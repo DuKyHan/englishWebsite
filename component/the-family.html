@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Unit 1 – The Family</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pink:#f3d6e4;--pink-dark:#c0446e;--pink-mid:#e8abc5;
+  --bg:#fdf6f9;--white:#fff;
+  --text:#1a1a1a;--muted:#666;
+  --border:#e8e0e5;
+  --green:#166534;--green-bg:#dcfce7;
+  --red:#991b1b;--red-bg:#fee2e2;
+  --blue:#1e3a8a;--blue-bg:#dbeafe;
+  --r:10px;--font:'Segoe UI',system-ui,sans-serif;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;}
+
+/* ── TOP BAR ── */
+header{background:var(--pink-dark);color:#fff;padding:1.5rem 2rem;text-align:center;}
+header h1{font-size:2rem;font-weight:700;letter-spacing:-0.5px;}
+header p{font-size:0.95rem;opacity:.85;margin-top:4px;}
+
+/* ── LAYOUT ── */
+.container{max-width:860px;margin:0 auto;padding:2rem 1.5rem;}
+section{margin-bottom:2.5rem;}
+h2{font-size:1.15rem;font-weight:700;color:var(--pink-dark);margin-bottom:1rem;
+   display:flex;align-items:center;gap:8px;}
+h2 .badge{background:var(--pink-dark);color:#fff;font-size:11px;padding:2px 9px;
+           border-radius:20px;font-weight:600;letter-spacing:.5px;}
+
+/* ── FAMILY TREE ── */
+.tree-wrap{background:var(--white);border:0.5px solid var(--border);border-radius:var(--r);
+           padding:2rem 1rem;overflow-x:auto;}
+.tree{display:flex;flex-direction:column;align-items:center;gap:0;}
+.tree-row{display:flex;justify-content:center;align-items:flex-start;gap:24px;position:relative;}
+.tree-row+.tree-row{margin-top:0;}
+
+.person{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:72px;}
+.avatar{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;
+        justify-content:center;font-size:1.5rem;border:2px solid var(--border);}
+.person-name{font-size:12px;font-weight:600;text-align:center;color:var(--text);}
+.couple{display:flex;align-items:flex-end;gap:4px;}
+.couple-connector{font-size:18px;color:var(--pink-dark);margin-bottom:30px;font-weight:700;}
+
+.branch{display:flex;flex-direction:column;align-items:center;}
+.branch-line{width:2px;height:28px;background:var(--pink-mid);margin:0 auto;}
+.branch-spread{display:flex;justify-content:center;align-items:flex-start;gap:24px;
+               position:relative;}
+.branch-spread::before{content:'';position:absolute;top:0;left:10%;right:10%;
+                       height:2px;background:var(--pink-mid);}
+.branch-item{display:flex;flex-direction:column;align-items:center;}
+.branch-item .branch-line{height:16px;}
+
+/* ── VOCABULARY CARDS ── */
+.vocab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;}
+.vocab-card{background:var(--white);border:0.5px solid var(--border);border-radius:var(--r);
+            padding:12px 14px;cursor:pointer;transition:border-color .15s,transform .1s;}
+.vocab-card:hover{border-color:var(--pink-dark);transform:translateY(-1px);}
+.vocab-card .word{font-size:15px;font-weight:700;color:var(--pink-dark);}
+.vocab-card .def{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.4;}
+.vocab-card .example{font-size:12px;color:#555;margin-top:6px;font-style:italic;border-top:0.5px solid var(--border);padding-top:6px;}
+
+/* ── EXERCISES ── */
+.exercise{background:var(--white);border:0.5px solid var(--border);border-radius:var(--r);padding:1.25rem 1.5rem;margin-bottom:1.25rem;}
+.exercise h3{font-size:14px;font-weight:700;margin-bottom:1rem;color:#333;}
+.ex-item{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:14px;flex-wrap:wrap;}
+.ex-item label{min-width:24px;font-weight:700;color:var(--pink-dark);}
+.fill-blank{border:none;border-bottom:2px solid var(--border);outline:none;width:130px;
+            font-size:14px;font-family:var(--font);color:var(--text);background:transparent;
+            padding:2px 4px;transition:border-color .15s;}
+.fill-blank:focus{border-color:var(--pink-dark);}
+.fill-blank.correct{border-color:#22c55e;color:var(--green);}
+.fill-blank.wrong{border-color:#ef4444;color:var(--red);}
+
+.mc-options{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+.mc-btn{padding:6px 16px;border:0.5px solid var(--border);border-radius:20px;
+        font-size:13px;background:var(--white);cursor:pointer;transition:all .12s;font-family:var(--font);}
+.mc-btn:hover{border-color:var(--pink-dark);color:var(--pink-dark);}
+.mc-btn.selected{background:var(--pink-dark);color:#fff;border-color:var(--pink-dark);}
+.mc-btn.correct-ans{background:var(--green-bg);color:var(--green);border-color:#22c55e;}
+.mc-btn.wrong-ans{background:var(--red-bg);color:var(--red);border-color:#ef4444;}
+
+.match-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.match-col{display:flex;flex-direction:column;gap:8px;}
+.match-item{padding:9px 14px;border:0.5px solid var(--border);border-radius:8px;
+            font-size:13px;cursor:pointer;background:var(--white);transition:all .12s;
+            user-select:none;}
+.match-item:hover{border-color:var(--pink-dark);}
+.match-item.selected{background:var(--pink-dark);color:#fff;border-color:var(--pink-dark);}
+.match-item.matched{background:var(--green-bg);color:var(--green);border-color:#22c55e;cursor:default;}
+.match-item.wrong-match{background:var(--red-bg);color:var(--red);border-color:#ef4444;}
+
+.check-btn{display:inline-block;margin-top:1rem;padding:8px 22px;background:var(--pink-dark);
+           color:#fff;border:none;border-radius:8px;font-size:14px;cursor:pointer;font-family:var(--font);}
+.check-btn:hover{opacity:.9;}
+.result-bar{margin-top:10px;font-size:13px;padding:8px 14px;border-radius:8px;display:none;}
+.result-bar.show{display:block;}
+.result-bar.pass{background:var(--green-bg);color:var(--green);}
+.result-bar.fail{background:var(--red-bg);color:var(--red);}
+
+/* ── TIP BOX ── */
+.tip{background:#fff8e6;border:0.5px solid #f5c842;border-radius:8px;padding:12px 16px;font-size:13px;margin-bottom:1.25rem;}
+.tip strong{color:#854d0e;}
+
+/* ── SCORE ── */
+.score-panel{position:fixed;bottom:20px;right:20px;background:var(--white);
+             border:0.5px solid var(--border);border-radius:var(--r);
+             padding:12px 18px;font-size:13px;box-shadow:0 4px 16px rgba(0,0,0,.08);}
+.score-panel strong{color:var(--pink-dark);font-size:18px;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🏠 Unit 1 – The Family</h1>
+  <p>English Vocabulary in Use · Elementary</p>
+</header>
+
+<div class="container">
+
+  <!-- ── FAMILY TREE ── -->
+  <section>
+    <h2><span class="badge">A</span> Family Tree – The Sorokins</h2>
+    <div class="tree-wrap">
+      <div class="tree">
+        <!-- Generation 1 -->
+        <div class="tree-row">
+          <div class="couple">
+            <div class="person"><div class="avatar">👴</div><div class="person-name">Henry</div></div>
+            <div class="couple-connector">+</div>
+            <div class="person"><div class="avatar">👵</div><div class="person-name">Diana</div></div>
+          </div>
+        </div>
+        <div class="branch-line" style="height:24px;width:2px;background:#e8abc5;margin:0 auto;"></div>
+
+        <!-- Generation 2 -->
+        <div style="position:relative;display:flex;justify-content:center;gap:48px;padding:0 1rem;">
+          <div style="position:absolute;top:0;left:18%;right:18%;height:2px;background:#e8abc5;"></div>
+          <div class="branch-item">
+            <div class="branch-line"></div>
+            <div class="person"><div class="avatar">👩</div><div class="person-name">Amelia</div></div>
+          </div>
+          <div class="branch-item">
+            <div class="branch-line"></div>
+            <div class="couple">
+              <div class="person"><div class="avatar">👨</div><div class="person-name">Ivan</div></div>
+              <div class="couple-connector">+</div>
+              <div class="person"><div class="avatar">👩</div><div class="person-name">Anne</div></div>
+            </div>
+          </div>
+          <div class="branch-item">
+            <div class="branch-line"></div>
+            <div class="couple">
+              <div class="person"><div class="avatar">👨</div><div class="person-name">George</div></div>
+              <div class="couple-connector">+</div>
+              <div class="person"><div class="avatar">👩</div><div class="person-name">Meena</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:center;gap:180px;margin-top:0;">
+          <div class="branch-line" style="height:24px;width:2px;background:#e8abc5;margin-top:0;"></div>
+          <div class="branch-line" style="height:24px;width:2px;background:#e8abc5;margin-top:0;"></div>
+        </div>
+
+        <!-- Generation 3 -->
+        <div style="display:flex;justify-content:center;gap:48px;position:relative;">
+          <div style="position:absolute;top:0;left:22%;right:40%;height:2px;background:#e8abc5;"></div>
+          <div style="position:absolute;top:0;left:58%;right:22%;height:2px;background:#e8abc5;"></div>
+          <div class="branch-item">
+            <div class="branch-line"></div>
+            <div class="person"><div class="avatar">👧</div><div class="person-name">Karen</div></div>
+          </div>
+          <div class="branch-item">
+            <div class="branch-line"></div>
+            <div class="person"><div class="avatar">👦</div><div class="person-name">Jack</div></div>
+          </div>
+          <div style="min-width:40px;"></div>
+          <div class="branch-item">
+            <div class="branch-line"></div>
+            <div class="person"><div class="avatar">👦</div><div class="person-name">Ravi</div></div>
+          </div>
+          <div class="branch-item">
+            <div class="branch-line"></div>
+            <div class="person"><div class="avatar">👧</div><div class="person-name">Kavita</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── VOCABULARY ── -->
+  <section>
+    <h2><span class="badge">B</span> Vocabulary – Family Words</h2>
+    <div class="tip"><strong>💡 Tip:</strong> We say <em>my/his <strong>wife</strong></em> (singular) but <em>our/their <strong>wives</strong></em> (plural).</div>
+    <div class="vocab-grid">
+      <div class="vocab-card"><div class="word">husband</div><div class="def">a man who is married</div><div class="example">Ivan is Anne's husband.</div></div>
+      <div class="vocab-card"><div class="word">wife</div><div class="def">a woman who is married</div><div class="example">Anne is Ivan's wife.</div></div>
+      <div class="vocab-card"><div class="word">parents</div><div class="def">father and mother together</div><div class="example">Ivan and Anne are Karen's parents.</div></div>
+      <div class="vocab-card"><div class="word">father</div><div class="def">a male parent</div><div class="example">Ivan is Karen's father.</div></div>
+      <div class="vocab-card"><div class="word">mother</div><div class="def">a female parent</div><div class="example">Anne is Jack's mother.</div></div>
+      <div class="vocab-card"><div class="word">son</div><div class="def">a male child</div><div class="example">Jack is their son.</div></div>
+      <div class="vocab-card"><div class="word">daughter</div><div class="def">a female child</div><div class="example">Karen is their daughter.</div></div>
+      <div class="vocab-card"><div class="word">brother</div><div class="def">a male sibling</div><div class="example">Jack is Karen's brother.</div></div>
+      <div class="vocab-card"><div class="word">sister</div><div class="def">a female sibling</div><div class="example">Karen is Jack's sister.</div></div>
+      <div class="vocab-card"><div class="word">grandfather</div><div class="def">father's/mother's father</div><div class="example">Henry is Karen's grandfather.</div></div>
+      <div class="vocab-card"><div class="word">grandmother</div><div class="def">father's/mother's mother</div><div class="example">Diana is Jack's grandmother.</div></div>
+      <div class="vocab-card"><div class="word">grandson</div><div class="def">son's/daughter's son</div><div class="example">Jack is Henry's grandson.</div></div>
+      <div class="vocab-card"><div class="word">granddaughter</div><div class="def">son's/daughter's daughter</div><div class="example">Karen is Diana's granddaughter.</div></div>
+      <div class="vocab-card"><div class="word">uncle</div><div class="def">parent's brother</div><div class="example">George is Karen's uncle.</div></div>
+      <div class="vocab-card"><div class="word">aunt</div><div class="def">parent's sister</div><div class="example">Amelia is Jack's aunt.</div></div>
+      <div class="vocab-card"><div class="word">nephew</div><div class="def">brother's/sister's son</div><div class="example">Jack is George's nephew.</div></div>
+      <div class="vocab-card"><div class="word">niece</div><div class="def">brother's/sister's daughter</div><div class="example">Karen is Meena's niece.</div></div>
+      <div class="vocab-card"><div class="word">cousin</div><div class="def">uncle's/aunt's child</div><div class="example">Ravi is Karen's cousin.</div></div>
+      <div class="vocab-card"><div class="word">only child</div><div class="def">no brothers or sisters</div><div class="example">"I am an only child."</div></div>
+      <div class="vocab-card"><div class="word">relatives</div><div class="def">all members of a family</div><div class="example">They are all relatives.</div></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       EXERCISE 1 – Fill in the blank (Ex 1.1)
+  ══════════════════════════════════════════ -->
+  <section>
+    <h2><span class="badge">Ex 1</span> Complete the sentences – Family Tree</h2>
+    <div class="exercise">
+      <h3>Look at the family tree. Write the correct family word.</h3>
+
+      <div class="ex-item"><label>1.</label> Kavita is Ravi's <input class="fill-blank" id="e1_1" placeholder="______" data-ans="sister"> .</div>
+      <div class="ex-item"><label>2.</label> Ravi is Kavita's <input class="fill-blank" id="e1_2" placeholder="______" data-ans="brother"> .</div>
+      <div class="ex-item"><label>3.</label> Anne is Kavita's <input class="fill-blank" id="e1_3" placeholder="______" data-ans="aunt"> .</div>
+      <div class="ex-item"><label>4.</label> Ivan is Ravi's <input class="fill-blank" id="e1_4" placeholder="______" data-ans="uncle"> .</div>
+      <div class="ex-item"><label>5.</label> Diana is Ravi's <input class="fill-blank" id="e1_5" placeholder="______" data-ans="grandmother"> .</div>
+      <div class="ex-item"><label>6.</label> Henry is Kavita's <input class="fill-blank" id="e1_6" placeholder="______" data-ans="grandfather"> .</div>
+      <div class="ex-item"><label>7.</label> Ravi is Ivan's <input class="fill-blank" id="e1_7" placeholder="______" data-ans="nephew"> .</div>
+      <div class="ex-item"><label>8.</label> Kavita is Ivan's <input class="fill-blank" id="e1_8" placeholder="______" data-ans="niece"> .</div>
+      <div class="ex-item"><label>9.</label> Meena is Kavita's <input class="fill-blank" id="e1_9" placeholder="______" data-ans="mother"> .</div>
+      <div class="ex-item"><label>10.</label> Meena is George's <input class="fill-blank" id="e1_10" placeholder="______" data-ans="wife"> .</div>
+      <div class="ex-item"><label>11.</label> Karen is Ravi's <input class="fill-blank" id="e1_11" placeholder="______" data-ans="cousin"> .</div>
+
+      <button class="check-btn" onclick="checkFill('ex1', 11)">Check answers</button>
+      <div class="result-bar" id="ex1-result"></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       EXERCISE 2 – Multiple choice
+  ══════════════════════════════════════════ -->
+  <section>
+    <h2><span class="badge">Ex 2</span> Choose the correct word</h2>
+    <div class="exercise">
+      <h3>Select the best answer for each question.</h3>
+
+      <!-- Q1 -->
+      <div style="margin-bottom:1.25rem;">
+        <div style="font-size:14px;margin-bottom:6px;"><strong>1.</strong> Henry is Karen's ___.</div>
+        <div class="mc-options" data-ans="grandfather" id="mc1">
+          <button class="mc-btn" onclick="pickMC(this,'mc1')">uncle</button>
+          <button class="mc-btn" onclick="pickMC(this,'mc1')">grandfather</button>
+          <button class="mc-btn" onclick="pickMC(this,'mc1')">father</button>
+          <button class="mc-btn" onclick="pickMC(this,'mc1')">brother</button>
+        </div>
+      </div>
+      <!-- Q2 -->
+      <div style="margin-bottom:1.25rem;">
+        <div style="font-size:14px;margin-bottom:6px;"><strong>2.</strong> Amelia is Jack's ___.</div>
+        <div class="mc-options" data-ans="aunt" id="mc2">
+          <button class="mc-btn" onclick="pickMC(this,'mc2')">niece</button>
+          <button class="mc-btn" onclick="pickMC(this,'mc2')">cousin</button>
+          <button class="mc-btn" onclick="pickMC(this,'mc2')">aunt</button>
+          <button class="mc-btn" onclick="pickMC(this,'mc2')">grandmother</button>
+        </div>
+      </div>
+      <!-- Q3 -->
+      <div style="margin-bottom:1.25rem;">
+        <div style="font-size:14px;margin-bottom:6px;"><strong>3.</strong> Jack is Karen's ___.</div>
+        <div class="mc-options" data-ans="brother" id="mc3">
+          <button class="mc-btn" onclick="pickMC(this,'mc3')">cousin</button>
+          <button class="mc-btn" onclick="pickMC(this,'mc3')">nephew</button>
+          <button class="mc-btn" onclick="pickMC(this,'mc3')">son</button>
+          <button class="mc-btn" onclick="pickMC(this,'mc3')">brother</button>
+        </div>
+      </div>
+      <!-- Q4 -->
+      <div style="margin-bottom:1.25rem;">
+        <div style="font-size:14px;margin-bottom:6px;"><strong>4.</strong> Karen is Henry and Diana's ___.</div>
+        <div class="mc-options" data-ans="granddaughter" id="mc4">
+          <button class="mc-btn" onclick="pickMC(this,'mc4')">daughter</button>
+          <button class="mc-btn" onclick="pickMC(this,'mc4')">granddaughter</button>
+          <button class="mc-btn" onclick="pickMC(this,'mc4')">niece</button>
+          <button class="mc-btn" onclick="pickMC(this,'mc4')">cousin</button>
+        </div>
+      </div>
+      <!-- Q5 -->
+      <div style="margin-bottom:1.25rem;">
+        <div style="font-size:14px;margin-bottom:6px;"><strong>5.</strong> George is Karen and Jack's ___.</div>
+        <div class="mc-options" data-ans="uncle" id="mc5">
+          <button class="mc-btn" onclick="pickMC(this,'mc5')">grandfather</button>
+          <button class="mc-btn" onclick="pickMC(this,'mc5')">nephew</button>
+          <button class="mc-btn" onclick="pickMC(this,'mc5')">uncle</button>
+          <button class="mc-btn" onclick="pickMC(this,'mc5')">father</button>
+        </div>
+      </div>
+
+      <button class="check-btn" onclick="checkMC()">Check answers</button>
+      <div class="result-bar" id="mc-result"></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       EXERCISE 3 – Matching
+  ══════════════════════════════════════════ -->
+  <section>
+    <h2><span class="badge">Ex 3</span> Match the word to its definition</h2>
+    <div class="exercise">
+      <h3>Click a word, then click the matching definition.</h3>
+      <div class="match-wrap">
+        <div class="match-col" id="match-left">
+          <div class="match-item" data-id="1" onclick="matchClick(this,'left')">nephew</div>
+          <div class="match-item" data-id="2" onclick="matchClick(this,'left')">cousin</div>
+          <div class="match-item" data-id="3" onclick="matchClick(this,'left')">granddaughter</div>
+          <div class="match-item" data-id="4" onclick="matchClick(this,'left')">aunt</div>
+          <div class="match-item" data-id="5" onclick="matchClick(this,'left')">only child</div>
+          <div class="match-item" data-id="6" onclick="matchClick(this,'left')">relatives</div>
+        </div>
+        <div class="match-col" id="match-right">
+          <div class="match-item" data-id="4" onclick="matchClick(this,'right')">your parent's sister</div>
+          <div class="match-item" data-id="6" onclick="matchClick(this,'right')">all members of your family</div>
+          <div class="match-item" data-id="1" onclick="matchClick(this,'right')">your brother or sister's son</div>
+          <div class="match-item" data-id="3" onclick="matchClick(this,'right')">your son or daughter's daughter</div>
+          <div class="match-item" data-id="5" onclick="matchClick(this,'right')">a child with no brothers or sisters</div>
+          <div class="match-item" data-id="2" onclick="matchClick(this,'right')">your uncle or aunt's child</div>
+        </div>
+      </div>
+      <div class="result-bar" id="match-result"></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       EXERCISE 4 – Gap fill paragraph (Ex 1.2)
+  ══════════════════════════════════════════ -->
+  <section>
+    <h2><span class="badge">Ex 4</span> Complete the paragraph</h2>
+    <div class="exercise">
+      <h3>Fill in the missing family words.</h3>
+      <p style="font-size:14px;line-height:2.2;color:#333;">
+        Meena has a brother, Sanjay. Sanjay is Kavita and Ravi's
+        <input class="fill-blank" id="p1" data-ans="uncle" placeholder="___">(1)
+        and Sanjay's wife is their
+        <input class="fill-blank" id="p2" data-ans="aunt" placeholder="___">(2).
+        Sanjay and his wife have one son, Prem. Prem is an
+        <input class="fill-blank" id="p3" data-ans="only child" placeholder="___">(3).
+        Henry's parents are still alive. Alexander is Henry's
+        <input class="fill-blank" id="p4" data-ans="father" placeholder="___">(4)
+        and his
+        <input class="fill-blank" id="p5" data-ans="wife" placeholder="___">(5)
+        Leila is Henry's
+        <input class="fill-blank" id="p6" data-ans="mother" placeholder="___">(6).
+        Alexander and Leila have three
+        <input class="fill-blank" id="p7" data-ans="children" placeholder="___">(7)
+        – Amelia, Ivan and George.
+        Ivan and George and their
+        <input class="fill-blank" id="p8" data-ans="wives" placeholder="___">(8),
+        Anne and Meena, love their
+        <input class="fill-blank" id="p9" data-ans="grandparents" placeholder="___">(9)
+        and visit them as often as possible.
+      </p>
+      <button class="check-btn" onclick="checkPara()">Check answers</button>
+      <div class="result-bar" id="para-result"></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       EXERCISE 5 – True / False
+  ══════════════════════════════════════════ -->
+  <section>
+    <h2><span class="badge">Ex 5</span> True or False?</h2>
+    <div class="exercise">
+      <h3>Decide if each sentence is true or false based on the family tree.</h3>
+
+      <div id="tf-wrap"></div>
+      <button class="check-btn" onclick="checkTF()">Check answers</button>
+      <div class="result-bar" id="tf-result"></div>
+    </div>
+  </section>
+
+</div><!-- /container -->
+
+<!-- Score panel -->
+<div class="score-panel">
+  Score: <strong id="score-val">0</strong> / <span id="score-total">0</span>
+</div>
+
+<script>
+// ── Score ───────────────────────────────────────────────────────────────────
+let totalScore = 0, maxScore = 0;
+function updateScore(gained, possible) {
+  totalScore += gained; maxScore += possible;
+  document.getElementById('score-val').textContent = totalScore;
+  document.getElementById('score-total').textContent = maxScore;
+}
+
+// ── Ex1: Fill in blank ───────────────────────────────────────────────────────
+function checkFill(prefix, count) {
+  let correct = 0;
+  for (let i = 1; i <= count; i++) {
+    const inp = document.getElementById('e1_' + i);
+    if (!inp) continue;
+    const ans = inp.dataset.ans.toLowerCase().trim();
+    const val = inp.value.toLowerCase().trim();
+    inp.classList.remove('correct','wrong');
+    if (val === ans) { inp.classList.add('correct'); correct++; }
+    else { inp.classList.add('wrong'); inp.placeholder = inp.dataset.ans; }
+  }
+  const bar = document.getElementById(prefix + '-result');
+  bar.textContent = `${correct} / ${count} correct`;
+  bar.className = 'result-bar show ' + (correct === count ? 'pass' : 'fail');
+  updateScore(correct, count);
+}
+
+// ── Ex2: Multiple choice ─────────────────────────────────────────────────────
+function pickMC(btn, groupId) {
+  const group = document.getElementById(groupId);
+  if (group.dataset.done) return;
+  group.querySelectorAll('.mc-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+function checkMC() {
+  const ids = ['mc1','mc2','mc3','mc4','mc5'];
+  let correct = 0;
+  ids.forEach(id => {
+    const group = document.getElementById(id);
+    if (group.dataset.done) return;
+    group.dataset.done = '1';
+    const ans = group.dataset.ans;
+    group.querySelectorAll('.mc-btn').forEach(btn => {
+      if (btn.textContent === ans) btn.classList.add('correct-ans');
+      else if (btn.classList.contains('selected')) btn.classList.add('wrong-ans');
+      btn.onclick = null;
+    });
+    const selected = group.querySelector('.selected');
+    if (selected && selected.textContent === ans) correct++;
+  });
+  const bar = document.getElementById('mc-result');
+  bar.textContent = `${correct} / ${ids.length} correct`;
+  bar.className = 'result-bar show ' + (correct === ids.length ? 'pass' : 'fail');
+  updateScore(correct, ids.length);
+}
+
+// ── Ex3: Matching ─────────────────────────────────────────────────────────────
+let matchSel = { left: null, right: null };
+function matchClick(el, side) {
+  if (el.classList.contains('matched')) return;
+  // deselect same side
+  document.querySelectorAll('#match-' + side + ' .match-item.selected')
+    .forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  matchSel[side] = el;
+
+  if (matchSel.left && matchSel.right) {
+    const l = matchSel.left, r = matchSel.right;
+    if (l.dataset.id === r.dataset.id) {
+      l.classList.remove('selected'); r.classList.remove('selected');
+      l.classList.add('matched'); r.classList.add('matched');
+      l.onclick = null; r.onclick = null;
+      checkAllMatched();
+    } else {
+      l.classList.add('wrong-match'); r.classList.add('wrong-match');
+      setTimeout(() => {
+        l.classList.remove('wrong-match','selected');
+        r.classList.remove('wrong-match','selected');
+      }, 700);
+    }
+    matchSel = { left: null, right: null };
+  }
+}
+function checkAllMatched() {
+  const total = document.querySelectorAll('#match-left .match-item').length;
+  const done = document.querySelectorAll('#match-left .match-item.matched').length;
+  if (done === total) {
+    const bar = document.getElementById('match-result');
+    bar.textContent = `All ${total} pairs matched! 🎉`;
+    bar.className = 'result-bar show pass';
+    updateScore(total, total);
+  }
+}
+
+// ── Ex4: Paragraph fill ───────────────────────────────────────────────────────
+function checkPara() {
+  const ids = ['p1','p2','p3','p4','p5','p6','p7','p8','p9'];
+  let correct = 0;
+  ids.forEach(id => {
+    const inp = document.getElementById(id);
+    const ans = inp.dataset.ans.toLowerCase().trim();
+    const val = inp.value.toLowerCase().trim();
+    inp.classList.remove('correct','wrong');
+    if (val === ans) { inp.classList.add('correct'); correct++; }
+    else { inp.classList.add('wrong'); inp.placeholder = inp.dataset.ans; }
+  });
+  const bar = document.getElementById('para-result');
+  bar.textContent = `${correct} / ${ids.length} correct`;
+  bar.className = 'result-bar show ' + (correct === ids.length ? 'pass' : 'fail');
+  updateScore(correct, ids.length);
+}
+
+// ── Ex5: True / False ─────────────────────────────────────────────────────────
+const tfData = [
+  { q: 'Ivan is Karen and Jack\'s father.', ans: true },
+  { q: 'Diana is Karen\'s aunt.', ans: false },
+  { q: 'Ravi and Kavita are Karen\'s cousins.', ans: true },
+  { q: 'George is Karen\'s grandfather.', ans: false },
+  { q: 'Jack is Henry and Diana\'s grandson.', ans: true },
+  { q: 'Karen is Anne and Ivan\'s niece.', ans: false },
+  { q: 'Meena is George\'s wife.', ans: true },
+];
+
+const tfWrap = document.getElementById('tf-wrap');
+tfData.forEach((item, i) => {
+  tfWrap.innerHTML += `
+    <div style="margin-bottom:12px;">
+      <div style="font-size:14px;margin-bottom:6px;"><strong>${i+1}.</strong> ${item.q}</div>
+      <div class="mc-options" data-ans="${item.ans}" id="tf${i}">
+        <button class="mc-btn" onclick="pickMC(this,'tf${i}')">True</button>
+        <button class="mc-btn" onclick="pickMC(this,'tf${i}')">False</button>
+      </div>
+    </div>`;
+});
+
+function checkTF() {
+  let correct = 0;
+  tfData.forEach((item, i) => {
+    const group = document.getElementById('tf' + i);
+    if (group.dataset.done) return;
+    group.dataset.done = '1';
+    const ansText = item.ans ? 'True' : 'False';
+    group.querySelectorAll('.mc-btn').forEach(btn => {
+      if (btn.textContent === ansText) btn.classList.add('correct-ans');
+      else if (btn.classList.contains('selected')) btn.classList.add('wrong-ans');
+      btn.onclick = null;
+    });
+    const sel = group.querySelector('.selected');
+    if (sel && sel.textContent === ansText) correct++;
+  });
+  const bar = document.getElementById('tf-result');
+  bar.textContent = `${correct} / ${tfData.length} correct`;
+  bar.className = 'result-bar show ' + (correct === tfData.length ? 'pass' : 'fail');
+  updateScore(correct, tfData.length);
+}
+</script>
+</body>
+</html>

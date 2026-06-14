@@ -1,874 +1,506 @@
 <!DOCTYPE html>
-<html lang="vi" data-theme="light">
+<html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Unit 1: Leisure Activities — Vocab Hub 🚀</title>
-<style>
-/* ============ DESIGN TOKENS ============ */
-:root{
-  --bg:#f4f6ff; --bg2:#ffffff; --card:#ffffff; --ink:#26283d; --ink-soft:#6b6e8a;
-  --line:#e4e7f4; --shadow:0 4px 14px rgba(80,90,200,.10);
-  --p:#6c4df6; --p-dark:#5438d6; --p-soft:#efeaff;
-  --accent:#ff7ab8; --accent-soft:#ffe9f4;
-  --good:#21c07a; --good-soft:#dcf9ec; --bad:#ff5a6a; --bad-soft:#ffe4e7;
-  --gold:#ffb300; --gold-soft:#fff4d6;
-  --teal:#19b8c9; --teal-soft:#e0f9fc;
-  --r:18px;
-}
-[data-theme="dark"]{
-  --bg:#141623; --bg2:#1c1f33; --card:#222640; --ink:#eceef8; --ink-soft:#a5a9c8;
-  --line:#33375a; --shadow:0 4px 18px rgba(0,0,0,.35);
-  --p:#8d72ff; --p-dark:#a18cff; --p-soft:#2c2a52;
-  --accent:#ff8ec3; --accent-soft:#3a2438;
-  --good:#2bd98c; --good-soft:#163b2c; --bad:#ff6b7a; --bad-soft:#3e1f26;
-  --gold:#ffc233; --gold-soft:#3c3115;
-  --teal:#2fd2e3; --teal-soft:#123a40;
-}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;padding:0}
-body{
-  font-family:'Quicksand','Baloo 2','Nunito',ui-rounded,'Segoe UI',system-ui,sans-serif;
-  background:var(--bg); color:var(--ink); min-height:100vh; transition:background .3s,color .3s;
-}
-button{font-family:inherit}
-.wrap{max-width:880px;margin:0 auto;padding:0 14px 90px}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Component Browser</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ============ HEADER ============ */
-header{
-  position:sticky;top:0;z-index:60;background:var(--bg);padding:12px 0 8px;
-  transition:background .3s;
-}
-.hd{display:flex;align-items:center;gap:10px;max-width:880px;margin:0 auto;padding:0 14px}
-.logo{font-weight:800;font-size:19px;display:flex;align-items:center;gap:8px}
-.logo .badge-unit{background:linear-gradient(135deg,var(--p),var(--accent));color:#fff;border-radius:10px;padding:3px 10px;font-size:12px;letter-spacing:.05em}
-.xp-pill{margin-left:auto;background:var(--gold-soft);border:2px solid var(--gold);color:var(--gold);border-radius:99px;padding:4px 12px;font-weight:800;font-size:14px}
-.theme-btn{background:var(--card);border:2px solid var(--line);border-radius:12px;width:40px;height:40px;font-size:18px;cursor:pointer;box-shadow:var(--shadow)}
+    :root {
+      --bg: #ffffff;
+      --bg-secondary: #f7f7f6;
+      --bg-hover: #f0f0ee;
+      --text: #111110;
+      --text-secondary: #6b6b68;
+      --border: rgba(0,0,0,0.1);
+      --border-hover: rgba(0,0,0,0.2);
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --mono: 'SFMono-Regular', Consolas, monospace;
+    }
 
-/* ============ NAV ============ */
-nav{overflow-x:auto;scrollbar-width:none;margin-top:8px}
-nav::-webkit-scrollbar{display:none}
-.nav-in{display:flex;gap:8px;max-width:880px;margin:0 auto;padding:4px 14px 10px;width:max-content;min-width:100%}
-.tab{
-  flex:none;background:var(--card);border:2px solid var(--line);border-radius:99px;
-  padding:8px 16px;font-weight:700;font-size:14px;color:var(--ink-soft);cursor:pointer;
-  transition:all .2s;white-space:nowrap;
-}
-.tab.active{background:var(--p);border-color:var(--p);color:#fff;box-shadow:0 4px 12px rgba(108,77,246,.35)}
-.tab:hover:not(.active){border-color:var(--p);color:var(--p)}
+    body {
+      font-family: var(--font);
+      background: var(--bg-secondary);
+      color: var(--text);
+      min-height: 100vh;
+      direction: ltr;
+    }
 
-/* ============ SECTIONS ============ */
-section{display:none;animation:fadeUp .35s cubic-bezier(.22,1,.36,1)}
-section.show{display:block}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-h2.sec-title{font-size:24px;margin:18px 0 4px;display:flex;align-items:center;gap:10px}
-p.sec-sub{color:var(--ink-soft);font-weight:600;font-size:14px;margin:0 0 18px}
+    /* ── TOPBAR ── */
+    .topbar {
+      background: var(--bg);
+      border-bottom: 0.5px solid var(--border);
+      padding: 0 2rem;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .topbar-brand {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .topbar-brand svg { opacity: 0.7; }
+    .topbar-path {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-family: var(--mono);
+    }
 
-/* ============ S1: FLIP CARDS ============ */
-.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
-.flip{perspective:1000px;height:250px;cursor:pointer}
-.flip-in{position:relative;width:100%;height:100%;transition:transform .55s cubic-bezier(.4,.1,.2,1.2);transform-style:preserve-3d}
-.flip.flipped .flip-in{transform:rotateY(180deg)}
-.face{
-  position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--r);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
-  padding:14px;text-align:center;box-shadow:var(--shadow);border:2px solid var(--line);
-}
-.face.front{background:linear-gradient(160deg,var(--card) 60%,var(--p-soft));}
-.face.front .emo{font-size:54px}
-.face.front .w{font-size:21px;font-weight:800}
-.face.front .tap{font-size:11px;color:var(--ink-soft);font-weight:700;letter-spacing:.05em}
-.face.back{background:var(--card);transform:rotateY(180deg);justify-content:flex-start;padding-top:18px;overflow:auto}
-.face.back .w{font-weight:800;font-size:17px;color:var(--p)}
-.ipa{color:var(--teal);font-weight:700;font-size:14px}
-.vi-mean{font-weight:800;font-size:15px;background:var(--accent-soft);color:var(--accent);border-radius:99px;padding:2px 12px}
-.ex{font-size:13px;font-weight:600;margin-top:4px}
-.ex-vi{font-size:12.5px;color:var(--ink-soft);font-weight:600;font-style:italic}
-.mini-speak{background:var(--teal);border:none;color:#fff;border-radius:10px;width:34px;height:30px;cursor:pointer;font-size:14px}
+    /* ── MAIN ── */
+    #app {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+      min-height: calc(100vh - 52px);
+    }
 
-/* ============ S2: LISTEN & REPEAT ============ */
-.lr-row{
-  background:var(--card);border:2px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);
-  padding:12px 14px;display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap;
-}
-.lr-emo{font-size:28px}
-.lr-word{font-weight:800;font-size:16px}
-.lr-ipa{font-size:13px;color:var(--teal);font-weight:700}
-.lr-btns{margin-left:auto;display:flex;gap:8px}
-.rbtn{border:none;border-radius:12px;padding:8px 12px;font-weight:800;font-size:13px;cursor:pointer;transition:transform .1s}
-.rbtn:active{transform:scale(.94)}
-.rbtn.listen{background:var(--teal-soft);color:var(--teal)}
-.rbtn.rec{background:var(--bad-soft);color:var(--bad)}
-.rbtn.rec.on{background:var(--bad);color:#fff;animation:blink 1s infinite}
-.rbtn.play{background:var(--good-soft);color:var(--good)}
-.rbtn:disabled{opacity:.4;cursor:not-allowed}
-@keyframes blink{50%{opacity:.6}}
-.mic-note{font-size:12.5px;color:var(--ink-soft);font-weight:600;background:var(--card);border:2px dashed var(--line);border-radius:12px;padding:10px 14px;margin-bottom:14px}
+    /* ── HOME VIEW ── */
+    .home-header { margin-bottom: 1.5rem; }
+    .home-header h1 {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .home-header p { font-size: 13px; color: var(--text-secondary); }
 
-/* ============ SHARED GAME UI ============ */
-.panel{background:var(--card);border:2px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:18px}
-.gstat{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.gpill{background:var(--p-soft);color:var(--p);font-weight:800;border-radius:99px;padding:5px 14px;font-size:14px}
-.gpill.gold{background:var(--gold-soft);color:var(--gold)}
-.gpill.teal{background:var(--teal-soft);color:var(--teal)}
-.btn{
-  border:none;border-radius:14px;padding:12px 24px;font-weight:800;font-size:15px;cursor:pointer;
-  transition:transform .1s,filter .2s;color:#fff;background:var(--p);box-shadow:0 4px 0 var(--p-dark);
-}
-.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--p-dark)}
-.btn.ghost{background:var(--card);color:var(--p);border:2px solid var(--p);box-shadow:none}
-.btn.small{padding:8px 16px;font-size:13px;border-radius:11px}
-.btn.good{background:var(--good);box-shadow:0 4px 0 #169a60}
-.btn:disabled{filter:grayscale(.8);opacity:.5;cursor:not-allowed}
+    .search-row { margin-bottom: 1rem; }
+    .search-row input {
+      width: 100%;
+      padding: 9px 14px;
+      font-size: 14px;
+      font-family: var(--font);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--bg);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s;
+      text-align: left;
+      direction: ltr;
+    }
+    .search-row input:focus { border-color: var(--border-hover); }
+    .search-row input::placeholder { color: var(--text-secondary); }
 
-/* matching */
-.mt-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.mt-col{display:grid;gap:10px;align-content:start}
-.mt-btn{
-  background:var(--bg2);border:2px solid var(--line);border-bottom-width:4px;border-radius:14px;
-  padding:12px 10px;font-weight:700;font-size:14.5px;cursor:pointer;color:var(--ink);transition:all .15s;text-align:center;
-}
-.mt-btn.sel{border-color:var(--p);background:var(--p-soft);color:var(--p)}
-.mt-btn.ok{border-color:var(--good);background:var(--good-soft);color:var(--good);pointer-events:none;transform:scale(.97)}
-.mt-btn.no{border-color:var(--bad);background:var(--bad-soft);animation:shake .4s}
-@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+    .count-row {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+      font-family: var(--mono);
+    }
 
-/* flashcards */
-.fc-stage{display:flex;flex-direction:column;align-items:center;gap:16px}
-.fc{perspective:1100px;width:min(420px,92vw);height:260px;cursor:pointer}
-.fc-in{position:relative;width:100%;height:100%;transition:transform .5s cubic-bezier(.4,.1,.2,1.15);transform-style:preserve-3d}
-.fc.flipped .fc-in{transform:rotateY(180deg)}
-.fc .face{font-size:15px}
-.fc .face.front .emo{font-size:64px}
-.fc .face.front .w{font-size:28px}
-.fc-controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
-.fc-count{font-weight:800;color:var(--ink-soft)}
-.mastered-btn{border:2px solid var(--good);background:var(--card);color:var(--good);border-radius:12px;padding:8px 16px;font-weight:800;cursor:pointer;font-size:13px}
-.mastered-btn.on{background:var(--good);color:#fff}
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+    }
 
-/* quiz */
-.q-opt{
-  display:block;width:100%;text-align:left;background:var(--bg2);border:2px solid var(--line);border-bottom-width:4px;
-  border-radius:14px;padding:13px 16px;font-weight:700;font-size:15px;color:var(--ink);cursor:pointer;margin-bottom:10px;transition:all .15s;
-}
-.q-opt:hover{border-color:var(--p)}
-.q-opt.ok{border-color:var(--good);background:var(--good-soft);color:var(--good)}
-.q-opt.no{border-color:var(--bad);background:var(--bad-soft);color:var(--bad);animation:shake .4s}
-.q-word{font-size:24px;font-weight:800;margin:6px 0 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.q-progress{height:10px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:16px}
-.q-progress>div{height:100%;background:linear-gradient(90deg,var(--p),var(--accent));transition:width .4s;border-radius:99px}
+    .card {
+      background: var(--bg);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.1rem 1rem;
+      cursor: pointer;
+      transition: border-color 0.12s, background 0.12s;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+    .card:hover { border-color: var(--border-hover); background: var(--bg-hover); }
 
-/* fill blank */
-.fb-row{background:var(--card);border:2px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:12px;box-shadow:var(--shadow)}
-.fb-sent{font-weight:700;font-size:15px;margin-bottom:4px}
-.fb-hint{font-size:13px;color:var(--ink-soft);font-weight:600;margin-bottom:10px}
-.fb-line{display:flex;gap:8px;flex-wrap:wrap}
-.fb-input{
-  flex:1;min-width:140px;border:2px solid var(--line);border-radius:12px;padding:10px 14px;font-family:inherit;
-  font-weight:700;font-size:15px;background:var(--bg2);color:var(--ink);outline:none;
-}
-.fb-input:focus{border-color:var(--p)}
-.fb-input.ok{border-color:var(--good);background:var(--good-soft)}
-.fb-input.no{border-color:var(--bad);background:var(--bad-soft);animation:shake .4s}
-.fb-reveal{font-size:13px;font-weight:800;color:var(--good);margin-top:6px}
+    .card-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 7px;
+      background: var(--bg-secondary);
+      border: 0.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card-icon svg { opacity: 0.55; }
 
-/* memory */
-.mem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-@media(max-width:520px){.mem-grid{grid-template-columns:repeat(4,1fr);gap:7px}}
-.mem-card{perspective:800px;aspect-ratio:3/3.4;cursor:pointer}
-.mem-in{position:relative;width:100%;height:100%;transition:transform .4s;transform-style:preserve-3d}
-.mem-card.open .mem-in{transform:rotateY(180deg)}
-.mem-face{
-  position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;border:2px solid var(--line);
-  display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;font-weight:800;
-}
-.mem-face.f{background:linear-gradient(135deg,var(--p),var(--accent));color:#fff;font-size:24px}
-.mem-face.b{background:var(--card);transform:rotateY(180deg);font-size:12.5px;color:var(--ink)}
-.mem-card.done .mem-face.b{background:var(--good-soft);border-color:var(--good);color:var(--good)}
+    .card-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      font-family: var(--mono);
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+    .card-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
 
-/* categories */
-.cat-pool{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;min-height:46px}
-.cat-chip{
-  background:var(--bg2);border:2px solid var(--line);border-bottom-width:4px;border-radius:99px;
-  padding:8px 16px;font-weight:800;font-size:14px;cursor:pointer;color:var(--ink);transition:all .15s;
-}
-.cat-chip.sel{border-color:var(--p);background:var(--p-soft);color:var(--p);transform:scale(1.05)}
-.cat-boxes{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
-.cat-box{background:var(--card);border:2px dashed var(--line);border-radius:var(--r);padding:12px;min-height:96px;cursor:pointer;transition:border-color .2s}
-.cat-box:hover{border-color:var(--p)}
-.cat-box h4{margin:0 0 8px;font-size:14.5px;display:flex;gap:6px;align-items:center}
-.cat-box .placed{display:flex;flex-wrap:wrap;gap:6px}
-.placed .tag{background:var(--good-soft);color:var(--good);border-radius:99px;padding:3px 10px;font-size:12.5px;font-weight:800;animation:fadeUp .3s}
-.cat-box.shake{animation:shake .4s;border-color:var(--bad)}
+    .empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 3rem;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
 
-/* dashboard */
-.dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
-.dash-card{background:var(--card);border:2px solid var(--line);border-radius:var(--r);padding:16px;text-align:center;box-shadow:var(--shadow)}
-.dash-card .v{font-size:28px;font-weight:800;color:var(--p)}
-.dash-card .l{font-size:12px;font-weight:800;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em}
-.bar{height:18px;background:var(--line);border-radius:99px;overflow:hidden}
-.bar>div{height:100%;background:linear-gradient(90deg,var(--good),var(--teal));border-radius:99px;transition:width .6s;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;color:#fff;font-size:11px;font-weight:800}
-.badges{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-top:14px}
-.bdg{background:var(--card);border:2px solid var(--line);border-radius:var(--r);padding:14px 8px;text-align:center;opacity:.35;filter:grayscale(1);transition:all .4s}
-.bdg.earned{opacity:1;filter:none;border-color:var(--gold);box-shadow:0 0 0 4px var(--gold-soft)}
-.bdg .be{font-size:36px}
-.bdg .bn{font-weight:800;font-size:13.5px;margin-top:4px}
-.bdg .br{font-size:11px;color:var(--ink-soft);font-weight:700}
-.score-list{list-style:none;padding:0;margin:8px 0 0}
-.score-list li{background:var(--bg2);border:2px solid var(--line);border-radius:12px;padding:8px 14px;margin-bottom:6px;font-weight:700;font-size:14px;display:flex;justify-content:space-between}
+    /* ── DETAIL VIEW ── */
+    .breadcrumb {
+      display: none;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      font-family: var(--mono);
+      color: var(--text-secondary);
+      margin-bottom: 1.25rem;
+    }
+    .breadcrumb .active { color: var(--text); }
+    .breadcrumb .sep { opacity: 0.35; }
 
-/* toast */
-#toast{
-  position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(120px);z-index:99;
-  background:var(--ink);color:var(--bg);font-weight:800;border-radius:99px;padding:12px 24px;
-  box-shadow:0 8px 30px rgba(0,0,0,.3);transition:transform .35s cubic-bezier(.22,1,.36,1);font-size:15px;
-}
-#toast.show{transform:translateX(-50%) translateY(0)}
+    .viewer {
+      background: var(--bg);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .viewer-header {
+      padding: 12px 16px;
+      border-bottom: 0.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .viewer-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: var(--mono);
+    }
+    .tag {
+      font-size: 10px;
+      padding: 2px 7px;
+      background: var(--bg-secondary);
+      border: 0.5px solid var(--border);
+      border-radius: 4px;
+      color: var(--text-secondary);
+      font-family: var(--font);
+    }
+    .back-btn {
+      font-size: 12px;
+      font-family: var(--font);
+      color: var(--text-secondary);
+      background: none;
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 5px 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: background 0.12s, color 0.12s;
+    }
+    .back-btn:hover { background: var(--bg-secondary); color: var(--text); }
 
-.confetti{position:fixed;top:-12px;z-index:99;border-radius:3px;pointer-events:none;animation:fall linear forwards}
-@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
-.center{text-align:center}
-.result-emoji{font-size:64px}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-</style>
+    .viewer-body { padding: 1.5rem; }
+    .viewer-desc {
+      display: none;
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+    .viewer-preview {
+      background: var(--bg-secondary);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      overflow: visible;
+    }
+    .viewer-preview-label {
+      font-size: 11px;
+      color: var(--text-secondary);
+      font-family: var(--mono);
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    pre {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      border-radius: var(--radius-md);
+      padding: 1.1rem 1.25rem;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      overflow-x: auto;
+    }
+    .kw  { color: #569cd6; }
+    .at  { color: #9cdcfe; }
+    .str { color: #ce9178; }
+    .cm  { color: #6a9955; }
+    .tg  { color: #4ec9b0; }
+
+    .loader {
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 13px;
+      padding: 2rem;
+    }
+  </style>
 </head>
 <body>
 
-<header>
-  <div class="hd">
-    <div class="logo">🚀 Vocab Hub <span class="badge-unit">UNIT 1 · LEISURE</span></div>
-    <div class="xp-pill">⚡ <span id="xpVal">0</span> XP</div>
-    <button class="theme-btn" id="themeBtn" title="Đổi giao diện sáng/tối">🌙</button>
+<header class="topbar">
+  <div class="topbar-brand">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <rect x="1" y="1" width="6" height="6" rx="1.5" fill="currentColor"/>
+      <rect x="9" y="1" width="6" height="6" rx="1.5" fill="currentColor"/>
+      <rect x="1" y="9" width="6" height="6" rx="1.5" fill="currentColor"/>
+      <rect x="9" y="9" width="6" height="6" rx="1.5" fill="currentColor"/>
+    </svg>
+    Lớp học Tiếng Anh
   </div>
-  <nav><div class="nav-in" id="navBar"></div></nav>
+  <span class="topbar-path"></span>
 </header>
 
-<div class="wrap">
-  <section id="sec-cards"></section>
-  <section id="sec-listen"></section>
-  <section id="sec-match"></section>
-  <section id="sec-flash"></section>
-  <section id="sec-quiz"></section>
-  <section id="sec-fill"></section>
-  <section id="sec-memory"></section>
-  <section id="sec-cat"></section>
-  <section id="sec-dash"></section>
-  <section id="sec-review"></section>
-</div>
-
-<div id="toast"></div>
+<main id="app"></main>
 
 <script>
-/* ====================================================
-   DATA — Unit 1: Leisure Activities (15 words)
-==================================================== */
-const VOCAB = [
- {en:"addicted", ipa:"/əˈdɪktɪd/", vi:"nghiện, ham mê", ex:"My brother is addicted to video games.", exvi:"Anh trai tôi nghiện trò chơi điện tử.", emo:"🎮", cat:"tech"},
- {en:"adore", ipa:"/əˈdɔː/", vi:"yêu thích, mê", ex:"I adore K-pop music and listen to it every day.", exvi:"Tôi cực kỳ yêu thích nhạc K-pop và nghe nó mỗi ngày.", emo:"😍", cat:"hobby"},
- {en:"community centre", ipa:"/kəˈmjuːnəti ˈsentə/", vi:"trung tâm văn hoá cộng đồng", ex:"We play badminton at the community centre.", exvi:"Chúng tôi chơi cầu lông ở trung tâm văn hoá cộng đồng.", emo:"🏢", cat:"place"},
- {en:"craft", ipa:"/krɑːft/", vi:"đồ thủ công, nghề thủ công", ex:"She makes paper crafts in her free time.", exvi:"Cô ấy làm đồ thủ công bằng giấy lúc rảnh rỗi.", emo:"✂️", cat:"hobby"},
- {en:"DIY", ipa:"/ˌdiː aɪ ˈwaɪ/", vi:"tự làm, tự sửa đồ tại nhà", ex:"Dad loves doing DIY projects at the weekend.", exvi:"Bố thích làm các dự án tự chế vào cuối tuần.", emo:"🔨", cat:"hobby"},
- {en:"hang out", ipa:"/hæŋ aʊt/", vi:"đi chơi (với bạn bè)", ex:"I often hang out with my friends after school.", exvi:"Tôi thường đi chơi với bạn bè sau giờ học.", emo:"🧋", cat:"leisure"},
- {en:"leisure", ipa:"/ˈleʒə/", vi:"thời gian rảnh rỗi", ex:"What do you do in your leisure time?", exvi:"Bạn làm gì vào thời gian rảnh rỗi?", emo:"⏰", cat:"leisure"},
- {en:"mind", ipa:"/maɪnd/", vi:"phiền, ngại", ex:"Do you mind turning down the music?", exvi:"Bạn có phiền vặn nhỏ nhạc xuống không?", emo:"🤔", cat:"other"},
- {en:"rely on", ipa:"/rɪˈlaɪ ɒn/", vi:"dựa vào, phụ thuộc vào", ex:"Don't rely on the internet for everything.", exvi:"Đừng phụ thuộc vào internet cho mọi thứ.", emo:"🤝", cat:"other"},
- {en:"savings", ipa:"/ˈseɪvɪŋz/", vi:"tiền tiết kiệm", ex:"She used her savings to buy a new bicycle.", exvi:"Cô ấy dùng tiền tiết kiệm để mua một chiếc xe đạp mới.", emo:"💰", cat:"other"},
- {en:"socialise", ipa:"/ˈsəʊʃəlaɪz/", vi:"giao lưu, kết giao", ex:"Teenagers like to socialise with friends at weekends.", exvi:"Thanh thiếu niên thích giao lưu với bạn bè vào cuối tuần.", emo:"👥", cat:"leisure"},
- {en:"stranger", ipa:"/ˈstreɪndʒə/", vi:"người lạ", ex:"Never share personal information with strangers online.", exvi:"Đừng bao giờ chia sẻ thông tin cá nhân với người lạ trên mạng.", emo:"🕵️", cat:"people"},
- {en:"surf", ipa:"/sɜːf/", vi:"lướt (mạng), lướt sóng", ex:"I surf the net to find new music.", exvi:"Tôi lướt mạng để tìm nhạc mới.", emo:"🏄", cat:"tech"},
- {en:"trick", ipa:"/trɪk/", vi:"trò khéo léo, kỹ thuật, mẹo", ex:"He can do amazing tricks on his skateboard.", exvi:"Cậu ấy có thể làm những kỹ thuật tuyệt vời trên ván trượt.", emo:"🛹", cat:"hobby"},
- {en:"virtual", ipa:"/ˈvɜːtʃuəl/", vi:"ảo (trên máy tính/Internet)", ex:"Virtual games are fun but can be addictive.", exvi:"Trò chơi ảo rất vui nhưng có thể gây nghiện.", emo:"🥽", cat:"tech"},
-];
-const CATS = {
-  leisure:{name:"Leisure Activities", vi:"Hoạt động giải trí", emo:"🎡"},
-  hobby:{name:"Hobbies & Interests", vi:"Sở thích", emo:"🎨"},
-  tech:{name:"Technology & Internet", vi:"Công nghệ & Internet", emo:"💻"},
-  people:{name:"People", vi:"Con người", emo:"🧑‍🤝‍🧑"},
-  place:{name:"Places", vi:"Địa điểm", emo:"📍"},
-  other:{name:"Other Vocabulary", vi:"Từ vựng khác", emo:"📚"},
-};
-const BADGES = [
-  {id:"beginner", emo:"🌱", name:"Beginner", vi:"Hoàn thành bài tập đầu tiên", xp:10},
-  {id:"explorer", emo:"🧭", name:"Explorer", vi:"Đạt 150 XP", xp:150},
-  {id:"expert",   emo:"🎖️", name:"Expert", vi:"Đạt 350 XP", xp:350},
-  {id:"master",   emo:"👑", name:"Vocabulary Master", vi:"Đạt 600 XP", xp:600},
-];
+  // ── DATA ─────────────────────────────────────────────────────────────────
+  let components = [];
 
-/* ====================================================
-   SAFE STORAGE (localStorage with in-memory fallback)
-==================================================== */
-const memStore = {};
-const store = {
-  get(k, d){ try{ const v = localStorage.getItem(k); return v===null? d : JSON.parse(v);}catch(e){ return k in memStore ? memStore[k] : d; } },
-  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){ memStore[k]=v; } }
-};
-let S = store.get('vocabhub_u1', {xp:0, mastered:[], quizScores:[], theme:'light'});
-function save(){ store.set('vocabhub_u1', S); }
-
-/* ====================================================
-   CORE HELPERS
-==================================================== */
-const $ = s => document.querySelector(s);
-const shuffle = a => a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(p=>p[1]);
-function speak(t){ try{ const u=new SpeechSynthesisUtterance(t); u.lang='en-GB'; u.rate=.85; speechSynthesis.cancel(); speechSynthesis.speak(u);}catch(e){} }
-function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._tm); t._tm=setTimeout(()=>t.classList.remove('show'),2200); }
-function addXP(n){
-  S.xp += n; $('#xpVal').textContent = S.xp;
-  BADGES.forEach(b=>{
-    if(S.xp >= b.xp && !S['bdg_'+b.id]){ S['bdg_'+b.id]=true; toast(`🏅 Huy hiệu mới: ${b.emo} ${b.name}!`); confetti(30); }
-  });
-  save(); renderDash();
-}
-function confetti(n=60){
-  const colors=['#6c4df6','#ff7ab8','#21c07a','#ffb300','#19b8c9'];
-  for(let i=0;i<n;i++){
-    const c=document.createElement('div'); c.className='confetti';
-    const s=6+Math.random()*8;
-    c.style.cssText=`left:${Math.random()*100}vw;width:${s}px;height:${s*1.4}px;background:${colors[i%5]};animation-duration:${2+Math.random()*2.5}s;animation-delay:${Math.random()*.6}s`;
-    document.body.appendChild(c); setTimeout(()=>c.remove(),5200);
+  // ── LOAD EXTERNAL COMPONENTS ─────────────────────────────────────────────
+  async function loadExternalComponents() {
+    try {
+      const res = await fetch('./component/manifest.json');
+      if (!res.ok) throw new Error('Không tìm thấy manifest.json');
+      const external = await res.json();
+      
+      external.forEach(item => {
+        components.push({
+          name: item.name,
+          file: item.file,
+          desc: item.desc,
+          icon: item.icon || `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>`,
+          external: `./component/${item.file}`
+        });
+      });
+    } catch (err) {
+      console.log('Không thể tải external components:', err.message);
+    }
+    render();
   }
-}
 
-/* ====================================================
-   NAVIGATION
-==================================================== */
-const SECTIONS = [
-  {id:'cards', label:'📇 Từ vựng'}, {id:'listen', label:'🔊 Nghe & Nhắc lại'},
-  {id:'match', label:'🔗 Nối từ'}, {id:'flash', label:'🃏 Flashcards'},
-  {id:'quiz', label:'✅ Trắc nghiệm'}, {id:'fill', label:'⌨️ Điền từ'},
-  {id:'memory', label:'🧠 Lật hình'}, {id:'cat', label:'🗂️ Phân loại'},
-  {id:'dash', label:'📊 Tiến độ'}, {id:'review', label:'🏆 Thử thách'},
-];
-$('#navBar').innerHTML = SECTIONS.map((s,i)=>`<button class="tab${i===0?' active':''}" data-s="${s.id}">${s.label}</button>`).join('');
-document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
-  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-  t.classList.add('active');
-  document.querySelectorAll('section').forEach(x=>x.classList.remove('show'));
-  $('#sec-'+t.dataset.s).classList.add('show');
-  window.scrollTo({top:0,behavior:'smooth'});
-  if(t.dataset.s==='dash') renderDash();
-});
-$('#sec-cards').classList.add('show');
+  // ── STATE ────────────────────────────────────────────────────────────────
+  let view = 'home';
+  let selected = null;
+  let query = '';
 
-/* ====================================================
-   THEME
-==================================================== */
-function applyTheme(){
-  document.documentElement.dataset.theme = S.theme;
-  $('#themeBtn').textContent = S.theme==='light' ? '🌙' : '☀️';
-}
-$('#themeBtn').onclick = ()=>{ S.theme = S.theme==='light'?'dark':'light'; save(); applyTheme(); };
-applyTheme();
-$('#xpVal').textContent = S.xp;
+  // ── UTILS ────────────────────────────────────────────────────────────────
+  function esc(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
 
-/* ====================================================
-   SECTION 1 — VOCABULARY FLIP CARDS
-==================================================== */
-$('#sec-cards').innerHTML = `
-  <h2 class="sec-title">📇 Vocabulary Cards <small style="font-size:13px;color:var(--ink-soft)">— Thẻ từ vựng</small></h2>
-  <p class="sec-sub">Chạm vào thẻ để lật và xem nghĩa, ví dụ. Tap a card to flip it!</p>
-  <div class="cards-grid">
-    ${VOCAB.map((w,i)=>`
-      <div class="flip" data-i="${i}">
-        <div class="flip-in">
-          <div class="face front">
-            <div class="emo">${w.emo}</div>
-            <div class="w">${w.en}</div>
-            <div class="tap">👆 TAP TO FLIP</div>
-          </div>
-          <div class="face back">
-            <div class="w">${w.en} <button class="mini-speak" data-say="${w.en}">🔊</button></div>
-            <div class="ipa">${w.ipa}</div>
-            <div class="vi-mean">${w.vi}</div>
-            <div class="ex">“${w.ex}”</div>
-            <div class="ex-vi">→ ${w.exvi}</div>
-          </div>
-        </div>
-      </div>`).join('')}
-  </div>`;
-document.querySelectorAll('#sec-cards .flip').forEach(f=>f.onclick=e=>{
-  if(e.target.classList.contains('mini-speak')){ speak(e.target.dataset.say); return; }
-  f.classList.toggle('flipped');
-});
+  // ── RENDER ───────────────────────────────────────────────────────────────
+  function render() {
+    const app = document.getElementById('app');
+    if (view === 'home') renderHome(app);
+    else renderDetail(app);
+  }
 
-/* ====================================================
-   SECTION 2 — LISTEN AND REPEAT (+ recording)
-==================================================== */
-const canRecord = !!(navigator.mediaDevices && window.MediaRecorder);
-$('#sec-listen').innerHTML = `
-  <h2 class="sec-title">🔊 Listen & Repeat <small style="font-size:13px;color:var(--ink-soft)">— Nghe và nhắc lại</small></h2>
-  <p class="sec-sub">Bấm 🔊 để nghe phát âm chuẩn → bấm 🎙️ để ghi âm giọng của bạn → bấm ▶️ để so sánh.</p>
-  <div class="mic-note">${canRecord
-    ? '🎙️ Trình duyệt của bạn hỗ trợ ghi âm! Lần đầu bấm ghi âm, hãy cho phép truy cập micro nhé.'
-    : '⚠️ Trình duyệt này không hỗ trợ ghi âm — bạn vẫn có thể luyện nghe và nhắc lại thành tiếng.'}</div>
-  ${VOCAB.map((w,i)=>`
-    <div class="lr-row">
-      <span class="lr-emo">${w.emo}</span>
-      <div><div class="lr-word">${w.en}</div><div class="lr-ipa">${w.ipa} · ${w.vi}</div></div>
-      <div class="lr-btns">
-        <button class="rbtn listen" data-say="${w.en}">🔊 Nghe</button>
-        <button class="rbtn rec" data-i="${i}" ${canRecord?'':'disabled'}>🎙️ Ghi âm</button>
-        <button class="rbtn play" data-i="${i}" disabled>▶️ Của tôi</button>
+  function renderHome(app) {
+    const filtered = components.filter(c =>
+      c.name.toLowerCase().includes(query.toLowerCase()) ||
+      c.desc.toLowerCase().includes(query.toLowerCase()) ||
+      c.file.toLowerCase().includes(query.toLowerCase())
+    );
+
+    app.innerHTML = `
+      <div class="home-header">
+        <h1>Component Browser</h1>
+        <p>${components.length} bài học</p>
       </div>
-    </div>`).join('')}`;
-document.querySelectorAll('#sec-listen .listen').forEach(b=>b.onclick=()=>speak(b.dataset.say));
+      <div class="search-row">
+        <input id="searchInput" type="text" placeholder="Tìm component..." autocomplete="off" dir="ltr" lang="en-US" style="direction: ltr; text-align: left; unicode-bidi: plaintext;" />
+      </div>
+      <div class="count-row">${filtered.length} kết quả</div>
+      <div class="grid" id="grid">
+        ${filtered.length === 0
+          ? `<div class="empty">Không tìm thấy component nào.</div>`
+          : filtered.map(c => `
+            <div class="card" data-name="${c.name}">
+              <div class="card-icon">${c.icon}</div>
+              <span class="card-name">${c.file.replace(/\.html$/, '')}</span>
+              <span class="card-desc">${c.desc}</span>
+            </div>`).join('')}
+      </div>
+    `;
 
-let mediaRec=null, recChunks=[], recBtnActive=null;
-const recordings = {};
-document.querySelectorAll('#sec-listen .rec').forEach(btn=>{
-  btn.onclick = async ()=>{
-    if(recBtnActive === btn){ mediaRec.stop(); return; }   // stop current
-    if(recBtnActive) return;                                // another recording in progress
-    try{
-      const stream = await navigator.mediaDevices.getUserMedia({audio:true});
-      recChunks=[]; mediaRec = new MediaRecorder(stream);
-      mediaRec.ondataavailable = e=>recChunks.push(e.data);
-      mediaRec.onstop = ()=>{
-        stream.getTracks().forEach(t=>t.stop());
-        recordings[btn.dataset.i] = URL.createObjectURL(new Blob(recChunks,{type:'audio/webm'}));
-        document.querySelector(`#sec-listen .play[data-i="${btn.dataset.i}"]`).disabled=false;
-        btn.classList.remove('on'); btn.textContent='🎙️ Ghi âm'; recBtnActive=null;
-        toast('✅ Đã ghi xong! Bấm ▶️ để nghe lại.');
-      };
-      mediaRec.start(); recBtnActive=btn;
-      btn.classList.add('on'); btn.textContent='⏹ Dừng';
-      setTimeout(()=>{ if(recBtnActive===btn) mediaRec.stop(); }, 5000); // auto-stop 5s
-    }catch(e){ toast('❌ Không truy cập được micro.'); }
-  };
-});
-document.querySelectorAll('#sec-listen .play').forEach(b=>b.onclick=()=>{
-  const url = recordings[b.dataset.i]; if(url) new Audio(url).play();
-});
-
-/* ====================================================
-   SECTION 3 — MATCHING GAME
-==================================================== */
-let mtScore=0, mtRound=0, mtSelL=null, mtSelR=null, mtLeftCount=0;
-const MT_ROUNDS = [VOCAB.slice(0,5), VOCAB.slice(5,10), VOCAB.slice(10,15)];
-function renderMatch(){
-  const sec = $('#sec-match');
-  if(mtRound >= MT_ROUNDS.length){
-    sec.innerHTML = `
-      <h2 class="sec-title">🔗 Matching Game</h2>
-      <div class="panel center">
-        <div class="result-emoji">🎉</div>
-        <h3>Hoàn thành cả 3 vòng!</h3>
-        <p style="color:var(--ink-soft);font-weight:600">Điểm nối từ: <b>${mtScore}</b></p>
-        <button class="btn" id="mtAgain">🔄 Chơi lại</button>
-      </div>`;
-    $('#mtAgain').onclick=()=>{ mtScore=0; mtRound=0; renderMatch(); };
-    return;
-  }
-  const set = MT_ROUNDS[mtRound];
-  mtLeftCount = set.length; mtSelL=mtSelR=null;
-  sec.innerHTML = `
-    <h2 class="sec-title">🔗 Matching Game <small style="font-size:13px;color:var(--ink-soft)">— Nối từ với nghĩa</small></h2>
-    <p class="sec-sub">Chạm 1 từ tiếng Anh rồi chạm nghĩa tiếng Việt tương ứng.</p>
-    <div class="gstat">
-      <span class="gpill">Vòng ${mtRound+1}/3</span>
-      <span class="gpill gold">⭐ Điểm: <span id="mtScoreV">${mtScore}</span></span>
-    </div>
-    <div class="panel mt-grid">
-      <div class="mt-col">${shuffle(set.map(w=>w.en)).map(en=>`<button class="mt-btn" data-en="${en}">${en}</button>`).join('')}</div>
-      <div class="mt-col">${shuffle(set.map(w=>w.vi)).map(vi=>`<button class="mt-btn" data-vi="${vi}">${vi}</button>`).join('')}</div>
-    </div>`;
-  const lookup = Object.fromEntries(set.map(w=>[w.en,w.vi]));
-  sec.querySelectorAll('.mt-btn').forEach(b=>b.onclick=()=>{
-    const isL = !!b.dataset.en;
-    sec.querySelectorAll(isL?'[data-en]':'[data-vi]').forEach(x=>x.classList.remove('sel'));
-    b.classList.add('sel');
-    if(isL) mtSelL=b; else mtSelR=b;
-    if(mtSelL && mtSelR){
-      const ok = lookup[mtSelL.dataset.en] === mtSelR.dataset.vi;
-      const L=mtSelL, R=mtSelR; mtSelL=mtSelR=null;
-      if(ok){
-        L.classList.add('ok'); R.classList.add('ok'); L.classList.remove('sel'); R.classList.remove('sel');
-        mtScore+=10; $('#mtScoreV').textContent=mtScore; addXP(5);
-        speak(L.dataset.en);
-        if(--mtLeftCount===0){ toast('✅ Xong vòng '+(mtRound+1)+'!'); mtRound++; setTimeout(renderMatch,900); }
-      } else {
-        L.classList.add('no'); R.classList.add('no');
-        setTimeout(()=>{ [L,R].forEach(x=>x.classList.remove('no','sel')); },450);
+    const searchInput = document.getElementById('searchInput');
+    // Set value bằng JS, không phải HTML attribute
+    searchInput.value = query;
+    
+    searchInput.addEventListener('input', e => {
+      let val = e.target.value;
+      
+      // Detect nếu text bị đảo ngược (chỉ số hoặc English)
+      if (/^[\d\w\-_]+$/.test(val)) {
+        const reversed = val.split('').reverse().join('');
+        // Nếu reversed khác gốc, check xem nó có phải cách đúng không
+        // bằng cách tìm trong components
+        const original_count = components.filter(c => c.name.includes(val) || c.file.includes(val) || c.desc.includes(val)).length;
+        const reversed_count = components.filter(c => c.name.includes(reversed) || c.file.includes(reversed) || c.desc.includes(reversed)).length;
+        
+        // Nếu reversed_count > original_count, thì reversed là đúng
+        if (reversed_count > original_count && original_count === 0) {
+          val = reversed;
+          searchInput.value = val;
+        }
       }
-    }
-  });
-}
-renderMatch();
+      
+      query = val;
+      render();
+    });
+    setTimeout(() => searchInput.focus(), 0);
 
-/* ====================================================
-   SECTION 4 — FLASHCARDS
-==================================================== */
-let fcOrder = VOCAB.map((_,i)=>i), fcIdx=0, fcAuto=null;
-function fcRender(){
-  const w = VOCAB[fcOrder[fcIdx]];
-  const mastered = S.mastered.includes(w.en);
-  $('#sec-flash').innerHTML = `
-    <h2 class="sec-title">🃏 Flashcards</h2>
-    <p class="sec-sub">Chạm thẻ để lật · dùng nút để chuyển thẻ · bật Auto-play để ôn nhanh.</p>
-    <div class="fc-stage">
-      <div class="fc" id="fcCard">
-        <div class="fc-in">
-          <div class="face front"><div class="emo">${w.emo}</div><div class="w">${w.en}</div><div class="tap">👆 TAP TO FLIP</div></div>
-          <div class="face back">
-            <div class="w" style="font-size:20px">${w.en} <button class="mini-speak" id="fcSpeak">🔊</button></div>
-            <div class="ipa">${w.ipa}</div><div class="vi-mean">${w.vi}</div>
-            <div class="ex">“${w.ex}”</div><div class="ex-vi">→ ${w.exvi}</div>
-          </div>
-        </div>
-      </div>
-      <div class="fc-count">Thẻ ${fcIdx+1} / ${fcOrder.length}</div>
-      <button class="mastered-btn ${mastered?'on':''}" id="fcMaster">${mastered?'✅ Đã thuộc!':'☑️ Đánh dấu đã thuộc'}</button>
-      <div class="fc-controls">
-        <button class="btn ghost" id="fcPrev">⬅️ Previous</button>
-        <button class="btn" id="fcNext">Next ➡️</button>
-      </div>
-      <div class="fc-controls">
-        <button class="btn small ghost" id="fcShuffle">🔀 Shuffle</button>
-        <button class="btn small ${fcAuto?'good':'ghost'}" id="fcAutoBtn">${fcAuto?'⏸ Stop auto':'▶️ Auto-play'}</button>
-      </div>
-    </div>`;
-  $('#fcCard').onclick = e=>{ if(e.target.id==='fcSpeak'){speak(w.en);return;} $('#fcCard').classList.toggle('flipped'); };
-  $('#fcPrev').onclick = ()=>{ fcIdx=(fcIdx-1+fcOrder.length)%fcOrder.length; fcRender(); };
-  $('#fcNext').onclick = ()=>{ fcIdx=(fcIdx+1)%fcOrder.length; fcRender(); };
-  $('#fcShuffle').onclick = ()=>{ fcOrder=shuffle(fcOrder); fcIdx=0; toast('🔀 Đã xáo trộn thẻ!'); fcRender(); };
-  $('#fcMaster').onclick = ()=>{
-    if(S.mastered.includes(w.en)) S.mastered = S.mastered.filter(x=>x!==w.en);
-    else { S.mastered.push(w.en); addXP(8); toast('🌟 +8 XP — từ mới đã thuộc!'); }
-    save(); fcRender(); renderDash();
-  };
-  $('#fcAutoBtn').onclick = ()=>{
-    if(fcAuto){ clearInterval(fcAuto); fcAuto=null; fcRender(); }
-    else{
-      fcAuto = setInterval(()=>{
-        const card=$('#fcCard');
-        if(card && !card.classList.contains('flipped')){ card.classList.add('flipped'); speak(VOCAB[fcOrder[fcIdx]].en); }
-        else { fcIdx=(fcIdx+1)%fcOrder.length; fcRender(); }
-      }, 2200);
-      fcRender();
-    }
-  };
-}
-fcRender();
-
-/* ====================================================
-   SECTION 5 — MULTIPLE CHOICE QUIZ (30 questions)
-==================================================== */
-let quizQs=[], quizI=0, quizScore=0, quizLock=false;
-function buildQuiz(){
-  const q1 = VOCAB.map(w=>({mode:'en2vi', w}));   // 15: choose VI meaning
-  const q2 = VOCAB.map(w=>({mode:'vi2en', w}));   // 15: choose EN word
-  quizQs = shuffle([...q1,...q2]); quizI=0; quizScore=0;
-  quizRender();
-}
-function quizRender(){
-  const sec=$('#sec-quiz');
-  if(quizI >= quizQs.length){
-    const pct = Math.round(quizScore/quizQs.length*100);
-    S.quizScores.push({pct, date:new Date().toLocaleDateString('vi-VN')});
-    if(S.quizScores.length>8) S.quizScores.shift();
-    save(); renderDash();
-    if(pct>=80) confetti();
-    sec.innerHTML = `
-      <h2 class="sec-title">✅ Multiple Choice Quiz</h2>
-      <div class="panel center">
-        <div class="result-emoji">${pct>=90?'🏆':pct>=70?'🎉':pct>=50?'💪':'📖'}</div>
-        <h3>Kết quả: ${quizScore}/${quizQs.length} câu đúng</h3>
-        <div class="bar" style="max-width:340px;margin:14px auto"><div style="width:${pct}%">${pct}%</div></div>
-        <p style="color:var(--ink-soft);font-weight:700">${pct>=90?'Xuất sắc! Bạn là cao thủ từ vựng! 👑':pct>=70?'Làm tốt lắm! Ôn thêm chút nữa là hoàn hảo!':pct>=50?'Khá ổn! Hãy xem lại các thẻ từ vựng nhé.':'Đừng nản — quay lại Section Từ vựng và thử lại nào!'}</p>
-        <button class="btn" id="quizAgain">🔄 Làm lại quiz</button>
-      </div>`;
-    $('#quizAgain').onclick=buildQuiz;
-    return;
-  }
-  const {mode,w} = quizQs[quizI];
-  quizLock=false;
-  let prompt, answer, pool;
-  if(mode==='en2vi'){ prompt=w.en; answer=w.vi; pool=shuffle(VOCAB.filter(v=>v.vi!==w.vi)).slice(0,3).map(v=>v.vi); }
-  else { prompt=w.vi; answer=w.en; pool=shuffle(VOCAB.filter(v=>v.en!==w.en)).slice(0,3).map(v=>v.en); }
-  const opts = shuffle([answer,...pool]);
-  sec.innerHTML = `
-    <h2 class="sec-title">✅ Multiple Choice Quiz</h2>
-    <div class="gstat">
-      <span class="gpill">Câu ${quizI+1}/${quizQs.length}</span>
-      <span class="gpill gold">⭐ ${quizScore} đúng</span>
-    </div>
-    <div class="q-progress"><div style="width:${quizI/quizQs.length*100}%"></div></div>
-    <div class="panel">
-      <p class="sec-sub" style="margin-bottom:2px">${mode==='en2vi'?'Chọn nghĩa tiếng Việt đúng:':'Chọn từ tiếng Anh đúng:'}</p>
-      <div class="q-word">${mode==='en2vi'?w.emo:''} ${prompt} ${mode==='en2vi'?`<button class="mini-speak" onclick="speak('${w.en.replace(/'/g,"\\'")}')">🔊</button>`:''}</div>
-      ${opts.map(o=>`<button class="q-opt" data-v="${o}">${o}</button>`).join('')}
-    </div>`;
-  sec.querySelectorAll('.q-opt').forEach(b=>b.onclick=()=>{
-    if(quizLock) return; quizLock=true;
-    const ok = b.dataset.v===answer;
-    sec.querySelectorAll('.q-opt').forEach(x=>{ if(x.dataset.v===answer) x.classList.add('ok'); });
-    if(ok){ quizScore++; addXP(4); } else b.classList.add('no');
-    setTimeout(()=>{ quizI++; quizRender(); }, ok?700:1400);
-  });
-}
-buildQuiz();
-
-/* ====================================================
-   SECTION 6 — FILL IN THE BLANK
-==================================================== */
-const FILL = VOCAB.map(w=>{
-  const re = new RegExp(w.en.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'i');
-  return {w, sent:w.ex.replace(re,'______'), hint:w.vi};
-});
-$('#sec-fill').innerHTML = `
-  <h2 class="sec-title">⌨️ Fill in the Blank <small style="font-size:13px;color:var(--ink-soft)">— Điền từ vào chỗ trống</small></h2>
-  <p class="sec-sub">Gõ từ tiếng Anh còn thiếu (gợi ý nghĩa tiếng Việt bên dưới mỗi câu) rồi bấm Kiểm tra.</p>
-  ${FILL.map((f,i)=>`
-    <div class="fb-row">
-      <div class="fb-sent">${i+1}. ${f.sent}</div>
-      <div class="fb-hint">💡 Gợi ý: ${f.hint} ${f.w.emo}</div>
-      <div class="fb-line">
-        <input class="fb-input" data-i="${i}" placeholder="Gõ từ tiếng Anh..." autocomplete="off" autocapitalize="off">
-        <button class="btn small" data-check="${i}">Kiểm tra</button>
-      </div>
-      <div class="fb-reveal" id="fbR${i}"></div>
-    </div>`).join('')}`;
-document.querySelectorAll('#sec-fill [data-check]').forEach(b=>{
-  b.onclick = ()=>{
-    const i=+b.dataset.check, inp=document.querySelector(`.fb-input[data-i="${i}"]`);
-    const guess = inp.value.trim().toLowerCase();
-    if(!guess) return;
-    const ok = guess === FILL[i].w.en.toLowerCase();
-    inp.classList.remove('ok','no'); void inp.offsetWidth;
-    if(ok){
-      inp.classList.add('ok'); inp.disabled=true; b.disabled=true;
-      $('#fbR'+i).textContent = '✅ Chính xác! +5 XP';
-      addXP(5); speak(FILL[i].w.en);
-    } else {
-      inp.classList.add('no');
-      $('#fbR'+i).textContent = '❌ Chưa đúng — thử lại nhé! (Bắt đầu bằng "'+FILL[i].w.en[0]+'...")';
-      $('#fbR'+i).style.color='var(--bad)';
-      setTimeout(()=>{$('#fbR'+i).style.color='var(--good)';},1500);
-    }
-  };
-});
-document.querySelectorAll('#sec-fill .fb-input').forEach(inp=>{
-  inp.addEventListener('keydown',e=>{ if(e.key==='Enter') document.querySelector(`[data-check="${inp.dataset.i}"]`).click(); });
-});
-
-/* ====================================================
-   SECTION 7 — MEMORY CARD GAME
-==================================================== */
-let memTimer=null, memSec=0, memMoves=0, memOpen=[], memFound=0, memLock=false;
-function memStart(){
-  clearInterval(memTimer); memSec=0; memMoves=0; memOpen=[]; memFound=0; memLock=false;
-  const picks = shuffle([...VOCAB]).slice(0,8);
-  const cards = shuffle(picks.flatMap(w=>[{k:w.en, t:w.en, en:w.en},{k:w.en, t:w.vi, en:w.en}]));
-  $('#sec-memory').innerHTML = `
-    <h2 class="sec-title">🧠 Memory Game <small style="font-size:13px;color:var(--ink-soft)">— Lật hình tìm cặp</small></h2>
-    <p class="sec-sub">Tìm các cặp: từ tiếng Anh ↔ nghĩa tiếng Việt. Càng ít lượt lật, điểm càng cao!</p>
-    <div class="gstat">
-      <span class="gpill teal">⏱ <span id="memTime">0:00</span></span>
-      <span class="gpill">🔁 Lượt: <span id="memMoves">0</span></span>
-      <span class="gpill gold">Cặp: <span id="memFound">0</span>/8</span>
-      <button class="btn small ghost" id="memRestart" style="margin-left:auto">🔄 Chơi lại</button>
-    </div>
-    <div class="panel"><div class="mem-grid">
-      ${cards.map((c,i)=>`
-        <div class="mem-card" data-k="${c.k}">
-          <div class="mem-in">
-            <div class="mem-face f">❓</div>
-            <div class="mem-face b">${c.t}</div>
-          </div>
-        </div>`).join('')}
-    </div></div>`;
-  $('#memRestart').onclick = memStart;
-  memTimer = setInterval(()=>{
-    memSec++; $('#memTime').textContent = Math.floor(memSec/60)+':'+String(memSec%60).padStart(2,'0');
-  },1000);
-  document.querySelectorAll('.mem-card').forEach(card=>card.onclick=()=>{
-    if(memLock || card.classList.contains('open') || card.classList.contains('done')) return;
-    card.classList.add('open'); memOpen.push(card);
-    if(memOpen.length===2){
-      memMoves++; $('#memMoves').textContent=memMoves; memLock=true;
-      const [a,b]=memOpen;
-      const same = a.dataset.k===b.dataset.k && a!==b;
-      setTimeout(()=>{
-        if(same){
-          a.classList.add('done'); b.classList.add('done');
-          memFound++; $('#memFound').textContent=memFound;
-          speak(a.dataset.k); addXP(3);
-          if(memFound===8){
-            clearInterval(memTimer);
-            const bonus = Math.max(40 - memMoves, 10);
-            addXP(bonus); confetti();
-            toast(`🏆 Hoàn thành trong ${memMoves} lượt · +${bonus} XP thưởng!`);
-          }
-        } else { a.classList.remove('open'); b.classList.remove('open'); }
-        memOpen=[]; memLock=false;
-      }, same?350:750);
-    }
-  });
-}
-memStart();
-
-/* ====================================================
-   SECTION 8 — WORD CATEGORIES
-==================================================== */
-let catSel=null, catDone=0;
-function catStart(){
-  catSel=null; catDone=0;
-  $('#sec-cat').innerHTML = `
-    <h2 class="sec-title">🗂️ Word Categories <small style="font-size:13px;color:var(--ink-soft)">— Phân loại từ vựng</small></h2>
-    <p class="sec-sub">Chạm 1 từ, sau đó chạm vào nhóm đúng của nó. Phân loại hết 15 từ nhé!</p>
-    <div class="cat-pool" id="catPool">
-      ${shuffle([...VOCAB]).map(w=>`<button class="cat-chip" data-en="${w.en}">${w.emo} ${w.en}</button>`).join('')}
-    </div>
-    <div class="cat-boxes">
-      ${Object.entries(CATS).map(([k,c])=>`
-        <div class="cat-box" data-cat="${k}">
-          <h4>${c.emo} ${c.name}<br><small style="color:var(--ink-soft);font-weight:700">${c.vi}</small></h4>
-          <div class="placed"></div>
-        </div>`).join('')}
-    </div>
-    <p class="sec-sub" style="margin-top:12px" id="catMsg"></p>`;
-  document.querySelectorAll('.cat-chip').forEach(ch=>ch.onclick=()=>{
-    document.querySelectorAll('.cat-chip').forEach(x=>x.classList.remove('sel'));
-    ch.classList.add('sel'); catSel=ch;
-  });
-  document.querySelectorAll('.cat-box').forEach(box=>box.onclick=()=>{
-    if(!catSel) { toast('👆 Chọn 1 từ trước đã!'); return; }
-    const w = VOCAB.find(v=>v.en===catSel.dataset.en);
-    if(w.cat === box.dataset.cat){
-      box.querySelector('.placed').insertAdjacentHTML('beforeend',`<span class="tag">${w.emo} ${w.en}</span>`);
-      catSel.remove(); catSel=null; addXP(3); catDone++;
-      if(catDone===VOCAB.length){ confetti(); $('#catMsg').innerHTML='🎉 <b>Tuyệt vời! Bạn đã phân loại đúng cả 15 từ!</b> <button class="btn small" onclick="catStart()">🔄 Chơi lại</button>'; }
-    } else {
-      box.classList.add('shake'); setTimeout(()=>box.classList.remove('shake'),450);
-      toast('❌ Chưa đúng nhóm — thử nhóm khác nhé!');
-    }
-  });
-}
-catStart();
-
-/* ====================================================
-   SECTION 9 — PROGRESS DASHBOARD
-==================================================== */
-function renderDash(){
-  const sec = $('#sec-dash'); if(!sec) return;
-  const m = S.mastered.length, total = VOCAB.length;
-  const avg = S.quizScores.length ? Math.round(S.quizScores.reduce((s,q)=>s+q.pct,0)/S.quizScores.length) : 0;
-  sec.innerHTML = `
-    <h2 class="sec-title">📊 Progress Dashboard <small style="font-size:13px;color:var(--ink-soft)">— Bảng tiến độ</small></h2>
-    <p class="sec-sub">Theo dõi hành trình chinh phục Unit 1 của bạn!</p>
-    <div class="dash-grid">
-      <div class="dash-card"><div class="v">${m}/${total}</div><div class="l">Từ đã thuộc</div></div>
-      <div class="dash-card"><div class="v">⚡${S.xp}</div><div class="l">Tổng XP</div></div>
-      <div class="dash-card"><div class="v">${S.quizScores.length?S.quizScores[S.quizScores.length-1].pct+'%':'—'}</div><div class="l">Quiz gần nhất</div></div>
-      <div class="dash-card"><div class="v">${avg?avg+'%':'—'}</div><div class="l">Điểm quiz TB</div></div>
-    </div>
-    <div class="panel">
-      <b>📈 Tiến độ thuộc từ (${Math.round(m/total*100)}%)</b>
-      <div class="bar" style="margin-top:8px"><div style="width:${m/total*100}%">${m>0?Math.round(m/total*100)+'%':''}</div></div>
-      <p style="font-size:13px;color:var(--ink-soft);font-weight:600;margin-bottom:0">💡 Đánh dấu "Đã thuộc" trong mục Flashcards để cập nhật tiến độ.</p>
-    </div>
-    <div class="panel" style="margin-top:14px">
-      <b>🏅 Huy hiệu (Badges)</b>
-      <div class="badges">
-        ${BADGES.map(b=>`
-          <div class="bdg ${S['bdg_'+b.id]?'earned':''}">
-            <div class="be">${b.emo}</div><div class="bn">${b.name}</div><div class="br">${b.vi}</div>
-          </div>`).join('')}
-      </div>
-    </div>
-    <div class="panel" style="margin-top:14px">
-      <b>📝 Lịch sử điểm quiz</b>
-      ${S.quizScores.length
-        ? `<ul class="score-list">${[...S.quizScores].reverse().map(q=>`<li><span>📅 ${q.date}</span><b style="color:${q.pct>=70?'var(--good)':'var(--bad)'}">${q.pct}%</b></li>`).join('')}</ul>`
-        : '<p style="color:var(--ink-soft);font-weight:600;font-size:14px;margin-bottom:0">Chưa có điểm nào — vào mục ✅ Trắc nghiệm để làm quiz đầu tiên!</p>'}
-    </div>`;
-}
-renderDash();
-
-/* ====================================================
-   SECTION 10 — REVIEW CHALLENGE (mixed + badges)
-==================================================== */
-let rvQs=[], rvI=0, rvScore=0, rvLock=false;
-function rvIntro(){
-  $('#sec-review').innerHTML = `
-    <h2 class="sec-title">🏆 Review Challenge <small style="font-size:13px;color:var(--ink-soft)">— Thử thách tổng hợp</small></h2>
-    <div class="panel center">
-      <div class="result-emoji">⚔️</div>
-      <h3>10 câu hỏi ngẫu nhiên — trộn đủ mọi dạng!</h3>
-      <p style="color:var(--ink-soft);font-weight:600">Trắc nghiệm xuôi, trắc nghiệm ngược và gõ từ. Mỗi câu đúng +8 XP.<br>Tích lũy XP để mở khoá 4 huy hiệu: 🌱 Beginner → 🧭 Explorer → 🎖️ Expert → 👑 Vocabulary Master!</p>
-      <button class="btn" id="rvStart">🚀 Bắt đầu thử thách</button>
-    </div>`;
-  $('#rvStart').onclick = ()=>{
-    rvQs = shuffle(VOCAB.flatMap(w=>[{t:'mc-en2vi',w},{t:'mc-vi2en',w},{t:'type',w}])).slice(0,10);
-    rvI=0; rvScore=0; rvRender();
-  };
-}
-function rvRender(){
-  const sec=$('#sec-review');
-  if(rvI>=rvQs.length){
-    const pct=Math.round(rvScore/rvQs.length*100);
-    if(pct>=80) confetti();
-    sec.innerHTML = `
-      <h2 class="sec-title">🏆 Review Challenge</h2>
-      <div class="panel center">
-        <div class="result-emoji">${pct>=80?'👑':pct>=50?'🎉':'💪'}</div>
-        <h3>Kết quả thử thách: ${rvScore}/${rvQs.length} (${pct}%)</h3>
-        <div class="bar" style="max-width:340px;margin:12px auto"><div style="width:${pct}%">${pct}%</div></div>
-        <p style="color:var(--ink-soft);font-weight:700">${pct>=80?'Đẳng cấp! Kiểm tra mục Tiến độ xem bạn mở khoá huy hiệu nào nhé!':'Chơi lại để kiếm thêm XP và mở khoá huy hiệu mới!'}</p>
-        <button class="btn" id="rvAgain">🔄 Thử thách mới</button>
-      </div>`;
-    $('#rvAgain').onclick=rvIntro;
-    return;
-  }
-  const q=rvQs[rvI]; rvLock=false;
-  let body='';
-  if(q.t==='type'){
-    body = `
-      <p class="sec-sub" style="margin-bottom:2px">Gõ từ tiếng Anh có nghĩa là:</p>
-      <div class="q-word">${q.w.emo} “${q.w.vi}”</div>
-      <div class="fb-line">
-        <input class="fb-input" id="rvInp" placeholder="Type the English word..." autocomplete="off" autocapitalize="off">
-        <button class="btn" id="rvCheck">Check</button>
-      </div><div class="fb-reveal" id="rvR"></div>`;
-  } else {
-    const en2vi = q.t==='mc-en2vi';
-    const answer = en2vi? q.w.vi : q.w.en;
-    const pool = shuffle(VOCAB.filter(v=>v.en!==q.w.en)).slice(0,3).map(v=>en2vi?v.vi:v.en);
-    const opts = shuffle([answer,...pool]);
-    body = `
-      <p class="sec-sub" style="margin-bottom:2px">${en2vi?'Chọn nghĩa đúng:':'Chọn từ tiếng Anh đúng:'}</p>
-      <div class="q-word">${en2vi? q.w.emo+' '+q.w.en : '“'+q.w.vi+'”'}</div>
-      ${opts.map(o=>`<button class="q-opt" data-v="${o}" data-ans="${answer}">${o}</button>`).join('')}`;
-  }
-  sec.innerHTML = `
-    <h2 class="sec-title">🏆 Review Challenge</h2>
-    <div class="gstat"><span class="gpill">Câu ${rvI+1}/10</span><span class="gpill gold">⭐ ${rvScore}</span></div>
-    <div class="q-progress"><div style="width:${rvI*10}%"></div></div>
-    <div class="panel">${body}</div>`;
-  if(q.t==='type'){
-    const inp=$('#rvInp'); inp.focus();
-    const go=()=>{
-      if(rvLock) return;
-      const ok = inp.value.trim().toLowerCase()===q.w.en.toLowerCase();
-      rvLock=true; inp.disabled=true;
-      inp.classList.add(ok?'ok':'no');
-      $('#rvR').textContent = ok? '✅ Chính xác!' : '❌ Đáp án: '+q.w.en;
-      if(ok){ rvScore++; addXP(8); } 
-      setTimeout(()=>{rvI++;rvRender();}, ok?700:1500);
-    };
-    $('#rvCheck').onclick=go;
-    inp.addEventListener('keydown',e=>{if(e.key==='Enter')go();});
-  } else {
-    sec.querySelectorAll('.q-opt').forEach(b=>b.onclick=()=>{
-      if(rvLock) return; rvLock=true;
-      const ok=b.dataset.v===b.dataset.ans;
-      sec.querySelectorAll('.q-opt').forEach(x=>{if(x.dataset.v===x.dataset.ans)x.classList.add('ok');});
-      if(ok){ rvScore++; addXP(8);} else b.classList.add('no');
-      setTimeout(()=>{rvI++;rvRender();}, ok?700:1400);
+    document.querySelectorAll('.card[data-name]').forEach(el => {
+      el.addEventListener('click', () => {
+        selected = components.find(c => c.name === el.dataset.name);
+        view = 'detail';
+        render();
+        window.scrollTo(0, 0);
+      });
     });
   }
-}
-rvIntro();
+
+  function renderDetail(app) {
+    const isExternal = selected.external;
+    const previewContent = selected.preview || (isExternal ? '<div class="loader">Đang tải...</div>' : '');
+    
+    app.innerHTML = `
+      <div class="breadcrumb">
+        <span>/</span>
+        <span>components/</span>
+        <span class="sep">/</span>
+        <span class="active">${selected.file}</span>
+      </div>
+      <div class="viewer">
+        <div class="viewer-header">
+          <div class="viewer-title">
+            ${selected.icon}
+            ${selected.file.replace(/\.html$/, '')}
+            <span class="tag">HTML</span>
+          </div>
+          <button class="back-btn" id="backBtn">← Quay lại</button>
+        </div>
+        <div class="viewer-body">
+          <p class="viewer-desc">${selected.desc}</p>
+          <div class="viewer-preview" id="preview">
+            <div class="viewer-preview-label">Preview</div>
+            ${previewContent}
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Tải component bên ngoài nếu có
+    if (isExternal) {
+      fetch(selected.external)
+        .then(res => res.text())
+        .then(html => {
+          const preview = document.getElementById('preview');
+          
+          // Hiển thị preview - tạo iframe để render HTML
+          const iframe = document.createElement('iframe');
+          iframe.style.width = '100%';
+          iframe.style.border = 'none';
+          iframe.style.borderRadius = 'var(--radius-md)';
+          iframe.setAttribute('scrolling', 'no');
+          
+          preview.innerHTML = '<div class="viewer-preview-label">Preview</div>';
+          preview.appendChild(iframe);
+          
+          // Ghi HTML vào iframe
+          iframe.contentDocument.open();
+          iframe.contentDocument.write(html);
+          iframe.contentDocument.close();
+          
+          // Hàm điều chỉnh chiều cao để fit hết content
+          const adjustHeight = () => {
+            try {
+              if (!iframe.contentDocument) return;
+              
+              const body = iframe.contentDocument.body;
+              const htmlDoc = iframe.contentDocument.documentElement;
+              
+              if (body) {
+                body.style.overflow = 'hidden';
+                body.style.margin = '0';
+                body.style.padding = '0';
+              }
+              
+              if (htmlDoc) {
+                htmlDoc.style.overflow = 'hidden';
+                htmlDoc.style.margin = '0';
+                htmlDoc.style.padding = '0';
+              }
+              
+              // Tính toán chiều cao content
+              let contentHeight = 0;
+              if (body && body.scrollHeight) {
+                contentHeight = body.scrollHeight;
+              }
+              if (htmlDoc && htmlDoc.scrollHeight > contentHeight) {
+                contentHeight = htmlDoc.scrollHeight;
+              }
+              
+              // Fit iframe vừa với content, không có scrolling
+              if (contentHeight > 0) {
+                iframe.style.height = (contentHeight * 1.3) + 'px';
+              }
+            } catch(e) {
+              console.error('Error adjusting iframe:', e);
+            }
+          };
+          
+          // Gọi điều chỉnh nhiều lần để đảm bảo capture được content hoàn toàn
+          setTimeout(adjustHeight, 50);
+          setTimeout(adjustHeight, 150);
+          setTimeout(adjustHeight, 400);
+          setTimeout(adjustHeight, 1000);
+          
+          iframe.onload = adjustHeight;
+        })
+        .catch(err => {
+          document.getElementById('preview').innerHTML = `<p style="color:red">Lỗi tải: ${err.message}</p>`;
+        });
+    }
+
+    document.getElementById('backBtn').addEventListener('click', () => {
+      view = 'home';
+      query = '';
+      render();
+    });
+  }
+
+  // ── INIT ─────────────────────────────────────────────────────────────────
+  loadExternalComponents();
 </script>
 </body>
 </html>

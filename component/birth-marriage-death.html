@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Unit 2 – Birth, Marriage and Death</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --purple:#6d28d9;--purple-light:#ede9fe;--purple-mid:#c4b5fd;
+  --bg:#f8f7ff;--white:#fff;
+  --text:#1a1a1a;--muted:#666;
+  --border:#e0daf5;
+  --green:#166534;--green-bg:#dcfce7;
+  --red:#991b1b;--red-bg:#fee2e2;
+  --amber:#854d0e;--amber-bg:#fef9c3;
+  --r:10px;--font:'Segoe UI',system-ui,sans-serif;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;}
+
+header{background:var(--purple);color:#fff;padding:1.5rem 2rem;text-align:center;}
+header h1{font-size:1.9rem;font-weight:700;letter-spacing:-.5px;}
+header p{font-size:.9rem;opacity:.8;margin-top:4px;}
+
+.container{max-width:860px;margin:0 auto;padding:2rem 1.5rem;}
+section{margin-bottom:2.5rem;}
+
+h2{font-size:1.1rem;font-weight:700;color:var(--purple);margin-bottom:1rem;
+   display:flex;align-items:center;gap:8px;}
+h2 .badge{background:var(--purple);color:#fff;font-size:11px;padding:2px 9px;
+           border-radius:20px;font-weight:600;}
+
+/* ── THEORY CARDS ── */
+.theory-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:1rem;}
+.theory-card{background:var(--white);border:0.5px solid var(--border);border-radius:var(--r);padding:1rem 1.1rem;}
+.theory-card .label{font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;
+                     color:var(--purple);margin-bottom:8px;}
+.theory-card p{font-size:13px;line-height:1.7;color:#333;}
+.theory-card strong{color:var(--purple);}
+
+.mistake-box{background:var(--amber-bg);border:0.5px solid #fbbf24;border-radius:8px;
+             padding:10px 14px;font-size:13px;margin-bottom:1rem;}
+.mistake-box strong{color:var(--amber);}
+.mistake-box s{color:#aaa;}
+
+/* ── VOCAB ── */
+.vocab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;}
+.vocab-card{background:var(--white);border:0.5px solid var(--border);border-radius:var(--r);
+            padding:12px 14px;transition:border-color .15s,transform .1s;}
+.vocab-card:hover{border-color:var(--purple);transform:translateY(-1px);}
+.vocab-card .word{font-size:15px;font-weight:700;color:var(--purple);}
+.vocab-card .def{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.4;}
+.vocab-card .ex{font-size:12px;color:#444;margin-top:6px;font-style:italic;
+                border-top:.5px solid var(--border);padding-top:6px;}
+
+/* ── EXERCISES ── */
+.exercise{background:var(--white);border:.5px solid var(--border);border-radius:var(--r);
+          padding:1.25rem 1.5rem;margin-bottom:1.25rem;}
+.exercise h3{font-size:14px;font-weight:700;margin-bottom:1rem;color:#333;}
+
+.ex-item{display:flex;align-items:baseline;gap:8px;margin-bottom:10px;font-size:14px;flex-wrap:wrap;}
+.ex-item label{min-width:20px;font-weight:700;color:var(--purple);flex-shrink:0;}
+
+.fill-blank{border:none;border-bottom:2px solid var(--border);outline:none;
+            min-width:110px;font-size:14px;font-family:var(--font);
+            color:var(--text);background:transparent;padding:2px 4px;transition:border-color .15s;}
+.fill-blank:focus{border-color:var(--purple);}
+.fill-blank.correct{border-color:#22c55e;color:var(--green);}
+.fill-blank.wrong{border-color:#ef4444;color:var(--red);}
+
+.mc-options{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;}
+.mc-btn{padding:6px 16px;border:.5px solid var(--border);border-radius:20px;
+        font-size:13px;background:var(--white);cursor:pointer;transition:all .12s;font-family:var(--font);}
+.mc-btn:hover{border-color:var(--purple);color:var(--purple);}
+.mc-btn.selected{background:var(--purple);color:#fff;border-color:var(--purple);}
+.mc-btn.correct-ans{background:var(--green-bg);color:var(--green);border-color:#22c55e;}
+.mc-btn.wrong-ans{background:var(--red-bg);color:var(--red);border-color:#ef4444;}
+
+.match-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.match-col{display:flex;flex-direction:column;gap:8px;}
+.match-item{padding:9px 14px;border:.5px solid var(--border);border-radius:8px;
+            font-size:13px;cursor:pointer;background:var(--white);transition:all .12s;user-select:none;}
+.match-item:hover{border-color:var(--purple);}
+.match-item.selected{background:var(--purple);color:#fff;border-color:var(--purple);}
+.match-item.matched{background:var(--green-bg);color:var(--green);border-color:#22c55e;cursor:default;}
+.match-item.wrong-match{background:var(--red-bg);color:var(--red);border-color:#ef4444;}
+
+.check-btn{display:inline-block;margin-top:1rem;padding:8px 22px;background:var(--purple);
+           color:#fff;border:none;border-radius:8px;font-size:14px;cursor:pointer;font-family:var(--font);}
+.check-btn:hover{opacity:.9;}
+.result-bar{margin-top:10px;font-size:13px;padding:8px 14px;border-radius:8px;display:none;}
+.result-bar.show{display:block;}
+.result-bar.pass{background:var(--green-bg);color:var(--green);}
+.result-bar.fail{background:var(--red-bg);color:var(--red);}
+
+.timeline{display:flex;flex-direction:column;gap:0;position:relative;padding-left:28px;}
+.timeline::before{content:'';position:absolute;left:8px;top:8px;bottom:8px;width:2px;background:var(--purple-mid);}
+.tl-item{position:relative;padding:10px 0 10px 16px;font-size:14px;}
+.tl-item::before{content:'';position:absolute;left:-20px;top:16px;width:12px;height:12px;
+                 border-radius:50%;background:var(--purple);border:2px solid var(--white);}
+.tl-item .tl-year{font-size:11px;font-weight:700;color:var(--purple);margin-bottom:2px;}
+
+.score-panel{position:fixed;bottom:20px;right:20px;background:var(--white);
+             border:.5px solid var(--border);border-radius:var(--r);
+             padding:12px 18px;font-size:13px;box-shadow:0 4px 16px rgba(0,0,0,.08);}
+.score-panel strong{color:var(--purple);font-size:18px;}
+
+.wordbox{display:flex;flex-wrap:wrap;gap:8px;padding:10px 14px;background:var(--purple-light);
+         border:.5px solid var(--purple-mid);border-radius:8px;margin-bottom:1rem;}
+.wordbox span{font-size:13px;font-weight:600;color:var(--purple);padding:3px 10px;
+              background:var(--white);border-radius:20px;border:.5px solid var(--purple-mid);}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>💍 Unit 2 – Birth, Marriage and Death</h1>
+  <p>English Vocabulary in Use · Elementary</p>
+</header>
+
+<div class="container">
+
+  <!-- ── THEORY ── -->
+  <section>
+    <h2><span class="badge">A</span> Birth</h2>
+    <div class="theory-grid">
+      <div class="theory-card">
+        <div class="label">Key phrases</div>
+        <p>Anna <strong>had a baby</strong> yesterday.<br>
+        He <strong>was born</strong> at 1.15.<br>
+        He <strong>weighed</strong> 3 kilograms.<br>
+        They called him John <strong>after</strong> his grandfather.<br>
+        His grandfather's <strong>birthday</strong> is June 16th.</p>
+      </div>
+      <div class="theory-card">
+        <div class="label">Was born</div>
+        <p>He <strong>was born</strong> in 1957.<br>
+        The parents <strong>were born</strong> in 1986.<br><br>
+        Used for the year, place, or date someone came into the world.</p>
+      </div>
+    </div>
+    <div class="mistake-box">
+      ⚠️ <strong>Common mistakes:</strong><br>
+      ✅ Anna <strong>had a baby</strong> &nbsp;|&nbsp; ❌ <s>Anna got a baby</s><br>
+      ✅ He <strong>was born</strong> &nbsp;|&nbsp; ❌ <s>He born</s> / <s>He is born</s>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="badge">B</span> Marriage</h2>
+    <div class="theory-grid">
+      <div class="theory-card">
+        <div class="label">Status words</div>
+        <p><strong>Single</strong> – no partner<br>
+        <strong>Married</strong> – has husband/wife<br>
+        <strong>Widowed</strong> – husband/wife died<br>
+        <strong>Separated</strong> – marriage breaking up<br>
+        <strong>Divorced</strong> – marriage legally ended</p>
+      </div>
+      <div class="theory-card">
+        <div class="label">Key phrases</div>
+        <p>Harry and Sarah <strong>got married</strong>.<br>
+        They <strong>married</strong> in 2001. <em>(formal)</em><br>
+        They went on their <strong>honeymoon</strong>.<br>
+        They <strong>were married</strong> for 15 years.<br><br>
+        <strong>bride</strong> = woman at wedding<br>
+        <strong>groom</strong> = man at wedding</p>
+      </div>
+    </div>
+    <div class="mistake-box">
+      ⚠️ <strong>Common mistake:</strong><br>
+      ✅ Sarah got married <strong>to</strong> Harry &nbsp;|&nbsp; ❌ <s>married with Harry</s>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="badge">C</span> Death</h2>
+    <div class="theory-grid">
+      <div class="theory-card">
+        <div class="label">Key phrases</div>
+        <p>Harry became <strong>ill</strong>.<br>
+        He <strong>died</strong> last year.<br>
+        He <strong>died of</strong> a heart attack.<br>
+        The <strong>funeral</strong> was on Monday.</p>
+      </div>
+      <div class="theory-card">
+        <div class="label">died / dead / death</div>
+        <p>He <strong>died</strong> last year. <em>(verb)</em><br>
+        He is <strong>dead</strong>. <em>(adjective)</em><br>
+        His <strong>death</strong> was sudden. <em>(noun)</em></p>
+      </div>
+    </div>
+    <div class="mistake-box">
+      ⚠️ <strong>Common mistake:</strong><br>
+      ✅ Harry <strong>is dead</strong> &nbsp;|&nbsp; ❌ <s>Harry is died</s> / <s>Harry is death</s>
+    </div>
+  </section>
+
+  <!-- ── VOCAB ── -->
+  <section>
+    <h2><span class="badge">Vocab</span> Key Words</h2>
+    <div class="vocab-grid">
+      <div class="vocab-card"><div class="word">baby</div><div class="def">a newborn child</div><div class="ex">Anna had a baby yesterday.</div></div>
+      <div class="vocab-card"><div class="word">was born</div><div class="def">came into the world</div><div class="ex">He was born in 1957.</div></div>
+      <div class="vocab-card"><div class="word">weigh</div><div class="def">to have a certain weight</div><div class="ex">He weighed 3 kilograms.</div></div>
+      <div class="vocab-card"><div class="word">birthday</div><div class="def">the day you were born</div><div class="ex">His birthday is June 16th.</div></div>
+      <div class="vocab-card"><div class="word">single</div><div class="def">not married / no partner</div><div class="ex">She is single.</div></div>
+      <div class="vocab-card"><div class="word">married</div><div class="def">has a husband or wife</div><div class="ex">They got married in 2001.</div></div>
+      <div class="vocab-card"><div class="word">widowed</div><div class="def">husband or wife has died</div><div class="ex">She was widowed at 60.</div></div>
+      <div class="vocab-card"><div class="word">divorced</div><div class="def">marriage legally ended</div><div class="ex">They are divorced.</div></div>
+      <div class="vocab-card"><div class="word">separated</div><div class="def">living apart from partner</div><div class="ex">They are separated.</div></div>
+      <div class="vocab-card"><div class="word">honeymoon</div><div class="def">holiday after a wedding</div><div class="ex">They went to Italy.</div></div>
+      <div class="vocab-card"><div class="word">bride</div><div class="def">woman at her wedding</div><div class="ex">The bride wore white.</div></div>
+      <div class="vocab-card"><div class="word">groom</div><div class="def">man at his wedding</div><div class="ex">The groom looked nervous.</div></div>
+      <div class="vocab-card"><div class="word">wedding</div><div class="def">the marriage ceremony</div><div class="ex">The wedding was beautiful.</div></div>
+      <div class="vocab-card"><div class="word">ill</div><div class="def">not feeling well; sick</div><div class="ex">Harry became ill.</div></div>
+      <div class="vocab-card"><div class="word">died</div><div class="def">stopped living (verb)</div><div class="ex">He died last year.</div></div>
+      <div class="vocab-card"><div class="word">dead</div><div class="def">no longer alive (adj)</div><div class="ex">Harry is dead.</div></div>
+      <div class="vocab-card"><div class="word">death</div><div class="def">the end of life (noun)</div><div class="ex">His death was sudden.</div></div>
+      <div class="vocab-card"><div class="word">funeral</div><div class="def">ceremony for a dead person</div><div class="ex">The funeral was on Friday.</div></div>
+    </div>
+  </section>
+
+  <!-- ══ EX 1: Find the word (2.2) ══ -->
+  <section>
+    <h2><span class="badge">Ex 1</span> Find the word (2.2)</h2>
+    <div class="exercise">
+      <h3>Write the word that matches each definition.</h3>
+      <div class="ex-item"><label>1.</label> The name for a woman on her wedding day. <input class="fill-blank" data-ans="bride" placeholder="______"></div>
+      <div class="ex-item"><label>2.</label> The name for a man on his wedding day. <input class="fill-blank" data-ans="groom" placeholder="______"></div>
+      <div class="ex-item"><label>3.</label> What you are if you haven't got a partner. <input class="fill-blank" data-ans="single" placeholder="______"></div>
+      <div class="ex-item"><label>4.</label> To be 57 kilograms. <input class="fill-blank" data-ans="weigh" placeholder="______"></div>
+      <div class="ex-item"><label>5.</label> What you are if your marriage has legally ended. <input class="fill-blank" data-ans="divorced" placeholder="______"></div>
+      <div class="ex-item"><label>6.</label> A religious service for a dead person. <input class="fill-blank" data-ans="funeral" placeholder="______"></div>
+      <div class="ex-item"><label>7.</label> A holiday after a wedding. <input class="fill-blank" data-ans="honeymoon" placeholder="______"></div>
+      <div class="ex-item"><label>8.</label> What you are if your husband or wife dies. <input class="fill-blank" data-ans="widowed" placeholder="______"></div>
+      <button class="check-btn" onclick="checkGroup('ex1',8)">Check answers</button>
+      <div class="result-bar" id="ex1-result"></div>
+    </div>
+  </section>
+
+  <!-- ══ EX 2: Complete with prepositions (2.3) ══ -->
+  <section>
+    <h2><span class="badge">Ex 2</span> Complete with the correct word (2.3)</h2>
+    <div class="exercise">
+      <h3>Choose from the box to fill each blank.</h3>
+      <div class="wordbox">
+        <span>in</span><span>after</span><span>of</span><span>to</span><span>born</span><span>on</span>
+      </div>
+      <p style="font-size:14px;line-height:2.4;color:#333;">
+        <input class="fill-blank" data-ans="in" placeholder="___" style="width:50px">(1)
+        2003 Anne got married
+        <input class="fill-blank" data-ans="to" placeholder="___" style="width:50px">(2)
+        Daniel Smith. Unfortunately, Daniel's grandmother, Lydia Smith, died
+        <input class="fill-blank" data-ans="of" placeholder="___" style="width:50px">(3)
+        old age soon after their wedding. Daniel and Anne were
+        <input class="fill-blank" data-ans="on" placeholder="___" style="width:50px">(4)
+        their honeymoon when she died. Anne's baby daughter was
+        <input class="fill-blank" data-ans="born" placeholder="______" style="width:70px">(5)
+        two years later. They called the baby Lydia,
+        <input class="fill-blank" data-ans="after" placeholder="______" style="width:70px">(6)
+        Daniel's grandmother.
+      </p>
+      <button class="check-btn" onclick="checkGroup('ex2',6)">Check answers</button>
+      <div class="result-bar" id="ex2-result"></div>
+    </div>
+  </section>
+
+  <!-- ══ EX 3: Historical figures timeline (2.4) ══ -->
+  <section>
+    <h2><span class="badge">Ex 3</span> Born and died sentences (2.4)</h2>
+    <div class="exercise">
+      <h3>Write a sentence for each person using "was born in … and died in …"</h3>
+
+      <div style="margin-bottom:12px;font-size:14px;">
+        <strong>Example:</strong> <em>Genghis Khan (1162–1227)</em><br>
+        <span style="color:var(--green);">→ Genghis Khan was born in 1162 and died in 1227.</span>
+      </div>
+
+      <div id="timeline-ex"></div>
+      <button class="check-btn" onclick="checkTimeline()">Check answers</button>
+      <div class="result-bar" id="tl-result"></div>
+    </div>
+  </section>
+
+  <!-- ══ EX 4: died / dead / death (2.5) ══ -->
+  <section>
+    <h2><span class="badge">Ex 4</span> died, dead or death? (2.5)</h2>
+    <div class="exercise">
+      <h3>Complete each sentence with the correct form.</h3>
+      <div class="ex-item"><label>1.</label> Kelly's grandfather <input class="fill-blank" data-ans="died" placeholder="______"> last year.</div>
+      <div class="ex-item"><label>2.</label> His <input class="fill-blank" data-ans="death" placeholder="______"> made her very sad.</div>
+      <div class="ex-item"><label>3.</label> Her grandmother has been <input class="fill-blank" data-ans="dead" placeholder="______"> for five years now.</div>
+      <div class="ex-item"><label>4.</label> She <input class="fill-blank" data-ans="died" placeholder="______"> of a heart attack.</div>
+      <div class="ex-item"><label>5.</label> Now all Kelly's grandparents are <input class="fill-blank" data-ans="dead" placeholder="______">.</div>
+      <button class="check-btn" onclick="checkGroup('ex4',5)">Check answers</button>
+      <div class="result-bar" id="ex4-result"></div>
+    </div>
+  </section>
+
+  <!-- ══ EX 5: Multiple choice ══ -->
+  <section>
+    <h2><span class="badge">Ex 5</span> Choose the correct option</h2>
+    <div class="exercise">
+      <h3>Pick the best answer for each sentence.</h3>
+
+      <div style="margin-bottom:1.2rem;">
+        <div style="font-size:14px;margin-bottom:6px;"><strong>1.</strong> Sarah got married ___ Harry.</div>
+        <div class="mc-options" data-ans="to" id="mc1">
+          <button class="mc-btn" onclick="pickMC(this,'mc1')">with</button>
+          <button class="mc-btn" onclick="pickMC(this,'mc1')">to</button>
+          <button class="mc-btn" onclick="pickMC(this,'mc1')">for</button>
+        </div>
+      </div>
+      <div style="margin-bottom:1.2rem;">
+        <div style="font-size:14px;margin-bottom:6px;"><strong>2.</strong> Anna ___ a baby last week.</div>
+        <div class="mc-options" data-ans="had" id="mc2">
+          <button class="mc-btn" onclick="pickMC(this,'mc2')">got</button>
+          <button class="mc-btn" onclick="pickMC(this,'mc2')">had</button>
+          <button class="mc-btn" onclick="pickMC(this,'mc2')">made</button>
+        </div>
+      </div>
+      <div style="margin-bottom:1.2rem;">
+        <div style="font-size:14px;margin-bottom:6px;"><strong>3.</strong> He ___ of cancer two years ago.</div>
+        <div class="mc-options" data-ans="died" id="mc3">
+          <button class="mc-btn" onclick="pickMC(this,'mc3')">dead</button>
+          <button class="mc-btn" onclick="pickMC(this,'mc3')">death</button>
+          <button class="mc-btn" onclick="pickMC(this,'mc3')">died</button>
+        </div>
+      </div>
+      <div style="margin-bottom:1.2rem;">
+        <div style="font-size:14px;margin-bottom:6px;"><strong>4.</strong> They went on their ___ to Paris.</div>
+        <div class="mc-options" data-ans="honeymoon" id="mc4">
+          <button class="mc-btn" onclick="pickMC(this,'mc4')">funeral</button>
+          <button class="mc-btn" onclick="pickMC(this,'mc4')">honeymoon</button>
+          <button class="mc-btn" onclick="pickMC(this,'mc4')">wedding</button>
+        </div>
+      </div>
+      <div style="margin-bottom:1.2rem;">
+        <div style="font-size:14px;margin-bottom:6px;"><strong>5.</strong> Harry is ___. He died last month.</div>
+        <div class="mc-options" data-ans="dead" id="mc5">
+          <button class="mc-btn" onclick="pickMC(this,'mc5')">died</button>
+          <button class="mc-btn" onclick="pickMC(this,'mc5')">death</button>
+          <button class="mc-btn" onclick="pickMC(this,'mc5')">dead</button>
+        </div>
+      </div>
+      <div style="margin-bottom:1.2rem;">
+        <div style="font-size:14px;margin-bottom:6px;"><strong>6.</strong> If your husband or wife dies, you are ___.</div>
+        <div class="mc-options" data-ans="widowed" id="mc6">
+          <button class="mc-btn" onclick="pickMC(this,'mc6')">divorced</button>
+          <button class="mc-btn" onclick="pickMC(this,'mc6')">single</button>
+          <button class="mc-btn" onclick="pickMC(this,'mc6')">widowed</button>
+        </div>
+      </div>
+
+      <button class="check-btn" onclick="checkMC()">Check answers</button>
+      <div class="result-bar" id="mc-result"></div>
+    </div>
+  </section>
+
+  <!-- ══ EX 6: Matching ══ -->
+  <section>
+    <h2><span class="badge">Ex 6</span> Match word to definition</h2>
+    <div class="exercise">
+      <h3>Click a word, then click its matching definition.</h3>
+      <div class="match-wrap">
+        <div class="match-col" id="match-left">
+          <div class="match-item" data-id="1" onclick="matchClick(this,'left')">groom</div>
+          <div class="match-item" data-id="2" onclick="matchClick(this,'left')">funeral</div>
+          <div class="match-item" data-id="3" onclick="matchClick(this,'left')">widowed</div>
+          <div class="match-item" data-id="4" onclick="matchClick(this,'left')">honeymoon</div>
+          <div class="match-item" data-id="5" onclick="matchClick(this,'left')">separated</div>
+          <div class="match-item" data-id="6" onclick="matchClick(this,'left')">weigh</div>
+        </div>
+        <div class="match-col" id="match-right">
+          <div class="match-item" data-id="3" onclick="matchClick(this,'right')">your husband or wife has died</div>
+          <div class="match-item" data-id="6" onclick="matchClick(this,'right')">to have a certain weight</div>
+          <div class="match-item" data-id="4" onclick="matchClick(this,'right')">a holiday taken after a wedding</div>
+          <div class="match-item" data-id="1" onclick="matchClick(this,'right')">the man at his own wedding</div>
+          <div class="match-item" data-id="2" onclick="matchClick(this,'right')">a ceremony held for a dead person</div>
+          <div class="match-item" data-id="5" onclick="matchClick(this,'right')">living apart from your partner</div>
+        </div>
+      </div>
+      <div class="result-bar" id="match-result"></div>
+    </div>
+  </section>
+
+</div>
+
+<div class="score-panel">Score: <strong id="score-val">0</strong> / <span id="score-total">0</span></div>
+
+<script>
+// ── Score ─────────────────────────────────────────────────────────────────────
+let totalScore=0, maxScore=0;
+function updateScore(g,p){totalScore+=g;maxScore+=p;
+  document.getElementById('score-val').textContent=totalScore;
+  document.getElementById('score-total').textContent=maxScore;}
+
+// ── Generic fill-blank groups by data-ans ─────────────────────────────────────
+function checkGroup(prefix, count){
+  const section = document.getElementById(prefix+'-result').closest('.exercise');
+  const inputs = section.querySelectorAll('.fill-blank');
+  let correct=0;
+  inputs.forEach(inp=>{
+    const ans=inp.dataset.ans.toLowerCase().trim();
+    const val=inp.value.toLowerCase().trim();
+    inp.classList.remove('correct','wrong');
+    if(val===ans){inp.classList.add('correct');correct++;}
+    else{inp.classList.add('wrong');inp.placeholder=inp.dataset.ans;}
+  });
+  const bar=document.getElementById(prefix+'-result');
+  bar.textContent=correct+' / '+count+' correct';
+  bar.className='result-bar show '+(correct===count?'pass':'fail');
+  updateScore(correct,count);
+}
+
+// ── Timeline exercise ─────────────────────────────────────────────────────────
+const tlData=[
+  {name:'Christopher Columbus',b:1451,d:1506},
+  {name:'Leonardo da Vinci',b:1452,d:1519},
+  {name:'Princess Diana',b:1961,d:1997},
+  {name:'Heath Ledger',b:1979,d:2008},
+];
+const tlWrap=document.getElementById('timeline-ex');
+tlData.forEach((p,i)=>{
+  tlWrap.innerHTML+=`
+  <div style="margin-bottom:14px;">
+    <div style="font-size:13px;font-weight:600;color:var(--purple);margin-bottom:4px;">
+      ${p.name} (${p.b}–${p.d})
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:14px;">
+      <span>${p.name} was born in</span>
+      <input class="fill-blank" data-ans="${p.b}" id="tl${i}b" placeholder="____" style="width:60px">
+      <span>and died in</span>
+      <input class="fill-blank" data-ans="${p.d}" id="tl${i}d" placeholder="____" style="width:60px">
+      <span>.</span>
+    </div>
+  </div>`;
+});
+
+function checkTimeline(){
+  let correct=0, total=tlData.length*2;
+  tlData.forEach((_,i)=>{
+    ['b','d'].forEach(k=>{
+      const inp=document.getElementById('tl'+i+k);
+      const ans=inp.dataset.ans;
+      const val=inp.value.trim();
+      inp.classList.remove('correct','wrong');
+      if(val===ans){inp.classList.add('correct');correct++;}
+      else{inp.classList.add('wrong');inp.placeholder=ans;}
+    });
+  });
+  const bar=document.getElementById('tl-result');
+  bar.textContent=correct+' / '+total+' correct';
+  bar.className='result-bar show '+(correct===total?'pass':'fail');
+  updateScore(correct,total);
+}
+
+// ── Multiple choice ───────────────────────────────────────────────────────────
+function pickMC(btn,groupId){
+  const group=document.getElementById(groupId);
+  if(group.dataset.done)return;
+  group.querySelectorAll('.mc-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+function checkMC(){
+  const ids=['mc1','mc2','mc3','mc4','mc5','mc6'];
+  let correct=0;
+  ids.forEach(id=>{
+    const group=document.getElementById(id);
+    if(group.dataset.done)return;
+    group.dataset.done='1';
+    const ans=group.dataset.ans;
+    group.querySelectorAll('.mc-btn').forEach(btn=>{
+      if(btn.textContent===ans)btn.classList.add('correct-ans');
+      else if(btn.classList.contains('selected'))btn.classList.add('wrong-ans');
+      btn.onclick=null;
+    });
+    const sel=group.querySelector('.selected');
+    if(sel&&sel.textContent===ans)correct++;
+  });
+  const bar=document.getElementById('mc-result');
+  bar.textContent=correct+' / '+ids.length+' correct';
+  bar.className='result-bar show '+(correct===ids.length?'pass':'fail');
+  updateScore(correct,ids.length);
+}
+
+// ── Matching ──────────────────────────────────────────────────────────────────
+let matchSel={left:null,right:null};
+function matchClick(el,side){
+  if(el.classList.contains('matched'))return;
+  document.querySelectorAll('#match-'+side+' .match-item.selected')
+    .forEach(e=>e.classList.remove('selected'));
+  el.classList.add('selected');
+  matchSel[side]=el;
+  if(matchSel.left&&matchSel.right){
+    const l=matchSel.left,r=matchSel.right;
+    if(l.dataset.id===r.dataset.id){
+      l.classList.remove('selected');r.classList.remove('selected');
+      l.classList.add('matched');r.classList.add('matched');
+      l.onclick=null;r.onclick=null;
+      const total=document.querySelectorAll('#match-left .match-item').length;
+      const done=document.querySelectorAll('#match-left .match-item.matched').length;
+      if(done===total){
+        const bar=document.getElementById('match-result');
+        bar.textContent='All '+total+' pairs matched! 🎉';
+        bar.className='result-bar show pass';
+        updateScore(total,total);
+      }
+    } else {
+      l.classList.add('wrong-match');r.classList.add('wrong-match');
+      setTimeout(()=>{
+        l.classList.remove('wrong-match','selected');
+        r.classList.remove('wrong-match','selected');
+      },700);
+    }
+    matchSel={left:null,right:null};
+  }
+}
+</script>
+</body>
+</html>
