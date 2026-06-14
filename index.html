@@ -304,7 +304,7 @@
     } catch (err) {
       console.log('Không thể tải external components:', err.message);
     }
-    render();
+    navigateFromHash();
   }
 
   // ── STATE ────────────────────────────────────────────────────────────────
@@ -383,6 +383,7 @@
       el.addEventListener('click', () => {
         selected = components.find(c => c.name === el.dataset.name);
         view = 'detail';
+        history.pushState({ file: selected.file }, '', '#' + selected.file.replace(/\.html$/, ''));
         render();
         window.scrollTo(0, 0);
       });
@@ -479,14 +480,12 @@
             }
           };
           
-          // Gọi lúc load xong, sau đó dùng ResizeObserver theo dõi liên tục
-          iframe.onload = () => {
-            adjustHeight();
-            try {
-              const ro = new iframe.contentWindow.ResizeObserver(adjustHeight);
-              ro.observe(iframe.contentDocument.body);
-            } catch(e) {}
-          };
+          setTimeout(adjustHeight, 50);
+          setTimeout(adjustHeight, 150);
+          setTimeout(adjustHeight, 400);
+          setTimeout(adjustHeight, 1000);
+
+          iframe.onload = adjustHeight;
         })
         .catch(err => {
           document.getElementById('preview').innerHTML = `<p style="color:red">Lỗi tải: ${err.message}</p>`;
@@ -496,9 +495,29 @@
     document.getElementById('backBtn').addEventListener('click', () => {
       view = 'home';
       query = '';
+      history.pushState(null, '', location.pathname);
       render();
     });
   }
+
+  // ── ROUTING ──────────────────────────────────────────────────────────────
+  function navigateFromHash() {
+    const hash = location.hash.slice(1); // bỏ dấu #
+    if (hash) {
+      const found = components.find(c => c.file.replace(/\.html$/, '') === hash);
+      if (found) {
+        selected = found;
+        view = 'detail';
+        render();
+        window.scrollTo(0, 0);
+        return;
+      }
+    }
+    view = 'home';
+    render();
+  }
+
+  window.addEventListener('popstate', navigateFromHash);
 
   // ── INIT ─────────────────────────────────────────────────────────────────
   loadExternalComponents();
