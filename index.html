@@ -479,13 +479,14 @@
             }
           };
           
-          // Gọi điều chỉnh nhiều lần để đảm bảo capture được content hoàn toàn
-          setTimeout(adjustHeight, 50);
-          setTimeout(adjustHeight, 150);
-          setTimeout(adjustHeight, 400);
-          setTimeout(adjustHeight, 1000);
-          
-          iframe.onload = adjustHeight;
+          // Gọi lúc load xong, sau đó dùng ResizeObserver theo dõi liên tục
+          iframe.onload = () => {
+            adjustHeight();
+            try {
+              const ro = new iframe.contentWindow.ResizeObserver(adjustHeight);
+              ro.observe(iframe.contentDocument.body);
+            } catch(e) {}
+          };
         })
         .catch(err => {
           document.getElementById('preview').innerHTML = `<p style="color:red">Lỗi tải: ${err.message}</p>`;
