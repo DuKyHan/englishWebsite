@@ -1,0 +1,2694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNIT 2: LIFE IN THE COUNTRYSIDE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-green: #2ecc71;
+            --light-green: #27ae60;
+            --dark-green: #229954;
+            --light-yellow: #f1c40f;
+            --dark-yellow: #f39c12;
+            --white: #ffffff;
+            --gray-dark: #2c3e50;
+            --gray-light: #ecf0f1;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --info: #3498db;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--light-green) 0%, var(--primary-green) 100%);
+            color: var(--gray-dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ===== HEADER & NAVIGATION ===== */
+        header {
+            background: linear-gradient(135deg, var(--dark-green) 0%, var(--light-green) 100%);
+            color: var(--white);
+            padding: 1rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .progress-bar-header {
+            flex-grow: 1;
+            min-width: 200px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            height: 25px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--light-yellow), var(--dark-yellow));
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: var(--gray-dark);
+        }
+
+        .user-stats {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+        }
+
+        .stat-item i {
+            color: var(--light-yellow);
+        }
+
+        /* ===== NAVIGATION MENU ===== */
+        nav {
+            background: var(--white);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 80px;
+            z-index: 999;
+        }
+
+        .nav-menu {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            list-style: none;
+            gap: 0;
+        }
+
+        .nav-item {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .nav-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            color: var(--gray-dark);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            font-weight: 500;
+            gap: 0.5rem;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: var(--light-yellow);
+            color: var(--dark-green);
+            border-bottom-color: var(--dark-green);
+        }
+
+        .nav-link i {
+            font-size: 1.3rem;
+        }
+
+        /* ===== MAIN CONTAINER ===== */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== HOME PAGE ===== */
+        .home-hero {
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--light-yellow) 100%);
+            color: var(--white);
+            padding: 3rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .home-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .home-hero p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--dark-green);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--light-green);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--light-yellow);
+            color: var(--gray-dark);
+        }
+
+        .btn-secondary:hover {
+            background: var(--dark-yellow);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4);
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-check {
+            background: var(--success);
+            color: var(--white);
+            margin-top: 1rem;
+        }
+
+        /* ===== FLASHCARD ===== */
+        .flashcard-container {
+            perspective: 1000px;
+            margin: 2rem 0;
+        }
+
+        .flashcard {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .flashcard:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+        }
+
+        .flashcard-word {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--dark-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .flashcard-ipa {
+            font-size: 1.2rem;
+            color: var(--light-green);
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .flashcard-meaning {
+            font-size: 1.5rem;
+            color: var(--gray-dark);
+            margin-bottom: 1rem;
+        }
+
+        .flashcard-example {
+            background: var(--gray-light);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-style: italic;
+        }
+
+        .example-text {
+            margin-bottom: 0.5rem;
+            color: var(--gray-dark);
+        }
+
+        .example-translation {
+            color: var(--light-green);
+            font-size: 0.9rem;
+        }
+
+        .btn-speak {
+            background: var(--info);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+
+        .btn-speak:hover {
+            background: #2980b9;
+        }
+
+        .card-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            gap: 1rem;
+        }
+
+        .card-counter {
+            background: var(--light-yellow);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            color: var(--gray-dark);
+        }
+
+        /* ===== GRAMMAR PAGE ===== */
+        .grammar-content {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            color: var(--dark-green);
+            font-size: 1.8rem;
+            margin: 2rem 0 1rem 0;
+            border-bottom: 3px solid var(--light-yellow);
+            padding-bottom: 0.5rem;
+        }
+
+        .grammar-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        .grammar-table th {
+            background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+            color: var(--white);
+            padding: 1rem;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .grammar-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .grammar-table tr:hover {
+            background: var(--gray-light);
+        }
+
+        .rule-box {
+            background: linear-gradient(135deg, var(--primary-green), var(--light-yellow));
+            color: var(--white);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            border-left: 5px solid var(--dark-green);
+        }
+
+        .example-box {
+            background: var(--gray-light);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid var(--light-green);
+        }
+
+        /* ===== EXERCISE PAGE ===== */
+        .exercise-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .exercise-number {
+            background: var(--primary-green);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: inline-block;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .exercise-question {
+            font-size: 1.1rem;
+            margin: 1rem 0;
+            color: var(--gray-dark);
+        }
+
+        .exercise-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--gray-light);
+            border-radius: 8px;
+            font-size: 1rem;
+            margin: 1rem 0;
+            transition: border-color 0.3s ease;
+        }
+
+        .exercise-input:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            background: linear-gradient(to bottom, transparent, rgba(46, 204, 113, 0.05));
+        }
+
+        .exercise-select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--gray-light);
+            border-radius: 8px;
+            font-size: 1rem;
+            margin: 1rem 0;
+            cursor: pointer;
+        }
+
+        .options-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .option-btn {
+            padding: 1rem;
+            border: 2px solid var(--gray-light);
+            background: var(--white);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            text-align: left;
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary-green);
+            background: var(--gray-light);
+        }
+
+        .option-btn.selected {
+            background: var(--primary-green);
+            color: var(--white);
+            border-color: var(--dark-green);
+        }
+
+        .option-btn.correct {
+            background: var(--success);
+            color: var(--white);
+            border-color: var(--success);
+        }
+
+        .option-btn.incorrect {
+            background: var(--danger);
+            color: var(--white);
+            border-color: var(--danger);
+        }
+
+        .answer-feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .answer-feedback.show {
+            display: block;
+        }
+
+        .feedback-correct {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .feedback-incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        /* ===== GAMIFICATION ===== */
+        .game-container {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .quiz-question {
+            background: linear-gradient(135deg, var(--light-green), var(--primary-green));
+            color: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .quiz-question h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .quiz-option {
+            padding: 1rem;
+            background: var(--white);
+            color: var(--gray-dark);
+            border: 2px solid var(--gray-light);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--primary-green);
+            transform: translateY(-3px);
+        }
+
+        .quiz-option.selected {
+            background: var(--primary-green);
+            color: var(--white);
+            border-color: var(--dark-green);
+        }
+
+        .quiz-score {
+            background: var(--light-yellow);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            margin: 2rem 0;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--gray-dark);
+        }
+
+        .score-item {
+            display: inline-block;
+            margin: 0 1rem;
+        }
+
+        /* ===== CHATBOT ===== */
+        .chat-container {
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, var(--dark-green), var(--light-green));
+            color: var(--white);
+            padding: 1.5rem;
+            border-radius: 15px 15px 0 0;
+            text-align: center;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+            background: var(--gray-light);
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            display: flex;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message-content {
+            background: var(--white);
+            padding: 1rem;
+            border-radius: 10px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .message.user .message-content {
+            background: var(--primary-green);
+            color: var(--white);
+        }
+
+        .message.tutor .message-content {
+            background: var(--white);
+            color: var(--gray-dark);
+            border: 1px solid var(--gray-light);
+        }
+
+        .chat-input-area {
+            padding: 1.5rem;
+            border-top: 1px solid var(--gray-light);
+            display: flex;
+            gap: 1rem;
+        }
+
+        .chat-input {
+            flex-grow: 1;
+            padding: 0.8rem;
+            border: 2px solid var(--gray-light);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--primary-green);
+        }
+
+        /* ===== TEST PAGE ===== */
+        .test-container {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .test-header {
+            background: linear-gradient(135deg, var(--light-green), var(--primary-green));
+            color: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .test-question {
+            background: var(--gray-light);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            border-left: 5px solid var(--primary-green);
+        }
+
+        .test-question-number {
+            color: var(--primary-green);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .test-question-text {
+            font-size: 1.1rem;
+            color: var(--gray-dark);
+            margin-bottom: 1rem;
+        }
+
+        .test-result {
+            background: linear-gradient(135deg, var(--primary-green), var(--light-yellow));
+            color: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .result-score {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .result-grade {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .result-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .result-item {
+            background: rgba(255,255,255,0.2);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        /* ===== ANALYTICS ===== */
+        .analytics-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .analytics-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .analytics-title {
+            color: var(--dark-green);
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid var(--light-yellow);
+            padding-bottom: 0.5rem;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, var(--primary-green), var(--light-yellow));
+            color: var(--white);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            opacity: 0.9;
+        }
+
+        /* ===== DIFFICULTY LEVELS ===== */
+        .level-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .level-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+        }
+
+        .level-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .level-card.level-1 {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border-color: var(--success);
+        }
+
+        .level-card.level-2 {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            border-color: var(--dark-yellow);
+        }
+
+        .level-card.level-3 {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            border-color: var(--danger);
+        }
+
+        .level-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .level-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--gray-dark);
+        }
+
+        .level-description {
+            color: var(--gray-dark);
+            opacity: 0.8;
+        }
+
+        /* ===== BADGES ===== */
+        .badges-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .badge {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            opacity: 0.3;
+            transition: all 0.3s ease;
+        }
+
+        .badge.earned {
+            opacity: 1;
+            transform: scale(1.05);
+            background: linear-gradient(135deg, var(--light-yellow), var(--dark-yellow));
+            color: var(--white);
+            box-shadow: 0 8px 20px rgba(243, 156, 18, 0.4);
+        }
+
+        .badge-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .badge-name {
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+            }
+
+            .nav-menu {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .nav-item {
+                flex: 1;
+                width: 100%;
+            }
+
+            .nav-link {
+                flex-direction: row;
+                justify-content: flex-start;
+                padding: 0.8rem;
+            }
+
+            .nav-link i {
+                margin-right: 0.5rem;
+            }
+
+            .flashcard {
+                min-height: 250px;
+                padding: 1.5rem;
+            }
+
+            .home-hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+
+            .grammar-table {
+                font-size: 0.9rem;
+            }
+
+            .grammar-table th,
+            .grammar-table td {
+                padding: 0.5rem;
+            }
+
+            .quiz-options,
+            .options-group {
+                grid-template-columns: 1fr;
+            }
+
+            .analytics-container {
+                grid-template-columns: 1fr;
+            }
+
+            .level-selector {
+                grid-template-columns: 1fr;
+            }
+
+            .chat-container {
+                height: 500px;
+                max-width: 100%;
+            }
+
+            .stat-number {
+                font-size: 1.5rem;
+            }
+
+            .home-hero {
+                padding: 1.5rem;
+            }
+
+            .user-stats {
+                gap: 1rem;
+            }
+
+            .stat-item {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.2rem;
+            }
+
+            .nav-link {
+                padding: 0.6rem;
+                font-size: 0.85rem;
+            }
+
+            .flashcard-word {
+                font-size: 1.5rem;
+            }
+
+            .section-title {
+                font-size: 1.3rem;
+            }
+
+            .home-hero h1 {
+                font-size: 1.4rem;
+            }
+
+            .button-group {
+                gap: 0.5rem;
+            }
+
+            .btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .test-result {
+                padding: 1.5rem;
+            }
+
+            .result-score {
+                font-size: 2rem;
+            }
+
+            .container {
+                margin: 1rem auto;
+            }
+        }
+
+        /* ===== ANIMATIONS ===== */
+        .pulse {
+            animation: pulse 0.5s ease;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .bounce {
+            animation: bounce 0.6s ease;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .shake {
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-10px);
+            }
+            75% {
+                transform: translateX(10px);
+            }
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--gray-light);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-green);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--dark-green);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--gray-dark);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--light-yellow);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--white);
+        }
+
+        /* ===== LOADING SPINNER ===== */
+        .spinner {
+            border: 4px solid var(--gray-light);
+            border-top: 4px solid var(--primary-green);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-title {
+            color: var(--dark-green);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-close {
+            background: var(--danger);
+            color: var(--white);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            float: right;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-leaf"></i>
+                <span>UNIT 2: COUNTRYSIDE</span>
+            </div>
+            <div class="progress-bar-header">
+                <div class="progress-fill" id="progressFill">0%</div>
+            </div>
+            <div class="user-stats">
+                <div class="stat-item">
+                    <i class="fas fa-star"></i>
+                    <span id="pointsDisplay">0 pts</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-medal"></i>
+                    <span id="streakDisplay">Streak: 0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a class="nav-link active" onclick="showPage('home')">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="showPage('vocabulary')">
+                    <i class="fas fa-book"></i>
+                    <span>Vocabulary</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="showPage('grammar')">
+                    <i class="fas fa-chalkboard-user"></i>
+                    <span>Grammar</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="showPage('practice')">
+                    <i class="fas fa-dumbbell"></i>
+                    <span>Practice</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="showPage('exercises')">
+                    <i class="fas fa-pen"></i>
+                    <span>Exercises</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="showPage('games')">
+                    <i class="fas fa-gamepad"></i>
+                    <span>Games</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="showPage('test')">
+                    <i class="fas fa-quiz"></i>
+                    <span>Test</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="showPage('analytics')">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Analytics</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <div class="container">
+        <!-- HOME PAGE -->
+        <div id="home" class="page active">
+            <div class="home-hero">
+                <h1>🌾 UNIT 2: LIFE IN THE COUNTRYSIDE 🌾</h1>
+                <p>Master comparative adjectives and adverbs while exploring rural life English vocabulary!</p>
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="showPage('vocabulary')">
+                        <i class="fas fa-book"></i> Start Learning
+                    </button>
+                    <button class="btn btn-secondary" onclick="showPage('grammar')">
+                        <i class="fas fa-graduation-cap"></i> Learn Grammar
+                    </button>
+                    <button class="btn btn-secondary" onclick="showPage('games')">
+                        <i class="fas fa-dice"></i> Play Games
+                    </button>
+                    <button class="btn btn-secondary" onclick="showPage('test')">
+                        <i class="fas fa-clipboard-check"></i> Take Test
+                    </button>
+                </div>
+            </div>
+
+            <div style="background: var(--white); padding: 2rem; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+                <h2 style="color: var(--dark-green); margin-bottom: 1.5rem;">📚 Learning Objectives</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                    <div style="background: linear-gradient(135deg, var(--light-green), var(--primary-green)); color: white; padding: 1.5rem; border-radius: 10px;">
+                        <h3 style="margin-bottom: 0.5rem;"><i class="fas fa-language"></i> 16 Vocabulary Words</h3>
+                        <p>Learn countryside-related vocabulary with pronunciation and examples</p>
+                    </div>
+                    <div style="background: linear-gradient(135deg, var(--primary-green), var(--light-yellow)); color: white; padding: 1.5rem; border-radius: 10px;">
+                        <h3 style="margin-bottom: 0.5rem;"><i class="fas fa-pen-fancy"></i> Comparative Forms</h3>
+                        <p>Master short and long adjectives + adverbs comparison structures</p>
+                    </div>
+                    <div style="background: linear-gradient(135deg, var(--light-yellow), var(--dark-yellow)); color: white; padding: 1.5rem; border-radius: 10px;">
+                        <h3 style="margin-bottom: 0.5rem;"><i class="fas fa-trophy"></i> 15 Practice Exercises</h3>
+                        <p>Complete comprehensive exercises with explanations and feedback</p>
+                    </div>
+                    <div style="background: linear-gradient(135deg, var(--dark-yellow), var(--info)); color: white; padding: 1.5rem; border-radius: 10px;">
+                        <h3 style="margin-bottom: 0.5rem;"><i class="fas fa-puzzle-piece"></i> Interactive Games</h3>
+                        <p>Matching, memory, and vocabulary quiz games with rewards</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: var(--light-yellow); padding: 2rem; border-radius: 15px; margin-top: 2rem; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+                <h3 style="color: var(--dark-green); margin-bottom: 1rem;">🎁 Your Progress</h3>
+                <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 1rem;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: bold; color: var(--gray-dark);" id="homePoints">0</div>
+                        <p style="color: var(--gray-dark);">Points Earned</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: bold; color: var(--gray-dark);" id="homeLessons">0</div>
+                        <p style="color: var(--gray-dark);">Lessons Completed</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; font-weight: bold; color: var(--gray-dark);" id="homeBadges">0</div>
+                        <p style="color: var(--gray-dark);">Badges Earned</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VOCABULARY PAGE -->
+        <div id="vocabulary" class="page">
+            <div style="background: var(--white); padding: 2rem; border-radius: 15px; margin-bottom: 2rem; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+                <h2 style="color: var(--dark-green); margin-bottom: 1rem;"><i class="fas fa-book"></i> Vocabulary Flashcards</h2>
+                <p style="color: var(--gray-dark); margin-bottom: 1rem;">Click to reveal meaning and example sentences. Click the speaker icon for pronunciation.</p>
+                
+                <div class="flashcard-container" id="flashcardContainer">
+                    <div class="flashcard" id="flashcard">
+                        <div class="flashcard-word" id="vocabWord">-</div>
+                        <div class="flashcard-ipa" id="vocabIPA">-</div>
+                        <div class="flashcard-meaning" id="vocabMeaning">-</div>
+                        <div class="flashcard-example">
+                            <div class="example-text"><strong>Example:</strong> <span id="vocabExample">-</span></div>
+                            <div class="example-translation"><strong>Translation:</strong> <span id="vocabTranslation">-</span></div>
+                        </div>
+                        <button class="btn-speak" onclick="speakWord()"><i class="fas fa-volume-up"></i> Pronounce</button>
+                    </div>
+                </div>
+
+                <div class="card-nav">
+                    <button class="btn btn-secondary btn-small" onclick="prevCard()"><i class="fas fa-chevron-left"></i> Previous</button>
+                    <div class="card-counter"><span id="cardCounter">1</span> / <span id="cardTotal">16</span></div>
+                    <button class="btn btn-secondary btn-small" onclick="nextCard()">Next <i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <!-- VOCABULARY GAMES -->
+            <div style="background: var(--white); padding: 2rem; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+                <h3 style="color: var(--dark-green); margin-bottom: 1.5rem;"><i class="fas fa-gamepad"></i> Vocabulary Games</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <button class="btn btn-primary" onclick="startMatchingGame()" style="padding: 1.5rem;">
+                        <i class="fas fa-link"></i><br>Matching Game
+                    </button>
+                    <button class="btn btn-primary" onclick="startVocabQuiz()" style="padding: 1.5rem;">
+                        <i class="fas fa-brain"></i><br>Vocabulary Quiz
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- GRAMMAR PAGE -->
+        <div id="grammar" class="page">
+            <div class="grammar-content">
+                <h2 style="color: var(--dark-green); margin-bottom: 2rem;"><i class="fas fa-chalkboard"></i> Comparative Forms of Adjectives & Adverbs</h2>
+
+                <div class="section-title">📍 Comparative Adjectives</div>
+                
+                <div class="rule-box">
+                    <h4 style="margin-bottom: 1rem;">SHORT ADJECTIVES (1 syllable)</h4>
+                    <p>Structure: <strong>S + be + adjective + -er + than + S</strong></p>
+                    <p style="margin-top: 0.5rem;">Examples: bigger, smaller, taller, faster, newer</p>
+                </div>
+
+                <div class="rule-box">
+                    <h4 style="margin-bottom: 1rem;">LONG ADJECTIVES (2+ syllables)</h4>
+                    <p>Structure: <strong>S + be + more/less + adjective + than + S</strong></p>
+                    <p style="margin-top: 0.5rem;">Examples: more expensive, more beautiful, more interesting</p>
+                </div>
+
+                <h3 style="color: var(--dark-green); margin: 2rem 0 1rem 0;">📊 Rules for Adding -er</h3>
+                
+                <table class="grammar-table">
+                    <thead>
+                        <tr>
+                            <th>Rule</th>
+                            <th>Example</th>
+                            <th>Comparative</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Most adjectives + -er</td>
+                            <td>tall, fast</td>
+                            <td>taller, faster</td>
+                        </tr>
+                        <tr>
+                            <td>Ends with 'e' + -r</td>
+                            <td>nice, large</td>
+                            <td>nicer, larger</td>
+                        </tr>
+                        <tr>
+                            <td>CVC (consonant-vowel-consonant) → double consonant + -er</td>
+                            <td>big, hot, fat</td>
+                            <td>bigger, hotter, fatter</td>
+                        </tr>
+                        <tr>
+                            <td>Ends with 'y' → change to 'i' + -er</td>
+                            <td>happy, pretty</td>
+                            <td>happier, prettier</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 style="color: var(--dark-green); margin: 2rem 0 1rem 0;">⚠️ Irregular Adjectives</h3>
+                
+                <table class="grammar-table">
+                    <thead>
+                        <tr>
+                            <th>Adjective</th>
+                            <th>Comparative</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>good</td>
+                            <td>better</td>
+                        </tr>
+                        <tr>
+                            <td>bad</td>
+                            <td>worse</td>
+                        </tr>
+                        <tr>
+                            <td>far</td>
+                            <td>farther / further</td>
+                        </tr>
+                        <tr>
+                            <td>much / many</td>
+                            <td>more</td>
+                        </tr>
+                        <tr>
+                            <td>little</td>
+                            <td>less</td>
+                        </tr>
+                        <tr>
+                            <td>old</td>
+                            <td>older / elder</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="section-title" style="margin-top: 3rem;">📍 Comparative Adverbs</div>
+
+                <div class="rule-box">
+                    <h4 style="margin-bottom: 1rem;">SHORT ADVERBS (1 syllable)</h4>
+                    <p>Structure: <strong>S + V + adverb + -er + than</strong></p>
+                    <p style="margin-top: 0.5rem;">Examples: harder, faster, earlier, better</p>
+                </div>
+
+                <div class="rule-box">
+                    <h4 style="margin-bottom: 1rem;">LONG ADVERBS (usually ending in -ly)</h4>
+                    <p>Structure: <strong>S + V + more/less + adverb + than</strong></p>
+                    <p style="margin-top: 0.5rem;">Examples: more carefully, more slowly, more beautifully</p>
+                </div>
+
+                <h3 style="color: var(--dark-green); margin: 2rem 0 1rem 0;">⚡ Example Sentences</h3>
+                
+                <div class="example-box">
+                    <strong>Comparative Adjectives:</strong>
+                    <ul style="margin-top: 0.5rem;">
+                        <li>✓ China is <strong>bigger</strong> than Japan.</li>
+                        <li>✓ This book is <strong>more interesting</strong> than that one.</li>
+                        <li>✓ She is <strong>happier</strong> than usual.</li>
+                        <li>✓ Living in the countryside is <strong>more peaceful</strong> than the city.</li>
+                    </ul>
+                </div>
+
+                <div class="example-box">
+                    <strong>Comparative Adverbs:</strong>
+                    <ul style="margin-top: 0.5rem;">
+                        <li>✓ She runs <strong>faster</strong> than me.</li>
+                        <li>✓ He speaks English <strong>more fluently</strong> than his brother.</li>
+                        <li>✓ My sister cooks <strong>better</strong> than I do.</li>
+                        <li>✓ We need to work <strong>harder</strong> than before.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- PRACTICE PAGE -->
+        <div id="practice" class="page">
+            <div style="background: var(--white); padding: 2rem; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+                <h2 style="color: var(--dark-green); margin-bottom: 2rem;"><i class="fas fa-dumbbell"></i> Guided Practice</h2>
+                
+                <div class="level-selector">
+                    <div class="level-card level-1" onclick="startPractice(1)">
+                        <div class="level-icon">🌱</div>
+                        <div class="level-title">Level 1</div>
+                        <div class="level-description">Easy - Basic comparisons</div>
+                    </div>
+                    <div class="level-card level-2" onclick="startPractice(2)">
+                        <div class="level-icon">🌿</div>
+                        <div class="level-title">Level 2</div>
+                        <div class="level-description">Medium - Mixed forms</div>
+                    </div>
+                    <div class="level-card level-3" onclick="startPractice(3)">
+                        <div class="level-icon">🌳</div>
+                        <div class="level-title">Level 3</div>
+                        <div class="level-description">Hard - Complex sentences</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="practiceContainer" class="exercise-card" style="display: none;">
+                <div id="practiceContent"></div>
+                <div style="margin-top: 2rem;">
+                    <button class="btn btn-check" onclick="checkPracticeAnswer()"><i class="fas fa-check"></i> Check Answer</button>
+                    <button class="btn btn-secondary" onclick="nextPracticeQuestion()" style="margin-left: 1rem;"><i class="fas fa-arrow-right"></i> Next</button>
+                </div>
+                <div id="practiceExplanation" class="answer-feedback" style="margin-top: 2rem;"></div>
+            </div>
+        </div>
+
+        <!-- EXERCISES PAGE -->
+        <div id="exercises" class="page">
+            <div style="background: var(--white); padding: 2rem; border-radius: 15px; margin-bottom: 2rem; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+                <h2 style="color: var(--dark-green); margin-bottom: 1rem;"><i class="fas fa-pen"></i> Complete Exercises</h2>
+                <p style="color: var(--gray-dark); margin-bottom: 1rem;">Choose an exercise to start:</p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                    <button class="btn btn-primary" onclick="loadExercise(1)">Exercise 1</button>
+                    <button class="btn btn-primary" onclick="loadExercise(2)">Exercise 2</button>
+                    <button class="btn btn-primary" onclick="loadExercise(3)">Exercise 3</button>
+                    <button class="btn btn-primary" onclick="loadExercise(4)">Exercise 4</button>
+                    <button class="btn btn-primary" onclick="loadExercise(5)">Exercise 5</button>
+                    <button class="btn btn-primary" onclick="loadExercise(6)">Exercise 6</button>
+                    <button class="btn btn-primary" onclick="loadExercise(7)">Exercise 7</button>
+                    <button class="btn btn-primary" onclick="loadExercise(8)">Exercise 8</button>
+                    <button class="btn btn-primary" onclick="loadExercise(9)">Exercise 9</button>
+                    <button class="btn btn-primary" onclick="loadExercise(10)">Exercise 10</button>
+                    <button class="btn btn-primary" onclick="loadExercise(11)">Exercise 11</button>
+                    <button class="btn btn-primary" onclick="loadExercise(12)">Exercise 12</button>
+                </div>
+            </div>
+
+            <div id="exerciseContainer"></div>
+        </div>
+
+        <!-- GAMES PAGE -->
+        <div id="games" class="page">
+            <div style="background: var(--white); padding: 2rem; border-radius: 15px; margin-bottom: 2rem; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+                <h2 style="color: var(--dark-green); margin-bottom: 2rem;"><i class="fas fa-gamepad"></i> Learning Games</h2>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                    <div style="background: linear-gradient(135deg, var(--light-green), var(--primary-green)); color: white; padding: 2rem; border-radius: 10px; text-align: center; cursor: pointer; transition: all 0.3s;" onclick="startQuizBattle()" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">⚔️</div>
+                        <h3>Quiz Battle</h3>
+                        <p style="margin-top: 0.5rem; opacity: 0.9;">20 rapid-fire questions with timer</p>
+                    </div>
+                    <div style="background: linear-gradient(135deg, var(--primary-green), var(--light-yellow)); color: white; padding: 2rem; border-radius: 10px; text-align: center; cursor: pointer; transition: all 0.3s;" onclick="startVocabRace()" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🏃</div>
+                        <h3>Vocabulary Race</h3>
+                        <p style="margin-top: 0.5rem; opacity: 0.9;">Choose correct meanings quickly</p>
+                    </div>
+                    <div style="background: linear-gradient(135deg, var(--light-yellow), var(--dark-yellow)); color: white; padding: 2rem; border-radius: 10px; text-align: center; cursor: pointer; transition: all 0.3s;" onclick="startMatchingGame()" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🔗</div>
+                        <h3>Matching Game</h3>
+                        <p style="margin-top: 0.5rem; opacity: 0.9;">Match words with their meanings</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- QUIZ BATTLE -->
+            <div id="quizBattleContainer" class="game-container" style="display: none;">
+                <div id="quizBattleContent"></div>
+            </div>
+
+            <!-- VOCAB RACE -->
+            <div id="vocabRaceContainer" class="game-container" style="display: none;">
+                <div id="vocabRaceContent"></div>
+            </div>
+
+            <!-- MATCHING GAME -->
+            <div id="matchingGameContainer" class="game-container" style="display: none;">
+                <h2 style="color: var(--dark-green); margin-bottom: 2rem;">Matching Game</h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                    <div>
+                        <h3 style="color: var(--primary-green); margin-bottom: 1rem;">Words</h3>
+                        <div id="matchingWords"></div>
+                    </div>
+                    <div>
+                        <h3 style="color: var(--primary-green); margin-bottom: 1rem;">Meanings</h3>
+                        <div id="matchingMeanings"></div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="submitMatching()"><i class="fas fa-check"></i> Submit</button>
+                <button class="btn btn-secondary" onclick="showPage('games')" style="margin-left: 1rem;"><i class="fas fa-arrow-left"></i> Back</button>
+            </div>
+        </div>
+
+        <!-- TEST PAGE -->
+        <div id="test" class="page">
+            <div class="test-container">
+                <div class="test-header" id="testHeader">
+                    <h2>Final Test - Unit 2</h2>
+                    <p>40 questions covering vocabulary and comparative forms</p>
+                </div>
+
+                <div id="testContent"></div>
+
+                <div id="testResult" style="display: none;">
+                    <div class="test-result">
+                        <div class="result-score" id="resultScore">0/0</div>
+                        <div class="result-grade" id="resultGrade">-</div>
+                        <div id="resultMessage" style="margin-bottom: 1.5rem;"></div>
+                        <div class="result-details">
+                            <div class="result-item">
+                                <div style="font-size: 1.5rem; font-weight: bold;" id="resultCorrect">0</div>
+                                <div>Correct</div>
+                            </div>
+                            <div class="result-item">
+                                <div style="font-size: 1.5rem; font-weight: bold;" id="resultIncorrect">0</div>
+                                <div>Incorrect</div>
+                            </div>
+                            <div class="result-item">
+                                <div style="font-size: 1.5rem; font-weight: bold;" id="resultPercentage">0%</div>
+                                <div>Percentage</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="retakeTest()" style="margin-top: 2rem;"><i class="fas fa-redo"></i> Retake Test</button>
+                        <button class="btn btn-secondary" onclick="showPage('home')" style="margin-left: 1rem;"><i class="fas fa-home"></i> Home</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ANALYTICS PAGE -->
+        <div id="analytics" class="page">
+            <h2 style="color: var(--dark-green); margin-bottom: 2rem;"><i class="fas fa-chart-line"></i> Your Learning Analytics</h2>
+
+            <div class="analytics-container">
+                <div class="analytics-card">
+                    <div class="analytics-title"><i class="fas fa-star"></i> Points & Rewards</div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="analyticsPoints">0</div>
+                        <div class="stat-label">Total Points</div>
+                    </div>
+                    <div class="stat-box" style="background: linear-gradient(135deg, var(--info), var(--primary-green));">
+                        <div class="stat-number" id="analyticsStreak">0</div>
+                        <div class="stat-label">Current Streak</div>
+                    </div>
+                </div>
+
+                <div class="analytics-card">
+                    <div class="analytics-title"><i class="fas fa-tasks"></i> Progress</div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="analyticsCompleted">0</div>
+                        <div class="stat-label">Lessons Completed</div>
+                    </div>
+                    <div class="stat-box" style="background: linear-gradient(135deg, var(--success), var(--primary-green));">
+                        <div class="stat-number" id="analyticsAccuracy">0%</div>
+                        <div class="stat-label">Average Accuracy</div>
+                    </div>
+                </div>
+
+                <div class="analytics-card">
+                    <div class="analytics-title"><i class="fas fa-medal"></i> Badges & Achievements</div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="analyticsBadges">0</div>
+                        <div class="stat-label">Badges Earned</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: var(--white); padding: 2rem; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+                <h3 style="color: var(--dark-green); margin-bottom: 1.5rem;"><i class="fas fa-chart-bar"></i> Performance Chart</h3>
+                <canvas id="performanceChart" style="max-height: 300px;"></canvas>
+            </div>
+
+            <div style="background: var(--white); padding: 2rem; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+                <h3 style="color: var(--dark-green); margin-bottom: 1.5rem;"><i class="fas fa-trophy"></i> Your Badges</h3>
+                <div class="badges-container" id="badgesDisplay"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <h3 style="margin-bottom: 1rem;">🌾 Unit 2: Life in the Countryside</h3>
+            <div class="footer-links">
+                <a href="javascript:showPage('home')">Home</a>
+                <a href="javascript:showPage('vocabulary')">Vocabulary</a>
+                <a href="javascript:showPage('grammar')">Grammar</a>
+                <a href="javascript:showPage('test')">Test</a>
+                <a href="javascript:showPage('analytics')">Analytics</a>
+            </div>
+            <p style="margin-top: 1.5rem; opacity: 0.9;">© 2024 Interactive English Learning Platform | Unit 2: Life in the Countryside</p>
+            <p style="margin-top: 0.5rem; opacity: 0.7;">Learn English through technology and interactive exercises</p>
+        </div>
+    </footer>
+
+    <script>
+        // ===== DATA =====
+        const vocabData = [
+            {
+                word: "Beehive",
+                ipa: "/ˈbiːhaɪv/",
+                meaning: "Tổ ong",
+                example: "There is a beehive on the tree.",
+                translation: "Có một tổ ong trên cây."
+            },
+            {
+                word: "Cattle",
+                ipa: "/ˈkætl/",
+                meaning: "Gia súc",
+                example: "There is a herd of cattle over there.",
+                translation: "Có một đàn gia súc ở đó."
+            },
+            {
+                word: "Crop",
+                ipa: "/krop/",
+                meaning: "Vụ mùa",
+                example: "We are looking forward to a bumper crop.",
+                translation: "Chúng tôi mong chờ một vụ mùa lớn."
+            },
+            {
+                word: "Dairy product",
+                ipa: "/ˈdeəri ˈprɒdʌkt/",
+                meaning: "Sản phẩm từ sữa",
+                example: "The doctor advised me to eat more dairy products.",
+                translation: "Bác sĩ khuyên tôi nên ăn nhiều sản phẩm từ sữa hơn."
+            },
+            {
+                word: "Densely",
+                ipa: "/ˈdenslɪ/",
+                meaning: "Dày đặc",
+                example: "I don't want to live in a densely populated area.",
+                translation: "Tôi không muốn sống ở một khu vực dân cư dày đặc."
+            },
+            {
+                word: "Disturbing",
+                ipa: "/dɪˈstɜːbɪŋ/",
+                meaning: "Gây khó chịu",
+                example: "Don't make such disturbing noise.",
+                translation: "Đừng gây ra tiếng ồn khó chịu như vậy."
+            },
+            {
+                word: "Earthen",
+                ipa: "/ˈɜːθn/",
+                meaning: "Bằng đất nung",
+                example: "The locals used to live in earthen houses.",
+                translation: "Người dân địa phương từng sống trong những ngôi nhà bằng đất nung."
+            },
+            {
+                word: "Envious",
+                ipa: "/ˈenviəs/",
+                meaning: "Ghen tị",
+                example: "Everyone is envious of him.",
+                translation: "Mọi người đều ghen tị với anh ta."
+            },
+            {
+                word: "Harvest",
+                ipa: "/ˈhɑːvɪst/",
+                meaning: "Vụ thu hoạch",
+                example: "Farmers often work very hard during harvest time.",
+                translation: "Nông dân thường làm việc rất chăm chỉ trong mùa thu hoạch."
+            },
+            {
+                word: "Hay",
+                ipa: "/heɪ/",
+                meaning: "Cỏ khô",
+                example: "These farm workers are making hay to feed the cattle in winter.",
+                translation: "Những công nhân nông trại này đang làm cỏ khô để nuôi gia súc vào mùa đông."
+            },
+            {
+                word: "Herd",
+                ipa: "/hɜːd/",
+                meaning: "Chăn, dắt",
+                example: "I used to go herding buffaloes when I was small.",
+                translation: "Tôi từng chăn trâu khi còn nhỏ."
+            },
+            {
+                word: "Inconvenient",
+                ipa: "/ˌɪnkənˈviːniənt/",
+                meaning: "Bất tiện",
+                example: "This place is a bit inconvenient for a formal meeting.",
+                translation: "Nơi này hơi bất tiện cho một cuộc họp trang trọng."
+            },
+            {
+                word: "Kite",
+                ipa: "/kaɪt/",
+                meaning: "Con diều",
+                example: "My brother wants to fly his new kite.",
+                translation: "Anh trai tôi muốn thả diều mới của mình."
+            },
+            {
+                word: "Load",
+                ipa: "/ləʊd/",
+                meaning: "Chất, chở",
+                example: "They loaded the boxes into the trucks.",
+                translation: "Họ chất các hộp lên xe tải."
+            },
+            {
+                word: "Nomadic",
+                ipa: "/nəʊˈmædɪk/",
+                meaning: "Thuộc về du mục",
+                example: "Many groups of people gave up their nomadic life to settle down.",
+                translation: "Nhiều nhóm người đã từ bỏ cuộc sống du mục để định cư."
+            },
+            {
+                word: "Pasture",
+                ipa: "/ˈpɑːstʃər/",
+                meaning: "Đồng cỏ",
+                example: "People often raise cattle in areas of rich pasture.",
+                translation: "Người ta thường nuôi gia súc ở những khu vực có nhiều cỏ."
+            }
+        ];
+
+        const practiceQuestions = {
+            1: [
+                {
+                    question: "This house is _____ than that one. (big)",
+                    answer: "bigger",
+                    explanation: "Big is a short adjective (1 syllable), so we add -er. Double the final consonant before adding -er: big → bigger.",
+                    difficulty: 1
+                },
+                {
+                    question: "She is _____ than her sister. (young)",
+                    answer: "younger",
+                    explanation: "Young is a short adjective ending in 'ng'. Add -er: young → younger.",
+                    difficulty: 1
+                },
+                {
+                    question: "This book is _____ than that one. (good)",
+                    answer: "better",
+                    explanation: "Good is an irregular adjective. The comparative form is 'better', not 'gooder'.",
+                    difficulty: 1
+                }
+            ],
+            2: [
+                {
+                    question: "Living in the city is _____ than living in the countryside. (convenient)",
+                    answer: "more convenient",
+                    explanation: "Convenient is a long adjective (4 syllables), so we use 'more' + adjective.",
+                    difficulty: 2
+                },
+                {
+                    question: "She speaks English _____ than her brother. (fluent)",
+                    answer: "more fluently",
+                    explanation: "This is an adverb formed from 'fluent'. Long adverbs use 'more' + adverb.",
+                    difficulty: 2
+                },
+                {
+                    question: "Today you look _____ than usual. (happy)",
+                    answer: "happier",
+                    explanation: "Happy ends in 'y'. Change 'y' to 'i' and add -er: happy → happier.",
+                    difficulty: 2
+                }
+            ],
+            3: [
+                {
+                    question: "The countryside is _____ and _____ than the city. (peaceful, beautiful)",
+                    answer: "more peaceful, more beautiful",
+                    explanation: "Both 'peaceful' and 'beautiful' are long adjectives, so both use 'more'.",
+                    difficulty: 3
+                },
+                {
+                    question: "He works _____ than anyone else in the company. (hard)",
+                    answer: "harder",
+                    explanation: "Hard is a short adverb, so add -er: hard → harder.",
+                    difficulty: 3
+                },
+                {
+                    question: "People in the countryside are _____ than city dwellers. (friendly)",
+                    answer: "friendlier",
+                    explanation: "Friendly ends in 'y'. Change 'y' to 'i' and add -er: friendly → friendlier.",
+                    difficulty: 3
+                }
+            ]
+        };
+
+        const exercises = {
+            1: {
+                title: "Give the comparative form of these adjectives",
+                type: "fill",
+                questions: [
+                    { word: "bad", answer: "worse" },
+                    { word: "clever", answer: "cleverer" },
+                    { word: "convenient", answer: "more convenient" },
+                    { word: "far", answer: "farther/further" },
+                    { word: "fresh", answer: "fresher" }
+                ]
+            },
+            2: {
+                title: "Choose the correct comparative form",
+                type: "multiple",
+                questions: [
+                    { question: "Living in this small town is _____ than I expected.", options: ["more peaceful", "peaceful more"], answer: "more peaceful" },
+                    { question: "Today you look _____ than usual.", options: ["happier", "more happy"], answer: "happier" },
+                    { question: "James has _____ books than Paul.", options: ["many", "more"], answer: "more" }
+                ]
+            },
+            3: {
+                title: "Fill in the blanks with comparative adjectives",
+                type: "fill",
+                questions: [
+                    { question: "Living in the city is _____ than living in the country. (convenient)", answer: "more convenient" },
+                    { question: "Mrs. Smith is _____ than I thought. (young)", answer: "younger" },
+                    { question: "Houses in big cities are much _____ than those in my hometown. (tall)", answer: "taller" }
+                ]
+            },
+            4: {
+                title: "Make sentences from the given words",
+                type: "sentence",
+                questions: [
+                    { prompt: "Bob / strong / Jim", answer: "Bob is stronger than Jim" },
+                    { prompt: "My current job / demanding / my last one", answer: "My current job is more demanding than my last one" },
+                    { prompt: "Life in the countryside / peaceful / life in the city", answer: "Life in the countryside is more peaceful than life in the city" }
+                ]
+            },
+            5: {
+                title: "Give the comparative form of these adverbs",
+                type: "fill",
+                questions: [
+                    { word: "badly", answer: "worse" },
+                    { word: "fast", answer: "faster" },
+                    { word: "fluently", answer: "more fluently" },
+                    { word: "early", answer: "earlier" },
+                    { word: "well", answer: "better" }
+                ]
+            },
+            6: {
+                title: "Choose the correct adverb form",
+                type: "multiple",
+                questions: [
+                    { question: "The teacher asked me to speak _____.", options: ["louder", "more loud"], answer: "louder" },
+                    { question: "No one in my class runs _____ than Peter.", options: ["more fastly", "faster"], answer: "faster" },
+                    { question: "Today I come to class _____ than usual.", options: ["more early", "earlier"], answer: "earlier" }
+                ]
+            },
+            7: {
+                title: "Fill in the blanks with comparative adverbs",
+                type: "fill",
+                questions: [
+                    { question: "I speak English _____ now than last year. (fluently)", answer: "more fluently" },
+                    { question: "Tom arrived _____ than I expected. (early)", answer: "earlier" },
+                    { question: "Mary dances _____ than anyone else. (gracefully)", answer: "more gracefully" }
+                ]
+            },
+            8: {
+                title: "Make sentences with comparative adverbs",
+                type: "sentence",
+                questions: [
+                    { prompt: "I / play / tennis / badly / Tom", answer: "I play tennis worse than Tom" },
+                    { prompt: "Cats / walk / quiet / dogs", answer: "Cats walk more quietly than dogs" }
+                ]
+            },
+            9: {
+                title: "Identify and correct errors",
+                type: "error",
+                questions: [
+                    { sentence: "Their life has been more comfortably since they moved to the city.", correction: "more comfortable (should be adjective after 'has been')" },
+                    { sentence: "She looks more pretty in this white dress.", correction: "prettier (don't use 'more' with short adjectives)" }
+                ]
+            },
+            10: {
+                title: "Reading comprehension - Answer questions",
+                type: "reading",
+                text: "Mongolian people still maintain their tradition of nomadic life. About half of the Mongolian population do not settle down but travel from place to place every season. Mongolia has severe weather with dramatic changes between seasons. That is why they have to move location to the most appropriate spots. In winter, they move in front of a mountain for shelter.",
+                questions: [
+                    { question: "Do about 50% of Mongolians lead a nomadic life?", answer: "Yes" },
+                    { question: "Why do Mongolians move locations?", answer: "Because of severe weather and seasonal changes" }
+                ]
+            },
+            11: {
+                title: "Complete with comparative forms",
+                type: "fill",
+                questions: [
+                    { question: "Her voice is _____ than mine. (soft)", answer: "softer" },
+                    { question: "We can live _____ in the countryside than in the city. (comfortably)", answer: "more comfortably" },
+                    { question: "It is getting _____ today so we can go out. (warm)", answer: "warmer" }
+                ]
+            },
+            12: {
+                title: "Rewrite sentences using less/more",
+                type: "rewrite",
+                questions: [
+                    { original: "Ann speaks French more fluently than James.", task: "Rewrite using less", answer: "James speaks French less fluently than Ann" },
+                    { original: "This cake is more freshly made than that one.", task: "Rewrite using less", answer: "That cake is less freshly made than this one" }
+                ]
+            }
+        };
+
+        // ===== STATE MANAGEMENT =====
+        let userStats = {
+            points: 0,
+            streak: 0,
+            lessonsCompleted: 0,
+            accuracy: 0,
+            badgesEarned: [],
+            vocabProgress: 0,
+            testScores: [],
+            totalAnswered: 0,
+            correctAnswers: 0
+        };
+
+        let currentCardIndex = 0;
+        let currentPracticeLevel = 0;
+        let currentPracticeQuestion = 0;
+        let currentExerciseId = 0;
+        let currentTestAnswers = {};
+        let currentTestQuestion = 0;
+        const testQuestions = generateTestQuestions();
+
+        // ===== PAGE NAVIGATION =====
+        function showPage(pageName) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            document.getElementById(pageName).classList.add('active');
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => link.classList.remove('active'));
+            event.target?.closest('.nav-link')?.classList.add('active');
+
+            if (pageName === 'vocabulary') {
+                loadCard(0);
+            } else if (pageName === 'analytics') {
+                updateAnalytics();
+            } else if (pageName === 'test' && !document.getElementById('testContent').innerHTML) {
+                loadTest();
+            }
+        }
+
+        // ===== VOCABULARY FUNCTIONS =====
+        function loadCard(index) {
+            currentCardIndex = index;
+            const vocab = vocabData[index];
+            document.getElementById('vocabWord').textContent = vocab.word;
+            document.getElementById('vocabIPA').textContent = vocab.ipa;
+            document.getElementById('vocabMeaning').textContent = vocab.meaning;
+            document.getElementById('vocabExample').textContent = vocab.example;
+            document.getElementById('vocabTranslation').textContent = vocab.translation;
+            document.getElementById('cardCounter').textContent = index + 1;
+            document.getElementById('cardTotal').textContent = vocabData.length;
+        }
+
+        function nextCard() {
+            if (currentCardIndex < vocabData.length - 1) {
+                loadCard(currentCardIndex + 1);
+                playSound('success');
+            }
+        }
+
+        function prevCard() {
+            if (currentCardIndex > 0) {
+                loadCard(currentCardIndex - 1);
+                playSound('click');
+            }
+        }
+
+        function speakWord() {
+            const word = vocabData[currentCardIndex].word;
+            const utterance = new SpeechSynthesisUtterance(word);
+            utterance.lang = 'en-US';
+            speechSynthesis.speak(utterance);
+            playSound('success');
+        }
+
+        // ===== PRACTICE FUNCTIONS =====
+        function startPractice(level) {
+            currentPracticeLevel = level;
+            currentPracticeQuestion = 0;
+            document.querySelector('.level-selector').style.display = 'none';
+            document.getElementById('practiceContainer').style.display = 'block';
+            loadPracticeQuestion();
+        }
+
+        function loadPracticeQuestion() {
+            const questions = practiceQuestions[currentPracticeLevel];
+            if (currentPracticeQuestion >= questions.length) {
+                endPracticeLevel();
+                return;
+            }
+            const q = questions[currentPracticeQuestion];
+            const content = `
+                <div class="exercise-number">Question ${currentPracticeQuestion + 1}/${questions.length}</div>
+                <div class="exercise-question">${q.question}</div>
+                <input type="text" id="practiceAnswer" class="exercise-input" placeholder="Type your answer..." style="margin: 1rem 0;">
+            `;
+            document.getElementById('practiceContent').innerHTML = content;
+            document.getElementById('practiceExplanation').innerHTML = '';
+            document.getElementById('practiceExplanation').classList.remove('show');
+            document.getElementById('practiceAnswer').focus();
+        }
+
+        function checkPracticeAnswer() {
+            const answer = document.getElementById('practiceAnswer').value.trim().toLowerCase();
+            const q = practiceQuestions[currentPracticeLevel][currentPracticeQuestion];
+            const isCorrect = answer === q.answer.toLowerCase();
+
+            if (isCorrect) {
+                userStats.points += 10;
+                userStats.correctAnswers++;
+                playSound('success');
+                document.getElementById('practiceExplanation').innerHTML = `
+                    <div class="feedback-correct">
+                        <div class="feedback-title">✓ Correct!</div>
+                        <strong>Explanation:</strong> ${q.explanation}
+                    </div>
+                `;
+            } else {
+                playSound('error');
+                document.getElementById('practiceExplanation').innerHTML = `
+                    <div class="feedback-incorrect">
+                        <div class="feedback-title">✗ Incorrect</div>
+                        <strong>Your answer:</strong> ${answer}<br>
+                        <strong>Correct answer:</strong> ${q.answer}<br>
+                        <strong>Explanation:</strong> ${q.explanation}
+                    </div>
+                `;
+            }
+            document.getElementById('practiceExplanation').classList.add('show');
+            userStats.totalAnswered++;
+            updateStats();
+        }
+
+        function nextPracticeQuestion() {
+            currentPracticeQuestion++;
+            loadPracticeQuestion();
+        }
+
+        function endPracticeLevel() {
+            const accuracy = ((userStats.correctAnswers / userStats.totalAnswered) * 100).toFixed(1);
+            userStats.accuracy = accuracy;
+            userStats.lessonsCompleted++;
+            document.getElementById('practiceContainer').style.display = 'none';
+            document.querySelector('.level-selector').style.display = 'grid';
+            playSound('levelup');
+        }
+
+        // ===== EXERCISE FUNCTIONS =====
+        function loadExercise(id) {
+            currentExerciseId = id;
+            const exercise = exercises[id];
+            let html = `<div class="exercise-card">
+                <h3 style="color: var(--dark-green); margin-bottom: 1.5rem;">Exercise ${id}: ${exercise.title}</h3>`;
+
+            exercise.questions.forEach((q, index) => {
+                html += `<div class="exercise-card" style="margin: 1rem 0;">
+                    <div class="exercise-number">Q${index + 1}</div>`;
+
+                if (exercise.type === 'fill') {
+                    html += `<div class="exercise-question">${q.word || q.question}</div>
+                        <input type="text" id="ex${id}_${index}" class="exercise-input" placeholder="Type your answer...">`;
+                } else if (exercise.type === 'multiple') {
+                    html += `<div class="exercise-question">${q.question}</div>`;
+                    q.options.forEach(opt => {
+                        html += `<button class="option-btn" onclick="selectOption(this, '${opt}')">${opt}</button>`;
+                    });
+                    html += `<input type="hidden" id="ex${id}_${index}" value="">`;
+                } else if (exercise.type === 'sentence') {
+                    html += `<div class="exercise-question">Make a sentence: ${q.prompt}</div>
+                        <input type="text" id="ex${id}_${index}" class="exercise-input" placeholder="Type your sentence...">`;
+                } else if (exercise.type === 'error') {
+                    html += `<div class="exercise-question">Correct this sentence:<br><strong>${q.sentence}</strong></div>
+                        <input type="text" id="ex${id}_${index}" class="exercise-input" placeholder="Type the correction...">`;
+                } else if (exercise.type === 'reading') {
+                    // Skip for now, handle separately
+                    return;
+                } else if (exercise.type === 'rewrite') {
+                    html += `<div class="exercise-question">${q.original}<br><br>${q.task}</div>
+                        <input type="text" id="ex${id}_${index}" class="exercise-input" placeholder="Type your answer...">`;
+                }
+
+                html += `</div>`;
+            });
+
+            html += `<button class="btn btn-check" onclick="submitExercise(${id})"><i class="fas fa-check"></i> Submit</button>`;
+            html += `<button class="btn btn-secondary" onclick="showPage('exercises')" style="margin-left: 1rem;"><i class="fas fa-arrow-left"></i> Back</button>
+                </div>`;
+
+            document.getElementById('exerciseContainer').innerHTML = html;
+            window.scrollTo(0, 0);
+        }
+
+        function selectOption(btn, value) {
+            const parent = btn.parentElement;
+            parent.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            const input = parent.querySelector('input[type="hidden"]');
+            if (input) input.value = value;
+        }
+
+        function submitExercise(id) {
+            const exercise = exercises[id];
+            let correct = 0;
+            let html = '<div style="margin-top: 2rem;">';
+
+            exercise.questions.forEach((q, index) => {
+                const input = document.getElementById(`ex${id}_${index}`);
+                const userAnswer = input.value.trim().toLowerCase();
+                const correctAnswer = (q.answer || q.correction).toLowerCase();
+                const isCorrect = userAnswer === correctAnswer;
+
+                if (isCorrect) {
+                    correct++;
+                    html += `<div class="answer-feedback feedback-correct"><div class="feedback-title">✓ Q${index + 1} Correct!</div></div>`;
+                } else {
+                    html += `<div class="answer-feedback feedback-incorrect"><div class="feedback-title">✗ Q${index + 1} Incorrect</div>Your answer: <strong>${userAnswer}</strong><br>Correct answer: <strong>${correctAnswer}</strong></div>`;
+                }
+            });
+
+            userStats.points += correct * 5;
+            userStats.correctAnswers += correct;
+            userStats.totalAnswered += exercise.questions.length;
+            updateStats();
+
+            html += `<div style="margin-top: 2rem; padding: 1.5rem; background: var(--light-yellow); border-radius: 10px; text-align: center;">
+                <strong>Score: ${correct}/${exercise.questions.length}</strong>
+            </div>`;
+
+            document.getElementById('exerciseContainer').innerHTML += html;
+            playSound(correct === exercise.questions.length ? 'levelup' : 'error');
+        }
+
+        // ===== GAME FUNCTIONS =====
+        function startMatchingGame() {
+            showPage('games');
+            document.getElementById('matchingGameContainer').style.display = 'block';
+            document.querySelectorAll('[id$="Container"]').forEach(el => {
+                if (el.id !== 'matchingGameContainer') el.style.display = 'none';
+            });
+
+            const shuffled = [...vocabData].sort(() => Math.random() - 0.5).slice(0, 6);
+            const meanings = shuffled.map(v => v.meaning).sort(() => Math.random() - 0.5);
+
+            let wordsHtml = '', meaningsHtml = '';
+            shuffled.forEach((v, i) => {
+                wordsHtml += `<div class="option-btn" draggable="true" ondragstart="dragStart(event)" data-word="${v.word}">${v.word}</div>`;
+            });
+            meanings.forEach((m, i) => {
+                meaningsHtml += `<div class="option-btn" ondrop="dropMeaning(event)" ondragover="allowDrop(event)" data-meaning="${m}">${m}<br><span id="matched${i}" style="font-size: 0.8rem; color: green;"></span></div>`;
+            });
+
+            document.getElementById('matchingWords').innerHTML = wordsHtml;
+            document.getElementById('matchingMeanings').innerHTML = meaningsHtml;
+        }
+
+        function dragStart(event) {
+            event.dataTransfer.setData('word', event.target.dataset.word);
+        }
+
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+
+        function dropMeaning(event) {
+            event.preventDefault();
+            const word = event.dataTransfer.getData('word');
+            const meaning = event.target.dataset.meaning;
+            const vocab = vocabData.find(v => v.word === word);
+            if (vocab && vocab.meaning === meaning) {
+                event.target.style.background = 'var(--success)';
+                event.target.style.color = 'white';
+                playSound('success');
+            }
+        }
+
+        function submitMatching() {
+            playSound('levelup');
+            userStats.points += 20;
+            updateStats();
+            alert('Matching game completed! +20 points');
+        }
+
+        function startQuizBattle() {
+            showPage('games');
+            document.getElementById('quizBattleContainer').style.display = 'block';
+            document.querySelectorAll('[id$="Container"]').forEach(el => {
+                if (el.id !== 'quizBattleContainer') el.style.display = 'none';
+            });
+
+            const questions = generateQuizQuestions(20);
+            let html = `<h2 style="color: var(--dark-green); margin-bottom: 2rem;">Quiz Battle - 20 Questions</h2>
+                <div id="quizBattleQuestions"></div>`;
+
+            questions.forEach((q, i) => {
+                html += `
+                    <div class="test-question">
+                        <div class="test-question-number">Q${i + 1}</div>
+                        <div class="test-question-text">${q.question}</div>
+                        <div class="options-group">
+                            ${q.options.map(opt => `<button class="option-btn" onclick="selectTestOption(this, '${opt}')">${opt}</button>`).join('')}
+                        </div>
+                        <input type="hidden" id="q${i}" value="">
+                    </div>
+                `;
+            });
+
+            html += `<button class="btn btn-check" onclick="submitQuizBattle()"><i class="fas fa-check"></i> Submit Battle</button>`;
+            document.getElementById('quizBattleContent').innerHTML = html;
+        }
+
+        function startVocabRace() {
+            showPage('games');
+            document.getElementById('vocabRaceContainer').style.display = 'block';
+            document.querySelectorAll('[id$="Container"]').forEach(el => {
+                if (el.id !== 'vocabRaceContainer') el.style.display = 'none';
+            });
+
+            const questions = vocabData.slice(0, 10).map(v => ({
+                question: `What does "${v.word}" mean?`,
+                correct: v.meaning,
+                options: [v.meaning, vocabData[Math.floor(Math.random() * vocabData.length)].meaning, vocabData[Math.floor(Math.random() * vocabData.length)].meaning].sort(() => Math.random() - 0.5)
+            }));
+
+            let html = `<h2 style="color: var(--dark-green); margin-bottom: 2rem;">Vocabulary Race - Speed Challenge</h2>`;
+            questions.forEach((q, i) => {
+                html += `
+                    <div class="quiz-question">
+                        <h3>${q.question}</h3>
+                    </div>
+                    <div class="quiz-options">
+                        ${q.options.map(opt => `<button class="quiz-option" onclick="selectTestOption(this, '${opt}'); updateRaceScore()">${opt}</button>`).join('')}
+                    </div>
+                `;
+            });
+
+            document.getElementById('vocabRaceContent').innerHTML = html;
+        }
+
+        function selectTestOption(btn, value) {
+            const parent = btn.closest('.test-question, .quiz-question');
+            const input = parent?.nextElementSibling?.querySelector('input') || parent?.querySelector('input[type="hidden"]');
+            if (input) input.value = value;
+            btn.closest('.options-group, .quiz-options').querySelectorAll('button').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+        }
+
+        function submitQuizBattle() {
+            const allInputs = document.querySelectorAll('#quizBattleQuestions input[type="hidden"]');
+            let correct = 0;
+            allInputs.forEach(input => {
+                // In real implementation, compare with correct answers
+                if (input.value) correct++;
+            });
+            userStats.points += correct * 3;
+            updateStats();
+            playSound('levelup');
+            alert(`Quiz Battle Complete! Score: ${correct}/20\n+${correct * 3} points earned!`);
+            showPage('games');
+        }
+
+        function updateRaceScore() {
+            userStats.streak++;
+            updateStats();
+        }
+
+        function startVocabQuiz() {
+            const questions = vocabData.map(v => ({
+                question: `Choose the meaning of "${v.word}"`,
+                correct: v.meaning,
+                options: [v.meaning, ...vocabData.filter(x => x.word !== v.word).map(x => x.meaning).slice(0, 3)].sort(() => Math.random() - 0.5)
+            }));
+
+            let html = `<div class="game-container" style="margin-bottom: 2rem;">
+                <h2 style="color: var(--dark-green); margin-bottom: 2rem;">Vocabulary Quiz - 16 Words</h2>`;
+
+            questions.forEach((q, i) => {
+                html += `
+                    <div class="quiz-question">
+                        <h3>${q.question}</h3>
+                    </div>
+                    <div class="quiz-options">
+                        ${q.options.map(opt => `<button class="quiz-option" onclick="selectQuizAnswer(this, '${opt}', '${q.correct}')">${opt}</button>`).join('')}
+                    </div>
+                `;
+            });
+
+            html += `<button class="btn btn-check" onclick="submitVocabQuiz()"><i class="fas fa-check"></i> Submit Quiz</button>`;
+            document.getElementById('vocabularyPageContent').innerHTML = html || document.querySelector('#vocabulary').innerHTML = html;
+        }
+
+        function selectQuizAnswer(btn, answer, correct) {
+            btn.classList.add('selected');
+            if (answer === correct) {
+                btn.classList.add('correct');
+            } else {
+                btn.classList.add('incorrect');
+            }
+        }
+
+        // ===== TEST FUNCTIONS =====
+        function generateTestQuestions() {
+            const questions = [];
+            
+            // Vocabulary matching
+            vocabData.slice(0, 10).forEach((v, i) => {
+                const options = [v.meaning, vocabData[(i+1) % vocabData.length].meaning, vocabData[(i+2) % vocabData.length].meaning].sort();
+                questions.push({
+                    type: 'multiple',
+                    question: `What does "${v.word}" mean?`,
+                    options: options,
+                    correct: v.meaning
+                });
+            });
+
+            // Comparative adjectives
+            const adjQuestions = [
+                { question: "This house is _____ than that one. (big)", correct: "bigger" },
+                { question: "She is _____ than her sister. (smart)", correct: "smarter" },
+                { question: "Living in the city is _____ than the countryside. (convenient)", correct: "more convenient" },
+                { question: "Today you look _____ than usual. (happy)", correct: "happier" },
+                { question: "This book is _____ than that one. (interesting)", correct: "more interesting" }
+            ];
+            questions.push(...adjQuestions.map(q => ({ type: 'fill', ...q })));
+
+            // Comparative adverbs
+            const advQuestions = [
+                { question: "He runs _____ than me. (fast)", correct: "faster" },
+                { question: "She speaks English _____ than her brother. (fluently)", correct: "more fluently" },
+                { question: "They work _____ nowadays. (hard)", correct: "harder" },
+                { question: "I arrive at school _____ than my friends. (early)", correct: "earlier" },
+                { question: "She drives _____ than before. (carefully)", correct: "more carefully" }
+            ];
+            questions.push(...advQuestions.map(q => ({ type: 'fill', ...q })));
+
+            // Comparative sentences
+            const sentenceQuestions = [
+                { question: "Which sentence is correct?", options: ["He is more tall than me.", "He is taller than me."], correct: "He is taller than me." },
+                { question: "Which is the correct comparative?", options: ["more better", "better"], correct: "better" },
+                { question: "What's the comparative of 'good'?", options: ["gooder", "better"], correct: "better" }
+            ];
+            questions.push(...sentenceQuestions.map(q => ({ type: 'multiple', ...q })));
+
+            // Reading comprehension
+            const reading = {
+                type: 'reading',
+                passage: "Life in the countryside is more peaceful than life in the city. People in rural areas are friendlier and more helpful. The air is fresher, and the environment is less polluted. However, life is less convenient because there are fewer shops and services. Despite these drawbacks, many people prefer the countryside for its natural beauty and slower pace of life.",
+                question: "According to the text, which statement is TRUE?",
+                options: ["City life is more peaceful.", "The countryside has fresher air.", "There are more shops in the countryside."],
+                correct: "The countryside has fresher air."
+            };
+            questions.push(reading);
+
+            // Irregular comparatives
+            const irregularQuestions = [
+                { question: "The comparative of 'bad' is _____.", correct: "worse" },
+                { question: "The comparative of 'far' is _____.", correct: "farther/further" },
+                { question: "The comparative of 'little' is _____.", correct: "less" }
+            ];
+            questions.push(...irregularQuestions.map(q => ({ type: 'fill', ...q })));
+
+            return questions.slice(0, 40);
+        }
+
+        function loadTest() {
+            let html = '';
+            testQuestions.forEach((q, i) => {
+                if (q.type === 'fill') {
+                    html += `
+                        <div class="test-question">
+                            <div class="test-question-number">Q${i + 1}</div>
+                            <div class="test-question-text">${q.question}</div>
+                            <input type="text" id="test${i}" class="exercise-input" placeholder="Your answer...">
+                        </div>
+                    `;
+                } else if (q.type === 'multiple') {
+                    html += `
+                        <div class="test-question">
+                            <div class="test-question-number">Q${i + 1}</div>
+                            <div class="test-question-text">${q.question}</div>
+                            <div class="options-group">
+                                ${q.options.map(opt => `<button class="option-btn" onclick="selectTestAnswer(this, '${opt}')">${opt}</button>`).join('')}
+                            </div>
+                            <input type="hidden" id="test${i}" value="">
+                        </div>
+                    `;
+                } else if (q.type === 'reading') {
+                    html += `
+                        <div class="test-question">
+                            <div class="test-question-number">Reading - Q${i + 1}</div>
+                            <div style="background: var(--gray-light); padding: 1rem; border-radius: 8px; margin: 1rem 0; font-style: italic;">${q.passage}</div>
+                            <div class="test-question-text">${q.question}</div>
+                            <div class="options-group">
+                                ${q.options.map(opt => `<button class="option-btn" onclick="selectTestAnswer(this, '${opt}')">${opt}</button>`).join('')}
+                            </div>
+                            <input type="hidden" id="test${i}" value="">
+                        </div>
+                    `;
+                }
+            });
+
+            html += `<button class="btn btn-check" onclick="submitTest()" style="margin-top: 2rem;"><i class="fas fa-check"></i> Submit Test</button>`;
+            document.getElementById('testContent').innerHTML = html;
+        }
+
+        function selectTestAnswer(btn, value) {
+            const parent = btn.closest('.test-question');
+            parent.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            const input = parent.querySelector('input[type="hidden"]');
+            if (input) input.value = value;
+        }
+
+        function submitTest() {
+            let correct = 0;
+            testQuestions.forEach((q, i) => {
+                const input = document.getElementById(`test${i}`);
+                const answer = input.value.trim().toLowerCase();
+                const correctAnswer = (q.correct || '').toLowerCase();
+                if (answer === correctAnswer) {
+                    correct++;
+                    currentTestAnswers[i] = true;
+                } else {
+                    currentTestAnswers[i] = false;
+                }
+            });
+
+            const percentage = Math.round((correct / 40) * 100);
+            let grade = 'Try Again';
+            if (percentage >= 90) grade = 'Excellent';
+            else if (percentage >= 80) grade = 'Very Good';
+            else if (percentage >= 65) grade = 'Good';
+            else if (percentage >= 50) grade = 'Fair';
+
+            userStats.testScores.push(percentage);
+            userStats.points += correct * 2;
+            updateStats();
+
+            document.getElementById('testContent').style.display = 'none';
+            document.getElementById('testHeader').style.display = 'none';
+            document.getElementById('testResult').style.display = 'block';
+            document.getElementById('resultScore').textContent = `${correct}/40`;
+            document.getElementById('resultCorrect').textContent = correct;
+            document.getElementById('resultIncorrect').textContent = 40 - correct;
+            document.getElementById('resultPercentage').textContent = percentage + '%';
+            document.getElementById('resultGrade').textContent = `Grade: ${grade}`;
+
+            let message = 'Great job!';
+            if (percentage < 50) message = 'Keep practicing!';
+            document.getElementById('resultMessage').textContent = message;
+
+            playSound(percentage >= 70 ? 'levelup' : 'error');
+        }
+
+        function retakeTest() {
+            document.getElementById('testContent').innerHTML = '';
+            document.getElementById('testResult').style.display = 'none';
+            document.getElementById('testHeader').style.display = 'block';
+            currentTestQuestion = 0;
+            currentTestAnswers = {};
+            loadTest();
+        }
+
+        function generateQuizQuestions(count) {
+            const allQuestions = [
+                ...vocabData.map(v => ({ question: `What does "${v.word}" mean?`, correct: v.meaning, options: [v.meaning, vocabData[Math.floor(Math.random() * 16)].meaning, vocabData[Math.floor(Math.random() * 16)].meaning].sort() })),
+                { question: "The comparative of 'big' is _____", correct: "bigger", options: ["bigger", "more big", "biggest"] },
+                { question: "The comparative of 'beautiful' is _____", correct: "more beautiful", options: ["beautiful", "more beautiful", "beautifuler"] }
+            ];
+            return allQuestions.slice(0, count);
+        }
+
+        // ===== ANALYTICS =====
+        function updateAnalytics() {
+            document.getElementById('analyticsPoints').textContent = userStats.points;
+            document.getElementById('analyticsStreak').textContent = userStats.streak;
+            document.getElementById('analyticsCompleted').textContent = userStats.lessonsCompleted;
+            document.getElementById('analyticsAccuracy').textContent = Math.round(userStats.accuracy) + '%';
+            document.getElementById('analyticsBadges').textContent = userStats.badgesEarned.length;
+
+            const badges = [
+                { name: '🎓 Scholar', desc: '5 lessons completed', earned: userStats.lessonsCompleted >= 5 },
+                { name: '⭐ Vocabulary Master', desc: 'Learn all 16 words', earned: userStats.vocabProgress >= 16 },
+                { name: '🔥 Hot Streak', desc: '10 correct in a row', earned: userStats.streak >= 10 },
+                { name: '💯 Perfect Score', desc: '100% on a test', earned: userStats.testScores.some(s => s === 100) },
+                { name: '🏆 Elite Learner', desc: '1000 points earned', earned: userStats.points >= 1000 }
+            ];
+
+            let badgesHtml = '';
+            badges.forEach(b => {
+                badgesHtml += `<div class="badge ${b.earned ? 'earned' : ''}">
+                    <div class="badge-icon">${b.name.split(' ')[0]}</div>
+                    <div class="badge-name">${b.name}</div>
+                    <div style="font-size: 0.8rem; opacity: 0.8;">${b.desc}</div>
+                </div>`;
+                if (b.earned && !userStats.badgesEarned.includes(b.name)) {
+                    userStats.badgesEarned.push(b.name);
+                }
+            });
+
+            document.getElementById('badgesDisplay').innerHTML = badgesHtml;
+
+            // Create chart
+            if (userStats.testScores.length > 0) {
+                const ctx = document.getElementById('performanceChart');
+                if (ctx && ctx.chart) ctx.chart.destroy();
+                ctx.chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: userStats.testScores.map((_, i) => `Test ${i + 1}`),
+                        datasets: [{
+                            label: 'Test Scores (%)',
+                            data: userStats.testScores,
+                            borderColor: '#2ecc71',
+                            backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { display: true }
+                        },
+                        scales: {
+                            y: { min: 0, max: 100 }
+                        }
+                    }
+                });
+            }
+        }
+
+        // ===== UTILITY FUNCTIONS =====
+        function updateStats() {
+            document.getElementById('progressFill').style.width = Math.min(userStats.points / 100, 1) * 100 + '%';
+            document.getElementById('progressFill').textContent = Math.min(Math.round(userStats.points / 10), 100) + '%';
+            document.getElementById('pointsDisplay').textContent = userStats.points + ' pts';
+            document.getElementById('streakDisplay').textContent = 'Streak: ' + userStats.streak;
+            document.getElementById('homePoints').textContent = userStats.points;
+            document.getElementById('homeLessons').textContent = userStats.lessonsCompleted;
+            document.getElementById('homeBadges').textContent = userStats.badgesEarned.length;
+        }
+
+        function playSound(type) {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            if (type === 'success') {
+                oscillator.frequency.value = 800;
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.3);
+            } else if (type === 'error') {
+                oscillator.frequency.value = 300;
+                gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.3);
+            } else if (type === 'levelup') {
+                oscillator.frequency.setValueAtTime(500, audioContext.currentTime);
+                oscillator.frequency.linearRampToValueAtTime(1000, audioContext.currentTime + 0.3);
+                gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.3);
+            } else if (type === 'click') {
+                oscillator.frequency.value = 600;
+                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.1);
+            }
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            updateStats();
+            loadCard(0);
+        });
+
+        // Add keyboard support
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextCard();
+            if (e.key === 'ArrowLeft') prevCard();
+            if (e.key === 'Enter' && document.getElementById('practiceAnswer')?.focus) {
+                checkPracticeAnswer();
+            }
+        });
+    </script>
+</body>
+</html>
