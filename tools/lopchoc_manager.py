@@ -4,11 +4,12 @@ Quan ly manifest.json (danh sach bai hoc) va deploy len GitHub, chia theo 3 buoc
 """
 import json
 import os
+import shutil
 import subprocess
 import sys
 import threading
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk, messagebox, filedialog
 
 # Ngan cua so console den loe len moi lan goi git.exe tu app khong-console (--windowed)
 NO_WINDOW = getattr(subprocess, 'CREATE_NO_WINDOW', 0)
@@ -190,7 +191,8 @@ class App(tk.Tk):
 
         toolbar = ttk.Frame(self.step1_frame, padding=(0, 0, 0, 8))
         toolbar.pack(fill='x')
-        ttk.Button(toolbar, text="➕ Thêm bài học", command=self.add_entry).pack(side='left', padx=(0, 4))
+        ttk.Button(toolbar, text="📥 Import file HTML", command=self.import_html_file).pack(side='left', padx=(0, 4))
+        ttk.Button(toolbar, text="➕ Thêm bài học", command=self.add_entry).pack(side='left', padx=4)
         ttk.Button(toolbar, text="✏️ Sửa", command=self.edit_entry).pack(side='left', padx=4)
         ttk.Button(toolbar, text="🗑 Xóa", command=self.delete_entry).pack(side='left', padx=4)
         ttk.Button(toolbar, text="⬆ Lên", command=lambda: self.move_entry(-1)).pack(side='left', padx=4)
@@ -328,11 +330,40 @@ class App(tk.Tk):
         self.dirty = True
 
     # ── CRUD ────────────────────────────────────────────────────────
-    def add_entry(self):
+    def import_html_file(self):
+        src = filedialog.askopenfilename(
+            title="Chọn file HTML để import vào component/",
+            filetypes=[("HTML files", "*.html *.htm"), ("Tất cả file", "*.*")]
+        )
+        if not src:
+            return
+
+        filename = os.path.basename(src)
+        dest = os.path.join(COMPONENT_DIR, filename)
+
+        if os.path.abspath(src) != os.path.abspath(dest):
+            if os.path.exists(dest):
+                if not messagebox.askyesno(
+                    "File đã tồn tại",
+                    f'File "{filename}" đã có trong component/. Ghi đè bằng file vừa chọn?'):
+                    return
+            try:
+                os.makedirs(COMPONENT_DIR, exist_ok=True)
+                shutil.copy2(src, dest)
+                self.log(f"[+] Đã import file vào component/: {filename}")
+            except Exception as e:
+                messagebox.showerror("Lỗi import", str(e))
+                return
+
+        self.add_entry(preset_file=filename)
+
+    def add_entry(self, preset_file=None):
         existing_files = {item.get('file', '').replace('\\', '/') for item in self.manifest}
         candidates = [f for f in list_html_files() if f not in existing_files]
+        if preset_file and preset_file not in candidates:
+            candidates = [preset_file] + candidates
 
-        dialog = EntryDialog(self, "Thêm bài học", candidates=candidates)
+        dialog = EntryDialog(self, "Thêm bài học", candidates=candidates, init_file=preset_file or '')
         self.wait_window(dialog)
         if dialog.result is None:
             return
@@ -469,6 +500,9 @@ class EntryDialog(tk.Toplevel):
         self.result = None
         self.transient(parent)
         self.grab_set()
+
+        if not init_name and init_file:
+            init_name = os.path.splitext(init_file)[0]
 
         pad = {'padx': 8, 'pady': 6}
 
