@@ -59,6 +59,30 @@ class App(tk.Tk):
         self._build_ui()
         self._refresh_table()
 
+        threading.Thread(target=self._sync_on_startup, daemon=True).start()
+
+    # ── SYNC ────────────────────────────────────────────────────────
+    def _sync_on_startup(self):
+        self.log("Đang đồng bộ dữ liệu mới nhất từ GitHub (có nhiều người dùng)...")
+        try:
+            rc = self._run(["git", "pull", "--rebase", "--autostash"])
+            if rc != 0:
+                self.log("[!] Không đồng bộ được (mất mạng hoặc đang có thay đổi chưa lưu). Đang dùng dữ liệu local.")
+                return
+        except FileNotFoundError:
+            self.log("[!] Không tìm thấy lệnh 'git'. Cài Git for Windows để dùng tính năng đồng bộ.")
+            return
+        except Exception as e:
+            self.log(f"[!] Lỗi khi đồng bộ: {e}")
+            return
+        self.after(0, self._reload_after_sync)
+
+    def _reload_after_sync(self):
+        self.manifest = load_manifest()
+        self._refresh_table()
+        self.status.set(f"Đã đồng bộ mới nhất — Đang mở: {MANIFEST_PATH}")
+        self.log("[✓] Đã đồng bộ xong, đang xem dữ liệu mới nhất.")
+
     # ── UI ──────────────────────────────────────────────────────────
     def _build_ui(self):
         toolbar = ttk.Frame(self, padding=8)
@@ -98,6 +122,10 @@ class App(tk.Tk):
         ttk.Label(self, textvariable=self.status, anchor='w', relief='sunken').pack(fill='x', side='bottom')
 
     def log(self, msg):
+        # co the goi tu thread nen (sync/deploy) -> luon cap nhat UI qua main thread
+        self.after(0, self._log_ui, msg)
+
+    def _log_ui(self, msg):
         self.log_text.configure(state='normal')
         self.log_text.insert('end', msg + '\n')
         self.log_text.see('end')
@@ -116,7 +144,8 @@ class App(tk.Tk):
 
     # ── CRUD ────────────────────────────────────────────────────────
     def add_entry(self):
-        candidates = list_html_files()
+        existing_files = {item.get('file', '').replace('\\', '/') for item in self.manifest}
+        candidates = [f for f in list_html_files() if f not in existing_files]
 
         dialog = EntryDialog(self, "Thêm bài học", candidates=candidates)
         self.wait_window(dialog)
@@ -224,7 +253,7 @@ class App(tk.Tk):
             rc = self._run(["git", "commit", "-m", msg])
             if rc != 0:
                 self.log("(Không có gì để commit hoặc commit lỗi — vẫn thử pull/push)")
-            rc = self._run(["git", "pull", "--rebase"])
+            rc = self._run(["git", "pull", "--rebase", "--autostash"])
             if rc != 0:
                 self.log("[X] git pull --rebase lỗi. Dừng lại, kiểm tra conflict trước khi push.")
                 return
