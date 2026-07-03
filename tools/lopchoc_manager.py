@@ -1,6 +1,6 @@
 """
 Lop Hoc Co Chi - Manager
-Quan ly manifest.json (danh sach bai hoc) va deploy len GitHub trong 1 tool.
+Quan ly manifest.json (danh sach bai hoc) va deploy len GitHub, chia theo 3 buoc.
 """
 import json
 import os
@@ -8,7 +8,11 @@ import subprocess
 import sys
 import threading
 import tkinter as tk
-from tkinter import ttk, messagebox, simpledialog
+from tkinter import ttk, messagebox
+
+# Ngan cua so console den loe len moi lan goi git.exe tu app khong-console (--windowed)
+NO_WINDOW = getattr(subprocess, 'CREATE_NO_WINDOW', 0)
+
 
 def _find_root_dir():
     """Do nguoc len tu vi tri file .py/.exe de tim thu muc chua component/manifest.json"""
@@ -26,6 +30,13 @@ def _find_root_dir():
 ROOT_DIR = _find_root_dir()
 COMPONENT_DIR = os.path.join(ROOT_DIR, 'component')
 MANIFEST_PATH = os.path.join(COMPONENT_DIR, 'manifest.json')
+LOGO_PATH = os.path.join(ROOT_DIR, 'static', 'logo.png')
+
+STEPS = [
+    (1, "Thêm / Sửa / Xóa"),
+    (2, "Lưu file manifest"),
+    (3, "Push lên GitHub"),
+]
 
 
 def load_manifest():
@@ -51,15 +62,232 @@ class App(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Lớp học cô Chi - Manager")
-        self.geometry("880x560")
-        self.minsize(760, 480)
+        self.geometry("880x640")
+        self.minsize(780, 560)
+        self._set_app_icon()
 
         self.manifest = load_manifest()
+        self.dirty = False
+        self.step = 1
 
-        self._build_ui()
+        self._build_style()
+        self._build_stepper()
+        self._build_statusbar()
+        self._build_log()
+        self._build_step1()
+        self._build_step2()
+        self._build_step3()
+
         self._refresh_table()
+        self._show_step(1)
 
-        threading.Thread(target=self._sync_on_startup, daemon=True).start()
+        self.git_available = self._check_git_setup()
+        if self.git_available:
+            threading.Thread(target=self._sync_on_startup, daemon=True).start()
+        else:
+            self.log("[!] Bỏ qua đồng bộ vì chưa cài Git.")
+            self.push_btn.state(['disabled'])
+
+    def _set_app_icon(self):
+        if not os.path.isfile(LOGO_PATH):
+            return
+        try:
+            self._icon_img = tk.PhotoImage(file=LOGO_PATH)
+            self.iconphoto(True, self._icon_img)
+        except tk.TclError:
+            pass
+
+    # ── GIT SETUP CHECK ─────────────────────────────────────────────
+    def _check_git_setup(self):
+        try:
+            subprocess.run(["git", "--version"], cwd=ROOT_DIR, capture_output=True, text=True, creationflags=NO_WINDOW)
+        except FileNotFoundError:
+            messagebox.showwarning(
+                "Chưa cài Git",
+                "Không tìm thấy Git trên máy này.\n\n"
+                "Cài Git for Windows (git-scm.com/downloads) rồi mở lại app "
+                "để dùng được tính năng Đồng bộ / Push lên GitHub."
+            )
+            return False
+
+        name = self._git_config_get("user.name")
+        email = self._git_config_get("user.email")
+        if not name or not email:
+            messagebox.showwarning(
+                "Thiếu thông tin Git",
+                "Máy này chưa thiết lập user.name / user.email cho Git.\n"
+                "Cần nhập để commit/push hoạt động đúng."
+            )
+            dialog = GitConfigDialog(self, init_name=name, init_email=email)
+            self.wait_window(dialog)
+            new_name, new_email = dialog.result  # dialog bat buoc nhap, khong the dong ma khong co ket qua
+            subprocess.run(["git", "config", "--global", "user.name", new_name], cwd=ROOT_DIR, creationflags=NO_WINDOW)
+            subprocess.run(["git", "config", "--global", "user.email", new_email], cwd=ROOT_DIR, creationflags=NO_WINDOW)
+            self.log(f"[✓] Đã thiết lập git user.name='{new_name}', user.email='{new_email}'")
+        return True
+
+    def _git_config_get(self, key):
+        try:
+            proc = subprocess.run(["git", "config", "--global", "--get", key], cwd=ROOT_DIR,
+                                   capture_output=True, text=True, creationflags=NO_WINDOW)
+            return proc.stdout.strip()
+        except FileNotFoundError:
+            return ''
+
+    # ── STYLE ───────────────────────────────────────────────────────
+    def _build_style(self):
+        style = ttk.Style(self)
+        style.configure('StepActive.TLabel', background='#2f6fed', foreground='white',
+                         padding=(12, 6), font=('Segoe UI', 10, 'bold'))
+        style.configure('StepDone.TLabel', background='#d7ead7', foreground='#1a7a1a',
+                         padding=(12, 6), font=('Segoe UI', 10, 'bold'))
+        style.configure('StepTodo.TLabel', background='#eee', foreground='#888',
+                         padding=(12, 6), font=('Segoe UI', 10, 'bold'))
+
+    # ── STEPPER BAR ─────────────────────────────────────────────────
+    def _build_stepper(self):
+        bar = ttk.Frame(self, padding=(10, 10))
+        bar.pack(fill='x')
+        self.step_labels = {}
+        for i, (num, name) in enumerate(STEPS):
+            lbl = ttk.Label(bar, text=f"{num}. {name}")
+            lbl.pack(side='left')
+            lbl.bind('<Button-1>', lambda e, n=num: self._on_step_click(n))
+            self.step_labels[num] = lbl
+            if i < len(STEPS) - 1:
+                ttk.Label(bar, text="  →  ", foreground='#999').pack(side='left')
+
+    def _on_step_click(self, n):
+        # Cho phep nhay lui ve buoc truoc do de xem/sua, nhung khong cho nhay vuot qua khi chua xong buoc hien tai
+        if n <= self.step:
+            self._show_step(n)
+
+    def _set_step_visual(self):
+        for num, lbl in self.step_labels.items():
+            if num == self.step:
+                lbl.configure(style='StepActive.TLabel')
+            elif num < self.step:
+                lbl.configure(style='StepDone.TLabel')
+            else:
+                lbl.configure(style='StepTodo.TLabel')
+
+    def _show_step(self, n):
+        self.step = n
+        for frame in (self.step1_frame, self.step2_frame, self.step3_frame):
+            frame.pack_forget()
+        if n == 1:
+            self.step1_frame.pack(fill='both', expand=True, padx=10, pady=(0, 6))
+        elif n == 2:
+            self._update_step2_summary()
+            self.step2_frame.pack(fill='both', expand=True, padx=10, pady=(0, 6))
+        elif n == 3:
+            self.step3_frame.pack(fill='both', expand=True, padx=10, pady=(0, 6))
+        self._set_step_visual()
+
+    # ── BUOC 1: THEM / SUA / XOA ───────────────────────────────────
+    def _build_step1(self):
+        self.step1_frame = ttk.Frame(self)
+
+        toolbar = ttk.Frame(self.step1_frame, padding=(0, 0, 0, 8))
+        toolbar.pack(fill='x')
+        ttk.Button(toolbar, text="➕ Thêm bài học", command=self.add_entry).pack(side='left', padx=(0, 4))
+        ttk.Button(toolbar, text="✏️ Sửa", command=self.edit_entry).pack(side='left', padx=4)
+        ttk.Button(toolbar, text="🗑 Xóa", command=self.delete_entry).pack(side='left', padx=4)
+        ttk.Button(toolbar, text="⬆ Lên", command=lambda: self.move_entry(-1)).pack(side='left', padx=4)
+        ttk.Button(toolbar, text="⬇ Xuống", command=lambda: self.move_entry(1)).pack(side='left', padx=4)
+        ttk.Button(toolbar, text="🔍 Kiểm tra trùng tên", command=self.check_duplicates).pack(side='left', padx=4)
+
+        columns = ('name', 'file', 'desc')
+        self.tree = ttk.Treeview(self.step1_frame, columns=columns, show='headings', selectmode='browse')
+        self.tree.heading('name', text='Tên (name)')
+        self.tree.heading('file', text='File')
+        self.tree.heading('desc', text='Mô tả')
+        self.tree.column('name', width=140)
+        self.tree.column('file', width=320)
+        self.tree.column('desc', width=320)
+        self.tree.pack(fill='both', expand=True)
+        self.tree.bind('<Double-1>', lambda e: self.edit_entry())
+
+        nav = ttk.Frame(self.step1_frame, padding=(0, 8, 0, 0))
+        nav.pack(fill='x')
+        ttk.Button(nav, text="Tiếp theo: Lưu file →", command=lambda: self._show_step(2)).pack(side='right')
+
+    # ── BUOC 2: LUU FILE MANIFEST ──────────────────────────────────
+    def _build_step2(self):
+        self.step2_frame = ttk.Frame(self)
+
+        box = ttk.Frame(self.step2_frame, padding=20)
+        box.pack(fill='both', expand=True)
+
+        self.step2_summary = tk.StringVar()
+        ttk.Label(box, textvariable=self.step2_summary, font=('Segoe UI', 11), justify='left').pack(anchor='w', pady=(0, 16))
+
+        self.save_btn = ttk.Button(box, text="💾 Lưu manifest.json", command=self._save_and_advance)
+        self.save_btn.pack(anchor='w')
+
+        nav = ttk.Frame(self.step2_frame, padding=(0, 8, 0, 0))
+        nav.pack(fill='x', side='bottom')
+        ttk.Button(nav, text="← Quay lại", command=lambda: self._show_step(1)).pack(side='left')
+        self.step2_next_btn = ttk.Button(nav, text="Tiếp theo: Push →", command=lambda: self._show_step(3))
+        self.step2_next_btn.pack(side='right')
+
+    def _update_step2_summary(self):
+        if self.dirty:
+            self.step2_summary.set(
+                f"Bạn đang có {len(self.manifest)} bài học trong danh sách.\n"
+                f"Có thay đổi CHƯA được lưu vào manifest.json — bấm nút bên dưới để lưu."
+            )
+            self.step2_next_btn.state(['disabled'])
+        else:
+            self.step2_summary.set(
+                f"Bạn đang có {len(self.manifest)} bài học trong danh sách.\n"
+                f"Đã lưu vào manifest.json. Có thể sang bước Push."
+            )
+            self.step2_next_btn.state(['!disabled'])
+
+    def _save_and_advance(self):
+        self.save()
+        self._update_step2_summary()
+
+    # ── BUOC 3: PUSH LEN GITHUB ─────────────────────────────────────
+    def _build_step3(self):
+        self.step3_frame = ttk.Frame(self)
+
+        box = ttk.Frame(self.step3_frame, padding=20)
+        box.pack(fill='x')
+
+        ttk.Label(box, text="Nội dung commit:", font=('Segoe UI', 10)).pack(anchor='w')
+        self.commit_msg_var = tk.StringVar(value="update")
+        ttk.Entry(box, textvariable=self.commit_msg_var, width=60).pack(anchor='w', pady=(4, 14))
+
+        self.push_btn = ttk.Button(box, text="🚀 Push lên GitHub", command=self.deploy)
+        self.push_btn.pack(anchor='w')
+
+        nav = ttk.Frame(self.step3_frame, padding=(0, 8, 0, 0))
+        nav.pack(fill='x', side='bottom')
+        ttk.Button(nav, text="← Quay lại", command=lambda: self._show_step(2)).pack(side='left')
+
+    # ── LOG / STATUS ────────────────────────────────────────────────
+    def _build_log(self):
+        log_frame = ttk.LabelFrame(self, text="Nhật ký", padding=6)
+        log_frame.pack(fill='x', expand=False, side='bottom', padx=10, pady=(0, 6))
+        self.log_text = tk.Text(log_frame, height=8, state='disabled', wrap='word', bg='#111', fg='#0f0',
+                                 font=('Consolas', 9))
+        self.log_text.pack(fill='both', expand=True)
+
+    def _build_statusbar(self):
+        self.status = tk.StringVar(value=f"Đang mở: {MANIFEST_PATH}")
+        ttk.Label(self, textvariable=self.status, anchor='w', relief='sunken').pack(fill='x', side='bottom')
+
+    def log(self, msg):
+        # co the goi tu thread nen (sync/deploy) -> luon cap nhat UI qua main thread
+        self.after(0, self._log_ui, msg)
+
+    def _log_ui(self, msg):
+        self.log_text.configure(state='normal')
+        self.log_text.insert('end', msg + '\n')
+        self.log_text.see('end')
+        self.log_text.configure(state='disabled')
 
     # ── SYNC ────────────────────────────────────────────────────────
     def _sync_on_startup(self):
@@ -79,58 +307,12 @@ class App(tk.Tk):
 
     def _reload_after_sync(self):
         self.manifest = load_manifest()
+        self.dirty = False
         self._refresh_table()
         self.status.set(f"Đã đồng bộ mới nhất — Đang mở: {MANIFEST_PATH}")
         self.log("[✓] Đã đồng bộ xong, đang xem dữ liệu mới nhất.")
 
-    # ── UI ──────────────────────────────────────────────────────────
-    def _build_ui(self):
-        toolbar = ttk.Frame(self, padding=8)
-        toolbar.pack(fill='x')
-
-        ttk.Button(toolbar, text="➕ Thêm bài học", command=self.add_entry).pack(side='left', padx=4)
-        ttk.Button(toolbar, text="✏️ Sửa", command=self.edit_entry).pack(side='left', padx=4)
-        ttk.Button(toolbar, text="🗑 Xóa", command=self.delete_entry).pack(side='left', padx=4)
-        ttk.Button(toolbar, text="⬆ Lên", command=lambda: self.move_entry(-1)).pack(side='left', padx=4)
-        ttk.Button(toolbar, text="⬇ Xuống", command=lambda: self.move_entry(1)).pack(side='left', padx=4)
-        ttk.Button(toolbar, text="🔍 Kiểm tra trùng tên", command=self.check_duplicates).pack(side='left', padx=4)
-        ttk.Button(toolbar, text="💾 Lưu manifest.json", command=self.save).pack(side='left', padx=12)
-
-        deploy_btn = ttk.Button(toolbar, text="🚀 Deploy lên GitHub", command=self.deploy)
-        deploy_btn.pack(side='right', padx=4)
-
-        # Table
-        columns = ('name', 'file', 'desc')
-        self.tree = ttk.Treeview(self, columns=columns, show='headings', selectmode='browse')
-        self.tree.heading('name', text='Tên (name)')
-        self.tree.heading('file', text='File')
-        self.tree.heading('desc', text='Mô tả')
-        self.tree.column('name', width=140)
-        self.tree.column('file', width=320)
-        self.tree.column('desc', width=320)
-        self.tree.pack(fill='both', expand=True, padx=8, pady=(0, 8))
-        self.tree.bind('<Double-1>', lambda e: self.edit_entry())
-
-        # Log console
-        log_frame = ttk.LabelFrame(self, text="Nhật ký", padding=6)
-        log_frame.pack(fill='both', expand=False, padx=8, pady=(0, 8))
-        self.log_text = tk.Text(log_frame, height=10, state='disabled', wrap='word', bg='#111', fg='#0f0',
-                                 font=('Consolas', 9))
-        self.log_text.pack(fill='both', expand=True)
-
-        self.status = tk.StringVar(value=f"Đang mở: {MANIFEST_PATH}")
-        ttk.Label(self, textvariable=self.status, anchor='w', relief='sunken').pack(fill='x', side='bottom')
-
-    def log(self, msg):
-        # co the goi tu thread nen (sync/deploy) -> luon cap nhat UI qua main thread
-        self.after(0, self._log_ui, msg)
-
-    def _log_ui(self, msg):
-        self.log_text.configure(state='normal')
-        self.log_text.insert('end', msg + '\n')
-        self.log_text.see('end')
-        self.log_text.configure(state='disabled')
-
+    # ── TABLE HELPERS ───────────────────────────────────────────────
     def _refresh_table(self):
         self.tree.delete(*self.tree.get_children())
         for i, item in enumerate(self.manifest):
@@ -141,6 +323,9 @@ class App(tk.Tk):
         if not sel:
             return None
         return int(sel[0])
+
+    def _mark_dirty(self):
+        self.dirty = True
 
     # ── CRUD ────────────────────────────────────────────────────────
     def add_entry(self):
@@ -162,6 +347,7 @@ class App(tk.Tk):
                 return
 
         self.manifest.append({"name": name, "file": file_, "desc": desc})
+        self._mark_dirty()
         self._refresh_table()
         self.log(f"[+] Đã thêm: {name} -> {file_}")
 
@@ -183,6 +369,7 @@ class App(tk.Tk):
             return
         name, file_, desc = dialog.result
         self.manifest[idx] = {"name": name, "file": file_, "desc": desc}
+        self._mark_dirty()
         self._refresh_table()
         self.log(f"[~] Đã sửa dòng {idx}: {name} -> {file_}")
 
@@ -195,6 +382,7 @@ class App(tk.Tk):
         if not messagebox.askyesno("Xác nhận xóa", f'Xóa mục "{item.get("name")}" ({item.get("file")})?'):
             return
         del self.manifest[idx]
+        self._mark_dirty()
         self._refresh_table()
         self.log(f"[-] Đã xóa: {item.get('name')} ({item.get('file')})")
 
@@ -206,6 +394,7 @@ class App(tk.Tk):
         if new_idx < 0 or new_idx >= len(self.manifest):
             return
         self.manifest[idx], self.manifest[new_idx] = self.manifest[new_idx], self.manifest[idx]
+        self._mark_dirty()
         self._refresh_table()
         self.tree.selection_set(str(new_idx))
 
@@ -224,6 +413,7 @@ class App(tk.Tk):
     def save(self):
         try:
             save_manifest(self.manifest)
+            self.dirty = False
             self.status.set(f"Đã lưu: {MANIFEST_PATH}")
             self.log(f"[✓] Đã lưu manifest.json ({len(self.manifest)} mục)")
         except Exception as e:
@@ -231,15 +421,16 @@ class App(tk.Tk):
 
     # ── DEPLOY ──────────────────────────────────────────────────────
     def deploy(self):
-        self.save()
-        msg = simpledialog.askstring("Commit message", "Nhập nội dung commit:", initialvalue="update")
-        if msg is None:
-            return
-        threading.Thread(target=self._run_deploy, args=(msg or "update",), daemon=True).start()
+        if self.dirty:
+            self.save()
+        msg = self.commit_msg_var.get().strip() or "update"
+        self.push_btn.state(['disabled'])
+        threading.Thread(target=self._run_deploy, args=(msg,), daemon=True).start()
 
     def _run(self, args):
         self.log("$ " + " ".join(args))
-        proc = subprocess.run(args, cwd=ROOT_DIR, capture_output=True, text=True, encoding='utf-8', errors='replace')
+        proc = subprocess.run(args, cwd=ROOT_DIR, capture_output=True, text=True, encoding='utf-8', errors='replace',
+                               creationflags=NO_WINDOW)
         if proc.stdout:
             self.log(proc.stdout.strip())
         if proc.stderr:
@@ -266,6 +457,8 @@ class App(tk.Tk):
             self.log("[X] Không tìm thấy lệnh 'git'. Cài Git for Windows và thêm vào PATH.")
         except Exception as e:
             self.log(f"[X] Lỗi: {e}")
+        finally:
+            self.after(0, lambda: self.push_btn.state(['!disabled']))
 
 
 class EntryDialog(tk.Toplevel):
@@ -314,6 +507,52 @@ class EntryDialog(tk.Toplevel):
             messagebox.showwarning("Thiếu thông tin", "Cần nhập File và Tên hiển thị.", parent=self)
             return
         self.result = (name, file_, desc)
+        self.destroy()
+
+
+class GitConfigDialog(tk.Toplevel):
+    """Bat buoc nguoi dung nhap user.name / user.email cho Git. Khong the dong ma bo trong."""
+
+    def __init__(self, parent, init_name='', init_email=''):
+        super().__init__(parent)
+        self.title("Thiết lập Git")
+        self.resizable(False, False)
+        self.result = None
+        self.transient(parent)
+        self.grab_set()
+        self.protocol("WM_DELETE_WINDOW", self._on_close_attempt)
+
+        pad = {'padx': 10, 'pady': 8}
+
+        ttk.Label(
+            self,
+            text="Chưa thiết lập user.name / user.email cho Git trên máy này.\n"
+                 "Vui lòng nhập để commit/push hoạt động đúng:",
+            justify='left'
+        ).grid(row=0, column=0, columnspan=2, sticky='w', **pad)
+
+        ttk.Label(self, text="Tên (user.name):").grid(row=1, column=0, sticky='w', **pad)
+        self.name_var = tk.StringVar(value=init_name)
+        ttk.Entry(self, textvariable=self.name_var, width=40).grid(row=1, column=1, **pad)
+
+        ttk.Label(self, text="Email (user.email):").grid(row=2, column=0, sticky='w', **pad)
+        self.email_var = tk.StringVar(value=init_email)
+        ttk.Entry(self, textvariable=self.email_var, width=40).grid(row=2, column=1, **pad)
+
+        ttk.Button(self, text="Lưu", command=self._on_ok).grid(row=3, column=0, columnspan=2, pady=12)
+
+        self.bind('<Return>', lambda e: self._on_ok())
+
+    def _on_close_attempt(self):
+        messagebox.showwarning("Bắt buộc nhập", "Cần nhập user.name và user.email trước khi tiếp tục.", parent=self)
+
+    def _on_ok(self):
+        name = self.name_var.get().strip()
+        email = self.email_var.get().strip()
+        if not name or not email:
+            messagebox.showwarning("Thiếu thông tin", "Cần nhập đủ Tên và Email.", parent=self)
+            return
+        self.result = (name, email)
         self.destroy()
 
 
