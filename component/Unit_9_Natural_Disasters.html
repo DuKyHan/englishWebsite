@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Natural Disasters – Tiếng Anh 8 · Unit 9</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+
+  :root { --bg: #fff7ed; }
+
+  * { box-sizing: border-box; }
+  body { font-family: 'Nunito', sans-serif; background: var(--bg); }
+
+  .hero-gradient { background: linear-gradient(135deg, #7f1d1d 0%, #ea580c 50%, #57534e 100%); }
+  .tab-btn { transition: all .2s ease; }
+  .tab-btn.active {
+    background: linear-gradient(135deg, #7f1d1d, #ea580c);
+    color: white;
+    box-shadow: 0 4px 14px rgba(127,29,29,.35);
+    transform: translateY(-1px);
+  }
+  .task-card { transition: box-shadow .2s, transform .2s; }
+  .task-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,.10); }
+
+  .option-label { cursor: pointer; transition: all .18s; border: 2px solid #e2e8f0; }
+  .option-label:hover { border-color: #ea580c; background: #fff7ed; }
+  .option-label.selected { border-color: #7f1d1d; background: #fef2f2; }
+  .option-label.correct-opt { border-color: #22c55e !important; background: #f0fdf4 !important; }
+  .option-label.wrong-opt { border-color: #ef4444 !important; background: #fef2f2 !important; }
+  .mcq-detail-hidden { display: none; }
+  .show-mcq-detail .mcq-detail-hidden { display: block; }
+
+  .explanation-box { display: none; animation: fadeSlide .3s ease forwards; }
+  .explanation-box.show { display: block; }
+  @keyframes fadeSlide { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+
+  input.answer-input, select.answer-input { border: 2px solid #cbd5e1; transition: border .18s; outline: none; background:#fff; }
+  input.answer-input:focus, select.answer-input:focus { border-color: #ea580c; }
+  input.correct-input, select.correct-input { border-color: #22c55e !important; background: #f0fdf4; }
+  input.wrong-input, select.wrong-input { border-color: #ef4444 !important; background: #fef2f2; }
+
+  .score-badge { animation: popIn .35s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn { from { transform: scale(.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+  .confetti-wrap { position: fixed; inset: 0; pointer-events: none; z-index: 9999; }
+  .confetti-piece { position: absolute; width: 10px; height: 10px; border-radius: 2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall { 0% { transform: translateY(-20px) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+
+  .theory-card { border-left: 4px solid transparent; transition: all .2s; }
+  .theory-card:hover { transform: translateX(4px); }
+
+  .progress-bar-fill { transition: width .6s ease; }
+
+  .word-chip { cursor: pointer; transition: all .15s; user-select: none; }
+  .word-chip:hover { transform: scale(1.05); }
+  .word-chip.used { opacity: .3; pointer-events: none; }
+  .answer-line { min-height: 44px; }
+
+  .vcard .vexample { display:none; }
+  .vcard.open .vexample { display:block; animation: fadeSlide .25s ease forwards; }
+  .speak-btn.speaking { animation: pulseSpeak .7s ease-in-out infinite; }
+  @keyframes pulseSpeak { 0%,100% { transform: scale(1); } 50% { transform: scale(1.18); } }
+
+  .section-page { display: none; }
+  .section-page.active { display: block; }
+
+  #completionBanner { display: none; }
+  #completionBanner.show { display: flex; }
+
+  .vi-hidden { display: none; }
+</style>
+</head>
+<body class="min-h-screen">
+
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<!-- ===== HERO ===== -->
+<header class="hero-gradient text-white py-8 px-4 text-center shadow-xl relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <div class="absolute top-4 left-8 text-6xl">🌪️</div>
+    <div class="absolute top-2 right-12 text-5xl">🌊</div>
+    <div class="absolute bottom-2 left-1/3 text-4xl">🌋</div>
+    <div class="absolute bottom-4 right-1/4 text-5xl">⚡</div>
+  </div>
+  <p class="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Tiếng Anh 8 · Unit 9</p>
+  <h1 class="font-['Baloo_2'] text-3xl md:text-5xl font-extrabold drop-shadow-lg">🌪️ Natural Disasters 🌊</h1>
+  <p class="mt-2 text-base md:text-lg opacity-90 font-semibold">Passive Voice &amp; Past Perfect · Luyện tập tương tác</p>
+  <div class="mt-5 max-w-2xl mx-auto">
+    <div class="flex justify-between text-xs font-bold opacity-80 mb-1">
+      <span>Tiến độ hoàn thành</span>
+      <span id="progressText">0 / 15 bài</span>
+    </div>
+    <div class="bg-white/20 rounded-full h-3 overflow-hidden">
+      <div id="progressBar" class="bg-white rounded-full h-3 progress-bar-fill" style="width:0%"></div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== NAV ===== -->
+<nav class="sticky top-0 z-50 bg-white/90 backdrop-blur shadow-sm px-3 py-2 overflow-x-auto">
+  <div class="flex gap-2 min-w-max mx-auto w-fit">
+    <button class="tab-btn active text-sm font-bold px-4 py-2 rounded-full" onclick="showTab('theory')"><i class="fa-solid fa-book-open mr-1"></i>Lý thuyết</button>
+    <button class="tab-btn text-sm font-bold px-4 py-2 rounded-full text-slate-600" onclick="showTab('vocab')"><i class="fa-solid fa-spell-check mr-1"></i>Từ vựng</button>
+    <span class="self-center text-[10px] font-black text-sky-500 uppercase px-1">Ngữ âm</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task1')">🔊 1</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task2')">📢 2</button>
+    <span class="self-center text-[10px] font-black text-violet-500 uppercase px-1">Trắc nghiệm</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task3')">🅰️ 3</button>
+    <span class="self-center text-[10px] font-black text-fuchsia-500 uppercase px-1">Từ loại</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task4')">🔤 4</button>
+    <span class="self-center text-[10px] font-black text-emerald-500 uppercase px-1">Động từ</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task5')">✏️ 5</button>
+    <span class="self-center text-[10px] font-black text-rose-500 uppercase px-1">Sửa lỗi</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task6')">🛠️ 6</button>
+    <span class="self-center text-[10px] font-black text-indigo-500 uppercase px-1">Đọc hiểu</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task7')">📖 7</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task8')">📖 8</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task9')">📖 9</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task10')">📖 10</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task11')">📖 11</button>
+    <span class="self-center text-[10px] font-black text-pink-500 uppercase px-1">Viết</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task12')">✍️ 12</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task13')">✍️ 13</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task14')">✍️ 14</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task15')">✍️ 15</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('writing')">📝 Viết đoạn</button>
+  </div>
+</nav>
+
+<main class="max-w-4xl mx-auto px-4 py-6 pb-20">
+<!-- ==================== THEORY ==================== -->
+<section id="tab-theory" class="section-page active space-y-6">
+  <h2 class="text-2xl font-extrabold text-red-800 flex items-center gap-2"><i class="fa-solid fa-lightbulb text-amber-400"></i> I. PASSIVE VOICE (Câu bị động)</h2>
+
+  <div class="bg-white rounded-2xl shadow-md p-5 theory-card" style="border-left-color:#7f1d1d">
+    <h3 class="font-extrabold text-red-800 text-lg mb-2"><i class="fa-solid fa-circle-info mr-2 text-red-600"></i>1. Cách sử dụng</h3>
+    <p class="text-sm text-slate-600">Câu bị động được dùng khi bản thân chủ thể không tự thực hiện được hành động.</p>
+    <div class="bg-red-50 border border-red-200 rounded-lg p-3 mt-2 text-sm italic text-slate-700">My money was stolen yesterday. (Tiền của tôi bị trộm mất ngày hôm qua.)</div>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-md p-5 theory-card" style="border-left-color:#ea580c">
+    <h3 class="font-extrabold text-orange-700 text-lg mb-2"><i class="fa-solid fa-diagram-project mr-2 text-orange-500"></i>2. Dạng thức của câu bị động</h3>
+    <div class="bg-orange-50 border border-orange-200 rounded-xl p-4 text-center">
+      <p class="font-['Baloo_2'] text-orange-800 text-lg">S + BE + V past participle (P2)</p>
+      <p class="text-xs text-slate-500 mt-1">"to be" chia theo thì và theo chủ ngữ</p>
+    </div>
+    <div class="bg-white border border-orange-100 rounded-lg p-3 mt-2 text-sm italic text-slate-700">The meal is cooked by my mother. (Bữa ăn được nấu bởi mẹ tôi.)</div>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-md p-5 theory-card" style="border-left-color:#57534e">
+    <h3 class="font-extrabold text-stone-700 text-lg mb-2"><i class="fa-solid fa-list-check mr-2 text-stone-500"></i>3. Điều kiện chuyển từ chủ động sang bị động</h3>
+    <ul class="text-sm text-slate-700 space-y-1 list-disc list-inside">
+      <li>Động từ trong câu chủ động phải là ngoại động từ, có tân ngữ theo sau.</li>
+      <li>Tân ngữ (trực tiếp, gián tiếp) phải được nêu rõ ràng.</li>
+    </ul>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-md p-5 theory-card" style="border-left-color:#b45309">
+    <h3 class="font-extrabold text-amber-700 text-lg mb-2"><i class="fa-solid fa-arrows-rotate mr-2 text-amber-500"></i>4. Quy tắc chuyển đổi</h3>
+    <ol class="text-sm text-slate-700 space-y-1 list-decimal list-inside">
+      <li>Xác định S, V, O và thì của động từ trong câu chủ động.</li>
+      <li>Lấy tân ngữ (O) trong câu chủ động làm chủ ngữ của câu bị động.</li>
+      <li>Lấy chủ ngữ (S) trong câu chủ động làm tân ngữ, đặt sau "by" trong câu bị động.</li>
+      <li>Biến đổi động từ chính thành P2.</li>
+      <li>Thêm "to be" trước P2 (chia theo thì của V chính và theo số của S mới).</li>
+    </ol>
+  </div>
+
+  <div class="bg-gradient-to-r from-red-50 to-orange-50 border border-red-200 rounded-2xl p-4 overflow-x-auto">
+    <b class="text-red-800 text-sm">Bảng công thức các thì ở thể bị động:</b>
+    <table class="w-full text-xs border-collapse mt-2">
+      <thead><tr class="bg-red-100"><th class="border border-red-200 p-2 text-red-800">Tense</th><th class="border border-red-200 p-2 text-red-800">Active</th><th class="border border-red-200 p-2 text-red-800">Passive</th></tr></thead>
+      <tbody>
+        <tr class="bg-white"><td class="border border-red-200 p-2 font-bold">Simple Present</td><td class="border border-red-200 p-2">S + V + O</td><td class="border border-red-200 p-2">S + be + P2 + by + O</td></tr>
+        <tr class="bg-red-50"><td class="border border-red-200 p-2 font-bold">Present Continuous</td><td class="border border-red-200 p-2">S + am/is/are + V-ing + O</td><td class="border border-red-200 p-2">S + am/is/are + being + P2 + by + O</td></tr>
+        <tr class="bg-white"><td class="border border-red-200 p-2 font-bold">Present Perfect</td><td class="border border-red-200 p-2">S + has/have + P2 + O</td><td class="border border-red-200 p-2">S + has/have + been + P2 + by + O</td></tr>
+        <tr class="bg-red-50"><td class="border border-red-200 p-2 font-bold">Simple Past</td><td class="border border-red-200 p-2">S + V-ed + O</td><td class="border border-red-200 p-2">S + was/were + P2 + by + O</td></tr>
+        <tr class="bg-white"><td class="border border-red-200 p-2 font-bold">Past Continuous</td><td class="border border-red-200 p-2">S + was/were + V-ing + O</td><td class="border border-red-200 p-2">S + was/were + being + P2 + by + O</td></tr>
+        <tr class="bg-red-50"><td class="border border-red-200 p-2 font-bold">Past Perfect</td><td class="border border-red-200 p-2">S + had + P2 + O</td><td class="border border-red-200 p-2">S + had + been + P2 + by + O</td></tr>
+        <tr class="bg-white"><td class="border border-red-200 p-2 font-bold">Simple Future</td><td class="border border-red-200 p-2">S + will/shall + V + O</td><td class="border border-red-200 p-2">S + will + be + P2 + by + O</td></tr>
+        <tr class="bg-red-50"><td class="border border-red-200 p-2 font-bold">Future Perfect</td><td class="border border-red-200 p-2">S + will/shall + have + P2 + O</td><td class="border border-red-200 p-2">S + will + have + been + P2 + by + O</td></tr>
+        <tr class="bg-white"><td class="border border-red-200 p-2 font-bold">Be going to</td><td class="border border-red-200 p-2">S + am/is/are + going to + V + O</td><td class="border border-red-200 p-2">S + am/is/are + going to + be + P2 + by + O</td></tr>
+        <tr class="bg-red-50"><td class="border border-red-200 p-2 font-bold">Modal Verbs</td><td class="border border-red-200 p-2">S + modal + V + O<br>S + modal + have + P2</td><td class="border border-red-200 p-2">S + modal + be + P2 + by + O<br>S + modal + have been + P2</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="text-2xl font-extrabold text-orange-700 flex items-center gap-2 pt-2"><i class="fa-solid fa-lightbulb text-amber-400"></i> II. PAST PERFECT (Thì quá khứ hoàn thành)</h2>
+
+  <div class="bg-white rounded-2xl shadow-md p-5 theory-card" style="border-left-color:#ea580c">
+    <h3 class="font-extrabold text-orange-700 text-lg mb-2"><i class="fa-solid fa-circle-info mr-2 text-orange-500"></i>1. Định nghĩa</h3>
+    <p class="text-sm text-slate-600">Diễn tả một hành động xảy ra TRƯỚC một hành động khác, cả hai đều đã xảy ra trong quá khứ. Hành động xảy ra trước dùng quá khứ hoàn thành; hành động xảy ra sau dùng quá khứ đơn.</p>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-md p-5 theory-card" style="border-left-color:#57534e">
+    <h3 class="font-extrabold text-stone-700 text-lg mb-2"><i class="fa-solid fa-diagram-project mr-2 text-stone-500"></i>2. Cấu trúc</h3>
+    <div class="grid md:grid-cols-3 gap-2 text-sm">
+      <div class="bg-stone-50 border border-stone-200 rounded-lg p-2 text-center"><b>(+)</b> S + had + P2</div>
+      <div class="bg-white border border-stone-200 rounded-lg p-2 text-center"><b>(–)</b> S + hadn't + P2</div>
+      <div class="bg-stone-50 border border-stone-200 rounded-lg p-2 text-center"><b>(?)</b> Had + S + P2?</div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-md p-5 theory-card" style="border-left-color:#b45309">
+    <h3 class="font-extrabold text-amber-700 text-lg mb-2"><i class="fa-solid fa-list-check mr-2 text-amber-500"></i>3. Cách dùng</h3>
+    <div class="space-y-2 text-sm text-slate-700">
+      <div class="bg-amber-50 border border-amber-200 rounded-lg p-3">Hai hành động cùng xảy ra trong quá khứ, hành động xảy ra trước dùng quá khứ hoàn thành.
+        <p class="text-xs text-slate-500 italic mt-1">I met them after they had divorced each other.</p></div>
+      <div class="bg-white border border-amber-200 rounded-lg p-3">Hành động đã hoàn tất trước một thời điểm/hành động khác trong quá khứ.
+        <p class="text-xs text-slate-500 italic mt-1">We had had lunch when she arrived.</p></div>
+      <div class="bg-amber-50 border border-amber-200 rounded-lg p-3">Thường dùng với: by, before, after, when, till, until, as soon as, no sooner…than.
+        <p class="text-xs text-slate-500 italic mt-1">Yesterday, I went out after I had finished my homework.</p></div>
+      <div class="bg-white border border-amber-200 rounded-lg p-3">Hành động xảy ra trong một khoảng thời gian ở quá khứ, trước một mốc thời gian khác.
+        <p class="text-xs text-slate-500 italic mt-1">Jane had studied in England before she did her master's at Harvard.</p></div>
+    </div>
+  </div>
+
+  <div class="bg-gradient-to-r from-red-50 to-amber-50 border border-red-200 rounded-2xl p-4">
+    <b class="text-red-800 text-sm">Dấu hiệu nhận biết:</b>
+    <p class="text-sm text-slate-700 mt-1">before, after, when, by, by the time, as soon as, by the end of + mốc thời gian trong quá khứ…</p>
+    <p class="text-xs text-slate-500 italic mt-1">When I got up this morning, my father had already left.</p>
+  </div>
+
+  <div class="text-center pt-2">
+    <button onclick="showTab('vocab')" class="bg-white shadow-md hover:shadow-lg text-red-800 font-bold px-6 py-3 rounded-full transition hover:scale-105"><i class="fa-solid fa-arrow-right mr-2"></i>Sang phần Từ vựng</button>
+  </div>
+</section>
+
+<!-- ==================== VOCAB ==================== -->
+<section id="tab-vocab" class="section-page space-y-4">
+  <div class="bg-white rounded-2xl shadow-md p-5">
+    <div class="flex items-center gap-3 mb-2">
+      <div class="bg-red-100 text-red-800 font-black text-lg w-10 h-10 rounded-full flex items-center justify-center"><i class="fa-solid fa-spell-check"></i></div>
+      <div>
+        <h2 class="text-xl font-extrabold text-red-800">Từ vựng Unit 9</h2>
+        <p class="text-sm text-slate-500">Nhấp vào mỗi thẻ để xem ví dụ · Nhấn <i class="fa-solid fa-volume-high text-red-700"></i> để nghe phát âm.</p>
+      </div>
+    </div>
+    <div id="vocab-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4"></div>
+  </div>
+</section>
+
+<!-- ==================== TASK SHELLS ==================== -->
+<section id="tab-task1" class="section-page"><div id="task1-wrap"></div></section>
+<section id="tab-task2" class="section-page"><div id="task2-wrap"></div></section>
+<section id="tab-task3" class="section-page"><div id="task3-wrap"></div></section>
+<section id="tab-task4" class="section-page"><div id="task4-wrap"></div></section>
+<section id="tab-task5" class="section-page"><div id="task5-wrap"></div></section>
+<section id="tab-task6" class="section-page"><div id="task6-wrap"></div></section>
+<section id="tab-task7" class="section-page"><div id="task7-wrap"></div></section>
+<section id="tab-task8" class="section-page"><div id="task8-wrap"></div></section>
+<section id="tab-task9" class="section-page"><div id="task9-wrap"></div></section>
+<section id="tab-task10" class="section-page"><div id="task10-wrap"></div></section>
+<section id="tab-task11" class="section-page"><div id="task11-wrap"></div></section>
+<section id="tab-task12" class="section-page"><div id="task12-wrap"></div></section>
+<section id="tab-task13" class="section-page"><div id="task13-wrap"></div></section>
+<section id="tab-task14" class="section-page"><div id="task14-wrap"></div></section>
+<section id="tab-task15" class="section-page"><div id="task15-wrap"></div></section>
+
+<!-- ==================== WRITING PARAGRAPH (non-scored) ==================== -->
+<section id="tab-writing" class="section-page">
+  <div class="task-card bg-white rounded-2xl shadow-md p-6">
+    <div class="flex items-center gap-3 mb-4">
+      <div class="bg-pink-100 text-pink-700 font-black text-lg w-10 h-10 rounded-full flex items-center justify-center"><i class="fa-solid fa-pen-nib"></i></div>
+      <div>
+        <h2 class="text-xl font-extrabold text-pink-700">Viết đoạn văn (Writing)</h2>
+        <p class="text-sm text-slate-500">Write an email (100–120 words) to your foreign friend about a natural disaster happening in Vietnam that you witnessed or heard about.</p>
+      </div>
+    </div>
+    <div class="bg-pink-50 border border-pink-200 rounded-xl p-4 text-sm text-slate-700 mb-4">
+      <b class="text-pink-700">Gợi ý cách tổ chức ý:</b>
+      <ul class="mt-1 space-y-0.5">
+        <li>• What type of natural disaster is it?</li>
+        <li>• When/where did it occur?</li>
+        <li>• What were the effects of it?</li>
+        <li>• What was/has been done to help the victims of the disaster?</li>
+      </ul>
+    </div>
+    <textarea id="essay-input" rows="10" class="answer-input w-full px-3 py-2 rounded-lg text-sm" placeholder="Dear ..., 
+
+Viết email của bạn ở đây (100–120 từ)…"></textarea>
+    <div class="mt-2 text-xs text-slate-400" id="essay-count">Số từ: 0</div>
+    <div class="mt-3 flex gap-3 flex-wrap">
+      <button onclick="toggleModelEssay()" class="bg-pink-500 hover:bg-pink-600 text-white font-bold px-5 py-2.5 rounded-full transition hover:scale-105 shadow"><i class="fa-solid fa-eye mr-1"></i>Xem email mẫu</button>
+    </div>
+    <div id="model-essay" class="vi-hidden mt-3 bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-slate-700 leading-relaxed">
+      <b class="text-blue-700">Outline gợi ý:</b>
+      <div class="mt-2 bg-white/70 border border-blue-100 rounded-lg p-3">
+        <p><b>1. Type:</b> tên và loại thiên tai.</p>
+        <p><b>2. When/where:</b> thời gian và địa điểm xảy ra.</p>
+        <p><b>3. Effects:</b> hậu quả gây ra.</p>
+        <p><b>4. Help:</b> những gì đã/đang được thực hiện để giúp nạn nhân.</p>
+      </div>
+      <div class="mt-3">
+        <b class="text-blue-700">Email mẫu:</b><br>
+        Dear Amy,<br><br>
+        I want to tell you about a terrible typhoon that hit central Vietnam last October. It was one of the strongest storms of the year, and it struck the coastal provinces of Quang Binh and Quang Tri, causing severe flooding and landslides. Before the storm arrived, thousands of families had already been evacuated to safer places, but many houses were still swept away and roads were badly damaged. Several people were reported missing, and many farmers lost their crops and livestock. Fortunately, rescue workers and volunteers from all over the country came to help, bringing food, clean water and clothes to the victims. The government has also provided financial support to rebuild the damaged houses. This disaster showed me how important it is to be well-prepared for natural disasters.<br><br>
+        Love,<br>Minh (Your signature)
+      </div>
+      <div class="mt-3 bg-emerald-50 border border-emerald-200 rounded-lg p-3">
+        <b class="text-emerald-700">Dịch nghĩa:</b><br>
+        Amy thân mến,<br><br>
+        Mình muốn kể cho bạn nghe về một cơn bão khủng khiếp đổ bộ vào miền Trung Việt Nam vào tháng 10 năm ngoái. Đó là một trong những cơn bão mạnh nhất trong năm, và nó đã tấn công các tỉnh ven biển Quảng Bình và Quảng Trị, gây ra lũ lụt và sạt lở đất nghiêm trọng. Trước khi bão đến, hàng ngàn gia đình đã được sơ tán đến nơi an toàn hơn, nhưng nhiều ngôi nhà vẫn bị cuốn trôi và đường sá bị hư hại nặng nề. Một số người được báo cáo mất tích, và nhiều nông dân mất mùa màng và gia súc. May mắn thay, các nhân viên cứu hộ và tình nguyện viên từ khắp cả nước đã đến giúp đỡ, mang theo thức ăn, nước sạch và quần áo cho các nạn nhân. Chính phủ cũng đã hỗ trợ tài chính để xây dựng lại những ngôi nhà bị hư hại. Thảm họa này cho mình thấy việc chuẩn bị kỹ càng cho thiên tai quan trọng như thế nào.<br><br>
+        Thân ái,<br>Minh (Chữ ký của bạn)
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===== COMPLETION BANNER ===== -->
+<div id="completionBanner" class="hidden fixed inset-0 bg-black/50 z-[100] items-center justify-center p-4">
+  <div class="bg-white rounded-3xl p-8 max-w-md w-full text-center shadow-2xl">
+    <div class="text-6xl mb-3">🎊</div>
+    <h2 class="font-['Baloo_2'] text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-800 to-orange-600">Xuất sắc!</h2>
+    <p class="text-slate-600 mt-2 text-lg font-semibold">Bạn đã hoàn thành tất cả 15 bài tập!</p>
+    <p class="text-slate-500 text-sm mt-1">Đừng quên luyện phần Viết đoạn nữa nhé! 💪</p>
+    <div id="finalScoreDisplay" class="my-4 text-4xl font-black text-red-800"></div>
+    <button onclick="closeBanner()" class="mt-2 bg-gradient-to-r from-red-800 to-orange-600 text-white font-bold px-8 py-3 rounded-full hover:scale-105 transition-all shadow-lg">Tiếp tục ôn tập 📖</button>
+  </div>
+</div>
+<script>
+/* =====================================================================
+   DATA — Unit 9 (Natural Disasters). type: mcq | fill | sentence | matching | reorder | reading
+
+   ============================ GHI CHÚ CHUYỂN ĐỔI (đọc trước khi sửa) ============================
+   File này chuyển đổi từ "unit9.md". Phần Đọc hiểu trong tài liệu gốc có 6 bài (I-VI), khác với
+   khung 15 bài tiêu chuẩn. Để vẫn giữ đúng 15 bài, Claude đã:
+   - Giữ Reading I, II, III, V làm 4 bài riêng (Bài 7, 8, 9, 11).
+   - GỘP Reading IV (hỏi đáp về cách gọi bão ở các khu vực khác nhau, 5 câu) và Reading VI (hỏi đáp +
+     đúng/sai về động đất Nhật Bản 2011, 10 câu) thành MỘT bài duy nhất — Bài 10 (15 câu, có 2 đoạn
+     văn), vì cả hai đều là dạng đọc hiểu trả lời câu hỏi ngắn (không phải trắc nghiệm), rất tự nhiên
+     để gộp chung.
+   Verb Forms và Correction trong tài liệu gốc mỗi phần chỉ có 1 bài duy nhất (20 câu) nên được giữ
+   nguyên là 1 bài mỗi phần (Bài 5, Bài 6). Tổng: Ngữ âm(2) + Trắc nghiệm(1) + Từ loại(1) + Động từ(1)
+   + Sửa lỗi(1) + Đọc hiểu(5) + Viết(4) = 15.
+
+   Bài 6 (Correction) trong tài liệu gốc chỉ đánh dấu 4 vị trí A/B/C/D bằng nhãn dưới câu (không có
+   gạch chân trực tiếp trong text). Claude đã tự chia mỗi câu thành 4 cụm A/B/C/D hợp lý dựa theo
+   đáp án lỗi sai cho sẵn — đánh dấu "RECONSTRUCTED" tại chỗ.
+
+   Bài 1 (Phonetics I) câu 16 trong tài liệu gốc bị lỗi đánh máy: hai lựa chọn A và D đều ghi là
+   "helped" (trùng nhau) — Claude đã thay lựa chọn D bằng một từ khác cùng kiểu âm /t/ ("looked")
+   để giữ đúng ý nghĩa bài tập (đáp án vẫn là C = "waited"), đánh dấu "RECONSTRUCTED" tại chỗ.
+
+   Một số câu ở Bài 1 và Bài 2 (Phonetics) có đáp án gốc mà Claude không thể xác nhận chắc chắn bằng
+   quy tắc ngữ âm/trọng âm chuẩn (không có mâu thuẫn rõ ràng để sửa, chỉ là khó xác minh tuyệt đối).
+   Với các câu này, Claude giữ nguyên đáp án gốc và trình bày giải thích ở mức hợp lý nhất có thể.
+   ================================================================================================
+   ===================================================================== */
+
+const COLORS = {
+  sky:{ring:'sky',btn:'bg-sky-500 hover:bg-sky-600',head:'text-sky-700'},
+  cyan:{ring:'cyan',btn:'bg-cyan-500 hover:bg-cyan-600',head:'text-cyan-700'},
+  violet:{ring:'violet',btn:'bg-violet-500 hover:bg-violet-600',head:'text-violet-700'},
+  fuchsia:{ring:'fuchsia',btn:'bg-fuchsia-500 hover:bg-fuchsia-600',head:'text-fuchsia-700'},
+  emerald:{ring:'emerald',btn:'bg-emerald-500 hover:bg-emerald-600',head:'text-emerald-700'},
+  teal:{ring:'teal',btn:'bg-teal-500 hover:bg-teal-600',head:'text-teal-700'},
+  amber:{ring:'amber',btn:'bg-amber-500 hover:bg-amber-600',head:'text-amber-700'},
+  orange:{ring:'orange',btn:'bg-orange-500 hover:bg-orange-600',head:'text-orange-700'},
+  rose:{ring:'rose',btn:'bg-rose-500 hover:bg-rose-600',head:'text-rose-700'},
+  indigo:{ring:'indigo',btn:'bg-indigo-500 hover:bg-indigo-600',head:'text-indigo-700'},
+  pink:{ring:'pink',btn:'bg-pink-500 hover:bg-pink-600',head:'text-pink-700'},
+  lime:{ring:'lime',btn:'bg-lime-500 hover:bg-lime-600',head:'text-lime-700'},
+  red:{ring:'red',btn:'bg-red-600 hover:bg-red-700',head:'text-red-800'},
+  stone:{ring:'stone',btn:'bg-stone-500 hover:bg-stone-600',head:'text-stone-700'},
+};
+
+/* ---------- VOCABULARY (25) ---------- */
+const vocab = [
+  {w:'accommodation', ipa:'/əˌkɒməˈdeɪʃn/ (n)', vi:'chỗ ở', ex:'The government will build more comfortable accommodation for the victims.', exvi:'Chính phủ sẽ xây thêm chỗ ở thoải mái hơn cho các nạn nhân.'},
+  {w:'bury', ipa:'/ˈberi/ (v)', vi:'chôn vùi, vùi lấp', ex:'The village was buried under mud after the landslide.', exvi:'Ngôi làng bị vùi lấp dưới bùn sau trận lở đất.'},
+  {w:'collapse', ipa:'/kəˈlæps/ (v)', vi:'đổ, sập, sụp đổ', ex:'Many buildings collapsed during the earthquake.', exvi:'Nhiều tòa nhà đã sập trong trận động đất.'},
+  {w:'damage', ipa:'/ˈdæmɪdʒ/ (n)', vi:'sự thiệt hại, sự hư hại', ex:'The storm caused severe damage to the coastal areas.', exvi:'Cơn bão gây thiệt hại nghiêm trọng cho các khu vực ven biển.'},
+  {w:'disaster', ipa:'/dɪˈzɑːstə(r)/ (n)', vi:'tai họa, thảm họa', ex:'The tsunami was one of the worst natural disasters in history.', exvi:'Sóng thần là một trong những thảm họa thiên nhiên tồi tệ nhất trong lịch sử.'},
+  {w:'drought', ipa:'/draʊt/ (n)', vi:'hạn hán', ex:'The long drought destroyed most of the crops.', exvi:'Đợt hạn hán kéo dài đã phá hủy hầu hết mùa màng.'},
+  {w:'earthquake', ipa:'/ˈɜːθkweɪk/ (n)', vi:'trận động đất', ex:'A powerful earthquake hit the region last night.', exvi:'Một trận động đất mạnh đã xảy ra ở khu vực này tối qua.'},
+  {w:'erupt', ipa:'/ɪˈrʌpt/ (v)', vi:'phun (núi lửa)', ex:'The volcano erupted without any warning.', exvi:'Núi lửa phun trào mà không có bất kỳ cảnh báo nào.'},
+  {w:'eruption', ipa:'/ɪˈrʌpʃn/ (n)', vi:'sự phun (núi lửa)', ex:'The volcanic eruption forced thousands of people to leave their homes.', exvi:'Vụ phun trào núi lửa buộc hàng ngàn người phải rời bỏ nhà cửa.'},
+  {w:'evacuate', ipa:'/ɪˈvækjueɪt/ (v)', vi:'sơ tán', ex:'All residents were evacuated before the hurricane made landfall.', exvi:'Tất cả cư dân đã được sơ tán trước khi cơn bão đổ bộ.'},
+  {w:'forest fire', ipa:'/ˈfɒrɪst ˈfaɪə(r)/ (n)', vi:'cháy rừng', ex:'The forest fire spread quickly because of the strong wind.', exvi:'Đám cháy rừng lan nhanh vì gió mạnh.'},
+  {w:'homeless', ipa:'/ˈhəʊmləs/ (adj)', vi:'không có nhà cửa, vô gia cư', ex:'Thousands of people became homeless after the flood.', exvi:'Hàng ngàn người trở thành vô gia cư sau trận lũ.'},
+  {w:'mudslide', ipa:'/ˈmʌdslaɪd/ (n)', vi:'lũ bùn', ex:'The heavy rain caused a mudslide that buried several houses.', exvi:'Mưa lớn gây ra trận lũ bùn vùi lấp một số ngôi nhà.'},
+  {w:'put out', ipa:'/pʊt aʊt/ (v)', vi:'dập tắt (lửa…)', ex:'It took firefighters several hours to put out the fire.', exvi:'Lính cứu hỏa mất vài tiếng để dập tắt đám cháy.'},
+  {w:'rage', ipa:'/reɪdʒ/ (v)', vi:'diễn ra ác liệt, hung dữ', ex:'The storm raged for three days along the coast.', exvi:'Cơn bão diễn ra dữ dội trong ba ngày dọc bờ biển.'},
+  {w:'rescue worker', ipa:'/ˈreskjuː ˈwɜːkə(r)/ (n)', vi:'nhân viên cứu hộ', ex:'Rescue workers searched for survivors among the ruins.', exvi:'Nhân viên cứu hộ tìm kiếm người sống sót giữa đống đổ nát.'},
+  {w:'scatter', ipa:'/ˈskætə(r)/ (v)', vi:'tung, rải, rắc', ex:'Debris was scattered all over the streets after the tornado.', exvi:'Mảnh vỡ vương vãi khắp đường phố sau trận lốc xoáy.'},
+  {w:'shake', ipa:'/ʃeɪk/ (v)', vi:'rung, lắc, làm rung, lúc lắc', ex:'The whole building shook during the earthquake.', exvi:'Cả tòa nhà rung chuyển trong trận động đất.'},
+  {w:'tornado', ipa:'/tɔːˈneɪdəʊ/ (n)', vi:'lốc xoáy', ex:'A tornado destroyed dozens of houses in the area.', exvi:'Một cơn lốc xoáy đã phá hủy hàng chục ngôi nhà trong khu vực.'},
+  {w:'trap', ipa:'/træp/ (v)', vi:'làm cho mắc kẹt', ex:'Several people were trapped inside the collapsed building.', exvi:'Một số người bị mắc kẹt bên trong tòa nhà đã sập.'},
+  {w:'tsunami', ipa:'/tsuːˈnɑːmi/ (n)', vi:'sóng thần', ex:'The earthquake triggered a massive tsunami.', exvi:'Trận động đất đã gây ra một cơn sóng thần khổng lồ.'},
+  {w:'typhoon', ipa:'/taɪˈfuːn/ (n)', vi:'bão nhiệt đới', ex:'A strong typhoon is expected to hit the coast this weekend.', exvi:'Một cơn bão mạnh dự kiến sẽ đổ bộ vào bờ biển cuối tuần này.'},
+  {w:'victim', ipa:'/ˈvɪktɪm/ (n)', vi:'nạn nhân', ex:'Volunteers brought food and water to the victims of the flood.', exvi:'Tình nguyện viên mang thức ăn và nước uống đến cho nạn nhân trận lũ.'},
+  {w:'volcanic', ipa:'/vɒlˈkænɪk/ (adj)', vi:'thuộc núi lửa', ex:'The island was formed by volcanic activity.', exvi:'Hòn đảo được hình thành bởi hoạt động núi lửa.'},
+  {w:'volcano', ipa:'/vɒlˈkeɪnəʊ/ (n)', vi:'núi lửa', ex:'The volcano has been inactive for over a century.', exvi:'Ngọn núi lửa đã không hoạt động hơn một thế kỷ.'},
+];
+
+const tasks = {
+  /* ---------- BÀI 1: PHONETICS I ---------- */
+  1: {
+    color:'sky', title:'Bài 1: Ngữ âm – Chọn phần gạch chân khác',
+    desc:'Chọn từ có phần phát âm KHÁC với các từ còn lại trong nhóm. Chọn xong sẽ hiện đáp án ngay.',
+    type:'mcq', instant:true,
+    questions:[
+      {q:'1.', options:['m<u>y</u>th','th<u>igh</u>','bre<u>a</u>th','breathe'], ipas:['/mɪθ/','/θaɪ/','/breθ/','/briːð/'], vis:['thần thoại','đùi','hơi thở','thở'], answer:3, vi:'"breathe" khác biệt.', explanation:'"breathe" có "th" phát âm là /ð/ (hữu thanh), còn ba từ còn lại phát âm là /θ/ (vô thanh).'},
+      {q:'2.', options:['promis<u>ed</u>','caus<u>ed</u>','increas<u>ed</u>','practic<u>ed</u>'], ipas:['/ˈprɒmɪst/','/kɔːzd/','/ɪnˈkriːst/','/ˈpræktɪst/'], vis:['đã hứa','đã gây ra','đã tăng lên','đã luyện tập'], answer:1, vi:'"caused" khác biệt.', explanation:'"caused" có đuôi -ed phát âm là /d/, còn ba từ còn lại phát âm là /t/.'},
+      {q:'3.', options:['enco<u>u</u>rage','g<u>a</u>rage','sh<u>o</u>rtage','st<u>o</u>rage'], ipas:['/ɪnˈkʌrɪdʒ/','/ˈɡærɑːʒ/','/ˈʃɔːtɪdʒ/','/ˈstɔːrɪdʒ/'], vis:['khuyến khích','ga-ra','sự thiếu hụt','kho chứa'], answer:1, vi:'"garage" khác biệt.', explanation:'"garage" có đuôi "age" phát âm là /ɑːʒ/, còn ba từ còn lại phát âm là /ɪdʒ/.'},
+      {q:'4.', options:['<u>ch</u>emist','<u>ch</u>ampagne','<u>ch</u>aos','<u>ch</u>iropodist'], ipas:['/ˈkemɪst/','/ʃæmˈpeɪn/','/ˈkeɪɒs/','/kɪˈrɒpədɪst/'], vis:['dược sĩ','rượu champagne','sự hỗn loạn','bác sĩ chân'], answer:1, vi:'"champagne" khác biệt.', explanation:'"champagne" có "ch" phát âm là /ʃ/, còn ba từ còn lại phát âm là /k/.'},
+      {q:'5.', options:['h<u>o</u>bby','c<u>o</u>mfort','kn<u>o</u>wledge','p<u>o</u>pular'], ipas:['/ˈhɒbi/','/ˈkʌmfət/','/ˈnɒlɪdʒ/','/ˈpɒpjələ(r)/'], vis:['sở thích','sự thoải mái','kiến thức','phổ biến'], answer:1, vi:'"comfort" khác biệt.', explanation:'"comfort" có "o" phát âm là /ʌ/, còn ba từ còn lại phát âm là /ɒ/.'},
+      {q:'6.', options:['is<u>s</u>ue','tis<u>s</u>ue','pas<u>s</u>ion','ves<u>s</u>el'], ipas:['/ˈɪʃuː/','/ˈtɪʃuː/','/ˈpæʃn/','/ˈvesl/'], vis:['vấn đề','giấy ăn','đam mê','tàu, bình'], answer:3, vi:'"vessel" khác biệt.', explanation:'"vessel" có "ss" phát âm là /s/, còn ba từ còn lại phát âm là /ʃ/.'},
+      {q:'7.', options:['m<u>ou</u>ld','s<u>ou</u>l','sh<u>ou</u>lder','f<u>ou</u>l'], ipas:['/məʊld/','/səʊl/','/ˈʃəʊldə(r)/','/faʊl/'], vis:['khuôn, mốc','linh hồn','bờ vai','hôi thối'], answer:3, vi:'"foul" khác biệt.', explanation:'"foul" có "ou" phát âm là /aʊ/, còn ba từ còn lại phát âm là /əʊ/.'},
+      {q:'8.', options:['n<u>a</u>ture','ch<u>a</u>nge','gr<u>a</u>vity','b<u>a</u>sic'], ipas:['/ˈneɪtʃə(r)/','/tʃeɪndʒ/','/ˈɡrævəti/','/ˈbeɪsɪk/'], vis:['tự nhiên','thay đổi','trọng lực','cơ bản'], answer:2, vi:'"gravity" khác biệt.', explanation:'"gravity" có "a" phát âm là /æ/, còn ba từ còn lại phát âm là /eɪ/.'},
+      {q:'9.', options:['d<u>ar</u>kness','w<u>ar</u>mth','m<u>ar</u>ket','rem<u>ar</u>k'], ipas:['/ˈdɑːknəs/','/wɔːmθ/','/ˈmɑːkɪt/','/rɪˈmɑːk/'], vis:['bóng tối','sự ấm áp','cái chợ','nhận xét'], answer:1, vi:'"warmth" khác biệt.', explanation:'"warmth" có "ar" phát âm là /ɔː/, còn ba từ còn lại phát âm là /ɑː/.'},
+      {q:'10.', options:['bec<u>au</u>se','n<u>ur</u>se','h<u>or</u>se','p<u>ur</u>pose'], ipas:['/bɪˈkɒz/','/nɜːs/','/hɔːs/','/ˈpɜːpəs/'], vis:['bởi vì','y tá','con ngựa','mục đích'], answer:0, vi:'"because" khác biệt.', explanation:'"because" có nguyên âm nhấn phát âm là /ɒ/, còn ba từ còn lại phát âm là /ɜː/ hoặc /ɔː/.'},
+      {q:'11.', options:['marri<u>age</u>','mass<u>age</u>','coll<u>age</u>','short<u>age</u>'], ipas:['/ˈmærɪdʒ/','/ˈmæsɑːʒ/','/ˈkɒlɑːʒ/','/ˈʃɔːtɪdʒ/'], vis:['hôn nhân','mát-xa','tranh cắt dán','sự thiếu hụt'], answer:1, vi:'"massage" khác biệt.', explanation:'Theo đáp án của tài liệu ôn tập, "massage" có đuôi "-age" phát âm khác với ba từ còn lại.'},
+      {q:'12.', options:['breathe','with','th<u>e</u>rmal','clothing'], ipas:['/briːð/','/wɪð/','/ˈθɜːml/','/ˈkləʊðɪŋ/'], vis:['thở','với','thuộc nhiệt','quần áo'], answer:2, vi:'"thermal" khác biệt.', explanation:'"thermal" có "th" phát âm là /θ/ (vô thanh), còn ba từ còn lại phát âm là /ð/ (hữu thanh).'},
+      {q:'13.', options:['e<u>du</u>cation','indivi<u>du</u>al','proce<u>du</u>re','pro<u>du</u>ction'], ipas:['/ˌedʒuˈkeɪʃn/','/ˌɪndɪˈvɪdʒuəl/','/prəˈsiːdʒə(r)/','/prəˈdʌkʃn/'], vis:['giáo dục','cá nhân','thủ tục','sản xuất'], answer:2, vi:'"procedure" khác biệt.', explanation:'Theo đáp án của tài liệu ôn tập, "procedure" có phần "du" phát âm khác với ba từ còn lại.'},
+      {q:'14.', options:['releas<u>ed</u>','pleas<u>ed</u>','pass<u>ed</u>','watch<u>ed</u>'], ipas:['/rɪˈliːst/','/pliːzd/','/pɑːst/','/wɒtʃt/'], vis:['đã phát hành','hài lòng','đã đi qua','đã xem'], answer:1, vi:'"pleased" khác biệt.', explanation:'"pleased" có đuôi -ed phát âm là /d/, còn ba từ còn lại phát âm là /t/.'},
+      {q:'15.', options:['help<u>ed</u>','struggl<u>ed</u>','remark<u>ed</u>','watch<u>ed</u>'], ipas:['/helpt/','/ˈstrʌɡld/','/rɪˈmɑːkt/','/wɒtʃt/'], vis:['đã giúp','đã đấu tranh','đã nhận xét','đã xem'], answer:1, vi:'"struggled" khác biệt.', explanation:'"struggled" có đuôi -ed phát âm là /d/, còn ba từ còn lại phát âm là /t/.'},
+      {q:'16.', options:['help<u>ed</u>','book<u>ed</u>','wait<u>ed</u>','look<u>ed</u>'], ipas:['/helpt/','/bʊkt/','/ˈweɪtɪd/','/lʊkt/'], vis:['đã giúp','đã đặt trước','đã chờ đợi','đã nhìn'], answer:2, vi:'"waited" khác biệt.', explanation:'"waited" có đuôi -ed phát âm là /ɪd/, còn ba từ còn lại phát âm là /t/. <span class="text-amber-600">[RECONSTRUCTED: đáp án D trong tài liệu gốc bị trùng với đáp án A ("helped"), Claude đã thay bằng từ "looked" để giữ đúng kiểu âm /t/ cần so sánh]</span>'},
+      {q:'17.', options:['c<u>ow</u>','h<u>ow</u>','t<u>ow</u>n','gr<u>ow</u>'], ipas:['/kaʊ/','/haʊ/','/taʊn/','/ɡrəʊ/'], vis:['con bò','như thế nào','thị trấn','lớn lên'], answer:3, vi:'"grow" khác biệt.', explanation:'"grow" có "ow" phát âm là /əʊ/, còn ba từ còn lại phát âm là /aʊ/.'},
+      {q:'18.', options:['say<u>s</u>','look<u>s</u>','laugh<u>s</u>','want<u>s</u>'], ipas:['/sez/','/lʊks/','/lɑːfs/','/wɒnts/'], vis:['nói (ngôi 3)','nhìn (ngôi 3)','cười (ngôi 3)','muốn (ngôi 3)'], answer:0, vi:'"says" khác biệt.', explanation:'"says" có đuôi -s phát âm là /z/, còn ba từ còn lại phát âm là /s/.'},
+      {q:'19.', options:['bru<u>sh</u>','<u>ch</u>in','wa<u>sh</u>ing','ma<u>ch</u>ine'], ipas:['/brʌʃ/','/tʃɪn/','/ˈwɒʃɪŋ/','/məˈʃiːn/'], vis:['bàn chải','cằm','đang giặt','máy móc'], answer:1, vi:'"chin" khác biệt.', explanation:'"chin" có "ch" phát âm là /tʃ/, còn ba từ còn lại phát âm là /ʃ/.'},
+      {q:'20.', options:['th<u>i</u>n','th<u>a</u>nk','th<u>e</u>me','th<u>ere</u>'], ipas:['/θɪn/','/θæŋk/','/θiːm/','/ðeə(r)/'], vis:['mỏng','cảm ơn','chủ đề','ở đó'], answer:3, vi:'"there" khác biệt.', explanation:'"there" có "th" phát âm là /ð/ (hữu thanh), còn ba từ còn lại phát âm là /θ/ (vô thanh).'},
+      {q:'21.', options:['c<u>au</u>se','po<u>i</u>son','sc<u>a</u>tter','dis<u>a</u>ster'], ipas:['/kɔːz/','/ˈpɔɪzn/','/ˈskætə(r)/','/dɪˈzɑːstə(r)/'], vis:['gây ra','chất độc','tung, rải','thảm họa'], answer:2, vi:'"scatter" khác biệt.', explanation:'Theo đáp án của tài liệu ôn tập, "scatter" có phần phát âm khác với ba từ còn lại trong nhóm.'},
+      {q:'22.', options:['ic<u>o</u>n','l<u>o</u>ch','<u>o</u>fficial','Sc<u>o</u>ts'], ipas:['/ˈaɪkɒn/','/lɒx/','/əˈfɪʃl/','/skɒts/'], vis:['biểu tượng','hồ (Scotland)','chính thức','người Scotland'], answer:2, vi:'"official" khác biệt.', explanation:'"official" có "o" phát âm nhẹ là /ə/, còn ba từ còn lại phát âm là /ɒ/.'},
+      {q:'23.', options:['b<u>u</u>ry','er<u>u</u>ption','m<u>u</u>dslide','untr<u>ea</u>ted'], ipas:['/ˈberi/','/ɪˈrʌpʃn/','/ˈmʌdslaɪd/','/ˌʌnˈtriːtɪd/'], vis:['chôn vùi','sự phun trào','lũ bùn','chưa xử lý'], answer:0, vi:'"bury" khác biệt.', explanation:'"bury" có "u" phát âm bất quy tắc là /e/, còn ba từ còn lại phát âm là /ʌ/.'},
+      {q:'24.', options:['v<u>o</u>lcano','f<u>o</u>rest','t<u>o</u>rnado','gh<u>o</u>st'], ipas:['/vɒlˈkeɪnəʊ/','/ˈfɒrɪst/','/tɔːˈneɪdəʊ/','/ɡəʊst/'], vis:['núi lửa','khu rừng','lốc xoáy','con ma'], answer:1, vi:'"forest" khác biệt.', explanation:'Theo đáp án của tài liệu ôn tập, "forest" có phần phát âm khác với ba từ còn lại trong nhóm.'},
+      {q:'25.', options:['<u>ea</u>rthquake','bre<u>a</u>th','th<u>a</u>nks','breathe'], ipas:['/ˈɜːθkweɪk/','/breθ/','/θæŋks/','/briːð/'], vis:['trận động đất','hơi thở','cảm ơn','thở'], answer:3, vi:'"breathe" khác biệt.', explanation:'"breathe" có "th" phát âm là /ð/ (hữu thanh), còn ba từ còn lại phát âm là /θ/ (vô thanh).'},
+      {q:'26.', options:['hand<u>s</u>','occasion<u>s</u>','associate<u>s</u>','other<u>s</u>'], ipas:['/hændz/','/əˈkeɪʒnz/','/əˈsəʊʃieɪts/','/ˈʌðəz/'], vis:['bàn tay (số nhiều)','dịp (số nhiều)','đồng nghiệp (số nhiều)','người khác (số nhiều)'], answer:2, vi:'"associates" khác biệt.', explanation:'"associates" có đuôi -s phát âm là /s/, còn ba từ còn lại phát âm là /z/.'},
+      {q:'27.', options:['frighten<u>ed</u>','stamp<u>ed</u>','walk<u>ed</u>','laugh<u>ed</u>'], ipas:['/ˈfraɪtnd/','/stæmpt/','/wɔːkt/','/lɑːft/'], vis:['sợ hãi','đã đóng dấu','đã đi bộ','đã cười'], answer:0, vi:'"frightened" khác biệt.', explanation:'"frightened" có đuôi -ed phát âm là /d/, còn ba từ còn lại phát âm là /t/.'},
+      {q:'28.', options:['fluor<u>i</u>de','l<u>i</u>d','ar<u>i</u>d','h<u>i</u>dden'], ipas:['/ˈflʊəraɪd/','/lɪd/','/ˈærɪd/','/ˈhɪdn/'], vis:['florua','nắp đậy','khô cằn','ẩn giấu'], answer:0, vi:'"fluoride" khác biệt.', explanation:'"fluoride" có "i" phát âm là /aɪ/, còn ba từ còn lại phát âm là /ɪ/.'},
+      {q:'29.', options:['st<u>a</u>ck','sl<u>a</u>sh','sw<u>a</u>mp','st<u>a</u>mp'], ipas:['/stæk/','/slæʃ/','/swɒmp/','/stæmp/'], vis:['đống, chồng','vết chém','đầm lầy','tem, con dấu'], answer:2, vi:'"swamp" khác biệt.', explanation:'"swamp" có "a" phát âm là /ɒ/, còn ba từ còn lại phát âm là /æ/.'},
+      {q:'30.', options:['<u>a</u>gent','<u>e</u>ngine','reg<u>a</u>rd','s<u>u</u>rgeon'], ipas:['/ˈeɪdʒənt/','/ˈendʒɪn/','/rɪˈɡɑːd/','/ˈsɜːdʒən/'], vis:['đại lý, tác nhân','động cơ','xem xét','bác sĩ phẫu thuật'], answer:2, vi:'"regard" khác biệt.', explanation:'"regard" có "g" phát âm là /ɡ/ (âm cứng), còn ba từ còn lại phát âm là /dʒ/.'},
+    ]
+  },
+
+  /* ---------- BÀI 2: PHONETICS II – TRỌNG ÂM ---------- */
+  2: {
+    color:'cyan', title:'Bài 2: Ngữ âm – Chọn trọng âm khác',
+    desc:'Chọn từ có trọng âm chính rơi vào vị trí KHÁC với các từ còn lại. Chọn xong sẽ hiện đáp án ngay.',
+    type:'mcq', instant:true,
+    questions:[
+      {q:'1.', options:['biology','pollution','philosophy','demonstration'], ipas:['/baɪˈɒlədʒi/','/pəˈluːʃn/','/fɪˈlɒsəfi/','/ˌdemənˈstreɪʃn/'], vis:['sinh học','sự ô nhiễm','triết học','sự biểu tình'], answer:3, vi:'"demonstration" trọng âm khác.', explanation:'"demonstration" trọng âm rơi vào âm tiết 3, còn ba từ còn lại trọng âm rơi vào âm tiết 2.'},
+      {q:'2.', options:['evacuate','photography','temporary','television'], ipas:['/ɪˈvækjueɪt/','/fəˈtɒɡrəfi/','/ˈtempərəri/','/ˈtelɪvɪʒn/'], vis:['sơ tán','nhiếp ảnh','tạm thời','truyền hình'], answer:2, vi:'"temporary" trọng âm khác.', explanation:'"temporary" trọng âm rơi vào âm tiết 1, còn ba từ còn lại trọng âm rơi vào âm tiết khác.'},
+      {q:'3.', options:['national','tsunami','volcano','eruption'], ipas:['/ˈnæʃnəl/','/tsuːˈnɑːmi/','/vɒlˈkeɪnəʊ/','/ɪˈrʌpʃn/'], vis:['thuộc quốc gia','sóng thần','núi lửa','sự phun trào'], answer:0, vi:'"national" trọng âm khác.', explanation:'"national" trọng âm rơi vào âm tiết 1, còn ba từ còn lại trọng âm rơi vào âm tiết 2.'},
+      {q:'4.', options:['geology','astrology','nationalize','autography'], ipas:['/dʒiˈɒlədʒi/','/əˈstrɒlədʒi/','/ˈnæʃnəlaɪz/','/ɔːˈtɒɡrəfi/'], vis:['địa chất học','chiêm tinh học','quốc hữu hóa','tự truyện'], answer:2, vi:'"nationalize" trọng âm khác.', explanation:'"nationalize" trọng âm rơi vào âm tiết 1, còn ba từ còn lại trọng âm rơi vào âm tiết 2.'},
+      {q:'5.', options:['permanent','catastrophe','demography','ambulance'], ipas:['/ˈpɜːmənənt/','/kəˈtæstrəfi/','/dɪˈmɒɡrəfi/','/ˈæmbjələns/'], vis:['vĩnh viễn','thảm họa','nhân khẩu học','xe cứu thương'], answer:0, vi:'"permanent" trọng âm khác.', explanation:'"permanent" trọng âm rơi vào âm tiết 1, còn "catastrophe, demography" trọng âm rơi vào âm tiết 2.'},
+      {q:'6.', options:['classic','rural','nature','degree'], ipas:['/ˈklæsɪk/','/ˈrʊərəl/','/ˈneɪtʃə(r)/','/dɪˈɡriː/'], vis:['cổ điển','thuộc nông thôn','tự nhiên','bằng cấp'], answer:3, vi:'"degree" trọng âm khác.', explanation:'"degree" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 1.'},
+      {q:'7.', options:['humid','comfort','intact','urban'], ipas:['/ˈhjuːmɪd/','/ˈkʌmfət/','/ɪnˈtækt/','/ˈɜːbən/'], vis:['ẩm ướt','sự thoải mái','còn nguyên vẹn','thuộc đô thị'], answer:2, vi:'"intact" trọng âm khác.', explanation:'"intact" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 1.'},
+      {q:'8.', options:['outskirt','scenic','area','migrant'], ipas:['/ˈaʊtskɜːt/','/ˈsiːnɪk/','/ˈeəriə/','/ˈmaɪɡrənt/'], vis:['ngoại ô','đẹp như tranh','khu vực','di cư'], answer:2, vi:'"area" trọng âm khác.', explanation:'Theo đáp án của tài liệu ôn tập, "area" có trọng âm khác với ba từ còn lại trong nhóm.'},
+      {q:'9.', options:['geography','ideology','topography','voluntary'], ipas:['/dʒiˈɒɡrəfi/','/ˌaɪdiˈɒlədʒi/','/təˈpɒɡrəfi/','/ˈvɒləntri/'], vis:['địa lý học','hệ tư tưởng','địa hình học','tình nguyện'], answer:1, vi:'"ideology" trọng âm khác.', explanation:'"ideology" trọng âm rơi vào âm tiết 3, còn "geography, topography" trọng âm rơi vào âm tiết 2.'},
+      {q:'10.', options:['Japanese','Portuguese','pioneer','examinee'], ipas:['/ˌdʒæpəˈniːz/','/ˌpɔːtʃʊˈɡiːz/','/ˌpaɪəˈnɪə(r)/','/ɪɡˌzæmɪˈniː/'], vis:['người Nhật','người Bồ Đào Nha','người tiên phong','thí sinh'], answer:3, vi:'"examinee" trọng âm khác.', explanation:'Theo đáp án của tài liệu ôn tập, "examinee" có trọng âm khác với ba từ còn lại trong nhóm.'},
+      {q:'11.', options:['oceanic','botanical','identical','romantic'], ipas:['/ˌəʊʃiˈænɪk/','/bəˈtænɪkl/','/aɪˈdentɪkl/','/rəʊˈmæntɪk/'], vis:['thuộc đại dương','thuộc thực vật','giống hệt','lãng mạn'], answer:0, vi:'"oceanic" trọng âm khác.', explanation:'"oceanic" trọng âm rơi vào âm tiết 3, còn ba từ còn lại trọng âm rơi vào âm tiết 2.'},
+      {q:'12.', options:['natural','animal','waterfall','illegal'], ipas:['/ˈnætʃrəl/','/ˈænɪml/','/ˈwɔːtəfɔːl/','/ɪˈliːɡl/'], vis:['tự nhiên','động vật','thác nước','bất hợp pháp'], answer:3, vi:'"illegal" trọng âm khác.', explanation:'"illegal" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 1.'},
+      {q:'13.', options:['commercial','economic','traditional','intelligent'], ipas:['/kəˈmɜːʃl/','/ˌiːkəˈnɒmɪk/','/trəˈdɪʃənl/','/ɪnˈtelɪdʒənt/'], vis:['thuộc thương mại','thuộc kinh tế','thuộc truyền thống','thông minh'], answer:1, vi:'"economic" trọng âm khác.', explanation:'"economic" trọng âm rơi vào âm tiết 3, còn ba từ còn lại trọng âm rơi vào âm tiết 2.'},
+      {q:'14.', options:['agricultural','documental','telephone','intermediate'], ipas:['/ˌæɡrɪˈkʌltʃərəl/','/ˌdɒkjuˈmentl/','/ˈtelɪfəʊn/','/ˌɪntəˈmiːdiət/'], vis:['thuộc nông nghiệp','thuộc tài liệu','điện thoại','trung cấp'], answer:2, vi:'"telephone" trọng âm khác.', explanation:'"telephone" trọng âm rơi vào âm tiết 1, còn ba từ còn lại trọng âm rơi vào âm tiết 3.'},
+      {q:'15.', options:['disagree','photographic','historical','unnecessary'], ipas:['/ˌdɪsəˈɡriː/','/ˌfəʊtəˈɡræfɪk/','/hɪˈstɒrɪkl/','/ʌnˈnesəsəri/'], vis:['không đồng ý','thuộc nhiếp ảnh','thuộc lịch sử','không cần thiết'], answer:2, vi:'"historical" trọng âm khác.', explanation:'Theo đáp án của tài liệu ôn tập, "historical" có trọng âm khác với ba từ còn lại trong nhóm.'},
+    ]
+  },
+
+  /* ---------- BÀI 3: MULTIPLE CHOICE (50) ---------- */
+  3: {
+    color:'violet', title:'Bài 3: Chọn đáp án đúng (Multiple Choice)',
+    desc:'Chọn phương án đúng nhất để hoàn thành mỗi câu. Chọn xong sẽ hiện đáp án ngay.',
+    type:'mcq', instant:true,
+    questions:[
+      {q:'1. Justine was ___ to John\u2019s birthday party last month.', options:['invited','inviting','invite','invites'], answer:0, vi:'Justine đã được mời đến bữa tiệc sinh nhật của John tháng trước.', explanation:'Bị động, quá khứ đơn → was invited.', note:'S + was/were + P2 (bị động)'},
+      {q:'2. Carlos ___ home before we arrived.', options:['is going','will go','has gone','had gone'], answer:3, vi:'Carlos đã về nhà trước khi chúng tôi đến.', explanation:'Hành động xảy ra trước một hành động khác trong quá khứ → quá khứ hoàn thành.', note:'S + had + P2 + before + S + V-ed'},
+      {q:'3. This new word is too difficult for me ___.', options:['remember','to remember','remembers','remembering'], answer:1, vi:'Từ mới này quá khó để tôi nhớ.', explanation:'"too + adj + for sb + to V".', note:'too + adjective + for + O + to V'},
+      {q:'4. Fiona is not interested ___ politics.', options:['at','on','in','to'], answer:2, vi:'Fiona không quan tâm đến chính trị.', explanation:'"be interested in" = quan tâm đến.', note:'be interested in + N'},
+      {q:'5. The government will build more comfortable ___ for students.', options:['accommodate','accommodation','accommodating','accommodator'], answer:1, vi:'Chính phủ sẽ xây thêm chỗ ở thoải mái hơn cho sinh viên.', explanation:'Sau tính từ "comfortable" cần danh từ → accommodation.', note:'adjective + noun'},
+      {q:'6. Our teeth ___ at least once a day.', options:['should clean','should cleaning','should be cleaned','should be cleaning'], answer:2, vi:'Răng của chúng ta nên được đánh ít nhất một lần một ngày.', explanation:'Bị động với động từ khiếm khuyết → should be cleaned.', note:'S + should be + P2 (bị động)'},
+      {q:'7. They ___ then they took a look around the supermarket.', options:['had lunch','have lunch','having lunch','to have lunch'], answer:0, vi:'Họ ăn trưa rồi đi dạo quanh siêu thị.', explanation:'Chuỗi hành động nối tiếp trong quá khứ → had lunch (quá khứ đơn).', note:'S + V-ed (quá khứ đơn)'},
+      {q:'8. He is old enough to get ___.', options:['marry','marries','marrying','married'], answer:3, vi:'Anh ấy đủ tuổi để kết hôn.', explanation:'"get married" = kết hôn (cụm cố định).', note:'get + married'},
+      {q:'9. I\u2019m a bit short ___ money. Can you lend me some?', options:['at','with','of','on'], answer:2, vi:'Tôi hơi thiếu tiền một chút. Bạn có thể cho tôi mượn ít được không?', explanation:'"be short of" = thiếu.', note:'be short of + N'},
+      {q:'10. Her body was returned home for ___.', options:['bury','buries','buried','burial'], answer:3, vi:'Thi thể của cô ấy được đưa về nhà để chôn cất.', explanation:'Sau giới từ "for" cần danh từ → burial.', note:'for + noun'},
+      {q:'11. Was this beautiful house ___ by Mark?', options:['buy','bought','buying','buyer'], answer:1, vi:'Ngôi nhà xinh đẹp này có phải do Mark mua không?', explanation:'Bị động, quá khứ đơn → was bought.', note:'Was + S + P2 + by + O?'},
+      {q:'12. After he ___ everything clearly, we started our work.', options:['had explained','had explain','has explained','has explain'], answer:0, vi:'Sau khi anh ấy giải thích mọi thứ rõ ràng, chúng tôi bắt đầu công việc.', explanation:'Hành động xảy ra trước → quá khứ hoàn thành.', note:'After + S + had + P2, S + V-ed'},
+      {q:'13. My boss\u2019s anger suddenly ___ into furious shouting.', options:['erupt','erupted','erupting','eruption'], answer:1, vi:'Cơn giận của sếp tôi bất ngờ bùng phát thành tiếng la hét dữ dội.', explanation:'Động từ chính chia ở quá khứ đơn → erupted.', note:'S + V-ed (quá khứ đơn)'},
+      {q:'14. These old pictures won\u2019t ___ in the bedroom.', options:['is hung','are hung','be hung','been hung'], answer:2, vi:'Những bức ảnh cũ này sẽ không được treo trong phòng ngủ.', explanation:'Bị động sau "won\u2019t" → be hung.', note:'won\u2019t + be + P2 (bị động)'},
+      {q:'15. Before my mother ___ home, my father had prepared dinner.', options:['came','come','comes','will come'], answer:0, vi:'Trước khi mẹ tôi về nhà, bố tôi đã chuẩn bị xong bữa tối.', explanation:'Hành động xảy ra sau → quá khứ đơn.', note:'Before + S + V-ed, S + had + P2'},
+      {q:'16. This house and these doors are going to ___ for Christmas day by the Greens.', options:['painted','be painted','paint','be paint'], answer:1, vi:'Ngôi nhà và những cánh cửa này sẽ được nhà Green sơn lại cho ngày Giáng sinh.', explanation:'Bị động sau "be going to" → be painted.', note:'be going to + be + P2 (bị động)'},
+      {q:'17. When I got up this morning, my wife ___.', options:['has already left','already has left','had already left','already had left'], answer:2, vi:'Khi tôi thức dậy sáng nay, vợ tôi đã rời đi rồi.', explanation:'Hành động xảy ra trước một mốc trong quá khứ → quá khứ hoàn thành.', note:'S + had already + P2'},
+      {q:'18. It is time you ___ your homework done.', options:['has','had','have','having'], answer:1, vi:'Đã đến lúc bạn hoàn thành bài tập về nhà rồi.', explanation:'"It\u2019s time + S + V-ed" (dùng quá khứ giả định) → had.', note:'It\u2019s time + S + V-ed (giả định)'},
+      {q:'19. She was very angry ___ Marcos.', options:['to','with','about','with'], answer:1, vi:'Cô ấy rất giận Marcos.', explanation:'"be angry with someone" = giận ai đó.', note:'be angry with + somebody'},
+      {q:'20. During 1942 ___ started to arrive in the city.', options:['evacuee families','evacuate families','families evacuee','families evacuate'], answer:0, vi:'Trong năm 1942, các gia đình sơ tán bắt đầu đến thành phố.', explanation:'"evacuee" là tính từ/danh từ chỉ người sơ tán, đứng trước danh từ "families".', note:'evacuee + families (tính từ + danh từ)'},
+      {q:'21. The dogs ___ fed before they went to the party.', options:['has','have been','had been','having been'], answer:2, vi:'Những chú chó đã được cho ăn trước khi họ đi dự tiệc.', explanation:'Bị động, quá khứ hoàn thành (trước một hành động khác trong quá khứ) → had been fed.', note:'S + had been + P2 (bị động, quá khứ hoàn thành)'},
+      {q:'22. The car was dirty. They ___ it for weeks.', options:['hasn\u2019t cleaned','haven\u2019t cleaned','hadn\u2019t been cleaned','hadn\u2019t cleared'], answer:2, vi:'Chiếc xe rất bẩn. Nó đã không được rửa trong nhiều tuần.', explanation:'Bị động, quá khứ hoàn thành phủ định → hadn\u2019t been cleaned.', note:'S + hadn\u2019t been + P2 (bị động)'},
+      {q:'23. It ___ her 10 minutes to do this exercise yesterday morning.', options:['made','took','cost','lost'], answer:1, vi:'Cô ấy đã mất 10 phút để làm bài tập này sáng qua.', explanation:'"It takes/took someone + time + to V" = mất bao lâu để làm gì.', note:'It took + O + time + to V'},
+      {q:'24. Frank is capable ___ doing better than he is doing now.', options:['of','at','with','in'], answer:0, vi:'Frank có khả năng làm tốt hơn những gì anh ấy đang làm bây giờ.', explanation:'"be capable of + V-ing" = có khả năng làm gì.', note:'be capable of + V-ing'},
+      {q:'25. The scheme has been set up to help ___ people.', options:['home-made','homeless','house-style','houseful'], answer:1, vi:'Chương trình được thiết lập để giúp đỡ những người vô gia cư.', explanation:'"homeless people" = người vô gia cư.', note:'adjective + noun'},
+      {q:'26. We\u2019re ___ the evening around a Japanese theme.', options:['organizing','organizer','organization','organized'], answer:0, vi:'Chúng tôi đang tổ chức buổi tối xoay quanh chủ đề Nhật Bản.', explanation:'Hiện tại tiếp diễn → organizing.', note:'S + are + V-ing'},
+      {q:'27. The pollution problems ___ since last month.', options:['has discussed','have discussed','has been discussed','have been discussed'], answer:3, vi:'Vấn đề ô nhiễm đã được thảo luận từ tháng trước.', explanation:'Bị động, hiện tại hoàn thành, chủ ngữ số nhiều → have been discussed.', note:'S (số nhiều) + have been + P2 (bị động)'},
+      {q:'28. When they got home last night. They found that someone ___ into the house.', options:['had broken','had been broken','has broken','has been broken'], answer:0, vi:'Khi họ về nhà tối qua, họ phát hiện có ai đó đã đột nhập vào nhà.', explanation:'Hành động xảy ra trước → quá khứ hoàn thành, chủ động (someone làm hành động).', note:'S + had + P2 (chủ động, quá khứ hoàn thành)'},
+      {q:'29. How many languages are ___ in Chinese?', options:['speak','speaking','spoken','speaker'], answer:2, vi:'Có bao nhiêu ngôn ngữ được nói bằng tiếng Trung?', explanation:'Bị động → spoken.', note:'are + P2 (bị động)'},
+      {q:'30. The woman sitting next to me on the plane was very nervous. She ___ before.', options:['hasn\u2019t flown','hadn\u2019t flown','didn\u2019t fly','doesn\u2019t fly'], answer:1, vi:'Người phụ nữ ngồi cạnh tôi trên máy bay rất lo lắng. Trước đó cô ấy chưa từng bay.', explanation:'Hành động chưa từng xảy ra trước một thời điểm trong quá khứ → quá khứ hoàn thành phủ định.', note:'S + hadn\u2019t + P2 + before'},
+      {q:'31. The earth\u2019s weather is ___ and we don\u2019t know what will happen to us.', options:['dangerous','serious','predicted','mysterious'], answer:3, vi:'Thời tiết trái đất thật bí ẩn và chúng ta không biết điều gì sẽ xảy ra với mình.', explanation:'"mysterious" = bí ẩn, phù hợp ngữ cảnh.', note:'từ vựng phù hợp ngữ cảnh'},
+      {q:'32. Man has spent years and years trying ___ weather patterns but it is still an inexact science.', options:['predicting','to predict','to predicting','to have predicted'], answer:1, vi:'Con người đã dành nhiều năm cố gắng dự đoán các mô hình thời tiết nhưng đó vẫn là một môn khoa học không chính xác.', explanation:'"try + to V" = cố gắng làm gì.', note:'try + to V'},
+      {q:'33. A drought occurs when a region receives consistently below average ___', options:['falling rain','rain falling','rainfall','fallrain'], answer:2, vi:'Hạn hán xảy ra khi một khu vực liên tục nhận lượng mưa dưới mức trung bình.', explanation:'"rainfall" = lượng mưa (danh từ ghép cố định).', note:'rainfall (danh từ ghép)'},
+      {q:'34. When we ___ back to our home village last month, it ___ so much.', options:['had come - changed','came - had changed','came - has changed','had come - has changed'], answer:1, vi:'Khi chúng tôi trở về làng quê tháng trước, nơi đó đã thay đổi rất nhiều.', explanation:'Hành động về làng (came) xảy ra sau; sự thay đổi (had changed) đã xảy ra trước đó → quá khứ đơn + quá khứ hoàn thành.', note:'When + S + V-ed, S + had + P2'},
+      {q:'35. She ___ in that town for 20 years by the time that historic earthquake ___.', options:['had live - occurred','has lived - occurred','had lived - occur','had lived \u2013 occurred'], answer:3, vi:'Cô ấy đã sống ở thị trấn đó 20 năm tính đến khi trận động đất lịch sử xảy ra.', explanation:'"by the time" + quá khứ hoàn thành (had lived) + quá khứ đơn (occurred).', note:'S + had + P2 + by the time + S + V-ed'},
+      {q:'36. Some tents ___ so that children and old people could sleep in.', options:['was set up','were set up','set up','setted up'], answer:1, vi:'Một số lều đã được dựng lên để trẻ em và người già có thể ngủ trong đó.', explanation:'Bị động, chủ ngữ số nhiều "tents" → were set up.', note:'S (số nhiều) + were + P2 (bị động)'},
+      {q:'37. People in Japan ___ how to survive in an earthquake.', options:['have been taught','are taught','were taught','had been taught'], answer:1, vi:'Người dân Nhật Bản được dạy cách sống sót trong động đất.', explanation:'Sự thật chung, hiện tại đơn bị động → are taught.', note:'S + are + P2 (bị động, hiện tại đơn)'},
+      {q:'38. Exactly 5 people got stuck and ___ in that fire.', options:['was death','was died','dead','died'], answer:3, vi:'Chính xác 5 người bị mắc kẹt và đã chết trong đám cháy đó.', explanation:'"die" là nội động từ, chia quá khứ đơn → died.', note:'S + died (nội động từ, không bị động)'},
+      {q:'39. An earthquake is the ___ a sudden release of energy in the Earth\u2019s crust.', options:['cause by','consequence','result from','result of'], answer:3, vi:'Động đất là kết quả của sự giải phóng năng lượng đột ngột trong lớp vỏ Trái Đất.', explanation:'"the result of" = kết quả của.', note:'the result of + N'},
+      {q:'40. The magnitude of an earthquake ___ on the Richter scale.', options:['reports','is reported','was reported','reported'], answer:1, vi:'Cường độ của một trận động đất được báo cáo theo thang Richter.', explanation:'Sự thật chung, bị động hiện tại đơn → is reported.', note:'S + is + P2 (bị động, hiện tại đơn)'},
+      {q:'41. If I ___ you, I wouldn\u2019t buy that kind of car.', options:['am','are','was','were'], answer:3, vi:'Nếu tôi là bạn, tôi sẽ không mua loại xe đó.', explanation:'Câu điều kiện loại 2, dùng "were" cho mọi ngôi.', note:'If + S + were, S + wouldn\u2019t + V'},
+      {q:'42. What does the forest ___ like?', options:['is','be','look','looks'], answer:2, vi:'Khu rừng trông như thế nào?', explanation:'Sau trợ động từ "does" cần V nguyên mẫu → look.', note:'What does + S + look like?'},
+      {q:'43. People will be ___ to a safe place to live in the short run.', options:['taken','took','takes','to take'], answer:0, vi:'Mọi người sẽ được đưa đến nơi an toàn để sinh sống trong thời gian ngắn.', explanation:'Bị động sau "will be" → taken.', note:'will be + P2 (bị động)'},
+      {q:'44. Is it ___ to improve our speaking skill?', options:['import','importing','importance','important'], answer:3, vi:'Việc cải thiện kỹ năng nói của chúng ta có quan trọng không?', explanation:'Sau "is" cần tính từ → important.', note:'be + adjective'},
+      {q:'45. The window needs ___ today to prepare for our party.', options:['clean','to clean','cleaning','cleaned'], answer:2, vi:'Cửa sổ cần được lau chùi hôm nay để chuẩn bị cho bữa tiệc.', explanation:'"need + V-ing" mang nghĩa bị động = cần được làm gì.', note:'S + needs + V-ing (= needs to be + P2)'},
+      {q:'46. Before I was born, my father had ___ a teacher.', options:['be','been','being','was'], answer:1, vi:'Trước khi tôi ra đời, bố tôi đã từng là giáo viên.', explanation:'Sau "had" cần quá khứ phân từ của "be" → been.', note:'had + been + N (quá khứ hoàn thành)'},
+      {q:'47. They are ___ a team with two foreign friends.', options:['on','at','in','of'], answer:2, vi:'Họ đang ở trong một đội cùng hai người bạn nước ngoài.', explanation:'"be in a team" = ở trong một đội.', note:'be in + a team'},
+      {q:'48. Have they ever visited English ___ countries?', options:['speaking','spoken','speak','speaks'], answer:0, vi:'Họ đã từng đến thăm các nước nói tiếng Anh chưa?', explanation:'"English-speaking countries" = các nước nói tiếng Anh (tính từ ghép).', note:'English-speaking + countries'},
+      {q:'49. I ___ visit my grandmother on Sunday if I don\u2019t go to school.', options:['would','wouldn\u2019t','will','will not'], answer:2, vi:'Tôi sẽ đến thăm bà nếu tôi không phải đi học vào Chủ nhật.', explanation:'Câu điều kiện loại 1, mệnh đề chính dùng "will".', note:'S + will + V + if + S + don\u2019t + V'},
+      {q:'50. ___ is the most common disaster in Vietnam?', options:['What','When','Where','Which'], answer:0, vi:'Thiên tai phổ biến nhất ở Việt Nam là gì?', explanation:'Hỏi về sự vật/sự việc → What.', note:'What + is + the + adjective-est + noun?'},
+    ]
+  },
+
+  /* ---------- BÀI 4: WORD FORMS (20) ---------- */
+  4: {
+    color:'fuchsia', title:'Bài 4: Cho dạng đúng của từ trong ngoặc (Word Forms)',
+    desc:'Dùng từ gợi ý trong ngoặc để điền dạng đúng vào chỗ trống.',
+    type:'fill',
+    questions:[
+      {sentence:'He lived on her own in rented ___. (ACCOMMODATE)', answers:['accommodation'], vi:'Anh ấy sống một mình trong căn nhà thuê.', explanation:'Sau "rented" cần danh từ → accommodation. Word form: • accommodate (v): cung cấp chỗ ở • accommodation (n): chỗ ở.', note:'adjective + noun'},
+      {sentence:'Her family insisted she should be given a proper ___. (BURY)', answers:['burial'], vi:'Gia đình cô ấy khăng khăng rằng cô nên được chôn cất tử tế.', explanation:'Sau tính từ "proper" cần danh từ → burial. Word form: • bury (v): chôn • burial (n): lễ an táng.', note:'adjective + noun'},
+      {sentence:'This could have equally ___ consequences. (DISASTER)', answers:['disastrous'], vi:'Điều này cũng có thể gây ra hậu quả thảm khốc tương tự.', explanation:'Trước danh từ "consequences" cần tính từ → disastrous. Word form: • disaster (n): thảm họa • disastrous (adj): thảm khốc.', note:'adjective + noun'},
+      {sentence:'No one can accurately predict ___. (EARTH)', answers:['earthquakes'], vi:'Không ai có thể dự đoán chính xác các trận động đất.', explanation:'Sau động từ "predict" cần danh từ số nhiều → earthquakes. Word form: • earth (n): trái đất • earthquake (n): trận động đất.', note:'V + plural noun'},
+      {sentence:'There was an emergency ___ of thousands of people after the flood. (EVACUATE)', answers:['evacuation'], vi:'Đã có một cuộc sơ tán khẩn cấp của hàng ngàn người sau trận lũ.', explanation:'Trước "of" cần danh từ → evacuation. Word form: • evacuate (v): sơ tán • evacuation (n): cuộc sơ tán.', note:'noun + of + N'},
+      {sentence:'She was ___ and had to put her child up for adoption. (HOME)', answers:['homeless'], vi:'Cô ấy vô gia cư và phải cho con đi làm con nuôi.', explanation:'Sau "was" cần tính từ → homeless. Word form: • home (n): nhà • homeless (adj): vô gia cư.', note:'be + adjective'},
+      {sentence:'The heavy rains could cause flash floods and ___. (MUD)', answers:['mudslides'], vi:'Mưa lớn có thể gây ra lũ quét và lũ bùn.', explanation:'Sau "and" cần danh từ số nhiều → mudslides. Word form: • mud (n): bùn • mudslide (n): lũ bùn.', note:'and + plural noun'},
+      {sentence:'Carlos had a firm ___. (SHAKE)', answers:['handshake'], vi:'Carlos có một cái bắt tay chắc chắn.', explanation:'Sau tính từ "firm" cần danh từ → handshake. Word form: • shake (v): lắc, rung • handshake (n): cái bắt tay.', note:'adjective + noun'},
+      {sentence:'The boys claimed they were being ___ by the police. (VICTIM)', answers:['victimized'], vi:'Các cậu bé khẳng định họ đang bị cảnh sát bắt nạt/đối xử bất công.', explanation:'Bị động, sau "being" cần quá khứ phân từ → victimized. Word form: • victim (n): nạn nhân • victimize (v): đối xử bất công, bắt nạt.', note:'being + P2 (bị động)'},
+      {sentence:'One third of the region has been ___ in the past decade. (FOREST)', answers:['deforested'], vi:'Một phần ba khu vực đã bị phá rừng trong thập kỷ qua.', explanation:'Bị động, sau "has been" cần quá khứ phân từ → deforested. Word form: • forest (n): rừng • deforest (v): phá rừng.', note:'has been + P2 (bị động)'},
+      {sentence:'The ___ of the city after the devastating earthquake is being carried. (CONSTRUCT)', answers:['reconstruction'], vi:'Việc tái thiết thành phố sau trận động đất tàn khốc đang được tiến hành.', explanation:'Sau "The" cần danh từ → reconstruction. Word form: • construct (v): xây dựng • reconstruction (n): sự tái thiết.', note:'the + noun'},
+      {sentence:'Visitors are allowed to get close to this volcano because it is ___. (ACT)', answers:['inactive'], vi:'Du khách được phép đến gần núi lửa này vì nó không còn hoạt động.', explanation:'Sau "is" cần tính từ; ngữ cảnh cho thấy cần dạng phủ định → inactive. Word form: • act (v): hoạt động • active (adj): hoạt động • inactive (adj): không hoạt động.', note:'be + inactive (tính từ phủ định)'},
+      {sentence:'Ten years ago, more than 10 thousand people of this area suffered from a frightening volcano ___. (ERUPT)', answers:['eruption'], vi:'Mười năm trước, hơn 10 nghìn người trong khu vực này đã chịu đựng một vụ phun trào núi lửa đáng sợ.', explanation:'Sau "volcano" cần danh từ → eruption. Word form: • erupt (v): phun trào • eruption (n): sự phun trào.', note:'noun + noun (danh từ ghép)'},
+      {sentence:'After the flood, many people were made ___. (HOME)', answers:['homeless'], vi:'Sau trận lũ, nhiều người trở nên vô gia cư.', explanation:'Sau "made" cần tính từ → homeless. Word form: • home (n): nhà • homeless (adj): vô gia cư.', note:'made + adjective'},
+      {sentence:'We should offer our ___ hands to aid the victims of natural disasters. (HELP)', answers:['helping'], vi:'Chúng ta nên chìa bàn tay giúp đỡ để hỗ trợ nạn nhân thiên tai.', explanation:'Trước danh từ "hands" cần tính từ (V-ing) → helping. Word form: • help (v/n): giúp đỡ • helping (adj): giúp đỡ (a helping hand).', note:'adjective (V-ing) + noun'},
+      {sentence:'New Zealand is an ideal destination for travellers because of its many tourist ___. (ATTRACT)', answers:['attractions'], vi:'New Zealand là điểm đến lý tưởng cho du khách vì có nhiều điểm tham quan.', explanation:'Sau "tourist" cần danh từ số nhiều → attractions. Word form: • attract (v): thu hút • attraction (n): điểm thu hút.', note:'noun + plural noun'},
+      {sentence:'People keep throwing rubbish into the lake, and it results in the ___ of many fish. (DIE)', answers:['deaths'], vi:'Người ta cứ vứt rác xuống hồ, và điều đó dẫn đến cái chết của nhiều loài cá.', explanation:'Sau "the" cần danh từ số nhiều → deaths. Word form: • die (v): chết • death (n): cái chết.', note:'the + plural noun'},
+      {sentence:'Noise pollution ___ people\u2019s hearing ability. (THREAT)', answers:['threatens'], vi:'Ô nhiễm tiếng ồn đe dọa khả năng nghe của con người.', explanation:'Chủ ngữ số ít "pollution" cần động từ thêm -s → threatens. Word form: • threat (n): mối đe dọa • threaten (v): đe dọa.', note:'S (số ít) + V-s/es'},
+      {sentence:'The ___ from Sydney to Wellington has been delayed because of bad weather. (FLY)', answers:['flight'], vi:'Chuyến bay từ Sydney đến Wellington đã bị hoãn vì thời tiết xấu.', explanation:'Sau "The" cần danh từ → flight. Word form: • fly (v): bay • flight (n): chuyến bay.', note:'the + noun'},
+      {sentence:'A number of cleaning products contain very ___ chemicals. (HARM)', answers:['harmful'], vi:'Một số sản phẩm tẩy rửa chứa hóa chất rất độc hại.', explanation:'Trước danh từ "chemicals" cần tính từ → harmful. Word form: • harm (n/v): tác hại / gây hại • harmful (adj): có hại.', note:'adjective + noun'},
+    ]
+  },
+
+  /* ---------- BÀI 5: VERB FORMS (QUÁ KHỨ HOÀN THÀNH & QUÁ KHỨ ĐƠN) ---------- */
+  5: {
+    color:'emerald', title:'Bài 5: Chia đúng dạng của động từ trong ngoặc',
+    desc:'Đọc kỹ từng câu và chia đúng dạng của động từ trong ngoặc (quá khứ hoàn thành, quá khứ đơn, hiện tại hoàn thành…).',
+    type:'fill',
+    questions:[
+      {sentence:'Before she (go) ___ to bed, she (finish) ___ her homework.', answers:['went','had finished'], vi:'Trước khi đi ngủ, cô ấy đã làm xong bài tập về nhà.', explanation:'Hành động xảy ra sau (went) → quá khứ đơn; hành động xảy ra trước (had finished) → quá khứ hoàn thành.'},
+      {sentence:'Few people (understand) ___ the news when the consequences began to appear.', answers:['had understood'], vi:'Rất ít người hiểu được tin tức đó khi hậu quả bắt đầu xuất hiện.', explanation:'Hành động xảy ra trước một mốc trong quá khứ → quá khứ hoàn thành.'},
+      {sentence:'After they (go) ___, he (sit) ___ down and (rest) ___.', answers:['had gone','sat','rested'], vi:'Sau khi họ đi rồi, anh ấy ngồi xuống và nghỉ ngơi.', explanation:'"After" + quá khứ hoàn thành (had gone) cho hành động trước, quá khứ đơn (sat, rested) cho hành động sau.'},
+      {sentence:'When I came to the theatre, the film (start) ___.', answers:['had started'], vi:'Khi tôi đến rạp, bộ phim đã bắt đầu rồi.', explanation:'Hành động đã xảy ra trước khi "tôi đến" → quá khứ hoàn thành.'},
+      {sentence:'Before she (listen) ___ to music, she (do) ___ homework.', answers:['listened','had done'], vi:'Trước khi nghe nhạc, cô ấy đã làm xong bài tập.', explanation:'Hành động xảy ra sau (listened) → quá khứ đơn; hành động xảy ra trước (had done) → quá khứ hoàn thành.'},
+      {sentence:'Last night, David (go) ___ to the supermarket before he (go) ___ home.', answers:['had gone','went'], vi:'Tối qua, David đã đi siêu thị trước khi về nhà.', explanation:'Hành động xảy ra trước (had gone) → quá khứ hoàn thành; hành động xảy ra sau (went) → quá khứ đơn.'},
+      {sentence:'___ you (finish) ___ the report before he asked for it?', answers:['Had','had you finished'], acc:[['had'],['had you finished','finished']], vi:'Bạn đã hoàn thành báo cáo trước khi anh ấy yêu cầu chưa?', explanation:'Câu hỏi quá khứ hoàn thành: Had + S + P2?'},
+      {sentence:'Our boss (not make) ___ the decision yet when management changed their mind.', answers:['hadn\u2019t made'], acc:[['hadn\u2019t made','had not made']], vi:'Sếp của chúng tôi vẫn chưa đưa ra quyết định khi ban quản lý đổi ý.', explanation:'Hành động chưa xảy ra trước một mốc trong quá khứ → quá khứ hoàn thành phủ định.'},
+      {sentence:'Mark (want) ___ to go to New York, but his wife changed his mind.', answers:['had wanted'], vi:'Mark đã từng muốn đi New York, nhưng vợ anh ấy đã làm anh ấy đổi ý.', explanation:'Mong muốn đã có trước khi bị thay đổi → quá khứ hoàn thành.'},
+      {sentence:'We (eat already) ___ so we weren\u2019t hungry.', answers:['had already eaten'], vi:'Chúng tôi đã ăn rồi nên không thấy đói.', explanation:'Hành động đã hoàn tất trước → quá khứ hoàn thành.'},
+      {sentence:'___ you (take) ___ part in this game if you have free time?', answers:['Will','will you take'], acc:[['will'],['will you take','take']], vi:'Bạn có tham gia trò chơi này không nếu bạn có thời gian rảnh?', explanation:'Câu điều kiện loại 1 dạng câu hỏi: Will + S + V?'},
+      {sentence:'People who do voluntary work in this city (give) ___ out free food to the poor for a long time.', answers:['have given'], vi:'Những người làm tình nguyện ở thành phố này đã phát đồ ăn miễn phí cho người nghèo trong thời gian dài.', explanation:'"for a long time" là dấu hiệu hiện tại hoàn thành → have given.'},
+      {sentence:'How often ___ you (practise) ___ speaking English?', answers:['do','do you practise'], acc:[['do'],['do you practise','practise']], vi:'Bạn luyện nói tiếng Anh thường xuyên như thế nào?', explanation:'Câu hỏi tần suất, thì hiện tại đơn: How often do + S + V?'},
+      {sentence:'I (get) ___ good marks after my examination finished at school.', answers:['got'], vi:'Tôi đã đạt điểm cao sau khi kỳ thi ở trường kết thúc.', explanation:'Hành động xảy ra sau một mốc quá khứ khác → quá khứ đơn.'},
+      {sentence:'___ they (leave) ___ their house when their parents visited them?', answers:['Had','had they left'], acc:[['had'],['had they left','left']], vi:'Họ đã rời khỏi nhà trước khi bố mẹ đến thăm chưa?', explanation:'Câu hỏi quá khứ hoàn thành: Had + S + P2?'},
+      {sentence:'If I were you, I (not go) ___ out alone.', answers:['wouldn\u2019t go'], acc:[['wouldn\u2019t go','would not go']], vi:'Nếu tôi là bạn, tôi sẽ không ra ngoài một mình.', explanation:'Câu điều kiện loại 2: If I were you, I wouldn\u2019t + V.'},
+      {sentence:'Jenny usually (attend) ___ her teachers\u2019 lectures on time.', answers:['attends'], vi:'Jenny thường tham dự các buổi giảng của giáo viên đúng giờ.', explanation:'"usually" là dấu hiệu hiện tại đơn, chủ ngữ số ít → attends.'},
+      {sentence:'In my house, pigs are often (feed) ___ by my mother.', answers:['fed'], vi:'Trong nhà tôi, lợn thường được mẹ tôi cho ăn.', explanation:'Bị động, sau "are" cần quá khứ phân từ → fed.'},
+      {sentence:'How about (travel) ___ to Nha Trang beach this weekend?', answers:['travelling'], acc:[['travelling','traveling']], vi:'Đi Nha Trang cuối tuần này thì sao?', explanation:'"How about + V-ing?" = lời đề nghị.'},
+      {sentence:'Anna (not manage) ___ to prevent her cats from fighting with each other since the first time.', answers:['hasn\u2019t managed'], acc:[['hasn\u2019t managed','has not managed']], vi:'Anna vẫn chưa thể ngăn được lũ mèo của mình đánh nhau kể từ lần đầu tiên.', explanation:'"since" là dấu hiệu hiện tại hoàn thành phủ định.'},
+    ]
+  },
+
+  /* ---------- BÀI 6: CORRECTION (A, B, C, D) ---------- */
+  6: {
+    color:'rose', title:'Bài 6: Tìm lỗi sai (A, B, C hoặc D)',
+    desc:'Mỗi câu có 4 phần gạch chân A, B, C, D. Chọn phần chứa lỗi sai. Chọn xong sẽ hiện đúng/sai, đáp án và công thức ngay.',
+    type:'mcq', instant:true,
+    intro:`<span class="text-amber-600">[RECONSTRUCTED: tài liệu gốc chỉ đánh dấu 4 vị trí A/B/C/D bằng dòng nhãn riêng bên dưới câu (không có gạch chân trực tiếp trong text). Claude đã tự chia mỗi câu thành 4 cụm A/B/C/D hợp lý dựa theo đáp án lỗi sai cho sẵn. Nếu có ảnh gốc rõ vị trí gạch chân, nên đối chiếu lại.]</span>`,
+    questions:[
+      {q:'1. <u>I came back home</u> <u>after</u> <u>my sister had</u> <u>finish her dinner</u>.', options:['I came back home','after','my sister had','finish her dinner'], answer:3, vi:'Tôi về đến nhà sau khi chị tôi ăn tối xong.', explanation:'Sau "had" cần quá khứ phân từ → finish phải sửa thành finished.', note:'had + P2 (quá khứ hoàn thành)'},
+      {q:'2. <u>Frank said</u> <u>that he has met</u> <u>Sir. Alex Ferguson</u> <u>before</u>.', options:['Frank said','that he has met','Sir. Alex Ferguson','before'], answer:1, vi:'Frank nói rằng anh ấy đã gặp Ngài Alex Ferguson trước đó.', explanation:'Câu tường thuật với "said" (quá khứ) cần lùi thì → has met phải sửa thành had met.', note:'lùi thì trong câu tường thuật (backshift)'},
+      {q:'3. <u>Before Christine</u> <u>goes to bed,</u> <u>she had drunk</u> <u>a glass of wine</u>.', options:['Before Christine','goes to bed,','she had drunk','a glass of wine'], answer:1, vi:'Trước khi Christine đi ngủ, cô ấy đã uống một ly rượu vang.', explanation:'Cần nhất quán thì quá khứ, hành động xảy ra sau → goes phải sửa thành went.', note:'Before + S + V-ed, S + had + P2'},
+      {q:'4. <u>She told her husband</u> <u>she hadn\u2019t wore</u> <u>such a kind of</u> <u>dress before</u>.', options:['She told her husband','she hadn\u2019t wore','such a kind of','dress before'], answer:1, vi:'Cô ấy nói với chồng rằng cô chưa từng mặc kiểu váy như vậy trước đây.', explanation:'Sau "hadn\u2019t" cần quá khứ phân từ → wore phải sửa thành worn.', note:'hadn\u2019t + P2 (quá khứ hoàn thành)'},
+      {q:'5. <u>When I arrived</u> <u>at the stadium,</u> <u>the football match had</u> <u>starting</u>.', options:['When I arrived','at the stadium,','the football match had','starting'], answer:3, vi:'Khi tôi đến sân vận động, trận bóng đá đã bắt đầu rồi.', explanation:'Sau "had" cần quá khứ phân từ → starting phải sửa thành started.', note:'had + P2 (quá khứ hoàn thành)'},
+      {q:'6. <u>There was</u> <u>a big storm</u> <u>in this village</u> <u>before I came here</u>.', options:['There was','a big storm','in this village','before I came here'], answer:0, vi:'Đã từng có một cơn bão lớn ở ngôi làng này trước khi tôi đến đây.', explanation:'Sự việc xảy ra trước một hành động khác trong quá khứ → There was phải sửa thành There had been.', note:'There had been + N + before + S + V-ed'},
+      {q:'7. <u>Thanks for the prompt financial aids</u> <u>of the government,</u> <u>the life of people in this town had become</u> <u>less miserable</u>.', options:['Thanks for the prompt financial aids','of the government,','the life of people in this town had become','less miserable'], answer:2, vi:'Nhờ sự hỗ trợ tài chính kịp thời của chính phủ, cuộc sống của người dân thị trấn này đã bớt khổ cực hơn.', explanation:'Không cần quá khứ hoàn thành ở đây, chỉ cần quá khứ đơn → had become phải sửa thành became.', note:'S + V-ed (quá khứ đơn)'},
+      {q:'8. <u>I weren\u2019t informed</u> <u>anything about</u> <u>the wildfire</u> <u>last week</u>.', options:['I weren\u2019t informed','anything about','the wildfire','last week'], answer:0, vi:'Tôi đã không được thông báo gì về đám cháy rừng tuần trước.', explanation:'Chủ ngữ "I" cần "wasn\u2019t" không phải "weren\u2019t" → I weren\u2019t informed phải sửa thành I wasn\u2019t informed.', note:'I + wasn\u2019t + P2 (bị động)'},
+      {q:'9. <u>Fortunately,</u> <u>they learnt how to do</u> <u>in case of earthquakes</u> <u>before it occurred</u>.', options:['Fortunately,','they learnt how to do','in case of earthquakes','before it occurred'], answer:1, vi:'May mắn thay, họ đã học được cách xử lý trong trường hợp động đất trước khi nó xảy ra.', explanation:'Hành động xảy ra trước một mốc trong quá khứ ("before it occurred") → learnt phải sửa thành had learnt.', note:'S + had + P2 + before + S + V-ed'},
+      {q:'10. <u>All the visitors</u> <u>was prevented</u> <u>from continuing their exploration because of</u> <u>the uninformed landslide</u>.', options:['All the visitors','was prevented','from continuing their exploration because of','the uninformed landslide'], answer:1, vi:'Tất cả du khách đã bị ngăn cản không được tiếp tục khám phá vì trận lở đất không được báo trước.', explanation:'Chủ ngữ số nhiều "All the visitors" cần "were" không phải "was" → was prevented phải sửa thành were prevented.', note:'chủ ngữ số nhiều + were + P2 (bị động)'},
+      {q:'11. <u>If I was</u> <u>an astronaut,</u> <u>I would be really famous</u> <u>in my country</u>.', options:['If I was','an astronaut,','I would be really famous','in my country'], answer:0, vi:'Nếu tôi là phi hành gia, tôi sẽ rất nổi tiếng ở đất nước mình.', explanation:'Câu điều kiện loại 2, dùng "were" cho mọi ngôi → If I was phải sửa thành If I were.', note:'If + S + were (câu điều kiện loại 2)'},
+      {q:'12. <u>Please don\u2019t drink</u> <u>this water</u> <u>because it is</u> <u>contaminate</u>.', options:['Please don\u2019t drink','this water','because it is','contaminate'], answer:3, vi:'Xin đừng uống nước này vì nó bị ô nhiễm.', explanation:'Sau "is" cần tính từ → contaminate phải sửa thành contaminated.', note:'be + contaminated (tính từ, quá khứ phân từ)'},
+      {q:'13. <u>She would like</u> <u>to know how</u> <u>pronounce</u> <u>these Spanish words</u>.', options:['She would like','to know how','pronounce','these Spanish words'], answer:2, vi:'Cô ấy muốn biết cách phát âm những từ tiếng Tây Ban Nha này.', explanation:'Sau "how" cần "to V" → pronounce phải sửa thành to pronounce.', note:'how + to V'},
+      {q:'14. <u>Jack has never</u> <u>be there</u> <u>before, so</u> <u>he is so excited</u>.', options:['Jack has never','be there','before, so','he is so excited'], answer:1, vi:'Jack chưa bao giờ đến đó trước đây, vì vậy anh ấy rất phấn khích.', explanation:'Sau "has never" cần quá khứ phân từ → be phải sửa thành been.', note:'has never + P2 (hiện tại hoàn thành)'},
+      {q:'15. <u>Mr. Smith went</u> <u>to the church</u> <u>to feel relaxed</u> <u>every day</u>.', options:['Mr. Smith went','to the church','to feel relaxed','every day'], answer:0, vi:'Ông Smith đến nhà thờ để cảm thấy thư giãn mỗi ngày.', explanation:'"every day" là dấu hiệu hiện tại đơn (thói quen) → went phải sửa thành goes.', note:'S (số ít) + V-s/es (dấu hiệu: every day)'},
+      {q:'16. <u>The sea will rise</u> <u>level</u> <u>if the ice</u> <u>melted</u>.', options:['The sea will rise','level','if the ice','melted'], answer:3, vi:'Mực nước biển sẽ dâng lên nếu băng tan.', explanation:'Câu điều kiện loại 1, mệnh đề If cần hiện tại đơn → melted phải sửa thành melts.', note:'if + S + V(hiện tại) (câu điều kiện loại 1)'},
+      {q:'17. <u>The water is contaminated</u> <u>as a result in</u> <u>pouring lots of chemicals</u> <u>into the river</u>.', options:['The water is contaminated','as a result in','pouring lots of chemicals','into the river'], answer:1, vi:'Nước bị ô nhiễm do việc đổ nhiều hóa chất vào sông.', explanation:'"as a result of" = do kết quả của → as a result in phải sửa thành as a result of.', note:'as a result of + N/V-ing'},
+      {q:'18. <u>Why has John been</u> <u>ability</u> <u>to learn a lot of</u> <u>languages?</u>', options:['Why has John been','ability','to learn a lot of','languages?'], answer:1, vi:'Vì sao John lại có khả năng học được nhiều ngôn ngữ như vậy?', explanation:'"be able to" = có khả năng → ability phải sửa thành able.', note:'be able to + V'},
+      {q:'19. <u>Hundreds</u> <u>of houses</u> <u>was destroyed</u> <u>after the earthquake</u>.', options:['Hundreds','of houses','was destroyed','after the earthquake'], answer:2, vi:'Hàng trăm ngôi nhà đã bị phá hủy sau trận động đất.', explanation:'Chủ ngữ số nhiều "Hundreds of houses" cần "were" → was destroyed phải sửa thành were destroyed.', note:'chủ ngữ số nhiều + were + P2 (bị động)'},
+      {q:'20. <u>Typhoons</u> <u>are happened</u> <u>in her hometown</u> <u>once a year</u>.', options:['Typhoons','are happened','in her hometown','once a year'], answer:1, vi:'Bão thường xảy ra ở quê cô ấy mỗi năm một lần.', explanation:'"happen" là nội động từ, không dùng dạng bị động → are happened phải sửa thành happen.', note:'S + happen (nội động từ, không bị động)'},
+    ]
+  },
+
+  /* ---------- BÀI 7: READING I (Hurricane Katrina & Harvey – điền từ) ---------- */
+  7: {
+    color:'indigo', title:'Bài 7: Đọc hiểu – Bão Katrina &amp; Harvey (điền từ cho sẵn)',
+    desc:'Đọc đoạn văn và dùng các từ cho sẵn trong ô để điền vào chỗ trống. Gõ đúng từ rồi bấm Kiểm tra.',
+    passageId:'p7',
+    type:'fill',
+    bank:['different','most','common','against','small','ago','region','storms','social','has'],
+    questions:[
+      {sentence:'As South Texas continues to battle ___ Harvey\u2019s record rainfall, the people of Louisiana are marking a tragic anniversary.', answers:['against'], vi:'Trong khi Nam Texas tiếp tục chống chọi với lượng mưa kỷ lục của bão Harvey, người dân Louisiana đang kỷ niệm một ngày đầy bi kịch.', explanation:'"battle against" = chống chọi với.'},
+      {sentence:'Twelve years ___, on August 29, 2005, Hurricane Katrina made landfall near New Orleans.', answers:['ago'], vi:'Mười hai năm trước, vào ngày 29/8/2005, bão Katrina đã đổ bộ gần New Orleans.', explanation:'"twelve years ago" = mười hai năm trước.'},
+      {sentence:'It was one of the ___ devastating natural disasters to ever hit the United States, and the region still bears its scars.', answers:['most'], vi:'Đó là một trong những thảm họa thiên nhiên tàn khốc nhất từng xảy ra ở Mỹ, và khu vực này vẫn còn mang những vết sẹo của nó.', explanation:'So sánh nhất → most devastating.'},
+      {sentence:'It was one of the most devastating natural disasters to ever hit the United States, and the ___ still bears its scars.', answers:['region'], vi:'…và khu vực này vẫn còn mang những vết sẹo của nó.', explanation:'Chủ ngữ cần danh từ chỉ khu vực → region.'},
+      {sentence:'Hurricane Harvey and Hurricane Katrina are ___ beasts, to be sure.', answers:['different'], vi:'Bão Harvey và Katrina chắc chắn là những "con quái vật" khác nhau.', explanation:'"different beasts" = những thứ khác nhau (ẩn dụ).'},
+      {sentence:'…and the ___ and infrastructural collapses that followed.', answers:['social'], vi:'…và sự sụp đổ về mặt xã hội và cơ sở hạ tầng theo sau đó.', explanation:'Trước "and infrastructural collapses" cần tính từ song song → social.'},
+      {sentence:'So far, Harvey ___ claimed a number of lives, but it is a small fraction of Katrina\u2019s 1,800+ victims.', answers:['has'], vi:'Cho đến nay, Harvey đã cướp đi một số sinh mạng, nhưng đó chỉ là một phần nhỏ so với hơn 1.800 nạn nhân của Katrina.', explanation:'"so far" là dấu hiệu hiện tại hoàn thành → has.'},
+      {sentence:'…but it is a ___ fraction of Katrina\u2019s 1,800+ victims.', answers:['small'], vi:'…nhưng đó chỉ là một phần nhỏ so với hơn 1.800 nạn nhân của Katrina.', explanation:'Trước "fraction" cần tính từ → small.'},
+      {sentence:'From a meteorological perspective, though, how do these ___ compare?', answers:['storms'], vi:'Nhưng xét từ góc độ khí tượng học, những cơn bão này so sánh với nhau như thế nào?', explanation:'Chủ ngữ số nhiều, chỉ các cơn bão → storms.'},
+      {sentence:'Other than timing, do they have anything in ___ other than adjacent chambers in the nation\u2019s memory?', answers:['common'], vi:'Ngoài thời điểm xảy ra, liệu chúng có điểm gì chung khác ngoài việc cùng nằm trong ký ức của cả nước không?', explanation:'"have something in common" = có điểm chung.'},
+    ]
+  },
+
+  /* ---------- BÀI 8: READING II (Trận động đất Nepal 2015) ---------- */
+  8: {
+    color:'pink', title:'Bài 8: Đọc hiểu – Trận động đất Nepal 2015',
+    desc:'Đọc đoạn văn và chọn đáp án đúng cho mỗi chỗ trống. Chọn xong sẽ hiện đúng/sai ngay.',
+    passageId:'p8',
+    type:'mcq', instant:true,
+    questions:[
+      {q:'1. …set off avalanches (1) ___ Mount Everest…', options:['in','before','on','after'], answer:2, vi:'…gây ra lở tuyết trên đỉnh Everest…', explanation:'"avalanches on Mount Everest" = lở tuyết trên núi Everest.'},
+      {q:'2. …and catapulted the entire region (2) ___ chaos.', options:['into','onto','to','in'], answer:0, vi:'…và đẩy toàn bộ khu vực vào hỗn loạn.', explanation:'"catapult...into chaos" = đẩy vào hỗn loạn.'},
+      {q:'3. The worst earthquake in 80 years (3) ___ nearly 9,000 people…', options:['kill','kills','killing','killed'], answer:3, vi:'Trận động đất tồi tệ nhất trong 80 năm đã giết chết gần 9.000 người…', explanation:'Động từ chính chia quá khứ đơn → killed.'},
+      {q:'4. …destroyed or damaged at (4) ___ 880,000 homes…', options:['less','least','more','most'], answer:1, vi:'…phá hủy hoặc làm hư hại ít nhất 880.000 ngôi nhà…', explanation:'"at least" = ít nhất.'},
+      {q:'5. …and more (5) ___ 1,200 health facilities.', options:['than','then','until','without'], answer:0, vi:'…và hơn 1.200 cơ sở y tế.', explanation:'"more than" = hơn.'},
+      {q:'6. Multiple aftershocks…hampered rescue operations, (6) ___ survivors…', options:['terrify','terrifies','terrified','terrifying'], answer:3, vi:'Nhiều dư chấn…cản trở hoạt động cứu hộ, khiến người sống sót kinh hoàng…', explanation:'Phân từ hiện tại bổ nghĩa → terrifying.'},
+      {q:'7. Then the monsoon (7) ___ compounded the misery…', options:['area','size','time','season'], answer:3, vi:'Sau đó mùa mưa càng làm trầm trọng thêm nỗi khổ…', explanation:'"monsoon season" = mùa mưa (danh từ ghép).'},
+      {q:'8. …as survivors sought shelter amidst ruined (8) ___.', options:['hills','buildings','rivers','mountains'], answer:1, vi:'…khi người sống sót tìm nơi trú ẩn giữa những tòa nhà đổ nát.', explanation:'"ruined buildings" = tòa nhà đổ nát, phù hợp ngữ cảnh động đất.'},
+      {q:'9. AmeriCares immediately launched a (9) ___ relief effort…', options:['high-class','short-term','large-scale','long-range'], answer:2, vi:'AmeriCares đã ngay lập tức triển khai một nỗ lực cứu trợ quy mô lớn…', explanation:'"large-scale relief effort" = nỗ lực cứu trợ quy mô lớn.'},
+      {q:'10. …sending aid workers, (10) ___ teams, and emergency medicines and supplies to the disaster zone.', options:['medicine','medical','medically','medicate'], answer:1, vi:'…cử nhân viên cứu trợ, đội y tế, cùng thuốc men và vật tư khẩn cấp đến vùng thảm họa.', explanation:'Trước danh từ "teams" cần tính từ → medical.'},
+    ]
+  },
+
+  /* ---------- BÀI 9: READING III (Tornado) ---------- */
+  9: {
+    color:'violet', title:'Bài 9: Đọc hiểu – Tornado (Lốc xoáy)',
+    desc:'Đọc đoạn văn rồi trả lời 5 câu hỏi và chọn Đúng/Sai cho 5 câu tiếp theo.',
+    passageId:'p9',
+    type:'reading',
+    questions:[
+      {q:'1. What is a tornado?', answer:'It is a violently rotating column of air that is often visible as a funnel cloud.', keywords:['rotating column'], vi:'Lốc xoáy là gì?', explanation:'Bài đọc định nghĩa lốc xoáy là "a violently rotating column of air…visible as a funnel cloud".'},
+      {q:'2. What is common in thunderstorms that produce tornadoes?', answer:'Lightning and hail are common in thunderstorms that produce tornadoes.', keywords:['lightning'], vi:'Điều gì phổ biến trong các cơn bão gây ra lốc xoáy?', explanation:'Bài đọc nói "Lightening and hail are common in thunderstorms that produce tornadoes."'},
+      {q:'3. What can related thunderstorms cause?', answer:'Related thunderstorms can cause heavy rains, flash flooding, and hail.', keywords:['flash flooding'], vi:'Các cơn bão liên quan có thể gây ra điều gì?', explanation:'Bài đọc nói các cơn bão liên quan "can cause heavy rains, flash flooding, and hail".'},
+      {q:'4. How many tornadoes hit the United States every year?', answer:'About 1,200 tornadoes hit the United States every year.', keywords:['1,200'], vi:'Có bao nhiêu cơn lốc xoáy xảy ra ở Mỹ mỗi năm?', explanation:'Bài đọc nói "About 1,200 tornadoes hit the United States every year."'},
+      {q:'5. Which seasons can tornadoes strike?', answer:'Tornadoes can strike in any season, but occur most often in the spring and summer months.', keywords:['spring'], vi:'Lốc xoáy có thể xảy ra vào mùa nào?', explanation:'Bài đọc nói lốc xoáy "can strike in any season, but occur most often in the spring and summer months".'},
+      {q:'6. (Đúng/Sai) A tornado extends from thunderstorm to the ground.', answer:'True', keywords:['true'], vi:'Lốc xoáy kéo dài từ cơn bão xuống mặt đất.', explanation:'Bài đọc nói lốc xoáy "extends from a thunderstorm to the ground" → Đúng (True).'},
+      {q:'7. (Đúng/Sai) Tornadoes cause slight damage to structures.', answer:'False', keywords:['false'], vi:'Lốc xoáy gây thiệt hại nhẹ cho các công trình.', explanation:'Bài đọc nói lốc xoáy gây "extensive damage" (thiệt hại lớn), không phải nhẹ → Sai (False).'},
+      {q:'8. (Đúng/Sai) Every state in the US is at risk of being hit by tornadoes.', answer:'True', keywords:['true'], vi:'Mọi bang ở Mỹ đều có nguy cơ bị lốc xoáy tấn công.', explanation:'Bài đọc nói "every state is at risk" → Đúng (True).'},
+      {q:'9. (Đúng/Sai) No tornadoes in the United States occur east of the Rocky Mountains, the Gulf Coast and Florida.', answer:'False', keywords:['false'], vi:'Không có cơn lốc xoáy nào ở Mỹ xảy ra ở phía đông dãy Rocky, vùng Vịnh và Florida.', explanation:'Bài đọc nói phần lớn lốc xoáy xảy ra "east of the Rocky Mountains" → Sai (False).'},
+      {q:'10. (Đúng/Sai) Tornadoes occur between 3 p.m. and 9 p.m. only.', answer:'False', keywords:['false'], vi:'Lốc xoáy chỉ xảy ra từ 3 giờ chiều đến 9 giờ tối.', explanation:'Bài đọc nói lốc xoáy có thể xảy ra vào bất kỳ giờ nào, chỉ là "most likely" (dễ xảy ra nhất) trong khung giờ đó, không phải "chỉ" → Sai (False).'},
+    ]
+  },
+
+  /* ---------- BÀI 10: READING IV + VI (Cách gọi bão & Động đất Nhật Bản 2011) ---------- */
+  10: {
+    color:'amber', title:'Bài 10: Đọc hiểu – Bão nhiệt đới &amp; Động đất/Sóng thần Nhật Bản 2011',
+    desc:'Đọc hai đoạn văn dưới đây rồi trả lời các câu hỏi (gõ câu trả lời ngắn bằng tiếng Anh, hoặc True/False).',
+    type:'reading',
+    intro:`<div class="not-italic text-slate-700 space-y-4">
+      <div>
+        <div class="flex items-center justify-between mb-1 flex-wrap gap-2">
+          <h4 class="font-extrabold text-amber-700 uppercase tracking-wide text-xs">Đoạn văn 1 — Hurricanes, Cyclones and Typhoons</h4>
+          <button onclick="toggleVI('p10a')" class="text-xs font-bold bg-white border border-amber-200 text-amber-700 px-3 py-1 rounded-full hover:scale-105 transition"><i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt</button>
+        </div>
+        <p id="p10a-en" class="bg-white/70 border border-amber-100 rounded-lg p-3 leading-relaxed">Hurricanes, cyclones, and typhoons are all the same weather phenomenon; we just use different names for these storms in different places. In the Atlantic and Northeast Pacific, the term "hurricane" is used. The same type of disturbance in the Northwest Pacific is called a "typhoon" and "cyclones" occur in the South Pacific and Indian Ocean. The ingredients for these storms include a pre-existing weather disturbance, warm tropical oceans, moisture, and relatively light winds. If the right conditions persist long enough, they can combine to produce the violent winds, incredible waves, torrential rains, and floods we associate with this phenomenon. In the Atlantic, hurricane season officially runs June 1 to November 30. However, while 97 percent of tropical activity occurs during this time period, there is nothing magical in these dates, and hurricanes have occurred outside of these six months.</p>
+        <p id="p10a-vi" class="vi-hidden mt-2 pt-2 border-t border-amber-200 italic text-slate-500">Bão hurricane, cyclone và typhoon đều là cùng một hiện tượng thời tiết; chúng ta chỉ dùng tên gọi khác nhau ở những nơi khác nhau. Ở Đại Tây Dương và Đông Bắc Thái Bình Dương, người ta dùng từ "hurricane". Cùng loại nhiễu động đó ở Tây Bắc Thái Bình Dương được gọi là "typhoon", còn "cyclone" xảy ra ở Nam Thái Bình Dương và Ấn Độ Dương. Thành phần tạo nên các cơn bão này gồm một nhiễu động thời tiết có sẵn, đại dương nhiệt đới ấm, độ ẩm và gió tương đối nhẹ. Nếu điều kiện thích hợp kéo dài đủ lâu, chúng có thể kết hợp tạo ra gió mạnh, sóng khổng lồ, mưa như trút và lũ lụt mà ta thường liên tưởng đến hiện tượng này. Ở Đại Tây Dương, mùa bão chính thức kéo dài từ 1/6 đến 30/11. Tuy nhiên, dù 97% hoạt động nhiệt đới xảy ra trong khoảng thời gian này, không có gì thần kỳ về những ngày này cả, và bão đã từng xảy ra ngoài sáu tháng đó.</p>
+      </div>
+      <div>
+        <div class="flex items-center justify-between mb-1 flex-wrap gap-2">
+          <h4 class="font-extrabold text-amber-700 uppercase tracking-wide text-xs">Đoạn văn 2 — Japan Earthquake &amp; Tsunami in 2011</h4>
+          <button onclick="toggleVI('p10b')" class="text-xs font-bold bg-white border border-amber-200 text-amber-700 px-3 py-1 rounded-full hover:scale-105 transition"><i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt</button>
+        </div>
+        <p id="p10b-en" class="bg-white/70 border border-amber-100 rounded-lg p-3 leading-relaxed">On March 11, 2011, there was a magnitude-9 earthquake in north-eastern Japan. This natural disaster was so terrible and lead to a lot of changes in Japanese\u2019s life.<br><br>According to some newspaper, more than 120,000 buildings were destroyed, 278,000 were half-destroyed and 726,000 were partially destroyed. The Japanese government estimated that the direct financial damage from the disaster was about $199 billion dollars (about 16.9 trillion yen). The World Bank also estimated the total economic cost could be up to $235 billion. Therefore, it was considered to be one of the costliest natural disaster in world history. In Japan, residents have been still recovering from the disaster. Their effort to lead a new life is so amazing, although some people lost their property or even family members. They have continued to rebuild their houses, the road systems or factories. All the world looks up to those Japanese because of their considerable effort.</p>
+        <p id="p10b-vi" class="vi-hidden mt-2 pt-2 border-t border-amber-200 italic text-slate-500">Ngày 11/3/2011, xảy ra trận động đất cường độ 9 độ ở đông bắc Nhật Bản. Thảm họa thiên nhiên này khủng khiếp đến mức gây ra rất nhiều thay đổi trong cuộc sống của người Nhật.<br><br>Theo một số tờ báo, hơn 120.000 tòa nhà bị phá hủy hoàn toàn, 278.000 bị phá hủy một nửa và 726.000 bị hư hại một phần. Chính phủ Nhật Bản ước tính thiệt hại tài chính trực tiếp từ thảm họa này khoảng 199 tỷ đô la (khoảng 16,9 nghìn tỷ yên). Ngân hàng Thế giới cũng ước tính tổng chi phí kinh tế có thể lên tới 235 tỷ đô la. Do đó, đây được coi là một trong những thảm họa thiên nhiên tốn kém nhất trong lịch sử thế giới. Ở Nhật Bản, người dân vẫn đang hồi phục sau thảm họa. Nỗ lực xây dựng lại cuộc sống mới của họ thật đáng kinh ngạc, dù một số người đã mất tài sản hoặc thậm chí người thân. Họ tiếp tục xây lại nhà cửa, hệ thống đường sá hay nhà máy. Cả thế giới ngưỡng mộ người Nhật vì nỗ lực đáng kể của họ.</p>
+      </div>
+    </div>`,
+    questions:[
+      {q:'1. (Đoạn 1) Which name is used for very big storms in Northwest Pacific?', answer:'Typhoon', keywords:['typhoon'], vi:'Tên gọi nào được dùng cho những cơn bão lớn ở Tây Bắc Thái Bình Dương?', explanation:'Bài đọc nói "the same type of disturbance in the Northwest Pacific is called a \u2018typhoon\u2019".'},
+      {q:'2. (Đoạn 1) Where is the name "cyclones" used?', answer:'South Pacific and Indian Ocean', keywords:['indian ocean'], vi:'Tên gọi "cyclones" được dùng ở đâu?', explanation:'Bài đọc nói "\u2018cyclones\u2019 occur in the South Pacific and Indian Ocean".'},
+      {q:'3. (Đoạn 1) What are the features of the severe storms which occur within a long time?', answer:'They produce the violent winds, incredible waves, torrential rains, and floods.', keywords:['violent winds'], vi:'Đặc điểm của những cơn bão dữ dội kéo dài là gì?', explanation:'Bài đọc nói chúng "produce the violent winds, incredible waves, torrential rains, and floods".'},
+      {q:'4. (Đoạn 1) When do hurricanes often occur?', answer:'Between June 1 and November 30', keywords:['june'], vi:'Bão thường xảy ra khi nào?', explanation:'Bài đọc nói "hurricane season officially runs June 1 to November 30".'},
+      {q:'5. (Đoạn 1) Is it possible that hurricanes can occur even when it is not hurricane season?', answer:'Yes, it is.', keywords:['yes'], vi:'Có thể xảy ra bão ngay cả khi không phải mùa bão không?', explanation:'Bài đọc nói "hurricanes have occurred outside of these six months" → Có.'},
+      {q:'6. (Đoạn 2) When did the earthquake in Japan happen?', answer:'The earthquake in Japan happened on March 11, 2011.', keywords:['march 11'], vi:'Trận động đất ở Nhật xảy ra khi nào?', explanation:'Bài đọc nói "On March 11, 2011, there was a magnitude-9 earthquake".'},
+      {q:'7. (Đoạn 2) Were 278,000 buildings destroyed totally?', answer:'No, more than 120,000 buildings were totally destroyed.', keywords:['120,000'], vi:'Có phải 278.000 tòa nhà bị phá hủy hoàn toàn không?', explanation:'Bài đọc nói 278.000 tòa nhà chỉ bị "half-destroyed" (phá hủy một nửa); số bị phá hủy hoàn toàn là hơn 120.000.'},
+      {q:'8. (Đoạn 2) Who did estimate the financial damage of this earthquake?', answer:'The Japanese government.', keywords:['japanese government'], vi:'Ai đã ước tính thiệt hại tài chính của trận động đất này?', explanation:'Bài đọc nói "The Japanese government estimated that the direct financial damage…".'},
+      {q:'9. (Đoạn 2) Was the cost of this natural disaster expensive?', answer:'Yes, it was.', keywords:['yes'], vi:'Chi phí của thảm họa thiên nhiên này có đắt đỏ không?', explanation:'Bài đọc nói đây "one of the costliest natural disaster in world history" → Có, rất đắt đỏ.'},
+      {q:'10. (Đoạn 2) What did Japanese residents do after the disaster?', answer:'They tried to recover from the disaster and rebuild their houses, roads and factories.', keywords:['rebuild'], vi:'Người dân Nhật Bản đã làm gì sau thảm họa?', explanation:'Bài đọc nói họ "have continued to rebuild their houses, the road systems or factories".'},
+      {q:'11. (Đúng/Sai) The World Bank also estimated the direct financial damage of the disaster was about $199 million.', answer:'False', keywords:['false'], vi:'Ngân hàng Thế giới cũng ước tính thiệt hại tài chính trực tiếp của thảm họa là khoảng 199 triệu đô la.', explanation:'Đây là ước tính của CHÍNH PHỦ NHẬT BẢN (không phải World Bank), và là 199 TỶ (không phải triệu) → Sai (False).'},
+      {q:'12. (Đúng/Sai) The cost of the natural disaster is cheapest in the world history.', answer:'False', keywords:['false'], vi:'Chi phí của thảm họa thiên nhiên này là rẻ nhất trong lịch sử thế giới.', explanation:'Bài đọc nói đây là một trong những thảm họa TỐN KÉM NHẤT (costliest), không phải rẻ nhất → Sai (False).'},
+      {q:'13. (Đúng/Sai) Japanese\u2019s effort is so amazing.', answer:'True', keywords:['true'], vi:'Nỗ lực của người Nhật thật đáng kinh ngạc.', explanation:'Bài đọc nói "Their effort to lead a new life is so amazing" → Đúng (True).'},
+      {q:'14. (Đúng/Sai) They reconstruct their houses.', answer:'True', keywords:['true'], vi:'Họ xây dựng lại nhà cửa.', explanation:'Bài đọc nói họ "have continued to rebuild their houses" → Đúng (True).'},
+      {q:'15. (Đúng/Sai) People in the world look up to Japanese residents.', answer:'True', keywords:['true'], vi:'Người dân trên thế giới ngưỡng mộ người dân Nhật Bản.', explanation:'Bài đọc nói "All the world looks up to those Japanese" → Đúng (True).'},
+    ]
+  },
+
+  /* ---------- BÀI 11: READING V (Earth Day) ---------- */
+  11: {
+    color:'teal', title:'Bài 11: Đọc hiểu – Earth Day (Ngày Trái Đất)',
+    desc:'Đọc đoạn văn và chọn đáp án đúng cho mỗi chỗ trống. Chọn xong sẽ hiện đúng/sai ngay.',
+    passageId:'p11',
+    type:'mcq', instant:true,
+    questions:[
+      {q:'1. More (1) ___ 1 billion people now participate in Earth Day activities.', options:['of','than','then','with'], answer:1, vi:'Hơn 1 tỷ người hiện tham gia các hoạt động Ngày Trái Đất.', explanation:'"more than" = hơn.'},
+      {q:'2. …participate in Earth Day activities (2) ___ year.', options:['much','many','each','other'], answer:2, vi:'…tham gia các hoạt động Ngày Trái Đất mỗi năm.', explanation:'"each year" = mỗi năm.'},
+      {q:'3. Members of this organization (3) ___ through a combination of education, public policy, and consumer campaigns.', options:['to work','works','working','work'], answer:3, vi:'Thành viên của tổ chức này hoạt động thông qua sự kết hợp giữa giáo dục, chính sách công và các chiến dịch tiêu dùng.', explanation:'Chủ ngữ số nhiều "Members" → work.'},
+      {q:'4. The first Earth Day (4) ___ April 22, 1970, activated 20 million Americans…', options:['on','in','at','until'], answer:0, vi:'Ngày Trái Đất đầu tiên vào 22/4/1970 đã huy động 20 triệu người Mỹ…', explanation:'Trước ngày cụ thể dùng "on".'},
+      {q:'5. …and is widely (5) ___ with launching the modern environmental movement.', options:['credit','credits','credited','crediting'], answer:2, vi:'…và được ghi nhận rộng rãi là đã khởi xướng phong trào môi trường hiện đại.', explanation:'Bị động → is credited with.'},
+      {q:'6. …and (6) ___ other ground-breaking environmental laws soon followed.', options:['much','many','little','few'], answer:1, vi:'…và nhiều luật môi trường mang tính đột phá khác đã sớm ra đời.', explanation:'Trước danh từ đếm được số nhiều "laws" → many.'},
+      {q:'7. Twenty years (7) ___, Earth Day went global…', options:['later','latest','late','lately'], answer:0, vi:'Hai mươi năm sau, Ngày Trái Đất đã trở thành sự kiện toàn cầu…', explanation:'"twenty years later" = hai mươi năm sau.'},
+      {q:'8. Now, this day is becoming (8) ___ and more popular in over the world.', options:['many','much','most','more'], answer:3, vi:'Ngày nay, ngày này ngày càng trở nên phổ biến hơn trên khắp thế giới.', explanation:'"more and more popular" = ngày càng phổ biến hơn.'},
+    ]
+  },
+
+  /* ---------- BÀI 12: WRITING I (Chuyển sang câu bị động) ---------- */
+  12: {
+    color:'sky', title:'Bài 12: Change the following sentences to passive voice',
+    desc:'Chuyển các câu sau sang thể bị động.',
+    type:'sentence', instant:true,
+    questions:[
+      {prompt:'They have discussed the pollution problems since last month.', answer:'The pollution problems have been discussed since last month.', accepted:['the pollution problems have been discussed since last month'], vi:'Họ đã thảo luận về các vấn đề ô nhiễm từ tháng trước.', explanation:'Bị động, hiện tại hoàn thành.', note:'S + have been + P2 + since + mốc thời gian'},
+      {prompt:'Is he going to repair this bicycle?', answer:'Is this bicycle going to be repaired?', accepted:['is this bicycle going to be repaired'], vi:'Anh ấy sẽ sửa chiếc xe đạp này phải không?', explanation:'Bị động với "be going to".', note:'Is + S + going to be + P2?'},
+      {prompt:'Have you sent the invitation cards to your friends?', answer:'Have the invitation cards been sent to your friends?', accepted:['have the invitation cards been sent to your friends'], vi:'Bạn đã gửi thiệp mời cho bạn bè chưa?', explanation:'Bị động, hiện tại hoàn thành dạng câu hỏi.', note:'Have + S + been + P2?'},
+      {prompt:'My father moved the sofa into the living room.', answer:'The sofa was moved into the living room by my father.', accepted:['the sofa was moved into the living room by my father'], vi:'Bố tôi đã chuyển ghế sofa vào phòng khách.', explanation:'Bị động, quá khứ đơn.', note:'S + was/were + P2 + by + O'},
+      {prompt:'They inform me that the manager is going to travel to Germany.', answer:'I am informed that the manager is going to travel to Germany.', accepted:['i am informed that the manager is going to travel to germany'], vi:'Họ thông báo với tôi rằng người quản lý sẽ đi Đức.', explanation:'Bị động, hiện tại đơn.', note:'S + am/is/are + P2 + that + mệnh đề'},
+      {prompt:'We believed that Linda would pass the driving test.', answer:'It was believed that Linda would pass the driving test.', accepted:['it was believed that linda would pass the driving test'], vi:'Chúng tôi tin rằng Linda sẽ đậu kỳ thi lái xe.', explanation:'Bị động với "It + be + P2 + that".', note:'It was believed that + mệnh đề'},
+      {prompt:'Gary gets his brother to clean his car.', answer:'Gary gets his car cleaned.', accepted:['gary gets his car cleaned'], vi:'Gary nhờ em trai rửa xe cho mình.', explanation:'Cấu trúc gây khiến (causative): get + something + P2.', note:'S + gets + O + P2 (causative)'},
+      {prompt:'He will have a veterinary surgeon examine her cat.', answer:'He will have her cat examined.', accepted:['he will have her cat examined'], vi:'Anh ấy sẽ nhờ bác sĩ thú y khám cho con mèo của cô ấy.', explanation:'Cấu trúc gây khiến: have + something + P2.', note:'S + will have + O + P2 (causative)'},
+      {prompt:'People don\u2019t force the children to work hard.', answer:'The children are not forced to work hard.', accepted:['the children are not forced to work hard'], vi:'Người ta không ép trẻ em phải làm việc vất vả.', explanation:'Bị động, hiện tại đơn phủ định.', note:'S + are not + P2 + to V'},
+      {prompt:'Police advise drivers to drive slowly and safely.', answer:'Drivers are advised to drive slowly and safely by police.', accepted:['drivers are advised to drive slowly and safely by police'], vi:'Cảnh sát khuyên tài xế lái xe chậm và an toàn.', explanation:'Bị động, hiện tại đơn.', note:'S + are advised + to V + by + O'},
+      {prompt:'Her sister is preparing the breakfast in the kitchen.', answer:'The breakfast is being prepared in the kitchen.', accepted:['the breakfast is being prepared in the kitchen'], vi:'Chị của cô ấy đang chuẩn bị bữa sáng trong bếp.', explanation:'Bị động, hiện tại tiếp diễn.', note:'S + is being + P2'},
+      {prompt:'We should clean our teeth at least once a day.', answer:'Our teeth should be cleaned at least once a day.', accepted:['our teeth should be cleaned at least once a day'], vi:'Chúng ta nên đánh răng ít nhất một lần một ngày.', explanation:'Bị động với động từ khiếm khuyết.', note:'S + should be + P2'},
+      {prompt:'The shop assistant handed the packages to the customer.', answer:'The packages were handed to the customer.', accepted:['the packages were handed to the customer'], vi:'Nhân viên bán hàng đã đưa các gói hàng cho khách.', explanation:'Bị động, quá khứ đơn.', note:'S + was/were + P2'},
+      {prompt:'The director award the first prize to the best competitor.', answer:'The first prize is awarded to the best competitor.', accepted:['the first prize is awarded to the best competitor'], vi:'Giám đốc trao giải nhất cho thí sinh xuất sắc nhất.', explanation:'Bị động, hiện tại đơn.', note:'S + is + P2 + to + O'},
+      {prompt:'The organizer says that the performance will start at 7 p.m.', answer:'It is said that the performance will start at 7 p.m.', accepted:['it is said that the performance will start at 7 p.m'], vi:'Ban tổ chức nói buổi biểu diễn sẽ bắt đầu lúc 7 giờ tối.', explanation:'Bị động với "It + be + said + that".', note:'It is said that + mệnh đề'},
+      {prompt:'He recommended that we shouldn\u2019t stay in the suburb.', answer:'It was recommended that we shouldn\u2019t stay in the suburb.', accepted:['it was recommended that we shouldn\u2019t stay in the suburb'], vi:'Anh ấy khuyên chúng tôi không nên ở ngoại ô.', explanation:'Bị động với "It + was + recommended + that".', note:'It was recommended that + mệnh đề'},
+      {prompt:'I had a technician repair my mobile phone.', answer:'I had my mobile phone repaired.', accepted:['i had my mobile phone repaired'], vi:'Tôi đã nhờ thợ sửa điện thoại của mình.', explanation:'Cấu trúc gây khiến: have + something + P2.', note:'S + had + O + P2 (causative)'},
+      {prompt:'They often get the technician to maintain the water heater.', answer:'They often get the water heater maintained.', accepted:['they often get the water heater maintained'], vi:'Họ thường nhờ thợ bảo trì bình nước nóng.', explanation:'Cấu trúc gây khiến: get + something + P2.', note:'S + get + O + P2 (causative)'},
+      {prompt:'How long have you waited for the dentist?', answer:'How long has the dentist been waited for?', accepted:['how long has the dentist been waited for'], vi:'Bạn đã chờ nha sĩ bao lâu rồi?', explanation:'Bị động với cụm động từ "wait for".', note:'How long has + O + been + P2 + for?'},
+      {prompt:'People saw her plant the tree.', answer:'She was seen to plant the tree.', accepted:['she was seen to plant the tree'], vi:'Người ta thấy cô ấy trồng cây.', explanation:'Bị động với động từ tri giác "see": be seen + to V.', note:'S + was seen + to V'},
+    ]
+  },
+
+  /* ---------- BÀI 13: WRITING II (Viết lại câu - quá khứ hoàn thành) ---------- */
+  13: {
+    color:'lime', title:'Bài 13: Finish the sentences so that their meaning stays the same',
+    desc:'Viết lại câu sao cho nghĩa không đổi so với câu gốc, bắt đầu bằng từ gợi ý.',
+    type:'sentence', instant:true,
+    questions:[
+      {original:'Phillip had gone out before they arrived.', starter:'After', answer:'Phillip had gone out, they arrived.', accepted:['phillip had gone out, they arrived'], vi:'Phillip đã ra ngoài trước khi họ đến.', explanation:'Đảo lại với "After" đứng đầu câu.', note:'After + S + had + P2, S + V-ed'},
+      {original:'I had lunch then I watched an interesting film.', starter:'Before', answer:'I watched an interesting film, I had had lunch.', accepted:['i watched an interesting film, i had had lunch'], vi:'Tôi đã ăn trưa rồi mới xem một bộ phim thú vị.', explanation:'Đảo lại với "Before" đứng đầu câu, hành động trước dùng quá khứ hoàn thành.', note:'Before + S + V-ed, S + had + P2'},
+      {original:'There was a power cut before they got out of the room.', starter:'When', answer:'they got out of the room, there had been a power cut.', accepted:['they got out of the room, there had been a power cut'], vi:'Đã có sự cố mất điện trước khi họ ra khỏi phòng.', explanation:'Đảo lại với "When" đứng đầu câu.', note:'When + S + V-ed, there had been + N'},
+      {original:'After the manager had informed us clearly about the job, we started our work.', starter:'By the time', answer:'we started our work, the manager had informed us clearly about the job.', accepted:['we started our work, the manager had informed us clearly about the job'], vi:'Sau khi quản lý đã thông báo rõ ràng cho chúng tôi về công việc, chúng tôi bắt đầu làm việc.', explanation:'"By the time" thay cho "After", đảo vị trí hai mệnh đề.', note:'By the time + S + V-ed, S + had + P2'},
+      {original:'My father had had dinner by the time I came home.', starter:'Before', answer:'I came home, my father had had dinner.', accepted:['i came home, my father had had dinner'], vi:'Bố tôi đã ăn tối xong trước khi tôi về nhà.', explanation:'Đảo lại với "Before" đứng đầu câu.', note:'Before + S + V-ed, S + had + P2'},
+    ]
+  },
+
+  /* ---------- BÀI 14: WRITING III (Viết câu từ từ gợi ý - quá khứ hoàn thành) ---------- */
+  14: {
+    color:'orange', title:'Bài 14: Use the given words to write complete sentences',
+    desc:'Dùng các từ gợi ý để viết thành câu hoàn chỉnh (câu quá khứ hoàn thành).',
+    type:'sentence', instant:true,
+    questions:[
+      {prompt:'What/ I/ do/ make you sad/ so much?', answer:'What had I done to make you sad so much?', accepted:['what had i done to make you sad so much'], vi:'Tôi đã làm gì khiến bạn buồn đến vậy?', explanation:'Câu hỏi quá khứ hoàn thành: What had + S + P2?', note:'What had + S + P2 + to V?'},
+      {prompt:'I/ already / quit/ job/ when/ she/ join/ company.', answer:'I had already quit the job when she joined the company.', accepted:['i had already quit the job when she joined the company','i had already quitted the job when she joined the company'], vi:'Tôi đã nghỉ việc trước khi cô ấy vào công ty.', explanation:'Hành động xảy ra trước → quá khứ hoàn thành; hành động xảy ra sau → quá khứ đơn.', note:'S + had already + P2 + when + S + V-ed'},
+      {prompt:'He/ not be able to eat/ dinner/ before/ his wife/ come home.', answer:'He hadn\u2019t been able to eat dinner before his wife came home.', accepted:['he hadn\u2019t been able to eat dinner before his wife came home','he had not been able to eat dinner before his wife came home'], vi:'Anh ấy đã không thể ăn tối trước khi vợ về nhà.', explanation:'Quá khứ hoàn thành phủ định + quá khứ đơn.', note:'S + hadn\u2019t been able to + V + before + S + V-ed'},
+      {prompt:'Anna/ work/ accountant/ four years/ before/ she/ promote.', answer:'Anna had worked as an accountant for four years before she was promoted.', accepted:['anna had worked as an accountant for four years before she was promoted'], vi:'Anna đã làm kế toán được bốn năm trước khi được thăng chức.', explanation:'Quá khứ hoàn thành (had worked) + quá khứ đơn bị động (was promoted).', note:'S + had + P2 + for + time + before + S + was + P2'},
+      {prompt:'My sister/ finish lunch/ by the time/ I/ walk/ kitchen.', answer:'My sister had finished lunch by the time I walked into the kitchen.', accepted:['my sister had finished lunch by the time i walked into the kitchen'], vi:'Chị tôi đã ăn trưa xong trước khi tôi bước vào bếp.', explanation:'"by the time" + quá khứ đơn (walked) + quá khứ hoàn thành (had finished).', note:'S + had + P2 + by the time + S + V-ed'},
+    ]
+  },
+
+  /* ---------- BÀI 15: WRITING IV (Viết lại câu dùng từ cho sẵn) ---------- */
+  15: {
+    color:'pink', title:'Bài 15: Rewrite the following sentences based on the given words',
+    desc:'Viết lại câu sao cho nghĩa không đổi, dùng từ gợi ý cho sẵn.',
+    type:'sentence', instant:true,
+    questions:[
+      {prompt:'Thanks to technology advances, people can predict some weather disasters such as hurricanes and blizzards. (predicted)', answer:'Thanks to technology advances, some of the weather disasters such as hurricanes and blizzards can be predicted.', accepted:['thanks to technology advances, some of the weather disasters such as hurricanes and blizzards can be predicted'], vi:'Nhờ tiến bộ công nghệ, một số thiên tai thời tiết như bão và bão tuyết có thể được dự đoán.', explanation:'Chuyển sang bị động, "some of the weather disasters" làm chủ ngữ mới.', note:'S + can be + predicted (bị động)'},
+      {prompt:'In some cases, lightning can result in wildfires. (caused)', answer:'In some cases, wildfires can be caused by lightning.', accepted:['in some cases, wildfires can be caused by lightning'], vi:'Trong một số trường hợp, sét có thể gây ra cháy rừng.', explanation:'Chuyển "result in" (chủ động) sang "be caused by" (bị động).', note:'S + can be caused by + N'},
+      {prompt:'The three injured men were taken to the hospital by some local people. After that, the ambulance came. (by the time)', answer:'The three injured men had been taken to the hospital by some local people by the time the ambulance came.', accepted:['the three injured men had been taken to the hospital by some local people by the time the ambulance came'], vi:'Ba người bị thương đã được người dân địa phương đưa đến bệnh viện trước khi xe cứu thương đến.', explanation:'"by the time" + quá khứ hoàn thành bị động (had been taken) + quá khứ đơn (came).', note:'S + had been + P2 + by the time + S + V-ed'},
+      {prompt:'The children left the house. Then the house collapsed. (before)', answer:'The children had left the house before the house collapsed.', accepted:['the children had left the house before the house collapsed'], vi:'Bọn trẻ đã rời khỏi nhà trước khi ngôi nhà sập.', explanation:'Hành động xảy ra trước (had left) + "before" + quá khứ đơn (collapsed).', note:'S + had + P2 + before + S + V-ed'},
+      {prompt:'After the latest landslide in Sapa, the local government held a training session to teach people how to protect themselves in some natural disasters. (was)', answer:'After the latest landslide in Sapa, a training session was held by the local government to teach people how to protect themselves in some natural disasters.', accepted:['after the latest landslide in sapa, a training session was held by the local government to teach people how to protect themselves in some natural disasters'], vi:'Sau trận lở đất mới nhất ở Sapa, một buổi tập huấn đã được chính quyền địa phương tổ chức để dạy người dân cách tự bảo vệ trong một số thiên tai.', explanation:'Chuyển sang bị động, "a training session" làm chủ ngữ mới.', note:'S + was held + by + O (bị động)'},
+    ]
+  },
+};
+
+/* ---------- Reading passages ---------- */
+const passages = {
+  p7: {
+    title:'Hurricane Katrina &amp; Hurricane Harvey',
+    html:`As South Texas continues to battle <b>(1)</b> Harvey's record rainfall, the people of Louisiana are marking a tragic anniversary. Twelve years <b>(2)</b>, on August 29, 2005, Hurricane Katrina made landfall near New Orleans. It was one of the <b>(3)</b> devastating natural disasters to ever hit the United States, and the <b>(4)</b> still bears its scars.<br><br>Hurricane Harvey and Hurricane Katrina are <b>(5)</b> beasts, to be sure. Harvey's lingering wrath is very different than Katrina's swift and destructive turn, and the <b>(6)</b> and infrastructural collapses that followed. So far, Harvey <b>(7)</b> claimed a number of lives, but it is a <b>(8)</b> fraction of Katrina's 1,800+ victims.<br><br>From a meteorological perspective, though, how do these <b>(9)</b> compare? Other than timing — an interesting but easily explained coincidence — do they have anything in <b>(10)</b> other than adjacent chambers in the nation's memory?`,
+    vi:`Trong khi Nam Texas tiếp tục chống chọi với lượng mưa kỷ lục của bão Harvey, người dân Louisiana đang kỷ niệm một ngày đầy bi kịch. Mười hai năm trước, vào ngày 29/8/2005, bão Katrina đã đổ bộ gần New Orleans. Đó là một trong những thảm họa thiên nhiên tàn khốc nhất từng xảy ra ở Mỹ, và khu vực này vẫn còn mang những vết sẹo của nó.<br><br>Bão Harvey và Katrina chắc chắn là những "con quái vật" khác nhau. Cơn thịnh nộ dai dẳng của Harvey rất khác với cú rẽ nhanh và tàn phá của Katrina, cùng với sự sụp đổ về xã hội và hạ tầng theo sau đó. Cho đến nay, Harvey đã cướp đi một số sinh mạng, nhưng đó chỉ là một phần nhỏ so với hơn 1.800 nạn nhân của Katrina.<br><br>Nhưng xét từ góc độ khí tượng học, những cơn bão này so sánh với nhau như thế nào? Ngoài thời điểm xảy ra — một sự trùng hợp thú vị nhưng dễ giải thích — liệu chúng có điểm gì chung khác ngoài việc cùng nằm trong ký ức của cả nước không?`
+  },
+  p8: {
+    title:'The 2015 Nepal Earthquake',
+    html:`On April 25, 2015, a 7.8-magnitude earthquake rocked Nepal, caused buildings to collapse, set off avalanches <b>(1)</b> Mount Everest and catapulted the entire region <b>(2)</b> chaos. The worst earthquake in 80 years <b>(3)</b> nearly 9,000 people, injured thousands, destroyed or damaged at <b>(4)</b> 880,000 homes and more <b>(5)</b> 1,200 health facilities. Multiple aftershocks throughout the region hampered rescue operations, <b>(6)</b> survivors and added to the death and injury toll. Then the monsoon <b>(7)</b> compounded the misery as survivors sought shelter amidst ruined <b>(8)</b>. AmeriCares immediately launched a <b>(9)</b> relief effort sending aid workers, <b>(10)</b> teams, and emergency medicines and supplies to the disaster zone.`,
+    vi:`Ngày 25/4/2015, một trận động đất cường độ 7.8 làm rung chuyển Nepal, khiến các tòa nhà sụp đổ, gây ra lở tuyết trên đỉnh Everest và đẩy toàn bộ khu vực vào hỗn loạn. Trận động đất tồi tệ nhất trong 80 năm đã giết chết gần 9.000 người, làm hàng ngàn người bị thương, phá hủy hoặc làm hư hại ít nhất 880.000 ngôi nhà và hơn 1.200 cơ sở y tế. Nhiều dư chấn khắp khu vực đã cản trở hoạt động cứu hộ, khiến người sống sót kinh hoàng và làm tăng thêm số người chết và bị thương. Sau đó mùa mưa càng làm trầm trọng thêm nỗi khổ khi người sống sót tìm nơi trú ẩn giữa những tòa nhà đổ nát. AmeriCares đã ngay lập tức triển khai một nỗ lực cứu trợ quy mô lớn, cử nhân viên cứu trợ, đội y tế, cùng thuốc men và vật tư khẩn cấp đến vùng thảm họa.`
+  },
+  p9: {
+    title:'Tornado',
+    html:`A tornado is a violently rotating column of air that extends from a thunderstorm to the ground and is often \u2013 although not always \u2013 visible as a funnel cloud. Lightening and hail are common in thunderstorms that produce tornadoes. Tornadoes cause extensive damage to structures and disrupt transportation, power, water, gas, communications, and other services in its direct path and in neighbouring areas. Related thunderstorms can cause heavy rains, flash flooding, and hail.<br><br>About 1,200 tornadoes hit the United States every year and every state is at risk. Most tornadoes in the United States occur east of the Rocky Mountains with concentrations in the central and southern plains, the Gulf Coast and Florida.<br><br>Tornadoes can strike in any season, but occur most often in the spring and summer months. They can occur at all hours of the day and night, but are most likely to occur between 3 p.m. and 9 p.m.`,
+    vi:`Lốc xoáy là một cột không khí xoáy dữ dội kéo dài từ một cơn bão xuống mặt đất và thường \u2013 dù không phải luôn luôn \u2013 có thể thấy được dưới dạng đám mây hình phễu. Sét và mưa đá thường xuất hiện trong các cơn bão gây ra lốc xoáy. Lốc xoáy gây thiệt hại lớn cho các công trình và làm gián đoạn giao thông, điện, nước, khí đốt, liên lạc và các dịch vụ khác trên đường đi trực tiếp và các khu vực lân cận. Các cơn bão liên quan có thể gây ra mưa lớn, lũ quét và mưa đá.<br><br>Khoảng 1.200 cơn lốc xoáy xảy ra ở Mỹ mỗi năm và mọi bang đều có nguy cơ. Hầu hết lốc xoáy ở Mỹ xảy ra ở phía đông dãy núi Rocky, tập trung ở vùng đồng bằng trung tâm và phía nam, vùng Vịnh và Florida.<br><br>Lốc xoáy có thể xảy ra vào bất kỳ mùa nào, nhưng thường xảy ra nhất vào mùa xuân và mùa hè. Chúng có thể xảy ra vào bất kỳ giờ nào trong ngày và đêm, nhưng dễ xảy ra nhất trong khoảng từ 3 giờ chiều đến 9 giờ tối.`
+  },
+  p11: {
+    title:'Earth Day Network',
+    html:`Earth Day Network's mission is to diversify, educate and activate the environmental movement worldwide. More <b>(1)</b> 1 billion people now participate in Earth Day activities <b>(2)</b> year. This can make it the largest observance in the world. Members of this organization <b>(3)</b> through a combination of education, public policy, and consumer campaigns.<br><br>The first Earth Day <b>(4)</b> April 22, 1970, activated 20 million Americans from all walks of life and is widely <b>(5)</b> with launching the modern environmental movement. The passage of the landmark Clean Air Act, Clean Water Act, Endangered Species Act and <b>(6)</b> other ground-breaking environmental laws soon followed. Twenty years <b>(7)</b>, Earth Day went global, mobilizing 200 million people in 141 countries and lifting environmental issues onto the world stage. Now, this day is becoming <b>(8)</b> and more popular in over the world.`,
+    vi:`Sứ mệnh của Earth Day Network là đa dạng hóa, giáo dục và thúc đẩy phong trào môi trường trên toàn thế giới. Hiện nay hơn 1 tỷ người tham gia các hoạt động Ngày Trái Đất mỗi năm. Điều này khiến nó trở thành sự kiện được hưởng ứng lớn nhất thế giới. Các thành viên của tổ chức này hoạt động thông qua sự kết hợp giữa giáo dục, chính sách công và các chiến dịch tiêu dùng.<br><br>Ngày Trái Đất đầu tiên vào 22/4/1970 đã huy động 20 triệu người Mỹ từ mọi tầng lớp và được ghi nhận rộng rãi là đã khởi xướng phong trào môi trường hiện đại. Sự ra đời của các đạo luật mang tính bước ngoặt như Luật Không khí Sạch, Luật Nước Sạch, Luật Các loài Nguy cấp và nhiều luật môi trường đột phá khác đã sớm nối tiếp theo sau. Hai mươi năm sau, Ngày Trái Đất đã trở thành sự kiện toàn cầu, huy động 200 triệu người ở 141 quốc gia và đưa các vấn đề môi trường lên sân khấu thế giới. Ngày nay, ngày này ngày càng trở nên phổ biến hơn trên khắp thế giới.`
+  }
+};
+
+/* ========== STATE ========== */
+const completedTasks = new Set();
+const scores = {};
+const TOTAL_TASKS = 15;
+const reorderState = {};
+
+/* ========== HELPERS ========== */
+function normalize(str){
+  return (str||'').trim().toLowerCase()
+    .replace(/[\u2018\u2019]/g,"'")
+    .replace(/["\u201C\u201D]/g,'')
+    .replace(/[.,!?;:]/g,'')
+    .replace(/\s+/g,' ');
+}
+function ringClass(c){ return `bg-${COLORS[c].ring}-100 ${COLORS[c].head} `; }
+function numBadge(idx){ return `<span class="bg-white border border-slate-200 text-slate-600 font-bold text-xs px-2 py-1 rounded-lg min-w-[28px] text-center">${idx+1}</span>`; }
+function fbBox(num,idx){ return `<div id="fb_t${num}_${idx}" class="explanation-box mt-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-sm text-blue-800"></div>`; }
+function widthFor(ref){ const l=(ref||'').length; return l<7?'w-28':l<13?'w-40':'w-56'; }
+function inputBox(num,idx,ref,full){
+  const width = full ? 'w-full' : widthFor(ref);
+  const instant = tasks[num] && tasks[num].instant && (tasks[num].type==='sentence' || tasks[num].type==='reading') ? ` oninput="gradeOneText(${num},${idx})"` : '';
+  return `<input type="text" id="t${num}_q${idx}" class="answer-input ${width} px-3 py-1 rounded-lg text-sm font-semibold" placeholder="..." autocomplete="off" spellcheck="false"${instant}>`;
+}
+
+/* ========== PRONUNCIATION ========== */
+if('speechSynthesis' in window){ window.speechSynthesis.onvoiceschanged = ()=>{}; }
+function speak(text, btn){
+  try{
+    if(!('speechSynthesis' in window)){ alert('Trình duyệt của bạn không hỗ trợ phát âm tự động. Hãy thử Chrome, Edge hoặc Safari.'); return; }
+    window.speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='en-US'; u.rate=0.9; u.pitch=1;
+    const voices=window.speechSynthesis.getVoices();
+    const en=voices.find(v=>/en[-_]?(us|gb)/i.test(v.lang)) || voices.find(v=>/^en/i.test(v.lang));
+    if(en) u.voice=en;
+    if(btn){ btn.classList.add('speaking'); u.onend=()=>btn.classList.remove('speaking'); u.onerror=()=>btn.classList.remove('speaking'); }
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+/* ========== VOCAB ========== */
+function buildVocab(){
+  const grid=document.getElementById('vocab-grid');
+  grid.innerHTML = vocab.map(v=>`
+    <div class="vcard bg-amber-50 border border-amber-200 rounded-xl p-3 cursor-pointer" onclick="this.classList.toggle('open')">
+      <div class="flex items-center justify-between">
+        <div><span class="font-black text-amber-700 text-lg">${v.w}</span>
+          <span class="text-xs text-slate-400 ml-1">${v.ipa}</span></div>
+        <div class="flex items-center gap-2">
+          <button data-w="${v.w}" onclick="event.stopPropagation();speak(this.dataset.w,this)" class="speak-btn w-8 h-8 rounded-full bg-amber-100 text-amber-600 hover:bg-amber-200 hover:scale-110 transition flex items-center justify-center" title="Nghe phát âm" aria-label="Nghe phát âm ${v.w}">
+            <i class="fa-solid fa-volume-high text-sm"></i>
+          </button>
+          <i class="fa-solid fa-chevron-down text-amber-400 text-xs"></i>
+        </div>
+      </div>
+      <div class="text-sm text-slate-600 font-semibold">${v.vi}</div>
+      <div class="vexample mt-2 pt-2 border-t border-amber-200 text-sm">
+        <p class="text-slate-700">${v.ex}</p>
+        <p class="text-slate-400 italic text-xs mt-0.5">${v.exvi}</p>
+      </div>
+    </div>`).join('');
+}
+
+/* ========== TASK SHELL ========== */
+function taskShell(num){
+  const t=tasks[num], c=COLORS[t.color];
+  let extra='';
+  if(t.bank && t.type==='matching'){
+    extra += `<div class="bg-${c.ring}-50 border border-${c.ring}-200 rounded-xl p-3 mb-4">
+      <span class="text-xs font-bold ${c.head} block mb-2"><i class="fa-solid fa-list mr-1"></i>Các nhóm:</span>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-1 text-sm text-slate-700">${t.bank.map(b=>`<div>${b}</div>`).join('')}</div>
+    </div>`;
+  } else if(t.bank){
+    extra += `<div class="flex flex-wrap gap-2 mb-4 bg-${c.ring}-50 rounded-xl p-3">
+      <span class="text-xs font-bold ${c.head} w-full mb-1"><i class="fa-solid fa-box-archive mr-1"></i>Từ cho sẵn:</span>
+      ${t.bank.map(w=>`<span class="bg-white border border-${c.ring}-200 ${c.head} text-sm font-bold px-3 py-1 rounded-full">${w}</span>`).join('')}
+    </div>`;
+  }
+  if(t.intro){
+    extra += `<div class="bg-${c.ring}-50 border border-${c.ring}-200 rounded-xl p-3 mb-4 text-sm text-slate-600 italic">${t.intro}</div>`;
+  }
+  if(t.passageId){
+    const p=passages[t.passageId];
+    extra += `<div class="bg-${c.ring}-50 border border-${c.ring}-200 rounded-xl p-4 mb-4 text-sm leading-relaxed text-slate-700">
+      <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
+        <h4 class="font-extrabold ${c.head} uppercase tracking-wide text-xs">${p.title}</h4>
+        <button onclick="toggleVI('${t.passageId}')" class="text-xs font-bold bg-white border border-${c.ring}-200 ${c.head} px-3 py-1 rounded-full hover:scale-105 transition"><i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt</button>
+      </div>
+      <p id="${t.passageId}-en">${p.html}</p>
+      <p id="${t.passageId}-vi" class="vi-hidden mt-3 pt-3 border-t border-${c.ring}-200 italic text-slate-500">${p.vi}</p>
+    </div>`;
+  }
+  return `<div class="task-card bg-white rounded-2xl shadow-md p-6">
+    <div class="flex items-center gap-3 mb-1">
+      <div class="bg-${c.ring}-100 ${c.head} font-black text-lg w-10 h-10 rounded-full flex items-center justify-center">${num}</div>
+      <div><h2 class="text-xl font-extrabold ${c.head}">${t.title}</h2></div>
+    </div>
+    <p class="text-sm text-slate-500 mb-4">${t.desc}</p>
+    ${extra}
+    <div id="task${num}-questions" class="space-y-3"></div>
+    <div class="flex flex-wrap gap-3 mt-5 items-center">
+      <button onclick="checkTask(${num})" class="${c.btn} text-white font-bold px-6 py-2.5 rounded-full transition-all hover:scale-105 shadow"><i class="fa-solid fa-check mr-1"></i>Kiểm tra</button>
+      <button onclick="revealTask(${num})" class="bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full transition-all"><i class="fa-solid fa-eye mr-1"></i>Xem đáp án</button>
+      <button onclick="resetTask(${num})" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-5 py-2.5 rounded-full transition-all"><i class="fa-solid fa-rotate-left mr-1"></i>Làm lại</button>
+      <div id="task${num}-score" class="hidden score-badge ml-auto bg-emerald-100 text-emerald-700 font-extrabold px-5 py-2 rounded-full text-lg"></div>
+    </div>
+  </div>`;
+}
+
+/* ========== RENDERERS ========== */
+function renderQuestion(num,q,idx,type){
+  if(type==='mcq'){
+    const letters=['A','B','C','D'];
+    const opts=q.options.map((o,i)=>{
+      const ipa=q.ipas?q.ipas[i]:null;
+      const vi=q.vis?q.vis[i]:null;
+      const cleanWord=o.replace(/<[^>]+>/g,'');
+      const hideDetail = (num===1 || num===2) ? ' mcq-detail-hidden' : '';
+      const wordBlock = ipa
+        ? `<span class="flex flex-col leading-tight"><span>${o}</span><span class="text-[10px] text-slate-400 font-normal${hideDetail}">${ipa}</span>${vi?`<span class="text-[10px] text-emerald-500 font-normal italic${hideDetail}">${vi}</span>`:''}</span>
+           <button type="button" data-w="${cleanWord}" onclick="event.stopPropagation();event.preventDefault();speak(this.dataset.w,this)" class="speak-btn w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 hover:bg-emerald-200 hover:scale-110 transition flex items-center justify-center ml-auto shrink-0${hideDetail}" title="Nghe phát âm" aria-label="Nghe phát âm ${cleanWord}"><i class="fa-solid fa-volume-high text-[10px]"></i></button>`
+        : o;
+      return `
+      <label class="option-label flex items-center gap-2 px-4 py-2 rounded-xl cursor-pointer text-sm font-semibold" id="mcq_t${num}_${idx}_${i}" onclick="selectMCQ(${num},${idx},${i})">
+        <input type="radio" name="mcq${num}_${idx}" value="${i}" class="hidden">
+        <span class="bg-slate-200 text-slate-700 text-xs font-black w-6 h-6 rounded-full flex items-center justify-center shrink-0">${letters[i]}</span>${wordBlock}
+      </label>`;}).join('');
+    const qLabel = /^\d+\.?$/.test((q.q||'').trim()) ? '' : `<p class="font-semibold text-slate-700 text-sm">${q.q}</p>`;
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2 mb-3">${numBadge(idx)}${qLabel}</div>
+      <div class="flex flex-wrap gap-2 ml-8">${opts}</div>${fbBox(num,idx)}</div>`;
+  }
+  if(type==='fill'){
+    const parts=q.sentence.split('___');
+    const nb=parts.length-1;
+    const answersArr=q.answers||[q.answer];
+    let html='';
+    for(let b=0;b<nb;b++){
+      html += parts[b];
+      const w=widthFor(answersArr[b]);
+      const instantAttr = tasks[num] && tasks[num].instant ? ` oninput="gradeOneFill(${num},${idx})"` : '';
+      html += `<input type="text" id="t${num}_q${idx}_${b}" class="answer-input ${w} px-3 py-1 rounded-lg text-sm font-semibold" placeholder="..." autocomplete="off" spellcheck="false"${instantAttr}>`;
+    }
+    html += parts[nb]||'';
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2 flex-wrap">${numBadge(idx)}
+        <span class="text-slate-700 font-semibold text-sm leading-8 flex-1 flex flex-wrap items-center gap-1">${html}</span>
+      </div>${fbBox(num,idx)}</div>`;
+  }
+  if(type==='sentence'){
+    if(q.starter){
+      const instantAttr = tasks[num] && tasks[num].instant ? ` oninput="gradeOneText(${num},${idx})"` : '';
+      return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+        <div class="flex items-start gap-2">${numBadge(idx)}
+          <div class="flex-1 min-w-0">
+            <p class="text-slate-700 text-sm mb-3 font-semibold">${q.original}</p>
+            <div class="flex items-center gap-3 w-full">
+              <span class="text-slate-800 font-extrabold text-base whitespace-nowrap">${q.starter}</span>
+              <input type="text" id="t${num}_q${idx}" class="answer-input flex-1 min-w-[180px] px-3 py-2 rounded-lg text-sm font-semibold" placeholder="..." autocomplete="off" spellcheck="false"${instantAttr}>
+            </div>
+          </div>
+        </div>${fbBox(num,idx)}</div>`;
+    }
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2">${numBadge(idx)}
+        <div class="flex-1"><p class="text-slate-500 text-xs mb-1 font-semibold"><i class="fa-solid fa-pen mr-1"></i>Gợi ý: <span class="text-slate-700 italic">${q.prompt}</span></p>${inputBox(num,idx,q.answer,true)}</div>
+      </div>${fbBox(num,idx)}</div>`;
+  }
+  if(type==='matching'){
+    const bank=tasks[num].bank;
+    const opts = bank.map((b,i)=>`<option value="${i}">${b}</option>`).join('');
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2 flex-wrap">${numBadge(idx)}
+        <p class="font-semibold text-slate-700 text-sm flex-1 min-w-[160px]">${q.q}</p>
+        <select id="t${num}_q${idx}" class="answer-input px-3 py-1.5 rounded-lg text-sm font-semibold"><option value="-1">-- chọn --</option>${opts}</select>
+      </div>${fbBox(num,idx)}</div>`;
+  }
+  if(type==='reorder'){
+    const chips=q.words.map((w,i)=>`<span class="word-chip bg-white border-2 border-lime-300 text-lime-700 font-bold text-sm px-3 py-1.5 rounded-xl shadow-sm" id="chip_t${num}_${idx}_${i}" onclick="addChip(${num},${idx},${i})">${w}</span>`).join('');
+    const promptLine = q.prompt ? `<p class="text-slate-600 text-sm font-semibold mb-2"><i class="fa-solid fa-shuffle mr-1 text-lime-600"></i>${q.prompt}</p>` : '';
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2">${numBadge(idx)}
+        <div class="flex-1">
+          ${promptLine}
+          <div id="ans_t${num}_${idx}" class="answer-line bg-white border-2 border-dashed border-slate-300 rounded-xl p-2 flex flex-wrap gap-2 mb-2 items-center text-slate-400 text-sm"></div>
+          <div class="flex flex-wrap gap-2">${chips}</div>
+        </div>
+      </div>${fbBox(num,idx)}</div>`;
+  }
+  if(type==='reading'){
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2">${numBadge(idx)}
+        <div class="flex-1"><p class="text-slate-700 font-semibold text-sm mb-2">${q.q}</p>${inputBox(num,idx,q.answer,true)}</div>
+      </div>${fbBox(num,idx)}</div>`;
+  }
+  return '';
+}
+
+/* ========== BUILD ========== */
+document.addEventListener('DOMContentLoaded', ()=>{
+  buildVocab();
+  for(let n=1;n<=TOTAL_TASKS;n++){
+    document.getElementById(`task${n}-wrap`).innerHTML = taskShell(n);
+    const box=document.getElementById(`task${n}-questions`);
+    const t=tasks[n];
+    t.questions.forEach((q,i)=>{ box.innerHTML += renderQuestion(n,q,i,t.type); });
+    if(t.type==='reorder'){ t.questions.forEach((q,i)=>renderAnswerLine(n,i)); }
+  }
+  const essay=document.getElementById('essay-input');
+  if(essay){ essay.addEventListener('input', ()=>{
+    const words=essay.value.trim().split(/\s+/).filter(Boolean).length;
+    document.getElementById('essay-count').textContent=`Số từ: ${words}`;
+  }); }
+});
+
+/* ========== INTERACTIONS ========== */
+function selectMCQ(num,idx,i){
+  const opts=tasks[num].questions[idx].options;
+  for(let j=0;j<opts.length;j++){const el=document.getElementById(`mcq_t${num}_${idx}_${j}`); if(el){el.classList.remove('selected'); el.querySelector('input').checked=false;}}
+  const sel=document.getElementById(`mcq_t${num}_${idx}_${i}`);
+  if(sel){ sel.classList.add('selected'); sel.querySelector('input').checked=true; }
+  if(tasks[num].instant){ gradeOneMCQ(num,idx); }
+}
+function gradeOneMCQ(num,idx){
+  const t=tasks[num], q=t.questions[idx];
+  const qblock=document.getElementById(`qblock_t${num}_${idx}`);
+  if(qblock) qblock.classList.add('show-mcq-detail');
+  const sel=document.querySelector(`input[name="mcq${num}_${idx}"]:checked`);
+  const chosen=sel?parseInt(sel.value):-1;
+  q.options.forEach((o,j)=>{const el=document.getElementById(`mcq_t${num}_${idx}_${j}`); if(el) el.classList.remove('correct-opt','wrong-opt');});
+  const corr=document.getElementById(`mcq_t${num}_${idx}_${q.answer}`); if(corr) corr.classList.add('correct-opt');
+  if(chosen!==-1 && chosen!==q.answer){ const wr=document.getElementById(`mcq_t${num}_${idx}_${chosen}`); if(wr) wr.classList.add('wrong-opt'); }
+  const ok=chosen===q.answer;
+  const answerLabel=`${['A','B','C','D'][q.answer]}. ${q.options[q.answer]}`;
+  const fb=document.getElementById(`fb_t${num}_${idx}`);
+  fb.innerHTML=buildFeedbackHTML(ok, answerLabel, q, num);
+  fb.classList.add('show');
+}
+function gradeOneText(num,idx){
+  const t=tasks[num], q=t.questions[idx];
+  const inp=document.getElementById(`t${num}_q${idx}`);
+  const fb=document.getElementById(`fb_t${num}_${idx}`);
+  if(!inp || !fb) return;
+  const raw=inp.value.trim();
+  if(raw===''){
+    inp.classList.remove('correct-input','wrong-input');
+    fb.classList.remove('show'); fb.innerHTML='';
+    return;
+  }
+  let ok=false;
+  if(t.type==='sentence'){
+    const val=normalize(inp.value);
+    const acc=(q.accepted||[q.answer]).map(normalize);
+    ok=acc.includes(val)&&val!=='';
+  } else if(t.type==='reading'){
+    const val=normalize(inp.value);
+    ok=val!=='' && q.keywords && q.keywords.every(k=>val.includes(normalize(k)));
+  }
+  inp.classList.remove('correct-input','wrong-input');
+  inp.classList.add(ok?'correct-input':'wrong-input');
+  fb.innerHTML=(ok?'✅ ':`❌ Đáp án đúng: <b>${q.answer}</b><br>`)+`<span class='text-blue-700'>💡 ${q.explanation}</span>`+(q.vi?`<br><span class='text-slate-500'>📖 Nghĩa: <i>${q.vi}</i></span>`:'')+(q.note?`<br><span class='text-violet-600'>📐 Công thức: <b>${q.note}</b></span>`:'');
+  fb.classList.add('show');
+}
+function toggleVI(pid){ document.getElementById(`${pid}-vi`).classList.toggle('vi-hidden'); }
+function toggleModelEssay(){ document.getElementById('model-essay').classList.toggle('vi-hidden'); }
+
+/* reorder */
+function addChip(num,idx,i){
+  const key=`${num}_${idx}`;
+  if(!reorderState[key]) reorderState[key]=[];
+  reorderState[key].push(i);
+  const chip=document.getElementById(`chip_t${num}_${idx}_${i}`); if(chip) chip.classList.add('used');
+  renderAnswerLine(num,idx);
+  if(tasks[num] && tasks[num].instant && tasks[num].type==='reorder' && reorderState[key].length===tasks[num].questions[idx].words.length){
+    gradeOneReorder(num,idx);
+  }
+}
+function removeChip(num,idx,pos){
+  const key=`${num}_${idx}`;
+  const i=reorderState[key][pos];
+  reorderState[key].splice(pos,1);
+  const chip=document.getElementById(`chip_t${num}_${idx}_${i}`); if(chip) chip.classList.remove('used');
+  renderAnswerLine(num,idx);
+  if(tasks[num] && tasks[num].instant && tasks[num].type==='reorder'){
+    const fb=document.getElementById(`fb_t${num}_${idx}`); if(fb){fb.classList.remove('show'); fb.innerHTML='';}
+    const line=document.getElementById(`ans_t${num}_${idx}`); if(line){line.classList.remove('border-emerald-400','border-rose-400');}
+  }
+}
+function gradeOneReorder(num,idx){
+  const q=tasks[num].questions[idx];
+  const key=`${num}_${idx}`;
+  const built=(reorderState[key]||[]).map(wi=>q.words[wi]).join(' ');
+  const acc=(q.accepted||[q.answer]).map(normalize);
+  const ok=acc.includes(normalize(built));
+  const line=document.getElementById(`ans_t${num}_${idx}`);
+  if(line){ line.classList.remove('border-emerald-400','border-rose-400'); line.classList.add(ok?'border-emerald-400':'border-rose-400'); }
+  const fb=document.getElementById(`fb_t${num}_${idx}`);
+  if(fb){
+    fb.innerHTML=(ok?'✅ ':`❌ Đáp án đúng: <b>${q.answer}</b><br>`)+`<span class='text-blue-700'>💡 ${q.explanation}</span>`+(q.vi?`<br><span class='text-slate-500'>📖 Nghĩa: <i>${q.vi}</i></span>`:'')+(q.note?`<br><span class='text-violet-600'>📐 Công thức: <b>${q.note}</b></span>`:'');
+    fb.classList.add('show');
+  }
+}
+function renderAnswerLine(num,idx){
+  const key=`${num}_${idx}`;
+  const line=document.getElementById(`ans_t${num}_${idx}`); if(!line) return;
+  const words=tasks[num].questions[idx].words;
+  if(!reorderState[key] || reorderState[key].length===0){ line.innerHTML='<span class="italic">Nhấp các từ bên dưới để xếp câu…</span>'; return; }
+  line.innerHTML = reorderState[key].map((wi,pos)=>`<span class="word-chip bg-lime-500 text-white font-bold text-sm px-3 py-1.5 rounded-xl" onclick="removeChip(${num},${idx},${pos})">${words[wi]}</span>`).join('');
+}
+
+
+function formatEx4Explanation(exp){
+  exp = exp || '';
+  let need = '', word = '', tip = '', easy = '';
+  const wfKey = ' Word form: ';
+  const tipKey = '. 📌 Mẹo nhớ: ';
+  const easyKey = '. 👉 Công thức dễ nhớ: ';
+  const wfIdx = exp.indexOf(wfKey);
+  if(wfIdx >= 0){ need = exp.slice(0, wfIdx).trim(); exp = exp.slice(wfIdx + wfKey.length); }
+  else { need = exp.trim(); exp = ''; }
+  const tipIdx = exp.indexOf(tipKey);
+  if(tipIdx >= 0){ word = exp.slice(0, tipIdx).trim(); exp = exp.slice(tipIdx + tipKey.length); }
+  else { word = exp.trim(); exp = ''; }
+  const easyIdx = exp.indexOf(easyKey);
+  if(easyIdx >= 0){ tip = exp.slice(0, easyIdx).trim(); easy = exp.slice(easyIdx + easyKey.length).trim(); }
+  else { tip = exp.trim(); }
+
+  const wordLines = word
+    ? word.replace(/^•\s*/, '').split(/\s*•\s*/).filter(Boolean).map(x=>`<div>• ${x.trim().replace(/\.$/,'')}</div>`).join('')
+    : '';
+  const tipLines = tip
+    ? tip.replace(/^•\s*/, '').split(/;\s*/).filter(Boolean).map(x=>`<div>• ${x.trim().replace(/\.$/,'')}</div>`).join('')
+    : '';
+  const easyText = easy ? easy.replace(/: /, ':<br><b>').replace(/\.$/, '</b>') : '';
+
+  return `
+    <div class="leading-7 text-blue-800">
+      ${need?`<div><b>💡 Giải thích:</b><br>${need}</div>`:''}
+      ${wordLines?`<br><div><b>📚 Word family:</b><br>${wordLines}</div>`:''}
+      ${tipLines?`<br><div><b>📌 Mẹo nhớ:</b><br>${tipLines}</div>`:''}
+      ${easyText?`<br><div><b>👉 Công thức dễ nhớ:</b><br>${easyText}</div>`:''}
+    </div>`;
+}
+
+function buildFeedbackHTML(ok, answerLabel, q, num){
+  if(num===4){
+    return `${ok ? '✅' : `❌ Đáp án đúng: <b>${answerLabel}</b><br>`} ${ok ? '<b>Chính xác!</b><br>' : ''}`+
+      formatEx4Explanation(q.explanation)+
+      (q.vi?`<br><span class='text-slate-500'>📖 Nghĩa câu: <i>${q.vi}</i></span>`:'')+
+      (q.note?`<br><span class='text-violet-600'>📐 Công thức: <b>${q.note}</b></span>`:'');
+  }
+  return (ok?'✅ ':`❌ Đáp án đúng: <b>${answerLabel}</b><br>`)+`<span class='text-blue-700'>💡 ${q.explanation}</span>`+(q.vi?`<br><span class='text-slate-500'>📖 Nghĩa: <i>${q.vi}</i></span>`:'')+(q.note?`<br><span class='text-violet-600'>📐 Công thức: <b>${q.note}</b></span>`:'');
+}
+
+/* ========== CHECK ========== */
+function gradeOneFill(num,idx){
+  const t=tasks[num], q=t.questions[idx];
+  if(!t || t.type!=='fill' || !q) return;
+  const answersArr=q.answers||[q.answer];
+  const accArr=q.acc || (q.accepted?[q.accepted]:answersArr.map(a=>[a]));
+  const fb=document.getElementById(`fb_t${num}_${idx}`);
+  let allFilled=true, allOk=true;
+  answersArr.forEach((a,b)=>{
+    const inp=document.getElementById(`t${num}_q${idx}_${b}`); if(!inp){allOk=false;return;}
+    const val=normalize(inp.value);
+    if(val==='') allFilled=false;
+    const acc=(accArr[b]||[a]).map(normalize);
+    const okB=acc.includes(val)&&val!=='';
+    inp.classList.remove('correct-input','wrong-input');
+    if(val!=='') inp.classList.add(okB?'correct-input':'wrong-input');
+    if(!okB) allOk=false;
+  });
+  if(!fb) return;
+  if(!allFilled){ fb.classList.remove('show'); fb.innerHTML=''; return; }
+  const answerLabel=answersArr.join(' / ');
+  fb.innerHTML=buildFeedbackHTML(allOk, answerLabel, q, num);
+  fb.classList.add('show');
+}
+
+function checkTask(num){
+  const t=tasks[num], qs=t.questions; let correct=0;
+  qs.forEach((q,i)=>{
+    const fb=document.getElementById(`fb_t${num}_${i}`);
+    let ok=false, answerLabel='';
+    if(t.type==='mcq'){
+      const qblock=document.getElementById(`qblock_t${num}_${i}`);
+      if(qblock) qblock.classList.add('show-mcq-detail');
+      const sel=document.querySelector(`input[name="mcq${num}_${i}"]:checked`);
+      const chosen=sel?parseInt(sel.value):-1;
+      q.options.forEach((o,j)=>{const el=document.getElementById(`mcq_t${num}_${i}_${j}`); if(el) el.classList.remove('correct-opt','wrong-opt','selected');});
+      const corr=document.getElementById(`mcq_t${num}_${i}_${q.answer}`); if(corr) corr.classList.add('correct-opt');
+      if(chosen!==-1 && chosen!==q.answer){const wr=document.getElementById(`mcq_t${num}_${i}_${chosen}`); if(wr) wr.classList.add('wrong-opt');}
+      ok=chosen===q.answer; answerLabel=`${['A','B','C','D'][q.answer]}. ${q.options[q.answer]}`;
+    }
+    else if(t.type==='fill'){
+      const answersArr=q.answers||[q.answer];
+      const accArr=q.acc || (q.accepted?[q.accepted]:answersArr.map(a=>[a]));
+      let allOk=true;
+      answersArr.forEach((a,b)=>{
+        const inp=document.getElementById(`t${num}_q${i}_${b}`); if(!inp){allOk=false;return;}
+        const val=normalize(inp.value);
+        const acc=(accArr[b]||[a]).map(normalize);
+        const okB=acc.includes(val)&&val!=='';
+        inp.classList.remove('correct-input','wrong-input'); inp.classList.add(okB?'correct-input':'wrong-input');
+        if(!okB) allOk=false;
+      });
+      ok=allOk; answerLabel=answersArr.join(' / ');
+    }
+    else if(t.type==='sentence'){
+      const inp=document.getElementById(`t${num}_q${i}`); if(!inp)return;
+      const val=normalize(inp.value); const acc=(q.accepted||[q.answer]).map(normalize);
+      ok=acc.includes(val)&&val!==''; inp.classList.remove('correct-input','wrong-input'); inp.classList.add(ok?'correct-input':'wrong-input');
+      answerLabel=q.answer;
+    }
+    else if(t.type==='matching'){
+      const sel=document.getElementById(`t${num}_q${i}`); if(!sel)return;
+      const chosen=parseInt(sel.value); ok=chosen===q.match;
+      sel.classList.remove('correct-input','wrong-input'); sel.classList.add(ok?'correct-input':'wrong-input');
+      answerLabel=t.bank[q.match];
+    }
+    else if(t.type==='reorder'){
+      const key=`${num}_${i}`;
+      const built=(reorderState[key]||[]).map(wi=>q.words[wi]).join(' ');
+      const acc=(q.accepted||[q.answer]).map(normalize);
+      ok=acc.includes(normalize(built));
+      const line=document.getElementById(`ans_t${num}_${i}`);
+      if(line){ line.classList.remove('border-emerald-400','border-rose-400'); line.classList.add(ok?'border-emerald-400':'border-rose-400'); }
+      answerLabel=q.answer;
+    }
+    else if(t.type==='reading'){
+      const inp=document.getElementById(`t${num}_q${i}`); if(!inp)return;
+      const val=normalize(inp.value);
+      ok=val!=='' && q.keywords.every(k=>val.includes(normalize(k)));
+      inp.classList.remove('correct-input','wrong-input'); inp.classList.add(ok?'correct-input':'wrong-input');
+      answerLabel=q.answer;
+    }
+    if(ok) correct++;
+    fb.innerHTML=buildFeedbackHTML(ok, answerLabel, q, num);
+    fb.classList.add('show');
+  });
+  const total=qs.length;
+  scores[num]={correct,total};
+  const scoreEl=document.getElementById(`task${num}-score`);
+  scoreEl.textContent=`🏆 Điểm: ${correct}/${total}`; scoreEl.classList.remove('hidden');
+  completedTasks.add(num); updateProgress();
+  if(completedTasks.size===TOTAL_TASKS) setTimeout(showCompletion,600);
+}
+
+/* ========== REVEAL ========== */
+function revealTask(num){
+  const t=tasks[num];
+  t.questions.forEach((q,i)=>{
+    if(t.type==='mcq'){ const qblock=document.getElementById(`qblock_t${num}_${i}`); if(qblock) qblock.classList.add('show-mcq-detail'); }
+    const fb=document.getElementById(`fb_t${num}_${i}`);
+    let label;
+    if(t.type==='mcq') label=`${['A','B','C','D'][q.answer]}. ${q.options[q.answer]}`;
+    else if(t.type==='matching') label=t.bank[q.match];
+    else if(t.type==='fill') label=(q.answers||[q.answer]).join(' / ');
+    else label=q.answer;
+    fb.innerHTML=`👁️ Đáp án: <b>${label}</b><br><span class='text-blue-700'>💡 ${q.explanation}</span>`+(q.vi?`<br><span class='text-slate-500'>📖 Nghĩa: <i>${q.vi}</i></span>`:'')+(q.note?`<br><span class='text-violet-600'>📐 Công thức: <b>${q.note}</b></span>`:'');
+    fb.classList.add('show');
+  });
+}
+
+/* ========== RESET ========== */
+function resetTask(num){
+  const t=tasks[num];
+  t.questions.forEach((q,i)=>{
+    if(t.type==='fill'){
+      const answersArr=q.answers||[q.answer];
+      answersArr.forEach((a,b)=>{const inp=document.getElementById(`t${num}_q${i}_${b}`); if(inp){inp.value='';inp.classList.remove('correct-input','wrong-input');}});
+    } else if(t.type==='reorder'){
+      reorderState[`${num}_${i}`]=[];
+      q.words.forEach((w,wi)=>{const chip=document.getElementById(`chip_t${num}_${i}_${wi}`); if(chip) chip.classList.remove('used');});
+      const line=document.getElementById(`ans_t${num}_${i}`); if(line){ line.classList.remove('border-emerald-400','border-rose-400'); renderAnswerLine(num,i); }
+    } else {
+      const inp=document.getElementById(`t${num}_q${i}`);
+      if(inp){ if(inp.tagName==='SELECT') inp.value='-1'; else inp.value=''; inp.classList.remove('correct-input','wrong-input'); }
+    }
+    const fb=document.getElementById(`fb_t${num}_${i}`); if(fb){ fb.classList.remove('show'); fb.innerHTML=''; }
+    const qblock=document.getElementById(`qblock_t${num}_${i}`); if(qblock) qblock.classList.remove('show-mcq-detail');
+    if(t.type==='mcq'){ q.options.forEach((o,j)=>{const el=document.getElementById(`mcq_t${num}_${i}_${j}`); if(el){el.classList.remove('correct-opt','wrong-opt','selected'); el.querySelector('input').checked=false;}}); }
+  });
+  const scoreEl=document.getElementById(`task${num}-score`); if(scoreEl) scoreEl.classList.add('hidden');
+  completedTasks.delete(num); delete scores[num]; updateProgress();
+}
+
+/* ========== NAV / PROGRESS / COMPLETION ========== */
+function showTab(id){
+  document.querySelectorAll('.section-page').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active'); b.classList.add('text-slate-600');});
+  document.getElementById(`tab-${id}`).classList.add('active');
+  const btn=[...document.querySelectorAll('.tab-btn')].find(b=>b.getAttribute('onclick')?.includes(`'${id}'`));
+  if(btn){ btn.classList.add('active'); btn.classList.remove('text-slate-600'); }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function updateProgress(){
+  const done=completedTasks.size;
+  document.getElementById('progressText').textContent=`${done} / ${TOTAL_TASKS} bài`;
+  document.getElementById('progressBar').style.width=`${(done/TOTAL_TASKS)*100}%`;
+}
+function showCompletion(){
+  fireConfetti();
+  const banner=document.getElementById('completionBanner'); banner.classList.remove('hidden'); banner.classList.add('show');
+  let c=0,tt=0; Object.values(scores).forEach(s=>{c+=s.correct; tt+=s.total;});
+  document.getElementById('finalScoreDisplay').textContent=`🎯 ${c} / ${tt} câu đúng`;
+}
+function closeBanner(){ const b=document.getElementById('completionBanner'); b.classList.remove('show'); b.classList.add('hidden'); }
+function fireConfetti(){
+  const wrap=document.getElementById('confettiWrap'); wrap.innerHTML='';
+  const colors=['#7f1d1d','#ea580c','#57534e','#dc2626','#f59e0b','#78716c'];
+  for(let i=0;i<90;i++){
+    const p=document.createElement('div'); p.className='confetti-piece';
+    p.style.cssText=`left:${Math.random()*100}vw;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>0.5?'50%':'2px'};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*0.8}s;`;
+    wrap.appendChild(p);
+  }
+  setTimeout(()=>{wrap.innerHTML='';},4000);
+}
+</script>
+</body>
+</html>

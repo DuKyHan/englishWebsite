@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Festivals in Viet Nam – Tiếng Anh 8 · Unit 5</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+
+  :root { --bg: #fffbeb; }
+
+  * { box-sizing: border-box; }
+  body { font-family: 'Nunito', sans-serif; background: var(--bg); }
+
+  .hero-gradient { background: linear-gradient(135deg, #dc2626 0%, #f59e0b 50%, #7c2d12 100%); }
+  .tab-btn { transition: all .2s ease; }
+  .tab-btn.active {
+    background: linear-gradient(135deg, #dc2626, #7c2d12);
+    color: white;
+    box-shadow: 0 4px 14px rgba(220,38,38,.35);
+    transform: translateY(-1px);
+  }
+  .task-card { transition: box-shadow .2s, transform .2s; }
+  .task-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,.10); }
+
+  .option-label { cursor: pointer; transition: all .18s; border: 2px solid #e2e8f0; }
+  .option-label:hover { border-color: #fb923c; background: #fff7ed; }
+  .option-label.selected { border-color: #dc2626; background: #fef2f2; }
+  .option-label.correct-opt { border-color: #22c55e !important; background: #f0fdf4 !important; }
+  .option-label.wrong-opt { border-color: #ef4444 !important; background: #fef2f2 !important; }
+  .mcq-detail-hidden { display: none; }
+  .show-mcq-detail .mcq-detail-hidden { display: block; }
+
+  .explanation-box { display: none; animation: fadeSlide .3s ease forwards; }
+  .explanation-box.show { display: block; }
+  @keyframes fadeSlide { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+
+  input.answer-input, select.answer-input { border: 2px solid #cbd5e1; transition: border .18s; outline: none; background:#fff; }
+  input.answer-input:focus, select.answer-input:focus { border-color: #fb923c; }
+  input.correct-input, select.correct-input { border-color: #22c55e !important; background: #f0fdf4; }
+  input.wrong-input, select.wrong-input { border-color: #ef4444 !important; background: #fef2f2; }
+
+  .score-badge { animation: popIn .35s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn { from { transform: scale(.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+  .confetti-wrap { position: fixed; inset: 0; pointer-events: none; z-index: 9999; }
+  .confetti-piece { position: absolute; width: 10px; height: 10px; border-radius: 2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall { 0% { transform: translateY(-20px) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+
+  .theory-card { border-left: 4px solid transparent; transition: all .2s; }
+  .theory-card:hover { transform: translateX(4px); }
+
+  .progress-bar-fill { transition: width .6s ease; }
+
+  .word-chip { cursor: pointer; transition: all .15s; user-select: none; }
+  .word-chip:hover { transform: scale(1.05); }
+  .word-chip.used { opacity: .3; pointer-events: none; }
+  .answer-line { min-height: 44px; }
+
+  .vcard .vexample { display:none; }
+  .vcard.open .vexample { display:block; animation: fadeSlide .25s ease forwards; }
+  .speak-btn.speaking { animation: pulseSpeak .7s ease-in-out infinite; }
+  @keyframes pulseSpeak { 0%,100% { transform: scale(1); } 50% { transform: scale(1.18); } }
+
+  .section-page { display: none; }
+  .section-page.active { display: block; }
+
+  #completionBanner { display: none; }
+  #completionBanner.show { display: flex; }
+
+  .vi-hidden { display: none; }
+</style>
+</head>
+<body class="min-h-screen">
+
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<!-- ===== HERO ===== -->
+<header class="hero-gradient text-white py-8 px-4 text-center shadow-xl relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <div class="absolute top-4 left-8 text-6xl">🏮</div>
+    <div class="absolute top-2 right-12 text-5xl">🎊</div>
+    <div class="absolute bottom-2 left-1/3 text-4xl">🥮</div>
+    <div class="absolute bottom-4 right-1/4 text-5xl">🐉</div>
+  </div>
+  <p class="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Tiếng Anh 8 · Unit 5</p>
+  <h1 class="font-['Baloo_2'] text-3xl md:text-5xl font-extrabold drop-shadow-lg">🏮 Festivals in Viet Nam 🎊</h1>
+  <p class="mt-2 text-base md:text-lg opacity-90 font-semibold">Simple, Compound &amp; Complex Sentences · Luyện tập tương tác</p>
+  <div class="mt-5 max-w-2xl mx-auto">
+    <div class="flex justify-between text-xs font-bold opacity-80 mb-1">
+      <span>Tiến độ hoàn thành</span>
+      <span id="progressText">0 / 15 bài</span>
+    </div>
+    <div class="bg-white/20 rounded-full h-3 overflow-hidden">
+      <div id="progressBar" class="bg-white rounded-full h-3 progress-bar-fill" style="width:0%"></div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== NAV ===== -->
+<nav class="sticky top-0 z-50 bg-white/90 backdrop-blur shadow-sm px-3 py-2 overflow-x-auto">
+  <div class="flex gap-2 min-w-max mx-auto w-fit">
+    <button class="tab-btn active text-sm font-bold px-4 py-2 rounded-full" onclick="showTab('theory')"><i class="fa-solid fa-book-open mr-1"></i>Lý thuyết</button>
+    <button class="tab-btn text-sm font-bold px-4 py-2 rounded-full text-slate-600" onclick="showTab('vocab')"><i class="fa-solid fa-spell-check mr-1"></i>Từ vựng</button>
+    <span class="self-center text-[10px] font-black text-sky-500 uppercase px-1">Ngữ âm</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task1')">🔊 1</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task2')">📢 2</button>
+    <span class="self-center text-[10px] font-black text-violet-500 uppercase px-1">Trắc nghiệm</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task3')">🅰️ 3</button>
+    <span class="self-center text-[10px] font-black text-fuchsia-500 uppercase px-1">Từ loại</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task4')">🔤 4</button>
+    <span class="self-center text-[10px] font-black text-emerald-500 uppercase px-1">Động từ</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task5')">✏️ 5</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task6')">✏️ 6</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task7')">📜 7</button>
+    <span class="self-center text-[10px] font-black text-rose-500 uppercase px-1">Sửa lỗi</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task8')">🛠️ 8</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task9')">🛠️ 9</button>
+    <span class="self-center text-[10px] font-black text-indigo-500 uppercase px-1">Đọc hiểu</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task10')">📖 10</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task11')">📖 11</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task12')">📖 12</button>
+    <span class="self-center text-[10px] font-black text-pink-500 uppercase px-1">Viết</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task13')">✍️ 13</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task14')">✍️ 14</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task15')">🧩 15</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('writing')">📝 Viết đoạn</button>
+  </div>
+</nav>
+
+<main class="max-w-4xl mx-auto px-4 py-6 pb-20">
+<!-- ==================== THEORY ==================== -->
+<section id="tab-theory" class="section-page active space-y-6">
+  <h2 class="text-2xl font-extrabold text-red-700 flex items-center gap-2"><i class="fa-solid fa-lightbulb text-amber-400"></i> I. SIMPLE SENTENCES (Câu đơn)</h2>
+  <p class="text-slate-500 text-sm -mt-4">Câu đơn giản nhất trong tiếng Anh, chỉ gồm MỘT mệnh đề độc lập.</p>
+
+  <div class="bg-white rounded-2xl shadow-md p-5 theory-card" style="border-left-color:#dc2626">
+    <h3 class="font-extrabold text-red-700 text-lg mb-2"><i class="fa-solid fa-circle-info mr-2 text-red-500"></i>Đặc điểm của câu đơn</h3>
+    <div class="space-y-2 text-sm text-slate-700">
+      <div class="bg-red-50 border border-red-200 rounded-lg p-3"><b class="text-red-700">•</b> Câu đơn chỉ chứa 1 mệnh đề gồm chủ ngữ và vị ngữ.
+        <p class="text-xs text-slate-500 italic mt-1">Learning English is important nowadays. (Ngày nay việc học tiếng Anh rất quan trọng.)</p></div>
+      <div class="bg-white border border-red-200 rounded-lg p-3"><b class="text-red-700">•</b> Có thể có nhiều hơn một chủ ngữ.
+        <p class="text-xs text-slate-500 italic mt-1">Mary and Tom are playing tennis. (Mary và Tom đang chơi tennis.)</p></div>
+      <div class="bg-red-50 border border-red-200 rounded-lg p-3"><b class="text-red-700">•</b> Có thể có nhiều hơn một động từ.
+        <p class="text-xs text-slate-500 italic mt-1">I play some video games and learn English on my computer.</p></div>
+      <div class="bg-white border border-red-200 rounded-lg p-3"><b class="text-red-700">•</b> Có thể có 2 chủ ngữ và 2 động từ.
+        <p class="text-xs text-slate-500 italic mt-1">My sister and I play some video games and learn English on our computer.</p></div>
+    </div>
+  </div>
+
+  <h2 class="text-2xl font-extrabold text-amber-700 flex items-center gap-2 pt-2"><i class="fa-solid fa-lightbulb text-amber-400"></i> II. COMPOUND SENTENCES (Câu ghép)</h2>
+  <p class="text-slate-500 text-sm -mt-4">Câu chứa từ HAI mệnh đề độc lập trở lên, diễn tả các ý có tầm quan trọng ngang nhau.</p>
+
+  <div class="bg-white rounded-2xl shadow-md p-5 theory-card" style="border-left-color:#b45309">
+    <h3 class="font-extrabold text-amber-700 text-lg mb-2"><i class="fa-solid fa-link mr-2 text-amber-500"></i>3 cách nối hai mệnh đề độc lập</h3>
+    <div class="space-y-2 text-sm text-slate-700">
+      <div class="bg-amber-50 border border-amber-200 rounded-lg p-3"><b class="text-amber-700">1. Dấu chấm phẩy (;)</b>
+        <p class="text-xs text-slate-500 italic mt-1">I met David yesterday; he\u2019s just come out of hospital.</p></div>
+      <div class="bg-white border border-amber-200 rounded-lg p-3"><b class="text-amber-700">2. Dấu phẩy (,) + liên từ đẳng lập (FANBOYS: for, and, nor, but, or, yet, so)</b>
+        <p class="text-xs text-slate-500 italic mt-1">He loves her but she doesn\u2019t love him.<br>We missed the bus, so we came to work late.</p></div>
+      <div class="bg-amber-50 border border-amber-200 rounded-lg p-3"><b class="text-amber-700">3. Dấu chấm phẩy (;) + liên từ trạng từ (however, therefore, nevertheless, moreover…) + dấu phẩy (,)</b>
+        <p class="text-xs text-slate-500 italic mt-1">Peter didn\u2019t study; therefore, he failed the test.</p></div>
+    </div>
+  </div>
+
+  <h2 class="text-2xl font-extrabold text-rose-700 flex items-center gap-2 pt-2"><i class="fa-solid fa-lightbulb text-amber-400"></i> III. COMPLEX SENTENCES (Câu phức)</h2>
+  <p class="text-slate-500 text-sm -mt-4">Câu chứa một mệnh đề chính (độc lập) và một hay nhiều mệnh đề phụ thuộc.</p>
+
+  <div class="bg-white rounded-2xl shadow-md p-5 theory-card" style="border-left-color:#9d174d">
+    <h3 class="font-extrabold text-rose-700 text-lg mb-2"><i class="fa-solid fa-diagram-project mr-2 text-rose-500"></i>Cấu trúc &amp; ví dụ</h3>
+    <p class="text-sm text-slate-600 mb-2">Hai mệnh đề được nối bằng dấu phẩy hoặc liên từ phụ thuộc như: <i>because, before, that, which, although, as, if, in order that, since, when, who...</i></p>
+    <div class="space-y-2 text-sm text-slate-700">
+      <div class="bg-rose-50 border border-rose-200 rounded-lg p-3 italic">When I came, they were watching TV. (Khi chúng tôi đến, họ đang xem ti vi.)</div>
+      <div class="bg-white border border-rose-200 rounded-lg p-3 italic">We\u2019ll go out if the rain stops.</div>
+      <div class="bg-rose-50 border border-rose-200 rounded-lg p-3 italic">Although he\u2019s 72, he still walks to work every day.</div>
+    </div>
+    <div class="mt-3 bg-gradient-to-r from-rose-50 to-amber-50 border border-rose-200 rounded-xl p-4">
+      <b class="text-rose-700 text-sm">Một số liên từ phụ thuộc thường gặp:</b>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-1 text-sm text-slate-700 mt-2">
+        <div>after, although, as</div><div>as if, as long as, as much as</div><div>as soon as, as though</div>
+        <div>because, before</div><div>even if, even though, if</div><div>in order to, in case, once</div>
+        <div>since, so that, that, though</div><div>unless, until, when, whenever</div><div>whereas, where, wherever, while</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center pt-2">
+    <button onclick="showTab('vocab')" class="bg-white shadow-md hover:shadow-lg text-red-700 font-bold px-6 py-3 rounded-full transition hover:scale-105"><i class="fa-solid fa-arrow-right mr-2"></i>Sang phần Từ vựng</button>
+  </div>
+</section>
+
+<!-- ==================== VOCAB ==================== -->
+<section id="tab-vocab" class="section-page space-y-4">
+  <div class="bg-white rounded-2xl shadow-md p-5">
+    <div class="flex items-center gap-3 mb-2">
+      <div class="bg-red-100 text-red-700 font-black text-lg w-10 h-10 rounded-full flex items-center justify-center"><i class="fa-solid fa-spell-check"></i></div>
+      <div>
+        <h2 class="text-xl font-extrabold text-red-700">Từ vựng Unit 5</h2>
+        <p class="text-sm text-slate-500">Nhấp vào mỗi thẻ để xem ví dụ · Nhấn <i class="fa-solid fa-volume-high text-red-500"></i> để nghe phát âm.</p>
+      </div>
+    </div>
+    <div id="vocab-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4"></div>
+  </div>
+</section>
+
+<!-- ==================== TASK SHELLS ==================== -->
+<section id="tab-task1" class="section-page"><div id="task1-wrap"></div></section>
+<section id="tab-task2" class="section-page"><div id="task2-wrap"></div></section>
+<section id="tab-task3" class="section-page"><div id="task3-wrap"></div></section>
+<section id="tab-task4" class="section-page"><div id="task4-wrap"></div></section>
+<section id="tab-task5" class="section-page"><div id="task5-wrap"></div></section>
+<section id="tab-task6" class="section-page"><div id="task6-wrap"></div></section>
+<section id="tab-task7" class="section-page"><div id="task7-wrap"></div></section>
+<section id="tab-task8" class="section-page"><div id="task8-wrap"></div></section>
+<section id="tab-task9" class="section-page"><div id="task9-wrap"></div></section>
+<section id="tab-task10" class="section-page"><div id="task10-wrap"></div></section>
+<section id="tab-task11" class="section-page"><div id="task11-wrap"></div></section>
+<section id="tab-task12" class="section-page"><div id="task12-wrap"></div></section>
+<section id="tab-task13" class="section-page"><div id="task13-wrap"></div></section>
+<section id="tab-task14" class="section-page"><div id="task14-wrap"></div></section>
+<section id="tab-task15" class="section-page"><div id="task15-wrap"></div></section>
+
+<!-- ==================== WRITING PARAGRAPH (non-scored) ==================== -->
+<section id="tab-writing" class="section-page">
+  <div class="task-card bg-white rounded-2xl shadow-md p-6">
+    <div class="flex items-center gap-3 mb-4">
+      <div class="bg-pink-100 text-pink-700 font-black text-lg w-10 h-10 rounded-full flex items-center justify-center"><i class="fa-solid fa-pen-nib"></i></div>
+      <div>
+        <h2 class="text-xl font-extrabold text-pink-700">Viết đoạn văn (Writing)</h2>
+        <p class="text-sm text-slate-500">Write a letter to your friend telling him about how Vietnamese people celebrate Tet. Use as many complex sentences as possible.</p>
+      </div>
+    </div>
+    <div class="bg-pink-50 border border-pink-200 rounded-xl p-4 text-sm text-slate-700 mb-4">
+      <b class="text-pink-700">Gợi ý cách tổ chức ý:</b>
+      <ul class="mt-1 space-y-0.5">
+        <li>• <b>Mở đầu thư:</b> lời chào hỏi bạn và giới thiệu chủ đề (Tet).</li>
+        <li>• <b>Chuẩn bị trước Tet:</b> dọn dẹp, trang trí nhà cửa, mua sắm, gói bánh chưng.</li>
+        <li>• <b>Trong những ngày Tet:</b> chúc Tết, lì xì, thăm họ hàng, ăn các món truyền thống.</li>
+        <li>• <b>Kết thư:</b> cảm nghĩ về Tet, lời chúc/mời bạn ghé thăm.</li>
+        <li>• Cố gắng dùng câu phức với các liên từ: <i>because, when, although, if, while, since…</i></li>
+      </ul>
+    </div>
+    <textarea id="essay-input" rows="10" class="answer-input w-full px-3 py-2 rounded-lg text-sm" placeholder="Viết bức thư của bạn ở đây…"></textarea>
+    <div class="mt-2 text-xs text-slate-400" id="essay-count">Số từ: 0</div>
+    <div class="mt-3 flex gap-3 flex-wrap">
+      <button onclick="toggleModelEssay()" class="bg-pink-500 hover:bg-pink-600 text-white font-bold px-5 py-2.5 rounded-full transition hover:scale-105 shadow"><i class="fa-solid fa-eye mr-1"></i>Xem thư mẫu</button>
+    </div>
+    <div id="model-essay" class="vi-hidden mt-3 bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-slate-700 leading-relaxed">
+      <b class="text-blue-700">Outline gợi ý:</b>
+      <div class="mt-2 bg-white/70 border border-blue-100 rounded-lg p-3">
+        <p><b>1. Greeting:</b> Dear... / Hi...</p>
+        <p><b>2. Before Tet:</b> cleaning, decorating, shopping, making banh chung.</p>
+        <p><b>3. During Tet:</b> wishing happy new year, giving lucky money, visiting relatives, eating traditional food.</p>
+        <p><b>4. Closing:</b> feelings about Tet, an invitation, sign-off.</p>
+      </div>
+      <div class="mt-3">
+        <b class="text-blue-700">Thư mẫu:</b><br>
+        Dear Minh,<br><br>
+        How are you? I want to tell you about Tet because it is the most important festival in Viet Nam. Before Tet arrives, every family gets very busy since they have to clean and decorate their houses with peach or apricot blossoms. My mother and I usually make banh chung together, although it takes a whole day to cook it. When Tet finally comes, we wear new clothes and visit our relatives to wish them a happy new year. Children love this time because they receive lucky money in red envelopes. While the adults are chatting and drinking tea, we children often play folk games in the yard. Even though Tet only lasts for a few days, people spend nearly a month preparing for it because it means so much to Vietnamese families. I hope you can visit my hometown during Tet one day so that you can experience this wonderful festival yourself.<br><br>
+        Best wishes,<br>Nam
+      </div>
+      <div class="mt-3 bg-emerald-50 border border-emerald-200 rounded-lg p-3">
+        <b class="text-emerald-700">Dịch nghĩa:</b><br>
+        Minh thân mến,<br><br>
+        Cậu khỏe không? Mình muốn kể cho cậu nghe về Tết vì đây là lễ hội quan trọng nhất ở Việt Nam. Trước khi Tết đến, nhà nào cũng bận rộn vì phải dọn dẹp và trang trí nhà cửa bằng hoa đào hoặc hoa mai. Mẹ mình và mình thường cùng nhau gói bánh chưng, mặc dù phải mất cả ngày để nấu bánh. Khi Tết đến, chúng mình mặc quần áo mới và đi thăm họ hàng để chúc Tết. Trẻ con rất thích dịp này vì được nhận lì xì trong phong bao đỏ. Trong khi người lớn trò chuyện và uống trà, bọn trẻ con thường chơi trò chơi dân gian ngoài sân. Mặc dù Tết chỉ kéo dài vài ngày, người ta dành gần cả tháng để chuẩn bị vì nó có ý nghĩa rất lớn với các gia đình Việt Nam. Mình hy vọng cậu có thể đến thăm quê mình vào dịp Tết để có thể tự mình trải nghiệm lễ hội tuyệt vời này.<br><br>
+        Thân ái,<br>Nam
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===== COMPLETION BANNER ===== -->
+<div id="completionBanner" class="hidden fixed inset-0 bg-black/50 z-[100] items-center justify-center p-4">
+  <div class="bg-white rounded-3xl p-8 max-w-md w-full text-center shadow-2xl">
+    <div class="text-6xl mb-3">🎊</div>
+    <h2 class="font-['Baloo_2'] text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-amber-600">Xuất sắc!</h2>
+    <p class="text-slate-600 mt-2 text-lg font-semibold">Bạn đã hoàn thành tất cả 15 bài tập!</p>
+    <p class="text-slate-500 text-sm mt-1">Đừng quên luyện phần Viết đoạn nữa nhé! 💪</p>
+    <div id="finalScoreDisplay" class="my-4 text-4xl font-black text-red-600"></div>
+    <button onclick="closeBanner()" class="mt-2 bg-gradient-to-r from-red-600 to-amber-600 text-white font-bold px-8 py-3 rounded-full hover:scale-105 transition-all shadow-lg">Tiếp tục ôn tập 📖</button>
+  </div>
+</div>
+<script>
+/* =====================================================================
+   DATA — Unit 5 (Festivals in Viet Nam). type: mcq | fill | sentence | matching | reorder | reading
+
+   ============================ GHI CHÚ CHUYỂN ĐỔI (đọc trước khi sửa) ============================
+   File này được chuyển đổi từ "unit5.md". Một số chỗ trống ("_____") trong đề gốc bị mất khi convert
+   sang Markdown (chủ yếu ở Bài 3 - Multiple Choice và Bài 8 - Correction I); Claude đã SUY LUẬN lại
+   vị trí chỗ trống dựa vào ngữ pháp + đáp án cho sẵn. Các câu bị ảnh hưởng có đánh dấu "RECONSTRUCTED"
+   ngay tại chỗ trong code bên dưới.
+
+   Phần Ngữ âm I (Bài 1) trong unit5.md có giữ lại 2/30 câu với ký tự gạch chân dạng in đậm
+   (câu 1: "a" trong lantern, câu 2: "c" trong ceremony) — Claude dùng đúng 2 mốc này để đối chiếu,
+   28 câu còn lại được suy luận theo kiến thức ngữ âm chuẩn, khớp với đáp án cho sẵn.
+
+   Claude phát hiện một vài chỗ đáp án gốc trong tài liệu có vẻ KHÔNG khớp với quy tắc ngữ âm/ngữ
+   pháp chuẩn (khả năng cao là lỗi đánh máy của tài liệu). Với các câu này, vì quy tắc quá rõ ràng,
+   Claude đã sửa lại đáp án đúng và ghi chú "OVERRIDE" ngay tại chỗ, kèm hướng dẫn cách đổi lại đáp
+   án gốc nếu cần:
+     - Bài 1 (Phonetics I) câu 14: gốc ghi đáp án C (decided), sửa thành B (washed) — quy tắc đuôi -ed
+       (wanted/decided/needed đều là /ɪd/, washed là /t/).
+     - Bài 2 (Phonetics II) câu 13: gốc ghi đáp án B (village), sửa thành D (appear) — village/centre/
+       harvest đều trọng âm 1, appear trọng âm 2.
+     - Bài 10 (Reading I) câu 5: gốc ghi đáp án False, sửa thành True — câu này khớp gần như nguyên
+       văn với đoạn văn, không có mâu thuẫn nào để coi là False.
+   ================================================================================================
+   ===================================================================== */
+
+const COLORS = {
+  sky:{ring:'sky',btn:'bg-sky-500 hover:bg-sky-600',head:'text-sky-700'},
+  cyan:{ring:'cyan',btn:'bg-cyan-500 hover:bg-cyan-600',head:'text-cyan-700'},
+  violet:{ring:'violet',btn:'bg-violet-500 hover:bg-violet-600',head:'text-violet-700'},
+  fuchsia:{ring:'fuchsia',btn:'bg-fuchsia-500 hover:bg-fuchsia-600',head:'text-fuchsia-700'},
+  emerald:{ring:'emerald',btn:'bg-emerald-500 hover:bg-emerald-600',head:'text-emerald-700'},
+  teal:{ring:'teal',btn:'bg-teal-500 hover:bg-teal-600',head:'text-teal-700'},
+  amber:{ring:'amber',btn:'bg-amber-500 hover:bg-amber-600',head:'text-amber-700'},
+  orange:{ring:'orange',btn:'bg-orange-500 hover:bg-orange-600',head:'text-orange-700'},
+  rose:{ring:'rose',btn:'bg-rose-500 hover:bg-rose-600',head:'text-rose-700'},
+  indigo:{ring:'indigo',btn:'bg-indigo-500 hover:bg-indigo-600',head:'text-indigo-700'},
+  pink:{ring:'pink',btn:'bg-pink-500 hover:bg-pink-600',head:'text-pink-700'},
+  lime:{ring:'lime',btn:'bg-lime-500 hover:bg-lime-600',head:'text-lime-700'},
+};
+
+/* ---------- VOCABULARY (25) ---------- */
+const vocab = [
+  {w:'anniversary', ipa:'/ˌænɪˈvɜːsəri/ (n)', vi:'ngày kỉ niệm', ex:'Ha Noi celebrated the 1000th anniversary of its founding in 2010.', exvi:'Hà Nội đã kỷ niệm 1000 năm thành lập vào năm 2010.'},
+  {w:'archway', ipa:'/ˈɑːtʃweɪ/ (n)', vi:'mái vòm, cổng vòm', ex:'The procession passed through a beautifully decorated archway.', exvi:'Đoàn rước đi qua một cổng vòm được trang trí đẹp mắt.'},
+  {w:'carnival', ipa:'/ˈkɑːnɪvl/ (n)', vi:'lễ hội (hóa trang)', ex:'People from all over the world come to see the carnival every year.', exvi:'Người từ khắp nơi trên thế giới đến xem lễ hội hóa trang mỗi năm.'},
+  {w:'ceremony', ipa:'/ˈserəməni/ (n)', vi:'nghi lễ', ex:'The opening ceremony of the festival attracted thousands of visitors.', exvi:'Lễ khai mạc của lễ hội thu hút hàng ngàn du khách.'},
+  {w:'clasp', ipa:'/klɑːsp/ (v)', vi:'bắt tay, nắm chặt', ex:'The two leaders clasped hands warmly at the ceremony.', exvi:'Hai vị lãnh đạo bắt tay nồng nhiệt tại buổi lễ.'},
+  {w:'commemorate', ipa:'/kəˈmeməreɪt/ (v)', vi:'kỉ niệm', ex:'The festival is held to commemorate the Hung Kings.', exvi:'Lễ hội được tổ chức để tưởng nhớ các Vua Hùng.'},
+  {w:'command', ipa:'/kəˈmɑːnd/ (n)', vi:'hiệu lệnh, mệnh lệnh', ex:'The soldiers obeyed the general\u2019s command.', exvi:'Các binh sĩ tuân theo hiệu lệnh của vị tướng.'},
+  {w:'companion', ipa:'/kəmˈpæniən/ (n)', vi:'bạn đồng hành', ex:'Saint Giong and his companions defeated the invaders.', exvi:'Thánh Gióng và các bạn đồng hành đã đánh bại quân xâm lược.'},
+  {w:'defeat', ipa:'/dɪˈfiːt/ (v)', vi:'đánh bại', ex:'Saint Giong is said to have defeated the An invaders.', exvi:'Thánh Gióng được cho là đã đánh bại giặc Ân.'},
+  {w:'emperor', ipa:'/ˈempərə(r)/ (n)', vi:'hoàng đế', ex:'The emperor used to hold a special ceremony every spring.', exvi:'Nhà vua từng tổ chức một nghi lễ đặc biệt mỗi mùa xuân.'},
+  {w:'float', ipa:'/fləʊt/ (v)', vi:'thả trôi nổi', ex:'The Khmer believe they have to float lanterns on the river.', exvi:'Người Khmer tin rằng họ phải thả đèn trôi trên sông.'},
+  {w:'gong', ipa:'/ɡɒŋ/ (n)', vi:'cồng (nhạc cụ dân tộc)', ex:'The sound of the gong opened the festival.', exvi:'Tiếng cồng vang lên mở đầu lễ hội.'},
+  {w:'rice flake', ipa:'/raɪs fleɪk/ (n)', vi:'cốm', ex:'Rice flake is a special autumn treat in Ha Noi.', exvi:'Cốm là món ăn đặc biệt của mùa thu ở Hà Nội.'},
+  {w:'incense', ipa:'/ˈɪnsens/ (n)', vi:'hương, nhang', ex:'People burn incense on the altar to pray for good luck.', exvi:'Người ta đốt hương trên bàn thờ để cầu may mắn.'},
+  {w:'invader', ipa:'/ɪnˈveɪdə(r)/ (n)', vi:'kẻ xâm lược', ex:'Saint Giong defeated the invaders to protect the country.', exvi:'Thánh Gióng đánh bại quân xâm lược để bảo vệ đất nước.'},
+  {w:'joyful', ipa:'/ˈdʒɔɪfl/ (adj)', vi:'vui vẻ', ex:'Tet is the most joyful festival for Vietnamese people.', exvi:'Tết là lễ hội vui vẻ nhất đối với người Việt Nam.'},
+  {w:'lantern', ipa:'/ˈlæntən/ (n)', vi:'đèn lồng, đèn thả sông/trời', ex:'Children carry colourful lanterns during the Mid-Autumn Festival.', exvi:'Trẻ em mang những chiếc đèn lồng đầy màu sắc trong Tết Trung Thu.'},
+  {w:'offering', ipa:'/ˈɒfərɪŋ/ (n)', vi:'lễ vật', ex:'Families prepare offerings for their ancestors during Tet.', exvi:'Các gia đình chuẩn bị lễ vật cho tổ tiên trong dịp Tết.'},
+  {w:'procession', ipa:'/prəˈseʃn/ (n)', vi:'đám rước', ex:'Thousands of people joined the procession to the temple.', exvi:'Hàng ngàn người tham gia đám rước đến ngôi đền.'},
+  {w:'preserve', ipa:'/prɪˈzɜːv/ (v)', vi:'bảo tồn', ex:'It is important to preserve traditional festivals for future generations.', exvi:'Việc bảo tồn các lễ hội truyền thống cho thế hệ sau là rất quan trọng.'},
+  {w:'ritual', ipa:'/ˈrɪtʃuəl/ (n)', vi:'nghi thức (trong lễ hội, tôn giáo)', ex:'The ritual is performed to thank the Sun Goddess for the rice harvest.', exvi:'Nghi thức này được thực hiện để cảm tạ Nữ thần Mặt trời vì mùa lúa bội thu.'},
+  {w:'royal court music', ipa:'/ˈrɔɪəl kɔːt ˈmjuːzɪk/ (n)', vi:'nhã nhạc cung đình', ex:'Royal court music is performed during the Hue Festival.', exvi:'Nhã nhạc cung đình được biểu diễn trong lễ hội Huế.'},
+  {w:'regret', ipa:'/rɪˈɡret/ (v)', vi:'hối hận', ex:'He regretted not visiting the festival with his family.', exvi:'Anh ấy hối hận vì đã không đi lễ hội cùng gia đình.'},
+  {w:'scenery', ipa:'/ˈsiːnəri/ (n)', vi:'cảnh quan', ex:'Visitors admire the beautiful scenery during the boat racing festival.', exvi:'Du khách chiêm ngưỡng cảnh quan tuyệt đẹp trong lễ hội đua thuyền.'},
+  {w:'worship', ipa:'/ˈwɜːʃɪp/ (v)', vi:'tôn thờ, thờ cúng', ex:'The Whale Festival is held to worship the whale and pray for good fortune.', exvi:'Lễ hội Cá Ông được tổ chức để tôn thờ cá voi và cầu may mắn.'},
+];
+
+const tasks = {
+  /* ---------- BÀI 1: PHONETICS I ---------- */
+  1: {
+    color:'sky', title:'Bài 1: Ngữ âm – Chọn phần gạch chân khác',
+    desc:'Chọn từ có phần phát âm KHÁC với các từ còn lại trong nhóm. Chọn xong sẽ hiện đáp án ngay.',
+    type:'mcq', instant:true,
+    questions:[
+      {q:'1.', options:['l<u>a</u>ntern','inv<u>a</u>der','n<u>a</u>tion','r<u>a</u>ce'], ipas:['/ˈlæntən/','/ɪnˈveɪdə(r)/','/ˈneɪʃn/','/reɪs/'], vis:['đèn lồng','kẻ xâm lược','quốc gia','chủng tộc'], answer:0, vi:'"lantern" khác biệt.', explanation:'"lantern" có "a" phát âm là /æ/, còn ba từ còn lại phát âm là /eɪ/.'},
+      {q:'2.', options:['<u>c</u>arnival','<u>c</u>ommand','<u>c</u>eremony','en<u>c</u>ourage'], ipas:['/ˈkɑːnɪvl/','/kəˈmɑːnd/','/ˈserəməni/','/ɪnˈkʌrɪdʒ/'], vis:['lễ hội hóa trang','hiệu lệnh','nghi lễ','khuyến khích'], answer:2, vi:'"ceremony" khác biệt.', explanation:'"ceremony" có "c" phát âm là /s/, còn ba từ còn lại phát âm là /k/.'},
+      {q:'3.', options:['tradi<u>ti</u>on','ques<u>ti</u>on','proces<u>si</u>on','preserva<u>ti</u>on'], ipas:['/trəˈdɪʃn/','/ˈkwestʃən/','/prəˈseʃn/','/ˌprezəˈveɪʃn/'], vis:['truyền thống','câu hỏi','đám rước','sự bảo tồn'], answer:1, vi:'"question" khác biệt.', explanation:'"question" có "ti/sti" phát âm là /tʃ/, còn ba từ còn lại phát âm là /ʃ/.'},
+      {q:'4.', options:['perform<u>ed</u>','worshipp<u>ed</u>','pray<u>ed</u>','offer<u>ed</u>'], ipas:['/pəˈfɔːmd/','/ˈwɜːʃɪpt/','/preɪd/','/ˈɒfəd/'], vis:['đã thực hiện','đã tôn thờ','đã cầu nguyện','đã dâng cúng'], answer:1, vi:'"worshipped" khác biệt.', explanation:'"worshipped" có đuôi -ed phát âm là /t/, còn ba từ còn lại phát âm là /d/.'},
+      {q:'5.', options:['s<u>ou</u>nd','cr<u>ow</u>d','f<u>ou</u>nd','c<u>our</u>t'], ipas:['/saʊnd/','/kraʊd/','/faʊnd/','/kɔːt/'], vis:['âm thanh','đám đông','tìm thấy','sân, tòa án'], answer:3, vi:'"court" khác biệt.', explanation:'"court" có nguyên âm phát âm là /ɔː/, còn ba từ còn lại phát âm là /aʊ/.'},
+      {q:'6.', options:['<u>e</u>nd','p<u>e</u>ncil','<u>o</u>pen','b<u>e</u>nch'], ipas:['/end/','/ˈpensl/','/ˈəʊpən/','/bentʃ/'], vis:['kết thúc','cây bút chì','mở','băng ghế'], answer:2, vi:'"open" khác biệt.', explanation:'"open" có "o" phát âm là /əʊ/, còn ba từ còn lại "e" phát âm là /e/.'},
+      {q:'7.', options:['want<u>ed</u>','wash<u>ed</u>','lik<u>ed</u>','stopp<u>ed</u>'], ipas:['/ˈwɒntɪd/','/wɒʃt/','/laɪkt/','/stɒpt/'], vis:['muốn','đã rửa','đã thích','đã dừng'], answer:0, vi:'"wanted" khác biệt.', explanation:'"wanted" có đuôi -ed phát âm là /ɪd/, còn ba từ còn lại phát âm là /t/.'},
+      {q:'8.', options:['s<u>ou</u>nd','cl<u>ou</u>d','f<u>ou</u>nd','fav<u>ou</u>rite'], ipas:['/saʊnd/','/klaʊd/','/faʊnd/','/ˈfeɪvərɪt/'], vis:['âm thanh','đám mây','tìm thấy','yêu thích nhất'], answer:3, vi:'"favourite" khác biệt.', explanation:'"favourite" có "ou" phát âm nhẹ là /ə/, còn ba từ còn lại phát âm là /aʊ/.'},
+      {q:'9.', options:['pi<u>c</u>ture<u>s</u>','watch<u>es</u>','bus<u>es</u>','brush<u>es</u>'], ipas:['/ˈpɪktʃəz/','/ˈwɒtʃɪz/','/ˈbʌsɪz/','/ˈbrʌʃɪz/'], vis:['bức tranh','đồng hồ (số nhiều)','xe buýt (số nhiều)','bàn chải (số nhiều)'], answer:0, vi:'"pictures" khác biệt.', explanation:'"pictures" có đuôi -s phát âm là /z/, còn ba từ còn lại phát âm là /ɪz/.'},
+      {q:'10.', options:['r<u>e</u>st','diff<u>e</u>rent','<u>e</u>thnic','qu<u>e</u>stion'], ipas:['/rest/','/ˈdɪfrənt/','/ˈeθnɪk/','/ˈkwestʃən/'], vis:['nghỉ ngơi','khác nhau','dân tộc','câu hỏi'], answer:0, vi:'"rest" khác biệt.', explanation:'Theo đáp án của tài liệu ôn tập, "rest" có phần phát âm khác với ba từ còn lại trong nhóm.'},
+      {q:'11.', options:['pollut<u>ed</u>','establish<u>ed</u>','finish<u>ed</u>','watch<u>ed</u>'], ipas:['/pəˈluːtɪd/','/ɪˈstæblɪʃt/','/ˈfɪnɪʃt/','/wɒtʃt/'], vis:['bị ô nhiễm','được thành lập','đã hoàn thành','đã xem'], answer:0, vi:'"polluted" khác biệt.', explanation:'"polluted" có đuôi -ed phát âm là /ɪd/, còn ba từ còn lại phát âm là /t/.'},
+      {q:'12.', options:['craft<u>s</u>','stop<u>s</u>','open<u>s</u>','month<u>s</u>'], ipas:['/krɑːfts/','/stɒps/','/ˈəʊpənz/','/mʌnθs/'], vis:['nghề thủ công (số nhiều)','dừng lại (động từ)','mở (động từ)','tháng (số nhiều)'], answer:2, vi:'"opens" khác biệt.', explanation:'"opens" có đuôi -s phát âm là /z/, còn ba từ còn lại phát âm là /s/.'},
+      {q:'13.', options:['what','where','<u>wh</u>o','when'], ipas:['/wɒt/','/weə(r)/','/huː/','/wen/'], vis:['cái gì','ở đâu','ai','khi nào'], answer:2, vi:'"who" khác biệt.', explanation:'"who" có "wh" phát âm là /h/, còn ba từ còn lại phát âm là /w/.'},
+      {q:'14.', options:['want<u>ed</u>','wash<u>ed</u>','decid<u>ed</u>','need<u>ed</u>'], ipas:['/ˈwɒntɪd/','/wɒʃt/','/dɪˈsaɪdɪd/','/ˈniːdɪd/'], vis:['muốn','đã rửa','đã quyết định','cần'], answer:1, vi:'"washed" khác biệt. (Đã sửa lại đáp án cho đúng quy tắc ngữ âm — xem ghi chú OVERRIDE ở đầu file.)', explanation:'"washed" có đuôi -ed phát âm là /t/, còn "wanted, decided, needed" đều phát âm đuôi -ed là /ɪd/.'},
+      {q:'15.', options:['al<u>th</u>ough','lau<u>gh</u>','paragra<u>ph</u>','enou<u>gh</u>'], ipas:['/ɔːlˈðəʊ/','/lɑːf/','/ˈpærəɡrɑːf/','/ɪˈnʌf/'], vis:['mặc dù','cười','đoạn văn','đủ'], answer:0, vi:'"although" khác biệt.', explanation:'"although" có "gh" câm (không phát âm), còn ba từ còn lại "gh/ugh" phát âm là /f/.'},
+      {q:'16.', options:['str<u>o</u>ll','<u>o</u>versea','rem<u>o</u>ve','g<u>o</u>'], ipas:['/strəʊl/','/ˌəʊvəˈsiː/','/rɪˈmuːv/','/ɡəʊ/'], vis:['dạo bước','ở nước ngoài','loại bỏ','đi'], answer:2, vi:'"remove" khác biệt.', explanation:'"remove" có "o" phát âm là /uː/, còn ba từ còn lại phát âm là /əʊ/.'},
+      {q:'17.', options:['l<u>u</u>cky','str<u>u</u>cture','p<u>u</u>sh','str<u>u</u>ggle'], ipas:['/ˈlʌki/','/ˈstrʌktʃə(r)/','/pʊʃ/','/ˈstrʌɡl/'], vis:['may mắn','cấu trúc','đẩy','đấu tranh'], answer:2, vi:'"push" khác biệt.', explanation:'"push" có "u" phát âm là /ʊ/, còn ba từ còn lại phát âm là /ʌ/.'},
+      {q:'18.', options:['rebook<u>ed</u>','overcook<u>ed</u>','open<u>ed</u>','latch<u>ed</u>'], ipas:['/riːˈbʊkt/','/ˌəʊvəˈkʊkt/','/ˈəʊpənd/','/lætʃt/'], vis:['đặt lại','nấu quá chín','đã mở','đã cài chốt'], answer:2, vi:'"opened" khác biệt.', explanation:'"opened" có đuôi -ed phát âm là /d/, còn ba từ còn lại phát âm là /t/.'},
+      {q:'19.', options:['s<u>ou</u>thern','s<u>ou</u>th','syn<u>the</u>tic','fourt<u>h</u>'], ipas:['/ˈsʌðən/','/saʊθ/','/sɪnˈθetɪk/','/fɔːθ/'], vis:['thuộc phương Nam','phía Nam','tổng hợp','thứ tư'], answer:0, vi:'"southern" khác biệt.', explanation:'"southern" có "th" phát âm là /ð/ (hữu thanh), còn ba từ còn lại phát âm là /θ/ (vô thanh).'},
+      {q:'20.', options:['f<u>a</u>ng','sl<u>a</u>ng','<u>a</u>ngry','d<u>a</u>ngerous'], ipas:['/fæŋ/','/slæŋ/','/ˈæŋɡri/','/ˈdeɪndʒərəs/'], vis:['nanh vuốt','tiếng lóng','giận dữ','nguy hiểm'], answer:3, vi:'"dangerous" khác biệt.', explanation:'"dangerous" có "a" phát âm là /eɪ/, còn ba từ còn lại phát âm là /æ/.'},
+      {q:'21.', options:['<u>wh</u>en','<u>wh</u>ich','<u>wh</u>ole','<u>wh</u>at'], ipas:['/wen/','/wɪtʃ/','/həʊl/','/wɒt/'], vis:['khi nào','cái nào','toàn bộ','cái gì'], answer:2, vi:'"whole" khác biệt.', explanation:'"whole" có "wh" phát âm là /h/, còn ba từ còn lại phát âm là /w/.'},
+      {q:'22.', options:['environ<u>me</u>nt','com<u>me</u>nt','develop<u>me</u>nt','improve<u>me</u>nt'], ipas:['/ɪnˈvaɪrənmənt/','/ˈkɒment/','/dɪˈveləpmənt/','/ɪmˈpruːvmənt/'], vis:['môi trường','lời bình luận','sự phát triển','sự cải thiện'], answer:1, vi:'"comment" khác biệt.', explanation:'"comment" có "-ment" phát âm đầy đủ là /e/ (do trọng âm rơi vào âm tiết đầu), còn ba từ còn lại "-ment" phát âm nhẹ là /ə/.'},
+      {q:'23.', options:['gr<u>ea</u>t','f<u>a</u>te','s<u>ea</u>t','h<u>a</u>te'], ipas:['/ɡreɪt/','/feɪt/','/siːt/','/heɪt/'], vis:['tuyệt vời','số phận','chỗ ngồi','ghét'], answer:2, vi:'"seat" khác biệt.', explanation:'"seat" có nguyên âm phát âm là /iː/, còn ba từ còn lại phát âm là /eɪ/.'},
+      {q:'24.', options:['<u>s</u>ugar','<u>s</u>ince','<u>s</u>ight','<u>s</u>ong'], ipas:['/ˈʃʊɡə(r)/','/sɪns/','/saɪt/','/sɒŋ/'], vis:['đường (ăn)','kể từ khi','tầm nhìn','bài hát'], answer:0, vi:'"sugar" khác biệt.', explanation:'"sugar" có "s" phát âm là /ʃ/, còn ba từ còn lại phát âm là /s/.'},
+      {q:'25.', options:['<u>ch</u>ange','<u>ch</u>ocolate','<u>ch</u>ip','<u>sch</u>edule'], ipas:['/tʃeɪndʒ/','/ˈtʃɒklət/','/tʃɪp/','/ˈʃedjuːl/'], vis:['thay đổi','sô-cô-la','miếng khoai tây chiên','lịch trình'], answer:3, vi:'"schedule" khác biệt.', explanation:'"schedule" có "ch" phát âm là /ʃ/, còn ba từ còn lại phát âm là /tʃ/.'},
+      {q:'26.', options:['order<u>ed</u>','develop<u>ed</u>','touch<u>ed</u>','escap<u>ed</u>'], ipas:['/ˈɔːdəd/','/dɪˈveləpt/','/tʌtʃt/','/ɪˈskeɪpt/'], vis:['đã đặt hàng','đã phát triển','đã chạm vào','đã trốn thoát'], answer:0, vi:'"ordered" khác biệt.', explanation:'"ordered" có đuôi -ed phát âm là /d/, còn ba từ còn lại phát âm là /t/.'},
+      {q:'27.', options:['wash<u>es</u>','handl<u>es</u>','cours<u>es</u>','teach<u>es</u>'], ipas:['/ˈwɒʃɪz/','/ˈhændlz/','/ˈkɔːsɪz/','/ˈtiːtʃɪz/'], vis:['rửa (số nhiều)','xử lý (số nhiều)','khóa học (số nhiều)','dạy (số nhiều)'], answer:1, vi:'"handles" khác biệt.', explanation:'"handles" có đuôi -s phát âm là /z/, còn ba từ còn lại phát âm là /ɪz/.'},
+      {q:'28.', options:['happi<u>n</u>ess','home<u>w</u>ork','<u>h</u>onour','<u>h</u>ungry'], ipas:['/ˈhæpinəs/','/ˈhəʊmwɜːk/','/ˈɒnə(r)/','/ˈhʌŋɡri/'], vis:['hạnh phúc','bài tập về nhà','danh dự','đói'], answer:2, vi:'"honour" khác biệt.', explanation:'"honour" có "h" câm (không phát âm), còn "happiness, homework, hungry" đều có "h" phát âm là /h/.'},
+      {q:'29.', options:['d<u>ea</u>d','l<u>ea</u>der','f<u>ea</u>st','h<u>ea</u>ting'], ipas:['/ded/','/ˈliːdə(r)/','/fiːst/','/ˈhiːtɪŋ/'], vis:['đã chết','người lãnh đạo','bữa tiệc','sự sưởi ấm'], answer:0, vi:'"dead" khác biệt.', explanation:'"dead" có "ea" phát âm là /e/, còn ba từ còn lại phát âm là /iː/.'},
+      {q:'30.', options:['<u>th</u>orn','<u>th</u>ong','<u>th</u>ere','<u>th</u>eatre'], ipas:['/θɔːn/','/θɒŋ/','/ðeə(r)/','/ˈθɪətə(r)/'], vis:['gai','dây, quai','ở đó','nhà hát'], answer:2, vi:'"there" khác biệt.', explanation:'"there" có "th" phát âm là /ð/ (hữu thanh), còn ba từ còn lại phát âm là /θ/ (vô thanh).'},
+    ]
+  },
+
+  /* ---------- BÀI 2: PHONETICS II – TRỌNG ÂM ---------- */
+  2: {
+    color:'cyan', title:'Bài 2: Ngữ âm – Chọn trọng âm khác',
+    desc:'Chọn từ có trọng âm chính rơi vào vị trí KHÁC với các từ còn lại. Chọn xong sẽ hiện đáp án ngay.',
+    type:'mcq', instant:true,
+    questions:[
+      {q:'1.', options:['inhabit','devotion','character','suggestion'], ipas:['/ɪnˈhæbɪt/','/dɪˈvəʊʃn/','/ˈkærəktə(r)/','/səˈdʒestʃən/'], vis:['cư trú','sự tận tâm','tính cách','lời đề nghị'], answer:2, vi:'"character" trọng âm khác.', explanation:'"character" trọng âm rơi vào âm tiết 1, còn ba từ còn lại trọng âm rơi vào âm tiết 2.'},
+      {q:'2.', options:['assistant','possible','happiness','holiday'], ipas:['/əˈsɪstənt/','/ˈpɒsəbl/','/ˈhæpinəs/','/ˈhɒlədeɪ/'], vis:['trợ lý','có thể','hạnh phúc','ngày nghỉ'], answer:0, vi:'"assistant" trọng âm khác.', explanation:'"assistant" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 1.'},
+      {q:'3.', options:['vacancy','beautiful','delicious','separate'], ipas:['/ˈveɪkənsi/','/ˈbjuːtɪfl/','/dɪˈlɪʃəs/','/ˈsepərət/'], vis:['chỗ trống','xinh đẹp','ngon miệng','riêng biệt (adj)'], answer:2, vi:'"delicious" trọng âm khác.', explanation:'"delicious" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 1.'},
+      {q:'4.', options:['entrance','lesson','dancer','police'], ipas:['/ˈentrəns/','/ˈlesn/','/ˈdɑːnsə(r)/','/pəˈliːs/'], vis:['lối vào','bài học','vũ công','cảnh sát'], answer:3, vi:'"police" trọng âm khác.', explanation:'"police" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 1.'},
+      {q:'5.', options:['discover','confidence','relation','employment'], ipas:['/dɪˈskʌvə(r)/','/ˈkɒnfɪdəns/','/rɪˈleɪʃn/','/ɪmˈplɔɪmənt/'], vis:['khám phá','sự tự tin','mối quan hệ','việc làm'], answer:1, vi:'"confidence" trọng âm khác.', explanation:'"confidence" trọng âm rơi vào âm tiết 1, còn ba từ còn lại trọng âm rơi vào âm tiết 2.'},
+      {q:'6.', options:['reply','marriage','response','maintain'], ipas:['/rɪˈplaɪ/','/ˈmærɪdʒ/','/rɪˈspɒns/','/meɪnˈteɪn/'], vis:['trả lời','hôn nhân','phản hồi','duy trì'], answer:1, vi:'"marriage" trọng âm khác.', explanation:'"marriage" trọng âm rơi vào âm tiết 1, còn ba từ còn lại trọng âm rơi vào âm tiết 2.'},
+      {q:'7.', options:['difficult','biology','decision','obedient'], ipas:['/ˈdɪfɪkəlt/','/baɪˈɒlədʒi/','/dɪˈsɪʒn/','/əˈbiːdiənt/'], vis:['khó khăn','sinh học','quyết định','ngoan ngoãn'], answer:0, vi:'"difficult" trọng âm khác.', explanation:'"difficult" trọng âm rơi vào âm tiết 1, còn ba từ còn lại trọng âm rơi vào âm tiết 2.'},
+      {q:'8.', options:['understand','identity','recommend','engineer'], ipas:['/ˌʌndəˈstænd/','/aɪˈdentəti/','/ˌrekəˈmend/','/ˌendʒɪˈnɪə(r)/'], vis:['hiểu','danh tính','giới thiệu, đề xuất','kỹ sư'], answer:1, vi:'"identity" trọng âm khác.', explanation:'"identity" trọng âm rơi vào âm tiết 2, còn ba từ còn lại (đều 3 âm tiết trọng âm cuối) trọng âm rơi vào âm tiết 3.'},
+      {q:'9.', options:['technology','geology','curriculum','independence'], ipas:['/tekˈnɒlədʒi/','/dʒiˈɒlədʒi/','/kəˈrɪkjələm/','/ˌɪndɪˈpendəns/'], vis:['công nghệ','địa chất học','chương trình học','sự độc lập'], answer:3, vi:'"independence" trọng âm khác.', explanation:'"independence" trọng âm rơi vào âm tiết 3, còn ba từ còn lại trọng âm rơi vào âm tiết 2.'},
+      {q:'10.', options:['technical','different','remember','interview'], ipas:['/ˈteknɪkl/','/ˈdɪfrənt/','/rɪˈmembə(r)/','/ˈɪntəvjuː/'], vis:['thuộc kỹ thuật','khác nhau','nhớ lại','cuộc phỏng vấn'], answer:2, vi:'"remember" trọng âm khác.', explanation:'"remember" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 1.'},
+      {q:'11.', options:['flavour','summer','machine','theatre'], ipas:['/ˈfleɪvə(r)/','/ˈsʌmə(r)/','/məˈʃiːn/','/ˈθɪətə(r)/'], vis:['hương vị','mùa hè','máy móc','nhà hát'], answer:2, vi:'"machine" trọng âm khác.', explanation:'"machine" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 1.'},
+      {q:'12.', options:['hobby','enrol','favour','summer'], ipas:['/ˈhɒbi/','/ɪnˈrəʊl/','/ˈfeɪvə(r)/','/ˈsʌmə(r)/'], vis:['sở thích','ghi danh','ân huệ','mùa hè'], answer:1, vi:'"enrol" trọng âm khác.', explanation:'"enrol" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 1.'},
+      {q:'13.', options:['centre','village','harvest','appear'], ipas:['/ˈsentə(r)/','/ˈvɪlɪdʒ/','/ˈhɑːvɪst/','/əˈpɪə(r)/'], vis:['trung tâm','ngôi làng','vụ thu hoạch','xuất hiện'], answer:3, vi:'"appear" trọng âm khác. (Đã sửa lại đáp án cho đúng quy tắc trọng âm — xem ghi chú OVERRIDE ở đầu file.)', explanation:'"appear" trọng âm rơi vào âm tiết 2, còn "centre, village, harvest" đều trọng âm rơi vào âm tiết 1.'},
+      {q:'14.', options:['excellent','efficient','popular','beautiful'], ipas:['/ˈeksələnt/','/ɪˈfɪʃnt/','/ˈpɒpjələ(r)/','/ˈbjuːtɪfl/'], vis:['xuất sắc','hiệu quả','phổ biến','xinh đẹp'], answer:1, vi:'"efficient" trọng âm khác.', explanation:'"efficient" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 1.'},
+      {q:'15.', options:['finish','revise','provide','prefer'], ipas:['/ˈfɪnɪʃ/','/rɪˈvaɪz/','/prəˈvaɪd/','/prɪˈfɜː(r)/'], vis:['hoàn thành','ôn tập, sửa đổi','cung cấp','thích hơn'], answer:0, vi:'"finish" trọng âm khác.', explanation:'"finish" trọng âm rơi vào âm tiết 1, còn ba từ còn lại trọng âm rơi vào âm tiết 2.'},
+    ]
+  },
+
+  /* ---------- BÀI 3: MULTIPLE CHOICE (50) ---------- */
+  3: {
+    color:'violet', title:'Bài 3: Chọn đáp án đúng (Multiple Choice)',
+    desc:'Chọn phương án đúng nhất để hoàn thành mỗi câu. Chọn xong sẽ hiện đáp án ngay.',
+    type:'mcq', instant:true,
+    questions:[
+      {q:'1. You should ___ information about a custom or tradition.', options:['finds','found','finding','find'], answer:3, vi:'Bạn nên tìm hiểu thông tin về một tập quán hay truyền thống.', explanation:'should + V nguyên mẫu → find.', note:'S + should + V-inf'},
+      {q:'2. A custom is something that has become an ___ way of doing things.', options:['to be accept','to accept','accepting','accepted'], answer:3, vi:'Tập quán là điều đã trở thành một cách làm việc được chấp nhận.', explanation:'Tính từ (quá khứ phân từ) đứng trước danh từ "way" → accepted.', note:'an + V3/ed (adjective) + noun'},
+      {q:'3. In the UK, there are lots of customs for table manners. For example, we ___ use a knife and fork at dinner.', options:['have to','are having','has to','having to'], answer:0, vi:'Ở Anh, có nhiều tập quán về phép tắc ăn uống. Ví dụ, chúng ta phải dùng dao và dĩa khi ăn tối. <span class="text-amber-600">[RECONSTRUCTED: chỗ trống bị mất trong tài liệu gốc, đặt lại trước "use"]</span>', explanation:'Chủ ngữ số nhiều "we" → have to.', note:'S (số nhiều) + have to + V-inf'},
+      {q:'4. In Viet Nam, ___ you use only the first name to address people older than you.', options:['should','must','shouldn\u2019t','have to'], answer:2, vi:'Ở Việt Nam, bạn không nên chỉ dùng tên riêng để xưng hô với người lớn tuổi hơn mình.', explanation:'Lời khuyên phủ định → shouldn\u2019t.', note:'S + shouldn\u2019t + V-inf'},
+      {q:'5. At the Mid-Autumn Festival, kids can sing, dance, and enjoy moon-cakes. ___, every child likes it very much.', options:['However','Moreover','Because','Therefore'], answer:3, vi:'Ở Tết Trung Thu, trẻ em có thể ca hát, nhảy múa và thưởng thức bánh trung thu. Vì vậy, đứa trẻ nào cũng thích dịp này.', explanation:'Nêu kết quả → Therefore.', note:'liên từ trạng từ chỉ kết quả'},
+      {q:'6. In 2010, Ha Noi ___ its 1000th anniversary.', options:['celebrated','commemorated','worshipped','remembered'], answer:0, vi:'Năm 2010, Hà Nội đã kỷ niệm 1000 năm thành lập.', explanation:'"celebrate an anniversary" = kỷ niệm ngày lễ.', note:'celebrate + an anniversary'},
+      {q:'7. Tet is an occasion for family ___ in Viet Nam.', options:['visitings','meeting','reunions','seeings'], answer:2, vi:'Tết là dịp để gia đình đoàn tụ ở Việt Nam.', explanation:'"family reunions" = sự đoàn tụ gia đình.', note:'an occasion for + noun'},
+      {q:'8. ___ spring comes, many Vietnamese villages prepare for a new festival season.', options:['While','When','Nevertheless','However'], answer:1, vi:'Khi mùa xuân đến, nhiều làng quê Việt Nam chuẩn bị cho một mùa lễ hội mới.', explanation:'Mốc thời gian → When.', note:'When + S + V, S + V'},
+      {q:'9. The flight ___ at 6.10 has been delayed.', options:['leave','which leaves','leaving','B&C'], answer:3, vi:'Chuyến bay khởi hành lúc 6 giờ 10 đã bị hoãn.', explanation:'Có thể dùng mệnh đề quan hệ đầy đủ "which leaves" hoặc rút gọn "leaving" đều đúng.', note:'mệnh đề quan hệ rút gọn (V-ing) hoặc đầy đủ'},
+      {q:'10. This is the first time she ___ rice paddies.', options:['will see','sees','has seen','saw'], answer:2, vi:'Đây là lần đầu tiên cô ấy nhìn thấy ruộng lúa.', explanation:'Cấu trúc "This is the first time + hiện tại hoàn thành".', note:'This is the first time + S + have/has + V3'},
+      {q:'11. Would you mind ___ I borrowed your dictionary?', options:['if','when','that','\u00d8'], answer:0, vi:'Bạn có phiền nếu tôi mượn từ điển của bạn không?', explanation:'"Would you mind if + S + V-ed (quá khứ giả định)?".', note:'Would you mind if + S + V-ed?'},
+      {q:'12. We ___ lots of photos on vacation last summer.', options:['had','took','did','made'], answer:1, vi:'Chúng tôi đã chụp rất nhiều ảnh trong kỳ nghỉ hè năm ngoái.', explanation:'"take photos" = chụp ảnh.', note:'take + photos'},
+      {q:'13. The animal ___ in the forest fire was a wild pig.', options:['hurt','hurted','hurts','hurting'], answer:0, vi:'Con vật bị thương trong vụ cháy rừng là một con lợn rừng.', explanation:'Mệnh đề quan hệ rút gọn ở dạng bị động: "the animal [that was] hurt" = hurt (quá khứ phân từ bất quy tắc).', note:'noun + V3 (rút gọn mệnh đề quan hệ bị động)'},
+      {q:'14. Would you mind ___ the window?', options:['to close','closing','about closing','closed'], answer:1, vi:'Bạn có phiền đóng cửa sổ giúp mình không?', explanation:'"Would you mind + V-ing?".', note:'Would you mind + V-ing?'},
+      {q:'15. Welcome ___ Springfield!', options:['at','to','in','for'], answer:1, vi:'Chào mừng đến với Springfield!', explanation:'"Welcome to + place".', note:'Welcome to + N'},
+      {q:'16. Accommodation in London ___ very expensive.', options:['is','are','has','have'], answer:0, vi:'Chỗ ở tại London rất đắt đỏ.', explanation:'"accommodation" là danh từ không đếm được, số ít → is.', note:'danh từ không đếm được + is'},
+      {q:'17. The road ___ down to the sea is very rough.', options:['goes','going','to go','gone'], answer:1, vi:'Con đường dẫn xuống biển rất gồ ghề.', explanation:'Mệnh đề quan hệ rút gọn: "the road [that goes] down to the sea" = going.', note:'noun + V-ing (rút gọn mệnh đề quan hệ chủ động)'},
+      {q:'18. ___ is a large hole in the side of a mountain or under the ground.', options:['Waterfall','Cave','Bay','Lake'], answer:1, vi:'Hang động là một lỗ hổng lớn trong sườn núi hoặc dưới lòng đất.', explanation:'Định nghĩa khớp với "Cave" (hang động).', note:'từ vựng: địa hình tự nhiên'},
+      {q:'19. The vase ___ on the shelf is very beautiful.', options:['stands','standing','is standing','stood'], answer:1, vi:'Chiếc bình đặt trên kệ rất đẹp.', explanation:'Mệnh đề quan hệ rút gọn: "the vase [that is] standing on the shelf" = standing.', note:'noun + V-ing (rút gọn mệnh đề quan hệ)'},
+      {q:'20. Do you mind if I ___ your atlas for a minute?', options:['borrow','will borrow','am going to borrow','borrowed'], answer:0, vi:'Bạn có phiền nếu tôi mượn tập bản đồ của bạn một chút không?', explanation:'"Do you mind if + S + V (hiện tại đơn)?".', note:'Do you mind if + S + V (hiện tại)?'},
+      {q:'21. The Christian Festival of Easter celebrates the return of Christ from the dead, ___ the festival is actually named after the goddess of the sun.', options:['if','but','however','moreover'], answer:1, vi:'Lễ Phục sinh của Kitô giáo kỷ niệm sự trở lại của Chúa từ cõi chết, nhưng lễ hội này thực ra được đặt theo tên nữ thần mặt trời.', explanation:'Sự tương phản trong câu ghép, dùng dấu phẩy + liên từ đẳng lập → but.', note:'S + V, but + S + V (câu ghép)'},
+      {q:'22. After a long and exhausting journey, they arrived home ___.', options:['finally','by the end','at the end','at last'], answer:3, vi:'Sau một hành trình dài và mệt mỏi, cuối cùng họ cũng về đến nhà.', explanation:'"at last" = cuối cùng (sau một quá trình dài).', note:'at last (cụm trạng từ)'},
+      {q:'23. I couldn\u2019t hear what he said ___ he was muttering under his breath.', options:['because','Although','in spite of','if'], answer:0, vi:'Tôi không thể nghe được anh ấy nói gì vì anh ấy đang lẩm bẩm.', explanation:'Nêu lý do → because.', note:'mệnh đề chính + because + mệnh đề nguyên nhân'},
+      {q:'24. Children need a caring environment to develop ___ mentally ___ physically.', options:['and - and','both \u2013 and','the \u2013 the','in - and'], answer:1, vi:'Trẻ em cần một môi trường quan tâm để phát triển cả về tinh thần lẫn thể chất.', explanation:'Cấu trúc "both...and..." = cả...và...', note:'both + adverb + and + adverb'},
+      {q:'25. We do not have many carnivals in Viet Nam; ___ we have many special traditional festivals.', options:['moreover','while','nevertheless','although'], answer:2, vi:'Chúng ta không có nhiều lễ hội hóa trang ở Việt Nam; tuy nhiên chúng ta có nhiều lễ hội truyền thống đặc sắc.', explanation:'Sự tương phản, dùng dấu chấm phẩy + liên từ trạng từ → nevertheless.', note:'S + V; nevertheless, S + V'},
+      {q:'26. I was promised a luxury weekend by my husband; ___, I am not satisfied.', options:['Despite','Because','Although','However'], answer:3, vi:'Tôi được chồng hứa cho một kỳ nghỉ cuối tuần sang trọng; tuy nhiên, tôi không hài lòng.', explanation:'Sự tương phản, dùng dấu chấm phẩy + liên từ trạng từ → However.', note:'S + V; however, S + V'},
+      {q:'27. ___ you study harder, you won\u2019t pass the examination.', options:['Unless','Because','If','Without'], answer:0, vi:'Trừ khi bạn học chăm chỉ hơn, bạn sẽ không đậu kỳ thi.', explanation:'"Unless" = nếu không, trừ khi.', note:'Unless + S + V (hiện tại), S + won\u2019t + V'},
+      {q:'28. My sister has been living in Da Lat for 2 years; ___, she has never been to Than Tho Lake.', options:['however','although','If','because'], answer:0, vi:'Chị tôi đã sống ở Đà Lạt được 2 năm; tuy nhiên, chị ấy chưa từng đến Hồ Than Thở.', explanation:'Sự tương phản, dùng dấu chấm phẩy + liên từ trạng từ → however.', note:'S + V; however, S + V'},
+      {q:'29. ___ Vietnamese IJSO delegation was attending 11th Olympiad in Argentina, we had chance to meet many friends all over the world and visit different beauty spots there.', options:['When','Despite','Although','If'], answer:0, vi:'Khi đoàn IJSO Việt Nam tham dự kỳ Olympiad lần thứ 11 tại Argentina, chúng tôi có cơ hội gặp gỡ nhiều bạn bè khắp thế giới và thăm nhiều danh lam thắng cảnh ở đó.', explanation:'Mốc thời gian → When.', note:'When + S + V(quá khứ), S + V(quá khứ)'},
+      {q:'30. When the first Chinese restaurants opened in Greece, it was very difficult to get fresh ___ of Chinese vegetables.', options:['provisions','materials','supplies','ingredients'], answer:2, vi:'Khi những nhà hàng Trung Hoa đầu tiên mở ở Hy Lạp, rất khó để có nguồn cung rau Trung Hoa tươi.', explanation:'"supplies" = nguồn cung cấp, phù hợp ngữ cảnh.', note:'từ vựng phù hợp ngữ cảnh'},
+      {q:'31. ___ different regions and religions have a variety in marital arrangements, the arranged marriage is a traditional feature of every community.', options:['Because','Although','While','When'], answer:1, vi:'Mặc dù các vùng miền và tôn giáo khác nhau có sự đa dạng trong cách sắp đặt hôn nhân, hôn nhân sắp đặt vẫn là nét truyền thống của mọi cộng đồng.', explanation:'Sự nhượng bộ → Although.', note:'Although + S + V, S + V'},
+      {q:'32. The Vietnamese are influenced by Buddhist theology and Confucian philosophy, ___ they believe in fate in marriage.', options:['and','but','so','yet'], answer:2, vi:'Người Việt chịu ảnh hưởng của Phật giáo và triết lý Nho giáo, vì vậy họ tin vào số phận trong hôn nhân.', explanation:'Nêu kết quả → so.', note:'S + V, so + S + V (câu ghép)'},
+      {q:'33. Always take your shoes off before you enter a temple in India, ___ you will be considered impolite.', options:['otherwise','therefore','however','moreover'], answer:0, vi:'Luôn cởi giày trước khi vào đền ở Ấn Độ, nếu không bạn sẽ bị coi là bất lịch sự.', explanation:'"otherwise" = nếu không thì.', note:'mệnh lệnh, otherwise + S + V'},
+      {q:'34. "Giao Thua" is the most sacred time of the year; ___, the first houseguest to offer the first greeting is very important.', options:['moreover','nevertheless','so','therefore'], answer:3, vi:'Giao thừa là thời khắc thiêng liêng nhất trong năm; do đó, người khách đầu tiên đến chúc Tết rất quan trọng.', explanation:'Nêu kết quả → therefore.', note:'S + V; therefore, S + V'},
+      {q:'35. The five-fruit tray on the altar symbolizes the gratitude of the Vietnamese to their ancestors; ___, it demonstrates their hope for a life of plenty.', options:['and','moreover','therefore','however'], answer:1, vi:'Mâm ngũ quả trên bàn thờ tượng trưng cho lòng biết ơn của người Việt với tổ tiên; hơn nữa, nó thể hiện hy vọng về một cuộc sống sung túc.', explanation:'Bổ sung ý → moreover.', note:'S + V; moreover, S + V'},
+      {q:'36. The Hung King Temple Festival ___ from the 8th to the 11th day of the third lunar month in Phu Tho.', options:['takes','takes part','takes place','takes turn'], answer:2, vi:'Lễ hội Đền Hùng diễn ra từ mùng 8 đến 11 tháng 3 âm lịch tại Phú Thọ.', explanation:'"take place" = diễn ra.', note:'S + takes place + thời gian'},
+      {q:'37. During the Buddhist Festival, visitors join the procession and ___ Buddha at the pagoda.', options:['think about','consider','worship','believe'], answer:2, vi:'Trong lễ hội Phật giáo, du khách tham gia đám rước và thờ cúng Đức Phật tại chùa.', explanation:'"worship Buddha" = thờ cúng Đức Phật.', note:'worship + đối tượng tôn thờ'},
+      {q:'38. I think the Kate Festival is a really joyful festival which ___ many activities.', options:['contains','holds','features','includes in'], answer:2, vi:'Tôi nghĩ lễ hội Kate là một lễ hội thực sự vui vẻ với nhiều hoạt động đặc sắc.', explanation:'"feature" = có đặc điểm nổi bật là.', note:'S + features + N'},
+      {q:'39. In Viet Nam, the ___ we mostly use is chopsticks.', options:['cut','cutting','cutlery','cutlet'], answer:2, vi:'Ở Việt Nam, bộ đồ ăn chúng ta chủ yếu dùng là đũa.', explanation:'"cutlery" = bộ đồ ăn.', note:'the + cutlery + we use'},
+      {q:'40. You shouldn\u2019t ___ your promise to the children.', options:['break','cut','keep','save'], answer:0, vi:'Bạn không nên thất hứa với bọn trẻ.', explanation:'"break a promise" = thất hứa.', note:'break + a promise'},
+      {q:'41. Mid-Autumn Festival not only recalls the family love, ___ is also a festival for both children and adults in Vietnam.', options:['and','but','yet','therefore'], answer:1, vi:'Tết Trung Thu không chỉ gợi nhớ tình cảm gia đình mà còn là lễ hội cho cả trẻ em và người lớn ở Việt Nam.', explanation:'Cấu trúc "not only... but also..." = không những... mà còn...', note:'not only + A, but (also) + B'},
+      {q:'42. Tran Temple Festival lasts from the 15th-20th of lunar August. ___, visitors all over the country eagerly go on a pilgrimage far prior to the day.', options:['Nevertheless','Otherwise','Therefore','Moreover'], answer:0, vi:'Lễ hội Đền Trần kéo dài từ 15-20 tháng 8 âm lịch. Tuy nhiên, du khách khắp cả nước háo hức hành hương từ trước ngày đó rất lâu.', explanation:'Sự tương phản → Nevertheless.', note:'S + V. Nevertheless, S + V'},
+      {q:'43. ___ the main worship event is taking place at Hung Temple, 100 lanterns are released into the sky.', options:['Because','Even though','While','If'], answer:2, vi:'Trong khi sự kiện thờ cúng chính diễn ra tại Đền Hùng, 100 chiếc đèn trời được thả lên bầu trời.', explanation:'Hai hành động diễn ra đồng thời → While.', note:'While + S + V (tiếp diễn), S + V'},
+      {q:'44. Lim Festival is among the most impressive festivals, ceremonies ___ singing events.', options:['or','but','yet','and'], answer:3, vi:'Lễ hội Lim là một trong những lễ hội ấn tượng nhất, với các nghi lễ và các sự kiện ca hát.', explanation:'Liệt kê ý ngang hàng, không tương phản → and.', note:'liệt kê: A and B'},
+      {q:'45. The navigation of the boat, called ghe ngo, requires great skills ___ it can easily be flipped.', options:['therefore','because','when','although'], answer:1, vi:'Việc điều khiển chiếc thuyền, gọi là ghe ngo, đòi hỏi kỹ năng cao vì nó rất dễ bị lật.', explanation:'Nêu lý do → because.', note:'mệnh đề chính + because + mệnh đề nguyên nhân'},
+      {q:'46. ___ you consider yourself a culture enthusiast, Hue Arts Festival is a must.', options:['If','Though','Because','As'], answer:0, vi:'Nếu bạn coi mình là người đam mê văn hóa, Lễ hội Nghệ thuật Huế là điều không thể bỏ lỡ.', explanation:'Điều kiện → If.', note:'If + S + V, S + V'},
+      {q:'47. The festival only lasted for three days; ___ they spent nearly a month preparing for it.', options:['when','moreover','otherwise','however'], answer:3, vi:'Lễ hội chỉ kéo dài ba ngày; tuy nhiên họ đã dành gần một tháng để chuẩn bị cho nó.', explanation:'Sự tương phản → however.', note:'S + V; however, S + V'},
+      {q:'48. In Quang Ninh, you can go to Yen Tu Mountain to attend the Yen Tu Festival, ___ you can visit Ha Long Bay.', options:['so','yet','or','otherwise'], answer:2, vi:'Ở Quảng Ninh, bạn có thể đến núi Yên Tử để dự Lễ hội Yên Tử, hoặc bạn có thể thăm Vịnh Hạ Long.', explanation:'Lựa chọn thay thế → or.', note:'S + V, or + S + V'},
+      {q:'49. ___ there are loads of festivals in Vietnam, Tet or Tet Nguyen Dan is the most important one.', options:['Since','Although','When','As long as'], answer:1, vi:'Mặc dù có rất nhiều lễ hội ở Việt Nam, Tết hay Tết Nguyên Đán vẫn là lễ hội quan trọng nhất.', explanation:'Sự nhượng bộ → Although.', note:'Although + S + V, S + V'},
+      {q:'50. Festival visitors can take part in cultural activities, such as visiting art galleries, historical places and parks. ___, they can taste exotic food and dishes.', options:['Moreover','Therefore','However','Otherwise'], answer:0, vi:'Du khách lễ hội có thể tham gia các hoạt động văn hóa như thăm phòng tranh, di tích lịch sử và công viên. Hơn nữa, họ có thể thưởng thức các món ăn lạ.', explanation:'Bổ sung ý → Moreover.', note:'S + V. Moreover, S + V'},
+    ]
+  },
+
+  /* ---------- BÀI 4: WORD FORMS (20) ---------- */
+  4: {
+    color:'fuchsia', title:'Bài 4: Cho dạng đúng của từ trong ngoặc (Word Forms)',
+    desc:'Dùng từ gợi ý trong ngoặc để điền dạng đúng vào chỗ trống.',
+    type:'fill',
+    questions:[
+      {sentence:'To make Chung cake, the rice and green bean has to be ___ in water for a day to make it stickier. (SOAK)', answers:['soaked'], vi:'Để làm bánh chưng, gạo và đậu xanh phải được ngâm trong nước một ngày để dẻo hơn.', explanation:'Bị động "has to be + V3" → soaked. Word form: • soak (v): ngâm • soaked (adj/V3): đã ngâm.', note:'has to be + V3 (bị động)'},
+      {sentence:'Vietnamese families plan their ___ around their children on Tet holiday. (ACTIVITY)', answers:['activities'], vi:'Các gia đình Việt Nam lên kế hoạch hoạt động xoay quanh con cái vào dịp Tết.', explanation:'Sau tính từ sở hữu "their" cần danh từ số nhiều → activities. Word form: • active (adj): năng động • activity (n): hoạt động.', note:'sở hữu cách + plural noun'},
+      {sentence:'Parents would use the Mid-Autumn Festival as an opportunity to show their love and ___ for their children. (APPRECIATE)', answers:['appreciation'], vi:'Cha mẹ dùng Tết Trung Thu như cơ hội để thể hiện tình yêu và sự trân trọng với con cái.', explanation:'Sau "and" nối với danh từ "love" → cần danh từ → appreciation. Word form: • appreciate (v): trân trọng • appreciation (n): sự trân trọng.', note:'love and + noun'},
+      {sentence:'Lanterns represent ___ while the procession symbolizes success in school. (BRIGHT)', answers:['brightness'], vi:'Đèn lồng tượng trưng cho sự sáng sủa, còn đám rước tượng trưng cho thành công trong học tập.', explanation:'Sau "represent" cần danh từ → brightness. Word form: • bright (adj): sáng • brightness (n): sự sáng sủa • brightly (adv): một cách sáng sủa.', note:'represent + noun'},
+      {sentence:'I am writing to express my ___ of my stay at the Eden Hotel in London last weekend. (SATISFY)', answers:['dissatisfaction'], vi:'Tôi viết thư này để bày tỏ sự không hài lòng về kỳ nghỉ tại khách sạn Eden ở London cuối tuần trước.', explanation:'Sau tính từ sở hữu "my" cần danh từ → dissatisfaction (sự không hài lòng, phù hợp ngữ cảnh thư phàn nàn). Word form: • satisfy (v): làm hài lòng • satisfaction (n): sự hài lòng • dissatisfaction (n): sự không hài lòng.', note:'my + noun'},
+      {sentence:'At the end of the service, a lot of ___ streamed down to the altar. (WORSHIP)', answers:['worshippers'], vi:'Cuối buổi lễ, rất nhiều tín đồ đổ về phía bàn thờ.', explanation:'Sau "a lot of" cần danh từ số nhiều chỉ người → worshippers. Word form: • worship (v/n): thờ cúng • worshipper (n): người thờ cúng, tín đồ.', note:'a lot of + plural noun (chỉ người)'},
+      {sentence:'___ lanterns feature special heritage night at Hoi An. (FLOAT)', answers:['Floating'], vi:'Đèn lồng thả trôi là điểm nhấn của đêm di sản đặc biệt tại Hội An.', explanation:'Trước danh từ "lanterns" cần tính từ (V-ing) → Floating. Word form: • float (v): thả trôi • floating (adj): trôi nổi.', note:'V-ing (adjective) + noun'},
+      {sentence:'___ activities are official procession, sporting events and singing. (FESTIVAL)', answers:['Festive'], vi:'Các hoạt động mang tính lễ hội gồm đám rước chính thức, các sự kiện thể thao và ca hát.', explanation:'Trước danh từ "activities" cần tính từ → Festive. Word form: • festival (n): lễ hội • festive (adj): mang tính lễ hội, tưng bừng.', note:'adjective + noun'},
+      {sentence:'___ for the Lunar New Year begin weeks before the festival. (PREPARE)', answers:['Preparations'], vi:'Công việc chuẩn bị cho Tết Nguyên Đán bắt đầu từ nhiều tuần trước lễ hội.', explanation:'Chủ ngữ của câu cần danh từ số nhiều → Preparations. Word form: • prepare (v): chuẩn bị • preparation (n): sự chuẩn bị.', note:'plural noun (chủ ngữ)'},
+      {sentence:'Tet is the privileged occasion for family members to ___. (REUNION)', answers:['reunite'], vi:'Tết là dịp đặc biệt để các thành viên trong gia đình đoàn tụ.', explanation:'Sau "to" cần động từ nguyên mẫu → reunite. Word form: • reunion (n): sự đoàn tụ • reunite (v): đoàn tụ.', note:'to + V-inf'},
+      {sentence:'Hung King Temple Festival is held in ___ of Vietnam\u2019s first kings. (COMMEMORATE)', answers:['commemoration'], vi:'Lễ hội Đền Hùng được tổ chức để tưởng nhớ các vị vua đầu tiên của Việt Nam.', explanation:'Sau "in" cần danh từ; "in commemoration of" = để tưởng nhớ. Word form: • commemorate (v): tưởng nhớ • commemoration (n): sự tưởng nhớ.', note:'in commemoration of + N'},
+      {sentence:'The tribe has different ___ masks for each ceremony. (CEREMONY)', answers:['ceremonial'], vi:'Bộ tộc có những chiếc mặt nạ nghi lễ khác nhau cho mỗi buổi lễ.', explanation:'Trước danh từ "masks" cần tính từ → ceremonial. Word form: • ceremony (n): nghi lễ • ceremonial (adj): thuộc về nghi lễ.', note:'adjective + noun'},
+      {sentence:'___ of culture can be achieved by keeping cultural elements, such as food, clothing, shelter, and language. (PRESERVE)', answers:['Preservation'], vi:'Việc bảo tồn văn hóa có thể đạt được bằng cách gìn giữ các yếu tố văn hóa như ẩm thực, trang phục, nơi ở và ngôn ngữ.', explanation:'Chủ ngữ của câu cần danh từ → Preservation. Word form: • preserve (v): bảo tồn • preservation (n): sự bảo tồn.', note:'noun (chủ ngữ) + of + N'},
+      {sentence:'The Whale Festival is ___ of the many different festivals in villages in Vietnam. (TYPE)', answers:['typical'], vi:'Lễ hội Cá Ông là một lễ hội tiêu biểu trong số nhiều lễ hội khác nhau ở các làng quê Việt Nam.', explanation:'Sau "is" cần tính từ; "typical of" = tiêu biểu cho. Word form: • type (n): loại • typical (adj): tiêu biểu, điển hình.', note:'be + typical + of + N'},
+      {sentence:'Hat Xoan is a folk song ___ in festivals and worshipping genie. (PERFORMANCE)', answers:['performed'], vi:'Hát Xoan là một loại dân ca được biểu diễn trong các lễ hội và thờ cúng thần linh.', explanation:'Mệnh đề quan hệ rút gọn bị động: "a folk song [that is] performed" = performed. Word form: • perform (v): biểu diễn • performance (n): buổi biểu diễn • performed (adj/V3): được biểu diễn.', note:'noun + V3 (rút gọn mệnh đề quan hệ bị động)'},
+      {sentence:'When Alice heard footsteps, she was ___ and started to run. (FRIGHT)', answers:['frightened'], vi:'Khi Alice nghe thấy tiếng bước chân, cô ấy sợ hãi và bắt đầu chạy.', explanation:'Sau "be" cần tính từ chỉ cảm xúc → frightened. Word form: • fright (n): sự sợ hãi • frighten (v): làm sợ hãi • frightened (adj): cảm thấy sợ hãi • frightening (adj): gây sợ hãi.', note:'be + frightened (cảm xúc bị tác động)'},
+      {sentence:'Cinderella\u2019s stepmother was ___ and treated her ___. (KIND-BAD)', answers:['unkind','badly'], vi:'Mẹ kế của Lọ Lem rất độc ác và đối xử tệ bạc với cô.', explanation:'Sau "be" cần tính từ → unkind; sau động từ "treated" cần trạng từ → badly. Word form: • kind (adj): tốt bụng • unkind (adj): không tốt bụng • bad (adj): tệ • badly (adv): một cách tệ hại.', note:'be + adjective; V + adverb'},
+      {sentence:'Jack is very bright, but he\u2019s also ___ of his accomplishments at school. (BOAST)', answers:['boastful'], vi:'Jack rất thông minh, nhưng cậu cũng hay khoe khoang về thành tích ở trường.', explanation:'Sau "be" cần tính từ; "boastful of" = hay khoe khoang về. Word form: • boast (v): khoe khoang • boastful (adj): hay khoe khoang.', note:'be + boastful + of + N'},
+      {sentence:'When Jack was going to the market, he met a ___. (MAGIC)', answers:['magician'], vi:'Khi Jack đang trên đường ra chợ, cậu gặp một pháp sư.', explanation:'Sau mạo từ "a" cần danh từ chỉ người → magician. Word form: • magic (n): phép thuật • magician (n): pháp sư, nhà ảo thuật • magical (adj): kỳ diệu.', note:'a + noun (chỉ người)'},
+      {sentence:'She smiled ___, waved, and vanished into thin air. (WICKED)', answers:['wickedly'], vi:'Cô ta cười một cách gian ác, vẫy tay, rồi biến mất không dấu vết.', explanation:'Trạng từ bổ nghĩa cho động từ "smiled" → wickedly. Word form: • wicked (adj): gian ác • wickedly (adv): một cách gian ác.', note:'V + adverb'},
+    ]
+  },
+
+  /* ---------- BÀI 5: VERB FORMS I ---------- */
+  5: {
+    color:'emerald', title:'Bài 5: Cho dạng đúng của động từ (I)',
+    desc:'Chia đúng dạng của động từ trong ngoặc để hoàn thành câu.',
+    type:'fill',
+    questions:[
+      {sentence:'My mother always tells me that I have to (be) ___ home by 9 p.m.', answers:['be'], vi:'Mẹ tôi luôn bảo tôi rằng tôi phải về nhà trước 9 giờ tối.', explanation:'have to + V nguyên mẫu → be.'},
+      {sentence:'When I came, the whole family (have) ___ dinner around a big dining table.', answers:['was having'], vi:'Khi tôi đến, cả gia đình đang ăn tối quanh một chiếc bàn lớn.', explanation:'Hành động đang diễn ra tại thời điểm trong quá khứ → quá khứ tiếp diễn: was having.'},
+      {sentence:'Children should (take) ___ things from adults with both hands.', answers:['take'], vi:'Trẻ em nên nhận đồ từ người lớn bằng hai tay.', explanation:'should + V nguyên mẫu → take.'},
+      {sentence:'In Australia, you mustn\u2019t (comment) ___ on a person\u2019s accent.', answers:['comment'], vi:'Ở Úc, bạn không được bình luận về giọng nói của người khác.', explanation:'mustn\u2019t + V nguyên mẫu → comment.'},
+      {sentence:'Laura lives in a big city. If she (live) ___ in the country, she ___ (have) a dog.', answers:['lived','would have'], vi:'Laura sống ở thành phố lớn. Nếu cô ấy sống ở nông thôn, cô ấy sẽ nuôi một con chó.', explanation:'Câu điều kiện loại 2 (giả định không có thật ở hiện tại): If + S + V-ed, S + would + V-inf.'},
+      {sentence:'I (learn) ___ Italian for the past three years.', answers:['have learnt'], acc:[['have learnt','have learned','have been learning']], vi:'Tôi đã học tiếng Ý được ba năm nay.', explanation:'"for the past three years" → thì hiện tại hoàn thành (tiếp diễn): have learnt / have been learning.'},
+      {sentence:'If I were you, I ___ (not / buy) that book.', answers:['wouldn\u2019t buy'], acc:[['wouldn\u2019t buy','would not buy']], vi:'Nếu tôi là bạn, tôi sẽ không mua cuốn sách đó.', explanation:'Câu điều kiện loại 2: If I were you, I would/wouldn\u2019t + V-inf.'},
+      {sentence:'What ___ the children (see) in the zoo yesterday?', answers:['did the children see'], acc:[['did the children see','did they see']], vi:'Hôm qua bọn trẻ đã nhìn thấy gì ở sở thú?', explanation:'Câu hỏi Wh- ở thì quá khứ đơn: What + did + S + V-inf?'},
+      {sentence:'They prefer ___ (play) in a swimming pool all day.', answers:['playing'], vi:'Họ thích bơi trong hồ bơi cả ngày.', explanation:'prefer + V-ing → playing.'},
+      {sentence:'The doctor will be ready in ten minutes. Take a seat while you ___ (wait).', answers:['are waiting'], vi:'Bác sĩ sẽ sẵn sàng trong mười phút nữa. Hãy ngồi trong lúc bạn chờ.', explanation:'Hành động đang tiếp diễn ở hiện tại (trong khi chờ) → hiện tại tiếp diễn: are waiting.'},
+    ]
+  },
+
+  /* ---------- BÀI 6: VERB FORMS II (QUÁ KHỨ ĐƠN & QUÁ KHỨ TIẾP DIỄN) ---------- */
+  6: {
+    color:'teal', title:'Bài 6: Viết đúng dạng động từ – Quá khứ đơn hay quá khứ tiếp diễn',
+    desc:'Chia đúng dạng động từ trong ngoặc, dùng thì quá khứ đơn hoặc quá khứ tiếp diễn.',
+    type:'fill',
+    questions:[
+      {sentence:'The woodcutter (work) ___ in the woods. He (hear) ___ a loud scream from a small cottage.', answers:['was working','heard'], vi:'Người tiều phu đang làm việc trong rừng. Anh ta nghe thấy tiếng thét lớn từ một căn nhà nhỏ.', explanation:'Hành động đang diễn ra (was working) bị hành động khác xen vào (heard) → quá khứ tiếp diễn + quá khứ đơn.'},
+      {sentence:'Hans Christian Andersen (grow up) ___ in a Danish village and (move) ___ to the big city in 1900s.', answers:['grew up','moved'], vi:'Hans Christian Andersen lớn lên ở một ngôi làng Đan Mạch và chuyển đến thành phố lớn vào những năm 1900.', explanation:'Hai hành động nối tiếp trong quá khứ → quá khứ đơn: grew up, moved.'},
+      {sentence:'Cinderella (have to) ___ work hard all day since her father died.', answers:['had to'], vi:'Lọ Lem đã phải làm việc vất vả cả ngày kể từ khi cha cô qua đời.', explanation:'Sự việc đã xảy ra trong quá khứ → quá khứ đơn: had to.'},
+      {sentence:'Cinderella (dress) ___ in rags with a dusty gray face from the cinders while her stepsisters always (dress) ___ splendid and elegant clothes.', answers:['dressed','dressed'], vi:'Lọ Lem mặc quần áo rách rưới với khuôn mặt lấm lem tro bụi, trong khi các chị kế luôn mặc những bộ quần áo lộng lẫy, sang trọng.', explanation:'Miêu tả thói quen/tình trạng trong quá khứ, hai hành động song song → quá khứ đơn cả hai.'},
+      {sentence:'I (see) ___ the accident when I (wait) ___ for the taxi.', answers:['saw','was waiting'], vi:'Tôi nhìn thấy vụ tai nạn khi đang chờ taxi.', explanation:'Hành động đang diễn ra (was waiting) bị hành động khác xen vào (saw) → quá khứ tiếp diễn + quá khứ đơn.'},
+      {sentence:'While people (talk) ___ to each other, he (read) ___ his book.', answers:['were talking','was reading'], vi:'Trong khi mọi người đang nói chuyện với nhau, anh ấy đang đọc sách.', explanation:'Hai hành động cùng diễn ra song song trong quá khứ → quá khứ tiếp diễn cả hai.'},
+      {sentence:'Who ___ she (dance) with at the party last night?', answers:['did she dance'], vi:'Tối qua cô ấy đã khiêu vũ với ai ở bữa tiệc?', explanation:'Câu hỏi Wh- ở thì quá khứ đơn: Who + did + S + V-inf?'},
+      {sentence:'While we (play) ___ basketball in the park, Mary (fall) ___ over.', answers:['were playing','fell'], vi:'Trong khi chúng tôi đang chơi bóng rổ ở công viên, Mary đã bị ngã.', explanation:'Hành động đang diễn ra (were playing) bị hành động khác xen vào (fell) → quá khứ tiếp diễn + quá khứ đơn.'},
+      {sentence:'When Cinderella (run) ___ she (loose) ___ one of her slippers.', answers:['was running','lost'], vi:'Khi Lọ Lem đang chạy, cô ấy làm rơi mất một chiếc giày.', explanation:'Hành động đang diễn ra (was running) bị hành động khác xen vào (lost) → quá khứ tiếp diễn + quá khứ đơn.'},
+      {sentence:'Someone (knock) ___ the door at midnight yesterday.', answers:['was knocking'], vi:'Có ai đó đang gõ cửa vào lúc nửa đêm hôm qua.', explanation:'Hành động đang diễn ra tại một thời điểm cụ thể trong quá khứ ("at midnight") → quá khứ tiếp diễn: was knocking.'},
+    ]
+  },
+
+  /* ---------- BÀI 7: VERB FORMS III (QUÁ KHỨ HOÀN THÀNH & QUÁ KHỨ ĐƠN) ---------- */
+  7: {
+    color:'amber', title:'Bài 7: Chia động từ trong ngoặc ở thì quá khứ hoàn thành hoặc quá khứ đơn',
+    desc:'Điền dạng đúng của động từ trong ngoặc, dùng thì quá khứ hoàn thành hoặc quá khứ đơn.',
+    type:'fill',
+    questions:[
+      {sentence:'When she (finish) ___ her work, she (go) ___ to the cinema.', answers:['had finished','went'], vi:'Khi cô ấy hoàn thành công việc xong, cô ấy đi xem phim.', explanation:'Hành động xảy ra trước (had finished) → quá khứ hoàn thành; hành động xảy ra sau (went) → quá khứ đơn.'},
+      {sentence:'He (not eat) ___ until his parents (come) ___ home.', answers:['hadn\u2019t eaten','came'], vi:'Cậu ấy đã không ăn cho đến khi bố mẹ về nhà.', explanation:'Hành động chưa xảy ra trước một mốc trong quá khứ → quá khứ hoàn thành phủ định + quá khứ đơn.'},
+      {sentence:'She (tell) ___ me she never (meet) ___ him.', answers:['told','had met'], vi:'Cô ấy nói với tôi rằng cô ấy chưa từng gặp anh ta.', explanation:'"told" (quá khứ đơn) xảy ra sau; "had met" (quá khứ hoàn thành) diễn tả việc chưa từng xảy ra trước đó.'},
+      {sentence:'He (do) ___ her homework before he (go) ___ out.', answers:['had done','went'], vi:'Cậu ấy đã làm xong bài tập trước khi ra ngoài.', explanation:'Hành động xảy ra trước (had done) → quá khứ hoàn thành; hành động xảy ra sau (went) → quá khứ đơn.'},
+      {sentence:'The lights (go) ___ out the moment he (get) ___ into the cinema.', answers:['had gone','got'], vi:'Đèn đã tắt ngay khi anh ấy bước vào rạp chiếu phim.', explanation:'Hành động xảy ra trước (had gone) → quá khứ hoàn thành; hành động mốc thời gian (got) → quá khứ đơn.'},
+      {sentence:'Hardly ___ the holiday (begin) ___ when they (leave) ___ the town.', answers:['had','begun','left'], vi:'Kỳ nghỉ vừa mới bắt đầu thì họ đã rời khỏi thị trấn.', explanation:'Cấu trúc đảo ngữ "Hardly had + S + V3 + when + S + V-ed" diễn tả hai hành động nối tiếp rất nhanh trong quá khứ.', note:'Hardly had + S + V3 + when + S + V-ed (đảo ngữ)'},
+      {sentence:'They (be) ___ out for an hour when it (start) ___ to rain.', answers:['had been','started'], vi:'Họ đã ra ngoài được một tiếng thì trời bắt đầu mưa.', explanation:'Hành động kéo dài trước một mốc (had been) → quá khứ hoàn thành; hành động xảy ra tại mốc đó (started) → quá khứ đơn.'},
+      {sentence:'They (leave) ___ the shop as soon as they (buy) ___ everything they (need) ___.', answers:['left','had bought','needed'], vi:'Họ rời khỏi cửa hàng ngay khi đã mua xong mọi thứ cần thiết.', explanation:'"as soon as" + hành động xảy ra trước (had bought) → quá khứ hoàn thành; "left" và "needed" → quá khứ đơn.'},
+      {sentence:'The house (burn) ___ to the ground by the time the firemen (arrive) ___.', answers:['had burnt','arrived'], acc:[['had burnt','had burned'],['arrived']], vi:'Ngôi nhà đã cháy rụi trước khi lính cứu hỏa đến.', explanation:'"by the time" + hành động xảy ra trước (had burnt) → quá khứ hoàn thành; hành động mốc thời gian (arrived) → quá khứ đơn.'},
+      {sentence:'As he (do) ___ a lot of work that day he (be) ___ very tired.', answers:['had done','was'], vi:'Vì đã làm rất nhiều việc trong ngày hôm đó nên anh ấy rất mệt.', explanation:'Hành động xảy ra trước và là nguyên nhân (had done) → quá khứ hoàn thành; kết quả (was) → quá khứ đơn.'},
+    ]
+  },
+
+  /* ---------- BÀI 8: CORRECTION I (A, B, C, D) ---------- */
+  8: {
+    color:'orange', title:'Bài 8: Tìm lỗi sai (A, B, C hoặc D)',
+    desc:'Mỗi câu có 4 phần gạch chân A, B, C, D. Chọn phần chứa lỗi sai. Chọn xong sẽ hiện đúng/sai, đáp án và công thức ngay.',
+    type:'mcq', instant:true,
+    intro:`<span class="text-amber-600">[RECONSTRUCTED: tài liệu gốc chỉ đánh dấu 4 vị trí A/B/C/D bằng dòng nhãn riêng bên dưới câu (không có gạch chân trực tiếp trong text). Claude đã tự chia mỗi câu thành 4 cụm A/B/C/D hợp lý dựa theo đáp án lỗi sai cho sẵn. Nếu có ảnh gốc rõ vị trí gạch chân, nên đối chiếu lại.]</span>`,
+    questions:[
+      {q:'1. <u>The ritual is made</u> <u>in order to thank</u> <u>the Sun Goddess</u> <u>for the rice harvest</u>.', options:['The ritual is made','in order to thank','the Sun Goddess','for the rice harvest'], answer:0, vi:'Nghi thức này được thực hiện để cảm tạ Nữ thần Mặt trời vì mùa lúa bội thu.', explanation:'"perform a ritual" = thực hiện nghi thức, không dùng "make" → is made phải sửa thành is performed.', note:'perform a ritual (thực hiện nghi thức)'},
+      {q:'2. <u>I found it</u> <u>very excited</u> <u>to take part in</u> <u>the spring festival of Bai Dinh Pagoda</u>.', options:['I found it','very excited','to take part in','the spring festival of Bai Dinh Pagoda'], answer:1, vi:'Tôi thấy việc tham gia lễ hội mùa xuân ở chùa Bái Đính rất thú vị.', explanation:'Vật/việc gây ra cảm giác dùng "-ing" → excited phải sửa thành exciting.', note:'find + it + adjective-ing (vật gây cảm giác)'},
+      {q:'3. I like <u>both the green or the blue T-shirt</u>, <u>but</u> <u>I don\u2019t have enough money</u> <u>to buy two T-shirts</u>.', options:['both the green or the blue T-shirt','but','I don\u2019t have enough money','to buy two T-shirts'], answer:0, vi:'Tôi thích cả áo thun xanh lá lẫn áo thun xanh dương, nhưng tôi không đủ tiền để mua cả hai chiếc.', explanation:'Cấu trúc "both...and..." → or phải sửa thành and.', note:'both A and B'},
+      {q:'4. <u>Your marks in English</u> <u>are low although</u> <u>you don\u2019t study</u> <u>hard enough</u>.', options:['Your marks in English','are low although','you don\u2019t study','hard enough'], answer:1, vi:'Điểm tiếng Anh của bạn thấp vì bạn không học đủ chăm chỉ.', explanation:'Quan hệ nguyên nhân - kết quả, không phải nhượng bộ → although phải sửa thành because.', note:'S + V + because + S + V (nguyên nhân)'},
+      {q:'5. <u>Which festival</u> <u>do you like</u> <u>much,</u> <u>Huong Pagoda or Hung Temple?</u>', options:['Which festival','do you like','much,','Huong Pagoda or Hung Temple?'], answer:2, vi:'Bạn thích lễ hội nào hơn, chùa Hương hay đền Hùng?', explanation:'So sánh giữa hai đối tượng cần dùng so sánh hơn → much phải sửa thành more.', note:'like...more, A or B? (so sánh hơn)'},
+      {q:'6. <u>We follow</u> <u>a custom to buy</u> <u>lanterns and moon cakes</u> <u>at Mid-Autumn Festival</u>.', options:['We follow','a custom to buy','lanterns and moon cakes','at Mid-Autumn Festival'], answer:1, vi:'Chúng tôi theo tập quán mua đèn lồng và bánh trung thu vào dịp Tết Trung Thu.', explanation:'"a custom of doing something" → to buy phải sửa thành of buying.', note:'a custom of + V-ing'},
+      {q:'7. <u>Before Tet,</u> <u>Vietnamese people are busy</u> <u>cleaning and decorating their houses and</u> <u>they cook traditional foods</u>.', options:['Before Tet,','Vietnamese people are busy','cleaning and decorating their houses and','they cook traditional foods'], answer:3, vi:'Trước Tết, người Việt Nam bận rộn dọn dẹp, trang trí nhà cửa và nấu các món ăn truyền thống.', explanation:'Cấu trúc song song "busy V-ing, V-ing and V-ing" → they cook phải sửa thành cooking.', note:'be busy + V-ing, V-ing and V-ing (song song)'},
+      {q:'8. <u>Until recently,</u> <u>people talk to each other</u> <u>instead of relying on texting and e-mail</u> <u>to communicate with their peers</u>.', options:['Until recently,','people talk to each other','instead of relying on texting and e-mail','to communicate with their peers'], answer:1, vi:'Cho đến gần đây, người ta vẫn nói chuyện trực tiếp với nhau thay vì dựa vào nhắn tin và email để giao tiếp với bạn bè.', explanation:'"Until recently" chỉ một giai đoạn đã qua → cần thì quá khứ đơn → talk phải sửa thành talked.', note:'Until recently, + S + V-ed (quá khứ đơn)'},
+      {q:'9. <u>She was offered</u> <u>the prestigious job, however</u> <u>she turned it down because she did not</u> <u>want to move to Texas</u>.', options:['She was offered','the prestigious job, however','she turned it down because she did not','want to move to Texas'], answer:1, vi:'Cô ấy được đề nghị công việc danh giá đó, nhưng cô đã từ chối vì không muốn chuyển đến Texas.', explanation:'"however" không thể nối trực tiếp hai mệnh đề bằng dấu phẩy như liên từ đẳng lập → however phải sửa thành but.', note:'S + V, but + S + V (liên từ đẳng lập)'},
+      {q:'10. <u>It started to rain</u> <u>hardly</u> <u>while we were playing</u> <u>some folk games at the festival</u>.', options:['It started to rain','hardly','while we were playing','some folk games at the festival'], answer:1, vi:'Trời bắt đầu mưa to trong khi chúng tôi đang chơi vài trò chơi dân gian ở lễ hội.', explanation:'"rain hard" = mưa to, "hardly" nghĩa là hầu như không → hardly phải sửa thành hard.', note:'rain hard (mưa to) — phân biệt với "hardly" (hầu như không)'},
+      {q:'11. <u>He hated</u> <u>being in the army</u> <u>when he had to</u> <u>obey commands</u>.', options:['He hated','being in the army','when he had to','obey commands'], answer:2, vi:'Anh ấy ghét việc phải ở trong quân đội vì phải tuân theo mệnh lệnh.', explanation:'Quan hệ nguyên nhân, không phải thời gian → when phải sửa thành because.', note:'S + V + because + S + had to + V (nguyên nhân)'},
+      {q:'12. <u>He must be about 60</u> <u>whereas</u> <u>his wife</u> <u>look about 30</u>.', options:['He must be about 60','whereas','his wife','look about 30'], answer:3, vi:'Anh ấy chắc khoảng 60 tuổi trong khi vợ anh ấy trông chỉ khoảng 30.', explanation:'Chủ ngữ số ít "his wife" cần động từ thêm -s → look phải sửa thành looks.', note:'chủ ngữ số ít + V-s/es'},
+      {q:'13. <u>You better</u> <u>take the keys</u> <u>in case</u> <u>I\u2019m out</u>.', options:['You better','take the keys','in case','I\u2019m out'], answer:0, vi:'Bạn nên mang theo chìa khóa phòng khi tôi đi vắng.', explanation:'Cấu trúc đúng là "had better" (nên) → You better phải sửa thành You had better.', note:'S + had better + V-inf'},
+      {q:'14. <u>I went to</u> <u>the post office</u> <u>immediately</u> <u>since I left you</u>.', options:['I went to','the post office','immediately','since I left you'], answer:3, vi:'Tôi đã đến bưu điện ngay sau khi rời khỏi bạn.', explanation:'Mốc thời gian cụ thể trong quá khứ, không phải nguyên nhân kéo dài → since phải sửa thành when.', note:'S + V + when + S + V (mốc thời gian)'},
+      {q:'15. <u>Shouldn\u2019t we</u> <u>wait until</u> <u>Antony</u> <u>here?</u>', options:['Shouldn\u2019t we','wait until','Antony','here?'], answer:0, vi:'Chúng ta có nên đợi đến khi Antony đến đây không?', explanation:'Theo đáp án của tài liệu ôn tập, câu hỏi này dùng thể khẳng định → Shouldn\u2019t we phải sửa thành Should we.', note:'Should we + V…? (theo đáp án tài liệu)'},
+    ]
+  },
+
+  /* ---------- BÀI 9: TÌM VÀ SỬA LỖI TRONG ĐOẠN VĂN ---------- */
+  9: {
+    color:'rose', title:'Bài 9: Tìm và sửa 5 lỗi sai trong đoạn văn',
+    desc:'Đọc đoạn văn. Mỗi câu có một lỗi sai. Gõ từ/cụm từ ĐÚNG vào ô trống, rồi bấm Kiểm tra để xem đáp án và giải thích.',
+    type:'fill',
+    intro:`<div class="not-italic text-slate-700">
+      <div class="font-extrabold text-rose-700 mb-2"><i class="fa-solid fa-magnifying-glass mr-1"></i>Đoạn văn gốc – Preparing for Tet</div>
+      <div class="bg-white/70 border border-rose-100 rounded-lg p-3 leading-7">
+        Tet\u2019s preparations and celebrations used to be spread over months, but nowadays the holiday is much shorter. A great deal of excitement still builds in well before Tet. Street are decorated on coloured lights and red banner. Shop are full with goods. People are busy buying gifts, cleaning and decorating their house and cooking traditional foods. Homes are often decorated plants and flowers at this time. Peach blossom is traditional at Tet in the North while apricot blossom is traditional in the South. The kumquat tree in its ripe deep orange fruits is popular throughout the country. One of Tet\u2019s most special food is banh chung, which is made up sticky rice, green beans and fatty pork. Mut, which is candied fruits such as sugared apples, plums or tomatoes, is also popular.
+      </div>
+      <p class="mt-2 text-xs text-slate-500 italic">Gợi ý: nhập phần sửa đúng, ví dụ nếu lỗi là "builds in" thì nhập "builds up".</p>
+    </div>`,
+    questions:[
+      {sentence:'A great deal of excitement still builds in well before Tet. \u2192 ___', answers:['builds up'], vi:'Không khí háo hức vẫn tăng dần lên từ rất lâu trước Tết.', explanation:'"build up" = tăng dần lên → in phải sửa thành up.', note:'build up (tăng dần)'},
+      {sentence:'Street are decorated on coloured lights and red banner. \u2192 ___', answers:['decorated with'], vi:'Đường phố được trang trí bằng đèn màu và băng rôn đỏ.', explanation:'"be decorated with" = được trang trí bằng → on phải sửa thành with.', note:'be decorated with + N'},
+      {sentence:'Shop are full with goods. \u2192 ___', answers:['full of'], vi:'Cửa hàng đầy ắp hàng hóa.', explanation:'"be full of" = đầy ắp → with phải sửa thành of.', note:'be full of + N'},
+      {sentence:'The kumquat tree in its ripe deep orange fruits is popular throughout the country. \u2192 ___', answers:['with its'], vi:'Cây quất với những trái chín màu cam đậm rất phổ biến khắp cả nước.', explanation:'"a tree with its fruits" = cây có (kèm theo) những trái → in phải sửa thành with.', note:'noun + with + its + N (mô tả đặc điểm đi kèm)'},
+      {sentence:'One of Tet\u2019s most special food is banh chung, which is made up sticky rice, green beans and fatty pork. \u2192 ___', answers:['made from'], vi:'Một trong những món ăn đặc biệt nhất của Tết là bánh chưng, được làm từ gạo nếp, đậu xanh và thịt mỡ.', explanation:'"be made from" = được làm từ (nguyên liệu) → made up phải sửa thành made from.', note:'be made from + nguyên liệu'},
+    ]
+  },
+
+  /* ---------- BÀI 10: READING I (Mid-Autumn Festival – Đúng/Sai) ---------- */
+  10: {
+    color:'indigo', title:'Bài 10: Đọc hiểu – Tết Trung Thu (Đúng/Sai)',
+    desc:'Đọc đoạn văn và chọn True hoặc False cho mỗi câu. Chọn xong sẽ hiện đúng/sai ngay.',
+    passageId:'p10',
+    type:'mcq', instant:true,
+    questions:[
+      {q:'1. In Viet Nam, the Mid-Autumn Festival is held on the 15th day of every month.', options:['True','False'], answer:1, vi:'Ở Việt Nam, Tết Trung Thu được tổ chức vào ngày 15 của mọi tháng.', explanation:'Bài đọc nói lễ hội được tổ chức vào ngày 15 tháng 8 âm lịch, không phải mọi tháng → Sai (False).'},
+      {q:'2. To make up for lost time, parents would use the Mid-Autumn Festival as an opportunity to show their love and appreciation for their children.', options:['True','False'], answer:0, vi:'Để bù đắp thời gian đã mất, cha mẹ dùng Tết Trung Thu như cơ hội thể hiện tình yêu và sự trân trọng với con cái.', explanation:'Bài đọc nói đúng như vậy → Đúng (True).'},
+      {q:'3. Lanterns represent brightness while the procession symbolizes success in school.', options:['True','False'], answer:0, vi:'Đèn lồng tượng trưng cho sự sáng sủa, còn đám rước tượng trưng cho thành công trong học tập.', explanation:'Bài đọc nói đúng như vậy → Đúng (True).'},
+      {q:'4. It\u2019s difficult for children to buy lanterns in Vietnamese markets.', options:['True','False'], answer:1, vi:'Trẻ em khó mua được đèn lồng ở chợ Việt Nam.', explanation:'Bài đọc nói chợ Việt Nam bán rất nhiều loại đèn lồng đa dạng → Sai (False).'},
+      {q:'5. In Mid-Autumn Festival, Vietnamese parents tell their children fairy tales and serve mooncakes and other special treats under the silvery moon.', options:['True','False'], answer:0, vi:'Trong Tết Trung Thu, cha mẹ Việt kể chuyện cổ tích cho con và thưởng thức bánh trung thu cùng những món đặc biệt khác dưới ánh trăng bạc. (Đã sửa lại đáp án — xem ghi chú OVERRIDE ở đầu file.)', explanation:'Bài đọc nói gần như nguyên văn câu này ("Vietnamese parents tell their children fairy tales and serve mooncakes...under the silvery moon") → Đúng (True).'},
+    ]
+  },
+
+  /* ---------- BÀI 11: READING II (Rice-cooking Festival – điền từ) ---------- */
+  11: {
+    color:'pink', title:'Bài 11: Đọc hiểu – Lễ hội thổi cơm thi',
+    desc:'Đọc đoạn văn và chọn đáp án đúng cho mỗi chỗ trống. Chọn xong sẽ hiện đúng/sai ngay.',
+    passageId:'p11',
+    type:'mcq', instant:true,
+    questions:[
+      {q:'1. The Rice-cooking (1) ___ was held in the communal house yard about one kilometer away from a (2) ___.', options:['holiday','contest','festival','competition'], answer:2, vi:'Lễ hội thổi cơm thi được tổ chức ở sân đình, cách một con sông khoảng một cây số.', explanation:'Khớp với tiêu đề "Rice-cooking Festival" → festival.'},
+      {q:'2. …about one kilometer away from a (2) ___. There were three (3) ___: water fetching, fire-making and rice-cooking.', options:['mountain','city','house','river'], answer:3, vi:'…cách một con sông khoảng một cây số. Có ba cuộc thi: lấy nước, tạo lửa và thổi cơm.', explanation:'Cuộc thi "lấy nước" cần một con sông gần đó → river.'},
+      {q:'3. There were three (3) ___: water fetching, fire-making and rice-cooking.', options:['holidays','contests','festivals','competitions'], answer:3, vi:'Có ba cuộc thi: lấy nước, tạo lửa và thổi cơm.', explanation:'"three competitions" = ba cuộc thi, đồng nghĩa với "contest" được nhắc ở câu sau.'},
+      {q:'4. The festival (4) ___ one day.', options:['takes','took','taking','take'], answer:1, vi:'Lễ hội diễn ra trong một ngày.', explanation:'Bài đọc kể chuyện ở thì quá khứ → took.'},
+      {q:'5. In the water-fetching (5) ___, one person from each team had to run to the river to get the water.', options:['contest','contests','test','tests'], answer:0, vi:'Trong cuộc thi lấy nước, một người của mỗi đội phải chạy ra sông để lấy nước.', explanation:'Danh từ số ít sau mạo từ "the" → contest.'},
+      {q:'6. …one person from each team had (6) ___ to the river to get the water.', options:['to run','run','ran','running'], answer:0, vi:'…một người của mỗi đội phải chạy ra sông để lấy nước.', explanation:'"had to + V-inf" → to run.'},
+      {q:'7. …one person from each team had to run to the river to get the (7) ___.', options:['bamboo','rice','fire','water'], answer:3, vi:'…một người của mỗi đội phải chạy ra sông để lấy nước.', explanation:'Đây là cuộc thi "water-fetching" (lấy nước) → water.'},
+      {q:'8. In the fire-making contest, two team members had to make fire in the (8) ___ way.', options:['strange','tradition','traditional','tradition'], answer:2, vi:'Trong cuộc thi tạo lửa, hai thành viên đội phải tạo lửa theo cách truyền thống.', explanation:'Trước danh từ "way" cần tính từ → traditional.'},
+      {q:'9. They tried to rub pieces of (9) ___ together to make the fire.', options:['bamboo','rice','fire','water'], answer:0, vi:'Họ cố cọ xát các mảnh tre với nhau để tạo lửa.', explanation:'Phương pháp truyền thống dùng tre để tạo lửa → bamboo.'},
+      {q:'10. Six people from each team (10) ___ in the Rice-cooking Festival.', options:['participates','participate','participating','participated'], answer:1, vi:'Sáu người của mỗi đội tham gia Lễ hội thổi cơm thi.', explanation:'Chủ ngữ số nhiều "Six people" đi với động từ nguyên mẫu (không thêm -s) → participate.'},
+    ]
+  },
+
+  /* ---------- BÀI 12: READING III (Chol Chnam Thmay Festival) ---------- */
+  12: {
+    color:'violet', title:'Bài 12: Đọc hiểu – Chol Chnam Thmay Festival',
+    desc:'Đọc đoạn văn rồi trả lời các câu hỏi bên dưới (gõ câu trả lời ngắn bằng tiếng Anh).',
+    passageId:'p12',
+    type:'reading',
+    questions:[
+      {q:'1. What is the festival?', answer:'It is Chol Chnam Thmay Festival.', keywords:['chol chnam thmay'], vi:'Đây là lễ hội gì?', explanation:'Bài đọc nói đây là "the New Year festival...of Khmer people" tên là Chol Chnam Thmay Festival.'},
+      {q:'2. When is it held? And how long does it last?', answer:'It is held in mid-April, in 3 days (4 days for the leap year).', keywords:['mid-april'], vi:'Lễ hội được tổ chức khi nào? Và kéo dài bao lâu?', explanation:'Bài đọc nói lễ hội được tổ chức vào giữa tháng Tư, kéo dài 3 ngày (4 ngày vào năm nhuận).'},
+      {q:'3. What do people prepare to celebrate the festival?', answer:'They prepare new clothes, food and drinks for the whole festival days, and they also repair, clean and decorate their house.', keywords:['new clothes'], vi:'Người ta chuẩn bị gì để đón lễ hội?', explanation:'Bài đọc nói người ta chuẩn bị quần áo mới, thức ăn, đồ uống, và sửa sang, dọn dẹp, trang trí nhà cửa.'},
+      {q:'4. How do Khmer people prepare the altar at night of New Year\u2019s Eve?', answer:'On the altar, they present 5 flower branches, 5 candles, 5 incense, 5 cereal seeds and fruit crops.', keywords:['5 candles'], vi:'Người Khmer chuẩn bị bàn thờ vào đêm giao thừa như thế nào?', explanation:'Bài đọc nói họ bày 5 cành hoa, 5 cây nến, 5 nén hương, 5 loại hạt ngũ cốc và hoa quả trên bàn thờ.'},
+      {q:'5. What do people do on the first New Year Day?', answer:'Major activities are bathing, dressing nice, and bringing sacrifice gifts to the temple in good time which has been selected.', keywords:['bathing'], vi:'Người ta làm gì vào ngày Tết đầu tiên?', explanation:'Bài đọc nói các hoạt động chính là tắm rửa, ăn mặc đẹp, và mang lễ vật đến chùa vào giờ tốt đã chọn.'},
+      {q:'6. When do people cook rice and bring it to the temple?', answer:'They cook rice and bring it to the temple on the second New Year day.', keywords:['second'], vi:'Người ta nấu cơm và mang đến chùa khi nào?', explanation:'Bài đọc nói việc này diễn ra vào ngày Tết thứ hai (Wonbof day).'},
+      {q:'7. When do they do Buddha bathing and monk-bathing ceremony?', answer:'They do Buddha bathing and monk-bathing ceremony on the third day.', keywords:['third'], vi:'Lễ tắm Phật và tắm cho sư được thực hiện khi nào?', explanation:'Bài đọc nói nghi lễ này diễn ra vào ngày thứ ba (Lom Sak day).'},
+      {q:'8. What do the monks do after doing Buddha bathing and monk-bathing ceremony?', answer:'They go to the grave to pray for the souls of those who died.', keywords:['grave'], vi:'Các nhà sư làm gì sau lễ tắm Phật và tắm cho sư?', explanation:'Bài đọc nói sau lễ ở chùa, các nhà sư đến nghĩa trang để cầu nguyện cho linh hồn người đã khuất.'},
+    ]
+  },
+
+  /* ---------- BÀI 13: WRITING I (Kết hợp hai câu đơn) ---------- */
+  13: {
+    color:'sky', title:'Bài 13: Combine the two simple sentences in one',
+    desc:'Kết hợp hai câu đơn thành một câu ghép, dùng từ nối cho sẵn trong ngoặc.',
+    type:'sentence', instant:true,
+    questions:[
+      {prompt:'The boys are playing games. The girls are watching TV. (and)', answer:'The boys are playing games and the girls are watching TV.', accepted:['the boys are playing games and the girls are watching tv'], vi:'Các cậu con trai đang chơi game còn các cô gái đang xem TV.', explanation:'Nối hai mệnh đề ngang hàng bằng dấu phẩy + and.', note:'S + V, and + S + V'},
+      {prompt:'I tried my best in the final test. The result was not as good as I expected. (but)', answer:'I tried my best in the final test but the result was not as good as I expected.', accepted:['i tried my best in the final test but the result was not as good as i expected'], vi:'Tôi đã cố gắng hết sức trong bài kiểm tra cuối kỳ nhưng kết quả không được như tôi mong đợi.', explanation:'Nối hai mệnh đề tương phản bằng but.', note:'S + V but + S + V'},
+      {prompt:'He lost the key. He couldn\u2019t get into the house. (so)', answer:'He lost the key so he couldn\u2019t get into the house.', accepted:['he lost the key so he couldn\u2019t get into the house','he lost the key so he could not get into the house'], vi:'Anh ấy làm mất chìa khóa nên không thể vào nhà.', explanation:'Nối hai mệnh đề nguyên nhân - kết quả bằng so.', note:'S + V so + S + V'},
+      {prompt:'She loves comedies. Her husband is interested in action films. (yet)', answer:'She loves comedies yet her husband is interested in action films.', accepted:['she loves comedies yet her husband is interested in action films'], vi:'Cô ấy thích phim hài trong khi chồng cô lại thích phim hành động.', explanation:'Nối hai mệnh đề tương phản bằng yet.', note:'S + V yet + S + V'},
+      {prompt:'You must do well in the test. You will not graduate. (or)', answer:'You must do well in the test or you will not graduate.', accepted:['you must do well in the test or you will not graduate'], vi:'Bạn phải làm bài tốt nếu không sẽ không tốt nghiệp.', explanation:'Nối hai mệnh đề lựa chọn/điều kiện bằng or.', note:'S + V or + S + V'},
+      {prompt:'Pop music is so popular. The melody is simple and memorable. (for)', answer:'Pop music is so popular for the simple and memorable melody.', accepted:['pop music is so popular for the simple and memorable melody'], vi:'Nhạc pop rất phổ biến vì giai điệu đơn giản và dễ nhớ.', explanation:'"for" ở đây mang nghĩa "vì, bởi vì" khi nối hai mệnh đề.', note:'S + V for + N (nêu lý do)'},
+      {prompt:'I should practice more for the competition. My health hasn\u2019t been excellent recently. (but)', answer:'I should practice more for the competition but my health hasn\u2019t been excellent recently.', accepted:['i should practice more for the competition but my health hasn\u2019t been excellent recently','i should practice more for the competition but my health has not been excellent recently'], vi:'Tôi nên luyện tập nhiều hơn cho cuộc thi nhưng sức khỏe tôi gần đây không được tốt.', explanation:'Nối hai mệnh đề tương phản bằng but.', note:'S + V but + S + V'},
+      {prompt:'You can go to the movies with me. You can go to the concert alone. (or)', answer:'You can go to the movies with me or you can go to the concert alone.', accepted:['you can go to the movies with me or you can go to the concert alone'], vi:'Bạn có thể đi xem phim với tôi hoặc đi xem hòa nhạc một mình.', explanation:'Nối hai mệnh đề lựa chọn bằng or.', note:'S + V or + S + V'},
+    ]
+  },
+
+  /* ---------- BÀI 14: WRITING II (Kết hợp câu bằng liên từ phụ thuộc) ---------- */
+  14: {
+    color:'lime', title:'Bài 14: Combine the sentences using a subordinator',
+    desc:'Kết hợp hai câu đơn thành một câu phức, dùng liên từ phụ thuộc phù hợp.',
+    type:'sentence', instant:true,
+    questions:[
+      {prompt:'I\u2019m going to the bank. I need some money. (ví dụ mẫu)', answer:'I\u2019m going to the bank because I need some money.', accepted:['i\u2019m going to the bank because i need some money','i am going to the bank because i need some money'], vi:'Tôi sẽ đến ngân hàng vì tôi cần tiền.', explanation:'Nêu lý do → because.', note:'S + V + because + S + V'},
+      {prompt:'I made lunch. I got home.', answer:'I made lunch when I got home.', accepted:['i made lunch when i got home'], vi:'Tôi đã nấu bữa trưa khi tôi về đến nhà.', explanation:'Mốc thời gian → when.', note:'S + V + when + S + V'},
+      {prompt:'It\u2019s raining. She\u2019s going for a walk in the park.', answer:'Although it\u2019s raining, she\u2019s going for a walk in the park.', accepted:['although it\u2019s raining, she\u2019s going for a walk in the park','although it is raining, she is going for a walk in the park'], vi:'Mặc dù trời đang mưa, cô ấy vẫn đi dạo trong công viên.', explanation:'Sự nhượng bộ → Although.', note:'Although + S + V, S + V'},
+      {prompt:'She finishes her homework soon. She will fail the class. (nếu KHÔNG thì sẽ trượt)', answer:'Unless she finishes her homework soon, she will fail the class.', accepted:['unless she finishes her homework soon, she will fail the class'], vi:'Trừ khi cô ấy hoàn thành bài tập sớm, cô ấy sẽ trượt môn học.', explanation:'"Unless" = nếu không, trừ khi.', note:'Unless + S + V, S + will + V'},
+      {prompt:'He decided to trust Tim. He was an honest man.', answer:'He decided to trust Tim because he was an honest man.', accepted:['he decided to trust tim because he was an honest man'], vi:'Anh ấy quyết định tin tưởng Tim vì Tim là một người trung thực.', explanation:'Nêu lý do → because.', note:'S + V + because + S + V'},
+      {prompt:'We went to school. She decided to investigate the situation.', answer:'When we went to school, she decided to investigate the situation.', accepted:['when we went to school, she decided to investigate the situation'], vi:'Khi chúng tôi đến trường, cô ấy quyết định điều tra tình hình.', explanation:'Mốc thời gian → When.', note:'When + S + V, S + V'},
+      {prompt:'Jennifer decided to leave Tom. He was too worried about his job.', answer:'Jennifer decided to leave Tom because he was too worried about his job.', accepted:['jennifer decided to leave tom because he was too worried about his job'], vi:'Jennifer quyết định rời bỏ Tom vì anh ấy quá lo lắng về công việc.', explanation:'Nêu lý do → because.', note:'S + V + because + S + V'},
+      {prompt:'Dennis bought a new jacket. He had received one as a gift last week.', answer:'Dennis bought a new jacket although he had received one as a gift last week.', accepted:['dennis bought a new jacket although he had received one as a gift last week'], vi:'Dennis mua một chiếc áo khoác mới dù tuần trước đã được tặng một chiếc.', explanation:'Sự nhượng bộ → although.', note:'S + V + although + S + V'},
+      {prompt:'Brandley claims that there will be trouble. He doesn\u2019t complete the job.', answer:'Brandley claims that there will be trouble if he doesn\u2019t complete the job.', accepted:['brandley claims that there will be trouble if he doesn\u2019t complete the job','brandley claims that there will be trouble if he does not complete the job'], vi:'Brandley khẳng định sẽ có rắc rối nếu anh ta không hoàn thành công việc.', explanation:'Điều kiện → if.', note:'S + V + if + S + V (hiện tại)'},
+      {prompt:'Janice will have finished the report. The time you receive the letter.', answer:'Janice will have finished the report by the time you receive the letter.', accepted:['janice will have finished the report by the time you receive the letter'], vi:'Janice sẽ hoàn thành báo cáo trước khi bạn nhận được lá thư này.', explanation:'"by the time" = trước khi (một mốc xảy ra) → cần dùng tương lai hoàn thành.', note:'S + will have + V3 + by the time + S + V'},
+    ]
+  },
+
+  /* ---------- BÀI 15: WRITING III (Đặt câu từ từ/cụm từ cho sẵn) ---------- */
+  15: {
+    color:'orange', title:'Bài 15: Make sentences using the words or phrases provided',
+    desc:'Dùng các từ/cụm từ gợi ý để viết thành câu hoàn chỉnh (có thể thêm từ hoặc thay đổi cho phù hợp ngữ pháp).',
+    type:'sentence', instant:true,
+    questions:[
+      {prompt:'Giong Festival/ hold/ commemorate/ Saint Giong/ who/ defeat/ An invaders', answer:'The Giong Festival is held to commemorate Saint Giong who defeated the An invaders.', accepted:['the giong festival is held to commemorate saint giong who defeated the an invaders'], vi:'Lễ hội Gióng được tổ chức để tưởng nhớ Thánh Gióng, người đã đánh bại giặc Ân.', explanation:'be held to commemorate + N + who + V-ed (mệnh đề quan hệ).', note:'S + is held to commemorate + N + who + V-ed'},
+      {prompt:'The Khmer/ believe/ they/ have to/ float/ lanterns/ otherwise/ may not/ get/ good luck', answer:'The Khmer believe they have to float lanterns; otherwise, they may not get good luck.', accepted:['the khmer believe they have to float lanterns; otherwise, they may not get good luck'], vi:'Người Khmer tin rằng họ phải thả đèn trôi, nếu không họ có thể sẽ không gặp may mắn.', explanation:'Câu ghép với dấu chấm phẩy + otherwise.', note:'S + V; otherwise, S + may not + V'},
+      {prompt:'Lim Festival/ take place/ every year/ 13th day/ first lunar month', answer:'The Lim Festival takes place every year on the 13th day of the first lunar month.', accepted:['the lim festival takes place every year on the 13th day of the first lunar month'], vi:'Lễ hội Lim diễn ra hàng năm vào ngày 13 tháng Giêng âm lịch.', explanation:'take place + on + ngày cụ thể + of + tháng.', note:'S + takes place + on the + ngày + of + tháng'},
+      {prompt:'officially/ national holiday/ Tet/ last/ three days/ however/ Vietnamese people/ often/ spend/ nearly a month/ celebrate/ this special event', answer:'Officially, the national holiday of Tet lasts for three days; however, Vietnamese people often spend nearly a month celebrating this special event.', accepted:['officially, the national holiday of tet lasts for three days; however, vietnamese people often spend nearly a month celebrating this special event'], vi:'Về mặt chính thức, kỳ nghỉ lễ Tết kéo dài ba ngày; tuy nhiên, người Việt thường dành gần một tháng để chuẩn bị đón mừng sự kiện đặc biệt này.', explanation:'Câu ghép với dấu chấm phẩy + however; spend time + V-ing.', note:'S + V; however, S + spend + time + V-ing'},
+      {prompt:'prepare/ Mid-Autumn Festival/ make/ colorful lanterns/ happy activity/ between/ families/ children', answer:'To prepare for Mid-Autumn Festival, making colourful lanterns is a happy activity between families and children.', accepted:['to prepare for mid-autumn festival, making colourful lanterns is a happy activity between families and children','to prepare for mid-autumn festival, making colorful lanterns is a happy activity between families and children'], vi:'Để chuẩn bị cho Tết Trung Thu, việc làm những chiếc đèn lồng đầy màu sắc là một hoạt động vui vẻ giữa các gia đình và trẻ em.', explanation:'To V (mục đích), V-ing (chủ ngữ là danh động từ) + is + a + adjective + noun.', note:'To V…, V-ing + is + a + adj + N'},
+      {prompt:'Whale Festival/ a festival/ worship/ the whale/ pray/ the good fortune/ the fishmen', answer:'Whale Festival is a festival to worship the whale and pray for the good fortune of the fishermen.', accepted:['whale festival is a festival to worship the whale and pray for the good fortune of the fishermen','whale festival is a festival to worship the whale and pray for the good fortune of the fishmen'], vi:'Lễ hội Cá Ông là lễ hội để tôn thờ cá voi và cầu mong may mắn cho ngư dân.', explanation:'be + a festival + to V (mục đích) + and + to V.', note:'S + is a festival + to V and (to) V'},
+      {prompt:'while/ elephants/ race/ people/ cheer/ encourage/ them', answer:'While the elephants are racing, people cheer to encourage them.', accepted:['while the elephants are racing, people cheer to encourage them'], vi:'Trong khi các chú voi đang đua, mọi người reo hò để cổ vũ chúng.', explanation:'While + S + V-ing (đang diễn ra), S + V + to V (mục đích).', note:'While + S + be + V-ing, S + V + to V'},
+      {prompt:'Hung Kings Temple Festival/ one of/ most important/ national holiday/ Vietnam/ commemorate/ Hung Kings', answer:'Hung Kings Temple Festival is one of the most important national holidays in Vietnam to commemorate Hung Kings.', accepted:['hung kings temple festival is one of the most important national holidays in vietnam to commemorate hung kings'], vi:'Lễ hội Đền Hùng là một trong những ngày lễ quốc gia quan trọng nhất ở Việt Nam để tưởng nhớ các Vua Hùng.', explanation:'be + one of the most + adjective + plural noun + to V (mục đích).', note:'S + is one of the most + adj + plural N + to V'},
+    ]
+  },
+};
+
+/* ---------- Reading passages ---------- */
+const passages = {
+  p10: {
+    title:'Mid-Autumn Festival',
+    html:`In Viet Nam, Tet Trung Thu or the Mid-Autumn Festival is one of the most popular family holidays. It is held on the 15th day of the August lunar month. Vietnamese families plan their activities around their children on this special day. In a Vietnamese folklore, parents were working so hard to prepare for the harvest that they left the children playing by themselves. To make up for lost time, parents would use the Mid-Autumn Festival as an opportunity to show their love and appreciation for their children. Appropriately the Mid-Autumn Festival is also called the Children\u2019s Festival. In the United States, this tradition continues in many Vietnamese-American communities. Trung Thu activities are often centered on children and education. Parents buy lanterns for their children so that they can participate in a candlelit lantern procession at dawn. Lanterns represent brightness while the procession symbolizes success in school. Vietnamese markets sell a variety of lanterns, but the most popular children\u2019s lantern is the star lantern. Other children\u2019s activities include arts and crafts in which children make face masks and lanterns. Children also perform traditional Vietnamese dances for adults and participate in contests for prizes and scholarships. Unicorn dancers are also very popular in Trung Thu festivities.<br><br>Like the Chinese, Vietnamese parents tell their children fairy tales and serve mooncakes and other special treats under the silvery moon. A favorite folklore is about a carp that wanted to become a dragon. The carp worked and worked and eventually transformed itself into a dragon. This is the story behind the mythical symbol, C\u00e1 H\u00f3a R\u1ed3ng. Parents use this story to encourage their children to work hard so that they can become whomever they want to be.`,
+    vi:`Ở Việt Nam, Tết Trung Thu là một trong những ngày lễ gia đình phổ biến nhất. Nó được tổ chức vào ngày 15 tháng 8 âm lịch. Các gia đình Việt Nam lên kế hoạch hoạt động xoay quanh con cái vào ngày đặc biệt này. Theo một truyện dân gian Việt Nam, cha mẹ từng phải làm việc vất vả để chuẩn bị cho vụ mùa đến nỗi để con cái tự chơi một mình. Để bù đắp khoảng thời gian đã mất, cha mẹ dùng Tết Trung Thu như một cơ hội để thể hiện tình yêu và sự trân trọng dành cho con cái. Vì vậy Tết Trung Thu còn được gọi là Tết Thiếu Nhi. Ở Mỹ, truyền thống này vẫn tiếp tục trong nhiều cộng đồng người Việt. Các hoạt động Trung Thu thường xoay quanh trẻ em và giáo dục. Cha mẹ mua đèn lồng cho con để chúng có thể tham gia đám rước đèn lúc rạng sáng. Đèn lồng tượng trưng cho sự sáng sủa, còn đám rước tượng trưng cho thành công trong học tập. Chợ Việt Nam bán rất nhiều loại đèn lồng, nhưng phổ biến nhất với trẻ em là đèn ông sao. Các hoạt động khác của trẻ em gồm làm thủ công như mặt nạ và đèn lồng. Trẻ em cũng biểu diễn các điệu múa truyền thống Việt Nam cho người lớn xem và tham gia các cuộc thi để giành giải thưởng, học bổng. Múa lân cũng rất phổ biến trong dịp Trung Thu.<br><br>Giống như người Trung Quốc, cha mẹ Việt Nam kể chuyện cổ tích cho con và cùng thưởng thức bánh trung thu cùng những món đặc biệt khác dưới ánh trăng bạc. Một câu chuyện dân gian được yêu thích là về một con cá chép muốn hóa thành rồng. Con cá chép đã cố gắng rất nhiều và cuối cùng hóa thành rồng. Đây là câu chuyện đằng sau biểu tượng thần thoại Cá Hóa Rồng. Cha mẹ dùng câu chuyện này để khuyến khích con cái chăm chỉ để có thể trở thành bất cứ ai chúng muốn.`
+  },
+  p11: {
+    title:'The Rice-cooking Festival',
+    html:`The Rice-cooking <b>(1)</b> was held in the communal house yard about one kilometer away from a <b>(2)</b>. There were three <b>(3)</b>: water fetching, fire-making and rice-cooking. The festival <b>(4)</b> one day. In the water-fetching <b>(5)</b>, one person from each team had <b>(6)</b> to the river to get the <b>(7)</b>. In the fire-making contest, two team members had to make fire in the <b>(8)</b> way. They tried to rub pieces of <b>(9)</b> together to make the fire. Six people from each team <b>(10)</b> in the Rice-cooking Festival. They had to separate the rice from the husk and then cook the rice.`,
+    vi:`Lễ hội thổi cơm thi được tổ chức ở sân đình, cách một con sông khoảng một cây số. Có ba cuộc thi: lấy nước, tạo lửa và thổi cơm. Lễ hội diễn ra trong một ngày. Trong cuộc thi lấy nước, một người của mỗi đội phải chạy ra sông để lấy nước. Trong cuộc thi tạo lửa, hai thành viên của đội phải tạo lửa theo cách truyền thống. Họ cố cọ xát các mảnh tre với nhau để tạo ra lửa. Sáu người của mỗi đội tham gia Lễ hội thổi cơm thi. Họ phải tách gạo ra khỏi trấu rồi nấu cơm.`
+  },
+  p12: {
+    title:'Chol Chnam Thmay Festival',
+    html:`This holiday is the New Year festival in the ancient calendar of Khmer people. Held in mid-April, the festival occurs in 3 days (4 days for the leap year). People prepare new clothes, food and drinks for the whole festival days. They also repair, clean and decorate their house. Everyone is excited to care for the holiday.<br><br>At night of New Year\u2019s Eve, every family prepares a lavish meal, burns incense and candles to welcome the new god, and bids farewell to the old god. On the altar, they present 5 flower branches, 5 candles, 5 incense, 5 cereal seeds and fruit crops. They pray for health and luck in the New Year.<br><br>On the first New Year day \u2013 Chol Sangkran Chmay, major activities are bathing, dressing nice, and bringing sacrifice gifts to the temple in good time which has been selected.<br>On Wonbof day \u2013 the second day, they make rice offerings and cover the sand mountain. People cook rice and bring it to the temple in the morning and the afternoon.<br><br>On Lom Sak day \u2013 the third day, they do Buddha bathing and monk-bathing ceremony. In the morning, people bring breakfast to monks and listen to the sermon. At noon, they burn the lamps, offer sacrifice gifts and bring fragrant water to bathe Buddha statues. After the ceremony at the temple, the monks go to the grave to pray for the souls of those who died.`,
+    vi:`Đây là lễ hội năm mới theo lịch cổ truyền của người Khmer. Được tổ chức vào giữa tháng Tư, lễ hội kéo dài 3 ngày (4 ngày vào năm nhuận). Người ta chuẩn bị quần áo mới, thức ăn và đồ uống cho suốt những ngày lễ hội. Họ cũng sửa sang, dọn dẹp và trang trí nhà cửa. Mọi người đều háo hức chăm chút cho ngày lễ.<br><br>Vào đêm giao thừa, mỗi gia đình chuẩn bị một bữa ăn thịnh soạn, đốt hương và nến để đón vị thần mới và tiễn vị thần cũ. Trên bàn thờ, họ bày 5 cành hoa, 5 cây nến, 5 nén hương, 5 loại hạt ngũ cốc và hoa quả. Họ cầu sức khỏe và may mắn trong năm mới.<br><br>Vào ngày Tết đầu tiên - Chol Sangkran Chmay, các hoạt động chính là tắm rửa, ăn mặc đẹp, và mang lễ vật đến chùa vào giờ tốt đã chọn.<br>Vào ngày Wonbof - ngày thứ hai, họ dâng cơm cúng và đắp núi cát. Người ta nấu cơm và mang đến chùa vào buổi sáng và buổi chiều.<br><br>Vào ngày Lom Sak - ngày thứ ba, họ làm lễ tắm Phật và tắm cho sư. Buổi sáng, người ta mang đồ ăn sáng đến cho các sư và nghe giảng đạo. Buổi trưa, họ thắp đèn, dâng lễ vật và mang nước thơm để tắm tượng Phật. Sau buổi lễ ở chùa, các nhà sư đến nghĩa trang để cầu nguyện cho linh hồn người đã khuất.`
+  }
+};
+
+/* ========== STATE ========== */
+const completedTasks = new Set();
+const scores = {};
+const TOTAL_TASKS = 15;
+const reorderState = {};
+
+/* ========== HELPERS ========== */
+function normalize(str){
+  return (str||'').trim().toLowerCase()
+    .replace(/[\u2018\u2019]/g,"'")
+    .replace(/["\u201C\u201D]/g,'')
+    .replace(/[.,!?;:]/g,'')
+    .replace(/\s+/g,' ');
+}
+function ringClass(c){ return `bg-${COLORS[c].ring}-100 ${COLORS[c].head} `; }
+function numBadge(idx){ return `<span class="bg-white border border-slate-200 text-slate-600 font-bold text-xs px-2 py-1 rounded-lg min-w-[28px] text-center">${idx+1}</span>`; }
+function fbBox(num,idx){ return `<div id="fb_t${num}_${idx}" class="explanation-box mt-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-sm text-blue-800"></div>`; }
+function widthFor(ref){ const l=(ref||'').length; return l<7?'w-28':l<13?'w-40':'w-56'; }
+function inputBox(num,idx,ref,full){
+  const width = full ? 'w-full' : widthFor(ref);
+  const instant = tasks[num] && tasks[num].instant && (tasks[num].type==='sentence' || tasks[num].type==='reading') ? ` oninput="gradeOneText(${num},${idx})"` : '';
+  return `<input type="text" id="t${num}_q${idx}" class="answer-input ${width} px-3 py-1 rounded-lg text-sm font-semibold" placeholder="..." autocomplete="off" spellcheck="false"${instant}>`;
+}
+
+/* ========== PRONUNCIATION ========== */
+if('speechSynthesis' in window){ window.speechSynthesis.onvoiceschanged = ()=>{}; }
+function speak(text, btn){
+  try{
+    if(!('speechSynthesis' in window)){ alert('Trình duyệt của bạn không hỗ trợ phát âm tự động. Hãy thử Chrome, Edge hoặc Safari.'); return; }
+    window.speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='en-US'; u.rate=0.9; u.pitch=1;
+    const voices=window.speechSynthesis.getVoices();
+    const en=voices.find(v=>/en[-_]?(us|gb)/i.test(v.lang)) || voices.find(v=>/^en/i.test(v.lang));
+    if(en) u.voice=en;
+    if(btn){ btn.classList.add('speaking'); u.onend=()=>btn.classList.remove('speaking'); u.onerror=()=>btn.classList.remove('speaking'); }
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+/* ========== VOCAB ========== */
+function buildVocab(){
+  const grid=document.getElementById('vocab-grid');
+  grid.innerHTML = vocab.map(v=>`
+    <div class="vcard bg-amber-50 border border-amber-200 rounded-xl p-3 cursor-pointer" onclick="this.classList.toggle('open')">
+      <div class="flex items-center justify-between">
+        <div><span class="font-black text-amber-700 text-lg">${v.w}</span>
+          <span class="text-xs text-slate-400 ml-1">${v.ipa}</span></div>
+        <div class="flex items-center gap-2">
+          <button data-w="${v.w}" onclick="event.stopPropagation();speak(this.dataset.w,this)" class="speak-btn w-8 h-8 rounded-full bg-amber-100 text-amber-600 hover:bg-amber-200 hover:scale-110 transition flex items-center justify-center" title="Nghe phát âm" aria-label="Nghe phát âm ${v.w}">
+            <i class="fa-solid fa-volume-high text-sm"></i>
+          </button>
+          <i class="fa-solid fa-chevron-down text-amber-400 text-xs"></i>
+        </div>
+      </div>
+      <div class="text-sm text-slate-600 font-semibold">${v.vi}</div>
+      <div class="vexample mt-2 pt-2 border-t border-amber-200 text-sm">
+        <p class="text-slate-700">${v.ex}</p>
+        <p class="text-slate-400 italic text-xs mt-0.5">${v.exvi}</p>
+      </div>
+    </div>`).join('');
+}
+
+/* ========== TASK SHELL ========== */
+function taskShell(num){
+  const t=tasks[num], c=COLORS[t.color];
+  let extra='';
+  if(t.bank && t.type==='matching'){
+    extra += `<div class="bg-${c.ring}-50 border border-${c.ring}-200 rounded-xl p-3 mb-4">
+      <span class="text-xs font-bold ${c.head} block mb-2"><i class="fa-solid fa-list mr-1"></i>Các nhóm:</span>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-1 text-sm text-slate-700">${t.bank.map(b=>`<div>${b}</div>`).join('')}</div>
+    </div>`;
+  } else if(t.bank){
+    extra += `<div class="flex flex-wrap gap-2 mb-4 bg-${c.ring}-50 rounded-xl p-3">
+      <span class="text-xs font-bold ${c.head} w-full mb-1"><i class="fa-solid fa-box-archive mr-1"></i>Từ cho sẵn:</span>
+      ${t.bank.map(w=>`<span class="bg-white border border-${c.ring}-200 ${c.head} text-sm font-bold px-3 py-1 rounded-full">${w}</span>`).join('')}
+    </div>`;
+  }
+  if(t.intro){
+    extra += `<div class="bg-${c.ring}-50 border border-${c.ring}-200 rounded-xl p-3 mb-4 text-sm text-slate-600 italic">${t.intro}</div>`;
+  }
+  if(t.passageId){
+    const p=passages[t.passageId];
+    extra += `<div class="bg-${c.ring}-50 border border-${c.ring}-200 rounded-xl p-4 mb-4 text-sm leading-relaxed text-slate-700">
+      <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
+        <h4 class="font-extrabold ${c.head} uppercase tracking-wide text-xs">${p.title}</h4>
+        <button onclick="toggleVI('${t.passageId}')" class="text-xs font-bold bg-white border border-${c.ring}-200 ${c.head} px-3 py-1 rounded-full hover:scale-105 transition"><i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt</button>
+      </div>
+      <p id="${t.passageId}-en">${p.html}</p>
+      <p id="${t.passageId}-vi" class="vi-hidden mt-3 pt-3 border-t border-${c.ring}-200 italic text-slate-500">${p.vi}</p>
+    </div>`;
+  }
+  return `<div class="task-card bg-white rounded-2xl shadow-md p-6">
+    <div class="flex items-center gap-3 mb-1">
+      <div class="bg-${c.ring}-100 ${c.head} font-black text-lg w-10 h-10 rounded-full flex items-center justify-center">${num}</div>
+      <div><h2 class="text-xl font-extrabold ${c.head}">${t.title}</h2></div>
+    </div>
+    <p class="text-sm text-slate-500 mb-4">${t.desc}</p>
+    ${extra}
+    <div id="task${num}-questions" class="space-y-3"></div>
+    <div class="flex flex-wrap gap-3 mt-5 items-center">
+      <button onclick="checkTask(${num})" class="${c.btn} text-white font-bold px-6 py-2.5 rounded-full transition-all hover:scale-105 shadow"><i class="fa-solid fa-check mr-1"></i>Kiểm tra</button>
+      <button onclick="revealTask(${num})" class="bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full transition-all"><i class="fa-solid fa-eye mr-1"></i>Xem đáp án</button>
+      <button onclick="resetTask(${num})" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-5 py-2.5 rounded-full transition-all"><i class="fa-solid fa-rotate-left mr-1"></i>Làm lại</button>
+      <div id="task${num}-score" class="hidden score-badge ml-auto bg-emerald-100 text-emerald-700 font-extrabold px-5 py-2 rounded-full text-lg"></div>
+    </div>
+  </div>`;
+}
+
+/* ========== RENDERERS ========== */
+function renderQuestion(num,q,idx,type){
+  if(type==='mcq'){
+    const letters=['A','B','C','D'];
+    const opts=q.options.map((o,i)=>{
+      const ipa=q.ipas?q.ipas[i]:null;
+      const vi=q.vis?q.vis[i]:null;
+      const cleanWord=o.replace(/<[^>]+>/g,'');
+      const hideDetail = (num===1 || num===2) ? ' mcq-detail-hidden' : '';
+      const wordBlock = ipa
+        ? `<span class="flex flex-col leading-tight"><span>${o}</span><span class="text-[10px] text-slate-400 font-normal${hideDetail}">${ipa}</span>${vi?`<span class="text-[10px] text-emerald-500 font-normal italic${hideDetail}">${vi}</span>`:''}</span>
+           <button type="button" data-w="${cleanWord}" onclick="event.stopPropagation();event.preventDefault();speak(this.dataset.w,this)" class="speak-btn w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 hover:bg-emerald-200 hover:scale-110 transition flex items-center justify-center ml-auto shrink-0${hideDetail}" title="Nghe phát âm" aria-label="Nghe phát âm ${cleanWord}"><i class="fa-solid fa-volume-high text-[10px]"></i></button>`
+        : o;
+      return `
+      <label class="option-label flex items-center gap-2 px-4 py-2 rounded-xl cursor-pointer text-sm font-semibold" id="mcq_t${num}_${idx}_${i}" onclick="selectMCQ(${num},${idx},${i})">
+        <input type="radio" name="mcq${num}_${idx}" value="${i}" class="hidden">
+        <span class="bg-slate-200 text-slate-700 text-xs font-black w-6 h-6 rounded-full flex items-center justify-center shrink-0">${letters[i]}</span>${wordBlock}
+      </label>`;}).join('');
+    const qLabel = /^\d+\.?$/.test((q.q||'').trim()) ? '' : `<p class="font-semibold text-slate-700 text-sm">${q.q}</p>`;
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2 mb-3">${numBadge(idx)}${qLabel}</div>
+      <div class="flex flex-wrap gap-2 ml-8">${opts}</div>${fbBox(num,idx)}</div>`;
+  }
+  if(type==='fill'){
+    const parts=q.sentence.split('___');
+    const nb=parts.length-1;
+    const answersArr=q.answers||[q.answer];
+    let html='';
+    for(let b=0;b<nb;b++){
+      html += parts[b];
+      const w=widthFor(answersArr[b]);
+      const instantAttr = tasks[num] && tasks[num].instant ? ` oninput="gradeOneFill(${num},${idx})"` : '';
+      html += `<input type="text" id="t${num}_q${idx}_${b}" class="answer-input ${w} px-3 py-1 rounded-lg text-sm font-semibold" placeholder="..." autocomplete="off" spellcheck="false"${instantAttr}>`;
+    }
+    html += parts[nb]||'';
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2 flex-wrap">${numBadge(idx)}
+        <span class="text-slate-700 font-semibold text-sm leading-8 flex-1 flex flex-wrap items-center gap-1">${html}</span>
+      </div>${fbBox(num,idx)}</div>`;
+  }
+  if(type==='sentence'){
+    if(q.starter){
+      const instantAttr = tasks[num] && tasks[num].instant ? ` oninput="gradeOneText(${num},${idx})"` : '';
+      return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+        <div class="flex items-start gap-2">${numBadge(idx)}
+          <div class="flex-1 min-w-0">
+            <p class="text-slate-700 text-sm mb-3 font-semibold">${q.original}</p>
+            <div class="flex items-center gap-3 w-full">
+              <span class="text-slate-800 font-extrabold text-base whitespace-nowrap">${q.starter}</span>
+              <input type="text" id="t${num}_q${idx}" class="answer-input flex-1 min-w-[180px] px-3 py-2 rounded-lg text-sm font-semibold" placeholder="..." autocomplete="off" spellcheck="false"${instantAttr}>
+            </div>
+          </div>
+        </div>${fbBox(num,idx)}</div>`;
+    }
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2">${numBadge(idx)}
+        <div class="flex-1"><p class="text-slate-500 text-xs mb-1 font-semibold"><i class="fa-solid fa-pen mr-1"></i>Gợi ý: <span class="text-slate-700 italic">${q.prompt}</span></p>${inputBox(num,idx,q.answer,true)}</div>
+      </div>${fbBox(num,idx)}</div>`;
+  }
+  if(type==='matching'){
+    const bank=tasks[num].bank;
+    const opts = bank.map((b,i)=>`<option value="${i}">${b}</option>`).join('');
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2 flex-wrap">${numBadge(idx)}
+        <p class="font-semibold text-slate-700 text-sm flex-1 min-w-[160px]">${q.q}</p>
+        <select id="t${num}_q${idx}" class="answer-input px-3 py-1.5 rounded-lg text-sm font-semibold"><option value="-1">-- chọn --</option>${opts}</select>
+      </div>${fbBox(num,idx)}</div>`;
+  }
+  if(type==='reorder'){
+    const chips=q.words.map((w,i)=>`<span class="word-chip bg-white border-2 border-lime-300 text-lime-700 font-bold text-sm px-3 py-1.5 rounded-xl shadow-sm" id="chip_t${num}_${idx}_${i}" onclick="addChip(${num},${idx},${i})">${w}</span>`).join('');
+    const promptLine = q.prompt ? `<p class="text-slate-600 text-sm font-semibold mb-2"><i class="fa-solid fa-shuffle mr-1 text-lime-600"></i>${q.prompt}</p>` : '';
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2">${numBadge(idx)}
+        <div class="flex-1">
+          ${promptLine}
+          <div id="ans_t${num}_${idx}" class="answer-line bg-white border-2 border-dashed border-slate-300 rounded-xl p-2 flex flex-wrap gap-2 mb-2 items-center text-slate-400 text-sm"></div>
+          <div class="flex flex-wrap gap-2">${chips}</div>
+        </div>
+      </div>${fbBox(num,idx)}</div>`;
+  }
+  if(type==='reading'){
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2">${numBadge(idx)}
+        <div class="flex-1"><p class="text-slate-700 font-semibold text-sm mb-2">${q.q}</p>${inputBox(num,idx,q.answer,true)}</div>
+      </div>${fbBox(num,idx)}</div>`;
+  }
+  return '';
+}
+
+/* ========== BUILD ========== */
+document.addEventListener('DOMContentLoaded', ()=>{
+  buildVocab();
+  for(let n=1;n<=TOTAL_TASKS;n++){
+    document.getElementById(`task${n}-wrap`).innerHTML = taskShell(n);
+    const box=document.getElementById(`task${n}-questions`);
+    const t=tasks[n];
+    t.questions.forEach((q,i)=>{ box.innerHTML += renderQuestion(n,q,i,t.type); });
+    if(t.type==='reorder'){ t.questions.forEach((q,i)=>renderAnswerLine(n,i)); }
+  }
+  const essay=document.getElementById('essay-input');
+  if(essay){ essay.addEventListener('input', ()=>{
+    const words=essay.value.trim().split(/\s+/).filter(Boolean).length;
+    document.getElementById('essay-count').textContent=`Số từ: ${words}`;
+  }); }
+});
+
+/* ========== INTERACTIONS ========== */
+function selectMCQ(num,idx,i){
+  const opts=tasks[num].questions[idx].options;
+  for(let j=0;j<opts.length;j++){const el=document.getElementById(`mcq_t${num}_${idx}_${j}`); if(el){el.classList.remove('selected'); el.querySelector('input').checked=false;}}
+  const sel=document.getElementById(`mcq_t${num}_${idx}_${i}`);
+  if(sel){ sel.classList.add('selected'); sel.querySelector('input').checked=true; }
+  if(tasks[num].instant){ gradeOneMCQ(num,idx); }
+}
+function gradeOneMCQ(num,idx){
+  const t=tasks[num], q=t.questions[idx];
+  const qblock=document.getElementById(`qblock_t${num}_${idx}`);
+  if(qblock) qblock.classList.add('show-mcq-detail');
+  const sel=document.querySelector(`input[name="mcq${num}_${idx}"]:checked`);
+  const chosen=sel?parseInt(sel.value):-1;
+  q.options.forEach((o,j)=>{const el=document.getElementById(`mcq_t${num}_${idx}_${j}`); if(el) el.classList.remove('correct-opt','wrong-opt');});
+  const corr=document.getElementById(`mcq_t${num}_${idx}_${q.answer}`); if(corr) corr.classList.add('correct-opt');
+  if(chosen!==-1 && chosen!==q.answer){ const wr=document.getElementById(`mcq_t${num}_${idx}_${chosen}`); if(wr) wr.classList.add('wrong-opt'); }
+  const ok=chosen===q.answer;
+  const answerLabel=`${['A','B','C','D'][q.answer]}. ${q.options[q.answer]}`;
+  const fb=document.getElementById(`fb_t${num}_${idx}`);
+  fb.innerHTML=buildFeedbackHTML(ok, answerLabel, q, num);
+  fb.classList.add('show');
+}
+function gradeOneText(num,idx){
+  const t=tasks[num], q=t.questions[idx];
+  const inp=document.getElementById(`t${num}_q${idx}`);
+  const fb=document.getElementById(`fb_t${num}_${idx}`);
+  if(!inp || !fb) return;
+  const raw=inp.value.trim();
+  if(raw===''){
+    inp.classList.remove('correct-input','wrong-input');
+    fb.classList.remove('show'); fb.innerHTML='';
+    return;
+  }
+  let ok=false;
+  if(t.type==='sentence'){
+    const val=normalize(inp.value);
+    const acc=(q.accepted||[q.answer]).map(normalize);
+    ok=acc.includes(val)&&val!=='';
+  } else if(t.type==='reading'){
+    const val=normalize(inp.value);
+    ok=val!=='' && q.keywords && q.keywords.every(k=>val.includes(normalize(k)));
+  }
+  inp.classList.remove('correct-input','wrong-input');
+  inp.classList.add(ok?'correct-input':'wrong-input');
+  fb.innerHTML=(ok?'✅ ':`❌ Đáp án đúng: <b>${q.answer}</b><br>`)+`<span class='text-blue-700'>💡 ${q.explanation}</span>`+(q.vi?`<br><span class='text-slate-500'>📖 Nghĩa: <i>${q.vi}</i></span>`:'')+(q.note?`<br><span class='text-violet-600'>📐 Công thức: <b>${q.note}</b></span>`:'');
+  fb.classList.add('show');
+}
+function toggleVI(pid){ document.getElementById(`${pid}-vi`).classList.toggle('vi-hidden'); }
+function toggleModelEssay(){ document.getElementById('model-essay').classList.toggle('vi-hidden'); }
+
+/* reorder */
+function addChip(num,idx,i){
+  const key=`${num}_${idx}`;
+  if(!reorderState[key]) reorderState[key]=[];
+  reorderState[key].push(i);
+  const chip=document.getElementById(`chip_t${num}_${idx}_${i}`); if(chip) chip.classList.add('used');
+  renderAnswerLine(num,idx);
+  if(tasks[num] && tasks[num].instant && tasks[num].type==='reorder' && reorderState[key].length===tasks[num].questions[idx].words.length){
+    gradeOneReorder(num,idx);
+  }
+}
+function removeChip(num,idx,pos){
+  const key=`${num}_${idx}`;
+  const i=reorderState[key][pos];
+  reorderState[key].splice(pos,1);
+  const chip=document.getElementById(`chip_t${num}_${idx}_${i}`); if(chip) chip.classList.remove('used');
+  renderAnswerLine(num,idx);
+  if(tasks[num] && tasks[num].instant && tasks[num].type==='reorder'){
+    const fb=document.getElementById(`fb_t${num}_${idx}`); if(fb){fb.classList.remove('show'); fb.innerHTML='';}
+    const line=document.getElementById(`ans_t${num}_${idx}`); if(line){line.classList.remove('border-emerald-400','border-rose-400');}
+  }
+}
+function gradeOneReorder(num,idx){
+  const q=tasks[num].questions[idx];
+  const key=`${num}_${idx}`;
+  const built=(reorderState[key]||[]).map(wi=>q.words[wi]).join(' ');
+  const acc=(q.accepted||[q.answer]).map(normalize);
+  const ok=acc.includes(normalize(built));
+  const line=document.getElementById(`ans_t${num}_${idx}`);
+  if(line){ line.classList.remove('border-emerald-400','border-rose-400'); line.classList.add(ok?'border-emerald-400':'border-rose-400'); }
+  const fb=document.getElementById(`fb_t${num}_${idx}`);
+  if(fb){
+    fb.innerHTML=(ok?'✅ ':`❌ Đáp án đúng: <b>${q.answer}</b><br>`)+`<span class='text-blue-700'>💡 ${q.explanation}</span>`+(q.vi?`<br><span class='text-slate-500'>📖 Nghĩa: <i>${q.vi}</i></span>`:'')+(q.note?`<br><span class='text-violet-600'>📐 Công thức: <b>${q.note}</b></span>`:'');
+    fb.classList.add('show');
+  }
+}
+function renderAnswerLine(num,idx){
+  const key=`${num}_${idx}`;
+  const line=document.getElementById(`ans_t${num}_${idx}`); if(!line) return;
+  const words=tasks[num].questions[idx].words;
+  if(!reorderState[key] || reorderState[key].length===0){ line.innerHTML='<span class="italic">Nhấp các từ bên dưới để xếp câu…</span>'; return; }
+  line.innerHTML = reorderState[key].map((wi,pos)=>`<span class="word-chip bg-lime-500 text-white font-bold text-sm px-3 py-1.5 rounded-xl" onclick="removeChip(${num},${idx},${pos})">${words[wi]}</span>`).join('');
+}
+
+
+function formatEx4Explanation(exp){
+  exp = exp || '';
+  let need = '', word = '', tip = '', easy = '';
+  const wfKey = ' Word form: ';
+  const tipKey = '. 📌 Mẹo nhớ: ';
+  const easyKey = '. 👉 Công thức dễ nhớ: ';
+  const wfIdx = exp.indexOf(wfKey);
+  if(wfIdx >= 0){ need = exp.slice(0, wfIdx).trim(); exp = exp.slice(wfIdx + wfKey.length); }
+  else { need = exp.trim(); exp = ''; }
+  const tipIdx = exp.indexOf(tipKey);
+  if(tipIdx >= 0){ word = exp.slice(0, tipIdx).trim(); exp = exp.slice(tipIdx + tipKey.length); }
+  else { word = exp.trim(); exp = ''; }
+  const easyIdx = exp.indexOf(easyKey);
+  if(easyIdx >= 0){ tip = exp.slice(0, easyIdx).trim(); easy = exp.slice(easyIdx + easyKey.length).trim(); }
+  else { tip = exp.trim(); }
+
+  const wordLines = word
+    ? word.replace(/^•\s*/, '').split(/\s*•\s*/).filter(Boolean).map(x=>`<div>• ${x.trim().replace(/\.$/,'')}</div>`).join('')
+    : '';
+  const tipLines = tip
+    ? tip.replace(/^•\s*/, '').split(/;\s*/).filter(Boolean).map(x=>`<div>• ${x.trim().replace(/\.$/,'')}</div>`).join('')
+    : '';
+  const easyText = easy ? easy.replace(/: /, ':<br><b>').replace(/\.$/, '</b>') : '';
+
+  return `
+    <div class="leading-7 text-blue-800">
+      ${need?`<div><b>💡 Giải thích:</b><br>${need}</div>`:''}
+      ${wordLines?`<br><div><b>📚 Word family:</b><br>${wordLines}</div>`:''}
+      ${tipLines?`<br><div><b>📌 Mẹo nhớ:</b><br>${tipLines}</div>`:''}
+      ${easyText?`<br><div><b>👉 Công thức dễ nhớ:</b><br>${easyText}</div>`:''}
+    </div>`;
+}
+
+function buildFeedbackHTML(ok, answerLabel, q, num){
+  if(num===4){
+    return `${ok ? '✅' : `❌ Đáp án đúng: <b>${answerLabel}</b><br>`} ${ok ? '<b>Chính xác!</b><br>' : ''}`+
+      formatEx4Explanation(q.explanation)+
+      (q.vi?`<br><span class='text-slate-500'>📖 Nghĩa câu: <i>${q.vi}</i></span>`:'')+
+      (q.note?`<br><span class='text-violet-600'>📐 Công thức: <b>${q.note}</b></span>`:'');
+  }
+  return (ok?'✅ ':`❌ Đáp án đúng: <b>${answerLabel}</b><br>`)+`<span class='text-blue-700'>💡 ${q.explanation}</span>`+(q.vi?`<br><span class='text-slate-500'>📖 Nghĩa: <i>${q.vi}</i></span>`:'')+(q.note?`<br><span class='text-violet-600'>📐 Công thức: <b>${q.note}</b></span>`:'');
+}
+
+/* ========== CHECK ========== */
+function gradeOneFill(num,idx){
+  const t=tasks[num], q=t.questions[idx];
+  if(!t || t.type!=='fill' || !q) return;
+  const answersArr=q.answers||[q.answer];
+  const accArr=q.acc || (q.accepted?[q.accepted]:answersArr.map(a=>[a]));
+  const fb=document.getElementById(`fb_t${num}_${idx}`);
+  let allFilled=true, allOk=true;
+  answersArr.forEach((a,b)=>{
+    const inp=document.getElementById(`t${num}_q${idx}_${b}`); if(!inp){allOk=false;return;}
+    const val=normalize(inp.value);
+    if(val==='') allFilled=false;
+    const acc=(accArr[b]||[a]).map(normalize);
+    const okB=acc.includes(val)&&val!=='';
+    inp.classList.remove('correct-input','wrong-input');
+    if(val!=='') inp.classList.add(okB?'correct-input':'wrong-input');
+    if(!okB) allOk=false;
+  });
+  if(!fb) return;
+  if(!allFilled){ fb.classList.remove('show'); fb.innerHTML=''; return; }
+  const answerLabel=answersArr.join(' / ');
+  fb.innerHTML=buildFeedbackHTML(allOk, answerLabel, q, num);
+  fb.classList.add('show');
+}
+
+function checkTask(num){
+  const t=tasks[num], qs=t.questions; let correct=0;
+  qs.forEach((q,i)=>{
+    const fb=document.getElementById(`fb_t${num}_${i}`);
+    let ok=false, answerLabel='';
+    if(t.type==='mcq'){
+      const qblock=document.getElementById(`qblock_t${num}_${i}`);
+      if(qblock) qblock.classList.add('show-mcq-detail');
+      const sel=document.querySelector(`input[name="mcq${num}_${i}"]:checked`);
+      const chosen=sel?parseInt(sel.value):-1;
+      q.options.forEach((o,j)=>{const el=document.getElementById(`mcq_t${num}_${i}_${j}`); if(el) el.classList.remove('correct-opt','wrong-opt','selected');});
+      const corr=document.getElementById(`mcq_t${num}_${i}_${q.answer}`); if(corr) corr.classList.add('correct-opt');
+      if(chosen!==-1 && chosen!==q.answer){const wr=document.getElementById(`mcq_t${num}_${i}_${chosen}`); if(wr) wr.classList.add('wrong-opt');}
+      ok=chosen===q.answer; answerLabel=`${['A','B','C','D'][q.answer]}. ${q.options[q.answer]}`;
+    }
+    else if(t.type==='fill'){
+      const answersArr=q.answers||[q.answer];
+      const accArr=q.acc || (q.accepted?[q.accepted]:answersArr.map(a=>[a]));
+      let allOk=true;
+      answersArr.forEach((a,b)=>{
+        const inp=document.getElementById(`t${num}_q${i}_${b}`); if(!inp){allOk=false;return;}
+        const val=normalize(inp.value);
+        const acc=(accArr[b]||[a]).map(normalize);
+        const okB=acc.includes(val)&&val!=='';
+        inp.classList.remove('correct-input','wrong-input'); inp.classList.add(okB?'correct-input':'wrong-input');
+        if(!okB) allOk=false;
+      });
+      ok=allOk; answerLabel=answersArr.join(' / ');
+    }
+    else if(t.type==='sentence'){
+      const inp=document.getElementById(`t${num}_q${i}`); if(!inp)return;
+      const val=normalize(inp.value); const acc=(q.accepted||[q.answer]).map(normalize);
+      ok=acc.includes(val)&&val!==''; inp.classList.remove('correct-input','wrong-input'); inp.classList.add(ok?'correct-input':'wrong-input');
+      answerLabel=q.answer;
+    }
+    else if(t.type==='matching'){
+      const sel=document.getElementById(`t${num}_q${i}`); if(!sel)return;
+      const chosen=parseInt(sel.value); ok=chosen===q.match;
+      sel.classList.remove('correct-input','wrong-input'); sel.classList.add(ok?'correct-input':'wrong-input');
+      answerLabel=t.bank[q.match];
+    }
+    else if(t.type==='reorder'){
+      const key=`${num}_${i}`;
+      const built=(reorderState[key]||[]).map(wi=>q.words[wi]).join(' ');
+      const acc=(q.accepted||[q.answer]).map(normalize);
+      ok=acc.includes(normalize(built));
+      const line=document.getElementById(`ans_t${num}_${i}`);
+      if(line){ line.classList.remove('border-emerald-400','border-rose-400'); line.classList.add(ok?'border-emerald-400':'border-rose-400'); }
+      answerLabel=q.answer;
+    }
+    else if(t.type==='reading'){
+      const inp=document.getElementById(`t${num}_q${i}`); if(!inp)return;
+      const val=normalize(inp.value);
+      ok=val!=='' && q.keywords.every(k=>val.includes(normalize(k)));
+      inp.classList.remove('correct-input','wrong-input'); inp.classList.add(ok?'correct-input':'wrong-input');
+      answerLabel=q.answer;
+    }
+    if(ok) correct++;
+    fb.innerHTML=buildFeedbackHTML(ok, answerLabel, q, num);
+    fb.classList.add('show');
+  });
+  const total=qs.length;
+  scores[num]={correct,total};
+  const scoreEl=document.getElementById(`task${num}-score`);
+  scoreEl.textContent=`🏆 Điểm: ${correct}/${total}`; scoreEl.classList.remove('hidden');
+  completedTasks.add(num); updateProgress();
+  if(completedTasks.size===TOTAL_TASKS) setTimeout(showCompletion,600);
+}
+
+/* ========== REVEAL ========== */
+function revealTask(num){
+  const t=tasks[num];
+  t.questions.forEach((q,i)=>{
+    if(t.type==='mcq'){ const qblock=document.getElementById(`qblock_t${num}_${i}`); if(qblock) qblock.classList.add('show-mcq-detail'); }
+    const fb=document.getElementById(`fb_t${num}_${i}`);
+    let label;
+    if(t.type==='mcq') label=`${['A','B','C','D'][q.answer]}. ${q.options[q.answer]}`;
+    else if(t.type==='matching') label=t.bank[q.match];
+    else if(t.type==='fill') label=(q.answers||[q.answer]).join(' / ');
+    else label=q.answer;
+    fb.innerHTML=`👁️ Đáp án: <b>${label}</b><br><span class='text-blue-700'>💡 ${q.explanation}</span>`+(q.vi?`<br><span class='text-slate-500'>📖 Nghĩa: <i>${q.vi}</i></span>`:'')+(q.note?`<br><span class='text-violet-600'>📐 Công thức: <b>${q.note}</b></span>`:'');
+    fb.classList.add('show');
+  });
+}
+
+/* ========== RESET ========== */
+function resetTask(num){
+  const t=tasks[num];
+  t.questions.forEach((q,i)=>{
+    if(t.type==='fill'){
+      const answersArr=q.answers||[q.answer];
+      answersArr.forEach((a,b)=>{const inp=document.getElementById(`t${num}_q${i}_${b}`); if(inp){inp.value='';inp.classList.remove('correct-input','wrong-input');}});
+    } else if(t.type==='reorder'){
+      reorderState[`${num}_${i}`]=[];
+      q.words.forEach((w,wi)=>{const chip=document.getElementById(`chip_t${num}_${i}_${wi}`); if(chip) chip.classList.remove('used');});
+      const line=document.getElementById(`ans_t${num}_${i}`); if(line){ line.classList.remove('border-emerald-400','border-rose-400'); renderAnswerLine(num,i); }
+    } else {
+      const inp=document.getElementById(`t${num}_q${i}`);
+      if(inp){ if(inp.tagName==='SELECT') inp.value='-1'; else inp.value=''; inp.classList.remove('correct-input','wrong-input'); }
+    }
+    const fb=document.getElementById(`fb_t${num}_${i}`); if(fb){ fb.classList.remove('show'); fb.innerHTML=''; }
+    const qblock=document.getElementById(`qblock_t${num}_${i}`); if(qblock) qblock.classList.remove('show-mcq-detail');
+    if(t.type==='mcq'){ q.options.forEach((o,j)=>{const el=document.getElementById(`mcq_t${num}_${i}_${j}`); if(el){el.classList.remove('correct-opt','wrong-opt','selected'); el.querySelector('input').checked=false;}}); }
+  });
+  const scoreEl=document.getElementById(`task${num}-score`); if(scoreEl) scoreEl.classList.add('hidden');
+  completedTasks.delete(num); delete scores[num]; updateProgress();
+}
+
+/* ========== NAV / PROGRESS / COMPLETION ========== */
+function showTab(id){
+  document.querySelectorAll('.section-page').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active'); b.classList.add('text-slate-600');});
+  document.getElementById(`tab-${id}`).classList.add('active');
+  const btn=[...document.querySelectorAll('.tab-btn')].find(b=>b.getAttribute('onclick')?.includes(`'${id}'`));
+  if(btn){ btn.classList.add('active'); btn.classList.remove('text-slate-600'); }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function updateProgress(){
+  const done=completedTasks.size;
+  document.getElementById('progressText').textContent=`${done} / ${TOTAL_TASKS} bài`;
+  document.getElementById('progressBar').style.width=`${(done/TOTAL_TASKS)*100}%`;
+}
+function showCompletion(){
+  fireConfetti();
+  const banner=document.getElementById('completionBanner'); banner.classList.remove('hidden'); banner.classList.add('show');
+  let c=0,tt=0; Object.values(scores).forEach(s=>{c+=s.correct; tt+=s.total;});
+  document.getElementById('finalScoreDisplay').textContent=`🎯 ${c} / ${tt} câu đúng`;
+}
+function closeBanner(){ const b=document.getElementById('completionBanner'); b.classList.remove('show'); b.classList.add('hidden'); }
+function fireConfetti(){
+  const wrap=document.getElementById('confettiWrap'); wrap.innerHTML='';
+  const colors=['#dc2626','#f59e0b','#7c2d12','#facc15','#fb7185','#fbbf24'];
+  for(let i=0;i<90;i++){
+    const p=document.createElement('div'); p.className='confetti-piece';
+    p.style.cssText=`left:${Math.random()*100}vw;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>0.5?'50%':'2px'};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*0.8}s;`;
+    wrap.appendChild(p);
+  }
+  setTimeout(()=>{wrap.innerHTML='';},4000);
+}
+</script>
+</body>
+</html>

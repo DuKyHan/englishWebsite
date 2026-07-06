@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Customs and Traditions – Tiếng Anh 8 · Unit 4</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+
+  :root { --bg: #fefce8; }
+
+  * { box-sizing: border-box; }
+  body { font-family: 'Nunito', sans-serif; background: var(--bg); }
+
+  .hero-gradient { background: linear-gradient(135deg, #0f766e 0%, #b45309 50%, #9d174d 100%); }
+  .tab-btn { transition: all .2s ease; }
+  .tab-btn.active {
+    background: linear-gradient(135deg, #0f766e, #9d174d);
+    color: white;
+    box-shadow: 0 4px 14px rgba(15,118,110,.35);
+    transform: translateY(-1px);
+  }
+  .task-card { transition: box-shadow .2s, transform .2s; }
+  .task-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,.10); }
+
+  .option-label { cursor: pointer; transition: all .18s; border: 2px solid #e2e8f0; }
+  .option-label:hover { border-color: #fb923c; background: #fff7ed; }
+  .option-label.selected { border-color: #0f766e; background: #f0fdfa; }
+  .option-label.correct-opt { border-color: #22c55e !important; background: #f0fdf4 !important; }
+  .option-label.wrong-opt { border-color: #ef4444 !important; background: #fef2f2 !important; }
+  .mcq-detail-hidden { display: none; }
+  .show-mcq-detail .mcq-detail-hidden { display: block; }
+
+  .explanation-box { display: none; animation: fadeSlide .3s ease forwards; }
+  .explanation-box.show { display: block; }
+  @keyframes fadeSlide { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+
+  input.answer-input, select.answer-input { border: 2px solid #cbd5e1; transition: border .18s; outline: none; background:#fff; }
+  input.answer-input:focus, select.answer-input:focus { border-color: #fb923c; }
+  input.correct-input, select.correct-input { border-color: #22c55e !important; background: #f0fdf4; }
+  input.wrong-input, select.wrong-input { border-color: #ef4444 !important; background: #fef2f2; }
+
+  .score-badge { animation: popIn .35s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn { from { transform: scale(.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+  .confetti-wrap { position: fixed; inset: 0; pointer-events: none; z-index: 9999; }
+  .confetti-piece { position: absolute; width: 10px; height: 10px; border-radius: 2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall { 0% { transform: translateY(-20px) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+
+  .theory-card { border-left: 4px solid transparent; transition: all .2s; }
+  .theory-card:hover { transform: translateX(4px); }
+
+  .progress-bar-fill { transition: width .6s ease; }
+
+  .word-chip { cursor: pointer; transition: all .15s; user-select: none; }
+  .word-chip:hover { transform: scale(1.05); }
+  .word-chip.used { opacity: .3; pointer-events: none; }
+  .answer-line { min-height: 44px; }
+
+  .vcard .vexample { display:none; }
+  .vcard.open .vexample { display:block; animation: fadeSlide .25s ease forwards; }
+  .speak-btn.speaking { animation: pulseSpeak .7s ease-in-out infinite; }
+  @keyframes pulseSpeak { 0%,100% { transform: scale(1); } 50% { transform: scale(1.18); } }
+
+  .section-page { display: none; }
+  .section-page.active { display: block; }
+
+  #completionBanner { display: none; }
+  #completionBanner.show { display: flex; }
+
+  .vi-hidden { display: none; }
+</style>
+</head>
+<body class="min-h-screen">
+
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<!-- ===== HERO ===== -->
+<header class="hero-gradient text-white py-8 px-4 text-center shadow-xl relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <div class="absolute top-4 left-8 text-6xl">🤝</div>
+    <div class="absolute top-2 right-12 text-5xl">🍽️</div>
+    <div class="absolute bottom-2 left-1/3 text-4xl">🏮</div>
+    <div class="absolute bottom-4 right-1/4 text-5xl">🎊</div>
+  </div>
+  <p class="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Tiếng Anh 8 · Unit 4</p>
+  <h1 class="font-['Baloo_2'] text-3xl md:text-5xl font-extrabold drop-shadow-lg">🤝 Our Customs and Traditions 🍽️</h1>
+  <p class="mt-2 text-base md:text-lg opacity-90 font-semibold">Should/Shouldn't &amp; Have to · Luyện tập tương tác</p>
+  <div class="mt-5 max-w-2xl mx-auto">
+    <div class="flex justify-between text-xs font-bold opacity-80 mb-1">
+      <span>Tiến độ hoàn thành</span>
+      <span id="progressText">0 / 15 bài</span>
+    </div>
+    <div class="bg-white/20 rounded-full h-3 overflow-hidden">
+      <div id="progressBar" class="bg-white rounded-full h-3 progress-bar-fill" style="width:0%"></div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== NAV ===== -->
+<nav class="sticky top-0 z-50 bg-white/90 backdrop-blur shadow-sm px-3 py-2 overflow-x-auto">
+  <div class="flex gap-2 min-w-max mx-auto w-fit">
+    <button class="tab-btn active text-sm font-bold px-4 py-2 rounded-full" onclick="showTab('theory')"><i class="fa-solid fa-book-open mr-1"></i>Lý thuyết</button>
+    <button class="tab-btn text-sm font-bold px-4 py-2 rounded-full text-slate-600" onclick="showTab('vocab')"><i class="fa-solid fa-spell-check mr-1"></i>Từ vựng</button>
+    <span class="self-center text-[10px] font-black text-sky-500 uppercase px-1">Ngữ âm</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task1')">🔊 1</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task2')">📢 2</button>
+    <span class="self-center text-[10px] font-black text-violet-500 uppercase px-1">Trắc nghiệm</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task3')">🅰️ 3</button>
+    <span class="self-center text-[10px] font-black text-fuchsia-500 uppercase px-1">Từ loại</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task4')">🔤 4</button>
+    <span class="self-center text-[10px] font-black text-emerald-500 uppercase px-1">Động từ</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task5')">✏️ 5</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task6')">✏️ 6</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task7')">📜 7</button>
+    <span class="self-center text-[10px] font-black text-rose-500 uppercase px-1">Sửa lỗi</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task8')">🛠️ 8</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task9')">🛠️ 9</button>
+    <span class="self-center text-[10px] font-black text-indigo-500 uppercase px-1">Đọc hiểu</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task10')">📖 10</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task11')">📖 11</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task12')">📖 12</button>
+    <span class="self-center text-[10px] font-black text-pink-500 uppercase px-1">Viết</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task13')">✍️ 13</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task14')">✍️ 14</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task15')">🧩 15</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('writing')">📝 Viết đoạn</button>
+  </div>
+</nav>
+
+<main class="max-w-4xl mx-auto px-4 py-6 pb-20">
+<!-- ==================== THEORY ==================== -->
+<section id="tab-theory" class="section-page active space-y-6">
+  <h2 class="text-2xl font-extrabold text-teal-700 flex items-center gap-2"><i class="fa-solid fa-lightbulb text-amber-400"></i> I. SHOULD / SHOULDN'T FOR ADVICE</h2>
+  <p class="text-slate-500 text-sm -mt-4">(Đưa ra lời khuyên với Should và Shouldn't)</p>
+
+  <div class="bg-white rounded-2xl shadow-md p-5 theory-card" style="border-left-color:#0f766e">
+    <h3 class="font-extrabold text-teal-700 text-lg mb-2"><i class="fa-solid fa-diagram-project mr-2 text-teal-500"></i>1. Cấu trúc</h3>
+    <div class="bg-teal-50 border border-teal-200 rounded-xl p-4 text-center">
+      <p class="font-['Baloo_2'] text-teal-800 text-lg">S + should / shouldn't + V (nguyên mẫu không "to")</p>
+      <p class="text-xs text-slate-500 mt-1">(shouldn't = should not)</p>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-md p-5 theory-card" style="border-left-color:#b45309">
+    <h3 class="font-extrabold text-amber-700 text-lg mb-2"><i class="fa-solid fa-circle-info mr-2 text-amber-500"></i>2. Cách dùng</h3>
+    <p class="text-sm text-slate-600 mb-3">"Should" nghĩa là <b>nên</b>, "shouldn't" nghĩa là <b>không nên</b>. Đây là cấu trúc thông dụng nhất để đưa ra lời khuyên trong tiếng Anh.</p>
+    <div class="space-y-2 text-sm text-slate-700">
+      <div class="bg-amber-50 border border-amber-200 rounded-lg p-3"><b class="text-amber-700">a.</b> "Should" dùng để đưa ra lời khuyên.
+        <p class="text-xs text-slate-500 italic mt-1">I should do a lot of homework tonight. (Tôi nên làm nhiều bài tập tối nay.)<br>You shouldn't work all day. (Bạn không nên làm việc cả ngày.)</p></div>
+      <div class="bg-white border border-amber-200 rounded-lg p-3"><b class="text-amber-700">b.</b> Dùng "I should"/"we should" để đề nghị điều tốt nên làm.
+        <p class="text-xs text-slate-500 italic mt-1">I should go home. It's midnight. (Tôi nên về nhà. Đã nửa đêm rồi.)<br>We should invite them to our wedding.</p></div>
+      <div class="bg-amber-50 border border-amber-200 rounded-lg p-3"><b class="text-amber-700">c.</b> Dùng câu hỏi "Should I/we...?" để xin lời khuyên.
+        <p class="text-xs text-slate-500 italic mt-1">What should I say to Fred? (Tôi nên nói gì với Fred?)</p></div>
+      <div class="bg-white border border-amber-200 rounded-lg p-3"><b class="text-amber-700">d.</b> Thường dùng "I think"/"I don't think" với "should".
+        <p class="text-xs text-slate-500 italic mt-1">I think you should put the answers back.</p></div>
+    </div>
+  </div>
+
+  <div class="bg-gradient-to-r from-rose-50 to-amber-50 border border-rose-200 rounded-2xl p-5">
+    <h3 class="font-extrabold text-rose-700 mb-2"><i class="fa-solid fa-clock-rotate-left mr-2"></i>Lưu ý: lời khuyên/hối tiếc về QUÁ KHỨ</h3>
+    <p class="text-sm text-rose-900 mb-2">Khi khuyên ai đó nên làm gì đó ở quá khứ, hoặc tự hối hận về việc đã làm/chưa làm, ta dùng:</p>
+    <div class="bg-white/70 border border-rose-100 rounded-lg p-3 text-center">
+      <p class="font-['Baloo_2'] text-rose-800">S + should have + V3/ed. &nbsp;/&nbsp; S + shouldn't have + V3/ed.</p>
+    </div>
+    <div class="text-xs text-slate-600 italic mt-2 space-y-1">
+      <p>I should have studied harder. (Tôi đã không học chăm chỉ và bị trượt kỳ thi, giờ tôi hối hận.)</p>
+      <p>I shouldn't have eaten so much cake! (Tôi đã ăn quá nhiều bánh và giờ bị mệt.)</p>
+      <p>You should have called me when you arrived. (Lẽ ra em nên gọi cho anh khi đến nơi nhưng em không làm.)</p>
+    </div>
+  </div>
+
+  <h2 class="text-2xl font-extrabold text-rose-700 flex items-center gap-2 pt-2"><i class="fa-solid fa-lightbulb text-amber-400"></i> II. HAVE TO</h2>
+  <p class="text-slate-500 text-sm -mt-4">(Cách dùng "have to")</p>
+
+  <div class="bg-white rounded-2xl shadow-md p-5 theory-card" style="border-left-color:#9d174d">
+    <h3 class="font-extrabold text-rose-700 text-lg mb-2"><i class="fa-solid fa-diagram-project mr-2 text-rose-500"></i>1. Cấu trúc</h3>
+    <div class="grid md:grid-cols-3 gap-3 text-sm">
+      <div class="bg-rose-50 border border-rose-200 rounded-lg p-3 text-center"><b class="text-rose-700">(+)</b><br>S + have to + V-inf</div>
+      <div class="bg-white border border-rose-200 rounded-lg p-3 text-center"><b class="text-rose-700">(–)</b><br>S + don't have to + V-inf</div>
+      <div class="bg-rose-50 border border-rose-200 rounded-lg p-3 text-center"><b class="text-rose-700">(?)</b><br>Do + S + have to + V-inf?</div>
+    </div>
+    <p class="text-xs text-slate-500 mt-2 italic">* S chỉ áp dụng với I/you/we/they (những chủ ngữ khác dùng "has to/doesn't have to/Does...have to").</p>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-md p-5 theory-card" style="border-left-color:#b45309">
+    <h3 class="font-extrabold text-amber-700 text-lg mb-2"><i class="fa-solid fa-circle-info mr-2 text-amber-500"></i>2. Cách dùng</h3>
+    <div class="space-y-2 text-sm text-slate-700">
+      <div class="bg-amber-50 border border-amber-200 rounded-lg p-3">Dùng tương đương với "must" để diễn đạt sự cần thiết.
+        <p class="text-xs text-slate-500 italic mt-1">I have to go to the hospital. (Tôi phải đi tới bệnh viện.)</p></div>
+      <div class="bg-white border border-amber-200 rounded-lg p-3">Diễn đạt sự bắt buộc do tình thế/điều kiện bên ngoài (nội quy, luật pháp, mệnh lệnh…).
+        <p class="text-xs text-slate-500 italic mt-1">I have to stop smoking. Doctor's orders.</p></div>
+      <div class="bg-amber-50 border border-amber-200 rounded-lg p-3"><b>Don't have to</b>: chỉ sự KHÔNG cần thiết (chứ không phải cấm đoán). Trợ động từ "do" dùng với "have to" trong câu hỏi và phủ định.
+        <p class="text-xs text-slate-500 italic mt-1">You don't have to wash these shoes, they're clean.</p></div>
+    </div>
+  </div>
+
+  <div class="text-center pt-2">
+    <button onclick="showTab('vocab')" class="bg-white shadow-md hover:shadow-lg text-teal-700 font-bold px-6 py-3 rounded-full transition hover:scale-105"><i class="fa-solid fa-arrow-right mr-2"></i>Sang phần Từ vựng</button>
+  </div>
+</section>
+
+<!-- ==================== VOCAB ==================== -->
+<section id="tab-vocab" class="section-page space-y-4">
+  <div class="bg-white rounded-2xl shadow-md p-5">
+    <div class="flex items-center gap-3 mb-2">
+      <div class="bg-teal-100 text-teal-700 font-black text-lg w-10 h-10 rounded-full flex items-center justify-center"><i class="fa-solid fa-spell-check"></i></div>
+      <div>
+        <h2 class="text-xl font-extrabold text-teal-700">Từ vựng Unit 4</h2>
+        <p class="text-sm text-slate-500">Nhấp vào mỗi thẻ để xem ví dụ · Nhấn <i class="fa-solid fa-volume-high text-teal-500"></i> để nghe phát âm.</p>
+      </div>
+    </div>
+    <div id="vocab-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4"></div>
+  </div>
+</section>
+
+<!-- ==================== TASK SHELLS ==================== -->
+<section id="tab-task1" class="section-page"><div id="task1-wrap"></div></section>
+<section id="tab-task2" class="section-page"><div id="task2-wrap"></div></section>
+<section id="tab-task3" class="section-page"><div id="task3-wrap"></div></section>
+<section id="tab-task4" class="section-page"><div id="task4-wrap"></div></section>
+<section id="tab-task5" class="section-page"><div id="task5-wrap"></div></section>
+<section id="tab-task6" class="section-page"><div id="task6-wrap"></div></section>
+<section id="tab-task7" class="section-page"><div id="task7-wrap"></div></section>
+<section id="tab-task8" class="section-page"><div id="task8-wrap"></div></section>
+<section id="tab-task9" class="section-page"><div id="task9-wrap"></div></section>
+<section id="tab-task10" class="section-page"><div id="task10-wrap"></div></section>
+<section id="tab-task11" class="section-page"><div id="task11-wrap"></div></section>
+<section id="tab-task12" class="section-page"><div id="task12-wrap"></div></section>
+<section id="tab-task13" class="section-page"><div id="task13-wrap"></div></section>
+<section id="tab-task14" class="section-page"><div id="task14-wrap"></div></section>
+<section id="tab-task15" class="section-page"><div id="task15-wrap"></div></section>
+
+<!-- ==================== WRITING PARAGRAPH (non-scored) ==================== -->
+<section id="tab-writing" class="section-page">
+  <div class="task-card bg-white rounded-2xl shadow-md p-6">
+    <div class="flex items-center gap-3 mb-4">
+      <div class="bg-pink-100 text-pink-700 font-black text-lg w-10 h-10 rounded-full flex items-center justify-center"><i class="fa-solid fa-pen-nib"></i></div>
+      <div>
+        <h2 class="text-xl font-extrabold text-pink-700">Viết đoạn văn (Writing)</h2>
+        <p class="text-sm text-slate-500">Write a short paragraph about how people greet each other in Viet Nam. Viết một đoạn khoảng 80–100 từ.</p>
+      </div>
+    </div>
+    <div class="bg-pink-50 border border-pink-200 rounded-xl p-4 text-sm text-slate-700 mb-4">
+      <b class="text-pink-700">Gợi ý cách tổ chức ý:</b>
+      <ul class="mt-1 space-y-0.5">
+        <li>• <b>Mở đầu:</b> giới thiệu chung về việc chào hỏi có vai trò quan trọng trong văn hóa Việt Nam.</li>
+        <li>• <b>Cách chào hỏi:</b> cúi đầu nhẹ/bắt tay, dùng từ xưng hô phù hợp với tuổi tác, nói "xin chào"/"chào (bác/anh/chị)".</li>
+        <li>• <b>Điều nên/không nên:</b> nên tôn trọng người lớn tuổi hơn, nên gọi tên kèm chức danh; không nên chỉ gọi tên riêng với người lớn tuổi hơn.</li>
+        <li>• <b>Kết luận:</b> ý nghĩa của cách chào hỏi này (thể hiện sự tôn trọng, gắn kết cộng đồng).</li>
+      </ul>
+    </div>
+    <textarea id="essay-input" rows="8" class="answer-input w-full px-3 py-2 rounded-lg text-sm" placeholder="Viết đoạn văn của bạn ở đây (80–100 từ)…"></textarea>
+    <div class="mt-2 text-xs text-slate-400" id="essay-count">Số từ: 0</div>
+    <div class="mt-3 flex gap-3 flex-wrap">
+      <button onclick="toggleModelEssay()" class="bg-pink-500 hover:bg-pink-600 text-white font-bold px-5 py-2.5 rounded-full transition hover:scale-105 shadow"><i class="fa-solid fa-eye mr-1"></i>Xem đoạn văn mẫu</button>
+    </div>
+    <div id="model-essay" class="vi-hidden mt-3 bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-slate-700 leading-relaxed">
+      <b class="text-blue-700">Outline gợi ý:</b>
+      <div class="mt-2 bg-white/70 border border-blue-100 rounded-lg p-3">
+        <p><b>1. Introduction:</b> greeting is an important custom in Vietnamese culture.</p>
+        <p><b>2. How people greet:</b> saying "xin chao", a slight bow or handshake, using the right form of address for age/status.</p>
+        <p><b>3. What people should/shouldn't do:</b> should show respect to older people; shouldn't call an older person only by their first name.</p>
+        <p><b>4. Conclusion:</b> greeting reflects respect and a sense of belonging in the community.</p>
+      </div>
+      <div class="mt-3">
+        <b class="text-blue-700">Đoạn văn mẫu:</b><br>
+        In Viet Nam, greeting is an important custom that reflects respect between people. When Vietnamese people meet, they usually smile, nod their heads slightly and say "xin chao", which means "hello". Unlike in some Western cultures, Vietnamese people should not use only the first name to address someone older than them; instead, they add a title such as "anh", "chi", "co" or "bac" before the name to show politeness. Younger people often greet older people first as a sign of respect, and they may also give a small bow. Shaking hands is common too, especially in more formal or business situations. This way of greeting shows that Vietnamese culture values respect for age and a strong sense of belonging within the family and the community.
+      </div>
+      <div class="mt-3 bg-emerald-50 border border-emerald-200 rounded-lg p-3">
+        <b class="text-emerald-700">Dịch nghĩa:</b><br>
+        Ở Việt Nam, chào hỏi là một phong tục quan trọng thể hiện sự tôn trọng giữa mọi người. Khi gặp nhau, người Việt thường mỉm cười, gật đầu nhẹ và nói "xin chào". Khác với một số nền văn hóa phương Tây, người Việt không nên chỉ gọi tên riêng đối với người lớn tuổi hơn mình; thay vào đó họ thêm danh xưng như "anh", "chị", "cô" hay "bác" trước tên để thể hiện sự lịch sự. Người trẻ thường chào người lớn tuổi trước như một cách thể hiện sự tôn trọng, và có thể cúi đầu nhẹ. Bắt tay cũng phổ biến, đặc biệt trong các tình huống trang trọng hoặc công việc. Cách chào hỏi này cho thấy văn hóa Việt Nam coi trọng sự tôn kính người lớn tuổi và cảm giác gắn kết trong gia đình cũng như cộng đồng.
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===== COMPLETION BANNER ===== -->
+<div id="completionBanner" class="hidden fixed inset-0 bg-black/50 z-[100] items-center justify-center p-4">
+  <div class="bg-white rounded-3xl p-8 max-w-md w-full text-center shadow-2xl">
+    <div class="text-6xl mb-3">🎊</div>
+    <h2 class="font-['Baloo_2'] text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-rose-600">Xuất sắc!</h2>
+    <p class="text-slate-600 mt-2 text-lg font-semibold">Bạn đã hoàn thành tất cả 15 bài tập!</p>
+    <p class="text-slate-500 text-sm mt-1">Đừng quên luyện phần Viết đoạn nữa nhé! 💪</p>
+    <div id="finalScoreDisplay" class="my-4 text-4xl font-black text-teal-600"></div>
+    <button onclick="closeBanner()" class="mt-2 bg-gradient-to-r from-teal-600 to-rose-600 text-white font-bold px-8 py-3 rounded-full hover:scale-105 transition-all shadow-lg">Tiếp tục ôn tập 📖</button>
+  </div>
+</div>
+<script>
+/* =====================================================================
+   DATA — Unit 4 (Our Customs and Traditions). type: mcq | fill | sentence | matching | reorder | reading
+
+   ============================ GHI CHÚ CHUYỂN ĐỔI (đọc trước khi sửa) ============================
+   File này được chuyển đổi từ "unit4.md" (do người dùng cung cấp). Trong quá trình OCR/convert
+   sang Markdown, RẤT NHIỀU chỗ trống ("_____") trong đề bài gốc đã bị mất (không còn hiển thị),
+   nên khi build file này, Claude đã phải SUY LUẬN lại vị trí chỗ trống dựa vào ngữ pháp + đáp án
+   cho sẵn trong bảng "ANSWER KEYS" ở cuối file .md. Các câu bị ảnh hưởng đã được đánh dấu bằng
+   comment "RECONSTRUCTED" ngay tại chỗ trong code bên dưới. Nếu sau này có ảnh gốc/bản rõ hơn,
+   nên đối chiếu lại các câu này trước tiên.
+
+   Ngoài ra, khi đối chiếu đáp án gốc với kiến thức ngữ âm chuẩn, Claude phát hiện 2 chỗ mà đáp án
+   trong file gốc dường như SAI so với quy tắc phát âm tiếng Anh chuẩn (không phải do OCR mà là lỗi
+   ở chính tài liệu). Claude đã ưu tiên GIỮ NGUYÊN đáp án gốc trong hầu hết trường hợp (để khớp với
+   đáp án giáo viên), NHƯNG với 2 câu sau, vì quy tắc phát âm quá rõ ràng/cơ bản (không có khả năng
+   diễn giải khác), Claude đã sửa lại đáp án đúng theo ngữ âm học và ghi chú "OVERRIDE" tại chỗ:
+     - Bài 1 (Phonetics I) câu 14: file gốc ghi đáp án D (concealed), nhưng theo quy tắc đuôi -ed
+       (concerned/received/concealed đều là /d/, còn attached là /t/) → sửa thành C (attached).
+     - Bài 1 (Phonetics I) câu 15: file gốc ghi đáp án C (reason), nhưng "ea" trong teacher/reason/
+       mean đều là /iː/, còn "clear" là /ɪə/ → sửa thành B (clear).
+   Nếu người dùng phản hồi rằng đáp án gốc mới là đúng (theo ý giáo viên), hãy đổi answer index lại
+   theo bảng gốc: câu 14 → answer:3 (D), câu 15 → answer:2 (C).
+   ================================================================================================
+   ===================================================================== */
+
+const COLORS = {
+  sky:{ring:'sky',btn:'bg-sky-500 hover:bg-sky-600',head:'text-sky-700'},
+  cyan:{ring:'cyan',btn:'bg-cyan-500 hover:bg-cyan-600',head:'text-cyan-700'},
+  violet:{ring:'violet',btn:'bg-violet-500 hover:bg-violet-600',head:'text-violet-700'},
+  fuchsia:{ring:'fuchsia',btn:'bg-fuchsia-500 hover:bg-fuchsia-600',head:'text-fuchsia-700'},
+  emerald:{ring:'emerald',btn:'bg-emerald-500 hover:bg-emerald-600',head:'text-emerald-700'},
+  teal:{ring:'teal',btn:'bg-teal-500 hover:bg-teal-600',head:'text-teal-700'},
+  amber:{ring:'amber',btn:'bg-amber-500 hover:bg-amber-600',head:'text-amber-700'},
+  orange:{ring:'orange',btn:'bg-orange-500 hover:bg-orange-600',head:'text-orange-700'},
+  rose:{ring:'rose',btn:'bg-rose-500 hover:bg-rose-600',head:'text-rose-700'},
+  indigo:{ring:'indigo',btn:'bg-indigo-500 hover:bg-indigo-600',head:'text-indigo-700'},
+  pink:{ring:'pink',btn:'bg-pink-500 hover:bg-pink-600',head:'text-pink-700'},
+  lime:{ring:'lime',btn:'bg-lime-500 hover:bg-lime-600',head:'text-lime-700'},
+};
+
+/* ---------- VOCABULARY (27) ---------- */
+const vocab = [
+  {w:'accept', ipa:'/əkˈsept/ (v)', vi:'chấp nhận, nhận', ex:'Vietnamese people usually accept advice from their elders.', exvi:'Người Việt thường chấp nhận lời khuyên từ người lớn tuổi.'},
+  {w:'break with', ipa:'/breɪk wɪð/ (v)', vi:'không theo, phá vỡ (truyền thống)', ex:'Some young people want to break with old traditions.', exvi:'Một số người trẻ muốn không theo các truyền thống cũ.'},
+  {w:'clockwise', ipa:'/ˈklɒkwaɪz/ (adv)', vi:'theo chiều kim đồng hồ', ex:'You should stir the soup clockwise, not anticlockwise.', exvi:'Bạn nên khuấy súp theo chiều kim đồng hồ, không phải ngược lại.'},
+  {w:'compliment', ipa:'/ˈkɒmplɪmənt/ (n)', vi:'lời khen', ex:'She gave her host a compliment on the delicious meal.', exvi:'Cô ấy khen chủ nhà về bữa ăn ngon.'},
+  {w:'course', ipa:'/kɔːs/ (n)', vi:'món ăn (trong bữa tiệc)', ex:'A formal dinner usually has several courses.', exvi:'Một bữa tối trang trọng thường có nhiều món.'},
+  {w:'cutlery', ipa:'/ˈkʌtləri/ (n)', vi:'bộ đồ ăn (thìa, dĩa, dao)', ex:'In Western countries, people use cutlery to eat their meals.', exvi:'Ở các nước phương Tây, người ta dùng bộ đồ ăn để ăn cơm.'},
+  {w:'filmstrip', ipa:'/ˈfɪlmstrɪp/ (n)', vi:'đoạn phim', ex:'The teacher showed us a filmstrip about table manners around the world.', exvi:'Giáo viên cho chúng tôi xem một đoạn phim về phép tắc ăn uống trên thế giới.'},
+  {w:'host', ipa:'/həʊst/ (n)', vi:'chủ nhà (nam)', ex:'The host welcomed all the guests warmly.', exvi:'Chủ nhà chào đón tất cả khách một cách nồng nhiệt.'},
+  {w:'hostess', ipa:'/ˈhəʊstəs/ (n)', vi:'chủ nhà (nữ)', ex:'The hostess prepared a lot of traditional dishes for the party.', exvi:'Nữ chủ nhà đã chuẩn bị rất nhiều món ăn truyền thống cho bữa tiệc.'},
+  {w:'generation', ipa:'/ˌdʒenəˈreɪʃn/ (n)', vi:'thế hệ', ex:'Many families have three generations living under one roof.', exvi:'Nhiều gia đình có ba thế hệ sống chung một mái nhà.'},
+  {w:'offspring', ipa:'/ˈɒfsprɪŋ/ (n)', vi:'con cái', ex:'Parents often pass down their customs to their offspring.', exvi:'Cha mẹ thường truyền lại phong tục cho con cái của họ.'},
+  {w:'oblige', ipa:'/əˈblaɪdʒ/ (v)', vi:'bắt buộc', ex:'Nobody is obliged to follow every old custom nowadays.', exvi:'Ngày nay không ai bị bắt buộc phải theo mọi phong tục cũ.'},
+  {w:'palm', ipa:'/pɑːm/ (n)', vi:'lòng bàn tay', ex:'He held the coin in the palm of his hand.', exvi:'Anh ấy cầm đồng xu trong lòng bàn tay.'},
+  {w:'pass down', ipa:'/pɑːs daʊn/ (v)', vi:'truyền lại, truyền cho', ex:'This custom has been passed down through many generations.', exvi:'Phong tục này đã được truyền qua nhiều thế hệ.'},
+  {w:'prong', ipa:'/prɒŋ/ (n)', vi:'đầu dĩa (phần có răng)', ex:'A fork usually has three or four prongs.', exvi:'Một cái dĩa thường có ba hoặc bốn đầu răng.'},
+  {w:'reflect', ipa:'/rɪˈflekt/ (v)', vi:'phản ánh', ex:'Table manners often reflect a country\u2019s culture.', exvi:'Phép tắc ăn uống thường phản ánh văn hóa của một quốc gia.'},
+  {w:'sharp', ipa:'/ʃɑːp/ (adv)', vi:'chính xác, đúng (giờ)', ex:'The meeting starts at 9 o\u2019clock sharp.', exvi:'Cuộc họp bắt đầu đúng 9 giờ.'},
+  {w:'sense of belonging', ipa:'/sens əv bɪˈlɒŋɪŋ/ (n)', vi:'cảm giác thân thuộc', ex:'Family traditions give children a strong sense of belonging.', exvi:'Truyền thống gia đình mang lại cho trẻ em cảm giác thân thuộc mạnh mẽ.'},
+  {w:'social', ipa:'/ˈsəʊʃl/ (adj)', vi:'thuộc về xã hội', ex:'Table manners are an important part of social behaviour.', exvi:'Phép tắc ăn uống là một phần quan trọng của hành vi xã hội.'},
+  {w:'spot on', ipa:'/spɒt ɒn/ (adj, informal)', vi:'chính xác', ex:'Your guess about the custom was spot on.', exvi:'Dự đoán của bạn về phong tục đó rất chính xác.'},
+  {w:'spray', ipa:'/spreɪ/ (v)', vi:'xịt', ex:'She sprayed some perfume before the ceremony.', exvi:'Cô ấy xịt một ít nước hoa trước buổi lễ.'},
+  {w:'spread', ipa:'/spred/ (v)', vi:'lan truyền', ex:'This custom has spread to many other countries.', exvi:'Phong tục này đã lan truyền sang nhiều nước khác.'},
+  {w:'table manners', ipa:'/ˈteɪbl ˈmænəz/ (n, plural)', vi:'phép tắc ăn uống trên bàn ăn', ex:'Good table manners are taught from a young age.', exvi:'Phép tắc ăn uống tốt được dạy từ khi còn nhỏ.'},
+  {w:'tip', ipa:'/tɪp/ (n, v)', vi:'tiền boa, boa', ex:'In some countries, it is polite to tip the waiter.', exvi:'Ở một số nước, boa cho người phục vụ là lịch sự.'},
+  {w:'unity', ipa:'/ˈjuːnəti/ (n)', vi:'sự thống nhất, đoàn kết', ex:'Family meals create a sense of unity.', exvi:'Bữa cơm gia đình tạo nên sự đoàn kết.'},
+  {w:'upwards', ipa:'/ˈʌpwədz/ (adv)', vi:'hướng lên trên', ex:'Turn your palm upwards when you receive something from an elder.', exvi:'Hãy hướng lòng bàn tay lên trên khi nhận đồ từ người lớn tuổi.'},
+  {w:'You\u2019re kidding!', ipa:'/jʊə ˈkɪdɪŋ/ (idiom)', vi:'Bạn nói đùa thế thôi!', ex:'"We have to bow three times." "You\u2019re kidding!"', exvi:'"Chúng ta phải cúi đầu ba lần." "Bạn đùa đấy à!"'},
+];
+
+const tasks = {
+  /* ---------- BÀI 1: PHONETICS I ---------- */
+  1: {
+    color:'sky', title:'Bài 1: Ngữ âm – Chọn phần gạch chân khác',
+    desc:'Chọn từ có phần phát âm KHÁC với các từ còn lại trong nhóm. Chọn xong sẽ hiện đáp án ngay.',
+    type:'mcq', instant:true,
+    questions:[
+      {q:'1.', options:['strike','stripe','sprite','spring'], ipas:['/straɪk/','/straɪp/','/spraɪt/','/sprɪŋ/'], vis:['tấn công, đình công','sọc','yêu tinh (sprite)','mùa xuân'], answer:3, vi:'"spring" khác biệt.', explanation:'"spring" có "i" phát âm là /ɪ/, còn ba từ còn lại "i" phát âm là /aɪ/.'},
+      {q:'2.', options:['food','book','goods','cook'], ipas:['/fuːd/','/bʊk/','/ɡʊdz/','/kʊk/'], vis:['thức ăn','sách','hàng hóa','nấu ăn'], answer:0, vi:'"food" khác biệt.', explanation:'"food" có "oo" phát âm là /uː/, còn ba từ còn lại phát âm là /ʊ/.'},
+      {q:'3.', options:['custom','bus','cushion','custard'], ipas:['/ˈkʌstəm/','/bʌs/','/ˈkʊʃn/','/ˈkʌstəd/'], vis:['phong tục','xe buýt','cái đệm/gối tựa','bánh custard'], answer:2, vi:'"cushion" khác biệt.', explanation:'"cushion" có "u" phát âm là /ʊ/, còn ba từ còn lại phát âm là /ʌ/.'},
+      {q:'4.', options:['puzzle','pizza','dizzy','buzzer'], ipas:['/ˈpʌzl/','/ˈpiːtsə/','/ˈdɪzi/','/ˈbʌzə(r)/'], vis:['câu đố','pizza','chóng mặt','cái chuông'], answer:1, vi:'"pizza" khác biệt.', explanation:'"pizza" có "zz" phát âm là /ts/ (từ mượn tiếng Ý), còn ba từ còn lại "zz/z" phát âm là /z/.'},
+      {q:'5.', options:['taboo','bamboo','candle','captain'], ipas:['/təˈbuː/','/bæmˈbuː/','/ˈkændl/','/ˈkæptɪn/'], vis:['điều cấm kỵ','cây tre','cây nến','thuyền trưởng'], answer:0, vi:'"taboo" khác biệt.', explanation:'"taboo" có "a" phát âm nhẹ là /ə/, còn ba từ còn lại "a" phát âm là /æ/.'},
+      {q:'6.', options:['stripe','string','spring','trip'], ipas:['/straɪp/','/strɪŋ/','/sprɪŋ/','/trɪp/'], vis:['sọc','sợi dây','mùa xuân','chuyến đi'], answer:0, vi:'"stripe" khác biệt.', explanation:'"stripe" có "i" phát âm là /aɪ/, còn ba từ còn lại phát âm là /ɪ/.'},
+      {q:'7.', options:['honey','donkey','money','survey'], ipas:['/ˈhʌni/','/ˈdɒŋki/','/ˈmʌni/','/ˈsɜːveɪ/'], vis:['mật ong','con lừa','tiền','khảo sát'], answer:3, vi:'"survey" khác biệt.', explanation:'"survey" có "ey" phát âm là /eɪ/, còn ba từ còn lại phát âm là /i/.'},
+      {q:'8.', options:['suitable','situation','regulation','customer'], ipas:['/ˈsuːtəbl/','/ˌsɪtʃuˈeɪʃn/','/ˌreɡjuˈleɪʃn/','/ˈkʌstəmə(r)/'], vis:['phù hợp','tình huống','quy định','khách hàng'], answer:3, vi:'"customer" khác biệt.', explanation:'"customer" có "u" phát âm là /ʌ/, còn ba từ còn lại "u" liên quan đến âm /uː/ hoặc /ju/.'},
+      {q:'9.', options:['youth','cloth','bathe','month'], ipas:['/juːθ/','/klɒθ/','/beɪð/','/mʌnθ/'], vis:['tuổi trẻ','vải, khăn','tắm rửa','tháng'], answer:2, vi:'"bathe" khác biệt.', explanation:'"bathe" có "th" phát âm là /ð/ (hữu thanh), còn ba từ còn lại phát âm là /θ/ (vô thanh).'},
+      {q:'10.', options:['washed','handed','laughed','helped'], ipas:['/wɒʃt/','/ˈhændɪd/','/lɑːft/','/helpt/'], vis:['đã rửa','đã đưa','đã cười','đã giúp'], answer:1, vi:'"handed" khác biệt.', explanation:'"handed" có đuôi -ed phát âm là /ɪd/, còn ba từ còn lại phát âm là /t/.'},
+      {q:'11.', options:['sound','touch','down','account'], ipas:['/saʊnd/','/tʌtʃ/','/daʊn/','/əˈkaʊnt/'], vis:['âm thanh','chạm vào','xuống','tài khoản'], answer:1, vi:'"touch" khác biệt.', explanation:'"touch" có nguyên âm phát âm là /ʌ/, còn ba từ còn lại phát âm là /aʊ/.'},
+      {q:'12.', options:['design','preserve','basic','physical'], ipas:['/dɪˈzaɪn/','/prɪˈzɜːv/','/ˈbeɪsɪk/','/ˈfɪzɪkl/'], vis:['thiết kế','gìn giữ','cơ bản','thuộc vật lý'], answer:2, vi:'"basic" khác biệt.', explanation:'"basic" có "s" phát âm là /s/, còn ba từ còn lại "s" phát âm là /z/.'},
+      {q:'13.', options:['occupation','occasion','shake','miraculous'], ipas:['/ˌɒkjuˈpeɪʃn/','/əˈkeɪʒn/','/ʃeɪk/','/mɪˈrækjələs/'], vis:['nghề nghiệp','dịp, cơ hội','lắc','kỳ diệu'], answer:3, vi:'"miraculous" khác biệt.', explanation:'"miraculous" có "a" phát âm là /æ/, còn ba từ còn lại phát âm là /eɪ/.'},
+      {q:'14.', options:['concerned','received','attached','concealed'], ipas:['/kənˈsɜːnd/','/rɪˈsiːvd/','/əˈtætʃt/','/kənˈsiːld/'], vis:['quan tâm','nhận được','đính kèm','giấu, che giấu'], answer:2, vi:'"attached" khác biệt. (Đã sửa lại đáp án cho đúng quy tắc ngữ âm — xem ghi chú OVERRIDE ở đầu file.)', explanation:'"attached" có đuôi -ed phát âm là /t/ (vì "attach" kết thúc bằng âm vô thanh /tʃ/), còn "concerned, received, concealed" đều phát âm đuôi -ed là /d/.'},
+      {q:'15.', options:['teacher','clear','reason','mean'], ipas:['/ˈtiːtʃə(r)/','/klɪə(r)/','/ˈriːzn/','/miːn/'], vis:['giáo viên','rõ ràng','lý do','có nghĩa là'], answer:1, vi:'"clear" khác biệt. (Đã sửa lại đáp án cho đúng quy tắc ngữ âm — xem ghi chú OVERRIDE ở đầu file.)', explanation:'"clear" có "ea" phát âm là /ɪə/, còn "teacher, reason, mean" đều phát âm "ea" là /iː/.'},
+      {q:'16.', options:['letter','twelve','person','sentence'], ipas:['/ˈletə(r)/','/twelv/','/ˈpɜːsn/','/ˈsentəns/'], vis:['bức thư','mười hai','người','câu (văn)'], answer:2, vi:'"person" khác biệt.', explanation:'"person" có "er" phát âm là /ɜː/, còn ba từ còn lại "e" phát âm là /e/.'},
+      {q:'17.', options:['included','received','remembered','annoyed'], ipas:['/ɪnˈkluːdɪd/','/rɪˈsiːvd/','/rɪˈmembəd/','/əˈnɔɪd/'], vis:['bao gồm','đã nhận','đã nhớ','khó chịu'], answer:0, vi:'"included" khác biệt.', explanation:'"included" có đuôi -ed phát âm là /ɪd/, còn ba từ còn lại phát âm là /d/.'},
+      {q:'18.', options:['enough','young','country','mountain'], ipas:['/ɪˈnʌf/','/jʌŋ/','/ˈkʌntri/','/ˈmaʊntən/'], vis:['đủ','trẻ','đất nước','ngọn núi'], answer:3, vi:'"mountain" khác biệt.', explanation:'"mountain" có "ou" phát âm là /aʊ/, còn ba từ còn lại phát âm là /ʌ/.'},
+      {q:'19.', options:['speech','March','machine','children'], ipas:['/spiːtʃ/','/mɑːtʃ/','/məˈʃiːn/','/ˈtʃɪldrən/'], vis:['bài phát biểu','tháng Ba','máy móc','trẻ em'], answer:2, vi:'"machine" khác biệt.', explanation:'"machine" có "ch" phát âm là /ʃ/, còn ba từ còn lại phát âm là /tʃ/.'},
+      {q:'20.', options:['face','commercial','center','city'], ipas:['/feɪs/','/kəˈmɜːʃl/','/ˈsentə(r)/','/ˈsɪti/'], vis:['khuôn mặt','thương mại','trung tâm','thành phố'], answer:1, vi:'"commercial" khác biệt.', explanation:'"commercial" có "ci" phát âm là /ʃ/, còn ba từ còn lại "c" phát âm là /s/.'},
+      {q:'21.', options:['website','violent','access','internet'], ipas:['/ˈwebsaɪt/','/ˈvaɪələnt/','/ˈækses/','/ˈɪntənet/'], vis:['trang mạng','bạo lực','sự truy cập','mạng internet'], answer:1, vi:'"violent" khác biệt.', explanation:'"violent" có "e" phát âm nhẹ là /ə/, còn ba từ còn lại "e" phát âm là /e/.'},
+      {q:'22.', options:['control','open','sold','document'], ipas:['/kənˈtrəʊl/','/ˈəʊpən/','/səʊld/','/ˈdɒkjumənt/'], vis:['kiểm soát','mở','đã bán','tài liệu'], answer:3, vi:'"document" khác biệt.', explanation:'"document" có "o" phát âm là /ɒ/, còn ba từ còn lại phát âm là /əʊ/.'},
+      {q:'23.', options:['mouth','shout','through','house'], ipas:['/maʊθ/','/ʃaʊt/','/θruː/','/haʊs/'], vis:['cái miệng','la hét','xuyên qua','ngôi nhà'], answer:2, vi:'"through" khác biệt.', explanation:'"through" có "ou" phát âm là /uː/, còn ba từ còn lại phát âm là /aʊ/.'},
+      {q:'24.', options:['heavy','ready','health','appear'], ipas:['/ˈhevi/','/ˈredi/','/helθ/','/əˈpɪə(r)/'], vis:['nặng','sẵn sàng','sức khỏe','xuất hiện'], answer:3, vi:'"appear" khác biệt.', explanation:'"appear" có "ea" phát âm là /ɪə/, còn ba từ còn lại phát âm là /e/.'},
+      {q:'25.', options:['pull','under','trust','erupt'], ipas:['/pʊl/','/ˈʌndə(r)/','/trʌst/','/ɪˈrʌpt/'], vis:['kéo','ở dưới','sự tin tưởng','phun trào'], answer:0, vi:'"pull" khác biệt.', explanation:'"pull" có "u" phát âm là /ʊ/, còn ba từ còn lại phát âm là /ʌ/.'},
+      {q:'26.', options:['washed','laughed','overlooked','sacred'], ipas:['/wɒʃt/','/lɑːft/','/ˌəʊvəˈlʊkt/','/ˈseɪkrɪd/'], vis:['đã rửa','đã cười','đã bỏ qua','linh thiêng'], answer:3, vi:'"sacred" khác biệt.', explanation:'"sacred" là tính từ gốc (không phải động từ thêm -ed) nên "-red" được phát âm thành một âm tiết riêng /rɪd/, còn ba từ còn lại đuôi -ed phát âm là /t/.'},
+      {q:'27.', options:['exhibition','exhibit','exciting','expensive'], ipas:['/ˌeksɪˈbɪʃn/','/ɪɡˈzɪbɪt/','/ɪkˈsaɪtɪŋ/','/ɪkˈspensɪv/'], vis:['triển lãm (danh từ)','trưng bày (động từ)','thú vị','đắt tiền'], answer:0, vi:'"exhibition" khác biệt.', explanation:'Theo đáp án của tài liệu ôn tập, "exhibition" có phụ âm "x" phát âm khác với ba từ còn lại.'},
+      {q:'28.', options:['heat','overhead','team','speak'], ipas:['/hiːt/','/ˌəʊvəˈhed/','/tiːm/','/spiːk/'], vis:['sức nóng','ở trên đầu','đội, nhóm','nói'], answer:1, vi:'"overhead" khác biệt.', explanation:'"overhead" có "ea" phát âm là /e/, còn ba từ còn lại phát âm là /iː/.'},
+      {q:'29.', options:['curious','purpose','burning','surfer'], ipas:['/ˈkjʊəriəs/','/ˈpɜːpəs/','/ˈbɜːnɪŋ/','/ˈsɜːfə(r)/'], vis:['tò mò','mục đích','đang cháy','người lướt sóng'], answer:0, vi:'"curious" khác biệt.', explanation:'"curious" có "ur" phát âm là /jʊə/, còn ba từ còn lại phát âm là /ɜː/.'},
+      {q:'30.', options:['responsible','design','beneficial','redo'], ipas:['/rɪˈspɒnsəbl/','/dɪˈzaɪn/','/ˌbenɪˈfɪʃl/','/riːˈduː/'], vis:['có trách nhiệm','thiết kế','có lợi','làm lại'], answer:2, vi:'"beneficial" khác biệt.', explanation:'Theo đáp án của tài liệu ôn tập, "beneficial" có phần phát âm khác với ba từ còn lại trong nhóm.'},
+    ]
+  },
+
+  /* ---------- BÀI 2: PHONETICS II – TRỌNG ÂM ---------- */
+  2: {
+    color:'cyan', title:'Bài 2: Ngữ âm – Chọn trọng âm khác',
+    desc:'Chọn từ có trọng âm chính rơi vào vị trí KHÁC với các từ còn lại. Chọn xong sẽ hiện đáp án ngay.',
+    type:'mcq', instant:true,
+    questions:[
+      {q:'1.', options:['invitation','celebration','tradition','information'], ipas:['/ˌɪnvɪˈteɪʃn/','/ˌselɪˈbreɪʃn/','/trəˈdɪʃn/','/ˌɪnfəˈmeɪʃn/'], vis:['lời mời','sự kỷ niệm','truyền thống','thông tin'], answer:2, vi:'"tradition" trọng âm khác.', explanation:'"tradition" (3 âm tiết) trọng âm rơi vào âm tiết 2, còn ba từ còn lại (4 âm tiết) trọng âm rơi vào âm tiết 3.'},
+      {q:'2.', options:['custom','invite','greeting','manner'], ipas:['/ˈkʌstəm/','/ɪnˈvaɪt/','/ˈɡriːtɪŋ/','/ˈmænə(r)/'], vis:['phong tục','mời','lời chào','cách cư xử'], answer:1, vi:'"invite" trọng âm khác.', explanation:'"invite" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 1.'},
+      {q:'3.', options:['woman','detest','balloon','police'], ipas:['/ˈwʊmən/','/dɪˈtest/','/bəˈluːn/','/pəˈliːs/'], vis:['phụ nữ','ghét','quả bóng bay','cảnh sát'], answer:0, vi:'"woman" trọng âm khác.', explanation:'"woman" trọng âm rơi vào âm tiết 1, còn ba từ còn lại trọng âm rơi vào âm tiết 2.'},
+      {q:'4.', options:['refuse','enter','deny','delay'], ipas:['/rɪˈfjuːz/','/ˈentə(r)/','/dɪˈnaɪ/','/dɪˈleɪ/'], vis:['từ chối','đi vào','phủ nhận','trì hoãn'], answer:1, vi:'"enter" trọng âm khác.', explanation:'"enter" trọng âm rơi vào âm tiết 1, còn ba từ còn lại trọng âm rơi vào âm tiết 2.'},
+      {q:'5.', options:['teacher','happen','again','worker'], ipas:['/ˈtiːtʃə(r)/','/ˈhæpən/','/əˈɡen/','/ˈwɜːkə(r)/'], vis:['giáo viên','xảy ra','lại lần nữa','công nhân'], answer:2, vi:'"again" trọng âm khác.', explanation:'"again" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 1.'},
+      {q:'6.', options:['boring','study','happy','begin'], ipas:['/ˈbɔːrɪŋ/','/ˈstʌdi/','/ˈhæpi/','/bɪˈɡɪn/'], vis:['buồn tẻ','học','vui vẻ','bắt đầu'], answer:3, vi:'"begin" trọng âm khác.', explanation:'"begin" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 1.'},
+      {q:'7.', options:['peaceful','beauty','journey','refresh'], ipas:['/ˈpiːsfl/','/ˈbjuːti/','/ˈdʒɜːni/','/rɪˈfreʃ/'], vis:['yên bình','vẻ đẹp','chuyến đi','làm mới, sảng khoái'], answer:3, vi:'"refresh" trọng âm khác.', explanation:'"refresh" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 1.'},
+      {q:'8.', options:['polluted','pagoda','separate','reflection'], ipas:['/pəˈluːtɪd/','/pəˈɡəʊdə/','/ˈsepərət/','/rɪˈflekʃn/'], vis:['bị ô nhiễm','ngôi chùa','riêng biệt (adj)','sự phản ánh'], answer:2, vi:'"separate" trọng âm khác.', explanation:'"separate" (tính từ) trọng âm rơi vào âm tiết 1, còn ba từ còn lại trọng âm rơi vào âm tiết 2.'},
+      {q:'9.', options:['important','glorious','bargain','passenger'], ipas:['/ɪmˈpɔːtnt/','/ˈɡlɔːriəs/','/ˈbɑːɡɪn/','/ˈpæsɪndʒə(r)/'], vis:['quan trọng','vẻ vang','mặc cả','hành khách'], answer:0, vi:'"important" trọng âm khác.', explanation:'"important" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 1.'},
+      {q:'10.', options:['patient','ancient','advance','cancer'], ipas:['/ˈpeɪʃnt/','/ˈeɪnʃnt/','/ədˈvɑːns/','/ˈkænsə(r)/'], vis:['bệnh nhân','cổ xưa','tiến lên','bệnh ung thư'], answer:2, vi:'"advance" trọng âm khác.', explanation:'"advance" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 1.'},
+      {q:'11.', options:['resident','cutlery','ancestor','permission'], ipas:['/ˈrezɪdənt/','/ˈkʌtləri/','/ˈænsestə(r)/','/pəˈmɪʃn/'], vis:['cư dân','bộ đồ ăn','tổ tiên','sự cho phép'], answer:3, vi:'"permission" trọng âm khác.', explanation:'"permission" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 1.'},
+      {q:'12.', options:['generation','presentation','necessity','obligation'], ipas:['/ˌdʒenəˈreɪʃn/','/ˌpreznˈteɪʃn/','/nəˈsesəti/','/ˌɒblɪˈɡeɪʃn/'], vis:['thế hệ','sự trình bày','sự cần thiết','nghĩa vụ'], answer:2, vi:'"necessity" trọng âm khác.', explanation:'"necessity" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 3.'},
+      {q:'13.', options:['respect','mention','expert','worship'], ipas:['/rɪˈspekt/','/ˈmenʃn/','/ˈekspɜːt/','/ˈwɜːʃɪp/'], vis:['tôn trọng','đề cập','chuyên gia','sự thờ cúng'], answer:0, vi:'"respect" trọng âm khác.', explanation:'"respect" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 1.'},
+      {q:'14.', options:['pagoda','complement','society','tradition'], ipas:['/pəˈɡəʊdə/','/ˈkɒmplɪmənt/','/səˈsaɪəti/','/trəˈdɪʃn/'], vis:['ngôi chùa','phần bổ sung','xã hội','truyền thống'], answer:1, vi:'"complement" trọng âm khác.', explanation:'"complement" (danh từ) trọng âm rơi vào âm tiết 1, còn ba từ còn lại trọng âm rơi vào âm tiết 2.'},
+      {q:'15.', options:['custom','explain','chopstick','manner'], ipas:['/ˈkʌstəm/','/ɪkˈspleɪn/','/ˈtʃɒpstɪk/','/ˈmænə(r)/'], vis:['phong tục','giải thích','đôi đũa','cách cư xử'], answer:1, vi:'"explain" trọng âm khác.', explanation:'"explain" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 1.'},
+    ]
+  },
+
+  /* ---------- BÀI 3: MULTIPLE CHOICE (50) ---------- */
+  3: {
+    color:'violet', title:'Bài 3: Chọn đáp án đúng (Multiple Choice)',
+    desc:'Chọn phương án đúng nhất để hoàn thành mỗi câu. Chọn xong sẽ hiện đáp án ngay.',
+    type:'mcq', instant:true,
+    questions:[
+      {q:'1. My parents usually ___ work very early.', options:['go to','going to','went','to go'], answer:0, vi:'Bố mẹ tôi thường đi làm rất sớm.', explanation:'Thói quen ở hiện tại → thì hiện tại đơn, "go to work".', note:'S + V(s/es) + to + N'},
+      {q:'2. There is a computer ___ the middle ___ the room.', options:['in / of','in / in','on / of','on / in'], answer:0, vi:'Có một máy tính ở giữa phòng.', explanation:'Cụm cố định "in the middle of" = ở giữa.', note:'in the middle of + N'},
+      {q:'3. Nam ___ leave early to tidy his room every day.', options:['should','must','ought to','need to'], answer:1, vi:'Nam phải rời đi sớm để dọn phòng mỗi ngày. <span class="text-amber-600">[RECONSTRUCTED: câu gốc trong tài liệu bị mất chỗ trống, Claude đã đặt lại chỗ trống ở vị trí động từ khiếm khuyết cho phù hợp với đáp án cho sẵn]</span>', explanation:'Diễn đạt sự cần thiết/bắt buộc → must.', note:'S + must + V-inf'},
+      {q:'4. Nga ___ have a holiday in Da Lat next summer.', options:['is going','will to','are going to','is going to'], answer:3, vi:'Nga sẽ có kỳ nghỉ ở Đà Lạt vào mùa hè tới.', explanation:'Dự định trong tương lai → be going to.', note:'S + is/am/are + going to + V'},
+      {q:'5. Lan isn\u2019t ___ to go to school today.', options:['enough well','enough good','well enough','good enough'], answer:2, vi:'Lan không đủ khỏe để đi học hôm nay.', explanation:'Tính từ/trạng từ + enough (enough đứng sau); sức khỏe dùng trạng từ "well" → well enough.', note:'adjective/adverb + enough'},
+      {q:'6. Boys and girls, you\u2019ll have to do this experiment ___ this afternoon.', options:['himself','yourselves','herself','itself'], answer:1, vi:'Các em ơi, các em sẽ phải tự làm thí nghiệm này vào chiều nay.', explanation:'Chủ ngữ "you" (nhiều người, số nhiều) → đại từ phản thân "yourselves".', note:'you (số nhiều) + V + yourselves'},
+      {q:'7. We must put all the small objects such as beads out ___ children\u2019s reach.', options:['of','in','on','to'], answer:0, vi:'Chúng ta phải để tất cả những vật nhỏ như hạt cườm ngoài tầm với của trẻ em.', explanation:'Cụm cố định "out of reach" = ngoài tầm với.', note:'out of + sở hữu cách + reach'},
+      {q:'8. You are too thin. You ___ eat much more meat.', options:['ought','ought not','ought to','ought not to'], answer:2, vi:'Bạn quá gầy. Bạn nên ăn nhiều thịt hơn.', explanation:'Lời khuyên khẳng định → ought to.', note:'S + ought to + V-inf'},
+      {q:'9. I and my pen friend ___ Ho Chi Minh\u2019s Mausoleum last Sunday.', options:['visit','visited','visits','visiting'], answer:1, vi:'Tôi và bạn qua thư của tôi đã thăm Lăng Bác Hồ vào Chủ nhật tuần trước.', explanation:'"last Sunday" → thì quá khứ đơn.', note:'S + V-ed (quá khứ đơn)'},
+      {q:'10. Let us ___ to the school\u2019s library next Monday.', options:['going','to go','to going','go'], answer:3, vi:'Hãy để chúng tôi đến thư viện trường vào thứ Hai tới.', explanation:'let + O + V nguyên mẫu (không "to") → go.', note:'let + O + V-inf'},
+      {q:'11. Peter doesn\u2019t talk much in public. He\u2019s rather ___.', options:['kind','sociable','humorous','reserved'], answer:3, vi:'Peter không nói nhiều ở nơi công cộng. Anh ấy khá kín đáo, ít nói.', explanation:'Ít nói nơi công cộng → tính cách "reserved" (kín đáo, dè dặt).', note:'từ vựng miêu tả tính cách'},
+      {q:'12. You must not let children play in the street because it is ___.', options:['suitable','dangerous','safe','careful'], answer:1, vi:'Bạn không được để trẻ em chơi ngoài đường vì điều đó nguy hiểm.', explanation:'Lý do cấm đoán → dangerous (nguy hiểm).', note:'từ vựng phù hợp ngữ cảnh'},
+      {q:'13. He\u2019ll come ___ to pick you ___.', options:['over / up','over / on','in / up','on / in'], answer:0, vi:'Anh ấy sẽ ghé qua đón bạn.', explanation:'Cụm động từ: "come over" (ghé qua) và "pick up" (đón ai đó).', note:'come over + to pick sb up (phrasal verbs)'},
+      {q:'14. The sun always ___ in the East and ___ in the West.', options:['rise/ set','rises/ set','rises/ sets','has risen/ set'], answer:2, vi:'Mặt trời luôn mọc ở hướng Đông và lặn ở hướng Tây.', explanation:'Sự thật hiển nhiên → thì hiện tại đơn, chủ ngữ số ít "the sun" cần thêm -s.', note:'S (số ít) + V-s/es (chân lý hiển nhiên)'},
+      {q:'15. He spends most of his time ___ charity work.', options:['to do','did','doing','with doing'], answer:2, vi:'Anh ấy dành phần lớn thời gian làm công việc từ thiện.', explanation:'spend + time + V-ing.', note:'spend + time + V-ing'},
+      {q:'16. You ___ miss any of the meetings. They\u2019re always very useful.', options:['needn\u2019t','should','shouldn\u2019t','can'], answer:2, vi:'Bạn không nên bỏ lỡ bất kỳ cuộc họp nào. Chúng luôn rất hữu ích.', explanation:'Lời khuyên phủ định → shouldn\u2019t.', note:'S + shouldn\u2019t + V-inf'},
+      {q:'17. She is famous ___ her intelligence. She designs many special styles for Ao dai.', options:['in','for','with','into'], answer:1, vi:'Cô ấy nổi tiếng vì sự thông minh của mình. Cô thiết kế nhiều kiểu áo dài đặc biệt.', explanation:'Cụm cố định "be famous for" = nổi tiếng vì.', note:'be famous for + N'},
+      {q:'18. I think someone ___ talk to the boss. We can\u2019t work extra hours on Saturday.', options:['have to','should','don\u2019t have to','shouldn\u2019t'], answer:1, vi:'Tôi nghĩ ai đó nên nói chuyện với sếp. Chúng ta không thể làm thêm giờ vào thứ Bảy.', explanation:'Lời khuyên → should.', note:'S + should + V-inf'},
+      {q:'19. We reached the house after ___ for almost an hour.', options:['cycled','to cycle','cycling','cycle'], answer:2, vi:'Chúng tôi đến nhà sau khi đạp xe gần một tiếng đồng hồ.', explanation:'Sau giới từ "after" cần V-ing.', note:'after + V-ing'},
+      {q:'20. At school, the teachers and students ___ follow the rules.', options:['has to','have to','need to','haven\u2019t to'], answer:1, vi:'Ở trường, giáo viên và học sinh phải tuân theo nội quy.', explanation:'Chủ ngữ số nhiều "teachers and students" → have to.', note:'S (số nhiều) + have to + V-inf'},
+      {q:'21. He ___ try to be a bit more punctual. It\u2019s rude to be late here.', options:['shouldn\u2019t','should','couldn\u2019t','was able to'], answer:1, vi:'Anh ấy nên cố gắng đúng giờ hơn một chút. Ở đây đi trễ là bất lịch sự.', explanation:'Lời khuyên → should.', note:'S + should + V-inf'},
+      {q:'22. Would you like to go ___ a walk ___ the park this afternoon?', options:['to \u2013 at','for \u2013 at','to \u2013 in','for \u2013 in'], answer:3, vi:'Bạn có muốn đi dạo trong công viên chiều nay không?', explanation:'Cụm cố định "go for a walk in the park".', note:'go for a walk in + N'},
+      {q:'23. The buses were very ___ this morning. We can\u2019t go to the church with you in time.', options:['crowd','crowded','full','busy'], answer:1, vi:'Sáng nay xe buýt rất đông đúc. Chúng tôi không thể đến nhà thờ đúng giờ cùng bạn.', explanation:'Tính từ mô tả "đông đúc" → crowded.', note:'be + crowded (tính từ)'},
+      {q:'24. We ___ wear uniform at school from Monday to Saturday. That\u2019s good way and equal to everyone.', options:['have to','haven\u2019t to','could','must'], answer:0, vi:'Chúng tôi phải mặc đồng phục ở trường từ thứ Hai đến thứ Bảy. Đó là cách hay và công bằng với mọi người.', explanation:'Quy định bắt buộc → have to.', note:'S + have to + V-inf'},
+      {q:'25. Anna ___ change her hair style because the old one doesn\u2019t suit her any more.', options:['could','has to','have to','doesn\u2019t have to'], answer:1, vi:'Anna phải đổi kiểu tóc vì kiểu cũ không còn hợp với cô ấy nữa.', explanation:'Chủ ngữ số ít "Anna" → has to.', note:'S (số ít) + has to + V-inf'},
+      {q:'26. The wai is the traditional ___ of people in Thailand.', options:['goodbye','hello','greeting','greetings'], answer:2, vi:'Wai là lời chào truyền thống của người Thái Lan.', explanation:'Sau "traditional" cần danh từ số ít → greeting.', note:'the traditional + noun (số ít)'},
+      {q:'27. When two Maori people meet, they ___ each other\u2019s noses.', options:['touch','feel','take','kiss'], answer:0, vi:'Khi hai người Maori gặp nhau, họ chạm mũi vào nhau.', explanation:'Nghi thức chào "hongi" của người Maori là chạm mũi → touch.', note:'từ vựng phù hợp ngữ cảnh văn hóa'},
+      {q:'28. Do you know the ___ way to welcome people in Tibet?', options:['custom','customer','customary','tradition'], answer:2, vi:'Bạn có biết cách chào đón người theo phong tục ở Tây Tạng không?', explanation:'Trước danh từ "way" cần tính từ → customary (theo phong tục, thường lệ).', note:'adjective + noun'},
+      {q:'29. The xoe dance is a spiritual ___ of Thai ethnic people.', options:['customs','tradition','habit','dance'], answer:1, vi:'Điệu múa xòe là một truyền thống tâm linh của người dân tộc Thái.', explanation:'Sau "a spiritual" cần danh từ số ít → tradition.', note:'a + adjective + noun (số ít)'},
+      {q:'30. In Viet Nam you shouldn\u2019t use only the first name to ___ people older than you.', options:['speak','talk','say','address'], answer:3, vi:'Ở Việt Nam bạn không nên chỉ dùng tên riêng để xưng hô với người lớn tuổi hơn mình.', explanation:'"address someone" = xưng hô/gọi ai đó.', note:'address + somebody (xưng hô với ai)'},
+      {q:'31. We are going to prepare ___ sticky rice served with grilled chicken for the celebration.', options:['five colours','five-colours','five-colour','five-coloured'], answer:3, vi:'Chúng tôi sẽ chuẩn bị xôi ngũ sắc ăn kèm gà nướng cho buổi lễ.', explanation:'Tính từ ghép đứng trước danh từ luôn ở dạng số ít và có "-ed" nếu là "coloured" → five-coloured.', note:'tính từ ghép: number + noun + -ed'},
+      {q:'32. A tradition is something special that is ___ through the generations.', options:['passed','passed to','passed down','passed out'], answer:2, vi:'Truyền thống là điều đặc biệt được truyền lại qua các thế hệ.', explanation:'Cụm cố định "pass down" = truyền lại.', note:'be passed down through + N'},
+      {q:'33. According to the ___ in England, we have to use a knife and fork at dinner.', options:['table ways','table manners','behaviours','differences'], answer:1, vi:'Theo phép tắc ăn uống ở Anh, chúng ta phải dùng dao và dĩa khi ăn tối.', explanation:'Cụm từ vựng "table manners" = phép tắc ăn uống.', note:'according to + table manners'},
+      {q:'34. We have to ___ our shoes when we go inside a pagoda.', options:['take off','give off','turn off','put on'], answer:0, vi:'Chúng ta phải cởi giày khi vào bên trong chùa.', explanation:'Cụm động từ "take off" = cởi (giày, quần áo).', note:'take off + N (cởi bỏ)'},
+      {q:'35. In Australia, you shouldn\u2019t ___ on a person\u2019s accent.', options:['comment','criticize','hate','dislike'], answer:0, vi:'Ở Úc, bạn không nên bình luận về giọng nói của người khác.', explanation:'Cụm cố định "comment on" = bình luận về.', note:'comment on + N'},
+      {q:'36. You look really tired. You ___ take a few days off and have a holiday.', options:['should','must','have to','can'], answer:0, vi:'Bạn trông thực sự mệt mỏi. Bạn nên nghỉ vài ngày và đi nghỉ mát.', explanation:'Lời khuyên → should.', note:'S + should + V-inf'},
+      {q:'37. In Vietnam, you ___ take a deep bow as you do in Japan.', options:['mustn\u2019t','don\u2019t have to','should','shouldn\u2019t'], answer:1, vi:'Ở Việt Nam, bạn không cần phải cúi chào sâu như ở Nhật Bản.', explanation:'Không cần thiết (không bắt buộc, không cấm) → don\u2019t have to.', note:'S + don\u2019t have to + V-inf'},
+      {q:'38. Sorry, but my train is at 6.00. I ___ leave now.', options:['shouldn\u2019t','ought to','mustn\u2019t','have to'], answer:3, vi:'Xin lỗi, nhưng tàu của tôi lúc 6 giờ. Tôi phải đi ngay bây giờ.', explanation:'Sự cần thiết vì hoàn cảnh khách quan (giờ tàu chạy) → have to.', note:'S + have to + V-inf'},
+      {q:'39. You ___ look at other students\u2019 work. It\u2019s against the rules.', options:['shouldn\u2019t','don\u2019t have to','mustn\u2019t','can\u2019t'], answer:2, vi:'Bạn không được nhìn bài của bạn học khác. Điều đó vi phạm nội quy.', explanation:'Cấm đoán theo nội quy → mustn\u2019t.', note:'S + mustn\u2019t + V-inf (cấm đoán)'},
+      {q:'40. The airline only allows two pieces of luggage. You ___ pack too much!', options:['shouldn\u2019t','mustn\u2019t','don\u2019t have to','couldn\u2019t'], answer:0, vi:'Hãng hàng không chỉ cho phép hai kiện hành lý. Bạn không nên đóng gói quá nhiều!', explanation:'Lời khuyên phủ định → shouldn\u2019t.', note:'S + shouldn\u2019t + V-inf'},
+      {q:'41. John can\u2019t come because he ___ work tomorrow.', options:['should','can','must','has to'], answer:3, vi:'John không thể đến vì anh ấy phải làm việc vào ngày mai.', explanation:'Sự bắt buộc do hoàn cảnh khách quan (công việc) → has to.', note:'S (số ít) + has to + V-inf'},
+      {q:'42. I know they enjoy their work, but they ___ work at the weekends. It\u2019s not good for them.', options:['shouldn\u2019t','don\u2019t have to','mustn\u2019t','have to'], answer:0, vi:'Tôi biết họ thích công việc của mình, nhưng họ không nên làm việc vào cuối tuần. Điều đó không tốt cho họ.', explanation:'Lời khuyên phủ định → shouldn\u2019t.', note:'S + shouldn\u2019t + V-inf'},
+      {q:'43. Elderly people ___ be treated with great respect.', options:['shouldn\u2019t','should','aren\u2019t obliged to','mustn\u2019t'], answer:1, vi:'Người cao tuổi nên được đối xử với sự tôn trọng lớn.', explanation:'Lời khuyên khẳng định → should.', note:'S + should + be + V3 (bị động)'},
+      {q:'44. He ___ use chopsticks for spring roll. It is finger food.', options:['must','has to','doesn\u2019t have to','should'], answer:2, vi:'Anh ấy không cần dùng đũa để ăn nem cuốn. Đó là món ăn bốc bằng tay.', explanation:'Không cần thiết → doesn\u2019t have to.', note:'S (số ít) + doesn\u2019t have to + V-inf'},
+      {q:'45. Everyone ___ wear a helmet when riding a motorbike. It\u2019s mandatory according to traffic law.', options:['isn\u2019t allowed to','must','can','shouldn\u2019t'], answer:1, vi:'Mọi người phải đội mũ bảo hiểm khi đi xe máy. Điều đó là bắt buộc theo luật giao thông.', explanation:'Luật pháp bắt buộc → must.', note:'S + must + V-inf (luật pháp, quy định)'},
+      {q:'46. It\u2019s Vietnamese tradition to ___ with families at Tet.', options:['back','reunite','relate','bow'], answer:1, vi:'Đó là truyền thống của người Việt là đoàn tụ với gia đình vào dịp Tết.', explanation:'"reunite with" = đoàn tụ với.', note:'reunite with + N'},
+      {q:'47. In American culture, ___ is very important.', options:['punctual','punctually','punctuality','punctualities'], answer:2, vi:'Trong văn hóa Mỹ, sự đúng giờ rất quan trọng.', explanation:'Chủ ngữ của câu cần danh từ không đếm được → punctuality.', note:'danh từ làm chủ ngữ'},
+      {q:'48. Language, religion, food and art are just some ___ of the various aspects of culture.', options:['features','faces','ways','products'], answer:0, vi:'Ngôn ngữ, tôn giáo, ẩm thực và nghệ thuật chỉ là một vài đặc điểm trong các khía cạnh đa dạng của văn hóa.', explanation:'"features" = đặc điểm, phù hợp ngữ cảnh liệt kê khía cạnh văn hóa.', note:'từ vựng phù hợp ngữ cảnh'},
+      {q:'49. Shoes must always be removed before ___ a Japanese home.', options:['entrance','enters','enter','entering'], answer:3, vi:'Giày luôn phải được cởi ra trước khi vào nhà người Nhật.', explanation:'Sau giới từ "before" cần V-ing.', note:'before + V-ing'},
+      {q:'50. In Russia, Father Frost brings presents for children ___ New Year\u2019s Day.', options:['in','on','At','for'], answer:1, vi:'Ở Nga, Ông Già Tuyết mang quà cho trẻ em vào ngày Tết Dương lịch.', explanation:'Trước một ngày cụ thể → on.', note:'on + New Year\u2019s Day (ngày cụ thể)'},
+    ]
+  },
+
+  /* ---------- BÀI 4: WORD FORMS (20) ---------- */
+  4: {
+    color:'fuchsia', title:'Bài 4: Cho dạng đúng của từ trong ngoặc (Word Forms)',
+    desc:'Dùng từ gợi ý trong ngoặc để điền dạng đúng vào chỗ trống.',
+    type:'fill',
+    questions:[
+      {sentence:'___ when dining, South Koreans use cushions to sit on the floor and eat from a low table. (TRADITION)', answers:['Traditionally'], vi:'Theo truyền thống khi dùng bữa, người Hàn Quốc dùng đệm để ngồi trên sàn và ăn từ một bàn thấp.', explanation:'Trạng từ đứng đầu câu bổ nghĩa cho cả câu → Traditionally. Word form: • tradition (n): truyền thống • traditional (adj): (thuộc) truyền thống • traditionally (adv): theo truyền thống.', note:'Adverb + , + S + V (mở đầu câu)'},
+      {sentence:'The wai is the traditional form of ___ in Thailand. (GREET)', answers:['greeting'], vi:'Wai là hình thức chào truyền thống ở Thái Lan.', explanation:'Sau giới từ "of" cần danh từ → greeting. Word form: • greet (v): chào • greeting (n): lời chào.', note:'of + noun (danh động từ)'},
+      {sentence:'They weren\u2019t ___ to live with their parents after the wedding. (OBLIGATION)', answers:['obliged'], vi:'Họ không bị bắt buộc phải sống cùng cha mẹ sau đám cưới.', explanation:'Sau "be" cần tính từ; "be obliged to" = bị bắt buộc phải. Word form: • obligation (n): nghĩa vụ • oblige (v): bắt buộc • obliged (adj): bị bắt buộc • obligatory (adj): có tính bắt buộc.', note:'be + obliged + to V'},
+      {sentence:'It is considered ___ to address an elder with his or her given name. (POLITE)', answers:['impolite'], vi:'Việc gọi tên riêng của người lớn tuổi hơn được coi là bất lịch sự.', explanation:'Sau "considered" cần tính từ → impolite (bất lịch sự). Word form: • polite (adj): lịch sự • impolite (adj): bất lịch sự • politely (adv): một cách lịch sự • politeness (n): sự lịch sự.', note:'be considered + adjective'},
+      {sentence:'Is that woman the ___ of the party? (HOST)', answers:['hostess'], vi:'Người phụ nữ đó có phải là chủ tiệc không?', explanation:'Chủ nhà là nữ → hostess. Word form: • host (n): chủ nhà (nam) • hostess (n): chủ nhà (nữ).', note:'the + noun (chỉ người)'},
+      {sentence:'The children in our family are always ___ to their elders. (RESPECT)', answers:['respectful'], vi:'Trẻ em trong gia đình chúng tôi luôn kính trọng người lớn tuổi.', explanation:'Sau "be" cần tính từ; "be respectful to" = kính trọng. Word form: • respect (n/v): sự tôn trọng / tôn trọng • respectful (adj): tôn kính • respectfully (adv): một cách tôn kính.', note:'be + respectful + to + N'},
+      {sentence:'Custom ___ from tradition in some aspects such as scale and time. (DIFFERENT)', answers:['differs'], vi:'Tập quán khác với truyền thống ở một số khía cạnh như quy mô và thời gian.', explanation:'Chủ ngữ số ít "Custom" cần động từ thêm -s; "differ from" = khác với. Word form: • different (adj): khác • differ (v): khác nhau • difference (n): sự khác biệt.', note:'S (số ít) + differs from + N'},
+      {sentence:'Don\u2019t use your personal chopsticks to get food from the ___ dish. (SERVE)', answers:['serving'], vi:'Đừng dùng đũa cá nhân để gắp thức ăn từ đĩa dùng chung.', explanation:'Trước danh từ "dish" cần tính từ; "serving dish" = đĩa thức ăn chung. Word form: • serve (v): phục vụ • serving (adj/n): (đĩa) dùng để phục vụ / phần ăn.', note:'adjective (V-ing) + noun'},
+      {sentence:'Many families have three ___, which create unique cultural features. (GENERATE)', answers:['generations'], vi:'Nhiều gia đình có ba thế hệ, tạo nên những nét văn hóa độc đáo.', explanation:'Sau số đếm cần danh từ số nhiều → generations. Word form: • generate (v): tạo ra • generation (n): thế hệ.', note:'number + plural noun'},
+      {sentence:'We have lots of customs and it can get a bit ___ for visitors. (COMFUSE)', answers:['confusing'], vi:'Chúng tôi có rất nhiều phong tục và điều đó có thể gây bối rối cho khách.', explanation:'Sau "get" cần tính từ mô tả tính chất gây ra cảm giác → confusing (gây bối rối). Word form: • confuse (v): làm bối rối • confusing (adj): gây bối rối • confused (adj): cảm thấy bối rối • confusion (n): sự bối rối.', note:'get + adjective (V-ing: gây ra cảm giác)'},
+      {sentence:'What is the ___ between a custom and a tradition? (SIMILAR)', answers:['similarity'], vi:'Điểm tương đồng giữa tập quán và truyền thống là gì?', explanation:'Sau "the" cần danh từ → similarity. Word form: • similar (adj): giống • similarity (n): sự tương đồng • similarly (adv): tương tự.', note:'the + noun'},
+      {sentence:'In Viet Nam, we usually wait for the ___ person to sit down before you sit down. (OLD)', answers:['eldest'], vi:'Ở Việt Nam, chúng ta thường đợi người lớn tuổi nhất ngồi xuống trước khi mình ngồi.', explanation:'Trước danh từ "person" cần tính từ so sánh nhất → eldest (lớn tuổi nhất, dùng cho người trong gia đình). Word form: • old (adj): già • elder (adj): lớn tuổi hơn (trong gia đình) • eldest (adj): lớn tuổi nhất.', note:'the + eldest + noun'},
+      {sentence:'Is he ___ to break the customs of her family? (PERMISSION)', answers:['permitted'], vi:'Anh ấy có được phép phá vỡ phong tục của gia đình cô ấy không? <span class="text-amber-600">[RECONSTRUCTED: chỗ trống bị mất trong tài liệu gốc, đặt lại trước "to break"]</span>', explanation:'Sau "be" cần tính từ (quá khứ phân từ); "be permitted to" = được phép. Word form: • permission (n): sự cho phép • permit (v): cho phép • permitted (adj): được phép.', note:'be + permitted + to V'},
+      {sentence:'Today, we are going to discuss the ___ of traditions. (NECESSARY)', answers:['necessity'], vi:'Hôm nay, chúng ta sẽ thảo luận về sự cần thiết của truyền thống. <span class="text-amber-600">[RECONSTRUCTED: chỗ trống bị mất trong tài liệu gốc, đặt lại sau "the"]</span>', explanation:'Sau "the" cần danh từ → necessity. Word form: • necessary (adj): cần thiết • necessity (n): sự cần thiết • necessarily (adv): một cách cần thiết.', note:'the + noun'},
+      {sentence:'The offspring will follow the customs without ___. (OBLIGE)', answers:['obligation'], vi:'Con cái sẽ theo phong tục mà không cảm thấy bị ép buộc. <span class="text-amber-600">[RECONSTRUCTED: chỗ trống bị mất trong tài liệu gốc, đặt lại sau "without"]</span>', explanation:'Sau giới từ "without" cần danh từ → obligation. Word form: • oblige (v): bắt buộc • obligation (n): nghĩa vụ, sự bắt buộc • obliged (adj): bị bắt buộc.', note:'without + noun'},
+      {sentence:'My dad is the ___ of this wedding anniversary party. (HOSTESS)', answers:['hostess'], vi:'Bố tôi là chủ tiệc kỷ niệm ngày cưới này. <span class="text-amber-600">[RECONSTRUCTED: chỗ trống bị mất trong tài liệu gốc, đặt lại sau "the"; câu gốc dùng "hostess" theo đúng đáp án tài liệu dù chủ ngữ là "dad"]</span>', explanation:'Theo đáp án của tài liệu ôn tập, dạng danh từ cần điền là "hostess". Word form: • host (n): chủ nhà (nam) • hostess (n): chủ nhà (nữ).', note:'the + noun (chỉ người)'},
+      {sentence:'Do you have to follow the traditions ___? (STRICT)', answers:['strictly'], vi:'Bạn có phải tuân theo truyền thống một cách nghiêm ngặt không? <span class="text-amber-600">[RECONSTRUCTED: chỗ trống bị mất trong tài liệu gốc, đặt lại ở cuối câu]</span>', explanation:'Trạng từ bổ nghĩa cho động từ "follow" → strictly. Word form: • strict (adj): nghiêm ngặt • strictly (adv): một cách nghiêm ngặt.', note:'V + adverb'},
+      {sentence:'She was taught a lot of ___ skills by my parents. (SOCIETY)', answers:['social'], vi:'Cô ấy được bố mẹ tôi dạy cho nhiều kỹ năng xã hội. <span class="text-amber-600">[RECONSTRUCTED: chỗ trống bị mất trong tài liệu gốc, đặt lại trước "skills"]</span>', explanation:'Trước danh từ "skills" cần tính từ → social. Word form: • society (n): xã hội • social (adj): thuộc về xã hội • socially (adv): về mặt xã hội.', note:'adjective + noun'},
+      {sentence:'In some ethnic groups, the elderly ___ their next generations to accept the customs. (OBLIGATION)', answers:['oblige'], vi:'Ở một số dân tộc, người lớn tuổi bắt buộc thế hệ sau phải chấp nhận các phong tục. <span class="text-amber-600">[RECONSTRUCTED: chỗ trống bị mất trong tài liệu gốc, đặt lại trước "their next generations"]</span>', explanation:'Chủ ngữ "the elderly" cần động từ → oblige (bắt buộc ai làm gì). Word form: • obligation (n): nghĩa vụ • oblige (v): bắt buộc.', note:'S + oblige + O + to V'},
+      {sentence:'We were impressed by the ___ of Ha Long Bay. (BEAUTIFUL)', answers:['beauty'], vi:'Chúng tôi ấn tượng bởi vẻ đẹp của Vịnh Hạ Long. <span class="text-amber-600">[RECONSTRUCTED: chỗ trống bị mất trong tài liệu gốc, đặt lại sau "the"]</span>', explanation:'Sau "the" cần danh từ → beauty. Word form: • beautiful (adj): đẹp • beauty (n): vẻ đẹp • beautifully (adv): một cách đẹp đẽ.', note:'the + noun'},
+    ]
+  },
+
+  /* ---------- BÀI 5: VERB FORMS I (SHOULD/SHOULDN'T hay HAVE TO) ---------- */
+  5: {
+    color:'emerald', title:'Bài 5: Complete with should(not) or (not) have to',
+    desc:'Điền dạng đúng của should/shouldn\u2019t hoặc have to/don\u2019t have to/has to vào chỗ trống.',
+    type:'fill',
+    intro:`<span class="text-amber-600">[RECONSTRUCTED: toàn bộ chỗ trống ở Bài 5 bị mất trong tài liệu gốc (unit4.md), Claude đã đặt lại vị trí chỗ trống ngay sau chủ ngữ của mỗi câu, dựa theo ngữ pháp và đáp án cho sẵn trong bảng "ANSWER KEYS".]</span>`,
+    questions:[
+      {sentence:'We ___ leave too late tomorrow if we want to reach the beach before lunch.', answers:['shouldn\u2019t'], acc:[['shouldn\u2019t','shouldnt','should not']], vi:'Chúng ta không nên rời đi quá muộn vào ngày mai nếu muốn đến bãi biển trước bữa trưa.', explanation:'Lời khuyên phủ định → shouldn\u2019t.'},
+      {sentence:'Ken and Liz ___ revise their lessons tonight as they have to take a test tomorrow.', answers:['have to'], vi:'Ken và Liz phải ôn bài tối nay vì ngày mai họ phải làm bài kiểm tra.', explanation:'Chủ ngữ số nhiều, sự cần thiết → have to.'},
+      {sentence:'We ___ bring something to Kate\u2019s party. I\u2019ll feel really embarrassed otherwise.', answers:['should'], vi:'Chúng ta nên mang gì đó đến bữa tiệc của Kate. Nếu không tôi sẽ cảm thấy thực sự ngại ngùng.', explanation:'Lời khuyên khẳng định → should.'},
+      {sentence:'He ___ write with his right hand because his father doesn\u2019t allow him to write with left hand.', answers:['has to'], vi:'Cậu ấy phải viết bằng tay phải vì bố cậu không cho phép viết bằng tay trái.', explanation:'Chủ ngữ số ít, bắt buộc do người khác quy định → has to.'},
+      {sentence:'Victoria ___ read the newspaper as she wants to find a job.', answers:['has to'], vi:'Victoria phải đọc báo vì cô ấy muốn tìm việc làm.', explanation:'Chủ ngữ số ít, sự cần thiết → has to.'},
+      {sentence:'That model on the TV is too skinny. I think she ___ eat more.', answers:['should'], vi:'Người mẫu đó trên TV quá gầy. Tôi nghĩ cô ấy nên ăn nhiều hơn.', explanation:'Lời khuyên → should.'},
+      {sentence:'Frank and Joey are having a fine art examination tomorrow, so they ___ practice drawing today.', answers:['have to'], vi:'Frank và Joey có bài kiểm tra mỹ thuật vào ngày mai, vì vậy hôm nay họ phải luyện vẽ.', explanation:'Chủ ngữ số nhiều, sự cần thiết → have to.'},
+      {sentence:'Lizzie ___ ask Bryan to help her with her studies. He did the same course last year.', answers:['should'], vi:'Lizzie nên nhờ Bryan giúp việc học. Anh ấy đã học khóa học tương tự vào năm ngoái.', explanation:'Lời khuyên → should.'},
+      {sentence:'Pregnant women ___ smoke as it can damage the baby.', answers:['shouldn\u2019t'], acc:[['shouldn\u2019t','shouldnt','should not']], vi:'Phụ nữ mang thai không nên hút thuốc vì nó có thể gây hại cho em bé.', explanation:'Lời khuyên phủ định → shouldn\u2019t.'},
+      {sentence:'You ___ take part in the meeting tonight if you don\u2019t want to.', answers:['don\u2019t have to'], acc:[['don\u2019t have to','dont have to','do not have to']], vi:'Bạn không cần phải tham gia cuộc họp tối nay nếu không muốn.', explanation:'Không cần thiết (không bắt buộc) → don\u2019t have to.'},
+    ]
+  },
+
+  /* ---------- BÀI 6: VERB FORMS II (CHIA ĐÚNG DẠNG ĐỘNG TỪ) ---------- */
+  6: {
+    color:'teal', title:'Bài 6: Write the correct form of the verbs',
+    desc:'Chia đúng dạng của động từ trong ngoặc để hoàn thành câu (thì hiện tại đơn diễn tả sự thật/phong tục).',
+    type:'fill',
+    questions:[
+      {sentence:'Worshipping (take) ___ place regularly on particular days, such as festivals and the death day of the ancestor.', answers:['takes'], vi:'Việc thờ cúng diễn ra thường xuyên vào những ngày nhất định, như lễ hội và ngày giỗ tổ tiên.', explanation:'Chủ ngữ số ít "Worshipping" (danh động từ) → thì hiện tại đơn, thêm -s: takes.'},
+      {sentence:'"Banh Chung" (be) ___ a traditional and irreplaceable cake of Vietnamese people in the Tet Holidays.', answers:['is'], vi:'Bánh Chưng là loại bánh truyền thống không thể thay thế của người Việt trong dịp Tết.', explanation:'Chủ ngữ số ít "Banh Chung" → be chia là "is".'},
+      {sentence:'The convention of giving "li xi" (have) ___ its roots in the folklore about the ogre called Tuy.', answers:['has'], vi:'Tục lì xì có nguồn gốc từ truyền thuyết về con quỷ tên Tuy.', explanation:'Chủ ngữ số ít "The convention" → have chia là "has".'},
+      {sentence:'Adults (give) ___ red lucky pockets to children as a token of luck and best wishes.', answers:['give'], vi:'Người lớn tặng bao lì xì đỏ cho trẻ em như một biểu tượng của may mắn và lời chúc tốt đẹp.', explanation:'Chủ ngữ số nhiều "Adults" → động từ giữ nguyên: give.'},
+      {sentence:'South Koreans prefer (do) ___ business with people with whom they have a personal connection.', answers:['doing'], vi:'Người Hàn Quốc thích làm ăn với những người mà họ có mối quan hệ cá nhân.', explanation:'prefer + V-ing → doing.'},
+      {sentence:'Thais generally (use) ___ first names rather than surnames, with the honorific title Khun before the name.', answers:['use'], vi:'Người Thái thường dùng tên riêng hơn là họ, kèm theo danh xưng tôn kính Khun trước tên.', explanation:'Chủ ngữ số nhiều "Thais" → động từ giữ nguyên: use.'},
+      {sentence:'Traditionally, children (live) ___ with their parents until marriage.', answers:['live'], vi:'Theo truyền thống, con cái sống cùng cha mẹ cho đến khi kết hôn.', explanation:'Chủ ngữ số nhiều "children" → động từ giữ nguyên: live.'},
+      {sentence:'The extended family (provide) ___ both emotional and financial support.', answers:['provides'], acc:[['provides','provide']], vi:'Đại gia đình cung cấp cả sự hỗ trợ về tinh thần lẫn tài chính.', explanation:'Chủ ngữ số ít "The extended family" → thêm -s: provides (đáp án gốc trong tài liệu ghi "provide", có thể chấp nhận cả hai).'},
+      {sentence:'The British (exchange) ___ gifts between family members and close friends for birthdays and Christmas.', answers:['exchange'], vi:'Người Anh trao đổi quà tặng giữa các thành viên trong gia đình và bạn bè thân thiết vào dịp sinh nhật và Giáng sinh.', explanation:'Chủ ngữ số nhiều "The British" → động từ giữ nguyên: exchange.'},
+      {sentence:'It is the custom for Polish (applaud) ___ when the plane (land) ___.', answers:['to applaud','lands'], vi:'Đó là phong tục của người Ba Lan là vỗ tay khi máy bay hạ cánh.', explanation:'"custom for somebody to V" → to applaud; mệnh đề thời gian "when" ở hiện tại đơn, chủ ngữ số ít "the plane" → lands.'},
+    ]
+  },
+
+  /* ---------- BÀI 7: VERB FORMS III (HAVE TO, MUST, SHOULD) ---------- */
+  7: {
+    color:'amber', title:'Bài 7: Fill in the blank using have to, must, should',
+    desc:'Điền have to/must/should (hoặc dạng phù hợp) vào chỗ trống để hoàn thành câu về phong tục các nước.',
+    type:'fill',
+    intro:`<span class="text-amber-600">[RECONSTRUCTED: toàn bộ chỗ trống ở Bài 7 bị mất trong tài liệu gốc, Claude đã đặt lại vị trí chỗ trống trước động từ chính của mỗi câu, dựa theo đáp án cho sẵn.]</span>`,
+    questions:[
+      {sentence:'If a man marries a Scot woman, he ___ welcome her with eggs and sauces on her face.', answers:['has to'], vi:'Nếu một người đàn ông cưới một phụ nữ Scotland, anh ta phải chào đón cô ấy bằng trứng và nước sốt trên mặt.', explanation:'Phong tục bắt buộc theo hoàn cảnh → has to.'},
+      {sentence:'When going to some African countries, you ___ touch hands to greeting people.', answers:['should'], vi:'Khi đến một số nước châu Phi, bạn nên chạm tay để chào người khác.', explanation:'Lời khuyên về phong tục → should.'},
+      {sentence:'In the northern part of Mozambique, people ___ greet their hands three times and say hello.', answers:['must'], acc:[['must','have to']], vi:'Ở miền bắc Mozambique, người ta phải chạm tay ba lần và nói xin chào.', explanation:'Phong tục bắt buộc → must/have to.'},
+      {sentence:'Living in the Central African Republic, you ___ slap their right hands together and grasp each other\u2019s middle finger if you see a good friend.', answers:['must'], vi:'Sống ở Cộng hòa Trung Phi, bạn phải vỗ tay phải vào nhau và nắm ngón giữa của nhau nếu gặp bạn thân.', explanation:'Phong tục bắt buộc → must.'},
+      {sentence:'In La Tomatina, the participants ___ throw tomatoes to others purely for fun.', answers:['have to'], vi:'Trong lễ hội La Tomatina, người tham gia phải ném cà chua vào nhau chỉ để vui.', explanation:'Quy định của lễ hội → have to.'},
+      {sentence:'Meeting the native Maori people, you ___ rub your noses to theirs in a sign of trust and closeness.', answers:['must'], vi:'Khi gặp người Maori bản địa, bạn phải cọ mũi vào mũi họ như một dấu hiệu tin tưởng và gần gũi.', explanation:'Phong tục bắt buộc → must.'},
+      {sentence:'It is the custom that children ___ ask the adults\u2019 permission before leaving the dining table.', answers:['should'], vi:'Theo phong tục, trẻ em nên xin phép người lớn trước khi rời khỏi bàn ăn.', explanation:'Lời khuyên về phong tục → should.'},
+      {sentence:'My father says I ___ go home at 9 p.m.', answers:['have to'], vi:'Bố tôi nói tôi phải về nhà lúc 9 giờ tối.', explanation:'Bắt buộc theo quy định của bố → have to.'},
+      {sentence:'You ___ drive on the left hand in London.', answers:['must'], vi:'Bạn phải lái xe bên trái ở London.', explanation:'Luật giao thông bắt buộc → must.'},
+      {sentence:'When eating in India, you ___ use the right hand.', answers:['have to'], vi:'Khi ăn ở Ấn Độ, bạn phải dùng tay phải.', explanation:'Phong tục bắt buộc → have to.'},
+    ]
+  },
+
+  /* ---------- BÀI 8: CORRECTION I (A, B, C, D) ---------- */
+  8: {
+    color:'orange', title:'Bài 8: Tìm lỗi sai (A, B, C hoặc D)',
+    desc:'Mỗi câu có 4 phần gạch chân A, B, C, D. Chọn phần chứa lỗi sai. Chọn xong sẽ hiện đúng/sai, đáp án và công thức ngay.',
+    type:'mcq', instant:true,
+    intro:`<span class="text-amber-600">[RECONSTRUCTED: tài liệu gốc chỉ đánh dấu 4 vị trí A/B/C/D bằng dòng nhãn riêng bên dưới câu (không có gạch chân trực tiếp trong text). Claude đã tự chia mỗi câu thành 4 cụm A/B/C/D hợp lý dựa theo đáp án lỗi sai cho sẵn. Nếu có ảnh gốc rõ vị trí gạch chân, nên đối chiếu lại.]</span>`,
+    questions:[
+      {q:'1. <u>Some people think</u> <u>young people</u> <u>should to follow</u> <u>the tradition of the society</u>.', options:['Some people think','young people','should to follow','the tradition of the society'], answer:2, vi:'Một số người nghĩ rằng người trẻ nên tuân theo truyền thống của xã hội.', explanation:'"should" theo sau là V nguyên mẫu (không "to") → should to follow phải sửa thành should follow.', note:'should + V-inf (không "to")'},
+      {q:'2. <u>According for tradition</u>, <u>the first person</u> <u>to enter the house on New Year\u2019s Eve brings</u> <u>either good luck or bad luck</u>.', options:['According for tradition','the first person','to enter the house on New Year\u2019s Eve brings','either good luck or bad luck'], answer:0, vi:'Theo truyền thống, người đầu tiên bước vào nhà vào đêm Giao thừa mang lại may mắn hoặc xui xẻo.', explanation:'Cụm cố định là "according to" → According for phải sửa thành According to.', note:'according to + N'},
+      {q:'3. <u>The traditional Vietnamese wedding</u> <u>is one of the most important</u> <u>ceremony</u> <u>in Vietnamese culture</u>.', options:['The traditional Vietnamese wedding','is one of the most important','ceremony','in Vietnamese culture'], answer:2, vi:'Đám cưới truyền thống Việt Nam là một trong những nghi lễ quan trọng nhất trong văn hóa Việt Nam.', explanation:'"one of the most + adj" theo sau là danh từ số nhiều → ceremony phải sửa thành ceremonies.', note:'one of the most + adjective + plural noun'},
+      {q:'4. <u>The Japanese are familiar</u> <u>with the western custom</u> <u>to eat</u> <u>a turkey dinner for Christmas</u>.', options:['The Japanese are familiar','with the western custom','to eat','a turkey dinner for Christmas'], answer:2, vi:'Người Nhật quen thuộc với phong tục phương Tây là ăn gà tây vào dịp Giáng sinh.', explanation:'"custom" theo sau là "of + V-ing" → to eat phải sửa thành of eating.', note:'custom + of + V-ing'},
+      {q:'5. <u>In Vietnam</u> <u>the engagement is sometimes considered</u> <u>much</u> <u>important than the wedding</u>.', options:['In Vietnam','the engagement is sometimes considered','much','important than the wedding'], answer:2, vi:'Ở Việt Nam, lễ đính hôn đôi khi được coi là quan trọng hơn đám cưới.', explanation:'So sánh hơn với tính từ dài cần "more" → much phải sửa thành more.', note:'more + adjective + than'},
+      {q:'6. <u>Dressing well</u> <u>is important</u> <u>in South Korea; it is considered a sign</u> <u>of respectful</u>.', options:['Dressing well','is important','in South Korea; it is considered a sign','of respectful'], answer:3, vi:'Ăn mặc chỉnh tề rất quan trọng ở Hàn Quốc; điều đó được coi là dấu hiệu của sự tôn trọng.', explanation:'Sau giới từ "of" cần danh từ, không phải tính từ → respectful phải sửa thành respect.', note:'a sign of + noun'},
+      {q:'7. In India, you <u>shouldn\u2019t</u> <u>never use your left hand</u> <u>to eat because</u> <u>it is considered disrespectful</u>.', options:['shouldn\u2019t','never use your left hand','to eat because','it is considered disrespectful'], answer:0, vi:'Ở Ấn Độ, bạn không bao giờ nên dùng tay trái để ăn vì điều đó bị coi là bất lịch sự.', explanation:'Không dùng phủ định kép "shouldn\u2019t never" → shouldn\u2019t phải sửa thành should (should never = không bao giờ nên).', note:'should + never + V (tránh phủ định kép)'},
+      {q:'8. <u>He asked me anxiously</u> <u>what he has to do</u> <u>when visiting</u> <u>a Vietnamese home</u>.', options:['He asked me anxiously','what he has to do','when visiting','a Vietnamese home'], answer:1, vi:'Anh ấy lo lắng hỏi tôi phải làm gì khi đến thăm nhà người Việt.', explanation:'Câu tường thuật với động từ chính ở quá khứ ("asked") cần lùi thì mệnh đề sau → has to phải sửa thành had to.', note:'lùi thì trong câu tường thuật (backshift)'},
+      {q:'9. <u>Another typical musical instrument</u> <u>of the Raglai is</u> <u>the flat gong called</u> <u>Ma La</u>.', options:['Another typical musical instrument','of the Raglai is','the flat gong called','Ma La'], answer:3, vi:'Một nhạc cụ tiêu biểu khác của người Raglai là chiếc cồng bằng gọi là Ma La.', explanation:'Tên riêng đi kèm "called" trong câu này cần thêm "the" theo đáp án tài liệu → Ma La phải sửa thành the Ma La.', note:'called + the + tên riêng (theo đáp án tài liệu)'},
+      {q:'10. <u>I want to visit</u> <u>the Vietnam Museum of Ethnology</u> <u>to learn</u> <u>for 54 ethnic minority groups</u>.', options:['I want to visit','the Vietnam Museum of Ethnology','to learn','for 54 ethnic minority groups'], answer:3, vi:'Tôi muốn thăm Bảo tàng Dân tộc học Việt Nam để tìm hiểu về 54 dân tộc thiểu số.', explanation:'"learn" đi với giới từ "about" → for phải sửa thành about.', note:'learn about + N'},
+      {q:'11. <u>Xo Dang men are good at</u> <u>architecture,</u> <u>sculpting, and</u> <u>paint</u>.', options:['Xo Dang men are good at','architecture,','sculpting, and','paint'], answer:3, vi:'Đàn ông người Xơ Đăng giỏi về kiến trúc, điêu khắc và hội họa.', explanation:'Cấu trúc song song với "architecture, sculpting" (danh động từ) → paint phải sửa thành painting.', note:'cấu trúc song song: N, V-ing, and V-ing'},
+      {q:'12. <u>I go to see Peter</u> <u>yesterday evening,</u> <u>but</u> <u>he was not at home</u>.', options:['I go to see Peter','yesterday evening,','but','he was not at home'], answer:0, vi:'Tôi đã đến gặp Peter tối qua nhưng anh ấy không có ở nhà.', explanation:'"yesterday evening" cần thì quá khứ đơn → go phải sửa thành went.', note:'S + V-ed + time markers (yesterday…)'},
+      {q:'13. <u>She was talking</u> <u>to a strangers</u> <u>when I came</u> <u>to the restaurant</u>.', options:['She was talking','to a strangers','when I came','to the restaurant'], answer:1, vi:'Cô ấy đang nói chuyện với một người lạ khi tôi đến nhà hàng.', explanation:'"a" đi với danh từ số ít → a strangers phải sửa thành a stranger.', note:'a/an + danh từ số ít'},
+      {q:'14. <u>What were you doing</u> <u>in</u> <u>6 p.m.</u> <u>yesterday?</u>', options:['What were you doing','in','6 p.m.','yesterday?'], answer:1, vi:'Bạn đang làm gì lúc 6 giờ chiều hôm qua?', explanation:'Trước giờ cụ thể dùng giới từ "at" → in phải sửa thành at.', note:'at + giờ cụ thể (at 6 p.m.)'},
+      {q:'15. <u>Why</u> <u>you leave</u> <u>the baby alone at home</u> <u>to go to the movies?</u>', options:['Why','you leave','the baby alone at home','to go to the movies?'], answer:1, vi:'Sao bạn lại để đứa bé một mình ở nhà để đi xem phim?', explanation:'Câu hỏi Wh- ở thì quá khứ cần trợ động từ "did" → you leave phải sửa thành did you leave.', note:'Why + did + S + V…?'},
+    ]
+  },
+
+  /* ---------- BÀI 9: TÌM VÀ SỬA LỖI TRONG ĐOẠN VĂN ---------- */
+  9: {
+    color:'rose', title:'Bài 9: Tìm và sửa 5 lỗi sai trong đoạn văn',
+    desc:'Đọc đoạn văn. Mỗi câu có một lỗi sai. Gõ từ/cụm từ ĐÚNG vào ô trống, rồi bấm Kiểm tra để xem đáp án và giải thích.',
+    type:'fill',
+    intro:`<div class="not-italic text-slate-700">
+      <div class="font-extrabold text-rose-700 mb-2"><i class="fa-solid fa-magnifying-glass mr-1"></i>Đoạn văn gốc – Chopsticks</div>
+      <div class="bg-white/70 border border-rose-100 rounded-lg p-3 leading-7">
+        Depending on the restaurant you decide upon for that evening, you may be require to use chopsticks. If for some reasons you aren\u2019t too adept with chopsticks, try to learn before pass through immigration. It\u2019s really not that hard. One false assumption among many Japanese that\u2019s slowly being dispelled by time are the "uniqueness" of Japan. Japan is a island nation; Japan is the only country that has four seasons; foreigners can\u2019t understand Japan; only Japanese can use chopsticks properly. I cannot count the number of times I\u2019ve been told how to use Japanese chopsticks but I couldn\u2019t use perfectly. If you\u2019re dining in a Japanese, don\u2019t be surprised if you receive a look of amazement at your ability to eat like a Japanese.
+      </div>
+      <p class="mt-2 text-xs text-slate-500 italic">Gợi ý: nhập phần sửa đúng, ví dụ nếu lỗi là "require" thì nhập "required".</p>
+    </div>`,
+    questions:[
+      {sentence:'Depending on the restaurant you decide upon for that evening, you may be require to use chopsticks. \u2192 ___', answers:['required'], vi:'Tùy vào nhà hàng bạn chọn tối hôm đó, bạn có thể sẽ phải dùng đũa.', explanation:'Bị động "may be + V3" → require phải sửa thành required.', note:'may be + V3 (bị động)'},
+      {sentence:'If for some reasons you aren\u2019t too adept with chopsticks, try to learn before pass through immigration. \u2192 ___', answers:['passing'], vi:'Nếu vì lý do nào đó bạn chưa thạo dùng đũa, hãy cố học trước khi qua cửa hải quan.', explanation:'Sau giới từ "before" cần V-ing → pass phải sửa thành passing.', note:'before + V-ing'},
+      {sentence:'One false assumption among many Japanese that\u2019s slowly being dispelled by time are the "uniqueness" of Japan. \u2192 ___', answers:['is'], vi:'Một giả định sai lầm trong số nhiều giả định của người Nhật đang dần được xóa bỏ theo thời gian là về "sự độc nhất" của Nhật Bản.', explanation:'Chủ ngữ số ít "One false assumption" → are phải sửa thành is.', note:'chủ ngữ số ít + is'},
+      {sentence:'Japan is a island nation; Japan is the only country that has four seasons; foreigners can\u2019t understand Japan; only Japanese can use chopsticks properly. \u2192 ___', answers:['an'], vi:'Nhật Bản là một quốc đảo; Nhật Bản là nước duy nhất có bốn mùa; người nước ngoài không thể hiểu Nhật Bản; chỉ người Nhật mới có thể dùng đũa thành thạo.', explanation:'"island" bắt đầu bằng âm nguyên âm /aɪ/ (chữ "i" câm) → a phải sửa thành an.', note:'an + danh từ bắt đầu bằng âm nguyên âm'},
+      {sentence:'If you\u2019re dining in a Japanese, don\u2019t be surprised if you receive a look of amazement at your ability to eat like a Japanese. \u2192 ___', answers:['with'], vi:'Nếu bạn đang dùng bữa cùng một người Nhật, đừng ngạc nhiên nếu bạn nhận được ánh nhìn kinh ngạc trước khả năng ăn uống như người Nhật của mình.', explanation:'"dine with somebody" = dùng bữa cùng ai → in phải sửa thành with.', note:'dine with + somebody'},
+    ]
+  },
+
+  /* ---------- BÀI 10: READING I (Jeans – cloze) ---------- */
+  10: {
+    color:'indigo', title:'Bài 10: Đọc hiểu – Điền từ vào đoạn văn về quần Jeans',
+    desc:'Đọc đoạn văn và điền một từ thích hợp vào mỗi chỗ trống. Chọn xong sẽ hiện đúng/sai ngay khi bạn gõ.',
+    passageId:'p10',
+    type:'fill', instant:true,
+    questions:[
+      {sentence:'Jeans are very popular with young people all ___ the world.', answers:['over'], vi:'Quần jeans rất phổ biến với giới trẻ khắp thế giới.', explanation:'Cụm cố định "all over the world" = khắp thế giới.'},
+      {sentence:'Some people say that jeans are the "uniform" of youth but they haven\u2019t always been ___.', answers:['popular'], vi:'Một số người nói quần jeans là "đồng phục" của tuổi trẻ nhưng chúng không phải lúc nào cũng phổ biến.', explanation:'Sau "been" cần tính từ → popular.'},
+      {sentence:'The story of jeans started almost two hundred years ___.', answers:['ago'], vi:'Câu chuyện về quần jeans bắt đầu từ gần hai trăm năm trước.', explanation:'"two hundred years ago" = hai trăm năm trước.'},
+      {sentence:'The cloth made in Genoa ___ called "jeanos".', answers:['was'], vi:'Loại vải được sản xuất ở Genoa được gọi là "jeanos".', explanation:'Bị động ở quá khứ đơn → was called.'},
+      {sentence:'In 1850, a salesman in California began selling pants made ___ canvas.', answers:['of'], vi:'Năm 1850, một người bán hàng ở California bắt đầu bán quần làm từ vải bạt.', explanation:'"made of" = làm từ (chất liệu).'},
+      {sentence:'Because they were so strong, "Levi\u2019s pants" became popular ___ gold miners, farmers and cowboys.', answers:['with'], vi:'Vì rất bền, quần "Levi\u2019s" trở nên phổ biến với thợ mỏ vàng, nông dân và những chàng cao bồi.', explanation:'"popular with" = phổ biến với (đối tượng nào đó).'},
+      {sentence:'Six years ___, Levis began making his pants with blue cotton clothes.', answers:['later'], vi:'Sáu năm sau, Levis bắt đầu làm quần bằng vải cotton xanh.', explanation:'"six years later" = sáu năm sau.'},
+      {sentence:'Levis began making his pants with blue cotton clothes ___ denim.', answers:['called'], vi:'Levis bắt đầu làm quần bằng vải cotton xanh được gọi là denim.', explanation:'"clothes called denim" = loại vải được gọi là denim.'},
+      {sentence:'Soon after, factory workers ___ the United States and Europe began wearing Jeans.', answers:['in'], vi:'Ngay sau đó, công nhân nhà máy ở Mỹ và châu Âu bắt đầu mặc quần jeans.', explanation:'"workers in + địa danh" = công nhân ở (một nơi nào đó).'},
+      {sentence:'Factory workers in the United States and Europe began ___ Jeans.', answers:['wearing'], vi:'Công nhân nhà máy ở Mỹ và châu Âu bắt đầu mặc quần jeans.', explanation:'begin + V-ing → wearing.'},
+    ]
+  },
+
+  /* ---------- BÀI 11: READING II (Nhật Bản – Đúng/Sai) ---------- */
+  11: {
+    color:'pink', title:'Bài 11: Đọc hiểu – Đúng (True) hay Sai (False)?',
+    desc:'Đọc đoạn văn và chọn True hoặc False cho mỗi câu. Chọn xong sẽ hiện đúng/sai ngay.',
+    passageId:'p11',
+    type:'mcq', instant:true,
+    questions:[
+      {q:'1. Only take off your shoes when you enter a Japanese house.', options:['True','False'], answer:1, vi:'Chỉ cởi giày khi vào nhà người Nhật (mà thôi).', explanation:'Bài đọc nói phải cởi giày khi vào NHÀ, hầu hết cửa hàng và khách sạn nữa, không chỉ nhà ở → Sai (False).'},
+      {q:'2. Be careful with your slippers when you come back to the main room.', options:['True','False'], answer:0, vi:'Cẩn thận với dép khi quay lại phòng chính.', explanation:'Bài đọc nói quay lại phòng chính khi còn mang dép đã đi qua khu vực bẩn là rất bất lịch sự → Đúng (True).'},
+      {q:'3. You mustn\u2019t wear slippers stepping onto a tatami mat.', options:['True','False'], answer:0, vi:'Bạn không được mang dép khi bước lên chiếu tatami.', explanation:'Bài đọc nói "Never wear slippers when you need to step onto a tatami mat" → Đúng (True).'},
+      {q:'4. The Japanese bath is also used for washing and rinsing.', options:['True','False'], answer:1, vi:'Bồn tắm của người Nhật cũng được dùng để tắm rửa, kỳ cọ.', explanation:'Bài đọc nói bồn tắm được dùng SAU KHI đã tắm rửa và kỳ cọ xong, không phải để tắm rửa → Sai (False).'},
+      {q:'5. The bath plays an important part in the Japanese life.', options:['True','False'], answer:0, vi:'Bồn tắm đóng vai trò quan trọng trong đời sống người Nhật.', explanation:'Bài đọc nhấn mạnh sự trang trọng và tầm quan trọng của việc tắm (được mời tắm trước, phải cẩn thận không làm bẩn nước) → Đúng (True).'},
+    ]
+  },
+
+  /* ---------- BÀI 12: READING III (Ancestor Worship) ---------- */
+  12: {
+    color:'violet', title:'Bài 12: Đọc hiểu – Ancestor Worship (Thờ cúng tổ tiên)',
+    desc:'Đọc đoạn văn rồi trả lời các câu hỏi bên dưới (gõ câu trả lời ngắn bằng tiếng Anh).',
+    passageId:'p12',
+    type:'reading',
+    intro:`<span class="text-amber-600">[Gộp Task 1 (nối từ với định nghĩa) và Task 2 (trả lời câu hỏi) của phần Reading III trong tài liệu gốc thành một bài duy nhất dạng hỏi–đáp ngắn, để giữ đúng tổng số 15 bài theo cấu trúc khung có sẵn.]</span>`,
+    questions:[
+      {q:'1. In the passage, what does the word "practice" mean?', answer:'Doing something many times.', keywords:['many times'], vi:'Trong bài, từ "practice" có nghĩa là gì?', explanation:'Theo bảng nối từ, "practice" (E) = doing something many times (làm điều gì đó nhiều lần).'},
+      {q:'2. What does the word "deed" mean?', answer:'An action.', keywords:['action'], vi:'Từ "deed" có nghĩa là gì?', explanation:'"deed" (C) = an action (một hành động).'},
+      {q:'3. What does the word "afterlife" mean?', answer:'The life which some people believe begins after death.', keywords:['after death'], vi:'Từ "afterlife" có nghĩa là gì?', explanation:'"afterlife" (A) = the life which some people believe begins after death (cuộc sống sau khi chết).'},
+      {q:'4. What does the word "incense" mean?', answer:'A substance that produces a sweet smell when burned, especially in religious ceremonies.', keywords:['smell'], vi:'Từ "incense" có nghĩa là gì?', explanation:'"incense" (B) = a substance that produces a sweet smell when burned (hương/nhang).'},
+      {q:'5. What does the word "rite" mean?', answer:'A ceremony, often for religious purposes.', keywords:['ceremony'], vi:'Từ "rite" có nghĩa là gì?', explanation:'"rite" (D) = a ceremony, often for religious purposes (nghi lễ).'},
+      {q:'6. Why does ancestor worship become a religious practice?', answer:'Because people believe that their ancestors possess supernatural powers.', keywords:['supernatural'], vi:'Vì sao thờ cúng tổ tiên trở thành một tín ngưỡng?', explanation:'Bài đọc nói việc thờ cúng dựa trên niềm tin rằng tổ tiên có sức mạnh siêu nhiên.'},
+      {q:'7. What are the activities of the worship?', answer:'Visiting the ancestors at their graves, making offerings to them, and burning incense every day on the domestic ancestral altar.', keywords:['graves'], vi:'Các hoạt động thờ cúng gồm những gì?', explanation:'Bài đọc liệt kê: thăm mộ tổ tiên, cúng đồ để họ dùng ở thế giới bên kia, và đốt hương mỗi ngày trên bàn thờ gia tiên.'},
+      {q:'8. Why do people burn spirit money for their dead ancestors?', answer:'Because they believe that their ancestors may use the money in the afterlife.', keywords:['afterlife'], vi:'Vì sao người ta đốt tiền vàng mã cho tổ tiên đã khuất?', explanation:'Bài đọc nói tiền vàng mã được đốt vì tin rằng tổ tiên có thể dùng số tiền đó ở thế giới bên kia.'},
+      {q:'9. What can we see on the spirit tablet?', answer:'We can see the year of the death, his full name, and the name of the son who erects the tablet.', keywords:['full name'], vi:'Chúng ta có thể thấy gì trên bài vị?', explanation:'Bài đọc nói trên bài vị khắc năm mất, họ tên đầy đủ, và tên người con lập bài vị.'},
+      {q:'10. When do anniversary rites for the major deceased member of the family take place?', answer:'They take place on the death date of the ancestor every year.', keywords:['death date'], vi:'Lễ giỗ của thành viên đã khuất trong gia đình diễn ra khi nào?', explanation:'Bài đọc nói lễ giỗ diễn ra vào ngày mất của người thân mỗi năm.'},
+    ]
+  },
+
+  /* ---------- BÀI 13: WRITING I (Lời khuyên cho Frank khi nấu ăn) ---------- */
+  13: {
+    color:'sky', title:'Bài 13: Give Frank advice with should/shouldn\u2019t',
+    desc:'Frank đang nấu ăn. Dùng gợi ý trong ô để viết lời khuyên hoàn chỉnh cho Frank bằng should/shouldn\u2019t.',
+    type:'sentence', instant:true,
+    intro:`<div class="text-slate-600 not-italic">
+      <b class="text-sky-700">Gợi ý (box):</b>
+      <ol class="list-decimal list-inside mt-1 space-y-0.5">
+        <li>Don\u2019t leave the beef in the oven for more than one hour.</li>
+        <li>Cut the onions as thin as possible.</li>
+        <li>Use fresh herbs and fresh vegetables.</li>
+        <li>Don\u2019t put in too much salt and chilies.</li>
+        <li>Wait until the water boils before you put the vegetables into it.</li>
+        <li>Heat the oven before you put the beef in.</li>
+        <li>Cut the beef into a lot of equal slices.</li>
+      </ol>
+    </div>`,
+    questions:[
+      {prompt:'Don\u2019t leave the beef in the oven for more than one hour.', answer:'He shouldn\u2019t leave the beef in the oven for more than one hour.', accepted:['he shouldn\u2019t leave the beef in the oven for more than one hour'], vi:'Anh ấy không nên để thịt bò trong lò quá một tiếng.', explanation:'Lời khuyên phủ định → He shouldn\u2019t + V.', note:'He shouldn\u2019t + V-inf'},
+      {prompt:'Cut the onions as thin as possible.', answer:'He should cut the onions as thin as possible.', accepted:['he should cut the onions as thin as possible'], vi:'Anh ấy nên thái hành càng mỏng càng tốt.', explanation:'Lời khuyên khẳng định → He should + V.', note:'He should + V-inf'},
+      {prompt:'Use fresh herbs and fresh vegetables.', answer:'He should use fresh herbs and fresh vegetables.', accepted:['he should use fresh herbs and fresh vegetables'], vi:'Anh ấy nên dùng rau thơm và rau củ tươi.', explanation:'Lời khuyên khẳng định → He should + V.', note:'He should + V-inf'},
+      {prompt:'Don\u2019t put in too much salt and chilies.', answer:'He shouldn\u2019t put in too much salt and chilies.', accepted:['he shouldn\u2019t put in too much salt and chilies'], vi:'Anh ấy không nên cho quá nhiều muối và ớt.', explanation:'Lời khuyên phủ định → He shouldn\u2019t + V.', note:'He shouldn\u2019t + V-inf'},
+      {prompt:'Wait until the water boils before you put the vegetables into it.', answer:'He should wait until the water boils before he puts the vegetables into it.', accepted:['he should wait until the water boils before he puts the vegetables into it'], vi:'Anh ấy nên đợi nước sôi trước khi cho rau vào.', explanation:'Lời khuyên khẳng định → He should + V.', note:'He should + V-inf'},
+      {prompt:'Heat the oven before you put the beef in.', answer:'He should heat the oven before he puts the beef in.', accepted:['he should heat the oven before he puts the beef in'], vi:'Anh ấy nên làm nóng lò trước khi cho thịt bò vào.', explanation:'Lời khuyên khẳng định → He should + V.', note:'He should + V-inf'},
+      {prompt:'Cut the beef into a lot of equal slices.', answer:'He shouldn\u2019t cut the beef into a lot of equal slices.', accepted:['he shouldn\u2019t cut the beef into a lot of equal slices'], vi:'Anh ấy không nên cắt thịt bò thành quá nhiều lát bằng nhau.', explanation:'Theo đáp án của tài liệu ôn tập, lời khuyên ở câu này là phủ định → He shouldn\u2019t + V.', note:'He shouldn\u2019t + V-inf'},
+    ]
+  },
+
+  /* ---------- BÀI 14: WRITING II (Viết câu hoàn chỉnh từ gợi ý) ---------- */
+  14: {
+    color:'lime', title:'Bài 14: Write in full sentences',
+    desc:'Dùng các từ/cụm từ gợi ý để viết thành câu hoàn chỉnh, đúng ngữ pháp.',
+    type:'sentence', instant:true,
+    questions:[
+      {prompt:'If/ you/ want/ work/ the USA, you should learn speak English.', answer:'If you want to work in the USA, you should learn to speak English.', accepted:['if you want to work in the usa, you should learn to speak english'], vi:'Nếu bạn muốn làm việc ở Mỹ, bạn nên học nói tiếng Anh.', explanation:'Thêm "to" trước động từ nguyên mẫu: want to work, learn to speak; thêm giới từ "in" trước tên quốc gia.', note:'want to V; learn to V; in + country'},
+      {prompt:'You should not/ give/ someone/ clock/ as/ present.', answer:'You shouldn\u2019t give someone a clock as a present.', accepted:['you shouldn\u2019t give someone a clock as a present','you should not give someone a clock as a present'], vi:'Bạn không nên tặng đồng hồ cho ai đó làm quà.', explanation:'Thêm mạo từ "a" trước danh từ số ít đếm được "clock" và "present".', note:'give sb + a + N + as + a + N'},
+      {prompt:'You/ ill./ You should not/ go/ school/ today.', answer:'You are ill. You shouldn\u2019t go to school today.', accepted:['you are ill. you shouldn\u2019t go to school today','you are ill. you should not go to school today'], vi:'Bạn bị ốm. Hôm nay bạn không nên đến trường.', explanation:'Thêm động từ "be" (are) và giới từ "to" trước "school".', note:'S + be + adj.  S + shouldn\u2019t + V + to + N'},
+      {prompt:'Tomorrow/ Sunday./ So/ I/ not have/ go/ school.', answer:'Tomorrow is Sunday. So I don\u2019t have to go to school.', accepted:['tomorrow is sunday. so i don\u2019t have to go to school','tomorrow is sunday. so i do not have to go to school'], vi:'Ngày mai là Chủ nhật. Vì vậy tôi không cần phải đi học.', explanation:'Thêm "is" và chia "don\u2019t have to" ở thì hiện tại.', note:'S + don\u2019t have to + V-inf'},
+      {prompt:'I/ think/ people/ should/ recycle/ more/ paper/ glass.', answer:'I think people should recycle more paper and glass.', accepted:['i think people should recycle more paper and glass'], vi:'Tôi nghĩ mọi người nên tái chế nhiều giấy và thủy tinh hơn.', explanation:'Thêm liên từ "and" nối hai danh từ "paper" và "glass".', note:'I think + S + should + V-inf'},
+      {prompt:'The/ museum/ free./ You/ not/ have/ pay.', answer:'The museum is free. You don\u2019t have to pay.', accepted:['the museum is free. you don\u2019t have to pay','the museum is free. you do not have to pay'], vi:'Bảo tàng miễn phí. Bạn không cần phải trả tiền.', explanation:'Thêm "is" và chia "don\u2019t have to" ở thì hiện tại.', note:'S + don\u2019t have to + V-inf'},
+      {prompt:'I/ have/ wear/ uniform/ when/ I/ at school.', answer:'I had to wear a uniform when I was at school.', accepted:['i had to wear a uniform when i was at school'], vi:'Tôi đã phải mặc đồng phục khi còn đi học.', explanation:'Chia "have to" ở quá khứ (had to) và "am/is/are" ở quá khứ (was), thêm mạo từ "a" trước "uniform".', note:'had to + V-inf (quá khứ)'},
+      {prompt:'If/ you/ see/ Pauline,/ you/ should/ polite/ her.', answer:'If you see Pauline, you should be polite to her.', accepted:['if you see pauline, you should be polite to her'], vi:'Nếu bạn gặp Pauline, bạn nên lịch sự với cô ấy.', explanation:'Thêm động từ "be" trước tính từ "polite" và giới từ "to" trước tân ngữ.', note:'should + be + adjective + to + O'},
+      {prompt:'You/ should not/ smoke./ It/ bad/ you.', answer:'You shouldn\u2019t smoke. It\u2019s bad for you.', accepted:['you shouldn\u2019t smoke. it\u2019s bad for you','you should not smoke. it is bad for you'], vi:'Bạn không nên hút thuốc. Nó có hại cho bạn.', explanation:'Thêm động từ "be" (is) và giới từ "for" trước tân ngữ.', note:'It\u2019s bad for + O'},
+      {prompt:'We/ have/ be/ on time/ the meeting.', answer:'We have to be on time for the meeting.', accepted:['we have to be on time for the meeting'], vi:'Chúng ta phải đến đúng giờ cho cuộc họp.', explanation:'Chia "have to" và thêm giới từ "for" trước tân ngữ.', note:'have to + be + on time + for + N'},
+    ]
+  },
+
+  /* ---------- BÀI 15: WRITING III (Viết lại câu) ---------- */
+  15: {
+    color:'orange', title:'Bài 15: Rewrite the second sentence with a similar meaning',
+    desc:'Viết lại câu thứ hai sao cho nghĩa không đổi so với câu thứ nhất, bắt đầu bằng từ gợi ý.',
+    type:'sentence', instant:true,
+    questions:[
+      {original:'She couldn\u2019t afford to buy the car.', starter:'The car is too', answer:'expensive for her to buy.', accepted:['expensive for her to buy'], vi:'Cô ấy không đủ tiền mua chiếc xe.', explanation:'Chuyển "can\u2019t afford to V" sang cấu trúc "too + adj + for sb + to V".', note:'S + be + too + adjective + for + O + to V'},
+      {original:'I would like you to help me to put the chair away.', starter:'Do you mind', answer:'helping me to put the chair away?', accepted:['helping me to put the chair away','helping me put the chair away'], vi:'Tôi muốn bạn giúp tôi cất cái ghế đi.', explanation:'"Do you mind" theo sau là V-ing.', note:'Do you mind + V-ing?'},
+      {original:'If I were you, I wouldn\u2019t sweep the house on the first day of Tet.', starter:'You', answer:'shouldn\u2019t sweep the house on the first day of Tet.', accepted:['shouldn\u2019t sweep the house on the first day of tet','should not sweep the house on the first day of tet'], vi:'Nếu tôi là bạn, tôi sẽ không quét nhà vào ngày đầu năm mới.', explanation:'"If I were you, I wouldn\u2019t V" mang nghĩa lời khuyên tương đương "You shouldn\u2019t V".', note:'You shouldn\u2019t + V-inf'},
+      {original:'Is it really necessary for us to finish the work today?', starter:'Do we', answer:'have to finish the work today?', accepted:['have to finish the work today','need to finish the work today'], vi:'Có thực sự cần thiết để chúng ta hoàn thành công việc hôm nay không?', explanation:'"Is it necessary for sb to V?" tương đương "Do + S + have to/need to + V?".', note:'Do we have to/need to + V-inf?'},
+      {original:'Learning about other cultures is one of my interests.', starter:'I\u2019m', answer:'interested in learning about other cultures.', accepted:['interested in learning about other cultures'], vi:'Tìm hiểu về các nền văn hóa khác là một trong những sở thích của tôi.', explanation:'"be interested in + V-ing" = quan tâm/thích tìm hiểu.', note:'I\u2019m interested in + V-ing'},
+      {original:'Unless he phones her immediately, he won\u2019t get any information.', starter:'If', answer:'he doesn\u2019t phone her immediately, he won\u2019t get any information.', accepted:['he doesn\u2019t phone her immediately, he won\u2019t get any information','he does not phone her immediately, he won\u2019t get any information'], vi:'Trừ khi anh ấy gọi điện cho cô ấy ngay, anh ấy sẽ không nhận được thông tin nào.', explanation:'"Unless" = "If...not" trong câu điều kiện.', note:'Unless + S + V(hiện tại) = If + S + don\u2019t/doesn\u2019t + V'},
+      {original:'It\u2019s very difficult to leave here after such a long time.', starter:'It isn\u2019t', answer:'easy to leave here after such a long time.', accepted:['easy to leave here after such a long time'], vi:'Thật khó để rời khỏi đây sau một thời gian dài như vậy.', explanation:'"very difficult" mang nghĩa tương đương "not easy".', note:'It isn\u2019t easy + to V'},
+      {original:'Let\u2019s get together and talk about our presentation before we do it in class.', starter:'Why', answer:'don\u2019t we get together and talk about our presentation before we do it in class?', accepted:['don\u2019t we get together and talk about our presentation before we do it in class'], vi:'Hãy cùng tụ họp và bàn về bài thuyết trình trước khi chúng ta trình bày trên lớp.', explanation:'"Let\u2019s + V" tương đương với lời đề nghị "Why don\u2019t we + V?".', note:'Why don\u2019t we + V-inf?'},
+    ]
+  },
+};
+
+/* ---------- Reading passages ---------- */
+const passages = {
+  p10: {
+    title:'The Story of Jeans',
+    html:`Jeans are very popular with young people all <b>(1)</b> the world. Some people say that jeans are the "uniform" of youth but they haven\u2019t always been <b>(2)</b>. The story of jeans started almost two hundred years <b>(3)</b>. People in Genoa, Italy made pants. The cloth made in Genoa <b>(4)</b> called "jeanos". The pants were called "Jeans". In 1850, a salesman in California began selling pants made <b>(5)</b> canvas. His name was Levi Strauss. Because they were so strong, "Levi\u2019s pants" became popular <b>(6)</b> gold miners, farmers and cowboys. Six years <b>(7)</b>, Levis began making his pants with blue cotton clothes <b>(8)</b> denim. Soon after, factory workers <b>(9)</b> the United States and Europe began <b>(10)</b> Jeans. Young people usually didn\u2019t wear them.`,
+    vi:`Quần jeans rất phổ biến với giới trẻ khắp thế giới. Một số người nói quần jeans là "đồng phục" của tuổi trẻ nhưng chúng không phải lúc nào cũng phổ biến. Câu chuyện về quần jeans bắt đầu từ gần hai trăm năm trước. Người dân ở Genoa, Ý làm ra loại quần này. Loại vải sản xuất ở Genoa được gọi là "jeanos". Quần được gọi là "Jeans". Năm 1850, một người bán hàng ở California bắt đầu bán quần làm từ vải bạt. Ông tên là Levi Strauss. Vì rất bền, "quần Levi\u2019s" trở nên phổ biến với thợ mỏ vàng, nông dân và cao bồi. Sáu năm sau, Levis bắt đầu làm quần bằng vải cotton xanh gọi là denim. Ngay sau đó, công nhân nhà máy ở Mỹ và châu Âu bắt đầu mặc quần jeans. Giới trẻ khi đó thường chưa mặc loại quần này.`
+  },
+  p11: {
+    title:'Taking off shoes in Japan',
+    html:`In Japan, take off your shoes at the entrance to all homes, and most businesses and hotels. Usually a rack will be provided to store your shoes, and a pair of guest slippers will be put nearby; many Japanese bring a pair of indoor slippers just in case, though.<br><br>Never wear slippers when you need to step onto a <i>tatami</i> mat (used in most Japanese homes and hotels), and be careful to remove the toilet slippers waiting for you in the bathroom. It is extremely bad form, for example, to reenter the main room of a house wearing slippers that have been running across a dirty area.<br><br>Unlike in western cultures, the Japanese bath is used after you have washed and rinsed and feel like soaking in extra-hot water for 10, 20, 30 minutes. If you happen to be invited into a Japanese household, you will be given the honour of using the bath first, usually before dinner. Be extra careful so as not to dirty the water in any way because of its importance.`,
+    vi:`Ở Nhật Bản, hãy cởi giày ở lối vào tất cả các ngôi nhà, và hầu hết cửa hàng, khách sạn. Thường sẽ có một kệ để giày, và một đôi dép khách sẽ được để gần đó; tuy nhiên nhiều người Nhật vẫn mang theo một đôi dép trong nhà phòng trường hợp cần thiết.<br><br>Không bao giờ mang dép khi bước lên chiếu tatami (dùng trong hầu hết nhà và khách sạn Nhật Bản), và hãy cẩn thận cởi dép nhà vệ sinh đang chờ bạn trong phòng tắm. Ví dụ, việc quay lại phòng chính của ngôi nhà khi đang mang dép đã đi qua khu vực bẩn là rất bất lịch sự.<br><br>Khác với văn hóa phương Tây, bồn tắm của người Nhật được dùng SAU KHI bạn đã tắm rửa, kỳ cọ sạch sẽ và muốn ngâm mình trong nước nóng khoảng 10, 20, 30 phút. Nếu bạn được mời đến nhà một gia đình Nhật Bản, bạn sẽ được vinh dự tắm trước, thường là trước bữa tối. Hãy đặc biệt cẩn thận để không làm bẩn nước vì tầm quan trọng của nó.`
+  },
+  p12: {
+    title:'Ancestor Worship',
+    html:`Ancestor worship is a religious practice based on the belief that one\u2019s ancestors possess supernatural powers, such as gods, angels, saints, or demons.<br><br>Ancestor worship in some cultures honours the deeds, memories, and sacrifice of the dead. Much of the worship includes visiting the ancestors at their graves, making offerings to them to provide for their welfare in the afterlife.<br><br>Spirit money (also called <i>Hell Notes</i>) is sometimes burned as an offering to ancestors as well for the afterlife. The living may regard the ancestors as "guardian angels" to them, perhaps protecting them from serious accidents, or guiding their path in life.<br><br>Families burn incense every day on the domestic ancestral altar. In China, the family altar houses the family spirit tablets. On the outer surface of the spirit tablet is engraved the year of the death, his full name, and the name of the son who erects the tablet.<br><br>Anniversary rites take place on the death date of each major deceased member of the family every year. Sacrificial food is offered, and living members of the family participate in the ceremony in ritual order based on age and generation.`,
+    vi:`Thờ cúng tổ tiên là một tín ngưỡng dựa trên niềm tin rằng tổ tiên của một người có sức mạnh siêu nhiên, giống như thần thánh, thiên thần hay ma quỷ.<br><br>Ở một số nền văn hóa, việc thờ cúng tổ tiên tôn vinh công lao, ký ức và sự hy sinh của người đã khuất. Phần lớn việc thờ cúng bao gồm thăm mộ tổ tiên, cúng đồ để lo cho họ ở thế giới bên kia.<br><br>Tiền vàng mã (còn gọi là "Hell Notes") đôi khi được đốt như một lễ vật cho tổ tiên ở thế giới bên kia. Người sống có thể coi tổ tiên như những "thiên thần hộ mệnh", có thể bảo vệ họ khỏi tai nạn nghiêm trọng, hoặc dẫn dắt con đường đời của họ.<br><br>Các gia đình đốt hương mỗi ngày trên bàn thờ gia tiên. Ở Trung Quốc, bàn thờ gia đình đặt các bài vị của gia tộc. Trên bề mặt ngoài của bài vị có khắc năm mất, họ tên đầy đủ, và tên người con lập bài vị.<br><br>Lễ giỗ diễn ra vào ngày mất của mỗi thành viên quan trọng đã khuất trong gia đình hàng năm. Đồ cúng được dâng lên, và các thành viên còn sống trong gia đình tham gia buổi lễ theo thứ tự nghi thức dựa trên tuổi tác và thế hệ.`
+  }
+};
+
+/* ========== STATE ========== */
+const completedTasks = new Set();
+const scores = {};
+const TOTAL_TASKS = 15;
+const reorderState = {};
+
+/* ========== HELPERS ========== */
+function normalize(str){
+  return (str||'').trim().toLowerCase()
+    .replace(/[\u2018\u2019]/g,"'")
+    .replace(/["\u201C\u201D]/g,'')
+    .replace(/[.,!?;:]/g,'')
+    .replace(/\s+/g,' ');
+}
+function ringClass(c){ return `bg-${COLORS[c].ring}-100 ${COLORS[c].head} `; }
+function numBadge(idx){ return `<span class="bg-white border border-slate-200 text-slate-600 font-bold text-xs px-2 py-1 rounded-lg min-w-[28px] text-center">${idx+1}</span>`; }
+function fbBox(num,idx){ return `<div id="fb_t${num}_${idx}" class="explanation-box mt-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-sm text-blue-800"></div>`; }
+function widthFor(ref){ const l=(ref||'').length; return l<7?'w-28':l<13?'w-40':'w-56'; }
+function inputBox(num,idx,ref,full){
+  const width = full ? 'w-full' : widthFor(ref);
+  const instant = tasks[num] && tasks[num].instant && (tasks[num].type==='sentence' || tasks[num].type==='reading') ? ` oninput="gradeOneText(${num},${idx})"` : '';
+  return `<input type="text" id="t${num}_q${idx}" class="answer-input ${width} px-3 py-1 rounded-lg text-sm font-semibold" placeholder="..." autocomplete="off" spellcheck="false"${instant}>`;
+}
+
+/* ========== PRONUNCIATION ========== */
+if('speechSynthesis' in window){ window.speechSynthesis.onvoiceschanged = ()=>{}; }
+function speak(text, btn){
+  try{
+    if(!('speechSynthesis' in window)){ alert('Trình duyệt của bạn không hỗ trợ phát âm tự động. Hãy thử Chrome, Edge hoặc Safari.'); return; }
+    window.speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='en-US'; u.rate=0.9; u.pitch=1;
+    const voices=window.speechSynthesis.getVoices();
+    const en=voices.find(v=>/en[-_]?(us|gb)/i.test(v.lang)) || voices.find(v=>/^en/i.test(v.lang));
+    if(en) u.voice=en;
+    if(btn){ btn.classList.add('speaking'); u.onend=()=>btn.classList.remove('speaking'); u.onerror=()=>btn.classList.remove('speaking'); }
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+/* ========== VOCAB ========== */
+function buildVocab(){
+  const grid=document.getElementById('vocab-grid');
+  grid.innerHTML = vocab.map(v=>`
+    <div class="vcard bg-amber-50 border border-amber-200 rounded-xl p-3 cursor-pointer" onclick="this.classList.toggle('open')">
+      <div class="flex items-center justify-between">
+        <div><span class="font-black text-amber-700 text-lg">${v.w}</span>
+          <span class="text-xs text-slate-400 ml-1">${v.ipa}</span></div>
+        <div class="flex items-center gap-2">
+          <button data-w="${v.w}" onclick="event.stopPropagation();speak(this.dataset.w,this)" class="speak-btn w-8 h-8 rounded-full bg-amber-100 text-amber-600 hover:bg-amber-200 hover:scale-110 transition flex items-center justify-center" title="Nghe phát âm" aria-label="Nghe phát âm ${v.w}">
+            <i class="fa-solid fa-volume-high text-sm"></i>
+          </button>
+          <i class="fa-solid fa-chevron-down text-amber-400 text-xs"></i>
+        </div>
+      </div>
+      <div class="text-sm text-slate-600 font-semibold">${v.vi}</div>
+      <div class="vexample mt-2 pt-2 border-t border-amber-200 text-sm">
+        <p class="text-slate-700">${v.ex}</p>
+        <p class="text-slate-400 italic text-xs mt-0.5">${v.exvi}</p>
+      </div>
+    </div>`).join('');
+}
+
+/* ========== TASK SHELL ========== */
+function taskShell(num){
+  const t=tasks[num], c=COLORS[t.color];
+  let extra='';
+  if(t.bank && t.type==='matching'){
+    extra += `<div class="bg-${c.ring}-50 border border-${c.ring}-200 rounded-xl p-3 mb-4">
+      <span class="text-xs font-bold ${c.head} block mb-2"><i class="fa-solid fa-list mr-1"></i>Các nhóm:</span>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-1 text-sm text-slate-700">${t.bank.map(b=>`<div>${b}</div>`).join('')}</div>
+    </div>`;
+  } else if(t.bank){
+    extra += `<div class="flex flex-wrap gap-2 mb-4 bg-${c.ring}-50 rounded-xl p-3">
+      <span class="text-xs font-bold ${c.head} w-full mb-1"><i class="fa-solid fa-box-archive mr-1"></i>Từ cho sẵn:</span>
+      ${t.bank.map(w=>`<span class="bg-white border border-${c.ring}-200 ${c.head} text-sm font-bold px-3 py-1 rounded-full">${w}</span>`).join('')}
+    </div>`;
+  }
+  if(t.intro){
+    extra += `<div class="bg-${c.ring}-50 border border-${c.ring}-200 rounded-xl p-3 mb-4 text-sm text-slate-600 italic">${t.intro}</div>`;
+  }
+  if(t.passageId){
+    const p=passages[t.passageId];
+    extra += `<div class="bg-${c.ring}-50 border border-${c.ring}-200 rounded-xl p-4 mb-4 text-sm leading-relaxed text-slate-700">
+      <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
+        <h4 class="font-extrabold ${c.head} uppercase tracking-wide text-xs">${p.title}</h4>
+        <button onclick="toggleVI('${t.passageId}')" class="text-xs font-bold bg-white border border-${c.ring}-200 ${c.head} px-3 py-1 rounded-full hover:scale-105 transition"><i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt</button>
+      </div>
+      <p id="${t.passageId}-en">${p.html}</p>
+      <p id="${t.passageId}-vi" class="vi-hidden mt-3 pt-3 border-t border-${c.ring}-200 italic text-slate-500">${p.vi}</p>
+    </div>`;
+  }
+  return `<div class="task-card bg-white rounded-2xl shadow-md p-6">
+    <div class="flex items-center gap-3 mb-1">
+      <div class="bg-${c.ring}-100 ${c.head} font-black text-lg w-10 h-10 rounded-full flex items-center justify-center">${num}</div>
+      <div><h2 class="text-xl font-extrabold ${c.head}">${t.title}</h2></div>
+    </div>
+    <p class="text-sm text-slate-500 mb-4">${t.desc}</p>
+    ${extra}
+    <div id="task${num}-questions" class="space-y-3"></div>
+    <div class="flex flex-wrap gap-3 mt-5 items-center">
+      <button onclick="checkTask(${num})" class="${c.btn} text-white font-bold px-6 py-2.5 rounded-full transition-all hover:scale-105 shadow"><i class="fa-solid fa-check mr-1"></i>Kiểm tra</button>
+      <button onclick="revealTask(${num})" class="bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full transition-all"><i class="fa-solid fa-eye mr-1"></i>Xem đáp án</button>
+      <button onclick="resetTask(${num})" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-5 py-2.5 rounded-full transition-all"><i class="fa-solid fa-rotate-left mr-1"></i>Làm lại</button>
+      <div id="task${num}-score" class="hidden score-badge ml-auto bg-emerald-100 text-emerald-700 font-extrabold px-5 py-2 rounded-full text-lg"></div>
+    </div>
+  </div>`;
+}
+
+/* ========== RENDERERS ========== */
+function renderQuestion(num,q,idx,type){
+  if(type==='mcq'){
+    const letters=['A','B','C','D'];
+    const opts=q.options.map((o,i)=>{
+      const ipa=q.ipas?q.ipas[i]:null;
+      const vi=q.vis?q.vis[i]:null;
+      const cleanWord=o.replace(/<[^>]+>/g,'');
+      const hideDetail = (num===1 || num===2) ? ' mcq-detail-hidden' : '';
+      const wordBlock = ipa
+        ? `<span class="flex flex-col leading-tight"><span>${o}</span><span class="text-[10px] text-slate-400 font-normal${hideDetail}">${ipa}</span>${vi?`<span class="text-[10px] text-emerald-500 font-normal italic${hideDetail}">${vi}</span>`:''}</span>
+           <button type="button" data-w="${cleanWord}" onclick="event.stopPropagation();event.preventDefault();speak(this.dataset.w,this)" class="speak-btn w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 hover:bg-emerald-200 hover:scale-110 transition flex items-center justify-center ml-auto shrink-0${hideDetail}" title="Nghe phát âm" aria-label="Nghe phát âm ${cleanWord}"><i class="fa-solid fa-volume-high text-[10px]"></i></button>`
+        : o;
+      return `
+      <label class="option-label flex items-center gap-2 px-4 py-2 rounded-xl cursor-pointer text-sm font-semibold" id="mcq_t${num}_${idx}_${i}" onclick="selectMCQ(${num},${idx},${i})">
+        <input type="radio" name="mcq${num}_${idx}" value="${i}" class="hidden">
+        <span class="bg-slate-200 text-slate-700 text-xs font-black w-6 h-6 rounded-full flex items-center justify-center shrink-0">${letters[i]}</span>${wordBlock}
+      </label>`;}).join('');
+    const qLabel = /^\d+\.?$/.test((q.q||'').trim()) ? '' : `<p class="font-semibold text-slate-700 text-sm">${q.q}</p>`;
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2 mb-3">${numBadge(idx)}${qLabel}</div>
+      <div class="flex flex-wrap gap-2 ml-8">${opts}</div>${fbBox(num,idx)}</div>`;
+  }
+  if(type==='fill'){
+    const parts=q.sentence.split('___');
+    const nb=parts.length-1;
+    const answersArr=q.answers||[q.answer];
+    let html='';
+    for(let b=0;b<nb;b++){
+      html += parts[b];
+      const w=widthFor(answersArr[b]);
+      const instantAttr = tasks[num] && tasks[num].instant ? ` oninput="gradeOneFill(${num},${idx})"` : '';
+      html += `<input type="text" id="t${num}_q${idx}_${b}" class="answer-input ${w} px-3 py-1 rounded-lg text-sm font-semibold" placeholder="..." autocomplete="off" spellcheck="false"${instantAttr}>`;
+    }
+    html += parts[nb]||'';
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2 flex-wrap">${numBadge(idx)}
+        <span class="text-slate-700 font-semibold text-sm leading-8 flex-1 flex flex-wrap items-center gap-1">${html}</span>
+      </div>${fbBox(num,idx)}</div>`;
+  }
+  if(type==='sentence'){
+    if(q.starter){
+      const instantAttr = tasks[num] && tasks[num].instant ? ` oninput="gradeOneText(${num},${idx})"` : '';
+      return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+        <div class="flex items-start gap-2">${numBadge(idx)}
+          <div class="flex-1 min-w-0">
+            <p class="text-slate-700 text-sm mb-3 font-semibold">${q.original}</p>
+            <div class="flex items-center gap-3 w-full">
+              <span class="text-slate-800 font-extrabold text-base whitespace-nowrap">${q.starter}</span>
+              <input type="text" id="t${num}_q${idx}" class="answer-input flex-1 min-w-[180px] px-3 py-2 rounded-lg text-sm font-semibold" placeholder="..." autocomplete="off" spellcheck="false"${instantAttr}>
+            </div>
+          </div>
+        </div>${fbBox(num,idx)}</div>`;
+    }
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2">${numBadge(idx)}
+        <div class="flex-1"><p class="text-slate-500 text-xs mb-1 font-semibold"><i class="fa-solid fa-pen mr-1"></i>Gợi ý: <span class="text-slate-700 italic">${q.prompt}</span></p>${inputBox(num,idx,q.answer,true)}</div>
+      </div>${fbBox(num,idx)}</div>`;
+  }
+  if(type==='matching'){
+    const bank=tasks[num].bank;
+    const opts = bank.map((b,i)=>`<option value="${i}">${b}</option>`).join('');
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2 flex-wrap">${numBadge(idx)}
+        <p class="font-semibold text-slate-700 text-sm flex-1 min-w-[160px]">${q.q}</p>
+        <select id="t${num}_q${idx}" class="answer-input px-3 py-1.5 rounded-lg text-sm font-semibold"><option value="-1">-- chọn --</option>${opts}</select>
+      </div>${fbBox(num,idx)}</div>`;
+  }
+  if(type==='reorder'){
+    const chips=q.words.map((w,i)=>`<span class="word-chip bg-white border-2 border-lime-300 text-lime-700 font-bold text-sm px-3 py-1.5 rounded-xl shadow-sm" id="chip_t${num}_${idx}_${i}" onclick="addChip(${num},${idx},${i})">${w}</span>`).join('');
+    const promptLine = q.prompt ? `<p class="text-slate-600 text-sm font-semibold mb-2"><i class="fa-solid fa-shuffle mr-1 text-lime-600"></i>${q.prompt}</p>` : '';
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2">${numBadge(idx)}
+        <div class="flex-1">
+          ${promptLine}
+          <div id="ans_t${num}_${idx}" class="answer-line bg-white border-2 border-dashed border-slate-300 rounded-xl p-2 flex flex-wrap gap-2 mb-2 items-center text-slate-400 text-sm"></div>
+          <div class="flex flex-wrap gap-2">${chips}</div>
+        </div>
+      </div>${fbBox(num,idx)}</div>`;
+  }
+  if(type==='reading'){
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2">${numBadge(idx)}
+        <div class="flex-1"><p class="text-slate-700 font-semibold text-sm mb-2">${q.q}</p>${inputBox(num,idx,q.answer,true)}</div>
+      </div>${fbBox(num,idx)}</div>`;
+  }
+  return '';
+}
+
+/* ========== BUILD ========== */
+document.addEventListener('DOMContentLoaded', ()=>{
+  buildVocab();
+  for(let n=1;n<=TOTAL_TASKS;n++){
+    document.getElementById(`task${n}-wrap`).innerHTML = taskShell(n);
+    const box=document.getElementById(`task${n}-questions`);
+    const t=tasks[n];
+    t.questions.forEach((q,i)=>{ box.innerHTML += renderQuestion(n,q,i,t.type); });
+    if(t.type==='reorder'){ t.questions.forEach((q,i)=>renderAnswerLine(n,i)); }
+  }
+  const essay=document.getElementById('essay-input');
+  if(essay){ essay.addEventListener('input', ()=>{
+    const words=essay.value.trim().split(/\s+/).filter(Boolean).length;
+    document.getElementById('essay-count').textContent=`Số từ: ${words}`;
+  }); }
+});
+
+/* ========== INTERACTIONS ========== */
+function selectMCQ(num,idx,i){
+  const opts=tasks[num].questions[idx].options;
+  for(let j=0;j<opts.length;j++){const el=document.getElementById(`mcq_t${num}_${idx}_${j}`); if(el){el.classList.remove('selected'); el.querySelector('input').checked=false;}}
+  const sel=document.getElementById(`mcq_t${num}_${idx}_${i}`);
+  if(sel){ sel.classList.add('selected'); sel.querySelector('input').checked=true; }
+  if(tasks[num].instant){ gradeOneMCQ(num,idx); }
+}
+function gradeOneMCQ(num,idx){
+  const t=tasks[num], q=t.questions[idx];
+  const qblock=document.getElementById(`qblock_t${num}_${idx}`);
+  if(qblock) qblock.classList.add('show-mcq-detail');
+  const sel=document.querySelector(`input[name="mcq${num}_${idx}"]:checked`);
+  const chosen=sel?parseInt(sel.value):-1;
+  q.options.forEach((o,j)=>{const el=document.getElementById(`mcq_t${num}_${idx}_${j}`); if(el) el.classList.remove('correct-opt','wrong-opt');});
+  const corr=document.getElementById(`mcq_t${num}_${idx}_${q.answer}`); if(corr) corr.classList.add('correct-opt');
+  if(chosen!==-1 && chosen!==q.answer){ const wr=document.getElementById(`mcq_t${num}_${idx}_${chosen}`); if(wr) wr.classList.add('wrong-opt'); }
+  const ok=chosen===q.answer;
+  const answerLabel=`${['A','B','C','D'][q.answer]}. ${q.options[q.answer]}`;
+  const fb=document.getElementById(`fb_t${num}_${idx}`);
+  fb.innerHTML=buildFeedbackHTML(ok, answerLabel, q, num);
+  fb.classList.add('show');
+}
+function gradeOneText(num,idx){
+  const t=tasks[num], q=t.questions[idx];
+  const inp=document.getElementById(`t${num}_q${idx}`);
+  const fb=document.getElementById(`fb_t${num}_${idx}`);
+  if(!inp || !fb) return;
+  const raw=inp.value.trim();
+  if(raw===''){
+    inp.classList.remove('correct-input','wrong-input');
+    fb.classList.remove('show'); fb.innerHTML='';
+    return;
+  }
+  let ok=false;
+  if(t.type==='sentence'){
+    const val=normalize(inp.value);
+    const acc=(q.accepted||[q.answer]).map(normalize);
+    ok=acc.includes(val)&&val!=='';
+  } else if(t.type==='reading'){
+    const val=normalize(inp.value);
+    ok=val!=='' && q.keywords && q.keywords.every(k=>val.includes(normalize(k)));
+  }
+  inp.classList.remove('correct-input','wrong-input');
+  inp.classList.add(ok?'correct-input':'wrong-input');
+  fb.innerHTML=(ok?'✅ ':`❌ Đáp án đúng: <b>${q.answer}</b><br>`)+`<span class='text-blue-700'>💡 ${q.explanation}</span>`+(q.vi?`<br><span class='text-slate-500'>📖 Nghĩa: <i>${q.vi}</i></span>`:'')+(q.note?`<br><span class='text-violet-600'>📐 Công thức: <b>${q.note}</b></span>`:'');
+  fb.classList.add('show');
+}
+function toggleVI(pid){ document.getElementById(`${pid}-vi`).classList.toggle('vi-hidden'); }
+function toggleModelEssay(){ document.getElementById('model-essay').classList.toggle('vi-hidden'); }
+
+/* reorder */
+function addChip(num,idx,i){
+  const key=`${num}_${idx}`;
+  if(!reorderState[key]) reorderState[key]=[];
+  reorderState[key].push(i);
+  const chip=document.getElementById(`chip_t${num}_${idx}_${i}`); if(chip) chip.classList.add('used');
+  renderAnswerLine(num,idx);
+  if(tasks[num] && tasks[num].instant && tasks[num].type==='reorder' && reorderState[key].length===tasks[num].questions[idx].words.length){
+    gradeOneReorder(num,idx);
+  }
+}
+function removeChip(num,idx,pos){
+  const key=`${num}_${idx}`;
+  const i=reorderState[key][pos];
+  reorderState[key].splice(pos,1);
+  const chip=document.getElementById(`chip_t${num}_${idx}_${i}`); if(chip) chip.classList.remove('used');
+  renderAnswerLine(num,idx);
+  if(tasks[num] && tasks[num].instant && tasks[num].type==='reorder'){
+    const fb=document.getElementById(`fb_t${num}_${idx}`); if(fb){fb.classList.remove('show'); fb.innerHTML='';}
+    const line=document.getElementById(`ans_t${num}_${idx}`); if(line){line.classList.remove('border-emerald-400','border-rose-400');}
+  }
+}
+function gradeOneReorder(num,idx){
+  const q=tasks[num].questions[idx];
+  const key=`${num}_${idx}`;
+  const built=(reorderState[key]||[]).map(wi=>q.words[wi]).join(' ');
+  const acc=(q.accepted||[q.answer]).map(normalize);
+  const ok=acc.includes(normalize(built));
+  const line=document.getElementById(`ans_t${num}_${idx}`);
+  if(line){ line.classList.remove('border-emerald-400','border-rose-400'); line.classList.add(ok?'border-emerald-400':'border-rose-400'); }
+  const fb=document.getElementById(`fb_t${num}_${idx}`);
+  if(fb){
+    fb.innerHTML=(ok?'✅ ':`❌ Đáp án đúng: <b>${q.answer}</b><br>`)+`<span class='text-blue-700'>💡 ${q.explanation}</span>`+(q.vi?`<br><span class='text-slate-500'>📖 Nghĩa: <i>${q.vi}</i></span>`:'')+(q.note?`<br><span class='text-violet-600'>📐 Công thức: <b>${q.note}</b></span>`:'');
+    fb.classList.add('show');
+  }
+}
+function renderAnswerLine(num,idx){
+  const key=`${num}_${idx}`;
+  const line=document.getElementById(`ans_t${num}_${idx}`); if(!line) return;
+  const words=tasks[num].questions[idx].words;
+  if(!reorderState[key] || reorderState[key].length===0){ line.innerHTML='<span class="italic">Nhấp các từ bên dưới để xếp câu…</span>'; return; }
+  line.innerHTML = reorderState[key].map((wi,pos)=>`<span class="word-chip bg-lime-500 text-white font-bold text-sm px-3 py-1.5 rounded-xl" onclick="removeChip(${num},${idx},${pos})">${words[wi]}</span>`).join('');
+}
+
+
+function formatEx4Explanation(exp){
+  exp = exp || '';
+  let need = '', word = '', tip = '', easy = '';
+  const wfKey = ' Word form: ';
+  const tipKey = '. 📌 Mẹo nhớ: ';
+  const easyKey = '. 👉 Công thức dễ nhớ: ';
+  const wfIdx = exp.indexOf(wfKey);
+  if(wfIdx >= 0){ need = exp.slice(0, wfIdx).trim(); exp = exp.slice(wfIdx + wfKey.length); }
+  else { need = exp.trim(); exp = ''; }
+  const tipIdx = exp.indexOf(tipKey);
+  if(tipIdx >= 0){ word = exp.slice(0, tipIdx).trim(); exp = exp.slice(tipIdx + tipKey.length); }
+  else { word = exp.trim(); exp = ''; }
+  const easyIdx = exp.indexOf(easyKey);
+  if(easyIdx >= 0){ tip = exp.slice(0, easyIdx).trim(); easy = exp.slice(easyIdx + easyKey.length).trim(); }
+  else { tip = exp.trim(); }
+
+  const wordLines = word
+    ? word.replace(/^•\s*/, '').split(/\s*•\s*/).filter(Boolean).map(x=>`<div>• ${x.trim().replace(/\.$/,'')}</div>`).join('')
+    : '';
+  const tipLines = tip
+    ? tip.replace(/^•\s*/, '').split(/;\s*/).filter(Boolean).map(x=>`<div>• ${x.trim().replace(/\.$/,'')}</div>`).join('')
+    : '';
+  const easyText = easy ? easy.replace(/: /, ':<br><b>').replace(/\.$/, '</b>') : '';
+
+  return `
+    <div class="leading-7 text-blue-800">
+      ${need?`<div><b>💡 Giải thích:</b><br>${need}</div>`:''}
+      ${wordLines?`<br><div><b>📚 Word family:</b><br>${wordLines}</div>`:''}
+      ${tipLines?`<br><div><b>📌 Mẹo nhớ:</b><br>${tipLines}</div>`:''}
+      ${easyText?`<br><div><b>👉 Công thức dễ nhớ:</b><br>${easyText}</div>`:''}
+    </div>`;
+}
+
+function buildFeedbackHTML(ok, answerLabel, q, num){
+  if(num===4){
+    return `${ok ? '✅' : `❌ Đáp án đúng: <b>${answerLabel}</b><br>`} ${ok ? '<b>Chính xác!</b><br>' : ''}`+
+      formatEx4Explanation(q.explanation)+
+      (q.vi?`<br><span class='text-slate-500'>📖 Nghĩa câu: <i>${q.vi}</i></span>`:'')+
+      (q.note?`<br><span class='text-violet-600'>📐 Công thức: <b>${q.note}</b></span>`:'');
+  }
+  return (ok?'✅ ':`❌ Đáp án đúng: <b>${answerLabel}</b><br>`)+`<span class='text-blue-700'>💡 ${q.explanation}</span>`+(q.vi?`<br><span class='text-slate-500'>📖 Nghĩa: <i>${q.vi}</i></span>`:'')+(q.note?`<br><span class='text-violet-600'>📐 Công thức: <b>${q.note}</b></span>`:'');
+}
+
+/* ========== CHECK ========== */
+function gradeOneFill(num,idx){
+  const t=tasks[num], q=t.questions[idx];
+  if(!t || t.type!=='fill' || !q) return;
+  const answersArr=q.answers||[q.answer];
+  const accArr=q.acc || (q.accepted?[q.accepted]:answersArr.map(a=>[a]));
+  const fb=document.getElementById(`fb_t${num}_${idx}`);
+  let allFilled=true, allOk=true;
+  answersArr.forEach((a,b)=>{
+    const inp=document.getElementById(`t${num}_q${idx}_${b}`); if(!inp){allOk=false;return;}
+    const val=normalize(inp.value);
+    if(val==='') allFilled=false;
+    const acc=(accArr[b]||[a]).map(normalize);
+    const okB=acc.includes(val)&&val!=='';
+    inp.classList.remove('correct-input','wrong-input');
+    if(val!=='') inp.classList.add(okB?'correct-input':'wrong-input');
+    if(!okB) allOk=false;
+  });
+  if(!fb) return;
+  if(!allFilled){ fb.classList.remove('show'); fb.innerHTML=''; return; }
+  const answerLabel=answersArr.join(' / ');
+  fb.innerHTML=buildFeedbackHTML(allOk, answerLabel, q, num);
+  fb.classList.add('show');
+}
+
+function checkTask(num){
+  const t=tasks[num], qs=t.questions; let correct=0;
+  qs.forEach((q,i)=>{
+    const fb=document.getElementById(`fb_t${num}_${i}`);
+    let ok=false, answerLabel='';
+    if(t.type==='mcq'){
+      const qblock=document.getElementById(`qblock_t${num}_${i}`);
+      if(qblock) qblock.classList.add('show-mcq-detail');
+      const sel=document.querySelector(`input[name="mcq${num}_${i}"]:checked`);
+      const chosen=sel?parseInt(sel.value):-1;
+      q.options.forEach((o,j)=>{const el=document.getElementById(`mcq_t${num}_${i}_${j}`); if(el) el.classList.remove('correct-opt','wrong-opt','selected');});
+      const corr=document.getElementById(`mcq_t${num}_${i}_${q.answer}`); if(corr) corr.classList.add('correct-opt');
+      if(chosen!==-1 && chosen!==q.answer){const wr=document.getElementById(`mcq_t${num}_${i}_${chosen}`); if(wr) wr.classList.add('wrong-opt');}
+      ok=chosen===q.answer; answerLabel=`${['A','B','C','D'][q.answer]}. ${q.options[q.answer]}`;
+    }
+    else if(t.type==='fill'){
+      const answersArr=q.answers||[q.answer];
+      const accArr=q.acc || (q.accepted?[q.accepted]:answersArr.map(a=>[a]));
+      let allOk=true;
+      answersArr.forEach((a,b)=>{
+        const inp=document.getElementById(`t${num}_q${i}_${b}`); if(!inp){allOk=false;return;}
+        const val=normalize(inp.value);
+        const acc=(accArr[b]||[a]).map(normalize);
+        const okB=acc.includes(val)&&val!=='';
+        inp.classList.remove('correct-input','wrong-input'); inp.classList.add(okB?'correct-input':'wrong-input');
+        if(!okB) allOk=false;
+      });
+      ok=allOk; answerLabel=answersArr.join(' / ');
+    }
+    else if(t.type==='sentence'){
+      const inp=document.getElementById(`t${num}_q${i}`); if(!inp)return;
+      const val=normalize(inp.value); const acc=(q.accepted||[q.answer]).map(normalize);
+      ok=acc.includes(val)&&val!==''; inp.classList.remove('correct-input','wrong-input'); inp.classList.add(ok?'correct-input':'wrong-input');
+      answerLabel=q.answer;
+    }
+    else if(t.type==='matching'){
+      const sel=document.getElementById(`t${num}_q${i}`); if(!sel)return;
+      const chosen=parseInt(sel.value); ok=chosen===q.match;
+      sel.classList.remove('correct-input','wrong-input'); sel.classList.add(ok?'correct-input':'wrong-input');
+      answerLabel=t.bank[q.match];
+    }
+    else if(t.type==='reorder'){
+      const key=`${num}_${i}`;
+      const built=(reorderState[key]||[]).map(wi=>q.words[wi]).join(' ');
+      const acc=(q.accepted||[q.answer]).map(normalize);
+      ok=acc.includes(normalize(built));
+      const line=document.getElementById(`ans_t${num}_${i}`);
+      if(line){ line.classList.remove('border-emerald-400','border-rose-400'); line.classList.add(ok?'border-emerald-400':'border-rose-400'); }
+      answerLabel=q.answer;
+    }
+    else if(t.type==='reading'){
+      const inp=document.getElementById(`t${num}_q${i}`); if(!inp)return;
+      const val=normalize(inp.value);
+      ok=val!=='' && q.keywords.every(k=>val.includes(normalize(k)));
+      inp.classList.remove('correct-input','wrong-input'); inp.classList.add(ok?'correct-input':'wrong-input');
+      answerLabel=q.answer;
+    }
+    if(ok) correct++;
+    fb.innerHTML=buildFeedbackHTML(ok, answerLabel, q, num);
+    fb.classList.add('show');
+  });
+  const total=qs.length;
+  scores[num]={correct,total};
+  const scoreEl=document.getElementById(`task${num}-score`);
+  scoreEl.textContent=`🏆 Điểm: ${correct}/${total}`; scoreEl.classList.remove('hidden');
+  completedTasks.add(num); updateProgress();
+  if(completedTasks.size===TOTAL_TASKS) setTimeout(showCompletion,600);
+}
+
+/* ========== REVEAL ========== */
+function revealTask(num){
+  const t=tasks[num];
+  t.questions.forEach((q,i)=>{
+    if(t.type==='mcq'){ const qblock=document.getElementById(`qblock_t${num}_${i}`); if(qblock) qblock.classList.add('show-mcq-detail'); }
+    const fb=document.getElementById(`fb_t${num}_${i}`);
+    let label;
+    if(t.type==='mcq') label=`${['A','B','C','D'][q.answer]}. ${q.options[q.answer]}`;
+    else if(t.type==='matching') label=t.bank[q.match];
+    else if(t.type==='fill') label=(q.answers||[q.answer]).join(' / ');
+    else label=q.answer;
+    fb.innerHTML=`👁️ Đáp án: <b>${label}</b><br><span class='text-blue-700'>💡 ${q.explanation}</span>`+(q.vi?`<br><span class='text-slate-500'>📖 Nghĩa: <i>${q.vi}</i></span>`:'')+(q.note?`<br><span class='text-violet-600'>📐 Công thức: <b>${q.note}</b></span>`:'');
+    fb.classList.add('show');
+  });
+}
+
+/* ========== RESET ========== */
+function resetTask(num){
+  const t=tasks[num];
+  t.questions.forEach((q,i)=>{
+    if(t.type==='fill'){
+      const answersArr=q.answers||[q.answer];
+      answersArr.forEach((a,b)=>{const inp=document.getElementById(`t${num}_q${i}_${b}`); if(inp){inp.value='';inp.classList.remove('correct-input','wrong-input');}});
+    } else if(t.type==='reorder'){
+      reorderState[`${num}_${i}`]=[];
+      q.words.forEach((w,wi)=>{const chip=document.getElementById(`chip_t${num}_${i}_${wi}`); if(chip) chip.classList.remove('used');});
+      const line=document.getElementById(`ans_t${num}_${i}`); if(line){ line.classList.remove('border-emerald-400','border-rose-400'); renderAnswerLine(num,i); }
+    } else {
+      const inp=document.getElementById(`t${num}_q${i}`);
+      if(inp){ if(inp.tagName==='SELECT') inp.value='-1'; else inp.value=''; inp.classList.remove('correct-input','wrong-input'); }
+    }
+    const fb=document.getElementById(`fb_t${num}_${i}`); if(fb){ fb.classList.remove('show'); fb.innerHTML=''; }
+    const qblock=document.getElementById(`qblock_t${num}_${i}`); if(qblock) qblock.classList.remove('show-mcq-detail');
+    if(t.type==='mcq'){ q.options.forEach((o,j)=>{const el=document.getElementById(`mcq_t${num}_${i}_${j}`); if(el){el.classList.remove('correct-opt','wrong-opt','selected'); el.querySelector('input').checked=false;}}); }
+  });
+  const scoreEl=document.getElementById(`task${num}-score`); if(scoreEl) scoreEl.classList.add('hidden');
+  completedTasks.delete(num); delete scores[num]; updateProgress();
+}
+
+/* ========== NAV / PROGRESS / COMPLETION ========== */
+function showTab(id){
+  document.querySelectorAll('.section-page').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active'); b.classList.add('text-slate-600');});
+  document.getElementById(`tab-${id}`).classList.add('active');
+  const btn=[...document.querySelectorAll('.tab-btn')].find(b=>b.getAttribute('onclick')?.includes(`'${id}'`));
+  if(btn){ btn.classList.add('active'); btn.classList.remove('text-slate-600'); }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function updateProgress(){
+  const done=completedTasks.size;
+  document.getElementById('progressText').textContent=`${done} / ${TOTAL_TASKS} bài`;
+  document.getElementById('progressBar').style.width=`${(done/TOTAL_TASKS)*100}%`;
+}
+function showCompletion(){
+  fireConfetti();
+  const banner=document.getElementById('completionBanner'); banner.classList.remove('hidden'); banner.classList.add('show');
+  let c=0,tt=0; Object.values(scores).forEach(s=>{c+=s.correct; tt+=s.total;});
+  document.getElementById('finalScoreDisplay').textContent=`🎯 ${c} / ${tt} câu đúng`;
+}
+function closeBanner(){ const b=document.getElementById('completionBanner'); b.classList.remove('show'); b.classList.add('hidden'); }
+function fireConfetti(){
+  const wrap=document.getElementById('confettiWrap'); wrap.innerHTML='';
+  const colors=['#0f766e','#b45309','#9d174d','#f59e0b','#f472b6','#14b8a6'];
+  for(let i=0;i<90;i++){
+    const p=document.createElement('div'); p.className='confetti-piece';
+    p.style.cssText=`left:${Math.random()*100}vw;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>0.5?'50%':'2px'};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*0.8}s;`;
+    wrap.appendChild(p);
+  }
+  setTimeout(()=>{wrap.innerHTML='';},4000);
+}
+</script>
+</body>
+</html>
