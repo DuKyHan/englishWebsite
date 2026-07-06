@@ -419,14 +419,18 @@ class App(tk.Tk):
                 return
 
         # Tu dong phan loai: neu file nam trong thu muc con (vd: abc/file.html)
-        # -> tim folder tuong ung trong manifest de them vao
+        # -> tim folder ma trong children da co file cung thu muc prefix
         if not target_folder and '/' in file_:
-            folder_name = file_.split('/')[0]
+            file_prefix = file_.split('/')[0] + '/'
             for item in self.manifest:
-                if item.get('type') == 'folder' and item.get('name') == folder_name:
-                    target_folder = item
-                    self.log(f"[i] Tu dong phan loai vao folder '{folder_name}' vi file nam trong thu muc do")
-                    break
+                if item.get('type') == 'folder' and item.get('children'):
+                    for ch in item['children']:
+                        if ch.get('file', '').startswith(file_prefix):
+                            target_folder = item
+                            self.log(f"[i] Tu dong phan loai vao folder '{item['name']}' vi file nam trong thu muc '{file_prefix.rstrip('/')}'")
+                            break
+                    if target_folder:
+                        break
 
         if target_folder:
             target_folder.setdefault('children', []).append({"name": name, "file": file_, "desc": desc})
