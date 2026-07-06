@@ -209,7 +209,9 @@ class App(tk.Tk):
         ttk.Button(toolbar, text="🔍 Kiểm tra trùng tên", command=self.check_duplicates).pack(side='left', padx=4)
 
         columns = ('name', 'file', 'desc')
-        self.tree = ttk.Treeview(self.step1_frame, columns=columns, show='headings', selectmode='browse')
+        self.tree = ttk.Treeview(self.step1_frame, columns=columns, show='tree headings', selectmode='browse')
+        self.tree.heading('#0', text='📂')
+        self.tree.column('#0', width=40, minwidth=40, stretch=False)
         self.tree.heading('name', text='Tên (name)')
         self.tree.heading('file', text='File')
         self.tree.heading('desc', text='Mô tả')
@@ -217,7 +219,7 @@ class App(tk.Tk):
         self.tree.column('file', width=320)
         self.tree.column('desc', width=320)
         self.tree.pack(fill='both', expand=True)
-        self.tree.bind('<Double-1>', lambda e: self.edit_entry())
+        self.tree.bind('<Double-1>', self._on_double_click)
 
         nav = ttk.Frame(self.step1_frame, padding=(0, 8, 0, 0))
         nav.pack(fill='x')
@@ -329,14 +331,29 @@ class App(tk.Tk):
         for idx, item in enumerate(self.manifest):
             if item.get('type') == 'folder':
                 folder_iid = f"f{idx}"
-                self.tree.insert('', 'end', iid=folder_iid,
-                                  values=(f"📁 {item.get('name', '')}", '', item.get('desc', '')))
+                self.tree.insert('', 'end', iid=folder_iid, text='📁',
+                                  values=(item.get('name', ''), '', item.get('desc', '')))
                 for ci, ch in enumerate(item.get('children', [])):
-                    self.tree.insert(folder_iid, 'end', iid=f"f{idx}-{ci}",
-                                      values=(f"  {ch.get('name', '')}", ch.get('file', ''), ch.get('desc', '')))
+                    self.tree.insert(folder_iid, 'end', iid=f"f{idx}-{ci}", text='',
+                                      values=(ch.get('name', ''), ch.get('file', ''), ch.get('desc', '')))
             else:
-                self.tree.insert('', 'end', iid=f"r{idx}",
+                self.tree.insert('', 'end', iid=f"r{idx}", text='',
                                   values=(item.get('name', ''), item.get('file', ''), item.get('desc', '')))
+
+    def _on_double_click(self, event):
+        """Double-click: neu la folder thi expand/collapse, neu la bai hoc thi sua."""
+        sel = self.tree.selection()
+        if not sel:
+            return
+        iid = sel[0]
+        if iid.startswith('f') and '-' not in iid:
+            # La folder -> toggle mo/thu
+            if self.tree.item(iid, 'open'):
+                self.tree.item(iid, open=False)
+            else:
+                self.tree.item(iid, open=True)
+        else:
+            self.edit_entry()
 
     def _selected_index(self):
         """Tra ve (idx, child_idx) hoac (idx, None). None neu chua chon."""
