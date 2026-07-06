@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Communication – Tiếng Anh 8 · Unit 10</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+
+  :root { --bg: #f0f9ff; }
+
+  * { box-sizing: border-box; }
+  body { font-family: 'Nunito', sans-serif; background: var(--bg); }
+
+  .hero-gradient { background: linear-gradient(135deg, #1e3a5f 0%, #0ea5e9 50%, #06b6d4 100%); }
+  .tab-btn { transition: all .2s ease; }
+  .tab-btn.active {
+    background: linear-gradient(135deg, #1e3a5f, #0ea5e9);
+    color: white;
+    box-shadow: 0 4px 14px rgba(30,58,95,.35);
+    transform: translateY(-1px);
+  }
+  .task-card { transition: box-shadow .2s, transform .2s; }
+  .task-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,.10); }
+
+  .option-label { cursor: pointer; transition: all .18s; border: 2px solid #e2e8f0; }
+  .option-label:hover { border-color: #0ea5e9; background: #f0f9ff; }
+  .option-label.selected { border-color: #1e3a5f; background: #e0f2fe; }
+  .option-label.correct-opt { border-color: #22c55e !important; background: #f0fdf4 !important; }
+  .option-label.wrong-opt { border-color: #ef4444 !important; background: #fef2f2 !important; }
+  .mcq-detail-hidden { display: none; }
+  .show-mcq-detail .mcq-detail-hidden { display: block; }
+
+  .explanation-box { display: none; animation: fadeSlide .3s ease forwards; }
+  .explanation-box.show { display: block; }
+  @keyframes fadeSlide { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+
+  input.answer-input, select.answer-input { border: 2px solid #cbd5e1; transition: border .18s; outline: none; background:#fff; }
+  input.answer-input:focus, select.answer-input:focus { border-color: #0ea5e9; }
+  input.correct-input, select.correct-input { border-color: #22c55e !important; background: #f0fdf4; }
+  input.wrong-input, select.wrong-input { border-color: #ef4444 !important; background: #fef2f2; }
+
+  .score-badge { animation: popIn .35s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn { from { transform: scale(.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+  .confetti-wrap { position: fixed; inset: 0; pointer-events: none; z-index: 9999; }
+  .confetti-piece { position: absolute; width: 10px; height: 10px; border-radius: 2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall { 0% { transform: translateY(-20px) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+
+  .theory-card { border-left: 4px solid transparent; transition: all .2s; }
+  .theory-card:hover { transform: translateX(4px); }
+
+  .progress-bar-fill { transition: width .6s ease; }
+
+  .word-chip { cursor: pointer; transition: all .15s; user-select: none; }
+  .word-chip:hover { transform: scale(1.05); }
+  .word-chip.used { opacity: .3; pointer-events: none; }
+  .answer-line { min-height: 44px; }
+
+  .vcard .vexample { display:none; }
+  .vcard.open .vexample { display:block; animation: fadeSlide .25s ease forwards; }
+  .speak-btn.speaking { animation: pulseSpeak .7s ease-in-out infinite; }
+  @keyframes pulseSpeak { 0%,100% { transform: scale(1); } 50% { transform: scale(1.18); } }
+
+  .section-page { display: none; }
+  .section-page.active { display: block; }
+
+  #completionBanner { display: none; }
+  #completionBanner.show { display: flex; }
+
+  .vi-hidden { display: none; }
+</style>
+</head>
+<body class="min-h-screen">
+
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<!-- ===== HERO ===== -->
+<header class="hero-gradient text-white py-8 px-4 text-center shadow-xl relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <div class="absolute top-4 left-8 text-6xl">💬</div>
+    <div class="absolute top-2 right-12 text-5xl">📱</div>
+    <div class="absolute bottom-2 left-1/3 text-4xl">🌐</div>
+    <div class="absolute bottom-4 right-1/4 text-5xl">🗣️</div>
+  </div>
+  <p class="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Tiếng Anh 8 · Unit 10</p>
+  <h1 class="font-['Baloo_2'] text-3xl md:text-5xl font-extrabold drop-shadow-lg">💬 Communication 📱</h1>
+  <p class="mt-2 text-base md:text-lg opacity-90 font-semibold">Future Continuous &amp; Verb + To-Infinitive · Luyện tập tương tác</p>
+  <div class="mt-5 max-w-2xl mx-auto">
+    <div class="flex justify-between text-xs font-bold opacity-80 mb-1">
+      <span>Tiến độ hoàn thành</span>
+      <span id="progressText">0 / 15 bài</span>
+    </div>
+    <div class="bg-white/20 rounded-full h-3 overflow-hidden">
+      <div id="progressBar" class="bg-white rounded-full h-3 progress-bar-fill" style="width:0%"></div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== NAV ===== -->
+<nav class="sticky top-0 z-50 bg-white/90 backdrop-blur shadow-sm px-3 py-2 overflow-x-auto">
+  <div class="flex gap-2 min-w-max mx-auto w-fit">
+    <button class="tab-btn active text-sm font-bold px-4 py-2 rounded-full" onclick="showTab('theory')"><i class="fa-solid fa-book-open mr-1"></i>Lý thuyết</button>
+    <button class="tab-btn text-sm font-bold px-4 py-2 rounded-full text-slate-600" onclick="showTab('vocab')"><i class="fa-solid fa-spell-check mr-1"></i>Từ vựng</button>
+    <span class="self-center text-[10px] font-black text-sky-500 uppercase px-1">Ngữ âm</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task1')">🔊 1</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task2')">📢 2</button>
+    <span class="self-center text-[10px] font-black text-violet-500 uppercase px-1">Trắc nghiệm</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task3')">🅰️ 3</button>
+    <span class="self-center text-[10px] font-black text-fuchsia-500 uppercase px-1">Từ loại</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task4')">🔤 4</button>
+    <span class="self-center text-[10px] font-black text-emerald-500 uppercase px-1">Động từ</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task5')">✏️ 5</button>
+    <span class="self-center text-[10px] font-black text-rose-500 uppercase px-1">Sửa lỗi</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task6')">🛠️ 6</button>
+    <span class="self-center text-[10px] font-black text-indigo-500 uppercase px-1">Đọc hiểu</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task7')">📖 7</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task8')">📖 8</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task9')">📖 9</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task10')">📖 10</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task11')">📖 11</button>
+    <span class="self-center text-[10px] font-black text-pink-500 uppercase px-1">Viết</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task12')">✍️ 12</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task13')">✍️ 13</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task14')">✍️ 14</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task15')">✍️ 15</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('writing')">📝 Viết đoạn</button>
+  </div>
+</nav>
+
+<main class="max-w-4xl mx-auto px-4 py-6 pb-20">
+<!-- ==================== THEORY ==================== -->
+<section id="tab-theory" class="section-page active space-y-6">
+  <h2 class="text-2xl font-extrabold text-sky-800 flex items-center gap-2"><i class="fa-solid fa-lightbulb text-amber-400"></i> I. THÌ TƯƠNG LAI TIẾP DIỄN (Future Continuous Tense)</h2>
+
+  <div class="bg-white rounded-2xl shadow-md p-5 theory-card" style="border-left-color:#1e3a5f">
+    <h3 class="font-extrabold text-sky-800 text-lg mb-2"><i class="fa-solid fa-diagram-project mr-2 text-sky-600"></i>1. Công thức</h3>
+    <div class="grid md:grid-cols-3 gap-2 text-sm">
+      <div class="bg-sky-50 border border-sky-200 rounded-lg p-2 text-center"><b>(+)</b> S + will/shall + be + V-ing</div>
+      <div class="bg-white border border-sky-200 rounded-lg p-2 text-center"><b>(–)</b> S + won't/shan't + be + V-ing</div>
+      <div class="bg-sky-50 border border-sky-200 rounded-lg p-2 text-center"><b>(?)</b> Will/Shall + S + be + V-ing?</div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-md p-5 theory-card" style="border-left-color:#0ea5e9">
+    <h3 class="font-extrabold text-sky-700 text-lg mb-2"><i class="fa-solid fa-circle-info mr-2 text-sky-500"></i>2. Cách dùng</h3>
+    <div class="space-y-2 text-sm text-slate-700">
+      <div class="bg-sky-50 border border-sky-200 rounded-lg p-3">Hành động sẽ diễn ra và <b>kéo dài liên tục</b> suốt một khoảng thời gian ở tương lai.
+        <p class="text-xs text-slate-500 italic mt-1">We will be using low energy light bulbs.</p></div>
+      <div class="bg-white border border-sky-200 rounded-lg p-3">Hành động tương lai <b>đang xảy ra thì</b> một hành động khác xảy đến.
+        <p class="text-xs text-slate-500 italic mt-1">I'll be using to save electricity when my parents go out.</p></div>
+      <div class="bg-sky-50 border border-sky-200 rounded-lg p-3">Hành động sẽ <b>đang xảy ra vào</b> một thời điểm hoặc một khoảng thời gian cụ thể ở tương lai.
+        <p class="text-xs text-slate-500 italic mt-1">This time next week I'll be reducing the amount of water your family uses.</p></div>
+      <div class="bg-white border border-sky-200 rounded-lg p-3">Hành động sẽ xảy ra như một phần trong <b>kế hoạch hoặc thời gian biểu</b>.
+        <p class="text-xs text-slate-500 italic mt-1">We will be turning off the faucet at 5pm.</p></div>
+    </div>
+  </div>
+
+  <div class="bg-gradient-to-r from-sky-50 to-cyan-50 border border-sky-200 rounded-2xl p-4">
+    <b class="text-sky-800 text-sm">Dấu hiệu nhận biết:</b>
+    <p class="text-sm text-slate-700 mt-1">In the future, next year, next month, next week, next time, this time tomorrow/next week…</p>
+  </div>
+
+  <h2 class="text-2xl font-extrabold text-cyan-700 flex items-center gap-2 pt-2"><i class="fa-solid fa-lightbulb text-amber-400"></i> II. VERB + TO-INFINITIVE</h2>
+
+  <div class="bg-white rounded-2xl shadow-md p-5 theory-card" style="border-left-color:#06b6d4">
+    <h3 class="font-extrabold text-cyan-700 text-lg mb-2"><i class="fa-solid fa-list-check mr-2 text-cyan-500"></i>1. Verb + to V</h3>
+    <p class="text-sm text-slate-600">agree, appear, arrange, attempt, ask, decide, determine, fail, endeavour, happen, hope, learn, manage, offer, plan, prepare, promise, prove, refuse, seem, tend, threaten, try, volunteer, expect, want…</p>
+    <div class="bg-cyan-50 border border-cyan-200 rounded-lg p-3 mt-2 text-sm italic text-slate-700">She agreed to pay $50. · He learnt to look after himself.</div>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-md p-5 theory-card" style="border-left-color:#0891b2">
+    <h3 class="font-extrabold text-cyan-700 text-lg mb-2"><i class="fa-solid fa-circle-question mr-2 text-cyan-500"></i>2. Verb + how/what/when/where/which/why + to V</h3>
+    <p class="text-sm text-slate-600">ask, decide, discover, find out, forget, know, learn, remember, see, show, think, understand, want to know, wonder…</p>
+    <div class="bg-cyan-50 border border-cyan-200 rounded-lg p-3 mt-2 text-sm italic text-slate-700">He discovered how to open the safe. · I found out where to buy fruit cheaply.</div>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-md p-5 theory-card" style="border-left-color:#0e7490">
+    <h3 class="font-extrabold text-cyan-700 text-lg mb-2"><i class="fa-solid fa-users mr-2 text-cyan-500"></i>3. Verb + Object + to V</h3>
+    <p class="text-sm text-slate-600">advise, allow, enable, encourage, forbid, force, hear, instruct, invite, order, permit, persuade, request, remind, train, urge, want, tempt…</p>
+    <div class="bg-cyan-50 border border-cyan-200 rounded-lg p-3 mt-2 text-sm italic text-slate-700">She encouraged me to try again. · They persuaded us to go with them.</div>
+  </div>
+
+  <div class="text-center pt-2">
+    <button onclick="showTab('vocab')" class="bg-white shadow-md hover:shadow-lg text-sky-800 font-bold px-6 py-3 rounded-full transition hover:scale-105"><i class="fa-solid fa-arrow-right mr-2"></i>Sang phần Từ vựng</button>
+  </div>
+</section>
+
+<!-- ==================== VOCAB ==================== -->
+<section id="tab-vocab" class="section-page space-y-4">
+  <div class="bg-white rounded-2xl shadow-md p-5">
+    <div class="flex items-center gap-3 mb-2">
+      <div class="bg-sky-100 text-sky-800 font-black text-lg w-10 h-10 rounded-full flex items-center justify-center"><i class="fa-solid fa-spell-check"></i></div>
+      <div>
+        <h2 class="text-xl font-extrabold text-sky-800">Từ vựng Unit 10</h2>
+        <p class="text-sm text-slate-500">Nhấp vào mỗi thẻ để xem ví dụ · Nhấn <i class="fa-solid fa-volume-high text-sky-700"></i> để nghe phát âm.</p>
+      </div>
+    </div>
+    <div id="vocab-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4"></div>
+  </div>
+</section>
+
+<!-- ==================== TASK SHELLS ==================== -->
+<section id="tab-task1" class="section-page"><div id="task1-wrap"></div></section>
+<section id="tab-task2" class="section-page"><div id="task2-wrap"></div></section>
+<section id="tab-task3" class="section-page"><div id="task3-wrap"></div></section>
+<section id="tab-task4" class="section-page"><div id="task4-wrap"></div></section>
+<section id="tab-task5" class="section-page"><div id="task5-wrap"></div></section>
+<section id="tab-task6" class="section-page"><div id="task6-wrap"></div></section>
+<section id="tab-task7" class="section-page"><div id="task7-wrap"></div></section>
+<section id="tab-task8" class="section-page"><div id="task8-wrap"></div></section>
+<section id="tab-task9" class="section-page"><div id="task9-wrap"></div></section>
+<section id="tab-task10" class="section-page"><div id="task10-wrap"></div></section>
+<section id="tab-task11" class="section-page"><div id="task11-wrap"></div></section>
+<section id="tab-task12" class="section-page"><div id="task12-wrap"></div></section>
+<section id="tab-task13" class="section-page"><div id="task13-wrap"></div></section>
+<section id="tab-task14" class="section-page"><div id="task14-wrap"></div></section>
+<section id="tab-task15" class="section-page"><div id="task15-wrap"></div></section>
+
+<!-- ==================== WRITING PARAGRAPH ==================== -->
+<section id="tab-writing" class="section-page">
+  <div class="task-card bg-white rounded-2xl shadow-md p-6">
+    <div class="flex items-center gap-3 mb-4">
+      <div class="bg-pink-100 text-pink-700 font-black text-lg w-10 h-10 rounded-full flex items-center justify-center"><i class="fa-solid fa-pen-nib"></i></div>
+      <div>
+        <h2 class="text-xl font-extrabold text-pink-700">Viết đoạn văn (Writing)</h2>
+        <p class="text-sm text-slate-500">Is your living area facing with any kind of pollution? Write a paragraph (100–120 words) about it.</p>
+      </div>
+    </div>
+    <div class="bg-pink-50 border border-pink-200 rounded-xl p-4 text-sm text-slate-700 mb-4">
+      <b class="text-pink-700">Gợi ý cách tổ chức ý:</b>
+      <ul class="mt-1 space-y-0.5">
+        <li>• What kind of pollution is it facing?</li>
+        <li>• How is the situation?</li>
+        <li>• What are the causes?</li>
+        <li>• What are the effects?</li>
+        <li>• What should the people do to reduce it?</li>
+      </ul>
+    </div>
+    <textarea id="essay-input" rows="10" class="answer-input w-full px-3 py-2 rounded-lg text-sm" placeholder="Viết đoạn văn của bạn ở đây (100–120 từ)…"></textarea>
+    <div class="mt-2 text-xs text-slate-400" id="essay-count">Số từ: 0</div>
+    <div class="mt-3 flex gap-3 flex-wrap">
+      <button onclick="toggleModelEssay()" class="bg-pink-500 hover:bg-pink-600 text-white font-bold px-5 py-2.5 rounded-full transition hover:scale-105 shadow"><i class="fa-solid fa-eye mr-1"></i>Xem bài mẫu</button>
+    </div>
+    <div id="model-essay" class="vi-hidden mt-3 bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-slate-700 leading-relaxed">
+      <b class="text-blue-700">Bài mẫu:</b><br><br>
+      My living area is facing serious air pollution. The situation is getting worse day by day because of the increasing number of vehicles on the roads and the factories nearby. Every morning, the air is thick with smoke and dust, making it difficult to breathe. Many people, especially children and the elderly, have developed respiratory problems such as asthma and bronchitis. The main causes are exhaust fumes from cars and motorbikes, as well as industrial waste from factories. To reduce this pollution, people should use public transport or bicycles instead of private cars. The government should also enforce stricter regulations on factories and encourage the use of clean energy. If we all work together, we can improve the air quality in our living area.
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===== COMPLETION BANNER ===== -->
+<div id="completionBanner" class="hidden fixed inset-0 bg-black/50 z-[100] items-center justify-center p-4">
+  <div class="bg-white rounded-3xl p-8 max-w-md w-full text-center shadow-2xl">
+    <div class="text-6xl mb-3">🎊</div>
+    <h2 class="font-['Baloo_2'] text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-sky-800 to-cyan-600">Xuất sắc!</h2>
+    <p class="text-slate-600 mt-2 text-lg font-semibold">Bạn đã hoàn thành tất cả 15 bài tập!</p>
+    <p class="text-slate-500 text-sm mt-1">Đừng quên luyện phần Viết đoạn nữa nhé! 💪</p>
+    <div id="finalScoreDisplay" class="my-4 text-4xl font-black text-sky-800"></div>
+    <button onclick="closeBanner()" class="mt-2 bg-gradient-to-r from-sky-800 to-cyan-600 text-white font-bold px-8 py-3 rounded-full hover:scale-105 transition-all shadow-lg">Tiếp tục ôn tập 📖</button>
+  </div>
+</div>
+<script>
+/* =====================================================================
+   DATA — Unit 10 (Communication). type: mcq | fill | sentence | reading
+   ===================================================================== */
+
+const COLORS = {
+  sky:{ring:'sky',btn:'bg-sky-500 hover:bg-sky-600',head:'text-sky-700'},
+  cyan:{ring:'cyan',btn:'bg-cyan-500 hover:bg-cyan-600',head:'text-cyan-700'},
+  violet:{ring:'violet',btn:'bg-violet-500 hover:bg-violet-600',head:'text-violet-700'},
+  fuchsia:{ring:'fuchsia',btn:'bg-fuchsia-500 hover:bg-fuchsia-600',head:'text-fuchsia-700'},
+  emerald:{ring:'emerald',btn:'bg-emerald-500 hover:bg-emerald-600',head:'text-emerald-700'},
+  teal:{ring:'teal',btn:'bg-teal-500 hover:bg-teal-600',head:'text-teal-700'},
+  amber:{ring:'amber',btn:'bg-amber-500 hover:bg-amber-600',head:'text-amber-700'},
+  orange:{ring:'orange',btn:'bg-orange-500 hover:bg-orange-600',head:'text-orange-700'},
+  rose:{ring:'rose',btn:'bg-rose-500 hover:bg-rose-600',head:'text-rose-700'},
+  indigo:{ring:'indigo',btn:'bg-indigo-500 hover:bg-indigo-600',head:'text-indigo-700'},
+  pink:{ring:'pink',btn:'bg-pink-500 hover:bg-pink-600',head:'text-pink-700'},
+  lime:{ring:'lime',btn:'bg-lime-500 hover:bg-lime-600',head:'text-lime-700'},
+};
+
+/* ---------- VOCABULARY (22) ---------- */
+const vocab = [
+  {w:'body language', ipa:'/ˈbɒdi ˈlæŋɡwɪdʒ/ (n)', vi:'ngôn ngữ cơ thể, cử chỉ', ex:'Body language is a powerful form of non-verbal communication.', exvi:'Ngôn ngữ cơ thể là một hình thức giao tiếp phi ngôn ngữ mạnh mẽ.'},
+  {w:'communicate', ipa:'/kəˈmjuːnɪkeɪt/ (v)', vi:'giao tiếp', ex:'People communicate in many different ways.', exvi:'Mọi người giao tiếp theo nhiều cách khác nhau.'},
+  {w:'communication breakdown', ipa:'/kəˌmjuːnɪˈkeɪʃn ˈbreɪkdaʊn/ (n)', vi:'giao tiếp không thành công, ngưng trệ giao tiếp', ex:'A communication breakdown may happen due to cultural differences.', exvi:'Sự ngưng trệ giao tiếp có thể xảy ra do khác biệt văn hóa.'},
+  {w:'communication channel', ipa:'/kəˌmjuːnɪˈkeɪʃn ˈtʃænl/ (n)', vi:'kênh giao tiếp', ex:'Email is a popular communication channel in the office.', exvi:'Email là một kênh giao tiếp phổ biến trong văn phòng.'},
+  {w:'cultural difference', ipa:'/ˈkʌltʃərəl ˈdɪfrəns/ (n)', vi:'khác biệt văn hóa', ex:'Cultural differences can cause misunderstandings.', exvi:'Khác biệt văn hóa có thể gây ra hiểu lầm.'},
+  {w:'cyber world', ipa:'/ˈsaɪbə wɜːld/ (n)', vi:'thế giới ảo, thế giới mạng', ex:'Teenagers spend a lot of time in the cyber world.', exvi:'Thanh thiếu niên dành nhiều thời gian trong thế giới mạng.'},
+  {w:'chat room', ipa:'/tʃæt ruːm/ (n)', vi:'phòng chat (trên mạng)', ex:'You can go into a chat room and talk to people all over the world.', exvi:'Bạn có thể vào phòng chat và nói chuyện với mọi người trên khắp thế giới.'},
+  {w:'face-to-face', ipa:'/feɪs tʊ feɪs/ (adj, adv)', vi:'trực diện', ex:'Face-to-face communication is more personal than texting.', exvi:'Giao tiếp trực diện cá nhân hơn nhắn tin.'},
+  {w:'interact', ipa:'/ˌɪntərˈækt/ (v)', vi:'tương tác', ex:'Students need to interact with each other in class.', exvi:'Học sinh cần tương tác với nhau trong lớp.'},
+  {w:'landline phone', ipa:'/ˈlændlaɪn fəʊn/ (n)', vi:'điện thoại bàn', ex:'We can use landline phones for talking only, not for sending text messages.', exvi:'Chúng ta có thể dùng điện thoại bàn chỉ để gọi, không thể gửi tin nhắn.'},
+  {w:'language barrier', ipa:'/ˈlæŋɡwɪdʒ ˈbæriə/ (n)', vi:'rào cản ngôn ngữ', ex:'The language barrier is the biggest challenge when studying abroad.', exvi:'Rào cản ngôn ngữ là thách thức lớn nhất khi du học.'},
+  {w:'message board', ipa:'/ˈmesɪdʒ bɔːd/ (n)', vi:'diễn đàn trên mạng', ex:'I posted my question on the message board.', exvi:'Tôi đã đăng câu hỏi lên diễn đàn.'},
+  {w:'multimedia', ipa:'/ˌmʌltiˈmiːdiə/ (n)', vi:'đa phương tiện', ex:'The school uses multimedia in teaching.', exvi:'Trường sử dụng đa phương tiện trong giảng dạy.'},
+  {w:'netiquette', ipa:'/ˈnetɪket/ (n)', vi:'phép lịch sự khi giao tiếp trên mạng', ex:'Good netiquette is important when using the Internet.', exvi:'Phép lịch sự trên mạng rất quan trọng khi sử dụng Internet.'},
+  {w:'non-verbal language', ipa:'/nɒn-vɜːbl ˈlæŋɡwɪdʒ/ (n)', vi:'ngôn ngữ không dùng lời nói', ex:'Using signs is one kind of non-verbal communication.', exvi:'Sử dụng ký hiệu là một loại giao tiếp phi ngôn ngữ.'},
+  {w:'smart phone', ipa:'/smɑːt fəʊn/ (n)', vi:'điện thoại thông minh', ex:'Nowadays people prefer using smart phones rather than landline phones.', exvi:'Ngày nay mọi người thích dùng điện thoại thông minh hơn điện thoại bàn.'},
+  {w:'snail mail', ipa:'/sneɪl meɪl/ (n)', vi:'thư gửi qua đường bưu điện, thư chậm', ex:'Snail mails seem less advantageous than emails.', exvi:'Thư gửi qua bưu điện có vẻ kém tiện lợi hơn email.'},
+  {w:'social media', ipa:'/ˈsəʊʃl ˈmiːdiə/ (n)', vi:'mạng xã hội', ex:'Facebook is the most popular social media.', exvi:'Facebook là mạng xã hội phổ biến nhất.'},
+  {w:'telepathy', ipa:'/təˈlepəθi/ (n)', vi:'thần giao cách cảm', ex:'Using telepathy is a way to communicate by thoughts and feelings.', exvi:'Sử dụng thần giao cách cảm là cách giao tiếp bằng suy nghĩ và cảm xúc.'},
+  {w:'text', ipa:'/tekst/ (n, v)', vi:'văn bản, tin nhắn văn bản', ex:'She sent me a text message last night.', exvi:'Cô ấy gửi cho tôi một tin nhắn tối qua.'},
+  {w:'verbal language', ipa:'/ˈvɜːbl ˈlæŋɡwɪdʒ/ (n)', vi:'ngôn ngữ dùng lời nói', ex:'Speech is the fastest method of verbal communication.', exvi:'Nói là phương pháp giao tiếp bằng lời nhanh nhất.'},
+  {w:'video conference', ipa:'/ˈvɪdiəʊ ˈkɒnfərəns/ (n)', vi:'hội thảo qua mạng có hình ảnh', ex:'Video conferencing connects people in real time through audio and video.', exvi:'Hội nghị video kết nối mọi người theo thời gian thực qua âm thanh và hình ảnh.'},
+];
+
+/* ---------- TASKS ---------- */
+const tasks = {
+  /* ---------- BÀI 1: PHONETICS I ---------- */
+  1: {
+    color:'sky', title:'Bài 1: Ngữ âm – Chọn phần gạch chân khác',
+    desc:'Chọn từ có phần phát âm KHÁC với các từ còn lại trong nhóm.',
+    type:'mcq', instant:true,
+    questions:[
+      {q:'1.', options:['airports','suitcases','things','calculators'], answer:0, vi:'"airports" khác biệt.', explanation:'"airports" có "s" phát âm là /s/, còn ba từ còn lại phát âm là /z/.'},
+      {q:'2.', options:['chemist','chicken','church','changeable'], answer:0, vi:'"chemist" khác biệt.', explanation:'"chemist" có "ch" phát âm là /k/, còn ba từ còn lại phát âm là /tʃ/.'},
+      {q:'3.', options:['university','unique','united','undo'], answer:3, vi:'"undo" khác biệt.', explanation:'"undo" có "u" phát âm là /ʌ/, còn ba từ còn lại phát âm là /juː/.'},
+      {q:'4.', options:['faithful','fairy','failure','fainted'], answer:1, vi:'"fairy" khác biệt.', explanation:'"fairy" có "ai" phát âm là /eə/, còn ba từ còn lại phát âm là /eɪ/.'},
+      {q:'5.', options:['sun','sure','success','sort'], answer:1, vi:'"sure" khác biệt.', explanation:'"sure" có "s" phát âm là /ʃ/, còn ba từ còn lại phát âm là /s/.'},
+      {q:'6.', options:['affect','agency','aquatic','accommodation'], answer:1, vi:'"agency" khác biệt.', explanation:'"agency" có "a" phát âm là /eɪ/, còn ba từ còn lại phát âm là /ə/.'},
+      {q:'7.', options:['measure','illustrate','source','awesome'], answer:0, vi:'"measure" khác biệt.', explanation:'"measure" có "s" phát âm là /ʒ/, còn ba từ còn lại phát âm là /s/.'},
+      {q:'8.', options:['contaminate','contaminant','pollutant','poison'], answer:3, vi:'"poison" khác biệt.', explanation:'"poison" có "oi" phát âm là /ɔɪ/, còn ba từ còn lại có nguyên âm khác.'},
+      {q:'9.', options:['shake','scatter','trap','collapse'], answer:0, vi:'"shake" khác biệt.', explanation:'"shake" có "a" phát âm là /eɪ/, còn ba từ còn lại phát âm là /æ/.'},
+      {q:'10.', options:['healthy','thermal','northern','earth'], answer:2, vi:'"northern" khác biệt.', explanation:'"northern" có "th" phát âm là /ð/ (hữu thanh), còn ba từ còn lại phát âm là /θ/ (vô thanh).'},
+      {q:'11.', options:['interact','landline','chat','verbal'], answer:3, vi:'"verbal" khác biệt.', explanation:'"verbal" có "er" phát âm là /ɜː/, còn ba từ còn lại có nguyên âm khác.'},
+      {q:'12.', options:['weight','height','eight','vein'], answer:1, vi:'"height" khác biệt.', explanation:'"height" có "ei" phát âm là /aɪ/, còn ba từ còn lại phát âm là /eɪ/.'},
+      {q:'13.', options:['accurate','accept','accident','success'], answer:0, vi:'"accurate" khác biệt.', explanation:'"accurate" có "cc" phát âm là /k/, còn ba từ còn lại phát âm là /ks/.'},
+      {q:'14.', options:['rubbish','cultural','thunder','furious'], answer:3, vi:'"furious" khác biệt.', explanation:'"furious" có "u" phát âm là /ʊə/, còn ba từ còn lại phát âm là /ʌ/.'},
+      {q:'15.', options:['diving','discover','discipline','divide'], answer:2, vi:'"discipline" khác biệt.', explanation:'"discipline" có "i" phát âm là /ɪ/, còn ba từ còn lại phát âm là /aɪ/.'},
+      {q:'16.', options:['cotton','bottle','cold','common'], answer:2, vi:'"cold" khác biệt.', explanation:'"cold" có "o" phát âm là /əʊ/, còn ba từ còn lại phát âm là /ɒ/.'},
+      {q:'17.', options:['shout','sugar','share','surgery'], answer:0, vi:'"shout" khác biệt.', explanation:'"shout" có "sh" phát âm là /ʃ/ với nguyên âm /aʊ/, còn ba từ còn lại có "s" phát âm là /ʃ/ hoặc /s/.'},
+      {q:'18.', options:['valentine','imagine','discipline','magazine'], answer:0, vi:'"valentine" khác biệt.', explanation:'"valentine" có "i" phát âm là /aɪ/, còn ba từ còn lại phát âm là /ɪ/.'},
+      {q:'19.', options:['drummer','future','number','umbrella'], answer:1, vi:'"future" khác biệt.', explanation:'"future" có "u" phát âm là /juː/, còn ba từ còn lại phát âm là /ʌ/.'},
+      {q:'20.', options:['host','cost','post','most'], answer:1, vi:'"cost" khác biệt.', explanation:'"cost" có "o" phát âm là /ɒ/, còn ba từ còn lại phát âm là /əʊ/.'},
+      {q:'21.', options:['other','leather','wealthy','brother'], answer:2, vi:'"wealthy" khác biệt.', explanation:'"wealthy" có "th" phát âm là /θ/ (vô thanh), còn ba từ còn lại phát âm là /ð/ (hữu thanh).'},
+      {q:'22.', options:['television','elephant','section','Swedish'], answer:3, vi:'"Swedish" khác biệt.', explanation:'"Swedish" có "e" phát âm là /iː/, còn ba từ còn lại phát âm là /ə/ hoặc /e/.'},
+      {q:'23.', options:['explain','current','desire','electric'], answer:1, vi:'"current" khác biệt.', explanation:'"current" có "e" phát âm là /ʌ/, còn ba từ còn lại có nguyên âm khác.'},
+      {q:'24.', options:['threaten','thread','seat','bread'], answer:2, vi:'"seat" khác biệt.', explanation:'"seat" có "ea" phát âm là /iː/, còn ba từ còn lại phát âm là /e/.'},
+      {q:'25.', options:['deaf','leaf','meat','heat'], answer:0, vi:'"deaf" khác biệt.', explanation:'"deaf" có "ea" phát âm là /e/, còn ba từ còn lại phát âm là /iː/.'},
+      {q:'26.', options:['allow','follow','yellow','fellow'], answer:0, vi:'"allow" khác biệt.', explanation:'"allow" có "ow" phát âm là /aʊ/, còn ba từ còn lại phát âm là /əʊ/.'},
+      {q:'27.', options:['exhaust','hour','honest','house'], answer:3, vi:'"house" khác biệt.', explanation:'"house" có "h" phát âm là /h/, còn ba từ còn lại "h" không phát âm (silent).'},
+      {q:'28.', options:['mood','moon','soon','good'], answer:3, vi:'"good" khác biệt.', explanation:'"good" có "oo" phát âm là /ʊ/, còn ba từ còn lại phát âm là /uː/.'},
+      {q:'29.', options:['Dutch','Russian','just','use'], answer:3, vi:'"use" khác biệt.', explanation:'"use" có "u" phát âm là /juː/, còn ba từ còn lại phát âm là /ʌ/.'},
+      {q:'30.', options:['descent','dissent','discontent','continent'], answer:1, vi:'"dissent" khác biệt.', explanation:'"dissent" có "s" phát âm là /z/, còn ba từ còn lại phát âm là /s/.'},
+    ]
+  },
+
+  /* ---------- BÀI 2: PHONETICS II – TRỌNG ÂM ---------- */
+  2: {
+    color:'cyan', title:'Bài 2: Ngữ âm – Chọn trọng âm khác',
+    desc:'Chọn từ có trọng âm chính rơi vào vị trí KHÁC với các từ còn lại.',
+    type:'mcq', instant:true,
+    questions:[
+      {q:'1.', options:['competitive','proactive','selective','interactive'], answer:3, vi:'"interactive" trọng âm khác.', explanation:'"interactive" trọng âm rơi vào âm tiết 3, còn ba từ còn lại trọng âm rơi vào âm tiết 2.'},
+      {q:'2.', options:['identity','positive','primitive','telephone'], answer:0, vi:'"identity" trọng âm khác.', explanation:'"identity" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 1.'},
+      {q:'3.', options:['curiosity','nationality','community','university'], answer:2, vi:'"community" trọng âm khác.', explanation:'"community" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 3.'},
+      {q:'4.', options:['priority','repetitive','electrical','energetic'], answer:3, vi:'"energetic" trọng âm khác.', explanation:'"energetic" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 3.'},
+      {q:'5.', options:['simplicity','quality','equality','activity'], answer:1, vi:'"quality" trọng âm khác.', explanation:'"quality" trọng âm rơi vào âm tiết 1, còn ba từ còn lại trọng âm rơi vào âm tiết 2.'},
+      {q:'6.', options:['cigarette','referee','newspaper','engineer'], answer:2, vi:'"newspaper" trọng âm khác.', explanation:'"newspaper" trọng âm rơi vào âm tiết 1, còn ba từ còn lại trọng âm rơi vào âm tiết 3.'},
+      {q:'7.', options:['educate','valuable','interesting','committee'], answer:3, vi:'"committee" trọng âm khác.', explanation:'"committee" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 1.'},
+      {q:'8.', options:['appear','wonder','happen','study'], answer:0, vi:'"appear" trọng âm khác.', explanation:'"appear" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 1.'},
+      {q:'9.', options:['beauty','advice','postcard','picture'], answer:1, vi:'"advice" trọng âm khác.', explanation:'"advice" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 1.'},
+      {q:'10.', options:['equipment','assistant','experiment','sociable'], answer:3, vi:'"sociable" trọng âm khác.', explanation:'"sociable" trọng âm rơi vào âm tiết 1, còn ba từ còn lại trọng âm rơi vào âm tiết 2.'},
+      {q:'11.', options:['beautiful','factory','animal','pollution'], answer:3, vi:'"pollution" trọng âm khác.', explanation:'"pollution" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 1.'},
+      {q:'12.', options:['atmosphere','poisonous','polluted','telephone'], answer:2, vi:'"polluted" trọng âm khác.', explanation:'"polluted" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 1.'},
+      {q:'13.', options:['pedestrian','institute','document','energy'], answer:0, vi:'"pedestrian" trọng âm khác.', explanation:'"pedestrian" trọng âm rơi vào âm tiết 2, còn ba từ còn lại trọng âm rơi vào âm tiết 1.'},
+      {q:'14.', options:['celebrate','symbolise','festival','guarantee'], answer:3, vi:'"guarantee" trọng âm khác.', explanation:'"guarantee" trọng âm rơi vào âm tiết 3, còn ba từ còn lại trọng âm rơi vào âm tiết 1.'},
+      {q:'15.', options:['tropical','equipment','available','extensive'], answer:0, vi:'"tropical" trọng âm khác.', explanation:'"tropical" trọng âm rơi vào âm tiết 1, còn ba từ còn lại trọng âm rơi vào âm tiết 2.'},
+    ]
+  },
+
+  /* ---------- BÀI 3: MULTIPLE CHOICE (50) ---------- */
+  3: {
+    color:'violet', title:'Bài 3: Chọn đáp án đúng (Multiple Choice)',
+    desc:'Chọn phương án đúng nhất để hoàn thành mỗi câu.',
+    type:'mcq', instant:true,
+    questions:[
+      {q:'1. Cutting trees down can ___ to the soil erosion.', options:['make','lead','cause','trigger'], answer:1, vi:'Việc chặt cây có thể dẫn đến xói mòn đất.', explanation:'"lead to" = dẫn đến. "make" không đi với "to", "cause" không cần "to", "trigger" cũng không đi với "to" theo cách này.'},
+      {q:'2. The Earth ___ around the Sun.', options:['moving','move','moves','is moving'], answer:2, vi:'Trái Đất quay quanh Mặt Trời.', explanation:'Sự thật chung, hiện tại đơn, chủ ngữ số ít → moves.'},
+      {q:'3. People who live in different regions can speak their languages with different ___.', options:['accent','accents','voice','voices'], answer:1, vi:'Người sống ở các vùng khác nhau có thể nói ngôn ngữ của họ với giọng khác nhau.', explanation:'"accents" (số nhiều) vì có "different" và nhiều người → accents.'},
+      {q:'4. She thought that if they ___ lots of money, they would go on holiday.', options:['have','are having','had','has'], answer:2, vi:'Cô ấy nghĩ rằng nếu họ có nhiều tiền, họ sẽ đi nghỉ.', explanation:'Câu điều kiện loại 2: if + S + V-ed (quá khứ đơn) → had.'},
+      {q:'5. How long ___ you studied English?', options:['have been','have','has','having'], answer:1, vi:'Bạn đã học tiếng Anh được bao lâu?', explanation:'Hiện tại hoàn thành: How long have + S + P2?'},
+      {q:'6. The little cat should be ___ to be healthy.', options:['cured','cure','cures','curing'], answer:0, vi:'Con mèo nhỏ nên được chữa trị để khỏe mạnh.', explanation:'Bị động với động từ khiếm khuyết → should be cured.'},
+      {q:'7. Disneyland is ___ of the most interesting games.', options:['a house','houses','home','homes'], answer:2, vi:'Disneyland là nơi có những trò chơi thú vị nhất.', explanation:'"home of" = nơi có, quê hương của.'},
+      {q:'8. Did the storm cause ___ to the local in the middle part?', options:['damaged','damage','damaging','damages'], answer:1, vi:'Cơn bão có gây thiệt hại cho người dân ở khu vực giữa không?', explanation:'Sau "cause" cần danh từ → damage.'},
+      {q:'9. When I came there, the highest building ___ been destroyed by the storm!', options:['have','has','had','is having'], answer:2, vi:'Khi tôi đến đó, tòa nhà cao nhất đã bị phá hủy bởi bão!', explanation:'Quá khứ hoàn thành: had + P2.'},
+      {q:'10. She wouldn\'t go out if she ___ the weather forecast.', options:['listens to','listened to','listening to','is listening to'], answer:1, vi:'Cô ấy sẽ không ra ngoài nếu cô ấy nghe dự báo thời tiết.', explanation:'Câu điều kiện loại 2: if + S + V-ed → listened to.'},
+      {q:'11. My cousin said that she and her boyfriend would get ___ in the following month.', options:['marry','marries','married','marrying'], answer:2, vi:'Chị họ tôi nói rằng cô ấy và bạn trai sẽ kết hôn vào tháng sau.', explanation:'"get married" = kết hôn.'},
+      {q:'12. Why have they been ___ to speak Spanish?', options:['ability','abilities','abled','able'], answer:3, vi:'Tại sao họ có thể nói tiếng Tây Ban Nha?', explanation:'"be able to" = có khả năng.'},
+      {q:'13. How ___ do you know about the United Kingdom?', options:['many','long','much','often'], answer:2, vi:'Bạn biết bao nhiêu về Vương quốc Anh?', explanation:'"How much" + danh từ không đếm được (knowledge).'},
+      {q:'14. The first thing you see in her country is ___ restaurants.', options:['spacious','Space','spaces','spacing'], answer:0, vi:'Điều đầu tiên bạn thấy ở đất nước cô ấy là những nhà hàng rộng rãi.', explanation:'Trước danh từ "restaurants" cần tính từ → spacious.'},
+      {q:'15. The ___ pollution happens when the radiation goes into the land.', options:['radio','radios','radiated','radioactive'], answer:3, vi:'Ô nhiễm phóng xạ xảy ra khi bức xạ đi vào đất.', explanation:'"radioactive pollution" = ô nhiễm phóng xạ (tính từ + danh từ).'},
+      {q:'16. What is the ___ with you?', options:['matters','matter','wrong','fault'], answer:1, vi:'Bạn bị làm sao vậy?', explanation:'"What is the matter with you?" = Bạn bị gì vậy?'},
+      {q:'17. How ___ going to the cinema?', options:['at','in','on','about'], answer:3, vi:'Đi xem phim thì sao?', explanation:'"How about + V-ing?" = lời đề nghị.'},
+      {q:'18. If I ___ hard, I will get good marks.', options:['will study','study','am studying','studied'], answer:1, vi:'Nếu tôi học chăm chỉ, tôi sẽ được điểm cao.', explanation:'Câu điều kiện loại 1: if + S + V (hiện tại đơn) → study.'},
+      {q:'19. How can ___ help the poor in this town?', options:['governments','a government','the government','government'], answer:2, vi:'Chính phủ có thể giúp đỡ người nghèo ở thị trấn này bằng cách nào?', explanation:'"the government" (có mạo từ xác định) chỉ chính phủ cụ thể.'},
+      {q:'20. She ___ it difficult to understand their culture.', options:['thinks','learn','finds','realizes'], answer:2, vi:'Cô ấy thấy khó hiểu văn hóa của họ.', explanation:'"find + it + adj" = thấy...như thế nào.'},
+      {q:'21. A: Do you mind if I ___ a phone call? B: No, of course not.', options:['answer','send','take','make'], answer:3, vi:'Bạn có phiền nếu tôi gọi một cuộc điện thoại không?', explanation:'"make a phone call" = gọi điện thoại (cụm cố định).'},
+      {q:'22. After speaking on the phone, we knew we will have to see one another ___.', options:['hand-in-hand','face-to-face','head-to-toe','toe-to-toe'], answer:1, vi:'Sau khi nói chuyện điện thoại, chúng tôi biết chúng tôi sẽ phải gặp nhau trực tiếp.', explanation:'"face-to-face" = trực diện, gặp mặt trực tiếp.'},
+      {q:'23. We can use ___ for talking only, not for sending text messages.', options:['landline phone','mobile phone','smart phone','video'], answer:0, vi:'Chúng ta có thể dùng điện thoại bàn chỉ để gọi, không thể gửi tin nhắn.', explanation:'"landline phone" = điện thoại bàn, chỉ dùng để gọi.'},
+      {q:'24. Using signs is one kind of ___ communication.', options:['verbal','non-verbal','multimedia','written'], answer:1, vi:'Sử dụng ký hiệu là một loại giao tiếp phi ngôn ngữ.', explanation:'"non-verbal communication" = giao tiếp phi ngôn ngữ.'},
+      {q:'25. I read about the accident ___ the Internet.', options:['on','in','to','at'], answer:0, vi:'Tôi đọc về vụ tai nạn trên Internet.', explanation:'"on the Internet" = trên Internet.'},
+      {q:'26. This time next week we ___ around Africa.', options:['are travelling','travel','will travel','will be travelling'], answer:3, vi:'Giờ này tuần sau chúng tôi sẽ đang đi quanh châu Phi.', explanation:'Thì tương lai tiếp diễn: will be + V-ing.'},
+      {q:'27. At three o\'clock tomorrow, we ___ a video conference in our office.', options:['have','will be having','had','are having'], answer:1, vi:'Ngày mai lúc 3 giờ, chúng tôi sẽ đang họp video trong văn phòng.', explanation:'Thì tương lai tiếp diễn: will be + V-ing.'},
+      {q:'28. Lena enjoys ___ on the phone with her friends.', options:['chat','chats','chatting','chatted'], answer:2, vi:'Lena thích nói chuyện điện thoại với bạn bè.', explanation:'"enjoy + V-ing" = thích làm gì.'},
+      {q:'29. How did you learn ___ Japanese so well?', options:['speaking','to speak','speak','spoke'], answer:1, vi:'Bạn học nói tiếng Nhật giỏi như vậy bằng cách nào?', explanation:'"learn + to V" = học làm gì.'},
+      {q:'30. My sister suggested ___ fishing, but I didn\'t think that was a good idea.', options:['to go','go','going','goes'], answer:2, vi:'Chị tôi đề nghị đi câu cá, nhưng tôi không nghĩ đó là ý hay.', explanation:'"suggest + V-ing" = đề nghị làm gì.'},
+      {q:'31. I feel like ___ out tonight. What about you?', options:['to go','go','going','be going'], answer:2, vi:'Tôi cảm thấy muốn đi ra ngoài tối nay. Còn bạn?', explanation:'"feel like + V-ing" = cảm thấy muốn làm gì.'},
+      {q:'32. I chose ___ by plane because it\'s more convenient.', options:['to travel','travel','travelling','to travelling'], answer:0, vi:'Tôi chọn đi máy bay vì nó tiện hơn.', explanation:'"choose + to V" = chọn làm gì.'},
+      {q:'33. Nowadays people prefer ___ smart phones rather than landline phones.', options:['use','using','to use','to be using'], answer:2, vi:'Ngày nay mọi người thích dùng điện thoại thông minh hơn điện thoại bàn.', explanation:'"prefer + to V" = thích làm gì hơn.'},
+      {q:'34. We hope ___ next week.', options:['meet','meeting','to meet','to meeting'], answer:2, vi:'Chúng tôi hy vọng gặp nhau tuần sau.', explanation:'"hope + to V" = hy vọng làm gì.'},
+      {q:'35. Do you mind ___ me email about the party?', options:['send','sending','to send','to sending'], answer:1, vi:'Bạn có phiền gửi email cho tôi về bữa tiệc không?', explanation:'"Do you mind + V-ing?" = Bạn có phiền làm gì không?'},
+      {q:'36. On the web, you can go into a ___ and talk to other people all over the world.', options:['chat room','online','sites','web page'], answer:0, vi:'Trên web, bạn có thể vào phòng chat và nói chuyện với mọi người trên toàn thế giới.', explanation:'"chat room" = phòng chat.'},
+      {q:'37. ___ connects people in real time through audio and video communication over Internet.', options:['Landline phone','Snail mail','Body language','Video conferencing'], answer:3, vi:'Hội nghị video kết nối mọi người theo thời gian thực qua âm thanh và hình ảnh.', explanation:'"Video conferencing" = hội nghị video.'},
+      {q:'38. In Britain, men do not look at women on the streets. However, the French do. This is called ___ difference.', options:['manner','gender','cultures','cultural'], answer:3, vi:'Ở Anh, đàn ông không nhìn phụ nữ trên đường. Tuy nhiên, người Pháp thì có. Đây gọi là khác biệt văn hóa.', explanation:'"cultural difference" = khác biệt văn hóa.'},
+      {q:'39. He seemed to be in a hurry. He glanced nervously ___ his watch.', options:['in','on','at','to'], answer:2, vi:'Anh ấy có vẻ đang vội. Anh ấy liếc nhìn đồng hồ một cách lo lắng.', explanation:'"glance at" = liếc nhìn.'},
+      {q:'40. A: Hello. Is Hung there, please? B: I\'m afraid he\'s out. Can I take a message? A: No, don\'t worry. I\'ll call ___ later.', options:['back','on','to','in'], answer:0, vi:'A: Xin chào. Hung có ở đó không? B: Tôi e là anh ấy đi rồi. Tôi có thể nhắn tin không? A: Không, đừng lo. Tôi sẽ gọi lại sau.', explanation:'"call back" = gọi lại.'},
+      {q:'41. A: Could I speak to Mai, please? B: I think you must have the ___ number.', options:['right','left','wrong','exact'], answer:2, vi:'A: Tôi có thể nói chuyện với Mai không? B: Tôi nghĩ bạn chắc chắn nhầm số rồi.', explanation:'"the wrong number" = nhầm số.'},
+      {q:'42. By the end of this century, everyone ___ with telepathy devices.', options:['communicate','communicates','is communicating','will be communicating'], answer:3, vi:'Vào cuối thế kỷ này, mọi người sẽ đang giao tiếp bằng thiết bị thần giao cách cảm.', explanation:'Thì tương lai tiếp diễn: will be + V-ing.'},
+      {q:'43. At half past ten tomorrow morning I ___ along the motorway.', options:['will drive','am driving','will be driving','drive'], answer:2, vi:'Ngày mai lúc 10 giờ rưỡi sáng, tôi sẽ đang lái xe trên xa lộ.', explanation:'Thì tương lai tiếp diễn: will be + V-ing.'},
+      {q:'44. I really enjoyed ___ to the songs you sent me. Thanks!', options:['listen','to listen','listening','to be listening'], answer:2, vi:'Tôi thực sự thích nghe những bài hát bạn gửi cho tôi. Cảm ơn!', explanation:'"enjoy + V-ing" = thích làm gì.'},
+      {q:'45. My mother has decided ___ a Facebook account.', options:['open','to open','opening','to opening'], answer:1, vi:'Mẹ tôi đã quyết định mở một tài khoản Facebook.', explanation:'"decide + to V" = quyết định làm gì.'},
+      {q:'46. I don\'t want ___ snail mail because it\'s a slower and more expensive way than email.', options:['using','use','uses','to use'], answer:3, vi:'Tôi không muốn dùng thư bưu điện vì nó chậm và đắt hơn email.', explanation:'"want + to V" = muốn làm gì.'},
+      {q:'47. She promise ___ the chat room to discuss with me about the film.', options:['to join','join','joining','joins'], answer:0, vi:'Cô ấy hứa tham gia phòng chat để thảo luận với tôi về bộ phim.', explanation:'"promise + to V" = hứa làm gì.'},
+      {q:'48. E-mail allows people ___ in touch, regardless of distance.', options:['staying','stay','to have stayed','to stay'], answer:3, vi:'Email cho phép mọi người giữ liên lạc, bất kể khoảng cách.', explanation:'"allow + O + to V" = cho phép ai làm gì.'},
+      {q:'49. I\'m really looking forward ___ you next week.', options:['to see','to seeing','seeing','see'], answer:1, vi:'Tôi rất mong được gặp bạn tuần sau.', explanation:'"look forward to + V-ing" = mong chờ làm gì.'},
+      {q:'50. Tim pretended ___ me when I waved to him.', options:['not seeing','not to see','not see','to not see'], answer:1, vi:'Tim giả vờ không nhìn thấy tôi khi tôi vẫy tay với anh ấy.', explanation:'"pretend + not + to V" = giả vờ không làm gì.'},
+    ]
+  },
+
+  /* ---------- BÀI 4: WORD FORMS (20) ---------- */
+  4: {
+    color:'fuchsia', title:'Bài 4: Cho dạng đúng của từ trong ngoặc (Word Forms)',
+    desc:'Dùng từ gợi ý trong ngoặc để điền dạng đúng vào chỗ trống.',
+    type:'fill',
+    questions:[
+      {sentence:'Speech is the fastest method of ___ between people. (COMMUNICATE)', answers:['communication'], vi:'Nói là phương pháp giao tiếp nhanh nhất giữa con người.', explanation:'Sau "of" cần danh từ → communication.'},
+      {sentence:'A communication breakdown between two people from different countries may happen due to ___ differences. (CULTURE)', answers:['cultural'], vi:'Sự ngưng trệ giao tiếp giữa hai người từ các quốc gia khác nhau có thể xảy ra do khác biệt văn hóa.', explanation:'Trước danh từ "differences" cần tính từ → cultural.'},
+      {sentence:'When a policeman directs traffic, he often uses his arms to tell drivers where to go and when to stop. This is ___ communication. (VERBAL)', answers:['non-verbal'], vi:'Khi cảnh sát điều khiển giao thông, anh ấy thường dùng tay để chỉ cho tài xế đi đâu và khi nào dừng. Đây là giao tiếp phi ngôn ngữ.', explanation:'Dùng tay là phi ngôn ngữ → non-verbal.'},
+      {sentence:'Using telepathy is a way to communicate instantly by thoughts and feelings, without the need to use speech or ___. (WRITE)', answers:['writing'], vi:'Sử dụng thần giao cách cảm là cách giao tiếp tức thì bằng suy nghĩ và cảm xúc, không cần dùng lời nói hoặc viết.', explanation:'Sau "or" cần danh từ song song với "speech" → writing.'},
+      {sentence:'Students need the ___ to communicate with people within their team. (ABLE)', answers:['ability'], vi:'Học sinh cần khả năng giao tiếp với mọi người trong nhóm.', explanation:'Sau "the" cần danh từ → ability.'},
+      {sentence:'Could you tell that person was angry just by looking at his or her ___ expression? (FACE)', answers:['facial'], vi:'Bạn có thể biết người đó giận chỉ bằng cách nhìn biểu cảm khuôn mặt không?', explanation:'Trước danh từ "expression" cần tính từ → facial.'},
+      {sentence:'This lesson will focus on ___ communication skills. (EFFECT)', answers:['effective'], vi:'Bài học này sẽ tập trung vào kỹ năng giao tiếp hiệu quả.', explanation:'Trước danh từ "skills" cần tính từ → effective.'},
+      {sentence:'The technology can be used to produce ___ educational programs. (INTERACT)', answers:['interactive'], vi:'Công nghệ có thể được sử dụng để tạo ra các chương trình giáo dục tương tác.', explanation:'Trước danh từ "programs" cần tính từ → interactive.'},
+      {sentence:'In free time, Nga often communicates ___ with her cats. (NON-VERBAL)', answers:['non-verbally'], vi:'Thời gian rảnh, Nga thường giao tiếp phi ngôn ngữ với mèo.', explanation:'Sau "communicates" cần trạng từ → non-verbally.'},
+      {sentence:'Nowadays, many young people are using ___ media such as Facebook, Twitter, Zalo. (SOCIETY)', answers:['social'], vi:'Ngày nay, nhiều bạn trẻ sử dụng mạng xã hội như Facebook, Twitter, Zalo.', explanation:'Trước danh từ "media" cần tính từ → social.'},
+      {sentence:'The ___ are very concerned about the increasing number of wildfire in this year. (ENVIRONMENT)', answers:['environmentalists'], vi:'Các nhà môi trường rất lo ngại về số lượng cháy rừng tăng trong năm nay.', explanation:'Sau "The" cần danh từ chỉ người (số nhiều) → environmentalists.'},
+      {sentence:'Examples of primary ___ are exhaust fumes from cars, soot from smoke and ash from volcanic eruption. (POLLUTE)', answers:['pollutants'], vi:'Các chất ô nhiễm chính là khí thải từ xe hơi, bồ hóng từ khói và tro từ núi lửa.', explanation:'Sau "primary" cần danh từ số nhiều → pollutants.'},
+      {sentence:'Although the earthquake last only some seconds, but its ___ really terrified all the local people. (OCCUR)', answers:['occurrence'], vi:'Mặc dù trận động đất chỉ kéo dài vài giây, nhưng sự xảy ra của nó thực sự làm tất cả người dân sợ hãi.', explanation:'Sau "its" cần danh từ → occurrence.'},
+      {sentence:'Niagara Falls, on the border of the USA and Canada, is one of the most ___ sceneries in the world. (SPECTACLE)', answers:['spectacular'], vi:'Thác Niagara, ở biên giới Mỹ và Canada, là một trong những cảnh quan ngoạn mục nhất thế giới.', explanation:'So sánh nhất "most" cần tính từ → spectacular.'},
+      {sentence:'Different kinds of environmental pollution in recent years have destroyed many ___ habitats. (NATURE)', answers:['natural'], vi:'Các loại ô nhiễm môi trường khác nhau trong những năm gần đây đã phá hủy nhiều môi trường sống tự nhiên.', explanation:'Trước danh từ "habitats" cần tính từ → natural.'},
+      {sentence:'The birth of emails has made the ___ among people much easier than before. (CORRESPOND)', answers:['correspondence'], vi:'Sự ra đời của email đã làm cho sự liên lạc giữa mọi người dễ dàng hơn trước rất nhiều.', explanation:'Sau "the" cần danh từ → correspondence.'},
+      {sentence:'The Internet is ___ again. It is so annoying! (CONNECT)', answers:['disconnected'], vi:'Internet lại bị ngắt kết nối rồi. Thật khó chịu!', explanation:'Sau "is" cần tính từ; ngữ cảnh cho thấy cần dạng phủ định → disconnected.'},
+      {sentence:'Snail mails seem less ___ than emails. (ADVANTAGE)', answers:['advantageous'], vi:'Thư bưu điện có vẻ kém tiện lợi hơn email.', explanation:'Sau "less" cần tính từ → advantageous.'},
+      {sentence:'Being ___ to watching TV or videos may lead to many health problems among teenagers. (ADDICT)', answers:['addicted'], vi:'Nghiện xem TV hoặc video có thể dẫn đến nhiều vấn đề sức khỏe ở thanh thiếu niên.', explanation:'"be addicted to" = nghiện.'},
+      {sentence:'The Telegraph was one of the most well-known ___ in the 20th. (INVENT)', answers:['inventions'], vi:'Máy điện báo là một trong những phát minh nổi tiếng nhất thế kỷ 20.', explanation:'Sau "well-known" cần danh từ số nhiều → inventions.'},
+    ]
+  },
+
+  /* ---------- BÀI 5: VERB FORMS (20) ---------- */
+  5: {
+    color:'emerald', title:'Bài 5: Chia đúng dạng của động từ trong ngoặc',
+    desc:'Đọc kỹ từng câu và chia đúng dạng của động từ trong ngoặc.',
+    type:'fill',
+    questions:[
+      {sentence:'Would you mind (close) ___ the window?', answers:['closing'], vi:'Bạn có phiền đóng cửa sổ không?', explanation:'"Do you mind + V-ing?" → closing.'},
+      {sentence:'I\'d really love (see) ___ you again.', answers:['to see'], vi:'Tôi thực sự muốn gặp lại bạn.', explanation:'"love + to V" = muốn làm gì → to see.'},
+      {sentence:'It was a nice day, so we decided (go) ___ for a walk.', answers:['to go'], vi:'Trời đẹp, nên chúng tôi quyết định đi dạo.', explanation:'"decide + to V" = quyết định làm gì → to go.'},
+      {sentence:'I\'ve got a new smart phone. I haven\'t learnt (use) ___ it yet.', answers:['to use'], vi:'Tôi có điện thoại mới. Tôi vẫn chưa học cách dùng nó.', explanation:'"learn + to V" = học làm gì → to use.'},
+      {sentence:'I hate (have) ___ to get up early on Sunday!', answers:['having'], vi:'Tôi ghét phải dậy sớm vào Chủ nhật!', explanation:'"hate + V-ing" = ghét làm gì → having.'},
+      {sentence:'Don\'t forget (post) ___ the letter I gave you.', answers:['to post'], vi:'Đừng quên gửi lá thư tôi đưa cho bạn.', explanation:'"forget + to V" = quên (chưa làm) → to post.'},
+      {sentence:'I wonder where Linda is. She promised not (be) ___ late.', answers:['to be'], vi:'Tôi tự hỏi Linda ở đâu. Cô ấy hứa sẽ không đến muộn.', explanation:'"promise + not + to V" = hứa không làm gì → to be.'},
+      {sentence:'What do you want (do) ___ later?', answers:['to do'], vi:'Bạn muốn làm gì sau này?', explanation:'"want + to V" = muốn làm gì → to do.'},
+      {sentence:'Minh suggested (have) ___ a video conference this week.', answers:['having'], vi:'Minh đề nghị họp video tuần này.', explanation:'"suggest + V-ing" = đề nghị làm gì → having.'},
+      {sentence:'I\'m still looking for a job, but I hope (find) ___ something soon.', answers:['to find'], vi:'Tôi vẫn đang tìm việc, nhưng tôi hy vọng tìm được gì đó sớm.', explanation:'"hope + to V" = hy vọng làm gì → to find.'},
+      {sentence:'Quang Ngai was (hit) ___ by a severe storm last year.', answers:['hit'], vi:'Quảng Ngãi bị một cơn bão nặng tấn công năm ngoái.', explanation:'Bị động quá khứ đơn: was + P2. "hit" là động từ bất quy tắc (hit-hit-hit) → hit.'},
+      {sentence:'If the air (not pollute) ___, people\'s physical condition will be better.', answers:['is not polluted'], vi:'Nếu không khí không bị ô nhiễm, tình trạng sức khỏe của mọi người sẽ tốt hơn.', explanation:'Câu điều kiện loại 1, bị động: if + S + is not + P2.'},
+      {sentence:'Where (be) ___ they from? Spain and England.', answers:['are'], vi:'Họ đến từ đâu? Tây Ban Nha và Anh.', explanation:'Chủ ngữ số nhiều "they" → are.'},
+      {sentence:'If you had magic, what ___ you (do) ___ to stop pollution?', answers:['would','do'], vi:'Nếu bạn có phép thuật, bạn sẽ làm gì để ngăn ô nhiễm?', explanation:'Câu điều kiện loại 2: What would + S + V?'},
+      {sentence:'Minh (finish) ___ his housework before I went home.', answers:['had finished'], vi:'Minh đã làm xong việc nhà trước khi tôi về.', explanation:'Quá khứ hoàn thành: had + P2.'},
+      {sentence:'___ she (visit) ___ her close friends before the day she left the city?', answers:['Had','visited'], vi:'Cô ấy đã thăm bạn bè thân trước ngày rời thành phố chưa?', explanation:'Câu hỏi quá khứ hoàn thành: Had + S + P2?'},
+      {sentence:'How would you become if you (stop) ___ drinking water?', answers:['stopped'], vi:'Bạn sẽ ra sao nếu bạn ngừng uống nước?', explanation:'Câu điều kiện loại 2: if + S + V-ed → stopped.'},
+      {sentence:'___ you (have) ___ problems with your French lessons?', answers:['Do','have'], vi:'Bạn có gặp vấn đề với bài tiếng Pháp không?', explanation:'Câu hỏi hiện tại đơn: Do + S + V?'},
+      {sentence:'She could manage (overcome) ___ her serious illness last week.', answers:['to overcome'], vi:'Cô ấy có thể vượt qua bệnh nặng tuần trước.', explanation:'"manage + to V" = xoay xở làm gì → to overcome.'},
+      {sentence:'Nick often (record) ___ his voice when he practices speaking English.', answers:['records'], vi:'Nick thường ghi âm giọng nói khi luyện nói tiếng Anh.', explanation:'"often" là dấu hiệu hiện tại đơn, chủ ngữ số ít → records.'},
+    ]
+  },
+
+  /* ---------- BÀI 6: CORRECTION (20) ---------- */
+  6: {
+    color:'rose', title:'Bài 6: Tìm lỗi sai và sửa lại',
+    desc:'Mỗi câu có một lỗi sai. Chọn phần chứa lỗi sai và sửa lại cho đúng.',
+    type:'mcq', instant:true,
+    questions:[
+      {q:'1. You aren\'t allowed <u>smoking</u> because you are <u>too young</u> <u>to do</u> it.', options:['A: aren\'t allowed','B: smoking','C: too young','D: to do'], answer:1, vi:'Bạn không được phép hút thuốc vì bạn quá trẻ.', explanation:'"aren\'t allowed to smoke" (không được phép hút) → smoking phải sửa thành to smoke.', note:'be allowed + to V'},
+      {q:'2. <u>Because of</u> <u>language barrier</u>, they decided <u>using</u> body language <u>to communicate</u>.', options:['A: Because of','B: language barrier','C: using','D: to communicate'], answer:2, vi:'Vì rào cản ngôn ngữ, họ quyết định dùng ngôn ngữ cơ thể để giao tiếp.', explanation:'"decide + to V" → using phải sửa thành to use.', note:'decide + to V'},
+      {q:'3. The children <u>forged</u> <u>picking up</u> the note from the office <u>and now</u> they <u>are worried</u>.', options:['A: forgot','B: picking up','C: and now','D: are worried'], answer:1, vi:'Bọn trẻ quên nhặt ghi chú từ văn phòng và bây giờ chúng lo lắng.', explanation:'"forget + to V" = quên (chưa làm) → picking up phải sửa thành to pick up.', note:'forget + to V (quên chưa làm)'},
+      {q:'4. <u>Would you</u> prefer <u>came</u> <u>in the morning</u> <u>or the afternoon</u>?', options:['A: Would you','B: came','C: in the morning','D: or the afternoon'], answer:1, vi:'Bạn thích đến vào buổi sáng hay buổi chiều?', explanation:'"prefer + to V" → came phải sửa thành to come.', note:'prefer + to V'},
+      {q:'5. <u>I\'ll be here</u> <u>in a moment</u> if you <u>don\'t mind to wait</u> <u>for a couple of minutes</u>.', options:['A: I\'ll be here','B: in a moment','C: don\'t mind to wait','D: for a couple of minutes'], answer:2, vi:'Tôi sẽ ở đây ngay nếu bạn không phiền chờ vài phút.', explanation:'"Do you mind + V-ing?" → to wait phải sửa thành waiting.', note:'mind + V-ing'},
+      {q:'6. <u>The earthquake</u> happened <u>at midday</u> when many people <u>had had lunch</u>.', options:['A: The earthquake','B: at midday','C: had had lunch','D: (no error visible)'], answer:2, vi:'Trận động đất xảy ra vào giữa trưa khi nhiều người đang ăn trưa.', explanation:'Đang ăn trưa khi động đất xảy ra → quá khứ tiếp diễn: were having lunch.', note:'was/were + V-ing (quá khứ tiếp diễn)'},
+      {q:'7. <u>Water pollute</u> <u>in the lake</u> <u>has made</u> <u>the fish die</u>.', options:['A: Water pollute','B: in the lake','C: has made','D: the fish die'], answer:0, vi:'Ô nhiễm nước trong hồ đã khiến cá chết.', explanation:'Cần danh từ "pollution" không phải động từ "pollute" → Water pollution.', note:'noun + noun'},
+      {q:'8. <u>If I am</u> you, <u>I would choose</u> another country to visit <u>in this summer holiday</u>.', options:['A: If I am','B: I would choose','C: another country','D: in this summer holiday'], answer:0, vi:'Nếu tôi là bạn, tôi sẽ chọn quốc gia khác để thăm vào kỳ nghỉ hè.', explanation:'Câu điều kiện loại 2: If I were you → am phải sửa thành were.', note:'If I were you (câu điều kiện loại 2)'},
+      {q:'9. If the factory <u>doesn\'t stop</u> <u>pollute</u> the lake, <u>no fish</u> <u>will be able to survive</u>.', options:['A: doesn\'t stop','B: pollute','C: no fish','D: will be able to survive'], answer:1, vi:'Nếu nhà máy không ngừng ô nhiễm hồ, sẽ không có cá nào sống được.', explanation:'"stop + V-ing" → pollute phải sửa thành polluting.', note:'stop + V-ing'},
+      {q:'10. <u>Landslide</u> <u>has never occur</u> in my region <u>since 1995</u>.', options:['A: Landslide','B: has never occur','C: in my region','D: since 1995'], answer:1, vi:'Lở đất chưa bao giờ xảy ra ở khu vực tôi từ năm 1995.', explanation:'Hiện tại hoàn thành: has never + P2 → occur phải sửa thành occurred.', note:'has never + P2'},
+      {q:'11. <u>By the time</u> I <u>had went</u> <u>to India</u>, I had known about its Holi festival of Colors through my English book.', options:['A: By the time','B: had went','C: to India','D: had known'], answer:1, vi:'Trước khi tôi đi Ấn Độ, tôi đã biết về lễ hội Holi qua sách tiếng Anh.', explanation:'Quá khứ đơn: went (không phải had went). "By the time" + quá khứ đơn.', note:'By the time + S + V-ed'},
+      {q:'12. <u>If I save</u> enough money for my Europe tour <u>at the end of this year</u>, <u>I won\'t waited</u> until the next year <u>to make it</u>.', options:['A: If I save','B: at the end of this year','C: I won\'t waited','D: to make it'], answer:2, vi:'Nếu tôi tiết kiệm đủ tiền cho chuyến đi châu Âu cuối năm nay, tôi sẽ không đợi đến năm sau.', explanation:'"won\'t" + V nguyên mẫu → waited phải sửa thành wait.', note:'won\'t + V (nguyên mẫu)'},
+      {q:'13. <u>The destruction</u> <u>of the storm</u> <u>was so serious</u> that it had taken local people two weeks <u>to turn back to a normal life</u>.', options:['A: The destruction','B: of the storm','C: was so serious','D: to turn back'], answer:2, vi:'Sự tàn phá của cơn bão nghiêm trọng đến mức người dân mất hai tuần để trở lại cuộc sống bình thường.', explanation:'Quá khứ đơn phù hợp hơn → was phải sửa thành were hoặc dùng thì khác.', note:'thì quá khứ đơn'},
+      {q:'14. <u>This water</u> contains <u>quite a lot of contaminants</u>, but it <u>should be refined</u> before <u>drinking</u>.', options:['A: This water','B: quite a lot of contaminants','C: should be refined','D: drinking'], answer:2, vi:'Nước này chứa khá nhiều chất ô nhiễm, nhưng nó nên được tinh chế trước khi uống.', explanation:'"should be refined" → refined phải sửa thành purified hoặc filtered (từ ngữ cảnh).', note:'should be + P2'},
+      {q:'15. <u>My niece memorized</u> the names of most <u>English speaking</u> countries <u>before she was</u> six.', options:['A: My niece memorized','B: English speaking','C: before she was','D: (no error)'], answer:0, vi:'Cháu gái tôi đã nhớ tên hầu hết các nước nói tiếng Anh trước khi sáu tuổi.', explanation:'Quá khứ hoàn thành phù hợp hơn: had memorized (hành động xảyra trước "was six").', note:'had + P2 (quá khứ hoàn thành)'},
+      {q:'16. <u>He will be</u> <u>hasing</u> a test on Maths <u>at the end of</u> <u>this month</u>.', options:['A: He will be','B: hasing','C: at the end of','D: this month'], answer:1, vi:'Anh ấy sẽ có một bài thi Toán vào cuối tháng này.', explanation:'"having" (không phải hasing) → tương lai tiếp diễn: will be having.', note:'will be + V-ing'},
+      {q:'17. <u>Both Mai and Linh</u> detest <u>to wait</u> <u>for their friends</u> <u>under the rain</u>.', options:['A: Both Mai and Linh','B: to wait','C: for their friends','D: under the rain'], answer:1, vi:'Cả Mai và Linh đều ghét phải chờ bạn dưới mưa.', explanation:'"detest + V-ing" → to wait phải sửa thành waiting.', note:'detest + V-ing'},
+      {q:'18. <u>They allow us</u> <u>visiting</u> <u>the laboratory</u> under their supervision in 30 minutes next Friday morning.', options:['A: They allow us','B: visiting','C: the laboratory','D: next Friday morning'], answer:1, vi:'Họ cho phép chúng tôi thăm phòng thí nghiệm dưới sự giám sát của họ trong 30 phút sáng thứ Sáu.', explanation:'"allow + O + to V" → visiting phải sửa thành to visit.', note:'allow + O + to V'},
+      {q:'19. I think that <u>people will be</u> <u>continue</u> <u>using emails</u> <u>at least</u> in the next century.', options:['A: people will be','B: continue','C: using emails','D: at least'], answer:1, vi:'Tôi nghĩ mọi người sẽ tiếp tục sử dụng email ít nhất trong thế kỷ tới.', explanation:'"will continue" (không có "be") → continue phải sửa thành continue (bỏ "be").', note:'S + will + V (tương lai đơn)'},
+      {q:'20. <u>It is possibly</u> <u>that there will be</u> <u>no on-road telephone booths</u> for public use <u>any more</u> in the near future.', options:['A: It is possibly','B: that there will be','C: no on-road telephone booths','D: any more'], answer:0, vi:'Có thể sẽ không còn cabin điện thoại trên đường cho công chúng sử dụng trong tương lai gần.', explanation:'"It is possible" (tính từ, không phải trạng từ) → possibly phải sửa thành possible.', note:'It is possible that...'},
+    ]
+  },
+
+  /* ---------- BÀI 7: READING I (Cloze - điền từ) ---------- */
+  7: {
+    color:'indigo', title:'Bài 7: Đọc hiểu – Điền từ vào chỗ trống',
+    desc:'Đọc đoạn văn và dùng từ cho sẵn để điền vào chỗ trống.',
+    passageId:'p7',
+    type:'fill',
+    bank:['studying','barrier','studied','When','breakdown','travelling','carefully','to raise','to write','thinking'],
+    questions:[
+      {sentence:'I\'m Linh and now I (1) ___ at a high school in the United States.', answers:['studying'], vi:'Tôi là Linh và bây giờ tôi đang học ở một trường trung học ở Mỹ.', explanation:'Hiện tại tiếp diễn: am studying.'},
+      {sentence:'My biggest challenge in the United States is the language (2) ___.', answers:['barrier'], vi:'Thách thức lớn nhất của tôi ở Mỹ là rào cản ngôn ngữ.', explanation:'"language barrier" = rào cản ngôn ngữ.'},
+      {sentence:'I (3) ___ English for five years but I still face difficulties in communication.', answers:['studied'], vi:'Tôi đã học tiếng Anh được năm năm nhưng vẫn gặp khó khăn trong giao tiếp.', explanation:'Hiện tại hoàn thành: have studied.'},
+      {sentence:'(4) ___ I go to see an American movie, I still can\'t understand the actors.', answers:['When'], vi:'Khi tôi đi xem phim Mỹ, tôi vẫn không thể hiểu các diễn viên.', explanation:'"When" = khi.'},
+      {sentence:'Maybe because spoken English has a lot of idioms and communication (5) ___ may happen due to cultural differences.', answers:['breakdown'], vi:'Có thể vì tiếng Anh nói có nhiều thành ngữ và sự ngưng trệ giao tiếp có thể xảy ra do khác biệt văn hóa.', explanation:'"communication breakdown" = ngưng trệ giao tiếp.'},
+      {sentence:'Leaving home and (6) ___ to study in a new country can be a stressful experience.', answers:['travelling'], vi:'Rời nhà và đi du học ở một đất nước mới có thể là trải nghiệm căng thẳng.', explanation:'Song song với "leaving" → travelling.'},
+      {sentence:'Second, I listen (7) ___.', answers:['carefully'], vi:'Thứ hai, tôi lắng nghe cẩn thận.', explanation:'Sau "listen" cần trạng từ → carefully.'},
+      {sentence:'I\'m not afraid (8) ___ questions as many times as it is necessary.', answers:['to raise'], vi:'Tôi không ngại đặt câu hỏi nhiều lần nếu cần.', explanation:'"be afraid + to V" = ngại làm gì → to raise.'},
+      {sentence:'I decided (9) ___ down what I want to speak.', answers:['to write'], vi:'Tôi quyết định viết ra những gì tôi muốn nói.', explanation:'"decide + to V" = quyết định làm gì → to write.'},
+      {sentence:'This is good because I already have some words and sentences in my mind, instead of (10) ___ during the presentation.', answers:['thinking'], vi:'Điều này tốt vì tôi đã có sẵn từ và câu trong đầu, thay vì suy nghĩ trong khi thuyết trình.', explanation:'"instead of + V-ing" = thay vì làm gì → thinking.'},
+    ]
+  },
+
+  /* ---------- BÀI 8: READING II (Benefits of Video Conferencing) ---------- */
+  8: {
+    color:'pink', title:'Bài 8: Đọc hiểu – Benefits of Video Conferencing',
+    desc:'Đọc đoạn văn và chọn đáp án đúng cho mỗi câu hỏi.',
+    passageId:'p8',
+    type:'mcq', instant:true,
+    questions:[
+      {q:'1. Video conferencing helps people ___.', options:['send message','send snail mail','send email','hold meetings'], answer:3, vi:'Hội nghị video giúp mọi người tổ chức họp.', explanation:'Bài đọc nói video conferencing "allows you to hold meetings".'},
+      {q:'2. How does video conferencing help people?', options:['It helps connect people in different places in real time.','It helps connect people in different places in future time.','It helps connect people in same places in real time.','It helps connect people in same places in future time.'], answer:0, vi:'Hội nghị video giúp mọi người như thế nào?', explanation:'Bài đọc nói nó "allows you to hold meetings with people who are in different places while seeing them and talking to them in real time".'},
+      {q:'3. What can people do with video conferencing?', options:['People can see and touch each other.','People can see and use telepathy.','People can see and talk to each other.','People can talk and touch each other.'], answer:2, vi:'Mọi người có thể làm gì với hội nghị video?', explanation:'Bài đọc nói "seeing them and talking to them in real time".'},
+      {q:'4. Which statement below is NOT TRUE?', options:['Video calling is often one-to-one communication','Video conferencing can happen between many people.','In the past, video conferencing needed simple equipment.','Today, video conferencing only needs smartphone with Internet connectivity.'], answer:2, vi:'Câu nào sau đây KHÔNG ĐÚNG?', explanation:'Bài đọc nói "In the past, video conferencing needed complex and expensive equipment" (phức tạp và đắt), không phải đơn giản.'},
+      {q:'5. How can video conferencing help people who work away from the office?', options:['It saves time.','It saves money.','It saves time and money.','None of them.'], answer:2, vi:'Hội nghị video giúp người làm việc xa văn phòng như thế nào?', explanation:'Bài đọc nói "it helps to save time and money for them".'},
+      {q:'6. Who will get benefits from video conferencing?', options:['farmer','teacher','engineer','housewife'], answer:1, vi:'Ai sẽ được hưởng lợi từ hội nghị video?', explanation:'Bài đọc nói "Video conferencing can help teachers in teaching, too."'},
+      {q:'7. What is the advantage of studying through video conferencing?', options:['Teacher can start class late.','Teacher doesn\'t know his/her students.','Teacher and students can be in same places.','Teacher and students can be in different places.'], answer:3, vi:'Lợi thế của việc học qua hội nghị video là gì?', explanation:'Bài đọc nói "Courses can take place with the teacher and each different student living in a different location."'},
+      {q:'8. What does the word "mountainous" mean?', options:['a place has rivers','a poor place','a place has mountains','a far place'], answer:2, vi:'Từ "mountainous" có nghĩa là gì?', explanation:'"mountainous" = có nhiều núi, thuộc vùng núi.'},
+    ]
+  },
+
+  /* ---------- BÀI 9: READING III (Facebook - Cloze) ---------- */
+  9: {
+    color:'violet', title:'Bài 9: Đọc hiểu – Facebook (điền từ)',
+    desc:'Đọc đoạn văn và chọn đápán đúng cho mỗi chỗ trống.',
+    passageId:'p9',
+    type:'mcq', instant:true,
+    questions:[
+      {q:'1. Nowadays, Facebook is the most popular ___ media.', options:['social','society','sociable','socialize'], answer:0, vi:'Ngày nay, Facebook là mạng xã hội phổ biến nhất.', explanation:'"social media" = mạng xã hội.'},
+      {q:'2. Not only adults but also teenagers ___ using Facebook.', options:['will','is','are','were'], answer:2, vi:'Không chỉ người lớn mà cả thanh thiếu niên đều đang sử dụng Facebook.', explanation:'Chủ ngữ số nhiều "teenagers" → are.'},
+      {q:'3. …you can send a direct message to a friend and start ___.', options:['chatted','chatting','chat','chats'], answer:1, vi:'…bạn có thể gửi tin nhắn trực tiếp cho bạn bè và bắt đầu trò chuyện.', explanation:'"start + V-ing" = bắt đầu làm gì → chatting.'},
+      {q:'4. Facebook can help you keep ___.', options:['from touch','in touch','to touch','touching'], answer:1, vi:'Facebook có thể giúp bạn giữ liên lạc.', explanation:'"keep in touch" = giữ liên lạc.'},
+      {q:'5. …making them seem closer ___ the distance.', options:['in spite','despite','although','however'], answer:1, vi:'…khiến họ dường như gần hơn despite khoảng cách.', explanation:'"despite" + N/V-ing = mặc dù.'},
+      {q:'6. Facebook can also help reduce or eliminate the ___ to meet new people.', options:['barriers','connection','breakdown','communication'], answer:0, vi:'Facebook cũng có thể giúp giảm hoặc loại bỏ rào cản khi gặp người mới.', explanation:'"barriers" = rào cản.'},
+      {q:'7. …if you feel ___ about asking someone in class about a homework assignment…', options:['nervously','nervous','happy','happily'], answer:1, vi:'…nếu bạn cảm thấy lo lắng về việc hỏi ai đó trong lớp về bài tập…', explanation:'Sau "feel" cần tính từ → nervous.'},
+      {q:'8. …you may feel more comfortable sending ___ to that person on Facebook.', options:['snail mail','meeting','telepathy','messages'], answer:3, vi:'…bạn có thể cảm thấy thoải mái hơn khi gửi tin nhắn cho người đó trên Facebook.', explanation:'"sending messages" = gửi tin nhắn.'},
+      {q:'9. …you can avoid any embarrassment in ___ meeting.', options:['cyber world','face-to-face','head-to-toe','internet'], answer:1, vi:'…bạn có thể tránh尴尬 trong cuộc gặp trực tiếp.', explanation:'"face-to-face meeting" = cuộc gặp trực tiếp.'},
+      {q:'10. …shy people spend ___ time on Facebook than sociable people.', options:['less','fewer','few','more'], answer:3, vi:'…người nhút nhát dành nhiều thời gian trên Facebook hơn người hòa đồng.', explanation:'So sánh hơn với "more".'},
+    ]
+  },
+
+  /* ---------- BÀI 10: READING IV (Non-verbal Communication) ---------- */
+  10: {
+    color:'amber', title:'Bài 10: Đọc hiểu – Forms of Non-verbal Communication',
+    desc:'Đọc đoạn văn và chọn đáp án đúng cho mỗi câu hỏi.',
+    passageId:'p10',
+    type:'mcq', instant:true,
+    questions:[
+      {q:'1. How many forms of non-verbal communication mentioned in the text?', options:['3','4','5','2'], answer:1, vi:'Có bao nhiêu hình thức giao tiếp phi ngôn ngữ được đề cập trong bài?', explanation:'Bài đọc đề cập 4 hình thức: Eye contact, Touch, Facial Expressions, Posture.'},
+      {q:'2. People from which country think avoiding eye contact is a sign of respect?', options:['Asian countries','Ghana','North America','European countries'], answer:0, vi:'Người nước nào cho rằng tránh giao tiếp bằng mắt là dấu hiệu tôn trọng?', explanation:'Bài đọc nói "In many Asian cultures, avoiding eye contact is seen as a sign of respect."'},
+      {q:'3. Why do Latin and North America people think eye contact is important?', options:['Because they think it shows respect.','Because they think it shows equality.','Because they think it shows importance.','Because they think it shows difference.'], answer:1, vi:'Tại sao người Latin và Bắc Mỹ cho rằng giao tiếp bằng mắt quan trọng?', explanation:'Bài đọc nói "consider eye contact important for showing equality among individuals."'},
+      {q:'4. What does "a stubborn child" mean?', options:['A child who listens to the adults','A child who doesn\'t listen to the adults','A child who respects the adults','A lovely child'], answer:1, vi:'"A stubborn child" có nghĩa là gì?', explanation:'"stubborn" = cứng đầu, không nghe lời.'},
+      {q:'5. Is shaking hands to greet a stranger OK in America?', options:['Yes, it is.','No, it isn\'t.','Not mentioned','Not sure'], answer:0, vi:'Bắt tay để chào người lạ ở Mỹ có được không?', explanation:'Bài đọc nói "using a firm handshake is considered appropriate to greet a stranger" → Có.'},
+      {q:'6. What do you do to greet other people in France?', options:['Shrug your shoulder.','Shake hands.','Kiss on their cheeks.','Raise your fists.'], answer:2, vi:'Ở Pháp, bạn chào người khác bằng cách nào?', explanation:'Bài đọc nói "in France, it is common to kiss someone you greet on both cheeks."'},
+      {q:'7. People from which country feel fine to touch children\'s heads?', options:['France','Vietnam','China','North America'], answer:3, vi:'Người nước nào cảm thấy thoải mái khi chạm đầu trẻ em?', explanation:'Bài đọc nói "Touching children on the head is fine in North America."'},
+      {q:'8. Why people in Middle East don\'t receive gifts with left hands?', options:['Because the left hand is often used to clean the body.','Because the left hand is often used to touch children\'s heads.','Because the left hand is often used to shake hands.','Because the left hand is often used to wear watch.'], answer:0, vi:'Tại sao người Trung Đông không nhận quà bằng tay trái?', explanation:'Bài đọc nói "the left hand is often used to clean the body so using that hand to receive a gift…is considered very rude."'},
+      {q:'9. People in Nigeria wink at their children when ___.', options:['they want them to do house work','they want to show their love','they want them to leave the room','they want them to leave the classroom'], answer:2, vi:'Người Nigeria nháy mắt với con khi nào?', explanation:'Bài đọc nói "people in Nigeria wink at their children if they want them to leave the room."'},
+      {q:'10. What is the meaning of standing with hands on the hips in America?', options:['Power','Pride','Anger','Both A & B'], answer:3, vi:'Đứng chống nạnh ở Mỹ có ý nghĩa gì?', explanation:'Bài đọc nói "standing with hands on the hips may suggest power or pride" → Cả A & B.'},
+    ]
+  },
+
+  /* ---------- BÀI 11: READING V + VI (San Francisco earthquake + Canadian Culture) ---------- */
+  11: {
+    color:'teal', title:'Bài 11: Đọc hiểu – San Francisco Earthquake & Canadian Culture',
+    desc:'Đọc hai đoạn văn rồi trả lời câu hỏi.',
+    type:'reading',
+    questions:[
+      {q:'(V) 1. The San Francisco earthquake struck very ___ in the morning.', answer:'early', keywords:['early'], vi:'Trận động đất San Francisco xảy ra rất sớm vào buổi sáng.', explanation:'Bài đọc nói "struck very early in the morning".'},
+      {q:'(V) 2. The San Andreas Fault is a crack in the earth that ___ about 800 miles through California.', answer:'runs', keywords:['runs'], vi:'Đứt gãy San Andreas là một vết nứt trong trái đất chạy khoảng 800 dặm qua California.', explanation:'Bài đọc nói "a crack in the earth that runs about 800 miles".'},
+      {q:'(V) 3. The weakness caused by this crack is a main ___ why earthquakes occur.', answer:'reason', keywords:['reason'], vi:'Điểm yếu do vết nứt này gây ra là lý do chính khiến động đất xảy ra.', explanation:'"a main reason why" = lý do chính tại sao.'},
+      {q:'(V) 4. The main quake was ___ 5:12 a.m.', answer:'at', keywords:['at'], vi:'Trận động đất chính xảy ra lúc 5:12 sáng.', explanation:'"at 5:12 a.m." = lúc 5:12 sáng.'},
+      {q:'(V) 5. The main quake ___ for almost a minute.', answer:'lasted', keywords:['lasted'], vi:'Trận động đất chính kéo dài gần một phút.', explanation:'"lasted for almost a minute" = kéo dài gần một phút.'},
+      {q:'(VI) 1. Canada Day is the ___ of the formation of the provinces into Canada.', answer:'celebration', keywords:['celebration'], vi:'Canada Day là lễ kỷ niệm sự hình thành các tỉnh thành Canada.', explanation:'"the celebration of" = lễ kỷ niệm.'},
+      {q:'(VI) 2. Canada became an ___ territory of England back on July 1st, 1867.', answer:'independent', keywords:['independent'], vi:'Canada trở thành lãnh thổ độc lập khỏi Anh vào ngày 1/7/1867.', explanation:'"independent territory" = lãnh thổ độc lập.'},
+      {q:'(VI) 3. Canadians across the country celebrate in many ___.', answer:'ways', keywords:['ways'], vi:'Người Canada trên khắp cả nước kỷ niệm theo nhiều cách.', explanation:'"in many ways" = theo nhiều cách.'},
+      {q:'(VI) 4. The Prime Minister and the Governor General attend to ___ performances of Canadian musicians.', answer:'watch', keywords:['watch'], vi:'Thủ tướng và Toàn quyền tham dự để xem biểu diễn của các nhạc sĩ Canada.', explanation:'"watch performances" = xem biểu diễn.'},
+      {q:'(VI) 5. Many Canadians proudly ___ the Canadian flag at parades.', answer:'wave', keywords:['wave'], vi:'Nhiều người Canada tự hào vẫy quốc kỳ trong các cuộc diễu hành.', explanation:'"wave the flag" = vẫy cờ.'},
+    ]
+  },
+
+  /* ---------- BÀI 12: WRITING I (Viết câu từ từ gợi ý) ---------- */
+  12: {
+    color:'sky', title:'Bài 12: Viết câu từ từ gợi ý',
+    desc:'Dùng các từ gợi ý để viết thành câu hoàn chỉnh.',
+    type:'sentence', instant:true,
+    questions:[
+      {prompt:'Mary/ enjoy/ listen/ music/ on/ radio.', answer:'Mary enjoys listening to music on the radio.', accepted:['mary enjoys listening to music on the radio'], vi:'Mary thích nghe nhạc trên đài.', explanation:'"enjoy + V-ing" → enjoys listening.'},
+      {prompt:'I / not/ mind/ do/ washing/ up.', answer:'I don\'t mind doing the washing up.', accepted:['i don\'t mind doing the washing up','i do not mind doing the washing up'], vi:'Tôi không ngại rửa bát.', explanation:'"mind + V-ing" → doing.'},
+      {prompt:'She/ advised/ me/ see/ doctor/ as/ soon/ as/ possible.', answer:'She advised me to see the doctor as soon as possible.', accepted:['she advised me to see the doctor as soon as possible'], vi:'Cô ấy khuyên tôi đi khám bác sĩ càng sớm越好.', explanation:'"advise + O + to V" → to see.'},
+      {prompt:'At/ last/ they/ decided/ rent/ apartment.', answer:'At last, they decided to rent the apartment.', accepted:['at last, they decided to rent the apartment','at last they decided to rent the apartment'], vi:'Cuối cùng, họ quyết định thuê căn hộ.', explanation:'"decide + to V" → to rent.'},
+      {prompt:'Would/ you/ mind/ post/ this/ letter/ me?', answer:'Would you mind posting this letter for me?', accepted:['would you mind posting this letter for me'], vi:'Bạn có phiền gửi lá thư này cho tôi không?', explanation:'"Would you mind + V-ing?" → posting.'},
+      {prompt:'We/ plan/ go/ Europe/ this/ summer.', answer:'We plan to go to Europe this summer.', accepted:['we plan to go to europe this summer'], vi:'Chúng tôi dự định đi châu Âu mùa hè này.', explanation:'"plan + to V" → to go.'},
+      {prompt:'The/ students/ hope/ pass/ exam.', answer:'The students hope to pass the exam.', accepted:['the students hope to pass the exam'], vi:'Các học sinh hy vọng đậu kỳ thi.', explanation:'"hope + to V" → to pass.'},
+      {prompt:'My/ boss/ want/ me/ send/ this/ email/ before/ afternoon.', answer:'My boss wants me to send this email before afternoon.', accepted:['my boss wants me to send this email before afternoon'], vi:'Sếp tôi muốn tôi gửi email này trước buổi chiều.', explanation:'"want + O + to V" → me to send.'},
+      {prompt:'She/ always/ enjoy/ talk/ her/ grandfather/ He/ always/ tell/ great/ stories.', answer:'She always enjoys talking to her grandfather. He always tells great stories.', accepted:['she always enjoys talking to her grandfather. he always tells great stories','she always enjoys talking to her grandfather, he always tells great stories'], vi:'Cô ấy luôn thích nói chuyện với ông. Ông luôn kể những câu chuyện tuyệt vời.', explanation:'"enjoy + V-ing" → talking; "tell stories" = kể chuyện.'},
+      {prompt:'The/ children/ promised/ be/ back/ 9/ o\'clock.', answer:'The children promised to be back by 9 o\'clock.', accepted:['the children promised to be back by 9 o\'clock','the children promised to be back before 9 o\'clock'], vi:'Bọn trẻ hứa sẽ về trước 9 giờ.', explanation:'"promise + to V" → to be back.'},
+    ]
+  },
+
+  /* ---------- BÀI 13: WRITING II (Viết lại câu) ---------- */
+  13: {
+    color:'lime', title:'Bài 13: Viết lại câu (Rewrite)',
+    desc:'Viết lại câu sao cho nghĩa không đổi, dùng từ gợi ý cho sẵn.',
+    type:'sentence', instant:true,
+    questions:[
+      {prompt:'Remind me to send Minh a letter about our plans. (WRITE)', answer:'Remind me to write Minh a letter about our plans.', accepted:['remind me to write minh a letter about our plans'], vi:'Nhắc tôi viết cho Minh một lá thư về kế hoạch của chúng ta.', explanation:'"write a letter" = viết thư (thay vì "send a letter").'},
+      {prompt:'Some monkeys use sign language to talk to people. (COMMUNICATE)', answer:'Some monkeys communicate with people through sign language.', accepted:['some monkeys communicate with people through sign language'], vi:'Một số con khỉ giao tiếp với mọi người qua ngôn ngữ ký hiệu.', explanation:'"communicate with people through sign language" = giao tiếp với mọi người qua ngôn ngữ ký hiệu.'},
+      {prompt:'Could you tell Johns about the school program by e-mail? (SEND)', answer:'Could you send an email to John about the school program?', accepted:['could you send an email to john about the school program','could you send john an email about the school program'], vi:'Bạn có thể gửi email cho John về chương trình trường không?', explanation:'"send an email to someone" = gửi email cho ai.'},
+      {prompt:'Mai sent me a text message. (RECEIVED)', answer:'I received a text message from Mai.', accepted:['i received a text message from mai'], vi:'Tôi nhận được tin nhắn từ Mai.', explanation:'Đổi từ chủ động sang bị động + đổi chủ ngữ.'},
+      {prompt:'Did Huy say anything about your post on Facebook? (COMMENT)', answer:'Did Huy comment on your post on Facebook?', accepted:['did huy comment on your post on facebook','did huy comment about your post on facebook'], vi:'Huy có bình luận về bài đăng của bạn trên Facebook không?', explanation:'"comment on/about" = bình luận về.'},
+    ]
+  },
+
+  /* ---------- BÀI 14: WRITING III (Future Continuous) ---------- */
+  14: {
+    color:'orange', title:'Bài 14: Viết câu ở thì tương lai tiếp diễn',
+    desc:'Dùng các từ gợi ý để viết câu hoàn chỉnh ở thì tương lai tiếp diễn.',
+    type:'sentence', instant:true,
+    questions:[
+      {prompt:'Tomorrow/ at/ this/ time/ I/ dance/ at/ party.', answer:'Tomorrow at this time I will be dancing at the party.', accepted:['tomorrow at this time i will be dancing at the party'], vi:'Ngày mai vào giờ này tôi sẽ đang nhảy ở bữa tiệc.', explanation:'Tương lai tiếp diễn: will be + V-ing.'},
+      {prompt:'Next week/ at/ this/ time/ she/ sunbathe/ at/ beach.', answer:'Next week at this time she will be sunbathing at the beach.', accepted:['next week at this time she will be sunbathing at the beach'], vi:'Tuần sau vào giờ này cô ấy sẽ đang tắm nắng ở bãi biển.', explanation:'Tương lai tiếp diễn: will be + V-ing.'},
+      {prompt:'2030/ we/ not/ use/ landline/ telephones.', answer:'In 2030, we will not be using landline telephones.', accepted:['in 2030, we will not be using landline telephones','in 2030 we will not be using landline telephones','in 2030, we won\'t be using landline telephones'], vi:'Năm 2030, chúng ta sẽ không còn dùng điện thoại bàn.', explanation:'Tương lai tiếp diễn phủ định: will not be + V-ing.'},
+      {prompt:'This/ evening/ 8 o\'clock/ she/ watch/ movie/ her/ friends.', answer:'This evening at 8 o\'clock, she will be watching a movie with her friends.', accepted:['this evening at 8 o\'clock, she will be watching a movie with her friends','this evening at 8 o\'clock she will be watching a movie with her friends'], vi:'Tối nay lúc 8 giờ, cô ấy sẽ đang xem phim với bạn bè.', explanation:'Tương lai tiếp diễn: will be + V-ing.'},
+      {prompt:'When/ I/ am/ 75/ I/ play/ my/ grandchildren.', answer:'When I am 75, I will be playing with my grandchildren.', accepted:['when i am 75, i will be playing with my grandchildren','when i am 75 i will be playing with my grandchildren'], vi:'Khi tôi 75 tuổi, tôi sẽ đang chơi với cháu.', explanation:'Tương lai tiếp diễn: will be + V-ing.'},
+      {prompt:'Unfortunately/ sea/ levels/ still/ rise/ in/ 20 years.', answer:'Unfortunately, sea levels will still be rising in 20 years.', accepted:['unfortunately, sea levels will still be rising in 20 years','unfortunately sea levels will still be rising in 20 years'], vi:'Thật không may, mực nước biển sẽ vẫn đang dâng trong 20 năm nữa.', explanation:'Tương lai tiếp diễn: will still be + V-ing.'},
+      {prompt:'This/ time/ next month/ we/ sit/ on/ train/ Barcelona.', answer:'This time next month we will be sitting on the train to Barcelona.', accepted:['this time next month we will be sitting on the train to barcelona'], vi:'Giờ này tháng sau chúng tôi sẽ đang ngồi trên tàu đến Barcelona.', explanation:'Tương lai tiếp diễn: will be + V-ing.'},
+      {prompt:'What/ you/ do/ in/ a/ year/ from/ now?', answer:'What will you be doing in a year from now?', accepted:['what will you be doing in a year from now'], vi:'Bạn sẽ đang làm gì một năm nữa?', explanation:'Câu hỏi tương lai tiếp diễn: What will + S + be + V-ing?'},
+      {prompt:'At/ this/ rate/ you/ speak/ Spanish/ fluently.', answer:'At this rate you will be speaking Spanish fluently.', accepted:['at this rate you will be speaking spanish fluently'], vi:'Với tốc độ này, bạn sẽ nói tiếng Tây Ban Nha lưu loát.', explanation:'Tương lai tiếp diễn: will be + V-ing.'},
+      {prompt:'This/ time/ Saturday/ Joe/ drive/ to/ airport.', answer:'This time on Saturday Joe will be driving to the airport.', accepted:['this time on saturday joe will be driving to the airport','this time saturday joe will be driving to the airport'], vi:'Giờ này thứ Bảy, Joe sẽ đang lái xe ra sân bay.', explanation:'Tương lai tiếp diễn: will be + V-ing.'},
+    ]
+  },
+
+  /* ---------- BÀI 15: WRITING IV (Viết lại câu) ---------- */
+  15: {
+    color:'pink', title:'Bài 15: Rewrite the following sentences',
+    desc:'Viết lại câu sao cho nghĩa không đổi, dùng từ gợi ý cho sẵn.',
+    type:'sentence', instant:true,
+    questions:[
+      {prompt:'Let\'s go to the cinema. (HOW)', answer:'How about going to the cinema?', accepted:['how about going to the cinema'], vi:'Đi xem phim thì sao?', explanation:'"How about + V-ing?" = lời đề nghị.'},
+      {prompt:'She has studied English for 5 years. (AGO)', answer:'She started studying English 5 years ago.', accepted:['she started studying english 5 years ago'], vi:'Cô ấy bắt đầu học tiếng Anh 5 năm trước.', explanation:'"started + V-ing + ago" = bắt đầu làm gì cách đây bao lâu.'},
+      {prompt:'Mike completed his homework last night. (BY)', answer:'Mike\'s homework was completed by him last night.', accepted:['mike\'s homework was completed by him last night'], vi:'Bài tập về nhà của Mike đã được hoàn thành tối qua.', explanation:'Bị động: S + was + P2 + by + O.'},
+      {prompt:'Using lots of cars can lead to air pollution. (CAUSED)', answer:'Air pollution can be caused by using lots of cars.', accepted:['air pollution can be caused by using lots of cars'], vi:'Ô nhiễm không khí có thể do sử dụng nhiều xe hơi gây ra.', explanation:'Bị động: S + can be caused by + N/V-ing.'},
+      {prompt:'The air is polluted. People have breathing problems. (IF)', answer:'If the air is polluted, people will have breathing problems.', accepted:['if the air is polluted, people will have breathing problems','if the air is polluted people will have breathing problems'], vi:'Nếu không khí bị ô nhiễm, mọi người sẽ gặp vấn đề hô hấp.', explanation:'Câu điều kiện loại 1: If + S + V (hiện tại), S + will + V.'},
+    ]
+  },
+};
+
+/* ---------- Reading passages ---------- */
+const passages = {
+  p7: {
+    title:'Linh\'s Experience in the United States',
+    html:`I\'m Linh and now I <b>(1)</b> at a high school in the United States. My biggest challenge in the United States is the language <b>(2)</b>. I <b>(3)</b> English for five years but I still face difficulties in communication. For all the time, I feel nervous to understand what other people were saying and why they were laughing. <b>(4)</b> I go to see an American movie, I still can\'t understand the actors. Maybe because spoken English has a lot of idioms and communication <b>(5)</b> may happen due to cultural differences.<br><br>Leaving home and <b>(6)</b> to study in a new country can be a stressful experience. However, I have learned some ways to overcome my problem. First, I usually tell people that I am learning English in case they don\'t understand me. Second, I listen <b>(7)</b>. If I don\'t understand something for the first time, I\'m not afraid <b>(8)</b> questions as many times as it is necessary. Watching people speak also help me to add new words to my vocabulary. Finally, my big fear is public speaking, so I decided <b>(9)</b> down what I want to speak. This is good because I already have some words and sentences in my mind, instead of <b>(10)</b> during the presentation.`,
+    vi:`Tôi là Linh và bây giờ tôi đang học ở một trường trung học ở Mỹ. Thách thức lớn nhất của tôi ở Mỹ là rào cản ngôn ngữ. Tôi đã học tiếng Anh được năm năm nhưng vẫn gặp khó khăn trong giao tiếp. Tôi luôn cảm thấy lo lắng khi hiểu những gì người khác nói và tại sao họ cười. Khi tôi đi xem phim Mỹ, tôi vẫn không thể hiểu các diễn viên. Có thể vì tiếng Anh nói có nhiều thành ngữ và sự ngưng trệ giao tiếp có thể xảy ra do khác biệt văn hóa.<br><br>Rời nhà và đi du học ở một đất nước mới có thể là trải nghiệm căng thẳng. Tuy nhiên, tôi đã học được一些 cách để克服 vấn đề. Đầu tiên, tôi thường告诉 mọi người rằng tôi đang học tiếng Anh以防 họ không hiểu tôi. Thứ hai, tôi lắng nghe cẩn thận. Nếu tôi không hiểu gì lần đầu, tôi không ngại đặt câu hỏi nhiều lần nếu cần.观看 mọi người nói cũng giúp tôi mở rộng vốn từ. Cuối cùng, nỗi sợ lớn nhất của tôi là thuyết trình trước công chúng,所以我 quyết định viết ra những gì tôi muốn nói. Điều này tốt因为我 đã có sẵn từ và câu trong đầu, thay vì suy nghĩ trong khi thuyết trình.`
+  },
+  p8: {
+    title:'Benefits of Video Conferencing',
+    html:`Video conferencing is the technology that allows you to hold meetings with people who are in different places while seeing them and talking to them in real time. It is different from simple video calling, which is often one-to-one video communication. In the past, video conferencing needed complex and expensive equipment. Today, it\'s easy to join in a video conference on your computer or smart phone with Internet connectivity. Moreover, video conferencing is also an important tool for people who work away from the office, often at home because it helps to save time and money for them.<br><br>Video conferencing can help teachers in teaching, too. Video conferencing is a great way of learning and sharing knowledge beyond distance. Courses can take place with the teacher and each different student living in a different location. This will help education spread even to remote mountainous areas.`,
+    vi:`Hội nghị video là công nghệ cho phép bạn tổ chức họp với những người ở những nơi khác nhau trong khi thấy và nói chuyện với họ theo thời gian thực. Nó khác với cuộc gọi video đơn giản, thường là giao tiếp video một-một. Trước đây, hội nghị video cần thiết bị phức tạp và đắt tiền. Ngày nay, thật dễ dàng tham gia hội nghị video trên máy tính hoặc điện thoại thông minh có kết nối Internet. Hơn nữa, hội nghị video cũng là công cụ quan trọng cho những người làm việc xa văn phòng, thường ở nhà vì nó giúp tiết kiệm thời gian và tiền bạc cho họ.<br><br>Hội nghị video cũng có thể giúp giáo viên trong giảng dạy. Hội nghị video là cách tuyệt vời để học hỏi và chia sẻ kiến thức跨越 khoảng cách. Các khóa học có thể diễn ra với giáo viên và mỗi học sinh sống ở不同的 địa điểm. Điều này sẽ giúp giáo dục lan truyền甚至 đến các vùng núi xa xôi.`
+  },
+  p9: {
+    title:'Facebook - Social Media',
+    html:`Nowadays, Facebook is the most popular <b>(1)</b> media which helps to connect people. Not only adults but also teenagers <b>(2)</b> using Facebook. There are many ways to communicate on Facebook. You can post messages to the public or to your friends. If you want a private conversation, you can send a direct message to a friend and start <b>(3)</b>. If you want to meet new people with same interests, you can join in Facebook groups or Facebook pages.<br><br>When friends and family members move to a different place or even different country, Facebook can help you keep <b>(4)</b>. In addition to communicating directly through posting and messaging, you can play games with them, making them seem closer <b>(5)</b> the distance.<br><br>Facebook can also help reduce or eliminate the <b>(6)</b> to meet new people. For example, if you feel <b>(7)</b> about asking someone in class about a homework assignment, you may feel more comfortable sending <b>(8)</b> to that person on Facebook. That way, you can think over what you write and can avoid any embarrassment in <b>(9)</b> meeting. That\'s the reason why shy people spend <b>(10)</b> time on Facebook than sociable people.`,
+    vi:`Ngày nay, Facebook là mạng <b>(1)</b> phổ biến nhất giúp kết nối mọi người. Không chỉ người lớn mà cả thanh thiếu niên <b>(2)</b> sử dụng Facebook. Có nhiều cách để giao tiếp trên Facebook. Bạn có thể đăng tin nhắn công khai hoặc cho bạn bè. Nếu bạn muốn trò chuyện riêng tư, bạn có thể gửi tin nhắn trực tiếp cho bạn bè và bắt đầu <b>(3)</b>. Nếu bạn muốn gặp người mới có cùng sở thích, bạn có thể tham gia các nhóm hoặc trang Facebook.<br><br>Khi bạn bè và thành viên gia đình chuyển đến nơi khác甚至其他国家, Facebook có thể giúp bạn giữ <b>(4)</b>. Ngoài giao tiếp trực tiếp qua đăng bài và nhắn tin, bạn có thể chơi trò chơi với họ, khiến họ似乎 gần hơn <b>(5)</b> khoảng cách.<br><br>Facebook cũng có thể giúp giảm或 loại bỏ <b>(6)</b> khi gặp người mới. Ví dụ, nếu bạn cảm thấy <b>(7)</b> về việc hỏi ai đó trong lớp về bài tập, bạn có thể cảm thấy thoải mái hơn khi gửi <b>(8)</b> cho người đó trên Facebook. Bằng cách đó, bạn có thể suy nghĩ kỹ về những gì bạn viết và có thể避免尴尬 trong cuộc gặp <b>(9)</b>. Đó là lý do tại sao người nhút nhát dành <b>(10)</b> thời gian trên Facebook hơn người hòa đồng.`
+  },
+  p10: {
+    title:'Forms of Non-verbal Communication',
+    html:`Non-verbal communication can take many forms. Effectiveness in communication depends on understanding what these forms might be and how their meanings may differ between countries.<br><br><b>Eye contact</b><br>In many Asian cultures, avoiding eye contact is seen as a sign of respect. However, those in Latin and North America consider eye contact important for showing equality among individuals. In Ghana, if a young child looks an adult in the eye, it is considered an act of a stubborn child.<br><br><b>Touch</b><br>A great number of cultural expressions are shown through touch. In America, for example, using a firm handshake is considered appropriate to greet a stranger or business partner. However, in France, it is common to kiss someone you greet on both cheeks. Touching children on the head is fine in North America. However, in Asia, this is considered inappropriate because the head is an important part of the body. In the Middle East, the left hand is often used to clean the body so using that hand to receive a gift or shake hands is considered very rude.<br><br><b>Facial Expressions</b><br>Winking is a facial expression which has different meanings. In Latin America, it is considered a romantic gesture while people in Nigeria wink at their children if they want them to leave the room.<br><br><b>Posture</b><br>In America, standing with hands on the hips may suggest power or pride, but in Argentina, it may suggest anger.`,
+    vi:`Giao tiếp phi ngôn ngữ có thể có nhiều hình thức. Hiệu quả giao tiếp phụ thuộc vào việc hiểu这些 hình thức có thể là gì và ý nghĩa của chúng có thể khác nhau giữa các quốc gia.<br><br><b>Giao tiếp bằng mắt</b><br>Trong许多 nền văn hóa châu Á,避免 giao tiếp bằng mắt được coi là dấu hiệu tôn trọng. Tuy nhiên,那些 ở Latin và Bắc Mỹ coi giao tiếp bằng mắt quan trọng để thể hiện sự平等 giữa các cá nhân. Ở Ghana, nếu một đứa trẻ nhỏ nhìn thẳng vào mắt người lớn, nó được coi là hành vi của một đứa trẻ cứng đầu.<br><br><b>Chạm</b><br>Nhiều biểu hiện văn hóa được thể hiện qua việc chạm. Ở Mỹ, ví dụ,使用 bắt tay chặt được coi là phù hợp để chào người lạ hoặc đối tác kinh doanh. Tuy nhiên, ở Pháp, việc hôn ai đó bạn chào lên cả hai má là phổ biến. Chạm đầu trẻ em được chấp nhận ở Bắc Mỹ. Tuy nhiên, ở châu Á, điều này被 coi là不合适 vì đầu là phần quan trọng của cơ thể. Ở Trung Đông, tay trái thường được sử dụng để làm sạch cơ thể nên việc使用 tay đó để nhận quà或 bắt tay被 coi là非常 thô lỗ.<br><br><b>Biểu cảm khuôn mặt</b><br>Nháy mắt là một biểu cảm khuôn mặt có nhiều ý nghĩa khác nhau. Ở Latin America, nó được coi là cử chỉ lãng mạn trong khi người Nigeria nháy mắt với con nếu他们 muốn chúng rời khỏi phòng.<br><br><b>Tư thế</b><br>Ở Mỹ, đứng chống nạnh có thể gợi ý quyền lực或 tự hào, nhưng ở Argentina, nó có thể gợi ý sự giận dữ.`
+  }
+};
+
+/* ========== STATE ========== */
+const completedTasks = new Set();
+const scores = {};
+const TOTAL_TASKS = 15;
+const reorderState = {};
+
+/* ========== HELPERS ========== */
+function normalize(str){
+  return (str||'').trim().toLowerCase()
+    .replace(/[‘’]/g,"'")
+    .replace(/["“”]/g,'')
+    .replace(/[.,!?;:]/g,'')
+    .replace(/\s+/g,' ');
+}
+function ringClass(c){ return `bg-${COLORS[c].ring}-100 ${COLORS[c].head} `; }
+function numBadge(idx){ return `<span class="bg-white border border-slate-200 text-slate-600 font-bold text-xs px-2 py-1 rounded-lg min-w-[28px] text-center">${idx+1}</span>`; }
+function fbBox(num,idx){ return `<div id="fb_t${num}_${idx}" class="explanation-box mt-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-sm text-blue-800"></div>`; }
+function widthFor(ref){ const l=(ref||'').length; return l<7?'w-28':l<13?'w-40':'w-56'; }
+function inputBox(num,idx,ref,full){
+  const width = full ? 'w-full' : widthFor(ref);
+  return `<input type="text" id="t${num}_q${idx}" class="answer-input ${width} px-3 py-1 rounded-lg text-sm font-semibold" placeholder="..." autocomplete="off" spellcheck="false">`;
+}
+
+/* ========== PRONUNCIATION ========== */
+if('speechSynthesis' in window){ window.speechSynthesis.onvoiceschanged = ()=>{}; }
+function speak(text, btn){
+  try{
+    if(!('speechSynthesis' in window)){ return; }
+    window.speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='en-US'; u.rate=0.9; u.pitch=1;
+    const voices=window.speechSynthesis.getVoices();
+    const en=voices.find(v=>/en[-_]?(us|gb)/i.test(v.lang)) || voices.find(v=>/^en/i.test(v.lang));
+    if(en) u.voice=en;
+    if(btn){ btn.classList.add('speaking'); u.onend=()=>btn.classList.remove('speaking'); u.onerror=()=>btn.classList.remove('speaking'); }
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+/* ========== VOCAB ========== */
+function buildVocab(){
+  const grid=document.getElementById('vocab-grid');
+  grid.innerHTML = vocab.map(v=>`
+    <div class="vcard bg-sky-50 border border-sky-200 rounded-xl p-3 cursor-pointer" onclick="this.classList.toggle('open')">
+      <div class="flex items-center justify-between">
+        <div><span class="font-black text-sky-700 text-lg">${v.w}</span>
+          <span class="text-xs text-slate-400 ml-1">${v.ipa}</span></div>
+        <div class="flex items-center gap-2">
+          <button data-w="${v.w}" onclick="event.stopPropagation();speak(this.dataset.w,this)" class="speak-btn w-8 h-8 rounded-full bg-sky-100 text-sky-600 hover:bg-sky-200 hover:scale-110 transition flex items-center justify-center" title="Nghe phát âm">
+            <i class="fa-solid fa-volume-high text-sm"></i>
+          </button>
+          <i class="fa-solid fa-chevron-down text-sky-400 text-xs"></i>
+        </div>
+      </div>
+      <div class="text-sm text-slate-600 font-semibold">${v.vi}</div>
+      <div class="vexample mt-2 pt-2 border-t border-sky-200 text-sm">
+        <p class="text-slate-700">${v.ex}</p>
+        <p class="text-slate-400 italic text-xs mt-0.5">${v.exvi}</p>
+      </div>
+    </div>`).join('');
+}
+
+/* ========== TASK SHELL ========== */
+function taskShell(num){
+  const t=tasks[num], c=COLORS[t.color];
+  let extra='';
+  if(t.bank){
+    extra += `<div class="flex flex-wrap gap-2 mb-4 bg-${c.ring}-50 rounded-xl p-3">
+      <span class="text-xs font-bold ${c.head} w-full mb-1"><i class="fa-solid fa-box-archive mr-1"></i>Từ cho sẵn:</span>
+      ${t.bank.map(w=>`<span class="bg-white border border-${c.ring}-200 ${c.head} text-sm font-bold px-3 py-1 rounded-full">${w}</span>`).join('')}
+    </div>`;
+  }
+  if(t.passageId){
+    const p=passages[t.passageId];
+    extra += `<div class="bg-${c.ring}-50 border border-${c.ring}-200 rounded-xl p-4 mb-4 text-sm leading-relaxed text-slate-700">
+      <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
+        <h4 class="font-extrabold ${c.head} uppercase tracking-wide text-xs">${p.title}</h4>
+        <button onclick="toggleVI('${t.passageId}')" class="text-xs font-bold bg-white border border-${c.ring}-200 ${c.head} px-3 py-1 rounded-full hover:scale-105 transition"><i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt</button>
+      </div>
+      <p id="${t.passageId}-en">${p.html}</p>
+      <p id="${t.passageId}-vi" class="vi-hidden mt-3 pt-3 border-t border-${c.ring}-200 italic text-slate-500">${p.vi}</p>
+    </div>`;
+  }
+  return `<div class="task-card bg-white rounded-2xl shadow-md p-6">
+    <div class="flex items-center gap-3 mb-1">
+      <div class="bg-${c.ring}-100 ${c.head} font-black text-lg w-10 h-10 rounded-full flex items-center justify-center">${num}</div>
+      <div><h2 class="text-xl font-extrabold ${c.head}">${t.title}</h2></div>
+    </div>
+    <p class="text-sm text-slate-500 mb-4">${t.desc}</p>
+    ${extra}
+    <div id="task${num}-questions" class="space-y-3"></div>
+    <div class="flex flex-wrap gap-3 mt-5 items-center">
+      <button onclick="checkTask(${num})" class="${c.btn} text-white font-bold px-6 py-2.5 rounded-full transition-all hover:scale-105 shadow"><i class="fa-solid fa-check mr-1"></i>Kiểm tra</button>
+      <button onclick="revealTask(${num})" class="bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full transition-all"><i class="fa-solid fa-eye mr-1"></i>Xem đáp án</button>
+      <button onclick="resetTask(${num})" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-5 py-2.5 rounded-full transition-all"><i class="fa-solid fa-rotate-left mr-1"></i>Làm lại</button>
+      <div id="task${num}-score" class="hidden score-badge ml-auto bg-emerald-100 text-emerald-700 font-extrabold px-5 py-2 rounded-full text-lg"></div>
+    </div>
+  </div>`;
+}
+
+/* ========== RENDERERS ========== */
+function renderQuestion(num,q,idx,type){
+  if(type==='mcq'){
+    const letters=['A','B','C','D'];
+    const opts=q.options.map((o,i)=>{
+      return `
+      <label class="option-label flex items-center gap-2 px-4 py-2 rounded-xl cursor-pointer text-sm font-semibold" id="mcq_t${num}_${idx}_${i}" onclick="selectMCQ(${num},${idx},${i})">
+        <input type="radio" name="mcq${num}_${idx}" value="${i}" class="hidden">
+        <span class="bg-slate-200 text-slate-700 text-xs font-black w-6 h-6 rounded-full flex items-center justify-center shrink-0">${letters[i]}</span>${o}
+      </label>`;}).join('');
+    const qLabel = /^\d+\.?$/.test((q.q||'').trim()) ? '' : `<p class="font-semibold text-slate-700 text-sm">${q.q}</p>`;
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2 mb-3">${numBadge(idx)}${qLabel}</div>
+      <div class="flex flex-wrap gap-2 ml-8">${opts}</div>${fbBox(num,idx)}</div>`;
+  }
+  if(type==='fill'){
+    const parts=q.sentence.split('___');
+    const nb=parts.length-1;
+    const answersArr=q.answers||[q.answer];
+    let html='';
+    for(let b=0;b<nb;b++){
+      html += parts[b];
+      const w=widthFor(answersArr[b]);
+      html += `<input type="text" id="t${num}_q${idx}_${b}" class="answer-input ${w} px-3 py-1 rounded-lg text-sm font-semibold" placeholder="..." autocomplete="off" spellcheck="false">`;
+    }
+    html += parts[nb]||'';
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2 flex-wrap">${numBadge(idx)}
+        <span class="text-slate-700 font-semibold text-sm leading-8 flex-1 flex flex-wrap items-center gap-1">${html}</span>
+      </div>${fbBox(num,idx)}</div>`;
+  }
+  if(type==='sentence'){
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2">${numBadge(idx)}
+        <div class="flex-1"><p class="text-slate-500 text-xs mb-1 font-semibold"><i class="fa-solid fa-pen mr-1"></i>Gợi ý: <span class="text-slate-700 italic">${q.prompt}</span></p>${inputBox(num,idx,q.answer,true)}</div>
+      </div>${fbBox(num,idx)}</div>`;
+  }
+  if(type==='reading'){
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2">${numBadge(idx)}
+        <div class="flex-1"><p class="text-slate-700 font-semibold text-sm mb-2">${q.q}</p>${inputBox(num,idx,q.answer,true)}</div>
+      </div>${fbBox(num,idx)}</div>`;
+  }
+  return '';
+}
+
+/* ========== BUILD ========== */
+document.addEventListener('DOMContentLoaded', ()=>{
+  buildVocab();
+  for(let n=1;n<=TOTAL_TASKS;n++){
+    document.getElementById(`task${n}-wrap`).innerHTML = taskShell(n);
+    const box=document.getElementById(`task${n}-questions`);
+    const t=tasks[n];
+    t.questions.forEach((q,i)=>{ box.innerHTML += renderQuestion(n,q,i,t.type); });
+  }
+  const essay=document.getElementById('essay-input');
+  if(essay){ essay.addEventListener('input', ()=>{
+    const words=essay.value.trim().split(/\s+/).filter(Boolean).length;
+    document.getElementById('essay-count').textContent=`Số từ: ${words}`;
+  }); }
+});
+
+/* ========== INTERACTIONS ========== */
+function selectMCQ(num,idx,i){
+  const opts=tasks[num].questions[idx].options;
+  for(let j=0;j<opts.length;j++){const el=document.getElementById(`mcq_t${num}_${idx}_${j}`); if(el){el.classList.remove('selected'); el.querySelector('input').checked=false;}}
+  const sel=document.getElementById(`mcq_t${num}_${idx}_${i}`);
+  if(sel){ sel.classList.add('selected'); sel.querySelector('input').checked=true; }
+  if(tasks[num].instant){ gradeOneMCQ(num,idx); }
+}
+function gradeOneMCQ(num,idx){
+  const t=tasks[num], q=t.questions[idx];
+  const qblock=document.getElementById(`qblock_t${num}_${idx}`);
+  if(qblock) qblock.classList.add('show-mcq-detail');
+  const sel=document.querySelector(`input[name="mcq${num}_${idx}"]:checked`);
+  const chosen=sel?parseInt(sel.value):-1;
+  q.options.forEach((o,j)=>{const el=document.getElementById(`mcq_t${num}_${idx}_${j}`); if(el) el.classList.remove('correct-opt','wrong-opt');});
+  const corr=document.getElementById(`mcq_t${num}_${idx}_${q.answer}`); if(corr) corr.classList.add('correct-opt');
+  if(chosen!==-1 && chosen!==q.answer){ const wr=document.getElementById(`mcq_t${num}_${idx}_${chosen}`); if(wr) wr.classList.add('wrong-opt'); }
+  const ok=chosen===q.answer;
+  const answerLabel=`${['A','B','C','D'][q.answer]}. ${q.options[q.answer]}`;
+  const fb=document.getElementById(`fb_t${num}_${idx}`);
+  fb.innerHTML=(ok?'✅ ':`❌ Đáp án đúng: <b>${answerLabel}</b><br>`)+`<span class='text-blue-700'>💡 ${q.explanation}</span>`+(q.vi?`<br><span class='text-slate-500'>📖 Nghĩa: <i>${q.vi}</i></span>`:'')+(q.note?`<br><span class='text-violet-600'>📐 Công thức: <b>${q.note}</b></span>`:'');
+  fb.classList.add('show');
+}
+function toggleVI(pid){ document.getElementById(`${pid}-vi`).classList.toggle('vi-hidden'); }
+function toggleModelEssay(){ document.getElementById('model-essay').classList.toggle('vi-hidden'); }
+
+/* ========== CHECK ========== */
+function checkTask(num){
+  const t=tasks[num], qs=t.questions; let correct=0;
+  qs.forEach((q,i)=>{
+    const fb=document.getElementById(`fb_t${num}_${i}`);
+    let ok=false, answerLabel='';
+    if(t.type==='mcq'){
+      const qblock=document.getElementById(`qblock_t${num}_${i}`);
+      if(qblock) qblock.classList.add('show-mcq-detail');
+      const sel=document.querySelector(`input[name="mcq${num}_${i}"]:checked`);
+      const chosen=sel?parseInt(sel.value):-1;
+      q.options.forEach((o,j)=>{const el=document.getElementById(`mcq_t${num}_${i}_${j}`); if(el) el.classList.remove('correct-opt','wrong-opt','selected');});
+      const corr=document.getElementById(`mcq_t${num}_${i}_${q.answer}`); if(corr) corr.classList.add('correct-opt');
+      if(chosen!==-1 && chosen!==q.answer){const wr=document.getElementById(`mcq_t${num}_${i}_${chosen}`); if(wr) wr.classList.add('wrong-opt');}
+      ok=chosen===q.answer; answerLabel=`${['A','B','C','D'][q.answer]}. ${q.options[q.answer]}`;
+    }
+    else if(t.type==='fill'){
+      const answersArr=q.answers||[q.answer];
+      let allOk=true;
+      answersArr.forEach((a,b)=>{
+        const inp=document.getElementById(`t${num}_q${i}_${b}`); if(!inp){allOk=false;return;}
+        const val=normalize(inp.value);
+        const acc=[a].map(normalize);
+        const okB=acc.includes(val)&&val!=='';
+        inp.classList.remove('correct-input','wrong-input'); inp.classList.add(okB?'correct-input':'wrong-input');
+        if(!okB) allOk=false;
+      });
+      ok=allOk; answerLabel=answersArr.join(' / ');
+    }
+    else if(t.type==='sentence'){
+      const inp=document.getElementById(`t${num}_q${i}`); if(!inp)return;
+      const val=normalize(inp.value); const acc=(q.accepted||[q.answer]).map(normalize);
+      ok=acc.includes(val)&&val!==''; inp.classList.remove('correct-input','wrong-input'); inp.classList.add(ok?'correct-input':'wrong-input');
+      answerLabel=q.answer;
+    }
+    else if(t.type==='reading'){
+      const inp=document.getElementById(`t${num}_q${i}`); if(!inp)return;
+      const val=normalize(inp.value);
+      ok=val!=='' && q.keywords.every(k=>val.includes(normalize(k)));
+      inp.classList.remove('correct-input','wrong-input'); inp.classList.add(ok?'correct-input':'wrong-input');
+      answerLabel=q.answer;
+    }
+    if(ok) correct++;
+    fb.innerHTML=(ok?'✅ ':`❌ Đáp án đúng: <b>${answerLabel}</b><br>`)+`<span class='text-blue-700'>💡 ${q.explanation}</span>`+(q.vi?`<br><span class='text-slate-500'>📖 Nghĩa: <i>${q.vi}</i></span>`:'')+(q.note?`<br><span class='text-violet-600'>📐 Công thức: <b>${q.note}</b></span>`:'');
+    fb.classList.add('show');
+  });
+  const total=qs.length;
+  scores[num]={correct,total};
+  const scoreEl=document.getElementById(`task${num}-score`);
+  scoreEl.textContent=`🏆 Điểm: ${correct}/${total}`; scoreEl.classList.remove('hidden');
+  completedTasks.add(num); updateProgress();
+  if(completedTasks.size===TOTAL_TASKS) setTimeout(showCompletion,600);
+}
+
+/* ========== REVEAL ========== */
+function revealTask(num){
+  const t=tasks[num];
+  t.questions.forEach((q,i)=>{
+    if(t.type==='mcq'){ const qblock=document.getElementById(`qblock_t${num}_${i}`); if(qblock) qblock.classList.add('show-mcq-detail'); }
+    const fb=document.getElementById(`fb_t${num}_${i}`);
+    let label;
+    if(t.type==='mcq') label=`${['A','B','C','D'][q.answer]}. ${q.options[q.answer]}`;
+    else if(t.type==='fill') label=(q.answers||[q.answer]).join(' / ');
+    else label=q.answer;
+    fb.innerHTML=`👁️ Đáp án: <b>${label}</b><br><span class='text-blue-700'>💡 ${q.explanation}</span>`+(q.vi?`<br><span class='text-slate-500'>📖 Nghĩa: <i>${q.vi}</i></span>`:'')+(q.note?`<br><span class='text-violet-600'>📐 Công thức: <b>${q.note}</b></span>`:'');
+    fb.classList.add('show');
+  });
+}
+
+/* ========== RESET ========== */
+function resetTask(num){
+  const t=tasks[num];
+  t.questions.forEach((q,i)=>{
+    if(t.type==='fill'){
+      const answersArr=q.answers||[q.answer];
+      answersArr.forEach((a,b)=>{const inp=document.getElementById(`t${num}_q${i}_${b}`); if(inp){inp.value='';inp.classList.remove('correct-input','wrong-input');}});
+    } else {
+      const inp=document.getElementById(`t${num}_q${i}`);
+      if(inp){ if(inp.tagName==='SELECT') inp.value='-1'; else inp.value=''; inp.classList.remove('correct-input','wrong-input'); }
+    }
+    const fb=document.getElementById(`fb_t${num}_${i}`); if(fb){ fb.classList.remove('show'); fb.innerHTML=''; }
+    const qblock=document.getElementById(`qblock_t${num}_${i}`); if(qblock) qblock.classList.remove('show-mcq-detail');
+    if(t.type==='mcq'){ q.options.forEach((o,j)=>{const el=document.getElementById(`mcq_t${num}_${i}_${j}`); if(el){el.classList.remove('correct-opt','wrong-opt','selected'); el.querySelector('input').checked=false;}}); }
+  });
+  const scoreEl=document.getElementById(`task${num}-score`); if(scoreEl) scoreEl.classList.add('hidden');
+  completedTasks.delete(num); delete scores[num]; updateProgress();
+}
+
+/* ========== NAV / PROGRESS / COMPLETION ========== */
+function showTab(id){
+  document.querySelectorAll('.section-page').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active'); b.classList.add('text-slate-600');});
+  document.getElementById(`tab-${id}`).classList.add('active');
+  const btn=[...document.querySelectorAll('.tab-btn')].find(b=>b.getAttribute('onclick')?.includes(`'${id}'`));
+  if(btn){ btn.classList.add('active'); btn.classList.remove('text-slate-600'); }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function updateProgress(){
+  const done=completedTasks.size;
+  document.getElementById('progressText').textContent=`${done} / ${TOTAL_TASKS} bài`;
+  document.getElementById('progressBar').style.width=`${(done/TOTAL_TASKS)*100}%`;
+}
+function showCompletion(){
+  fireConfetti();
+  const banner=document.getElementById('completionBanner'); banner.classList.remove('hidden'); banner.classList.add('show');
+  let c=0,tt=0; Object.values(scores).forEach(s=>{c+=s.correct; tt+=s.total;});
+  document.getElementById('finalScoreDisplay').textContent=`🎯 ${c} / ${tt} câu đúng`;
+}
+function closeBanner(){ const b=document.getElementById('completionBanner'); b.classList.remove('show'); b.classList.add('hidden'); }
+function fireConfetti(){
+  const wrap=document.getElementById('confettiWrap'); wrap.innerHTML='';
+  const colors=['#1e3a5f','#0ea5e9','#06b6d4','#22c55e','#f59e0b','#ec4899'];
+  for(let i=0;i<90;i++){
+    const p=document.createElement('div'); p.className='confetti-piece';
+    p.style.cssText=`left:${Math.random()*100}vw;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>0.5?'50%':'2px'};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*0.8}s;`;
+    wrap.appendChild(p);
+  }
+  setTimeout(()=>{wrap.innerHTML='';},4000);
+}
+</script>
+</body>
+</html>

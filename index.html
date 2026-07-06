@@ -136,6 +136,24 @@
       justify-content: center;
     }
     .card-icon svg { opacity: 0.55; }
+    .card.folder-card { cursor: pointer; }
+    .card.folder-card .card-icon { background: #fef3c7; border-color: #f59e0b; }
+    .card.folder-card .card-icon svg { opacity: 0.8; color: #d97706; }
+    .folder-header {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;
+    }
+    .folder-back-btn {
+      font-size: 12px; font-family: var(--font); color: var(--text-secondary);
+      background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-md);
+      padding: 5px 12px; cursor: pointer; display: flex; align-items: center; gap: 5px;
+      transition: background 0.12s, color 0.12s;
+    }
+    .folder-back-btn:hover { background: var(--bg-secondary); color: var(--text); }
+    .folder-title {
+      font-size: 15px; font-weight: 600; color: var(--text);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .folder-title svg { color: #d97706; }
 
     .card-name {
       font-size: 13px;
@@ -297,13 +315,28 @@
       const external = await res.json();
       
       external.forEach(item => {
-        components.push({
-          name: item.name,
-          file: item.file,
-          desc: item.desc,
-          icon: item.icon || `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>`,
-          external: `./component/${item.file}`
-        });
+        if (item.type === 'folder') {
+          components.push({
+            name: item.name,
+            desc: item.desc || '',
+            type: 'folder',
+            children: (item.children || []).map(ch => ({
+              name: ch.name,
+              file: ch.file,
+              desc: ch.desc || '',
+              icon: ch.icon || `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>`,
+              external: `./component/${ch.file}`
+            }))
+          });
+        } else {
+          components.push({
+            name: item.name,
+            file: item.file,
+            desc: item.desc,
+            icon: item.icon || `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>`,
+            external: `./component/${item.file}`
+          });
+        }
       });
     } catch (err) {
       console.log('Không thể tải external components:', err.message);
@@ -315,6 +348,7 @@
   let view = 'home';
   let selected = null;
   let query = '';
+  let currentFolder = null; // folder entry đang mở, null = root
 
   // ── UTILS ────────────────────────────────────────────────────────────────
   function esc(s) {
@@ -328,6 +362,13 @@
       document.querySelector('.topbar').style.display = '';
       app.style.cssText = '';
       document.body.style.overflow = '';
+      // Cập nhật breadcrumb
+      const pathEl = document.querySelector('.topbar-path');
+      if (currentFolder) {
+        pathEl.textContent = `component / ${currentFolder.name}`;
+      } else {
+        pathEl.textContent = 'component';
+      }
       renderHome(app);
     } else {
       renderFullscreen();
@@ -357,23 +398,41 @@
     document.getElementById('backBtn').addEventListener('click', () => {
       view = 'home';
       query = '';
+      // Giữ currentFolder nếu đang xem file từ folder
       history.pushState(null, '', location.pathname);
       render();
     });
   }
 
   function renderHome(app) {
-    const filtered = components.filter(c =>
+    // Xác định danh sách hiển thị: root hoặc trong folder
+    const items = currentFolder ? currentFolder.children : components;
+
+    const filtered = items.filter(c =>
       c.name.toLowerCase().includes(query.toLowerCase()) ||
-      c.desc.toLowerCase().includes(query.toLowerCase()) ||
-      c.file.toLowerCase().includes(query.toLowerCase())
+      (c.desc && c.desc.toLowerCase().includes(query.toLowerCase())) ||
+      (c.file && c.file.toLowerCase().includes(query.toLowerCase()))
     );
+
+    const folderIcon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2 6a2 2 0 012-2h5l2 2h9a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/></svg>`;
+    const fileIcon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>`;
+
+    const backBtn = currentFolder
+      ? `<div class="folder-header">
+           <button class="folder-back-btn" id="folderBackBtn">← Quay lại</button>
+           <span class="folder-title">${folderIcon} ${esc(currentFolder.name)}</span>
+         </div>`
+      : '';
+
+    const headerTitle = currentFolder ? currentFolder.name : 'Lớp học cô Chi nè!';
+    const headerCount = currentFolder ? currentFolder.children.length : components.length;
 
     app.innerHTML = `
       <div class="home-header">
-        <h1>Lớp học cô Chi nè!</h1>
-        <p>${components.length} bài học</p>
+        <h1>${esc(headerTitle)}</h1>
+        <p>${headerCount} mục</p>
       </div>
+      ${backBtn}
       <div class="search-row">
         <input id="searchInput" type="text" placeholder="Tìm component..." autocomplete="off" dir="ltr" lang="en-US" style="direction: ltr; text-align: left; unicode-bidi: plaintext;" />
       </div>
@@ -381,47 +440,73 @@
       <div class="grid" id="grid">
         ${filtered.length === 0
           ? `<div class="empty">Không tìm thấy component nào.</div>`
-          : filtered.map(c => `
-            <div class="card" data-name="${c.name}">
-              <div class="card-icon">${c.icon}</div>
-              <span class="card-name">${c.file.replace(/\.html$/, '')}</span>
-              <span class="card-desc">${c.desc}</span>
-            </div>`).join('')}
+          : filtered.map(c => {
+              if (c.type === 'folder') {
+                return `<div class="card folder-card" data-folder="${c.name}">
+                  <div class="card-icon">${folderIcon}</div>
+                  <span class="card-name">${esc(c.name)}</span>
+                  <span class="card-desc">${esc(c.desc || (c.children ? c.children.length + ' mục' : ''))}</span>
+                </div>`;
+              }
+              return `<div class="card" data-name="${c.name}">
+                <div class="card-icon">${c.icon || fileIcon}</div>
+                <span class="card-name">${esc((c.file || c.name).replace(/\.html$/, ''))}</span>
+                <span class="card-desc">${esc(c.desc || '')}</span>
+              </div>`;
+            }).join('')}
       </div>
     `;
 
+    // Back button
+    if (currentFolder) {
+      document.getElementById('folderBackBtn').addEventListener('click', () => {
+        currentFolder = null;
+        query = '';
+        render();
+      });
+    }
+
     const searchInput = document.getElementById('searchInput');
-    // Set value bằng JS, không phải HTML attribute
     searchInput.value = query;
-    
+
     searchInput.addEventListener('input', e => {
       let val = e.target.value;
-      
+
       // Detect nếu text bị đảo ngược (chỉ số hoặc English)
       if (/^[\d\w\-_]+$/.test(val)) {
         const reversed = val.split('').reverse().join('');
-        // Nếu reversed khác gốc, check xem nó có phải cách đúng không
-        // bằng cách tìm trong components
-        const original_count = components.filter(c => c.name.includes(val) || c.file.includes(val) || c.desc.includes(val)).length;
-        const reversed_count = components.filter(c => c.name.includes(reversed) || c.file.includes(reversed) || c.desc.includes(reversed)).length;
-        
-        // Nếu reversed_count > original_count, thì reversed là đúng
+        const searchList = currentFolder ? currentFolder.children : components;
+        const original_count = searchList.filter(c => c.name.includes(val) || (c.file && c.file.includes(val)) || (c.desc && c.desc.includes(val))).length;
+        const reversed_count = searchList.filter(c => c.name.includes(reversed) || (c.file && c.file.includes(reversed)) || (c.desc && c.desc.includes(reversed))).length;
+
         if (reversed_count > original_count && original_count === 0) {
           val = reversed;
           searchInput.value = val;
         }
       }
-      
+
       query = val;
       render();
     });
     setTimeout(() => searchInput.focus(), 0);
 
+    // Click vào folder → mở folder
+    document.querySelectorAll('.card.folder-card').forEach(el => {
+      el.addEventListener('click', () => {
+        currentFolder = components.find(c => c.type === 'folder' && c.name === el.dataset.folder);
+        query = '';
+        render();
+        window.scrollTo(0, 0);
+      });
+    });
+
+    // Click vào file → mở detail
     document.querySelectorAll('.card[data-name]').forEach(el => {
       el.addEventListener('click', () => {
-        selected = components.find(c => c.name === el.dataset.name);
+        const list = currentFolder ? currentFolder.children : components;
+        selected = list.find(c => c.name === el.dataset.name);
         view = 'detail';
-        history.pushState({ file: selected.file }, '', '#' + selected.file.replace(/\.html$/, ''));
+        history.pushState({ file: selected.file }, '', '#' + (selected.file || selected.name).replace(/\.html$/, ''));
         render();
         window.scrollTo(0, 0);
       });
@@ -433,7 +518,21 @@
   function navigateFromHash() {
     const hash = location.hash.slice(1); // bỏ dấu #
     if (hash) {
-      const found = components.find(c => c.file.replace(/\.html$/, '') === hash);
+      // Tìm trong root trước
+      let found = components.find(c => c.file && c.file.replace(/\.html$/, '') === hash);
+      // Nếu không thấy, tìm trong folder children
+      if (!found) {
+        for (const comp of components) {
+          if (comp.type === 'folder' && comp.children) {
+            const child = comp.children.find(c => c.file && c.file.replace(/\.html$/, '') === hash);
+            if (child) {
+              found = child;
+              currentFolder = comp; // Mở folder chứa file này
+              break;
+            }
+          }
+        }
+      }
       if (found) {
         selected = found;
         view = 'detail';

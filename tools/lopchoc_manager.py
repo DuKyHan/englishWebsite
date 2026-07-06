@@ -54,9 +54,17 @@ def save_manifest(data):
 
 
 def list_html_files():
+    """Doc de quy tat ca file HTML trong component/, tra ve duong dan tuong doi."""
     if not os.path.isdir(COMPONENT_DIR):
         return []
-    return sorted(f for f in os.listdir(COMPONENT_DIR) if f.lower().endswith('.html'))
+    results = []
+    for dirpath, _, filenames in os.walk(COMPONENT_DIR):
+        for f in filenames:
+            if f.lower().endswith('.html'):
+                full = os.path.join(dirpath, f)
+                rel = os.path.relpath(full, COMPONENT_DIR).replace('\\', '/')
+                results.append(rel)
+    return sorted(results)
 
 
 class App(tk.Tk):
@@ -193,6 +201,7 @@ class App(tk.Tk):
         toolbar.pack(fill='x')
         ttk.Button(toolbar, text="📥 Import file HTML", command=self.import_html_file).pack(side='left', padx=(0, 4))
         ttk.Button(toolbar, text="➕ Thêm bài học", command=self.add_entry).pack(side='left', padx=4)
+        ttk.Button(toolbar, text="📁 Tạo thư mục", command=self.add_folder).pack(side='left', padx=4)
         ttk.Button(toolbar, text="✏️ Sửa", command=self.edit_entry).pack(side='left', padx=4)
         ttk.Button(toolbar, text="🗑 Xóa", command=self.delete_entry).pack(side='left', padx=4)
         ttk.Button(toolbar, text="⬆ Lên", command=lambda: self.move_entry(-1)).pack(side='left', padx=4)
@@ -317,14 +326,32 @@ class App(tk.Tk):
     # ── TABLE HELPERS ───────────────────────────────────────────────
     def _refresh_table(self):
         self.tree.delete(*self.tree.get_children())
-        for i, item in enumerate(self.manifest):
-            self.tree.insert('', 'end', iid=str(i), values=(item.get('name', ''), item.get('file', ''), item.get('desc', '')))
+        for idx, item in enumerate(self.manifest):
+            if item.get('type') == 'folder':
+                folder_iid = f"f{idx}"
+                self.tree.insert('', 'end', iid=folder_iid,
+                                  values=(f"📁 {item.get('name', '')}", '', item.get('desc', '')))
+                for ci, ch in enumerate(item.get('children', [])):
+                    self.tree.insert(folder_iid, 'end', iid=f"f{idx}-{ci}",
+                                      values=(f"  {ch.get('name', '')}", ch.get('file', ''), ch.get('desc', '')))
+            else:
+                self.tree.insert('', 'end', iid=f"r{idx}",
+                                  values=(item.get('name', ''), item.get('file', ''), item.get('desc', '')))
 
     def _selected_index(self):
+        """Tra ve (idx, child_idx) hoac (idx, None). None neu chua chon."""
         sel = self.tree.selection()
         if not sel:
-            return None
-        return int(sel[0])
+            return None, None
+        iid = sel[0]
+        if iid.startswith('r'):
+            return int(iid[1:]), None
+        elif '-' in iid and iid.startswith('f'):
+            parts = iid.split('-')
+            return int(parts[0][1:]), int(parts[1])
+        elif iid.startswith('f'):
+            return int(iid[1:]), None
+        return None, None
 
     def _mark_dirty(self):
         self.dirty = True
@@ -358,12 +385,26 @@ class App(tk.Tk):
         self.add_entry(preset_file=filename)
 
     def add_entry(self, preset_file=None):
-        existing_files = {item.get('file', '').replace('\\', '/') for item in self.manifest}
+        # Lay tat ca file da co trong manifest (ca trong folder children)
+        existing_files = set()
+        for item in self.manifest:
+            if item.get('file'):
+                existing_files.add(item['file'].replace('\\', '/'))
+            for ch in item.get('children', []):
+                if ch.get('file'):
+                    existing_files.add(ch['file'].replace('\\', '/'))
         candidates = [f for f in list_html_files() if f not in existing_files]
         if preset_file and preset_file not in candidates:
             candidates = [preset_file] + candidates
 
-        dialog = EntryDialog(self, "Thêm bài học", candidates=candidates, init_file=preset_file or '')
+        # Kiem tra neu dang chon folder -> them vao folder do
+        idx, _ = self._selected_index()
+        target_folder = None
+        if idx is not None and self.manifest[idx].get('type') == 'folder':
+            target_folder = self.manifest[idx]
+
+        title = f"Thêm bài học vào '{target_folder['name']}'" if target_folder else "Thêm bài học"
+        dialog = EntryDialog(self, title, candidates=candidates, init_file=preset_file or '')
         self.wait_window(dialog)
         if dialog.result is None:
             return
@@ -377,20 +418,48 @@ class App(tk.Tk):
                 f'Vẫn muốn thêm?'):
                 return
 
-        self.manifest.append({"name": name, "file": file_, "desc": desc})
+        # Tu dong phan loai: neu file nam trong thu muc con (vd: abc/file.html)
+        # -> tim folder tuong ung trong manifest de them vao
+        if not target_folder and '/' in file_:
+            folder_name = file_.split('/')[0]
+            for item in self.manifest:
+                if item.get('type') == 'folder' and item.get('name') == folder_name:
+                    target_folder = item
+                    self.log(f"[i] Tu dong phan loai vao folder '{folder_name}' vi file nam trong thu muc do")
+                    break
+
+        if target_folder:
+            target_folder.setdefault('children', []).append({"name": name, "file": file_, "desc": desc})
+            self.log(f"[+] Đã thêm vào '{target_folder['name']}': {name} -> {file_}")
+        else:
+            self.manifest.append({"name": name, "file": file_, "desc": desc})
+            self.log(f"[+] Đã thêm: {name} -> {file_}")
         self._mark_dirty()
         self._refresh_table()
-        self.log(f"[+] Đã thêm: {name} -> {file_}")
+
+    def add_folder(self):
+        dialog = FolderDialog(self, "Tạo thư mục mới")
+        self.wait_window(dialog)
+        if dialog.result is None:
+            return
+        name, desc = dialog.result
+        self.manifest.append({"name": name, "type": "folder", "desc": desc, "children": []})
+        self._mark_dirty()
+        self._refresh_table()
+        self.log(f"[+] Đã tạo thư mục: {name}")
 
     def edit_entry(self):
-        idx = self._selected_index()
+        idx, child_idx = self._selected_index()
         if idx is None:
             messagebox.showinfo("Chưa chọn", "Chọn 1 dòng để sửa trước.")
             return
-        item = self.manifest[idx]
+        if child_idx is not None:
+            item = self.manifest[idx]['children'][child_idx]
+        else:
+            item = self.manifest[idx]
         candidates = list_html_files()
         if item.get('file') not in candidates:
-            candidates = [item.get('file')] + candidates
+            candidates = [item.get('file', '')] + candidates
 
         dialog = EntryDialog(self, "Sửa bài học", candidates=candidates,
                               init_name=item.get('name', ''), init_file=item.get('file', ''),
@@ -399,35 +468,59 @@ class App(tk.Tk):
         if dialog.result is None:
             return
         name, file_, desc = dialog.result
-        self.manifest[idx] = {"name": name, "file": file_, "desc": desc}
+        if child_idx is not None:
+            self.manifest[idx]['children'][child_idx] = {"name": name, "file": file_, "desc": desc}
+        else:
+            self.manifest[idx] = {"name": name, "file": file_, "desc": desc}
         self._mark_dirty()
         self._refresh_table()
-        self.log(f"[~] Đã sửa dòng {idx}: {name} -> {file_}")
+        self.log(f"[~] Đã sửa: {name} -> {file_}")
 
     def delete_entry(self):
-        idx = self._selected_index()
+        idx, child_idx = self._selected_index()
         if idx is None:
             messagebox.showinfo("Chưa chọn", "Chọn 1 dòng để xóa trước.")
             return
-        item = self.manifest[idx]
-        if not messagebox.askyesno("Xác nhận xóa", f'Xóa mục "{item.get("name")}" ({item.get("file")})?'):
-            return
-        del self.manifest[idx]
+        if child_idx is not None:
+            item = self.manifest[idx]['children'][child_idx]
+            if not messagebox.askyesno("Xác nhận xóa", f'Xóa mục "{item.get("name")}" ({item.get("file")})?'):
+                return
+            del self.manifest[idx]['children'][child_idx]
+            # Xóa folder neu con rong
+            if not self.manifest[idx].get('children'):
+                del self.manifest[idx]
+        else:
+            item = self.manifest[idx]
+            label = f'thư mục "{item.get("name")}"' if item.get('type') == 'folder' else f'"{item.get("name")}" ({item.get("file")})'
+            if not messagebox.askyesno("Xác nhận xóa", f'Xóa {label}?'):
+                return
+            del self.manifest[idx]
         self._mark_dirty()
         self._refresh_table()
-        self.log(f"[-] Đã xóa: {item.get('name')} ({item.get('file')})")
+        self.log(f"[-] Đã xóa: {item.get('name')}")
 
     def move_entry(self, delta):
-        idx = self._selected_index()
+        idx, child_idx = self._selected_index()
         if idx is None:
             return
-        new_idx = idx + delta
-        if new_idx < 0 or new_idx >= len(self.manifest):
-            return
-        self.manifest[idx], self.manifest[new_idx] = self.manifest[new_idx], self.manifest[idx]
-        self._mark_dirty()
-        self._refresh_table()
-        self.tree.selection_set(str(new_idx))
+        if child_idx is not None:
+            # Di chuyen trong folder
+            children = self.manifest[idx].get('children', [])
+            new_ci = child_idx + delta
+            if new_ci < 0 or new_ci >= len(children):
+                return
+            children[child_idx], children[new_ci] = children[new_ci], children[child_idx]
+            self._mark_dirty()
+            self._refresh_table()
+            self.tree.selection_set(f"f{idx}-{new_ci}")
+        else:
+            new_idx = idx + delta
+            if new_idx < 0 or new_idx >= len(self.manifest):
+                return
+            self.manifest[idx], self.manifest[new_idx] = self.manifest[new_idx], self.manifest[idx]
+            self._mark_dirty()
+            self._refresh_table()
+            self.tree.selection_set(f"r{new_idx}")
 
     def check_duplicates(self):
         names = {}
@@ -541,6 +634,43 @@ class EntryDialog(tk.Toplevel):
             messagebox.showwarning("Thiếu thông tin", "Cần nhập File và Tên hiển thị.", parent=self)
             return
         self.result = (name, file_, desc)
+        self.destroy()
+
+
+class FolderDialog(tk.Toplevel):
+    def __init__(self, parent, title, init_name='', init_desc=''):
+        super().__init__(parent)
+        self.title(title)
+        self.resizable(False, False)
+        self.result = None
+        self.transient(parent)
+        self.grab_set()
+
+        pad = {'padx': 8, 'pady': 6}
+
+        ttk.Label(self, text="Tên thư mục:").grid(row=0, column=0, sticky='w', **pad)
+        self.name_var = tk.StringVar(value=init_name)
+        ttk.Entry(self, textvariable=self.name_var, width=40).grid(row=0, column=1, **pad)
+
+        ttk.Label(self, text="Mô tả:").grid(row=1, column=0, sticky='w', **pad)
+        self.desc_var = tk.StringVar(value=init_desc)
+        ttk.Entry(self, textvariable=self.desc_var, width=40).grid(row=1, column=1, **pad)
+
+        btns = ttk.Frame(self)
+        btns.grid(row=2, column=0, columnspan=2, pady=10)
+        ttk.Button(btns, text="Tạo", command=self._on_ok).pack(side='left', padx=6)
+        ttk.Button(btns, text="Hủy", command=self.destroy).pack(side='left', padx=6)
+
+        self.bind('<Return>', lambda e: self._on_ok())
+        self.bind('<Escape>', lambda e: self.destroy())
+
+    def _on_ok(self):
+        name = self.name_var.get().strip()
+        desc = self.desc_var.get().strip()
+        if not name:
+            messagebox.showwarning("Thiếu thông tin", "Cần nhập tên thư mục.", parent=self)
+            return
+        self.result = (name, desc)
         self.destroy()
 
 

@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comparatives – Tiếng Anh 8 · Unit 2</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+
+  :root {
+    --mint: #34d399;
+    --sky: #38bdf8;
+    --violet: #a78bfa;
+    --rose: #fb7185;
+    --amber: #fbbf24;
+    --bg: #f0fdf4;
+  }
+
+  * { box-sizing: border-box; }
+  body { font-family: 'Nunito', sans-serif; background: var(--bg); }
+
+  .hero-gradient {
+    background: linear-gradient(135deg, #10b981 0%, #0ea5e9 50%, #6366f1 100%);
+  }
+  .tab-btn { transition: all .2s ease; }
+  .tab-btn.active {
+    background: linear-gradient(135deg, #10b981, #0ea5e9);
+    color: white;
+    box-shadow: 0 4px 14px rgba(16,185,129,.35);
+    transform: translateY(-1px);
+  }
+  .task-card { transition: box-shadow .2s, transform .2s; }
+  .task-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,.10); }
+
+  .option-label {
+    cursor: pointer;
+    transition: all .18s;
+    border: 2px solid #e2e8f0;
+  }
+  .option-label:hover { border-color: #38bdf8; background: #f0f9ff; }
+  .option-label.selected { border-color: #6366f1; background: #eef2ff; }
+  .option-label.correct-opt { border-color: #22c55e !important; background: #f0fdf4 !important; }
+  .option-label.wrong-opt { border-color: #ef4444 !important; background: #fef2f2 !important; }
+
+  .explanation-box { display: none; animation: fadeSlide .3s ease forwards; }
+  .explanation-box.show { display: block; }
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  input.answer-input { border: 2px solid #cbd5e1; transition: border .18s; outline: none; }
+  input.answer-input:focus { border-color: #38bdf8; }
+  input.correct-input { border-color: #22c55e !important; background: #f0fdf4; }
+  input.wrong-input   { border-color: #ef4444 !important; background: #fef2f2; }
+
+  .score-badge { animation: popIn .35s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn {
+    from { transform: scale(.4); opacity: 0; }
+    to   { transform: scale(1);  opacity: 1; }
+  }
+
+  .confetti-wrap { position: fixed; inset: 0; pointer-events: none; z-index: 9999; }
+  .confetti-piece { position: absolute; width: 10px; height: 10px; border-radius: 2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall {
+    0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  .theory-card { border-left: 4px solid transparent; transition: all .2s; }
+  .theory-card:hover { transform: translateX(4px); }
+
+  .progress-bar-fill { transition: width .6s ease; }
+
+  /* sentence builder / reorder */
+  .word-chip { cursor: pointer; transition: all .15s; user-select: none; }
+  .word-chip:hover { transform: scale(1.05); }
+  .word-chip.used { opacity: .3; pointer-events: none; }
+  .answer-line { min-height: 44px; }
+
+  /* two-option pills */
+  .pick-pill { cursor: pointer; transition: all .15s; border: 2px solid #cbd5e1; }
+  .pick-pill:hover { border-color: #38bdf8; background: #f0f9ff; }
+  .pick-pill.picked { border-color: #6366f1; background: #eef2ff; color: #4338ca; }
+  .pick-pill.correct-opt { border-color: #22c55e !important; background: #dcfce7 !important; color: #15803d; }
+  .pick-pill.wrong-opt { border-color: #ef4444 !important; background: #fee2e2 !important; color: #b91c1c; }
+
+  /* True/False */
+  .tf-btn { transition: all .18s; }
+  .tf-btn:hover { transform: scale(1.04); }
+  .tf-btn.tf-selected-T { background: #0ea5e9; color: white; }
+  .tf-btn.tf-selected-F { background: #f43f5e; color: white; }
+  .tf-btn.tf-correct { background: #22c55e !important; color: white !important; }
+  .tf-btn.tf-wrong   { background: #ef4444 !important; color: white !important; }
+
+  .section-page { display: none; }
+  .section-page.active { display: block; }
+
+  #completionBanner { display: none; }
+  #completionBanner.show { display: flex; }
+
+  /* glossary words */
+  .gloss { border-bottom: 2px dotted #6366f1; cursor: help; color: #4338ca; font-weight: 700; position: relative; }
+  .gloss:hover::after {
+    content: attr(data-vi);
+    position: absolute; left: 0; top: 130%;
+    background: #1e293b; color: #fff; font-size: 12px; font-weight: 600;
+    padding: 4px 8px; border-radius: 8px; white-space: nowrap; z-index: 30;
+  }
+  .vi-hidden { display: none; }
+</style>
+</head>
+<body class="min-h-screen">
+
+<!-- ===== CONFETTI ===== -->
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<!-- ===== HERO ===== -->
+<header class="hero-gradient text-white py-8 px-4 text-center shadow-xl relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <div class="absolute top-4 left-8 text-6xl">🌾</div>
+    <div class="absolute top-2 right-12 text-5xl">🏞️</div>
+    <div class="absolute bottom-2 left-1/3 text-4xl">🐄</div>
+    <div class="absolute bottom-4 right-1/4 text-5xl">✨</div>
+  </div>
+  <p class="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Tiếng Anh 8 · Unit 2</p>
+  <h1 class="font-['Baloo_2'] text-3xl md:text-5xl font-extrabold drop-shadow-lg">
+    🌟 Life in the Countryside 🌟
+  </h1>
+  <p class="mt-2 text-base md:text-lg opacity-90 font-semibold">So sánh hơn của Tính từ &amp; Trạng từ · Luyện tập tương tác</p>
+
+  <!-- Progress overview -->
+  <div class="mt-5 max-w-2xl mx-auto">
+    <div class="flex justify-between text-xs font-bold opacity-80 mb-1">
+      <span>Tiến độ hoàn thành</span>
+      <span id="progressText">0 / 15 bài</span>
+    </div>
+    <div class="bg-white/20 rounded-full h-3 overflow-hidden">
+      <div id="progressBar" class="bg-white rounded-full h-3 progress-bar-fill" style="width:0%"></div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== NAV TABS ===== -->
+<nav class="sticky top-0 z-50 bg-white/90 backdrop-blur shadow-sm px-3 py-2 overflow-x-auto">
+  <div class="flex gap-2 min-w-max mx-auto w-fit">
+    <button class="tab-btn active text-sm font-bold px-4 py-2 rounded-full" onclick="showTab('theory')">
+      <i class="fa-solid fa-book-open mr-1"></i>Lý thuyết
+    </button>
+    <span class="self-center text-[10px] font-black text-sky-500 uppercase px-1">Tính từ</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task1')">📝 1</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task2')">🔘 2</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task3')">✏️ 3</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task4')">🧩 4</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task5')">🔤 5</button>
+    <span class="self-center text-[10px] font-black text-violet-500 uppercase px-1">Trạng từ</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task6')">📝 6</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task7')">🅰️ 7</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task8')">✏️ 8</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task9')">🧩 9</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task10')">🔁 10</button>
+    <span class="self-center text-[10px] font-black text-rose-500 uppercase px-1">Nâng cao</span>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task11')">🗂️ 11</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task12')">🛠️ 12</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task13')">🔁 13</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task14')">📖 14</button>
+    <button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600" onclick="showTab('task15')">📚 15</button>
+  </div>
+</nav>
+
+<!-- ===== MAIN ===== -->
+<main class="max-w-4xl mx-auto px-4 py-6 pb-20">
+
+<!-- ==================== THEORY ==================== -->
+<section id="tab-theory" class="section-page active space-y-6">
+  <h2 class="text-2xl font-extrabold text-emerald-700 flex items-center gap-2"><i class="fa-solid fa-lightbulb text-amber-400"></i> Lý thuyết: So sánh hơn (Comparatives)</h2>
+
+  <!-- Classify adjectives -->
+  <div class="bg-white rounded-2xl shadow-md p-5 theory-card" style="border-left-color:#38bdf8">
+    <h3 class="font-extrabold text-sky-600 text-lg mb-3"><i class="fa-solid fa-list-check mr-2"></i>1. Phân loại tính từ</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div class="bg-sky-50 rounded-xl p-3">
+        <div class="font-black text-sky-700">Tính từ NGẮN (short)</div>
+        <p class="text-xs text-slate-500">1 âm tiết. <i>Short adjectives have one syllable.</i></p>
+        <div class="text-sm mt-1 text-slate-700">tall, high, big, old, nice…</div>
+      </div>
+      <div class="bg-violet-50 rounded-xl p-3">
+        <div class="font-black text-violet-700">Tính từ DÀI (long)</div>
+        <p class="text-xs text-slate-500">2 âm tiết trở lên. <i>Long adjectives have two or more syllables.</i></p>
+        <div class="text-sm mt-1 text-slate-700">expensive, intelligent, beautiful…</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Formula adjectives -->
+  <div class="bg-white rounded-2xl shadow-md p-5 theory-card" style="border-left-color:#a78bfa">
+    <h3 class="font-extrabold text-violet-600 text-lg mb-3">
+      <i class="fa-solid fa-2 mr-1 bg-violet-100 text-violet-600 rounded-full w-7 h-7 inline-flex items-center justify-center text-sm"></i>
+      Cấu trúc so sánh hơn của tính từ
+    </h3>
+    <div class="grid md:grid-cols-2 gap-3">
+      <div class="bg-gradient-to-br from-sky-50 to-sky-100 border border-sky-200 rounded-xl p-4 text-center">
+        <div class="text-xs font-bold text-sky-600 uppercase mb-1">Tính từ ngắn</div>
+        <div class="font-['Baloo_2'] text-lg text-sky-800">S1 + be + <span class="text-rose-500">adj-er</span> + than + S2</div>
+        <p class="text-sm text-slate-600 mt-2">China is <b class="text-rose-500">bigger</b> than India.</p>
+        <p class="text-xs text-slate-400 italic">Trung Quốc lớn hơn Ấn Độ.</p>
+      </div>
+      <div class="bg-gradient-to-br from-violet-50 to-violet-100 border border-violet-200 rounded-xl p-4 text-center">
+        <div class="text-xs font-bold text-violet-600 uppercase mb-1">Tính từ dài</div>
+        <div class="font-['Baloo_2'] text-lg text-violet-800">S1 + be + <span class="text-rose-500">more</span> + adj + than + S2</div>
+        <p class="text-sm text-slate-600 mt-2">Gold is <b class="text-rose-500">more valuable</b> than silver.</p>
+        <p class="text-xs text-slate-400 italic">Vàng có giá trị hơn bạc.</p>
+      </div>
+    </div>
+    <div class="mt-3 bg-amber-50 rounded-xl p-3 text-sm text-amber-800">
+      <i class="fa-solid fa-star mr-1 text-amber-500"></i>
+      <b>Nhấn mạnh:</b> thêm <b>much / far</b> trước so sánh → <i>Her boyfriend is <b>much/far older</b> than her.</i>
+    </div>
+  </div>
+
+  <!-- Spelling rules -->
+  <div class="bg-white rounded-2xl shadow-md p-5 theory-card" style="border-left-color:#34d399">
+    <h3 class="font-extrabold text-emerald-600 text-lg mb-2">
+      <i class="fa-solid fa-3 mr-1 bg-emerald-100 text-emerald-600 rounded-full w-7 h-7 inline-flex items-center justify-center text-sm"></i>
+      Quy tắc thêm "-er" (Spelling changes)
+    </h3>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm rounded-xl overflow-hidden">
+        <thead>
+          <tr class="bg-emerald-100 text-emerald-800">
+            <th class="px-3 py-2 text-left font-bold">Quy tắc</th>
+            <th class="px-3 py-2 text-left font-bold">Ví dụ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-emerald-50"><td class="px-3 py-2">Tận cùng 1 phụ âm → + <b>er</b></td><td class="px-3 py-2">old → old<b class="text-rose-500">er</b>, near → near<b class="text-rose-500">er</b></td></tr>
+          <tr class="border-b border-emerald-50 bg-emerald-50/40"><td class="px-3 py-2">Tận cùng "e" → + <b>r</b></td><td class="px-3 py-2">nice → nice<b class="text-rose-500">r</b></td></tr>
+          <tr class="border-b border-emerald-50"><td class="px-3 py-2">Nguyên âm + 1 phụ âm → gấp đôi phụ âm + <b>er</b></td><td class="px-3 py-2">big → bi<b class="text-rose-500">gger</b>, hot → ho<b class="text-rose-500">tter</b></td></tr>
+          <tr class="bg-emerald-50/40"><td class="px-3 py-2">Tận cùng "y" → bỏ "y" + <b>ier</b></td><td class="px-3 py-2">happy → happ<b class="text-rose-500">ier</b>, pretty → prett<b class="text-rose-500">ier</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="mt-3 bg-emerald-50 rounded-xl p-3 text-sm text-emerald-800">
+      <i class="fa-solid fa-circle-info mr-1"></i>
+      <b>Lưu ý:</b> Tính từ 2 âm tiết tận cùng <b>-et, -ow, -er, -y</b> vẫn dùng quy tắc tính từ ngắn:
+      quiet → quieter, clever → cleverer, simple → simpler, narrow → narrower.
+    </div>
+  </div>
+
+  <!-- Irregular -->
+  <div class="bg-white rounded-2xl shadow-md p-5 theory-card" style="border-left-color:#fb7185">
+    <h3 class="font-extrabold text-rose-600 text-lg mb-2">
+      <i class="fa-solid fa-4 mr-1 bg-rose-100 text-rose-600 rounded-full w-7 h-7 inline-flex items-center justify-center text-sm"></i>
+      Tính từ so sánh đặc biệt (Irregular)
+    </h3>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
+      <div class="bg-rose-50 border border-rose-200 rounded-xl p-2 text-center">good → <b class="text-rose-600">better</b></div>
+      <div class="bg-rose-50 border border-rose-200 rounded-xl p-2 text-center">bad → <b class="text-rose-600">worse</b></div>
+      <div class="bg-rose-50 border border-rose-200 rounded-xl p-2 text-center">far → <b class="text-rose-600">farther/further</b></div>
+      <div class="bg-rose-50 border border-rose-200 rounded-xl p-2 text-center">many/much → <b class="text-rose-600">more</b></div>
+      <div class="bg-rose-50 border border-rose-200 rounded-xl p-2 text-center">little → <b class="text-rose-600">less</b></div>
+      <div class="bg-rose-50 border border-rose-200 rounded-xl p-2 text-center">old → <b class="text-rose-600">older/elder</b></div>
+    </div>
+  </div>
+
+  <!-- Adverbs -->
+  <div class="bg-white rounded-2xl shadow-md p-5 theory-card" style="border-left-color:#fbbf24">
+    <h3 class="font-extrabold text-amber-600 text-lg mb-2">
+      <i class="fa-solid fa-5 mr-1 bg-amber-100 text-amber-600 rounded-full w-7 h-7 inline-flex items-center justify-center text-sm"></i>
+      So sánh hơn của TRẠNG TỪ (Adverbs)
+    </h3>
+    <p class="text-slate-600 text-sm mb-3">Trạng từ ngắn (1 âm tiết): hard, near, far, fast… &nbsp;|&nbsp; Trạng từ dài (đuôi -ly): slowly, quickly, carefully…</p>
+    <div class="grid md:grid-cols-2 gap-3">
+      <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-center">
+        <div class="text-xs font-bold text-amber-600 uppercase mb-1">Trạng từ ngắn</div>
+        <div class="font-['Baloo_2'] text-base text-amber-800">S1 + V + <span class="text-rose-500">adv-er</span> + than + S2</div>
+        <p class="text-sm text-slate-600 mt-2">They work <b class="text-rose-500">harder</b> than I do.</p>
+      </div>
+      <div class="bg-orange-50 border border-orange-200 rounded-xl p-4 text-center">
+        <div class="text-xs font-bold text-orange-600 uppercase mb-1">Trạng từ dài</div>
+        <div class="font-['Baloo_2'] text-base text-orange-800">S1 + V + <span class="text-rose-500">more/less</span> + adv + than + S2</div>
+        <p class="text-sm text-slate-600 mt-2">My father talks <b class="text-rose-500">more slowly</b> than my mother.</p>
+      </div>
+    </div>
+    <div class="mt-3 grid grid-cols-2 md:grid-cols-4 gap-2 text-sm">
+      <div class="bg-white border border-amber-200 rounded-xl p-2 text-center">well → <b class="text-amber-600">better</b></div>
+      <div class="bg-white border border-amber-200 rounded-xl p-2 text-center">badly → <b class="text-amber-600">worse</b></div>
+      <div class="bg-white border border-amber-200 rounded-xl p-2 text-center">far → <b class="text-amber-600">farther/further</b></div>
+      <div class="bg-white border border-amber-200 rounded-xl p-2 text-center">early → <b class="text-amber-600">earlier</b></div>
+    </div>
+  </div>
+
+  <!-- Common mistakes -->
+  <div class="bg-gradient-to-r from-rose-50 to-pink-50 border border-rose-200 rounded-2xl p-5">
+    <h3 class="font-extrabold text-rose-700 mb-2"><i class="fa-solid fa-triangle-exclamation mr-2 text-rose-500"></i>Lỗi thường gặp (Common mistakes)</h3>
+    <ul class="space-y-1 text-sm text-rose-900">
+      <li>❌ <s>more better</s> → ✅ <b>better</b> (không dùng "more" với so sánh đặc biệt)</li>
+      <li>❌ <s>more pretty</s> → ✅ <b>prettier</b> (tính từ ngắn dùng -er)</li>
+      <li>❌ <s>more fastly / fastlier</s> → ✅ <b>faster</b> ("fast" là cả tính từ &amp; trạng từ)</li>
+      <li>❌ <s>work more hardly</s> → ✅ <b>work harder</b> ("hardly" = hầu như không)</li>
+      <li>❌ <s>She looks more beautifully</s> → ✅ <b>more beautiful</b> (sau <i>look/be</i> dùng tính từ)</li>
+    </ul>
+  </div>
+
+  <!-- Tips -->
+  <div class="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-2xl p-5">
+    <h3 class="font-extrabold text-amber-700 mb-2"><i class="fa-solid fa-bolt mr-2 text-amber-500"></i>Mẹo nhớ nhanh (Tips &amp; tricks)</h3>
+    <ul class="space-y-1 text-sm text-amber-900">
+      <li>🔑 Ngắn → <b>-er + than</b> &nbsp;|&nbsp; Dài → <b>more + adj/adv + than</b></li>
+      <li>🔑 Sau động từ thường (run, work, drive…) → dùng <b>TRẠNG TỪ</b></li>
+      <li>🔑 Sau <b>be / look / seem / get</b> → dùng <b>TÍNH TỪ</b></li>
+      <li>🔑 Học thuộc bảng bất quy tắc: good/well→better, bad/badly→worse</li>
+    </ul>
+  </div>
+
+  <div class="text-center pt-2">
+    <button onclick="showTab('task1')" class="bg-gradient-to-r from-emerald-500 to-sky-600 text-white font-bold px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105 text-lg">
+      Bắt đầu luyện tập! 🚀
+    </button>
+  </div>
+</section>
+
+<!-- ==================== TASK SHELLS (generated header + body) ==================== -->
+<!-- Each task container is built by JS into #task{n}-wrap -->
+<section id="tab-task1" class="section-page"><div id="task1-wrap"></div></section>
+<section id="tab-task2" class="section-page"><div id="task2-wrap"></div></section>
+<section id="tab-task3" class="section-page"><div id="task3-wrap"></div></section>
+<section id="tab-task4" class="section-page"><div id="task4-wrap"></div></section>
+<section id="tab-task5" class="section-page"><div id="task5-wrap"></div></section>
+<section id="tab-task6" class="section-page"><div id="task6-wrap"></div></section>
+<section id="tab-task7" class="section-page"><div id="task7-wrap"></div></section>
+<section id="tab-task8" class="section-page"><div id="task8-wrap"></div></section>
+<section id="tab-task9" class="section-page"><div id="task9-wrap"></div></section>
+<section id="tab-task10" class="section-page"><div id="task10-wrap"></div></section>
+<section id="tab-task11" class="section-page"><div id="task11-wrap"></div></section>
+<section id="tab-task12" class="section-page"><div id="task12-wrap"></div></section>
+<section id="tab-task13" class="section-page"><div id="task13-wrap"></div></section>
+<section id="tab-task14" class="section-page"><div id="task14-wrap"></div></section>
+<section id="tab-task15" class="section-page"><div id="task15-wrap"></div></section>
+
+</main>
+
+<!-- ===== COMPLETION BANNER ===== -->
+<div id="completionBanner" class="hidden fixed inset-0 bg-black/50 z-[100] items-center justify-center p-4">
+  <div class="bg-white rounded-3xl p-8 max-w-md w-full text-center shadow-2xl">
+    <div class="text-6xl mb-3">🎊</div>
+    <h2 class="font-['Baloo_2'] text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-sky-600">Xuất sắc!</h2>
+    <p class="text-slate-600 mt-2 text-lg font-semibold">Bạn đã hoàn thành tất cả 15 bài tập!</p>
+    <p class="text-slate-500 text-sm mt-1">Hãy ôn lại phần lý thuyết nếu muốn nắm vững hơn nhé! 💪</p>
+    <div id="finalScoreDisplay" class="my-4 text-4xl font-black text-emerald-600"></div>
+    <button onclick="closeBanner()" class="mt-2 bg-gradient-to-r from-emerald-500 to-sky-600 text-white font-bold px-8 py-3 rounded-full hover:scale-105 transition-all shadow-lg">
+      Tiếp tục ôn tập 📖
+    </button>
+  </div>
+</div>
+
+<script>
+/* =====================================================================
+   DATA  — Toàn bộ nội dung Unit 2. Giáo viên chỉ cần thay khối "tasks"
+   này để tạo Unit khác. Mỗi bài có: meta (số, màu, tiêu đề, mô tả) + type
+   + questions.
+   ===================================================================== */
+
+const COLORS = {
+  sky:    { ring:'sky',    btn:'bg-sky-500 hover:bg-sky-600',       head:'text-sky-700',    chip:'bg-sky-100 text-sky-700' },
+  violet: { ring:'violet', btn:'bg-violet-500 hover:bg-violet-600', head:'text-violet-700', chip:'bg-violet-100 text-violet-700' },
+  emerald:{ ring:'emerald',btn:'bg-emerald-500 hover:bg-emerald-600',head:'text-emerald-700',chip:'bg-emerald-100 text-emerald-700' },
+  amber:  { ring:'amber',  btn:'bg-amber-500 hover:bg-amber-600',   head:'text-amber-700',  chip:'bg-amber-100 text-amber-700' },
+  rose:   { ring:'rose',   btn:'bg-rose-500 hover:bg-rose-600',     head:'text-rose-700',   chip:'bg-rose-100 text-rose-700' },
+  teal:   { ring:'teal',   btn:'bg-teal-500 hover:bg-teal-600',     head:'text-teal-700',   chip:'bg-teal-100 text-teal-700' },
+  indigo: { ring:'indigo', btn:'bg-indigo-500 hover:bg-indigo-600', head:'text-indigo-700', chip:'bg-indigo-100 text-indigo-700' },
+  pink:   { ring:'pink',   btn:'bg-pink-500 hover:bg-pink-600',     head:'text-pink-700',   chip:'bg-pink-100 text-pink-700' },
+};
+
+const tasks = {
+  /* ---------- BÀI 1: bảng so sánh hơn tính từ ---------- */
+  1: {
+    color:'sky', title:'Bài 1: Dạng so sánh hơn của tính từ',
+    desc:'Viết dạng so sánh hơn (comparative) cho mỗi tính từ.',
+    type:'fillgrid',
+    questions:[
+      {word:'bad', answer:'worse', explanation:'Bất quy tắc: bad → worse.'},
+      {word:'clever', answer:'cleverer', accepted:['cleverer','more clever'], explanation:'2 âm tiết tận cùng -er → dùng quy tắc ngắn: cleverer.'},
+      {word:'convenient', answer:'more convenient', explanation:'Tính từ dài (3 âm tiết): more convenient.'},
+      {word:'far', answer:'farther', accepted:['farther','further'], explanation:'Bất quy tắc: far → farther/further.'},
+      {word:'fresh', answer:'fresher', explanation:'Tính từ ngắn: fresh → fresher.'},
+      {word:'friendly', answer:'friendlier', accepted:['friendlier','more friendly'], explanation:'Tận cùng -y → bỏ y + ier: friendlier.'},
+      {word:'generous', answer:'more generous', explanation:'Tính từ dài: more generous.'},
+      {word:'good', answer:'better', explanation:'Bất quy tắc: good → better.'},
+      {word:'happy', answer:'happier', explanation:'Tận cùng -y → happier.'},
+      {word:'high', answer:'higher', explanation:'Tính từ ngắn: high → higher.'},
+      {word:'little', answer:'less', explanation:'Bất quy tắc: little → less.'},
+      {word:'long', answer:'longer', explanation:'Tính từ ngắn: long → longer.'},
+      {word:'modern', answer:'more modern', explanation:'Tính từ dài: more modern.'},
+      {word:'old', answer:'older', accepted:['older','elder'], explanation:'Bất quy tắc: old → older/elder.'},
+      {word:'peaceful', answer:'more peaceful', explanation:'Tính từ dài: more peaceful.'},
+      {word:'pretty', answer:'prettier', explanation:'Tận cùng -y → prettier.'},
+      {word:'quiet', answer:'quieter', accepted:['quieter','more quiet'], explanation:'2 âm tiết tận cùng -et → quieter.'},
+      {word:'smart', answer:'smarter', explanation:'Tính từ ngắn: smart → smarter.'},
+      {word:'soon', answer:'sooner', explanation:'soon → sooner.'},
+      {word:'strong', answer:'stronger', explanation:'Tính từ ngắn: strong → stronger.'},
+      {word:'ugly', answer:'uglier', explanation:'Tận cùng -y → uglier.'},
+      {word:'warm', answer:'warmer', explanation:'Tính từ ngắn: warm → warmer.'},
+      {word:'wonderful', answer:'more wonderful', explanation:'Tính từ dài: more wonderful.'},
+      {word:'young', answer:'younger', explanation:'Tính từ ngắn: young → younger.'},
+    ]
+  },
+
+  /* ---------- BÀI 2: chọn đáp án đúng (2 lựa chọn) ---------- */
+  2: {
+    color:'violet', title:'Bài 2: Khoanh tròn đáp án đúng',
+    desc:'Chọn dạng so sánh hơn đúng trong hai lựa chọn.',
+    type:'choose2',
+    questions:[
+      {pre:'Living in this small town is', post:'than I expected.', options:['peaceful more','more peaceful'], answer:1, explanation:'Tính từ dài: more + adj (more peaceful).'},
+      {pre:'Nowadays people are', post:'about pollution than before.', options:['more anxious','anxious more'], answer:0, explanation:'Đúng trật tự: more anxious.'},
+      {pre:'Today you look', post:'than usual.', options:['happier','more happy'], answer:0, explanation:'Tận cùng -y → happier (không dùng more happy).'},
+      {pre:'This year I will move to a', post:'city.', options:['bigger','biggest'], answer:0, explanation:'So sánh hơn dùng "bigger", không phải so sánh nhất.'},
+      {pre:'This experience is', post:'than I expected.', options:['more exciting','most exciting'], answer:0, explanation:'Có "than" → so sánh hơn: more exciting.'},
+      {pre:'Who is', post:'between the two of them?', options:['more intelligent','most intelligent'], answer:0, explanation:'So sánh giữa HAI người → so sánh hơn: more intelligent.'},
+      {pre:'This song is', post:'than that song.', options:['catchier','more catchy'], answer:0, explanation:'Tận cùng -y → catchier.'},
+      {pre:'The new sofa is', post:'than the old one.', options:['costlier','more costly'], answer:0, explanation:'Tận cùng -y → costlier.'},
+      {pre:'Our family will move to a', post:'place next year.', options:['more comfortable','more comfortable than'], answer:0, explanation:'Không có vế "than S2" → không thêm "than".'},
+      {pre:'I hope you will get', post:'the next time I see you.', options:['best','better'], answer:1, explanation:'Bất quy tắc so sánh hơn: better.'},
+      {pre:'James has', post:'books than Paul.', options:['many','more'], answer:1, explanation:'Có "than" → so sánh hơn: more.'},
+      {pre:'She is', post:'than the last time I saw her.', options:['more independent','most independent'], answer:0, explanation:'Có "than" → so sánh hơn: more independent.'},
+      {pre:'Today my sister', post:'than usual.', options:['is more quiet','is quieter'], answer:1, explanation:'2 âm tiết -et → quieter.'},
+      {pre:'Jane is', post:'than Ann.', options:['more pretty','prettier'], answer:1, explanation:'Tận cùng -y → prettier.'},
+      {pre:'The weather is', post:'than yesterday.', options:['hotter','hottest'], answer:0, explanation:'Có "than" → so sánh hơn: hotter.'},
+    ]
+  },
+
+  /* ---------- BÀI 3: điền so sánh hơn của tính từ ---------- */
+  3: {
+    color:'emerald', title:'Bài 3: Hoàn thành câu (so sánh hơn của tính từ)',
+    desc:'Viết dạng so sánh hơn của tính từ trong ngoặc.',
+    type:'fill',
+    questions:[
+      {sentence:'Living in the city is ___ than living in the country.', hint:'convenient', answer:'more convenient', explanation:'Tính từ dài: more convenient.'},
+      {sentence:'Mrs. Smith is ___ than I thought.', hint:'young', answer:'younger', explanation:'Tính từ ngắn: younger.'},
+      {sentence:'Houses in big cities are much ___ than those in my hometown.', hint:'tall', answer:'taller', explanation:'Tính từ ngắn: taller.'},
+      {sentence:'No one in my class is ___ than Jim.', hint:'smart', answer:'smarter', explanation:'Tính từ ngắn: smarter.'},
+      {sentence:'The senior prom would be ___ than any other prom.', hint:'exciting', answer:'more exciting', explanation:'Tính từ dài: more exciting.'},
+      {sentence:'I have ___ courage than my brother.', hint:'little', answer:'less', explanation:'Bất quy tắc: little → less.'},
+      {sentence:"His health condition is getting ___.", hint:'bad', answer:'worse', explanation:'Bất quy tắc: bad → worse.'},
+      {sentence:'You are ___ than you think.', hint:'clever', answer:'cleverer', accepted:['cleverer','more clever'], explanation:'2 âm tiết -er → cleverer (more clever cũng chấp nhận).'},
+      {sentence:'This computer is much ___ than mine.', hint:'expensive', answer:'more expensive', explanation:'Tính từ dài: more expensive.'},
+      {sentence:'I always dream of a ___ house to live in.', hint:'modern', answer:'more modern', explanation:'Tính từ dài: more modern.'},
+      {sentence:'They are ___ than they used to be.', hint:'skillful', answer:'more skillful', explanation:'Tính từ dài: more skillful.'},
+      {sentence:'Life in this village is ___ than anywhere else.', hint:'peaceful', answer:'more peaceful', explanation:'Tính từ dài: more peaceful.'},
+      {sentence:'I think people in the countryside are ___ than city dwellers.', hint:'friendly', answer:'friendlier', accepted:['friendlier','more friendly'], explanation:'Tận cùng -y → friendlier.'},
+      {sentence:'This year, the prize for the winner is ___ than last year.', hint:'valuable', answer:'more valuable', explanation:'Tính từ dài: more valuable.'},
+      {sentence:'Which dress is ___ for me?', hint:'suitable', answer:'more suitable', explanation:'Tính từ dài: more suitable.'},
+      {sentence:'You should be ___ and show your best.', hint:'confident', answer:'more confident', explanation:'Tính từ dài: more confident.'},
+      {sentence:'They said that the conference was ___ than usual.', hint:'interesting', answer:'more interesting', explanation:'Tính từ dài: more interesting.'},
+      {sentence:'Jane is so pretty but her sister is even ___.', hint:'pretty', answer:'prettier', explanation:'Tận cùng -y → prettier.'},
+      {sentence:'They work hard to have a ___ life.', hint:'good', answer:'better', explanation:'Bất quy tắc: good → better.'},
+      {sentence:'John is ___ than the rest of the class.', hint:'intelligent', answer:'more intelligent', explanation:'Tính từ dài: more intelligent.'},
+    ]
+  },
+
+  /* ---------- BÀI 4: viết câu so sánh hơn từ gợi ý ---------- */
+  4: {
+    color:'amber', title:'Bài 4: Viết câu so sánh hơn (tính từ)',
+    desc:'Dùng từ gợi ý viết câu so sánh hơn hoàn chỉnh. (VD: Bob / strong / Jim → Bob is stronger than Jim.)',
+    type:'sentence',
+    questions:[
+      {prompt:'My current job / demanding / my last one.', answer:'My current job is more demanding than my last one.', accepted:['my current job is more demanding than my last one'], explanation:'demanding (dài) → more demanding than.'},
+      {prompt:'Today / Jane / beautiful / usual.', answer:'Today Jane is more beautiful than usual.', accepted:['today jane is more beautiful than usual','jane is more beautiful than usual today'], explanation:'beautiful (dài) → more beautiful than.'},
+      {prompt:'Yesterday / it / cold / today.', answer:'Yesterday it was colder than today.', accepted:['yesterday it was colder than today','it was colder yesterday than today'], explanation:'cold (ngắn) → colder; thì quá khứ "was".'},
+      {prompt:'Fruits and vegetables / healthy / fast food.', answer:'Fruits and vegetables are healthier than fast food.', accepted:['fruits and vegetables are healthier than fast food'], explanation:'healthy (-y) → healthier; chủ ngữ số nhiều "are".'},
+      {prompt:'Life in the countryside / peaceful / life in the city.', answer:'Life in the countryside is more peaceful than life in the city.', accepted:['life in the countryside is more peaceful than life in the city','life in the countryside is more peaceful than in the city'], explanation:'peaceful (dài) → more peaceful than.'},
+      {prompt:'Your sister / good / you think.', answer:'Your sister is better than you think.', accepted:['your sister is better than you think'], explanation:'good → better (bất quy tắc).'},
+      {prompt:'Who / intelligent / you / in your class?', answer:'Who is more intelligent than you in your class?', accepted:['who is more intelligent than you in your class'], explanation:'Câu hỏi với "who" + more intelligent than.'},
+      {prompt:'Ann / short / you?', answer:'Is Ann shorter than you?', accepted:['is ann shorter than you'], explanation:'Câu hỏi Yes/No: "Is Ann shorter than you?"'},
+      {prompt:'Last year / his salary / low / this year.', answer:'Last year his salary was lower than this year.', accepted:['last year his salary was lower than this year','his salary was lower last year than this year'], explanation:'low (ngắn) → lower; thì quá khứ "was".'},
+      {prompt:'Bob / look / strong / his brother.', answer:'Bob looks stronger than his brother.', accepted:['bob looks stronger than his brother'], explanation:'Sau "look" dùng tính từ: stronger than.'},
+    ]
+  },
+
+  /* ---------- BÀI 5: sắp xếp thành câu ---------- */
+  5: {
+    color:'rose', title:'Bài 5: Sắp xếp thành câu hoàn chỉnh',
+    desc:'Nhấp vào các từ theo đúng thứ tự để tạo thành câu.',
+    type:'reorder',
+    questions:[
+      {words:['I','think','London','is','more','expensive','than','New York'], answer:'I think London is more expensive than New York', explanation:'I think London is more expensive than New York.'},
+      {words:['Health','is','more','important','than','money'], answer:'Health is more important than money', explanation:'Health is more important than money.'},
+      {words:['Life','in','the','city','is','more','convenient','than','in','the','country'], answer:'Life in the city is more convenient than in the country', explanation:'Life in the city is more convenient than in the country.'},
+      {words:['The','health','care','in','the','city','is','better','than','in','the','countryside'], answer:'The health care in the city is better than in the countryside', explanation:'The health care in the city is better than in the countryside.'},
+    ]
+  },
+
+  /* ---------- BÀI 6: bảng so sánh hơn trạng từ ---------- */
+  6: {
+    color:'teal', title:'Bài 6: Dạng so sánh hơn của trạng từ',
+    desc:'Viết dạng so sánh hơn (comparative) cho mỗi trạng từ.',
+    type:'fillgrid',
+    questions:[
+      {word:'badly', answer:'worse', explanation:'Bất quy tắc: badly → worse.'},
+      {word:'conveniently', answer:'more conveniently', explanation:'Trạng từ -ly dài → more conveniently.'},
+      {word:'early', answer:'earlier', explanation:'Bất quy tắc/-y: early → earlier.'},
+      {word:'far', answer:'farther', accepted:['farther','further'], explanation:'far → farther/further.'},
+      {word:'fast', answer:'faster', explanation:'Trạng từ ngắn: fast → faster.'},
+      {word:'fluently', answer:'more fluently', explanation:'-ly dài → more fluently.'},
+      {word:'happily', answer:'more happily', explanation:'-ly dài → more happily.'},
+      {word:'hard', answer:'harder', explanation:'Trạng từ ngắn: hard → harder.'},
+      {word:'slowly', answer:'more slowly', explanation:'-ly dài → more slowly.'},
+      {word:'well', answer:'better', explanation:'Bất quy tắc: well → better.'},
+      {word:'late', answer:'later', explanation:'late → later.'},
+      {word:'smartly', answer:'more smartly', explanation:'-ly dài → more smartly.'},
+      {word:'responsibly', answer:'more responsibly', explanation:'-ly dài → more responsibly.'},
+      {word:'patiently', answer:'more patiently', explanation:'-ly dài → more patiently.'},
+      {word:'generously', answer:'more generously', explanation:'-ly dài → more generously.'},
+      {word:'cleverly', answer:'more cleverly', explanation:'-ly dài → more cleverly.'},
+      {word:'quickly', answer:'more quickly', explanation:'-ly dài → more quickly.'},
+      {word:'suitably', answer:'more suitably', accepted:['more suitably','more suitable'], explanation:'-ly dài → more suitably.'},
+      {word:'beautifully', answer:'more beautifully', explanation:'-ly dài → more beautifully.'},
+      {word:'strongly', answer:'more strongly', explanation:'-ly dài → more strongly.'},
+    ]
+  },
+
+  /* ---------- BÀI 7: trắc nghiệm trạng từ A/B/C ---------- */
+  7: {
+    color:'indigo', title:'Bài 7: Trắc nghiệm (trạng từ so sánh hơn)',
+    desc:'Chọn đáp án đúng A, B hoặc C cho mỗi câu.',
+    type:'mcq',
+    questions:[
+      {q:'1. The teacher asked me to speak ___.', options:['loud','louder','more loud'], answer:1, explanation:'speak + trạng từ so sánh hơn: louder.'},
+      {q:'2. Today you look ___ than usual.', options:['more confident','more confidently','confidently'], answer:0, explanation:'Sau "look" dùng tính từ: more confident.'},
+      {q:'3. Your house is ___ decorated than mine.', options:['more beautiful','more beautifully','beautifully'], answer:1, explanation:'Bổ nghĩa cho "decorated" (động từ) → trạng từ: more beautifully.'},
+      {q:'4. No one in my class runs ___ than Peter.', options:['more fastly','more better','faster'], answer:2, explanation:'fast → faster (không có "fastly").'},
+      {q:'5. This time you did much ___!', options:['better','more better','more well'], answer:0, explanation:'well → better; không dùng "more better".'},
+      {q:'6. You have to work ___ if you want to succeed.', options:['more hardly','hardlier','harder'], answer:2, explanation:'hard → harder ("hardly" nghĩa khác).'},
+      {q:'7. Today I come to class ___ than usual.', options:['more early','earlier','early'], answer:1, explanation:'early → earlier.'},
+      {q:'8. You need to work ___, or you will make a lot of mistakes.', options:['more careful','more carefully','carefully'], answer:1, explanation:'work + trạng từ so sánh hơn: more carefully.'},
+      {q:'9. She walks ___ than other people.', options:['slower','slowlier','more slowier'], answer:0, explanation:'Trong các lựa chọn, "slower" là dạng đúng (slowlier/more slowier sai).'},
+      {q:'10. The blue skirt suits you ___ than the black one.', options:['better','more better','more well'], answer:0, explanation:'well/good → better.'},
+    ]
+  },
+
+  /* ---------- BÀI 8: điền so sánh hơn của trạng từ ---------- */
+  8: {
+    color:'sky', title:'Bài 8: Hoàn thành câu (so sánh hơn của trạng từ)',
+    desc:'Viết dạng so sánh hơn của trạng từ trong ngoặc.',
+    type:'fill',
+    questions:[
+      {sentence:'I speak English ___ now than last year.', hint:'fluently', answer:'more fluently', explanation:'-ly dài → more fluently.'},
+      {sentence:'They smiled ___ than before.', hint:'happily', answer:'more happily', explanation:'-ly dài → more happily.'},
+      {sentence:'Tom arrived ___ than I expected.', hint:'early', answer:'earlier', explanation:'early → earlier.'},
+      {sentence:'We will meet ___ in the afternoon.', hint:'late', answer:'later', explanation:'late → later.'},
+      {sentence:'Mary dances ___ than anyone else.', hint:'gracefully', answer:'more gracefully', explanation:'-ly dài → more gracefully.'},
+      {sentence:'Could you speak ___?', hint:'loud', answer:'louder', explanation:'loud → louder.'},
+      {sentence:'Jim could do the task ___ than Jane.', hint:'well', answer:'better', explanation:'well → better.'},
+      {sentence:'We walked ___ than other people.', hint:'slowly', answer:'more slowly', explanation:'-ly dài → more slowly.'},
+      {sentence:'Planes can fly ___ than birds.', hint:'high', answer:'higher', explanation:'high → higher.'},
+      {sentence:'I can throw the ball ___ than anyone else in my team.', hint:'far', answer:'farther', accepted:['farther','further'], explanation:'far → farther/further.'},
+      {sentence:'James drives ___ than his wife.', hint:'carefully', answer:'more carefully', explanation:'-ly dài → more carefully.'},
+      {sentence:'I visit my grandmother ___ than my brother.', hint:'often', answer:'more often', explanation:'often → more often.'},
+      {sentence:'No one can run ___ than John.', hint:'fast', answer:'faster', explanation:'fast → faster.'},
+      {sentence:'My sister cooks ___ than I.', hint:'badly', answer:'worse', explanation:'badly → worse.'},
+      {sentence:'Everyone in the company is working ___ than ever before.', hint:'hard', answer:'harder', explanation:'hard → harder.'},
+    ]
+  },
+
+  /* ---------- BÀI 9: viết câu so sánh hơn (trạng từ) từ gợi ý ---------- */
+  9: {
+    color:'violet', title:'Bài 9: Viết câu so sánh hơn (trạng từ)',
+    desc:'Dùng từ gợi ý viết câu so sánh hơn với trạng từ.',
+    type:'sentence',
+    questions:[
+      {prompt:'I / play / tennis / badly / Tom.', answer:'I play tennis worse than Tom.', accepted:['i play tennis worse than tom'], explanation:'badly → worse.'},
+      {prompt:'The Australian athlete / run / slowly / the Korean athlete.', answer:'The Australian athlete runs more slowly than the Korean athlete.', accepted:['the australian athlete runs more slowly than the korean athlete'], explanation:'slowly → more slowly; ngôi 3 "runs".'},
+      {prompt:'Cats / walk / quiet / dogs.', answer:'Cats walk more quietly than dogs.', accepted:['cats walk more quietly than dogs'], explanation:'quiet → quietly → more quietly.'},
+      {prompt:'James / reply / swiftly / Peter.', answer:'James replies more swiftly than Peter.', accepted:['james replies more swiftly than peter'], explanation:'swiftly → more swiftly; ngôi 3 "replies".'},
+      {prompt:'The tiger / hunt / ferociously / the wolf.', answer:'The tiger hunts more ferociously than the wolf.', accepted:['the tiger hunts more ferociously than the wolf'], explanation:'ferociously → more ferociously; ngôi 3 "hunts".'},
+      {prompt:'Your idea / work / well / mine.', answer:'Your idea works better than mine.', accepted:['your idea works better than mine'], explanation:'well → better; ngôi 3 "works".'},
+      {prompt:'I / eat / vegetables / often / I used to.', answer:'I eat vegetables more often than I used to.', accepted:['i eat vegetables more often than i used to'], explanation:'often → more often.'},
+      {prompt:'Today / you / perform / badly / yesterday.', answer:'Today you perform worse than yesterday.', accepted:['today you perform worse than yesterday','you perform worse today than yesterday'], explanation:'badly → worse.'},
+    ]
+  },
+
+  /* ---------- BÀI 10: viết lại dùng more/less ---------- */
+  10: {
+    color:'emerald', title:'Bài 10: Viết lại câu dùng "more / less"',
+    desc:'Viết lại câu giữ nguyên nghĩa, dùng cấu trúc so sánh "more/less". (VD: Ann speaks French more fluently than James → James speaks French less fluently than Ann.)',
+    type:'rewrite',
+    questions:[
+      {sentence:'Today the sun shines more brightly than yesterday.', answer:'Yesterday the sun shone less brightly than today.', accepted:['yesterday the sun shone less brightly than today','yesterday the sun shines less brightly than today'], explanation:'Đảo chủ ngữ + more → less: Yesterday the sun shone less brightly than today.'},
+      {sentence:'This cake is more freshly made than that one.', answer:'That cake is less freshly made than this one.', accepted:['that cake is less freshly made than this one'], explanation:'Đảo this/that + more → less.'},
+      {sentence:'Jim behaves more politely than his younger brother.', answer:"Jim's younger brother behaves less politely than Jim.", accepted:["jim's younger brother behaves less politely than jim",'jims younger brother behaves less politely than jim'], explanation:'Đảo chủ ngữ + more → less.'},
+      {sentence:'Teenagers act more violently these days than in the past.', answer:'Teenagers acted less violently in the past than these days.', accepted:['teenagers acted less violently in the past than these days','teenagers act less violently in the past than these days'], explanation:'Đảo mốc thời gian + more → less.'},
+      {sentence:'The nurse works more carefully than her colleague.', answer:'The nurse\u2019s colleague works less carefully than the nurse.', accepted:["the nurse's colleague works less carefully than the nurse",'the nurses colleague works less carefully than the nurse'], explanation:'Đảo chủ ngữ + more → less.'},
+      {sentence:'My sister speaks more quickly than I.', answer:'I speak less quickly than my sister.', accepted:['i speak less quickly than my sister'], explanation:'Đảo chủ ngữ + more → less.'},
+      {sentence:'Now Mary drives more carefully than she used to.', answer:'Mary used to drive less carefully than she does now.', accepted:['mary used to drive less carefully than she does now','mary used to drive less carefully than now'], explanation:'Đảo "now / used to" + more → less.'},
+      {sentence:'This summer I go to the beach more often than last summer.', answer:'Last summer I went to the beach less often than this summer.', accepted:['last summer i went to the beach less often than this summer','last summer i go to the beach less often than this summer'], explanation:'Đảo mốc thời gian + more → less.'},
+    ]
+  },
+
+  /* ---------- BÀI 11: điền từ cho sẵn (word bank) ---------- */
+  11: {
+    color:'amber', title:'Bài 11: Điền từ cho sẵn (so sánh hơn)',
+    desc:'Chọn từ phù hợp trong khung và viết ở dạng so sánh hơn (tính từ hoặc trạng từ).',
+    bank:['angrily','large','soft','cleverly','warm','comfortably','hard','rich','costly','beautifully'],
+    type:'fill',
+    questions:[
+      {sentence:'Her voice is ___ than mine.', answer:'softer', explanation:'soft (tính từ) → softer.'},
+      {sentence:'James can sing ___ than many singers.', answer:'more beautifully', explanation:'sing + trạng từ: beautifully → more beautifully.'},
+      {sentence:'We can live ___ in the countryside than in the city.', answer:'more comfortably', explanation:'live + trạng từ: comfortably → more comfortably.'},
+      {sentence:'We hoped we would own a ___ apartment.', answer:'larger', explanation:'large (tính từ) → larger.'},
+      {sentence:'This modern computer is ___ than that old-fashioned one.', answer:'costlier', accepted:['costlier','more costly'], explanation:'costly (-y) → costlier.'},
+      {sentence:'My new house is ___ designed than my old one.', answer:'more cleverly', explanation:'designed + trạng từ: cleverly → more cleverly.'},
+      {sentence:'My father reacted ___ to my misbehaviors than my mother.', answer:'more angrily', explanation:'reacted + trạng từ: angrily → more angrily.'},
+      {sentence:'John studies ___ than anyone else in the class.', answer:'harder', explanation:'study + trạng từ: hard → harder.'},
+      {sentence:'It is getting ___ today so we can go out.', answer:'warmer', explanation:'warm (tính từ) → warmer.'},
+      {sentence:'People in the city are ___ than people in the countryside.', answer:'richer', explanation:'rich (tính từ) → richer.'},
+    ]
+  },
+
+  /* ---------- BÀI 12: tìm & sửa lỗi ---------- */
+  12: {
+    color:'rose', title:'Bài 12: Tìm lỗi sai và sửa lại',
+    desc:'Mỗi câu có một lỗi. Viết lại CẢ CÂU đã sửa đúng vào ô.',
+    type:'correct',
+    questions:[
+      {sentence:'Their life has been more comfortably since they moved to the city.', answer:'Their life has been more comfortable since they moved to the city.', accepted:['their life has been more comfortable since they moved to the city'], explanation:'Sau "has been" dùng tính từ: comfortable (không phải comfortably).'},
+      {sentence:'She looks more pretty in this white dress.', answer:'She looks prettier in this white dress.', accepted:['she looks prettier in this white dress'], explanation:'pretty (-y) → prettier (không dùng "more pretty").'},
+      {sentence:'The manager wants us to work more hardly.', answer:'The manager wants us to work harder.', accepted:['the manager wants us to work harder'], explanation:'hard → harder ("hardly" nghĩa khác).'},
+      {sentence:'This week you looks more healthily than last week.', answer:'This week you look healthier than last week.', accepted:['this week you look healthier than last week'], explanation:'look (số nhiều "you") + tính từ: healthier.'},
+      {sentence:'Everyone in my town is looking for more better crop this year.', answer:'Everyone in my town is looking for a better crop this year.', accepted:['everyone in my town is looking for a better crop this year','everyone in my town is looking for better crop this year'], explanation:'"more better" sai → "better".'},
+      {sentence:'Jim runs more fastly than his friends.', answer:'Jim runs faster than his friends.', accepted:['jim runs faster than his friends'], explanation:'fast → faster (không có "fastly").'},
+      {sentence:'I think a settled life is more better than a nomadic life.', answer:'I think a settled life is better than a nomadic life.', accepted:['i think a settled life is better than a nomadic life'], explanation:'"more better" sai → "better".'},
+      {sentence:'Today Jim performs less confident than usual.', answer:'Today Jim performs less confidently than usual.', accepted:['today jim performs less confidently than usual'], explanation:'perform + trạng từ: confidently.'},
+      {sentence:'The heavy rain makes it more difficultly to drive.', answer:'The heavy rain makes it more difficult to drive.', accepted:['the heavy rain makes it more difficult to drive'], explanation:'make it + tính từ: difficult.'},
+      {sentence:'Their team performed much more well than our team.', answer:'Their team performed much better than our team.', accepted:['their team performed much better than our team'], explanation:'"more well" sai → "better".'},
+    ]
+  },
+
+  /* ---------- BÀI 13: viết lại giữ nguyên nghĩa ---------- */
+  13: {
+    color:'teal', title:'Bài 13: Viết lại câu giữ nguyên nghĩa',
+    desc:'Viết lại câu bắt đầu bằng từ cho sẵn sao cho nghĩa không đổi.',
+    type:'rewrite',
+    questions:[
+      {sentence:'Mr Smith is wealthier than Mr Brown.  →  Mr Brown ___', answer:'Mr Brown is poorer than Mr Smith.', accepted:['mr brown is poorer than mr smith','mr brown is less wealthy than mr smith'], explanation:'wealthier → poorer / less wealthy (đảo chủ ngữ).'},
+      {sentence:"My house is smaller than my parents' house.  →  My parents' house ___", answer:"My parents' house is bigger than my house.", accepted:["my parents' house is bigger than my house","my parents house is bigger than my house","my parents' house is larger than my house","my parents house is larger than my house"], explanation:'smaller → bigger/larger (đảo chủ ngữ).'},
+      {sentence:'The black dress is more expensive than the red one.  →  The red dress ___', answer:'The red dress is cheaper than the black one.', accepted:['the red dress is cheaper than the black one','the red dress is less expensive than the black one'], explanation:'more expensive → cheaper / less expensive.'},
+      {sentence:'Today it is colder than yesterday.  →  Yesterday ___', answer:'Yesterday it was warmer than today.', accepted:['yesterday it was warmer than today','yesterday it was hotter than today'], explanation:'colder → warmer/hotter; thì quá khứ.'},
+      {sentence:"I don't think you are taller than me.  →  I don't think I ___", answer:"I don't think I am shorter than you.", accepted:["i don't think i am shorter than you",'i dont think i am shorter than you'], explanation:'taller → shorter (đảo chủ ngữ).'},
+      {sentence:'Is Jim worse at Math than John?  →  Is John ___', answer:'Is John better at Math than Jim?', accepted:['is john better at math than jim'], explanation:'worse → better (đảo chủ ngữ).'},
+      {sentence:'Jim looks much younger than his classmates.  →  Jim\u2019s classmates ___', answer:"Jim's classmates look much older than Jim.", accepted:["jim's classmates look much older than jim",'jims classmates look much older than jim'], explanation:'younger → older (đảo chủ ngữ, "look" số nhiều).'},
+      {sentence:'Your hair is longer than mine.  →  My hair ___', answer:'My hair is shorter than yours.', accepted:['my hair is shorter than yours'], explanation:'longer → shorter (đảo chủ ngữ).'},
+    ]
+  },
+
+  /* ---------- BÀI 14: đọc hiểu trắc nghiệm (cloze) ---------- */
+  14: {
+    color:'indigo', title:'Bài 14: Đọc hiểu – Trắc nghiệm điền từ',
+    desc:'Đọc đoạn văn và chọn đáp án đúng (A, B, C hoặc D) cho mỗi chỗ trống.',
+    passageId:'p14',
+    type:'mcq',
+    questions:[
+      {q:'(1)', options:['less polluted','more polluted','less pollutedly','more pollutedly'], answer:0, explanation:'Ít nhà máy & xe cộ → less polluted (ít ô nhiễm hơn).'},
+      {q:'(2)', options:['more healthy','healthier','more healthily','healthily'], answer:1, explanation:'can be + tính từ; healthy (-y) → healthier.'},
+      {q:'(3)', options:['longly','longer','shortly','shorter'], answer:1, explanation:'live longer = sống lâu hơn.'},
+      {q:'(4)', options:['more simple','simpler','simply','more simply'], answer:1, explanation:'is + tính từ; simple → simpler.'},
+      {q:'(5)', options:['higher','highly','lower','lowly'], answer:2, explanation:'tỉ lệ tội phạm thấp hơn → lower.'},
+      {q:'(6)', options:['more densely','more dense','less','less dense'], answer:2, explanation:'nông thôn ít dân hơn → less (populated).'},
+      {q:'(7)', options:['more friendly','friendlier','friendly','less friendly'], answer:1, explanation:'friendly (-y) → friendlier.'},
+      {q:'(8)', options:['more suitable','more suitbly','less suitably','suitably'], answer:0, explanation:'is + tính từ: more suitable (phù hợp hơn).'},
+    ]
+  },
+
+  /* ---------- BÀI 15: đọc hiểu trả lời câu hỏi ---------- */
+  15: {
+    color:'pink', title:'Bài 15: Đọc hiểu – Trả lời câu hỏi',
+    desc:'Đọc đoạn văn về cuộc sống du mục của người Mông Cổ và trả lời câu hỏi (viết câu trả lời).',
+    passageId:'p15',
+    type:'reading',
+    questions:[
+      {q:'1. Is it true that about 50% of Mongolian population still lead a nomadic life?', answer:'Yes, it is (true). About half of the population do not settle down.', keywords:['yes'], explanation:'Đoạn văn: "About half of Mongolian population do not settle down" → khoảng 50%. Trả lời: Yes, it is.'},
+      {q:'2. What are the most valuable possessions of Mongolian nomads?', answer:'Their tents and cattle.', keywords:['tent','cattle'], explanation:'"Their most valuable possessions are their tents and cattle."'},
+      {q:'3. Why do Mongolians have to move location throughout the year?', answer:'Because of the severe weather / dramatic changes in weather conditions between seasons.', keywords:['weather'], explanation:'Vì thời tiết khắc nghiệt và thay đổi mạnh giữa các mùa, họ phải di chuyển đến nơi phù hợp nhất.'},
+      {q:'4. Where do Mongolian nomads often move to in fall (autumn)?', answer:'Up a hill to collect hay for winter time.', keywords:['hill'], explanation:'"in autumn up a hill to collect hay for winter time."'},
+      {q:'5. How often do most nomads move their locations?', answer:'At least four times a year (some up to 30 times).', keywords:['four'], explanation:'"Most nomads move at least four times a year."'},
+      {q:'6. Why do more and more Mongolians move to Ulaanbaatar?', answer:'Because they want to look for an education and a professional job.', keywords:['education','job'], explanation:'"...because they want to look for an education and a professional job."'},
+    ]
+  },
+};
+
+/* Reading passages (with glossary + Vietnamese translation) */
+const passages = {
+  p14: {
+    title:'Benefit of living in the countryside',
+    html:`While many people prefer city life, a lot of people want to spend their life in a rural area.
+      The countryside is often <b class="text-indigo-600">(1)___</b> than the city because there are not as many
+      <span class="gloss" data-vi="nhà máy">factories</span> and traffic as in big cities. The country folk can be
+      <b class="text-indigo-600">(2)___</b> and they often live <b class="text-indigo-600">(3)___</b> than
+      <span class="gloss" data-vi="người thành thị">city dwellers</span>. Besides, life in the countryside is
+      <b class="text-indigo-600">(4)___</b> and peaceful because the <span class="gloss" data-vi="tỉ lệ tội phạm">crime rate</span>
+      is much <b class="text-indigo-600">(5)___</b>. The <span class="gloss" data-vi="vùng nông thôn">rural areas</span> are
+      <b class="text-indigo-600">(6)___</b> populated than the urban area but the neighbors are
+      <b class="text-indigo-600">(7)___</b> and more helpful. Life in the countryside is <b class="text-indigo-600">(8)___</b>
+      for old people than for energetic youngsters.`,
+    vi:`Tuy nhiều người thích cuộc sống thành thị, không ít người lại muốn sống ở vùng nông thôn. Nông thôn thường ÍT Ô NHIỄM HƠN
+      thành phố vì không có nhiều nhà máy và xe cộ như ở các thành phố lớn. Người dân quê có thể KHỎE MẠNH HƠN và họ thường sống
+      LÂU HƠN người thành thị. Ngoài ra, cuộc sống ở nông thôn ĐƠN GIẢN HƠN và yên bình vì tỉ lệ tội phạm THẤP HƠN nhiều. Vùng
+      nông thôn ÍT đông dân hơn khu đô thị nhưng hàng xóm THÂN THIỆN HƠN và sẵn lòng giúp đỡ hơn. Cuộc sống ở nông thôn PHÙ HỢP
+      HƠN với người già hơn là với giới trẻ năng động.`
+  },
+  p15: {
+    title:'The nomadic life of Mongolians',
+    html:`Mongolian people nowadays still maintain their tradition of a <span class="gloss" data-vi="du mục">nomadic</span> life.
+      About half of the Mongolian population do not <span class="gloss" data-vi="định cư">settle down</span> but travel from place
+      to place every season. When you think of Mongolian nomads, you think of animal farmers. Their most valuable
+      <span class="gloss" data-vi="tài sản">possessions</span> are their <span class="gloss" data-vi="lều">tents</span> and
+      <span class="gloss" data-vi="gia súc">cattle</span>. Mongolia has <span class="gloss" data-vi="khắc nghiệt">severe</span>
+      weather. There are dramatic changes in weather conditions between seasons. That is the reason why Mongolians have to move
+      location throughout the year to the most appropriate spots. In winter, they often move in front of a mountain for shelter.
+      In spring, it's closer to a river; in summer right next to a river for water supply; and in autumn up a hill to collect
+      <span class="gloss" data-vi="cỏ khô">hay</span> for winter time. Most nomads move at least four times a year, but some might
+      move up to 30 times in a year, especially if they have a lot of animals.<br><br>
+      The number of nomads has, however, significantly decreased over the last years. More and more of its citizens move to
+      Ulaanbaatar because they want to look for an education and a professional job. Mongolia is in a period of rapid change.`,
+    vi:`Người Mông Cổ ngày nay vẫn duy trì truyền thống sống du mục. Khoảng một nửa dân số không định cư mà di chuyển từ nơi này
+      sang nơi khác theo từng mùa. Tài sản quý giá nhất của họ là lều và gia súc. Mông Cổ có thời tiết khắc nghiệt, thay đổi mạnh
+      giữa các mùa — đó là lý do họ phải di chuyển quanh năm đến những nơi phù hợp nhất. Mùa đông họ dựng lều trước núi để trú; mùa
+      xuân gần sông hơn; mùa hè ngay cạnh sông để lấy nước; mùa thu lên đồi thu cỏ khô cho mùa đông. Hầu hết người du mục di chuyển
+      ít nhất bốn lần một năm, một số có thể tới 30 lần. Tuy nhiên, số người du mục đã giảm đáng kể trong những năm gần đây. Ngày
+      càng nhiều người chuyển tới Ulaanbaatar để tìm cơ hội học hành và việc làm chuyên môn.`
+  }
+};
+
+/* ========== STATE ========== */
+const completedTasks = new Set();
+const scores = {};
+
+/* ========== HELPERS ========== */
+function normalize(str){
+  return (str||'').trim().toLowerCase()
+    .replace(/[\u2018\u2019]/g,"'")
+    .replace(/[.,!?;]/g,'')
+    .replace(/\s+/g,' ');
+}
+function ringClass(c){ return `bg-${COLORS[c].ring}-100 ${COLORS[c].head} `; }
+
+/* ========== TASK SHELL BUILDER ========== */
+function taskShell(num){
+  const t = tasks[num];
+  const c = COLORS[t.color];
+  let extra = '';
+
+  // word bank (Bài 11)
+  if(t.bank){
+    extra += `<div class="flex flex-wrap gap-2 mb-5 bg-${c.ring}-50 rounded-xl p-3">
+      <span class="text-xs font-bold ${c.head} w-full mb-1"><i class="fa-solid fa-box-archive mr-1"></i>Từ cho sẵn:</span>
+      ${t.bank.map(w=>`<span class="bg-white border border-${c.ring}-200 ${c.head} text-sm font-bold px-3 py-1 rounded-full">${w}</span>`).join('')}
+    </div>`;
+  }
+  // reading passage (Bài 14, 15)
+  if(t.passageId){
+    const p = passages[t.passageId];
+    extra += `<div class="bg-${c.ring}-50 border border-${c.ring}-200 rounded-xl p-4 mb-4 text-sm leading-relaxed text-slate-700">
+      <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
+        <h4 class="font-extrabold ${c.head} uppercase tracking-wide text-xs">${p.title}</h4>
+        <button onclick="toggleVI('${t.passageId}')" class="text-xs font-bold bg-white border border-${c.ring}-200 ${c.head} px-3 py-1 rounded-full hover:scale-105 transition">
+          <i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt
+        </button>
+      </div>
+      <p id="${t.passageId}-en">${p.html}</p>
+      <p id="${t.passageId}-vi" class="vi-hidden mt-3 pt-3 border-t border-${c.ring}-200 italic text-slate-500">${p.vi}</p>
+      <p class="text-[11px] text-slate-400 mt-2"><i class="fa-solid fa-circle-info mr-1"></i>Di chuột vào từ <span class="gloss" data-vi="được tô viền">gạch chân</span> để xem nghĩa.</p>
+    </div>`;
+  }
+
+  return `
+  <div class="task-card bg-white rounded-2xl shadow-md p-6">
+    <div class="flex items-center gap-3 mb-5">
+      <div class="${ringClass(t.color)} font-black text-lg w-10 h-10 rounded-full flex items-center justify-center">${num}</div>
+      <div>
+        <h2 class="text-xl font-extrabold ${c.head}">${t.title}</h2>
+        <p class="text-sm text-slate-500">${t.desc}</p>
+      </div>
+    </div>
+    ${extra}
+    <div id="task${num}-questions" class="space-y-4"></div>
+    <div class="mt-5 flex gap-3 items-center flex-wrap">
+      <button onclick="checkTask(${num})" class="${c.btn} text-white font-bold px-6 py-2.5 rounded-full transition-all hover:scale-105 shadow">
+        <i class="fa-solid fa-check mr-2"></i>Kiểm tra đáp án
+      </button>
+      <button onclick="revealTask(${num})" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-5 py-2.5 rounded-full transition-all">
+        <i class="fa-solid fa-eye mr-1"></i>Hiện đáp án
+      </button>
+      <button onclick="resetTask(${num})" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-5 py-2.5 rounded-full transition-all">
+        <i class="fa-solid fa-rotate-left mr-1"></i>Làm lại
+      </button>
+      <div id="task${num}-score" class="hidden score-badge ml-auto bg-emerald-100 text-emerald-700 font-extrabold px-5 py-2 rounded-full text-lg"></div>
+    </div>
+  </div>`;
+}
+
+/* ========== QUESTION RENDERERS ========== */
+function inputBox(num,idx,ref,full){
+  const len = ref ? ref.length : 12;
+  const width = full ? 'w-full' : (len<8?'w-32':len<16?'w-44':'w-56');
+  return `<input type="text" id="t${num}_q${idx}" class="answer-input ${width} px-3 py-1 rounded-lg text-sm font-semibold" placeholder="..." autocomplete="off" spellcheck="false">`;
+}
+function fbBox(num,idx){
+  return `<div id="fb_t${num}_${idx}" class="explanation-box mt-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-sm text-blue-800"></div>`;
+}
+function numBadge(idx){
+  return `<span class="bg-white border border-slate-200 text-slate-600 font-bold text-xs px-2 py-1 rounded-lg min-w-[28px] text-center">${idx+1}</span>`;
+}
+
+function renderQuestion(num,q,idx,type){
+  if(type==='fillgrid'){
+    return `<div class="bg-slate-50 rounded-xl p-3 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-center gap-2 flex-wrap">
+        ${numBadge(idx)}
+        <span class="font-bold text-slate-700 text-sm min-w-[92px]">${q.word}</span>
+        <i class="fa-solid fa-arrow-right text-slate-300 text-xs"></i>
+        ${inputBox(num,idx,q.answer)}
+      </div>
+      ${fbBox(num,idx)}
+    </div>`;
+  }
+  if(type==='choose2'){
+    const pills = q.options.map((o,i)=>`
+      <span class="pick-pill px-4 py-1.5 rounded-full text-sm font-bold" id="pk_t${num}_${idx}_${i}" onclick="pickPill(${num},${idx},${i})">${o}</span>`).join('');
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2">
+        ${numBadge(idx)}
+        <div class="flex-1">
+          <p class="text-slate-700 font-semibold text-sm leading-7 flex flex-wrap items-center gap-2">
+            ${q.pre} <span class="inline-flex gap-2">${pills}</span> ${q.post}
+          </p>
+        </div>
+      </div>
+      ${fbBox(num,idx)}
+    </div>`;
+  }
+  if(type==='fill'){
+    const parts = q.sentence.split('___');
+    const hint = q.hint ? `<span class="ml-1 text-xs text-slate-400">(${q.hint})</span>` : '';
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2 flex-wrap">
+        ${numBadge(idx)}
+        <span class="text-slate-700 font-semibold text-sm leading-8 flex-1 flex flex-wrap items-center gap-1">
+          ${parts[0]}${inputBox(num,idx,q.answer)}${hint}${parts[1]||''}
+        </span>
+      </div>
+      ${fbBox(num,idx)}
+    </div>`;
+  }
+  if(type==='sentence'){
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2">
+        ${numBadge(idx)}
+        <div class="flex-1">
+          <p class="text-slate-500 text-xs mb-1 font-semibold"><i class="fa-solid fa-pen mr-1"></i>Gợi ý: <span class="text-slate-700 italic">${q.prompt}</span></p>
+          ${inputBox(num,idx,q.answer,true)}
+        </div>
+      </div>
+      ${fbBox(num,idx)}
+    </div>`;
+  }
+  if(type==='reorder'){
+    const chips = q.words.map((w,i)=>`
+      <span class="word-chip bg-white border-2 border-rose-200 text-rose-700 font-bold text-sm px-3 py-1.5 rounded-xl shadow-sm" id="chip_t${num}_${idx}_${i}" onclick="addChip(${num},${idx},${i})">${w}</span>`).join('');
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2">
+        ${numBadge(idx)}
+        <div class="flex-1">
+          <div id="ans_t${num}_${idx}" class="answer-line bg-white border-2 border-dashed border-slate-300 rounded-xl p-2 flex flex-wrap gap-2 mb-2 items-center text-slate-400 text-sm"></div>
+          <div class="flex flex-wrap gap-2">${chips}</div>
+        </div>
+      </div>
+      ${fbBox(num,idx)}
+    </div>`;
+  }
+  if(type==='mcq'){
+    const letters=['A','B','C','D'];
+    const opts = q.options.map((o,i)=>`
+      <label class="option-label flex items-center gap-2 px-4 py-2 rounded-xl cursor-pointer text-sm font-semibold" id="mcq_t${num}_${idx}_${i}" onclick="selectMCQ(${num},${idx},${i})">
+        <input type="radio" name="mcq${num}_${idx}" value="${i}" class="hidden">
+        <span class="bg-slate-200 text-slate-700 text-xs font-black w-6 h-6 rounded-full flex items-center justify-center">${letters[i]}</span>${o}
+      </label>`).join('');
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2 mb-3">${numBadge(idx)}<p class="font-semibold text-slate-700 text-sm">${q.q}</p></div>
+      <div class="flex flex-wrap gap-2 ml-8">${opts}</div>
+      ${fbBox(num,idx)}
+    </div>`;
+  }
+  if(type==='rewrite' || type==='correct'){
+    const label = type==='correct' ? '<i class="fa-solid fa-triangle-exclamation mr-1 text-rose-400"></i>Câu sai:' : '<i class="fa-solid fa-rotate mr-1 text-teal-400"></i>Câu gốc:';
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2">
+        ${numBadge(idx)}
+        <div class="flex-1">
+          <p class="text-slate-500 text-xs mb-1 font-semibold">${label} <span class="text-slate-700">${q.sentence}</span></p>
+          ${inputBox(num,idx,q.answer,true)}
+        </div>
+      </div>
+      ${fbBox(num,idx)}
+    </div>`;
+  }
+  if(type==='reading'){
+    return `<div class="bg-slate-50 rounded-xl p-4 border border-slate-200" id="qblock_t${num}_${idx}">
+      <div class="flex items-start gap-2">
+        ${numBadge(idx)}
+        <div class="flex-1">
+          <p class="text-slate-700 font-semibold text-sm mb-2">${q.q}</p>
+          ${inputBox(num,idx,q.answer,true)}
+        </div>
+      </div>
+      ${fbBox(num,idx)}
+    </div>`;
+  }
+  return '';
+}
+
+/* ========== BUILD ALL TASKS ========== */
+document.addEventListener('DOMContentLoaded', ()=>{
+  for(let n=1;n<=15;n++){
+    document.getElementById(`task${n}-wrap`).innerHTML = taskShell(n);
+    const box = document.getElementById(`task${n}-questions`);
+    const t = tasks[n];
+    t.questions.forEach((q,i)=>{ box.innerHTML += renderQuestion(n,q,i,t.type); });
+    // grid layout for fillgrid
+    if(t.type==='fillgrid'){
+      box.className = 'grid grid-cols-1 sm:grid-cols-2 gap-3';
+    }
+  }
+});
+
+/* ========== INTERACTIONS ========== */
+function pickPill(num,idx,i){
+  const opts = tasks[num].questions[idx].options;
+  for(let j=0;j<opts.length;j++){
+    const el=document.getElementById(`pk_t${num}_${idx}_${j}`);
+    if(el) el.classList.remove('picked');
+  }
+  const sel=document.getElementById(`pk_t${num}_${idx}_${i}`);
+  if(sel){ sel.classList.add('picked'); sel.dataset.picked='1'; }
+  // store on block
+  document.getElementById(`qblock_t${num}_${idx}`).dataset.pick=i;
+}
+
+function selectMCQ(num,idx,i){
+  const opts = tasks[num].questions[idx].options;
+  for(let j=0;j<opts.length;j++){
+    const el=document.getElementById(`mcq_t${num}_${idx}_${j}`);
+    if(el){ el.classList.remove('selected'); el.querySelector('input').checked=false; }
+  }
+  const sel=document.getElementById(`mcq_t${num}_${idx}_${i}`);
+  if(sel){ sel.classList.add('selected'); sel.querySelector('input').checked=true; }
+}
+
+/* reorder */
+const reorderState = {}; // key num_idx -> array of word indices
+function addChip(num,idx,i){
+  const key=`${num}_${idx}`;
+  if(!reorderState[key]) reorderState[key]=[];
+  reorderState[key].push(i);
+  document.getElementById(`chip_t${num}_${idx}_${i}`).classList.add('used');
+  renderAnswerLine(num,idx);
+}
+function removeChip(num,idx,pos){
+  const key=`${num}_${idx}`;
+  const i = reorderState[key][pos];
+  reorderState[key].splice(pos,1);
+  const chip=document.getElementById(`chip_t${num}_${idx}_${i}`);
+  if(chip) chip.classList.remove('used');
+  renderAnswerLine(num,idx);
+}
+function renderAnswerLine(num,idx){
+  const key=`${num}_${idx}`;
+  const line=document.getElementById(`ans_t${num}_${idx}`);
+  const words=tasks[num].questions[idx].words;
+  if(!reorderState[key] || reorderState[key].length===0){
+    line.innerHTML='<span class="italic">Nhấp các từ bên dưới để xếp câu…</span>';
+    return;
+  }
+  line.innerHTML = reorderState[key].map((wi,pos)=>`
+    <span class="word-chip bg-rose-500 text-white font-bold text-sm px-3 py-1.5 rounded-xl" onclick="removeChip(${num},${idx},${pos})">${words[wi]}</span>`).join('');
+}
+
+/* passage VI toggle */
+function toggleVI(pid){
+  document.getElementById(`${pid}-vi`).classList.toggle('vi-hidden');
+}
+
+/* ========== CHECK ========== */
+function checkTask(num){
+  const t=tasks[num]; const qs=t.questions; let correct=0;
+  qs.forEach((q,i)=>{
+    const fb=document.getElementById(`fb_t${num}_${i}`);
+    let ok=false, answerLabel='';
+
+    if(t.type==='fillgrid' || t.type==='fill'){
+      const inp=document.getElementById(`t${num}_q${i}`); if(!inp)return;
+      const val=normalize(inp.value);
+      const acc=(q.accepted||[q.answer]).map(normalize);
+      ok = acc.includes(val) && val!=='';
+      inp.classList.remove('correct-input','wrong-input');
+      inp.classList.add(ok?'correct-input':'wrong-input');
+      answerLabel=q.answer;
+    }
+    else if(t.type==='choose2'){
+      const block=document.getElementById(`qblock_t${num}_${i}`);
+      const pick = block.dataset.pick!==undefined ? parseInt(block.dataset.pick) : -1;
+      ok = pick===q.answer;
+      q.options.forEach((o,j)=>{
+        const el=document.getElementById(`pk_t${num}_${i}_${j}`);
+        el.classList.remove('correct-opt','wrong-opt');
+      });
+      const corr=document.getElementById(`pk_t${num}_${i}_${q.answer}`);
+      if(corr) corr.classList.add('correct-opt');
+      if(pick!==-1 && pick!==q.answer){
+        const wr=document.getElementById(`pk_t${num}_${i}_${pick}`);
+        if(wr) wr.classList.add('wrong-opt');
+      }
+      answerLabel=q.options[q.answer];
+    }
+    else if(t.type==='sentence' || t.type==='rewrite' || t.type==='correct'){
+      const inp=document.getElementById(`t${num}_q${i}`); if(!inp)return;
+      const val=normalize(inp.value);
+      const acc=(q.accepted||[q.answer]).map(normalize);
+      ok = acc.includes(val) && val!=='';
+      inp.classList.remove('correct-input','wrong-input');
+      inp.classList.add(ok?'correct-input':'wrong-input');
+      answerLabel=q.answer;
+    }
+    else if(t.type==='reorder'){
+      const key=`${num}_${i}`;
+      const built=(reorderState[key]||[]).map(wi=>q.words[wi]).join(' ');
+      ok = normalize(built)===normalize(q.answer);
+      const line=document.getElementById(`ans_t${num}_${i}`);
+      line.classList.remove('border-emerald-400','border-rose-400');
+      line.classList.add(ok?'border-emerald-400':'border-rose-400');
+      answerLabel=q.answer;
+    }
+    else if(t.type==='mcq'){
+      const sel=document.querySelector(`input[name="mcq${num}_${i}"]:checked`);
+      const chosen=sel?parseInt(sel.value):-1;
+      q.options.forEach((o,j)=>{
+        const el=document.getElementById(`mcq_t${num}_${i}_${j}`);
+        if(el) el.classList.remove('correct-opt','wrong-opt','selected');
+      });
+      const corr=document.getElementById(`mcq_t${num}_${i}_${q.answer}`);
+      if(corr) corr.classList.add('correct-opt');
+      if(chosen!==-1 && chosen!==q.answer){
+        const wr=document.getElementById(`mcq_t${num}_${i}_${chosen}`);
+        if(wr) wr.classList.add('wrong-opt');
+      }
+      ok = chosen===q.answer;
+      answerLabel=`${['A','B','C','D'][q.answer]}. ${q.options[q.answer]}`;
+    }
+    else if(t.type==='reading'){
+      const inp=document.getElementById(`t${num}_q${i}`); if(!inp)return;
+      const val=normalize(inp.value);
+      ok = val!=='' && q.keywords.every(k=>val.includes(normalize(k)));
+      inp.classList.remove('correct-input','wrong-input');
+      inp.classList.add(ok?'correct-input':'wrong-input');
+      answerLabel=q.answer;
+    }
+
+    if(ok) correct++;
+    fb.innerHTML = (ok?'✅ ':`❌ Đáp án đúng: <b>${answerLabel}</b><br>`) + `<span class='text-blue-700'>💡 ${q.explanation}</span>`;
+    fb.classList.add('show');
+  });
+
+  const total=qs.length;
+  scores[num]={correct,total};
+  const scoreEl=document.getElementById(`task${num}-score`);
+  scoreEl.textContent=`🏆 Điểm: ${correct}/${total}`;
+  scoreEl.classList.remove('hidden');
+
+  completedTasks.add(num);
+  updateProgress();
+  if(completedTasks.size===15) setTimeout(showCompletion,600);
+}
+
+/* ========== REVEAL ========== */
+function revealTask(num){
+  const t=tasks[num];
+  t.questions.forEach((q,i)=>{
+    const fb=document.getElementById(`fb_t${num}_${i}`);
+    let label = q.answer!==undefined ? q.answer
+      : (t.type==='choose2'?q.options[q.answer]
+      : (t.type==='mcq'?`${['A','B','C','D'][q.answer]}. ${q.options[q.answer]}`:''));
+    fb.innerHTML = `👁️ Đáp án: <b>${label}</b><br><span class='text-blue-700'>💡 ${q.explanation}</span>`;
+    fb.classList.add('show');
+  });
+}
+
+/* ========== RESET ========== */
+function resetTask(num){
+  const t=tasks[num];
+  t.questions.forEach((q,i)=>{
+    const inp=document.getElementById(`t${num}_q${i}`);
+    if(inp){ inp.value=''; inp.classList.remove('correct-input','wrong-input'); }
+    const fb=document.getElementById(`fb_t${num}_${i}`);
+    if(fb){ fb.classList.remove('show'); fb.innerHTML=''; }
+    if(t.type==='choose2'){
+      const block=document.getElementById(`qblock_t${num}_${i}`); if(block) delete block.dataset.pick;
+      q.options.forEach((o,j)=>{const el=document.getElementById(`pk_t${num}_${i}_${j}`); if(el) el.classList.remove('picked','correct-opt','wrong-opt');});
+    }
+    if(t.type==='mcq'){
+      q.options.forEach((o,j)=>{const el=document.getElementById(`mcq_t${num}_${i}_${j}`); if(el){el.classList.remove('correct-opt','wrong-opt','selected'); el.querySelector('input').checked=false;}});
+    }
+    if(t.type==='reorder'){
+      const key=`${num}_${i}`; reorderState[key]=[];
+      q.words.forEach((w,wi)=>{const c=document.getElementById(`chip_t${num}_${i}_${wi}`); if(c) c.classList.remove('used');});
+      const line=document.getElementById(`ans_t${num}_${i}`);
+      if(line){ line.classList.remove('border-emerald-400','border-rose-400'); renderAnswerLine(num,i); }
+    }
+  });
+  const scoreEl=document.getElementById(`task${num}-score`);
+  if(scoreEl) scoreEl.classList.add('hidden');
+  completedTasks.delete(num); delete scores[num];
+  updateProgress();
+}
+
+/* ========== NAV ========== */
+function showTab(id){
+  document.querySelectorAll('.section-page').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active'); b.classList.add('text-slate-600');});
+  document.getElementById(`tab-${id}`).classList.add('active');
+  const btn=[...document.querySelectorAll('.tab-btn')].find(b=>b.getAttribute('onclick')?.includes(`'${id}'`));
+  if(btn){ btn.classList.add('active'); btn.classList.remove('text-slate-600'); }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ========== PROGRESS ========== */
+function updateProgress(){
+  const done=completedTasks.size, total=15;
+  document.getElementById('progressText').textContent=`${done} / ${total} bài`;
+  document.getElementById('progressBar').style.width=`${(done/total)*100}%`;
+}
+
+/* ========== COMPLETION ========== */
+function showCompletion(){
+  fireConfetti();
+  const banner=document.getElementById('completionBanner');
+  banner.classList.remove('hidden'); banner.classList.add('show');
+  let c=0,tt=0; Object.values(scores).forEach(s=>{c+=s.correct; tt+=s.total;});
+  document.getElementById('finalScoreDisplay').textContent=`🎯 ${c} / ${tt} câu đúng`;
+}
+function closeBanner(){
+  const banner=document.getElementById('completionBanner');
+  banner.classList.remove('show'); banner.classList.add('hidden');
+}
+function fireConfetti(){
+  const wrap=document.getElementById('confettiWrap'); wrap.innerHTML='';
+  const colors=['#10b981','#38bdf8','#a78bfa','#fb7185','#fbbf24','#f472b6'];
+  for(let i=0;i<90;i++){
+    const p=document.createElement('div'); p.className='confetti-piece';
+    p.style.cssText=`left:${Math.random()*100}vw;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>0.5?'50%':'2px'};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*0.8}s;`;
+    wrap.appendChild(p);
+  }
+  setTimeout(()=>{wrap.innerHTML='';},4000);
+}
+</script>
+</body>
+</html>
