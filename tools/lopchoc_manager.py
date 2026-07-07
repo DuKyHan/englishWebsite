@@ -321,12 +321,81 @@ class App(tk.Tk):
     def _reload_after_sync(self):
         self.manifest = load_manifest()
         self.dirty = False
-        self._refresh_table()
+        self._refresh_table(save_state=False)
         self.status.set(f"Đã đồng bộ mới nhất — Đang mở: {MANIFEST_PATH}")
         self.log("[✓] Đã đồng bộ xong, đang xem dữ liệu mới nhất.")
 
     # ── TABLE HELPERS ───────────────────────────────────────────────
-    def _refresh_table(self):
+    def _save_tree_state(self):
+        """Lưu scroll position, folder mở, và selection trước khi rebuild."""
+        state = {}
+        try:
+            state['scroll'] = self.tree.yview()
+        except Exception:
+            state['scroll'] = None
+        state['open'] = set()
+        for idx, item in enumerate(self.manifest):
+            if item.get('type') == 'folder':
+                iid = f"f{idx}"
+                try:
+                    # tkinter co the tra '1', 'True', 1, True tuy platform
+                    val = self.tree.item(iid, 'open')
+                    if str(val).lower() not in ('0', 'false', ''):
+                        state['open'].add(item.get('name', ''))
+                except Exception:
+                    pass
+        sel = self.tree.selection()
+        if sel:
+            iid = sel[0]
+            try:
+                vals = self.tree.item(iid, 'values')
+                state['sel_name'] = vals[0] if vals else None
+            except Exception:
+                state['sel_name'] = None
+        else:
+            state['sel_name'] = None
+        return state
+
+    def _restore_tree_state(self, state):
+        """Khôi phục scroll, folder mở, selection sau khi rebuild."""
+        if not state:
+            return
+        # Mở lại các folder
+        if state.get('open'):
+            for idx, item in enumerate(self.manifest):
+                if item.get('type') == 'folder' and item.get('name', '') in state['open']:
+                    iid = f"f{idx}"
+                    try:
+                        self.tree.item(iid, open=True)
+                    except Exception:
+                        pass
+        # Khôi phục scroll
+        if state.get('scroll'):
+            try:
+                self.tree.yview_moveto(state['scroll'][0])
+            except Exception:
+                pass
+        # Khôi phục selection
+        if state.get('sel_name'):
+            for idx, item in enumerate(self.manifest):
+                if item.get('type') == 'folder':
+                    if item.get('name', '') == state['sel_name']:
+                        self.tree.selection_set(f"f{idx}")
+                        self.tree.focus(f"f{idx}")
+                        return
+                    for ci, ch in enumerate(item.get('children', [])):
+                        if ch.get('name', '') == state['sel_name']:
+                            self.tree.selection_set(f"f{idx}-{ci}")
+                            self.tree.focus(f"f{idx}-{ci}")
+                            return
+                else:
+                    if item.get('name', '') == state['sel_name']:
+                        self.tree.selection_set(f"r{idx}")
+                        self.tree.focus(f"r{idx}")
+                        return
+
+    def _refresh_table(self, save_state=True):
+        state = self._save_tree_state() if save_state else None
         self.tree.delete(*self.tree.get_children())
         for idx, item in enumerate(self.manifest):
             if item.get('type') == 'folder':
@@ -339,6 +408,8 @@ class App(tk.Tk):
             else:
                 self.tree.insert('', 'end', iid=f"r{idx}", text='',
                                   values=(item.get('name', ''), item.get('file', ''), item.get('desc', '')))
+        if state:
+            self._restore_tree_state(state)
 
     def _on_double_click(self, event):
         """Double-click: neu la folder thi expand/collapse, neu la bai hoc thi sua."""
@@ -491,10 +562,13 @@ class App(tk.Tk):
         name, file_, desc = dialog.result
         if child_idx is not None:
             self.manifest[idx]['children'][child_idx] = {"name": name, "file": file_, "desc": desc}
+            iid = f"f{idx}-{child_idx}"
         else:
             self.manifest[idx] = {"name": name, "file": file_, "desc": desc}
+            iid = f"r{idx}"
         self._mark_dirty()
-        self._refresh_table()
+        # Cập nhật in-place: chỉ thay đổi giá trị, không rebuild tree
+        self.tree.item(iid, values=(name, file_, desc))
         self.log(f"[~] Đã sửa: {name} -> {file_}")
 
     def delete_entry(self):
@@ -520,6 +594,30 @@ class App(tk.Tk):
         self._refresh_table()
         self.log(f"[-] Đã xóa: {item.get('name')}")
 
+    def _get_folder_open_states(self):
+        """Luu trang thai open cua tat ca folder theo ten."""
+        open_names = set()
+        for idx, item in enumerate(self.manifest):
+            if item.get('type') == 'folder':
+                iid = f"f{idx}"
+                try:
+                    val = self.tree.item(iid, 'open')
+                    if str(val).lower() not in ('0', 'false', ''):
+                        open_names.add(item.get('name', ''))
+                except Exception:
+                    pass
+        return open_names
+
+    def _set_folder_open_states(self, open_names):
+        """Khoi phuc trang thai open cua folder theo ten."""
+        for idx, item in enumerate(self.manifest):
+            if item.get('type') == 'folder':
+                iid = f"f{idx}"
+                try:
+                    self.tree.item(iid, open=item.get('name', '') in open_names)
+                except Exception:
+                    pass
+
     def move_entry(self, delta):
         idx, child_idx = self._selected_index()
         if idx is None:
@@ -535,6 +633,7 @@ class App(tk.Tk):
             self._refresh_table()
             self.tree.selection_set(f"f{idx}-{new_ci}")
         else:
+            # Di chuyen muc top-level
             new_idx = idx + delta
             if new_idx < 0 or new_idx >= len(self.manifest):
                 return
