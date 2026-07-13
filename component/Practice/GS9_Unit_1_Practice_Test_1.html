@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 1 - Practice Test 1 - Tieng Anh 9</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+  :root{ --accent:#1d4ed8; --accent2:#0891b2; }
+  * { box-sizing: border-box; }
+  body { font-family:'Nunito',sans-serif; background:#f5f3ff; }
+  .hero-gradient{ background: linear-gradient(135deg, #0c4a6e 0%, #1d4ed8 55%, #0891b2 100%); }
+  .tab-btn{ transition: all .2s ease; }
+  .tab-btn.active{ background: linear-gradient(135deg, #0c4a6e, #0891b2); color:#fff; box-shadow:0 4px 14px rgba(30,27,75,.35); transform:translateY(-1px); }
+  .task-card{ transition: box-shadow .2s, transform .2s; }
+  .task-card:hover{ transform: translateY(-2px); box-shadow:0 8px 30px rgba(0,0,0,.10); }
+  .option-label{ cursor:pointer; transition: all .18s; border:2px solid #e2e8f0; }
+  .option-label:hover{ border-color:var(--accent); background:#f5f3ff; }
+  .option-label.selected{ border-color:#1e1b4b; background:#eef2ff; }
+  .option-label.correct-opt{ border-color:#22c55e !important; background:#f0fdf4 !important; }
+  .option-label.wrong-opt{ border-color:#ef4444 !important; background:#fef2f2 !important; }
+  .mcq-detail-hidden{ display:none; }
+  .show-mcq-detail .mcq-detail-hidden{ display:block; }
+  .speak-btn{ cursor:pointer; }
+  .speak-btn.speaking{ animation: pulseSpeak .7s ease-in-out infinite; }
+  @keyframes pulseSpeak{ 0%,100%{transform:scale(1);} 50%{transform:scale(1.18);} }
+  .vi-hidden{ display:none; }
+  .explanation-box{ display:none; animation: fadeSlide .3s ease forwards; }
+  .explanation-box.show{ display:block; }
+  @keyframes fadeSlide{ from{opacity:0; transform:translateY(-6px);} to{opacity:1; transform:translateY(0);} }
+  input.answer-input{ border:2px solid #cbd5e1; transition:border .18s; outline:none; background:#fff; }
+  input.answer-input:focus{ border-color:var(--accent); }
+  input.correct-input{ border-color:#22c55e !important; background:#f0fdf4; }
+  input.wrong-input{ border-color:#ef4444 !important; background:#fef2f2; }
+  .score-badge{ animation: popIn .35s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn{ from{transform:scale(.4); opacity:0;} to{transform:scale(1); opacity:1;} }
+  .confetti-wrap{ position:fixed; inset:0; pointer-events:none; z-index:9999; }
+  .confetti-piece{ position:absolute; width:10px; height:10px; border-radius:2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall{ 0%{transform:translateY(-20px) rotate(0deg); opacity:1;} 100%{transform:translateY(100vh) rotate(720deg); opacity:0;} }
+  .progress-bar-fill{ transition: width .6s ease; }
+  .section-page{ display:none; }
+  .section-page.active{ display:block; }
+  #completionBanner{ display:none; }
+  #completionBanner.show{ display:flex; }
+  .passage-box{ background:#fff; border:1px solid #e2e8f0; border-radius:1rem; padding:1rem 1.25rem; line-height:1.9; font-size:.95rem; color:#334155; }
+  .dict-box{ background:#fef9c3; border:1px solid #fde68a; border-radius:1rem; padding:1rem 1.25rem; font-size:.9rem; color:#334155; }
+  .blank-tag{ background:#ede9fe; color:#5b21b6; font-weight:800; border-radius:.4rem; padding:0 .35rem; }
+  .wordfam-box{ background:#f5f3ff; border:1px solid #ddd6fe; border-radius:.6rem; padding:.5rem .75rem; font-size:.75rem; color:#5b21b6; line-height:1.6; width:100%; }
+</style>
+</head>
+<body class="min-h-screen">
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<header class="hero-gradient text-white py-8 px-4 text-center shadow-xl relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <div class="absolute top-4 left-8 text-6xl">🏘️</div>
+    <div class="absolute top-2 right-12 text-5xl">🧑‍🤝‍🧑</div>
+    <div class="absolute bottom-2 left-1/3 text-4xl">🌳</div>
+    <div class="absolute bottom-4 right-1/4 text-5xl">🏫</div>
+  </div>
+  <p class="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Tiếng Anh 9 · Unit 1 · Practice Test 1</p>
+  <h1 class="font-['Baloo_2'] text-3xl md:text-5xl font-extrabold drop-shadow-lg">🏘️ Unit 1: Local Community 🤝</h1>
+  <p class="mt-2 text-base md:text-lg opacity-90 font-semibold">Practice Test 1 · Luyện tập tương tác</p>
+  <div class="mt-5 max-w-2xl mx-auto">
+    <div class="flex justify-between text-xs font-bold opacity-80 mb-1">
+      <span>Tiến độ hoàn thành</span>
+      <span id="progressText">0 / 7 phần</span>
+    </div>
+    <div class="bg-white/20 rounded-full h-3 overflow-hidden">
+      <div id="progressBar" class="bg-white rounded-full h-3 progress-bar-fill" style="width:0%"></div>
+    </div>
+  </div>
+</header>
+
+<nav class="sticky top-0 z-50 bg-white/90 backdrop-blur shadow-sm px-3 py-2 overflow-x-auto">
+  <div class="flex gap-2 min-w-max mx-auto w-fit" id="navWrap"></div>
+</nav>
+
+<main class="max-w-4xl mx-auto px-4 py-6 pb-20" id="mainWrap"></main>
+
+<div id="completionBanner" class="fixed inset-0 z-[9998] items-center justify-center bg-black/50 px-4">
+  <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center score-badge shadow-2xl">
+    <div class="text-6xl mb-3">🎉</div>
+    <h3 class="text-2xl font-extrabold text-indigo-900 mb-1">Hoàn thành bài luyện tập!</h3>
+    <p class="text-slate-500 mb-4">Bạn đã làm xong tất cả các phần.</p>
+    <p id="finalScoreDisplay" class="text-3xl font-black text-violet-700 mb-5"></p>
+    <button onclick="closeBanner()" class="bg-gradient-to-r from-indigo-900 to-pink-600 text-white font-bold px-6 py-2.5 rounded-full">Đóng</button>
+  </div>
+</div>
+
+<script>
+const DATA = {"unit": 1, "test": 1, "sections": [
+{"roman": "I", "navLabel": "Ngữ âm & Từ vựng", "title": "Phát âm – Trọng âm – Từ vựng – Ngữ pháp", "icon": "ear-listen", "instructions": "Chọn đáp án (A, B, C hoặc D) đúng nhất.", "type": "mcq", "instant": true, "questions": [
+{"q": "1. Which word has the underlined part pronounced differently from that of the others?", "options": ["dr<u>a</u>ma", "g<u>a</u>rden", "c<u>a</u>ndy", "<u>a</u>rtist"], "answer": 2, "explanation": "\"candy\" phát âm /æ/, ba từ còn lại phát âm /ɑː/.", "ipas": ["/ˈdrɑːmə/", "/ˈɡɑːdn/", "/ˈkændi/", "/ˈɑːtɪst/"], "vis": ["vở kịch", "khu vườn", "kẹo", "nghệ sĩ"]},
+{"q": "2. Which word has the underlined part pronounced differently from that of the others?", "options": ["f<u>ea</u>ther", "pl<u>ea</u>sure", "sp<u>ea</u>ker", "w<u>ea</u>ther"], "answer": 2, "explanation": "\"speaker\" phát âm /iː/, ba từ còn lại phát âm /e/.", "ipas": ["/ˈfeðə(r)/", "/ˈpleʒə(r)/", "/ˈspiːkə(r)/", "/ˈweðə(r)/"], "vis": ["lông vũ", "niềm vui thích", "người nói, loa", "thời tiết"]},
+{"q": "3. Which word has a different stress pattern from that of the others?", "options": ["preserve", "craftsman", "sculpture", "layer"], "answer": 0, "explanation": "\"preserve\" trọng âm rơi vào âm tiết 2, ba từ còn lại trọng âm rơi vào âm tiết 1.", "ipas": ["/prɪˈzɜːv/", "/ˈkrɑːftsmən/", "/ˈskʌlptʃə(r)/", "/ˈleɪə(r)/"], "vis": ["bảo tồn, giữ gìn", "thợ thủ công", "tác phẩm điêu khắc", "lớp"]},
+{"q": "4. Which word has a different stress pattern from that of the others?", "options": ["handicraft", "lacquerware", "conical", "specific"], "answer": 3, "explanation": "\"specific\" trọng âm rơi vào âm tiết 2, ba từ còn lại trọng âm rơi vào âm tiết 1.", "ipas": ["/ˈhændikrɑːft/", "/ˈlækəweə(r)/", "/ˈkɒnɪkl/", "/spəˈsɪfɪk/"], "vis": ["nghề thủ công", "đồ sơn mài", "hình nón", "cụ thể, riêng biệt"]},
+{"q": "5. Tom: Is there any place for farmers to sell their vegetables?\nLan: Yes, the new ___ is great for selling local produce.", "options": ["town hall", "community garden", "recycling program", "farmer's market"], "answer": 3, "explanation": "\"farmer's market\" = chợ nông sản, nơi nông dân bán rau củ.", "vis": ["tòa thị chính", "vườn cộng đồng", "chương trình tái chế", "chợ nông sản"], "vi": "Tom: 'Có nơi nào để nông dân bán rau củ của họ không?' – Lan: 'Có chứ, khu chợ nông sản mới rất tuyệt để bán nông sản địa phương.'"},
+{"q": "6. Customer: Why should I use cloth bags instead of plastic ones?\nShopkeeper: Because we need to ___ our use of plastic to help the environment.", "options": ["look for", "cut down on", "get on with", "remind"], "answer": 1, "explanation": "\"cut down on\" = giảm bớt (việc sử dụng).", "vis": ["tìm kiếm", "giảm bớt, cắt giảm", "hòa hợp với; tiếp tục làm", "nhắc nhở"], "vi": "Khách hàng: 'Tại sao tôi nên dùng túi vải thay vì túi nhựa?' – Người bán: 'Vì chúng ta cần giảm bớt việc sử dụng nhựa để bảo vệ môi trường.'"},
+{"q": "7. Resident: These old park benches are broken and dangerous.\nOfficer: Don't worry. We will ___ them and replace them with new ones.", "options": ["take care of", "take down", "look around", "set up"], "answer": 1, "explanation": "\"take down\" = tháo dỡ, gỡ bỏ.", "vis": ["chăm sóc", "tháo dỡ, gỡ bỏ", "nhìn quanh", "thiết lập, lắp đặt"], "vi": "Cư dân: 'Những chiếc ghế đá công viên cũ này bị hỏng và nguy hiểm.' – Cán bộ: 'Đừng lo. Chúng tôi sẽ tháo dỡ chúng và thay bằng ghế mới.'"},
+{"q": "8. Nam: I'm not sure ___ to support the new recycling initiative.\nBa: You should talk to the group leader; he will explain the benefits.", "options": ["why", "what", "how", "who"], "answer": 2, "explanation": "\"not sure how to support\" = không chắc ủng hộ bằng cách nào (câu hỏi gián tiếp với how).", "vi": "Nam: 'Mình không chắc làm thế nào để ủng hộ sáng kiến tái chế mới.' – Ba: 'Bạn nên nói chuyện với trưởng nhóm, anh ấy sẽ giải thích lợi ích.'"},
+{"q": "9. Mai: We need help with the community event. Do you have a phone number?\nPhuc: No, they're not sure ___ to contact for support yet.", "options": ["who", "how", "why", "what"], "answer": 0, "explanation": "\"not sure who to contact\" = không chắc nên liên hệ với ai (who làm tân ngữ của contact).", "vi": "Mai: 'Chúng ta cần giúp đỡ cho sự kiện cộng đồng. Bạn có số điện thoại không?' – Phúc: 'Không, họ chưa chắc chắn nên liên hệ với ai để được hỗ trợ.'"},
+{"q": "10. A: Do you like living in this new condo?\nB: Not really. It's small and there are not enough ___ for families with children.", "options": ["facilities", "tools", "equipment", "space"], "answer": 0, "explanation": "\"facilities\" = tiện nghi, cơ sở vật chất (phù hợp cho gia đình có con nhỏ).", "vis": ["tiện nghi, cơ sở vật chất", "dụng cụ", "thiết bị", "không gian"], "vi": "A: 'Bạn có thích sống ở khu chung cư mới này không?' – B: 'Không hẳn. Nó nhỏ và không có đủ tiện nghi cho gia đình có con nhỏ.'"},
+{"q": "11. Son: Your parents are so good at making pottery!\nAn: Yes, my grandparents ___ those skills to them many years ago.", "options": ["handed up", "handed out", "handed down", "handed off"], "answer": 2, "explanation": "\"hand down\" = truyền lại (kỹ năng, tài sản) cho thế hệ sau.", "vis": ["nâng lên, đưa lên", "phát ra, phân phát", "truyền lại (cho thế hệ sau)", "chuyển giao, bàn giao"], "vi": "Sơn: 'Bố mẹ bạn giỏi làm gốm quá!' – An: 'Vâng, ông bà mình đã truyền lại những kỹ năng đó cho họ nhiều năm trước.'"},
+{"q": "12. Nga: Our neighborhood is much cleaner now, isn't it?\nMinh: Definitely. It's because everyone joined the ___ drive last Sunday.", "options": ["clean-up", "making", "building", "working"], "answer": 0, "explanation": "\"clean-up drive\" = chiến dịch dọn dẹp.", "vis": ["dọn dẹp, làm sạch", "làm ra, chế tạo", "xây dựng", "làm việc"], "vi": "Nga: 'Khu phố mình sạch hơn nhiều rồi phải không?' – Minh: 'Đúng vậy. Vì mọi người đã tham gia chiến dịch dọn dẹp vào Chủ nhật trước.'"},
+{"q": "13. James: Could you give me a hand with these rubbish bins?\nNga: \"___\"", "options": ["Yes, go ahead.", "Sure. I don't like them much.", "I couldn't. They're over there.", "Certainly. Where do you want to put them?"], "answer": 3, "explanation": "Trả lời lịch sự, đồng ý giúp đỡ và hỏi thêm chi tiết cần thiết.", "vis": ["Vâng, cứ làm đi.", "Được thôi. Tôi không thích chúng lắm.", "Tôi không thể. Chúng ở đằng kia.", "Được chứ. Bạn muốn đặt chúng ở đâu?"], "vi": "James: 'Bạn có thể giúp tôi mấy thùng rác này không?' – Nga: 'Được chứ. Bạn muốn đặt chúng ở đâu?'"},
+{"q": "14. Hieu: I heard your village is famous for a special kind of banh cuon.\nKien: \"___\"", "options": ["My village is very far from here.", "It is used to make banh cuon.", "That's right! It has a very unique taste.", "No, I don't like banh cuon."], "answer": 2, "explanation": "Trả lời khẳng định, phù hợp với lời khen về đặc sản của làng.", "vis": ["Làng mình ở rất xa đây.", "Nó được dùng để làm bánh cuốn.", "Đúng vậy! Nó có hương vị rất độc đáo.", "Không, mình không thích bánh cuốn."], "vi": "Hiếu: 'Mình nghe nói làng bạn nổi tiếng với một loại bánh cuốn đặc biệt.' – Kiên: 'Đúng vậy! Nó có hương vị rất độc đáo.'"}
+]},
+{"roman": "II", "navLabel": "Biển báo", "title": "Biển báo / Thông báo", "icon": "traffic-light", "instructions": "Đọc biển báo/thông báo và chọn ý đúng nhất.", "type": "mcq", "instant": true, "questions": [
+{"q": "15. What does the sign say?", "options": ["You can eat here freely.", "You can bring drinks but no food.", "Eating and drinking are not allowed.", "Food is okay, but no water."], "answer": 2, "explanation": "Biểu tượng cấm đồ ăn và thức uống trong vòng tròn gạch chéo → không được ăn uống ở khu vực này.", "vis": ["Bạn có thể ăn uống thoải mái ở đây.", "Bạn có thể mang đồ uống nhưng không được mang đồ ăn.", "Không được phép ăn uống.", "Đồ ăn thì được, nhưng không được mang nước."], "image": "<div class=\"inline-flex flex-col items-center w-40 bg-white border-2 border-slate-200 rounded-xl p-3 shadow-sm\">\n  <svg viewBox=\"0 0 100 100\" class=\"w-16 h-16\" aria-hidden=\"true\">\n    <circle cx=\"50\" cy=\"50\" r=\"46\" fill=\"#fff\" stroke=\"#dc2626\" stroke-width=\"8\"/>\n    <rect x=\"30\" y=\"40\" width=\"18\" height=\"24\" rx=\"3\" fill=\"#f59e0b\"/>\n    <path d=\"M30 40c0-8 18-8 18 0\" fill=\"none\" stroke=\"#7c2d12\" stroke-width=\"3\"/>\n    <path d=\"M62 36v28M70 36c4 4 4 10 0 14M58 36h4\" stroke=\"#0369a1\" stroke-width=\"4\" fill=\"none\" stroke-linecap=\"round\"/>\n    <line x1=\"14\" y1=\"86\" x2=\"86\" y2=\"14\" stroke=\"#dc2626\" stroke-width=\"8\" stroke-linecap=\"round\"/>\n  </svg>\n  <p class=\"text-[11px] font-black text-center text-slate-900 leading-tight mt-1\">NO FOOD OR DRINK</p>\n</div>"},
+{"q": "16. What does the notice say?", "options": ["You must keep your ticket for inspection.", "Officers will give you a ticket on the bus.", "You don't need a ticket for this trip.", "You can buy tickets from the officers."], "answer": 0, "explanation": "Thông báo yêu cầu hành khách giữ vé để nhân viên có thể kiểm tra trong suốt hành trình.", "vis": ["Bạn phải giữ vé để kiểm tra.", "Nhân viên sẽ phát vé cho bạn trên xe buýt.", "Bạn không cần vé cho chuyến đi này.", "Bạn có thể mua vé từ nhân viên."], "image": "<div class=\"inline-flex flex-col items-center w-44 bg-slate-800 border-2 border-slate-300 rounded-xl p-3 shadow-sm\">\n  <svg viewBox=\"0 0 100 100\" class=\"w-16 h-16\" aria-hidden=\"true\">\n    <rect x=\"18\" y=\"32\" width=\"64\" height=\"36\" rx=\"6\" fill=\"#fff\"/>\n    <circle cx=\"18\" cy=\"50\" r=\"6\" fill=\"#1e293b\"/>\n    <circle cx=\"82\" cy=\"50\" r=\"6\" fill=\"#1e293b\"/>\n    <line x1=\"30\" y1=\"32\" x2=\"30\" y2=\"68\" stroke=\"#94a3b8\" stroke-width=\"2\" stroke-dasharray=\"3 3\"/>\n    <path d=\"M40 44l6 6 12-12\" stroke=\"#16a34a\" stroke-width=\"4\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n    <rect x=\"38\" y=\"56\" width=\"32\" height=\"5\" rx=\"2\" fill=\"#cbd5e1\"/>\n  </svg>\n  <p class=\"text-[11px] font-black text-center text-white leading-tight mt-1\">PUBLIC TRANSPORT: KEEP YOUR TICKET</p>\n</div>"}
+]},
+{"roman": "III", "navLabel": "Điền đoạn văn", "title": "Chọn từ thích hợp điền vào đoạn văn", "icon": "file-lines", "instructions": "Chọn đáp án đúng để hoàn thành đoạn văn.", "type": "mcq", "instant": true, "passage": {"title": "Our Local Community", "html": "Our local community plays a crucial role (17)___ shaping a vibrant and supportive environment for all residents. One of the most effective ways to strengthen community bonds is through active participation in local events and initiatives. For instance, neighborhood clean-up drives not only enhance the beauty of our surroundings but also foster a sense of pride and collaboration among residents.\n\nAdditionally, community gardens offer (18)___ where people can grow fresh produce, share gardening tips, and enjoy the benefits of working together. By supporting local businesses and attending town festivals, we (19)___ to the economic and cultural vitality of our area. Engaging with our community helps build (20)___ relationships, address local issues, and create a more (21)___ and resilient neighborhood. These efforts are essential in ensuring that our area remains a vibrant and thriving place for (22)___. In conclusion, taking part in local activities and supporting community projects is not only beneficial for individuals but also strengthens the overall sense of belonging.", "vi": "Cộng đồng địa phương của chúng ta đóng vai trò quan trọng trong việc hình thành một môi trường sôi động và hỗ trợ cho mọi cư dân. Một trong những cách hiệu quả nhất để củng cố mối liên kết cộng đồng là tích cực tham gia vào các sự kiện và sáng kiến địa phương. Chẳng hạn, các chiến dịch dọn dẹp khu phố không chỉ làm đẹp thêm cảnh quan xung quanh mà còn nuôi dưỡng niềm tự hào và tinh thần hợp tác giữa các cư dân.\n\nNgoài ra, các vườn cộng đồng còn mang đến không gian nơi mọi người có thể trồng rau quả tươi, chia sẻ kinh nghiệm làm vườn và tận hưởng lợi ích của việc làm việc cùng nhau. Bằng cách ủng hộ các doanh nghiệp địa phương và tham gia các lễ hội của thị trấn, chúng ta đóng góp vào sự phát triển kinh tế và văn hóa của khu vực. Việc gắn kết với cộng đồng giúp xây dựng những mối quan hệ bền vững, giải quyết các vấn đề địa phương và tạo nên một khu dân cư đoàn kết và kiên cường hơn. Những nỗ lực này rất cần thiết để đảm bảo khu vực của chúng ta luôn là nơi sôi động và phát triển cho tất cả mọi người. Tóm lại, việc tham gia vào các hoạt động địa phương và ủng hộ các dự án cộng đồng không chỉ có lợi cho cá nhân mà còn củng cố ý thức thuộc về chung."}, "questions": [
+{"q": "17.", "options": ["at", "in", "on", "for"], "answer": 1, "explanation": "\"play a role in + V-ing\" = đóng vai trò trong việc...", "vis": ["tại, ở", "trong (thuộc cụm \"play a role in\")", "trên, vào", "cho, vì"], "vi": "Cộng đồng địa phương của chúng ta đóng vai trò quan trọng (17)___ việc hình thành một môi trường sôi động và hỗ trợ."},
+{"q": "18.", "options": ["spaces", "offices", "tools", "factories"], "answer": 0, "explanation": "\"offer a space\" = mang đến không gian (nơi trồng rau, chia sẻ kinh nghiệm).", "vis": ["không gian, khoảng trống", "văn phòng", "công cụ, dụng cụ", "nhà máy"], "vi": "Các vườn cộng đồng còn mang đến (18)___ nơi mọi người có thể trồng rau quả tươi."},
+{"q": "19.", "options": ["connect", "lead", "contribute", "respond"], "answer": 2, "explanation": "\"contribute to\" = đóng góp vào.", "vis": ["kết nối", "dẫn dắt, dẫn đến", "đóng góp (thuộc cụm \"contribute to\")", "phản hồi, đáp lại"], "vi": "Bằng cách ủng hộ doanh nghiệp địa phương, chúng ta (19)___ vào sự phát triển kinh tế và văn hóa của khu vực."},
+{"q": "20.", "options": ["lasting", "temporary", "sudden", "negative"], "answer": 0, "explanation": "\"lasting relationships\" = mối quan hệ bền vững, lâu dài.", "vis": ["bền vững, lâu dài", "tạm thời", "đột ngột", "tiêu cực"], "vi": "Việc gắn kết với cộng đồng giúp xây dựng những mối quan hệ (20)___."},
+{"q": "21.", "options": ["unitedly", "unity", "unite", "united"], "answer": 3, "explanation": "Tính từ \"united\" bổ nghĩa cho \"neighborhood\", song song với \"resilient\".", "vis": ["một cách đoàn kết (trạng từ)", "sự đoàn kết (danh từ)", "đoàn kết, hợp nhất (động từ)", "đoàn kết (tính từ)"], "vi": "...tạo nên một khu dân cư (21)___ và kiên cường hơn."},
+{"q": "22.", "options": ["someone", "everyone", "anyone", "no one"], "answer": 1, "explanation": "\"a thriving place for everyone\" = nơi phát triển cho tất cả mọi người.", "vis": ["một ai đó", "tất cả mọi người", "bất kỳ ai", "không ai cả"], "vi": "Khu vực của chúng ta luôn là nơi sôi động và phát triển cho (22)___."}
+]},
+{"roman": "IV", "navLabel": "Đọc hiểu", "title": "Đọc hiểu", "icon": "book-open", "instructions": "Đọc đoạn văn, xác định Đúng/Sai và chọn đáp án đúng.", "type": "mcq", "instant": true, "passage": {"title": "Local Communities in Towns and Cities", "html": "In any towns and cities, local communities play an important role in everyday life. Local community groups often organize events and activities that bring people together. For example, they might hold festivals, farmers' markets, or clean-up days. These events help to build relationships among residents and create a sense of belonging.\n\nCommunity centers are common places where people can join different classes and activities, such as sports, art, and language lessons. Many local communities also have volunteer groups that help those in need, such as food banks or shelters for the homeless. By participating in these activities, people can contribute to their community and make a positive impact.\n\nLocal businesses also benefit from a strong community. When residents support local shops and restaurants, they help boost the local economy. A close-knit community often has better communication and cooperation, which can lead to improvements in local services and facilities.", "vi": "Ở bất kỳ thị trấn hay thành phố nào, cộng đồng địa phương đều đóng vai trò quan trọng trong đời sống hằng ngày. Các nhóm cộng đồng địa phương thường tổ chức các sự kiện và hoạt động nhằm gắn kết mọi người lại với nhau. Ví dụ, họ có thể tổ chức lễ hội, chợ nông sản hoặc các ngày dọn dẹp. Những sự kiện này giúp xây dựng mối quan hệ giữa các cư dân và tạo nên cảm giác thuộc về.\n\nTrung tâm cộng đồng là nơi phổ biến để mọi người có thể tham gia các lớp học và hoạt động khác nhau như thể thao, nghệ thuật và ngoại ngữ. Nhiều cộng đồng địa phương cũng có các nhóm tình nguyện giúp đỡ những người cần hỗ trợ, chẳng hạn như ngân hàng thực phẩm hoặc nơi trú ẩn cho người vô gia cư. Bằng việc tham gia các hoạt động này, mọi người có thể đóng góp cho cộng đồng và tạo ra tác động tích cực.\n\nCác doanh nghiệp địa phương cũng được hưởng lợi từ một cộng đồng vững mạnh. Khi cư dân ủng hộ các cửa hàng và nhà hàng địa phương, họ giúp thúc đẩy nền kinh tế địa phương. Một cộng đồng gắn bó chặt chẽ thường có sự giao tiếp và hợp tác tốt hơn, điều này có thể dẫn đến những cải thiện trong dịch vụ và cơ sở vật chất địa phương."}, "questions": [
+{"q": "23. Local community groups arrange activities to help residents build relationships with each other.", "options": ["True", "False"], "answer": 0, "explanation": "Bài đọc: \"These events help to build relationships among residents\" → Đúng.", "vis": ["Đúng", "Sai"], "vi": "Các nhóm cộng đồng địa phương tổ chức các hoạt động giúp cư dân xây dựng mối quan hệ với nhau."},
+{"q": "24. People can only learn foreign languages at local community centers.", "options": ["True", "False"], "answer": 1, "explanation": "Bài đọc liệt kê nhiều lớp học khác nhau (sports, art, language), không chỉ ngoại ngữ → Sai.", "vis": ["Đúng", "Sai"], "vi": "Mọi người chỉ có thể học ngoại ngữ tại các trung tâm cộng đồng địa phương."},
+{"q": "25. Volunteer groups in local communities provide support for people who do not have a home.", "options": ["True", "False"], "answer": 0, "explanation": "Bài đọc: \"volunteer groups that help those in need, such as food banks or shelters for the homeless\" → Đúng.", "vis": ["Đúng", "Sai"], "vi": "Các nhóm tình nguyện trong cộng đồng địa phương hỗ trợ những người không có nhà ở."},
+{"q": "26. Supporting local shops and restaurants causes negative impacts on the local economy.", "options": ["True", "False"], "answer": 1, "explanation": "Bài đọc: ủng hộ cửa hàng địa phương giúp \"boost the local economy\" (tác động tích cực) → Sai.", "vis": ["Đúng", "Sai"], "vi": "Việc ủng hộ các cửa hàng và nhà hàng địa phương gây ra tác động tiêu cực đến nền kinh tế địa phương."},
+{"q": "27. What is the main idea of the passage?", "options": ["The various activities people can do at community centers.", "The importance and benefits of local communities in towns and cities.", "The role of local businesses in boosting the economy.", "How volunteer groups help homeless people in urban areas."], "answer": 1, "explanation": "Bài đọc bàn tổng quát về tầm quan trọng và lợi ích của cộng đồng địa phương ở các thị trấn, thành phố.", "vis": ["Những hoạt động đa dạng người dân có thể làm tại trung tâm cộng đồng.", "Tầm quan trọng và lợi ích của cộng đồng địa phương ở các thị trấn và thành phố.", "Vai trò của các doanh nghiệp địa phương trong việc thúc đẩy nền kinh tế.", "Cách các nhóm tình nguyện giúp đỡ người vô gia cư ở khu vực đô thị."], "vi": "Ý chính của đoạn văn là gì?"},
+{"q": "28. Which of the following is NOT true according to the passage?", "options": ["Community events like festivals can create a sense of belonging for residents.", "People can participate in sports and art classes at community centers.", "Local services and facilities can be improved without communication and cooperation.", "Supporting local businesses helps make the local economy stronger."], "answer": 2, "explanation": "Bài đọc nói việc cải thiện dịch vụ và cơ sở vật chất địa phương đến từ sự giao tiếp và hợp tác tốt hơn, không phải \"không cần\" chúng → mâu thuẫn với bài đọc.", "vis": ["Các sự kiện cộng đồng như lễ hội có thể tạo cảm giác thuộc về cho cư dân.", "Mọi người có thể tham gia các lớp thể thao và nghệ thuật tại trung tâm cộng đồng.", "Dịch vụ và cơ sở vật chất địa phương có thể được cải thiện mà không cần giao tiếp và hợp tác.", "Ủng hộ doanh nghiệp địa phương giúp nền kinh tế địa phương vững mạnh hơn."], "vi": "Ý nào sau đây KHÔNG đúng theo đoạn văn?"}
+]},
+{"roman": "V", "navLabel": "Từ loại", "title": "Cho dạng đúng của từ trong ngoặc", "icon": "spell-check", "instructions": "Điền dạng đúng của từ trong ngoặc vào chỗ trống.", "type": "fill", "questions": [
+{"q": "29. The annual talent show was very ___ this year.", "answer": "exciting", "explanation": "Tính từ: excite + ing → exciting (thú vị, hào hứng).", "hint": "(excite)", "family": ["excite (v): kích thích, làm hào hứng", "excited (adj): hào hứng, phấn khích (chỉ người)", "exciting (adj): thú vị, hào hứng (chỉ sự việc)", "excitement (n): sự hào hứng, phấn khích"]},
+{"q": "30. The artisans use ___ techniques to make these pots.", "answer": "traditional", "explanation": "Tính từ: tradition + al → traditional (truyền thống).", "hint": "(tradition)", "family": ["tradition (n): truyền thống", "traditional (adj): thuộc về truyền thống", "traditionally (adv): theo truyền thống"]},
+{"q": "31. We are looking for a ___ solution to the trash problem.", "answer": "specific", "explanation": "Tính từ: specify → specific (cụ thể, riêng biệt).", "hint": "(specify)", "family": ["specify (v): quy định rõ, nêu cụ thể", "specific (adj): cụ thể, riêng biệt", "specification (n): sự quy định cụ thể", "specifically (adv): một cách cụ thể"]},
+{"q": "32. The new library provides excellent ___ for students.", "answer": "facilities", "explanation": "Danh từ số nhiều: facilitate → facility/facilities (tiện nghi, cơ sở vật chất).", "hint": "(facilitate)", "family": ["facilitate (v): tạo điều kiện thuận lợi", "facility/facilities (n): tiện nghi, cơ sở vật chất"]},
+{"q": "33. My brother is an ___; he loves painting community murals.", "answer": "artist", "explanation": "Danh từ chỉ người: art → artist (nghệ sĩ).", "hint": "(art)", "family": ["art (n): nghệ thuật", "artist (n): nghệ sĩ", "artistic (adj): thuộc về nghệ thuật", "artistically (adv): một cách nghệ thuật"]},
+{"q": "34. The local government is trying to ___ the old village.", "answer": "preserve", "explanation": "Động từ: preservation → preserve (bảo tồn, giữ gìn).", "hint": "(preservation)", "family": ["preserve (v): bảo tồn, giữ gìn", "preservation (n): sự bảo tồn", "preserved (adj): được bảo tồn, được bảo quản"]}
+]},
+{"roman": "VI", "navLabel": "Từ điển", "title": "Tra từ điển \"community\"", "icon": "book-bookmark", "instructions": "Dựa vào mục từ điển, hoàn thành câu (không quá 3 từ).", "type": "fill", "dict": {"word": "community", "ipa": "/kəˈmjuːnəti/", "pos": "noun", "senses": [
+{"def": "1. [C] all the people who live in a particular area or country.", "examples": ["The local community supported the new park project.", "It is important to involve the whole community in the decision."]},
+{"def": "2. [C] a group of people who share the same religion, race, job, or interests.", "examples": ["There is a large business community in this city.", "The school serves the needs of the immigrant community."]},
+{"def": "3. [U] the feeling of sharing things and belonging to a group.", "examples": ["There is a strong sense of community in this small village."]}
+], "vi": "<b>community</b> /kəˈmjuːnəti/ (danh từ)<br>1. [C] tất cả những người sống trong một khu vực hay quốc gia nhất định.<br>• Cộng đồng địa phương đã ủng hộ dự án công viên mới.<br>• Điều quan trọng là để cả cộng đồng tham gia vào quyết định.<br>2. [C] một nhóm người có chung tôn giáo, chủng tộc, nghề nghiệp hoặc sở thích.<br>• Thành phố này có một cộng đồng doanh nghiệp lớn.<br>• Trường học phục vụ nhu cầu của cộng đồng người nhập cư.<br>3. [U] cảm giác chia sẻ và thuộc về một nhóm.<br>• Ngôi làng nhỏ này có tinh thần cộng đồng rất mạnh mẽ."}, "questions": [
+{"q": "35. The festival helps people feel closer together and creates ___.", "answer": "a sense of community", "explanation": "Dựa vào ví dụ: a strong sense of community (nghĩa 3 - [U] cảm giác chia sẻ và thuộc về một nhóm).", "vi": "Lễ hội giúp mọi người cảm thấy gần gũi hơn và tạo nên cảm giác thuộc về cộng đồng."},
+{"q": "36. The local center provides free language classes for the ___.", "answer": "immigrant community", "explanation": "Dựa vào ví dụ: the immigrant community (nghĩa 2 - [C] nhóm người có chung đặc điểm, ở đây là cộng đồng người nhập cư).", "vi": "Trung tâm địa phương cung cấp các lớp học ngôn ngữ miễn phí cho cộng đồng người nhập cư."}
+]},
+{"roman": "VII", "navLabel": "Viết lại câu", "title": "Viết lại câu sao cho nghĩa không đổi", "icon": "pen-to-square", "instructions": "Viết lại câu, giữ nguyên nghĩa với câu gốc.", "type": "sentence", "instant": true, "questions": [
+{"q": "37.", "original": "She wondered what she should write in the final essay.", "starter": "She wondered what", "answer": "to write in the final essay", "explanation": "what + S + should + V (cùng chủ ngữ) → what to V.", "vi": "Cô ấy tự hỏi mình nên viết gì trong bài luận cuối cùng.", "note": "S + wondered + what + S + should + V → S + wondered + what to V<br>Nghĩa đáp án: Cô ấy tự hỏi nên viết gì trong bài luận cuối cùng."},
+{"q": "38.", "original": "My hometown is famous for a special kind of banh cuon.", "starter": "Many people know", "answer": "my hometown for its special kind of banh cuon", "explanation": "be famous for = people know... for (chuyển chủ động, \"a\" → \"its\").", "vi": "Quê hương tôi nổi tiếng với một loại bánh cuốn đặc biệt.", "note": "S + be famous for + N → People know + S + for + N<br>Nghĩa đáp án: Nhiều người biết đến quê hương tôi vì loại bánh cuốn đặc biệt của nó."},
+{"q": "39.", "original": "They started the new community garden project last month.", "starter": "The new community garden project", "answer": "was started last month", "explanation": "Chuyển câu chủ động sang bị động: S + V(ed) + O → O + was/were + V3.", "vi": "Họ đã khởi động dự án vườn cộng đồng mới vào tháng trước.", "note": "S + started + O → O + was started<br>Nghĩa đáp án: Dự án vườn cộng đồng mới đã được khởi động vào tháng trước."},
+{"q": "40.", "original": "We had no food left, but we continued to walk.", "starter": "Although we had run", "answer": "out of food", "explanation": "\"had no food left\" = \"had run out of food\" (hết sạch thức ăn), nối bằng Although.", "vi": "Chúng tôi không còn thức ăn, nhưng vẫn tiếp tục đi bộ.", "note": "S + had no N left, but + S + V → Although + S + had run out of N, S + V<br>Nghĩa đáp án: Mặc dù đã hết sạch thức ăn, chúng tôi vẫn tiếp tục đi bộ."}
+]}
+]};
+
+const completedTasks = new Set();
+const scores = {};
+const TOTAL_TASKS = DATA.sections.length;
+
+function normalize(str){
+  return (str||'').trim().toLowerCase()
+    .replace(/[‘’]/g,"'")
+    .replace(/["“”]/g,'')
+    .replace(/[.,!?;:]/g,'')
+    .replace(/\s+/g,' ');
+}
+function widthFor(ref){ const l=(ref||'').length; return l<7?'w-24':l<16?'w-40':'w-full'; }
+
+if('speechSynthesis' in window){ window.speechSynthesis.onvoiceschanged = ()=>{}; }
+function speak(text, btn){
+  try{
+    if(!('speechSynthesis' in window)){ alert('Trình duyệt của bạn không hỗ trợ phát âm tự động. Hãy thử Chrome, Edge hoặc Safari.'); return; }
+    window.speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='en-US'; u.rate=0.9; u.pitch=1;
+    const voices=window.speechSynthesis.getVoices();
+    const en=voices.find(v=>/en[-_]?(us|gb)/i.test(v.lang)) || voices.find(v=>/^en/i.test(v.lang));
+    if(en) u.voice=en;
+    if(btn){ btn.classList.add('speaking'); u.onend=()=>btn.classList.remove('speaking'); u.onerror=()=>btn.classList.remove('speaking'); }
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+function buildNav(){
+  const nav=document.getElementById('navWrap');
+  nav.innerHTML = DATA.sections.map((s,i)=>
+    `<button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600${i===0?' active':''}" id="navbtn_${i}" onclick="showTab(${i})">${s.roman}. ${s.navLabel}</button>`
+  ).join('');
+}
+
+function optionLetter(i){ return ['A','B','C','D'][i]; }
+
+function renderPassage(p, idx){
+  if(!p) return '';
+  const viBlock = p.vi ? `<button onclick="togglePassageVI(${idx})" class="text-xs font-bold bg-white border border-indigo-200 text-indigo-700 px-3 py-1 rounded-full hover:scale-105 transition mt-2"><i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt</button>
+    <p id="passage_vi_${idx}" class="vi-hidden mt-2 pt-2 border-t border-indigo-200 italic text-slate-500">${p.vi}</p>` : '';
+  return `<div class="passage-box mb-4"><p class="font-extrabold text-indigo-900 mb-2"><i class="fa-solid fa-book mr-1"></i>${p.title||''}</p><p id="passage_en_${idx}">${p.html}</p>${viBlock}</div>`;
+}
+function renderDict(d, idx){
+  if(!d) return '';
+  const viBlock = d.vi ? `<button onclick="togglePassageVI(${idx})" class="text-xs font-bold bg-white border border-amber-300 text-amber-700 px-3 py-1 rounded-full hover:scale-105 transition mt-2"><i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt</button>
+    <p id="passage_vi_${idx}" class="vi-hidden mt-2 pt-2 border-t border-amber-300 text-slate-600">${d.vi}</p>` : '';
+  return `<div class="dict-box mb-4"><p class="font-extrabold text-amber-800 mb-1"><i class="fa-solid fa-book-bookmark mr-1"></i>${d.word} <span class="font-normal italic">${d.ipa||''}</span> <span class="font-normal">(${d.pos||''})</span></p>${d.senses.map(x=>`<p class="mb-1">✱ ${x.def}</p>${(x.examples||[]).map(e=>`<p class="ml-4 italic text-slate-600">• ${e}</p>`).join('')}`).join('')}${viBlock}</div>`;
+}
+
+function renderSection(s, idx){
+  let inner = `<h2 class="text-xl md:text-2xl font-extrabold text-indigo-900 flex items-center gap-2 mb-1"><i class="fa-solid fa-${s.icon||'circle-check'} text-amber-400"></i> ${s.roman}. ${s.title}</h2>`;
+  if(s.instructions) inner += `<p class="text-sm text-slate-500 mb-3 italic">${s.instructions}</p>`;
+  inner += renderPassage(s.passage, idx);
+  inner += renderDict(s.dict, idx);
+
+  inner += `<div class="space-y-4">`;
+  s.questions.forEach((q,i)=>{
+    inner += `<div class="task-card bg-white rounded-2xl shadow-md p-4" id="qblock_${idx}_${i}">`;
+    if(q.image) inner += `<div class="mb-3">${q.image}</div>`;
+    inner += `<p class="font-bold text-slate-800 mb-2"><span class="bg-slate-100 text-slate-600 text-xs font-black px-2 py-1 rounded-lg mr-2">${i+1}</span>${q.q}</p>`;
+    if(s.type==='mcq'){
+      inner += `<div class="grid sm:grid-cols-2 gap-2">`;
+      q.options.forEach((opt,j)=>{
+        const ipa = q.ipas ? q.ipas[j] : null;
+        const optVi = q.vis ? q.vis[j] : null;
+        const cleanWord = opt.replace(/<[^>]+>/g,'');
+        const wordBlock = (ipa || optVi)
+          ? `<span class="flex flex-col leading-tight"><span>${opt}</span>${ipa?`<span class="text-[10px] text-slate-400 font-normal mcq-detail-hidden">${ipa}</span>`:''}${optVi?`<span class="text-[10px] text-emerald-500 font-normal italic mcq-detail-hidden">${optVi}</span>`:''}</span>
+             <button type="button" data-w="${cleanWord}" onclick="event.stopPropagation();event.preventDefault();speak(this.dataset.w,this)" class="speak-btn w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 hover:bg-indigo-200 hover:scale-110 transition flex items-center justify-center ml-auto shrink-0 mcq-detail-hidden" title="Nghe phát âm" aria-label="Nghe phát âm ${cleanWord}"><i class="fa-solid fa-volume-high text-[10px]"></i></button>`
+          : `<span>${opt}</span>`;
+        inner += `<label class="option-label rounded-xl px-3 py-2 text-sm font-semibold flex items-center gap-2" id="opt_${idx}_${i}_${j}" onclick="selectMcq(${idx},${i},${j})">
+          <input type="radio" name="mcq_${idx}_${i}" class="accent-indigo-700" style="display:none">
+          <span class="font-black text-indigo-700">${optionLetter(j)}.</span> ${wordBlock}
+        </label>`;
+      });
+      inner += `</div>`;
+    } else if(s.type==='fill'){
+      const w = widthFor(q.answer);
+      const famBlock = q.family ? `<div class="wordfam-box mt-2">${q.family.map(f=>`<div>• ${f}</div>`).join('')}</div>` : '';
+      inner += `<div class="flex items-center gap-2 flex-wrap">`;
+      if(q.hint) inner += `<span class="blank-tag text-xs">${q.hint}</span>`;
+      inner += `<input type="text" id="inp_${idx}_${i}" class="answer-input ${w} px-3 py-1.5 rounded-lg text-sm font-semibold" placeholder="Nhập đáp án..." autocomplete="off" spellcheck="false"></div>${famBlock}`;
+    } else if(s.type==='sentence'){
+      const instantAttr = s.instant ? ` oninput="gradeOneSentence(${idx},${i})"` : '';
+      if(q.starter){
+        inner += `<p class="text-slate-700 text-sm mb-2">${q.original}</p>
+        <div class="flex items-center gap-3 w-full flex-wrap">
+          <span class="text-slate-800 font-extrabold text-base whitespace-nowrap">${q.starter}</span>
+          <input type="text" id="inp_${idx}_${i}" class="answer-input flex-1 min-w-[180px] px-3 py-2 rounded-lg text-sm font-semibold" placeholder="..." autocomplete="off" spellcheck="false"${instantAttr}>
+        </div>`;
+      } else {
+        inner += `<input type="text" id="inp_${idx}_${i}" class="answer-input w-full px-3 py-2 rounded-lg text-sm font-semibold" placeholder="Viết câu trả lời..." autocomplete="off" spellcheck="false"${instantAttr}>`;
+      }
+    }
+    inner += `<div class="explanation-box mt-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-sm text-blue-800" id="fb_${idx}_${i}"></div>`;
+    inner += `</div>`;
+  });
+  inner += `</div>`;
+
+  inner += `<div class="flex flex-wrap gap-2 mt-5">
+    <button onclick="checkSection(${idx})" class="bg-gradient-to-r from-indigo-900 to-pink-600 text-white font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-check mr-1"></i>Kiểm tra</button>
+    <button onclick="revealSection(${idx})" class="bg-white border-2 border-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-eye mr-1"></i>Xem đáp án</button>
+    <button onclick="resetSection(${idx})" class="bg-white border-2 border-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-rotate-left mr-1"></i>Làm lại</button>
+    <span id="score_${idx}" class="hidden ml-auto self-center font-extrabold text-emerald-600 text-sm score-badge"></span>
+  </div>`;
+
+  return `<section id="tab-${idx}" class="section-page${idx===0?' active':''} space-y-4">${inner}</section>`;
+}
+
+function buildMain(){
+  const main=document.getElementById('mainWrap');
+  main.innerHTML = DATA.sections.map((s,i)=>renderSection(s,i)).join('');
+}
+
+function togglePassageVI(idx){ const el=document.getElementById(`passage_vi_${idx}`); if(el) el.classList.toggle('vi-hidden'); }
+function selectMcq(idx,i,j){
+  const q=DATA.sections[idx].questions[i];
+  document.querySelectorAll(`[id^="opt_${idx}_${i}_"]`).forEach(el=>el.classList.remove('selected'));
+  document.getElementById(`opt_${idx}_${i}_${j}`).classList.add('selected');
+  document.getElementById(`opt_${idx}_${i}_${j}`).dataset.chosen = j;
+  if(DATA.sections[idx].instant){ gradeOneMcq(idx,i); }
+}
+
+function gradeOneMcq(idx,i){
+  const s=DATA.sections[idx], q=s.questions[i];
+  const qblock=document.getElementById(`qblock_${idx}_${i}`);
+  if(qblock) qblock.classList.add('show-mcq-detail');
+  const chosenEl=document.querySelector(`#tab-${idx} [id^="opt_${idx}_${i}_"].selected`);
+  const chosen = chosenEl ? parseInt(chosenEl.dataset.chosen) : -1;
+  const ok = chosen === q.answer;
+  const answerLabel = `${optionLetter(q.answer)}. ${q.options[q.answer]}`;
+  q.options.forEach((o,j)=>{
+    const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+    el.classList.remove('correct-opt','wrong-opt');
+    if(j===q.answer) el.classList.add('correct-opt');
+    else if(j===chosen) el.classList.add('wrong-opt');
+  });
+  const fb=document.getElementById(`fb_${idx}_${i}`);
+  fb.innerHTML = feedbackHTML(ok, answerLabel, q.explanation, q.vi, q.note);
+  fb.classList.add('show');
+}
+
+function gradeOneSentence(idx,i){
+  const q=DATA.sections[idx].questions[i];
+  const inp=document.getElementById(`inp_${idx}_${i}`);
+  const fb=document.getElementById(`fb_${idx}_${i}`);
+  if(!inp || !fb) return;
+  const raw=inp.value.trim();
+  if(raw===''){
+    inp.classList.remove('correct-input','wrong-input');
+    fb.classList.remove('show'); fb.innerHTML='';
+    return;
+  }
+  const val=normalize(inp.value);
+  const acc=(q.accepted||[q.answer]).map(normalize);
+  const ok = acc.includes(val);
+  inp.classList.remove('correct-input','wrong-input');
+  inp.classList.add(ok?'correct-input':'wrong-input');
+  fb.innerHTML = feedbackHTML(ok, q.answer, q.explanation, q.vi, q.note);
+  fb.classList.add('show');
+}
+
+function feedbackHTML(ok, answerLabel, explanation, vi, note){
+  const okLine = ok? `<span class="text-emerald-700 font-bold">✅ Chính xác!</span>` : `<span class="text-rose-600 font-bold">❌ Chưa đúng.</span> Đáp án đúng: <b>${answerLabel}</b>`;
+  const expLine = explanation? `<br><span class="text-blue-700">💡 ${explanation}</span>` : '';
+  const viLine = vi? `<span class="text-slate-500">📖 Nghĩa: <i>${vi}</i></span>` : '';
+  const noteLine = note? `<br><span class="text-violet-600">📐 Công thức: <b>${note}</b></span>` : '';
+  if(note){
+    return (viLine?viLine+'<br>':'') + okLine + expLine + noteLine;
+  }
+  return okLine + expLine + (viLine?'<br>'+viLine:'') + noteLine;
+}
+
+function checkSection(idx){
+  const s=DATA.sections[idx];
+  let correct=0;
+  s.questions.forEach((q,i)=>{
+    let ok=false, answerLabel='';
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    if(s.type==='mcq'){
+      const chosenEl=document.querySelector(`#tab-${idx} [id^="opt_${idx}_${i}_"].selected`);
+      const chosen = chosenEl ? parseInt(chosenEl.dataset.chosen) : -1;
+      ok = chosen === q.answer;
+      answerLabel = `${optionLetter(q.answer)}. ${q.options[q.answer]}`;
+      q.options.forEach((o,j)=>{
+        const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+        el.classList.remove('correct-opt','wrong-opt');
+        if(j===q.answer) el.classList.add('correct-opt');
+        else if(j===chosen) el.classList.add('wrong-opt');
+      });
+      const qblock=document.getElementById(`qblock_${idx}_${i}`);
+      if(qblock) qblock.classList.add('show-mcq-detail');
+    } else {
+      const inp=document.getElementById(`inp_${idx}_${i}`);
+      const val=normalize(inp.value);
+      const acc=(q.accepted||[q.answer]).map(normalize);
+      ok = val!=='' && acc.includes(val);
+      inp.classList.remove('correct-input','wrong-input');
+      inp.classList.add(ok?'correct-input':'wrong-input');
+      answerLabel = q.answer;
+    }
+    if(ok) correct++;
+    fb.innerHTML = feedbackHTML(ok, answerLabel, q.explanation, q.vi, q.note);
+    fb.classList.add('show');
+  });
+  const total=s.questions.length;
+  scores[idx]={correct,total};
+  const scoreEl=document.getElementById(`score_${idx}`);
+  scoreEl.textContent = `🏆 Điểm: ${correct}/${total}`;
+  scoreEl.classList.remove('hidden');
+  completedTasks.add(idx);
+  updateProgress();
+  if(completedTasks.size===TOTAL_TASKS) setTimeout(showCompletion,500);
+}
+
+function revealSection(idx){
+  const s=DATA.sections[idx];
+  s.questions.forEach((q,i)=>{
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    let answerLabel = s.type==='mcq' ? `${optionLetter(q.answer)}. ${q.options[q.answer]}` : q.answer;
+    if(s.type==='mcq'){
+      q.options.forEach((o,j)=>{
+        const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+        el.classList.remove('correct-opt','wrong-opt');
+        if(j===q.answer) el.classList.add('correct-opt');
+      });
+      const qblock=document.getElementById(`qblock_${idx}_${i}`);
+      if(qblock) qblock.classList.add('show-mcq-detail');
+    }
+    fb.innerHTML = `👁️ Đáp án: <b>${answerLabel}</b>` + (q.explanation?`<br><span class="text-blue-700">💡 ${q.explanation}</span>`:'') + (q.vi?`<br><span class="text-slate-500">📖 Nghĩa: <i>${q.vi}</i></span>`:'') + (q.note?`<br><span class="text-violet-600">📐 Công thức: <b>${q.note}</b></span>`:'');
+    fb.classList.add('show');
+  });
+}
+
+function resetSection(idx){
+  const s=DATA.sections[idx];
+  s.questions.forEach((q,i)=>{
+    if(s.type==='mcq'){
+      q.options.forEach((o,j)=>{
+        const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+        el.classList.remove('correct-opt','wrong-opt','selected');
+        delete el.dataset.chosen;
+      });
+    } else {
+      const inp=document.getElementById(`inp_${idx}_${i}`);
+      if(inp){ inp.value=''; inp.classList.remove('correct-input','wrong-input'); }
+    }
+    const qblock=document.getElementById(`qblock_${idx}_${i}`);
+    if(qblock) qblock.classList.remove('show-mcq-detail');
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    fb.classList.remove('show'); fb.innerHTML='';
+  });
+  const scoreEl=document.getElementById(`score_${idx}`); scoreEl.classList.add('hidden');
+  completedTasks.delete(idx); delete scores[idx]; updateProgress();
+}
+
+function showTab(idx){
+  document.querySelectorAll('.section-page').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active'); b.classList.add('text-slate-600');});
+  document.getElementById(`tab-${idx}`).classList.add('active');
+  const btn=document.getElementById(`navbtn_${idx}`);
+  btn.classList.add('active'); btn.classList.remove('text-slate-600');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updateProgress(){
+  const done=completedTasks.size;
+  document.getElementById('progressText').textContent = `${done} / ${TOTAL_TASKS} phần`;
+  document.getElementById('progressBar').style.width = `${(done/TOTAL_TASKS)*100}%`;
+}
+
+function showCompletion(){
+  fireConfetti();
+  const banner=document.getElementById('completionBanner');
+  banner.classList.remove('hidden'); banner.classList.add('show');
+  let c=0,t=0; Object.values(scores).forEach(s=>{c+=s.correct; t+=s.total;});
+  document.getElementById('finalScoreDisplay').textContent = `🎯 ${c} / ${t} câu đúng`;
+}
+function closeBanner(){ const b=document.getElementById('completionBanner'); b.classList.remove('show'); b.classList.add('hidden'); }
+function fireConfetti(){
+  const wrap=document.getElementById('confettiWrap'); wrap.innerHTML='';
+  const colors=['#0c4a6e','#1d4ed8','#0891b2','#0ea5e9','#f59e0b','#6366f1'];
+  for(let i=0;i<90;i++){
+    const p=document.createElement('div'); p.className='confetti-piece';
+    p.style.cssText=`left:${Math.random()*100}vw;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>0.5?'50%':'2px'};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*0.8}s;`;
+    wrap.appendChild(p);
+  }
+  setTimeout(()=>{wrap.innerHTML='';},4000);
+}
+
+buildNav();
+buildMain();
+updateProgress();
+</script>
+</body>
+</html>

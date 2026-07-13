@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 3 - Practice Test 1 - Tieng Anh 9</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+  :root{ --accent:#7e22ce; --accent2:#0891b2; }
+  * { box-sizing: border-box; }
+  body { font-family:'Nunito',sans-serif; background:#f5f3ff; }
+  .hero-gradient{ background: linear-gradient(135deg, #3b0764 0%, #7e22ce 55%, #0891b2 100%); }
+  .tab-btn{ transition: all .2s ease; }
+  .tab-btn.active{ background: linear-gradient(135deg, #3b0764, #0891b2); color:#fff; box-shadow:0 4px 14px rgba(30,27,75,.35); transform:translateY(-1px); }
+  .task-card{ transition: box-shadow .2s, transform .2s; }
+  .task-card:hover{ transform: translateY(-2px); box-shadow:0 8px 30px rgba(0,0,0,.10); }
+  .option-label{ cursor:pointer; transition: all .18s; border:2px solid #e2e8f0; }
+  .option-label:hover{ border-color:var(--accent); background:#f5f3ff; }
+  .option-label.selected{ border-color:#1e1b4b; background:#eef2ff; }
+  .option-label.correct-opt{ border-color:#22c55e !important; background:#f0fdf4 !important; }
+  .option-label.wrong-opt{ border-color:#ef4444 !important; background:#fef2f2 !important; }
+  .mcq-detail-hidden{ display:none; }
+  .show-mcq-detail .mcq-detail-hidden{ display:block; }
+  .speak-btn{ cursor:pointer; }
+  .speak-btn.speaking{ animation: pulseSpeak .7s ease-in-out infinite; }
+  @keyframes pulseSpeak{ 0%,100%{transform:scale(1);} 50%{transform:scale(1.18);} }
+  .vi-hidden{ display:none; }
+  .explanation-box{ display:none; animation: fadeSlide .3s ease forwards; }
+  .explanation-box.show{ display:block; }
+  @keyframes fadeSlide{ from{opacity:0; transform:translateY(-6px);} to{opacity:1; transform:translateY(0);} }
+  input.answer-input{ border:2px solid #cbd5e1; transition:border .18s; outline:none; background:#fff; }
+  input.answer-input:focus{ border-color:var(--accent); }
+  input.correct-input{ border-color:#22c55e !important; background:#f0fdf4; }
+  input.wrong-input{ border-color:#ef4444 !important; background:#fef2f2; }
+  .score-badge{ animation: popIn .35s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn{ from{transform:scale(.4); opacity:0;} to{transform:scale(1); opacity:1;} }
+  .confetti-wrap{ position:fixed; inset:0; pointer-events:none; z-index:9999; }
+  .confetti-piece{ position:absolute; width:10px; height:10px; border-radius:2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall{ 0%{transform:translateY(-20px) rotate(0deg); opacity:1;} 100%{transform:translateY(100vh) rotate(720deg); opacity:0;} }
+  .progress-bar-fill{ transition: width .6s ease; }
+  .section-page{ display:none; }
+  .section-page.active{ display:block; }
+  #completionBanner{ display:none; }
+  #completionBanner.show{ display:flex; }
+  .passage-box{ background:#fff; border:1px solid #e2e8f0; border-radius:1rem; padding:1rem 1.25rem; line-height:1.9; font-size:.95rem; color:#334155; }
+  .dict-box{ background:#fef9c3; border:1px solid #fde68a; border-radius:1rem; padding:1rem 1.25rem; font-size:.9rem; color:#334155; }
+  .blank-tag{ background:#ede9fe; color:#5b21b6; font-weight:800; border-radius:.4rem; padding:0 .35rem; }
+  .wordfam-box{ background:#f5f3ff; border:1px solid #ddd6fe; border-radius:.6rem; padding:.5rem .75rem; font-size:.75rem; color:#5b21b6; line-height:1.6; width:100%; }
+</style>
+</head>
+<body class="min-h-screen">
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<header class="hero-gradient text-white py-8 px-4 text-center shadow-xl relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <div class="absolute top-4 left-8 text-6xl">⏰</div>
+    <div class="absolute top-2 right-12 text-5xl">🧘</div>
+    <div class="absolute bottom-2 left-1/3 text-4xl">📋</div>
+    <div class="absolute bottom-4 right-1/4 text-5xl">💤</div>
+  </div>
+  <p class="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Tiếng Anh 9 · Unit 3 · Practice Test 1</p>
+  <h1 class="font-['Baloo_2'] text-3xl md:text-5xl font-extrabold drop-shadow-lg">⏰ Unit 3: Wellbeing 🧘</h1>
+  <p class="mt-2 text-base md:text-lg opacity-90 font-semibold">Practice Test 1 · Luyện tập tương tác</p>
+  <div class="mt-5 max-w-2xl mx-auto">
+    <div class="flex justify-between text-xs font-bold opacity-80 mb-1">
+      <span>Tiến độ hoàn thành</span>
+      <span id="progressText">0 / 7 phần</span>
+    </div>
+    <div class="bg-white/20 rounded-full h-3 overflow-hidden">
+      <div id="progressBar" class="bg-white rounded-full h-3 progress-bar-fill" style="width:0%"></div>
+    </div>
+  </div>
+</header>
+
+<nav class="sticky top-0 z-50 bg-white/90 backdrop-blur shadow-sm px-3 py-2 overflow-x-auto">
+  <div class="flex gap-2 min-w-max mx-auto w-fit" id="navWrap"></div>
+</nav>
+
+<main class="max-w-4xl mx-auto px-4 py-6 pb-20" id="mainWrap"></main>
+
+<div id="completionBanner" class="fixed inset-0 z-[9998] items-center justify-center bg-black/50 px-4">
+  <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center score-badge shadow-2xl">
+    <div class="text-6xl mb-3">🎉</div>
+    <h3 class="text-2xl font-extrabold text-indigo-900 mb-1">Hoàn thành bài luyện tập!</h3>
+    <p class="text-slate-500 mb-4">Bạn đã làm xong tất cả các phần.</p>
+    <p id="finalScoreDisplay" class="text-3xl font-black text-violet-700 mb-5"></p>
+    <button onclick="closeBanner()" class="bg-gradient-to-r from-indigo-900 to-pink-600 text-white font-bold px-6 py-2.5 rounded-full">Đóng</button>
+  </div>
+</div>
+
+<script>
+const DATA = {
+  "unit": 3, "test": 1, "sections": [
+  {
+    "roman": "I", "navLabel": "Ngữ âm & Từ vựng", "title": "Phát âm – Trọng âm – Từ vựng – Ngữ pháp", "icon": "ear-listen",
+    "instructions": "Chọn đáp án (A, B, C hoặc D) đúng nhất.", "type": "mcq",
+    "questions": [
+      {"q": "1. Which word has the underlined part pronounced differently from that of the others?", "options": ["additional", "accomplish", "anxiety", "assignment"], "answer": 2, "explanation": "\"anxiety\" phát âm /z/, ba từ còn lại phát âm /s/.", "ipas": ["/əˈdɪʃənl/", "/əˈkʌmplɪʃ/", "/æŋˈzaɪəti/", "/əˈsaɪnmənt/"], "vis": ["bổ sung, thêm vào", "hoàn thành, đạt được", "sự lo lắng, lo âu", "bài tập được giao"]},
+      {"q": "2. Which word has the underlined part pronounced differently from that of the others?", "options": ["distraction", "educate", "study", "deadline"], "answer": 3, "explanation": "\"deadline\" phát âm /iː/, ba từ còn lại phát âm /ʌ/ hoặc âm khác.", "ipas": ["/dɪˈstrækʃn/", "/ˈedʒukeɪt/", "/ˈstʌdi/", "/ˈdedlaɪn/"], "vis": ["sự xao nhãng, sự phân tâm", "giáo dục", "học, học tập", "hạn chót, thời hạn"]},
+      {"q": "3. Which word has a different stress pattern from that of the others?", "options": ["delay", "awake", "mental", "advise"], "answer": 2, "explanation": "\"mental\" trọng âm rơi vào âm tiết 1, ba từ còn lại trọng âm rơi vào âm tiết 2.", "ipas": ["/dɪˈleɪ/", "/əˈweɪk/", "/ˈmentl/", "/ədˈvaɪz/"], "vis": ["trì hoãn; sự chậm trễ", "tỉnh táo, thức giấc", "thuộc về tinh thần", "khuyên, tư vấn"]},
+      {"q": "4. Which word has a different stress pattern from that of the others?", "options": ["important", "emotion", "cognitive", "abandon"], "answer": 2, "explanation": "\"cognitive\" trọng âm rơi vào âm tiết 1, ba từ còn lại trọng âm rơi vào âm tiết 2.", "ipas": ["/ɪmˈpɔːtnt/", "/ɪˈməʊʃn/", "/ˈkɒɡnətɪv/", "/əˈbændən/"], "vis": ["quan trọng", "cảm xúc", "thuộc về nhận thức", "từ bỏ, bỏ rơi"]},
+      {"q": "5. Tom: You look so fresh today! What's your secret?\nNam: I ___ a healthy diet with lots of fruits and vegetables lately.", "options": ["have been following", "was following", "follow", "followed"], "answer": 0, "explanation": "\"lately\" → thì hiện tại hoàn thành tiếp diễn: have been following.", "vi": "Tom: 'Cậu trông tươi tắn quá hôm nay! Bí quyết của cậu là gì vậy?' – Nam: 'Gần đây tớ đã và đang theo một chế độ ăn lành mạnh với nhiều trái cây và rau củ.'"},
+      {"q": "6. Anna: Why are you so stressed about the project?\nMinh: I haven't handed ___ my assignment yet, and the deadline is today.", "options": ["up", "in", "into", "on"], "answer": 1, "explanation": "\"hand in\" = nộp bài.", "vis": ["nâng lên (hand up)", "nộp (hand in)", "không tạo thành cụm từ", "tiếp tục (hand on)"], "vi": "Anna: 'Sao cậu căng thẳng về dự án vậy?' – Minh: 'Tớ vẫn chưa nộp bài tập, mà hạn chót là hôm nay rồi.'"},
+      {"q": "7. Teacher: Why did you decide to stop taking the Art class?\nLan: I'm not good at it, so I am ___ the subject to focus on French.", "options": ["dropping", "taking", "attending", "marking"], "answer": 0, "explanation": "\"drop a subject\" = bỏ một môn học.", "vis": ["bỏ (môn học)", "học, tham gia", "tham dự", "chấm điểm, đánh dấu"], "vi": "Giáo viên: 'Sao em quyết định thôi học lớp Mỹ thuật?' – Lan: 'Em không giỏi môn đó, nên em đang bỏ môn này để tập trung vào tiếng Pháp.'"},
+      {"q": "8. Mom: You should ___ a weekly schedule to manage your time better.\nSon: Yes, I'll start planning my tasks this weekend, Mom.", "options": ["carry on", "carry away", "carry through", "carry out"], "answer": 3, "explanation": "\"carry out a schedule\" = thực hiện một lịch trình.", "vis": ["tiếp tục", "cuốn đi, làm mê mẩn", "thực hiện đến cùng", "thực hiện, tiến hành"], "vi": "Mẹ: 'Con nên thực hiện một lịch trình hàng tuần để quản lý thời gian tốt hơn.' – Con: 'Vâng, con sẽ bắt đầu lên kế hoạch cho công việc của mình vào cuối tuần này, mẹ ạ.'"},
+      {"q": "9. Huy: Who is the person ___ helped you with your time management?\nBa: It's my school counselor. She gave me great advice.", "options": ["whose", "whom", "which", "who"], "answer": 3, "explanation": "Mệnh đề quan hệ chỉ người làm chủ ngữ → who.", "vi": "Huy: 'Người đã giúp cậu quản lý thời gian là ai vậy?' – Ba: 'Đó là cố vấn học đường của tớ. Cô ấy đã cho tớ những lời khuyên tuyệt vời.'"},
+      {"q": "10. Doctor: To have a balanced life, you need to be a ___ person.\nPatient: I agree. I will try to exercise and eat well every day.", "options": ["healthily", "unhealthy", "healthy", "health"], "answer": 2, "explanation": "Tính từ đứng trước danh từ \"person\" → healthy.", "vi": "Bác sĩ: 'Để có một cuộc sống cân bằng, bạn cần trở thành một người khỏe mạnh.' – Bệnh nhân: 'Tôi đồng ý. Tôi sẽ cố gắng tập thể dục và ăn uống lành mạnh mỗi ngày.'"},
+      {"q": "11. Linh: ___ I have a lot of homework, I still make time for relaxation.\nMai: That's good! It helps you avoid feeling overwhelmed.", "options": ["Although", "Because", "Unless", "If"], "answer": 0, "explanation": "Ý nhượng bộ: dù có nhiều bài tập vẫn dành thời gian thư giãn → Although.", "vi": "Linh: 'Mặc dù mình có rất nhiều bài tập về nhà, mình vẫn dành thời gian để thư giãn.' – Mai: 'Tốt đấy! Điều đó giúp cậu tránh cảm giác quá tải.'"},
+      {"q": "12. Khoa: What do you do to improve your ___ health?\nAn: I usually play football or go for a walk in the park.", "options": ["additional", "mental", "physical", "social"], "answer": 2, "explanation": "Chơi thể thao, đi bộ → cải thiện sức khỏe thể chất (physical health).", "vis": ["bổ sung, thêm vào", "thuộc về tinh thần", "thuộc về thể chất", "thuộc về xã hội"], "vi": "Khoa: 'Cậu làm gì để cải thiện sức khỏe thể chất của mình?' – An: 'Tớ thường chơi bóng đá hoặc đi dạo trong công viên.'"},
+      {"q": "13. Mary: Shall we have a drink when you finish your talk?\nJohn: \"___\"", "options": ["All right, I'd love to.", "You needn't do that.", "No, you can't.", "You're welcome."], "answer": 0, "explanation": "Đồng ý với lời đề nghị.", "vis": ["Được thôi, tôi rất thích.", "Bạn không cần làm vậy.", "Không, bạn không thể.", "Không có gì."], "vi": "Mary: 'Chúng ta đi uống nước khi cậu nói chuyện xong nhé?' – John: 'Được thôi, tớ rất thích.'"},
+      {"q": "14. Teacher: Why didn't you attend the yoga class yesterday?\nStudent: \"___\"", "options": ["The room is at the end of the hall.", "I think I will join it next Tuesday.", "I'm sorry, I was busy with my assignments.", "Yoga is good for my mental health."], "answer": 2, "explanation": "Trả lời trực tiếp cho lý do vắng mặt bằng lời xin lỗi và giải thích.", "vis": ["Phòng học ở cuối hành lang.", "Em nghĩ em sẽ tham gia vào thứ Ba tới.", "Em xin lỗi, em bận làm bài tập ạ.", "Yoga tốt cho sức khỏe tinh thần của em."], "vi": "Giáo viên: 'Sao hôm qua em không tham dự lớp yoga?' – Học sinh: 'Em xin lỗi, em bận làm bài tập ạ.'"}
+    ],
+    "instant": true
+  },
+  {
+    "roman": "II", "navLabel": "Biển báo", "title": "Biển báo / Thông báo", "icon": "traffic-light",
+    "instructions": "Đọc biển báo/thông báo và chọn ý đúng nhất.", "type": "mcq",
+    "questions": [
+      {"q": "15. What does this sign tell you?", "options": ["You have unlimited time to finish.", "You should arrive late.", "Do not waste your time.", "You have a limited amount of time to finish."], "answer": 3, "vis": ["Bạn có thời gian không giới hạn để hoàn thành.", "Bạn nên đến muộn.", "Đừng lãng phí thời gian của bạn.", "Bạn có một khoảng thời gian giới hạn để hoàn thành."], "explanation": "A. You have unlimited time to finish. — sai, biển giới hạn thời gian chứ không phải không giới hạn<br>B. You should arrive late. — sai, biển không đề cập đến việc đến muộn<br>C. Do not waste your time. — sai, đây chỉ là suy luận rộng hơn, không đúng nghĩa chính xác của biển<br>D. You have a limited amount of time to finish. — đúng, khớp với ý nghĩa \"TIME LIMIT: 30 MINS\" ✓", "image": "<div class=\"inline-flex flex-col items-center w-40 bg-white border-2 border-slate-200 rounded-xl p-3 shadow-sm\">\n  <svg viewBox=\"0 0 100 100\" class=\"w-16 h-16\" aria-hidden=\"true\">\n    <circle cx=\"50\" cy=\"50\" r=\"42\" fill=\"#fff\" stroke=\"#1d4ed8\" stroke-width=\"6\"/>\n    <circle cx=\"50\" cy=\"50\" r=\"2.6\" fill=\"#1d4ed8\"/>\n    <line x1=\"50\" y1=\"50\" x2=\"50\" y2=\"25\" stroke=\"#1d4ed8\" stroke-width=\"5\" stroke-linecap=\"round\"/>\n    <line x1=\"50\" y1=\"50\" x2=\"69\" y2=\"58\" stroke=\"#0891b2\" stroke-width=\"5\" stroke-linecap=\"round\"/>\n    <circle cx=\"50\" cy=\"16\" r=\"2\" fill=\"#1d4ed8\"/>\n    <circle cx=\"84\" cy=\"50\" r=\"2\" fill=\"#1d4ed8\"/>\n    <circle cx=\"50\" cy=\"84\" r=\"2\" fill=\"#1d4ed8\"/>\n    <circle cx=\"16\" cy=\"50\" r=\"2\" fill=\"#1d4ed8\"/>\n  </svg>\n  <p class=\"text-[11px] font-black text-center text-slate-900 leading-tight mt-1\">TIME LIMIT: 30 MINS</p>\n</div>"},
+      {"q": "16. What does the notice say?", "options": ["Everyone in school can join at once.", "You must be at least 20 years old to join.", "The class lasts for 20 minutes.", "Only a maximum of 20 people can join the class."], "answer": 3, "vis": ["Tất cả mọi người trong trường đều có thể tham gia cùng lúc.", "Bạn phải ít nhất 20 tuổi mới được tham gia.", "Lớp học kéo dài 20 phút.", "Chỉ tối đa 20 người được tham gia lớp học."], "explanation": "A. Everyone in school can join at once. — sai, biển giới hạn số người, không phải cho tất cả<br>B. You must be at least 20 years old to join. — sai, con số 20 chỉ số người tối đa, không phải độ tuổi<br>C. The class lasts for 20 minutes. — sai, biển không đề cập đến thời lượng lớp học<br>D. Only a maximum of 20 people can join the class. — đúng, khớp với \"MAX 20 PEOPLE\" ✓", "image": "<div class=\"inline-flex flex-col items-center w-40 bg-cyan-700 border-2 border-slate-300 rounded-xl p-3 shadow-sm\">\n  <svg viewBox=\"0 0 100 100\" class=\"w-16 h-16\" aria-hidden=\"true\">\n    <circle cx=\"50\" cy=\"26\" r=\"10\" fill=\"#fff\"/>\n    <path d=\"M50 38 L72 78 L28 78 Z\" fill=\"#fff\" stroke=\"#fff\" stroke-linejoin=\"round\"/>\n    <path d=\"M50 50 L34 70\" stroke=\"#0e7490\" stroke-width=\"3\" stroke-linecap=\"round\" fill=\"none\"/>\n    <path d=\"M50 50 L66 70\" stroke=\"#0e7490\" stroke-width=\"3\" stroke-linecap=\"round\" fill=\"none\"/>\n  </svg>\n  <p class=\"text-[11px] font-black text-center text-white leading-tight mt-1\">LUNCHTIME YOGA · MAX 20 PEOPLE</p>\n</div>"}
+    ],
+    "instant": true
+  },
+  {
+    "roman": "III", "navLabel": "Điền đoạn văn", "title": "Chọn từ thích hợp điền vào đoạn văn", "icon": "file-lines",
+    "instructions": "Chọn đáp án đúng để hoàn thành đoạn văn.", "type": "mcq",
+    "passage": {
+      "title": "Cách cân bằng cuộc sống khi còn đi học",
+      "html": "When I was at school, I had to learn how to have a well-balanced life in order to reduce stress and anxiety. Here are some of the typical things I did. Firstly, I managed my time properly. Therefore, I started to plan my schedule, made a weekly work list and (17)___ priority to some of my work. This helped me concentrate my efforts on my most important tasks. In addition, I communicated (18)___ my family, friends, and teachers about my busy schedule and problems, so they would offer me additional support. I also took breaks (19)___ because they helped me keep away from stress and anxiety and gave my brain a rest and improved my happiness. Finally, I looked after my physical health. I (20)___ at least eight hours of sleep a day. I played football with my classmates twice a week and went for a walk with my grandparents early every morning. Besides, I also tried to follow (21)___ healthy diet. I ate a lot of fruit and vegetables. I ate little fattening foods and (22)___ junk food like chips, cookies, pizza, etc.",
+      "vi": "Khi còn đi học, tôi đã phải học cách có một cuộc sống cân bằng để giảm căng thẳng và lo âu. Sau đây là một số việc điển hình tôi đã làm. Trước tiên, tôi quản lý thời gian của mình một cách hợp lý. Vì vậy, tôi bắt đầu lên kế hoạch cho lịch trình của mình, lập một danh sách công việc hàng tuần và (17) ___ ưu tiên cho một số công việc. Điều này giúp tôi tập trung nỗ lực vào những nhiệm vụ quan trọng nhất. Ngoài ra, tôi trao đổi (18) ___ gia đình, bạn bè và thầy cô về lịch trình bận rộn và các vấn đề của mình, để họ có thể hỗ trợ tôi thêm. Tôi cũng nghỉ ngơi (19) ___ vì điều đó giúp tôi tránh xa căng thẳng và lo âu, cho bộ não được nghỉ ngơi và cải thiện niềm vui của tôi. Cuối cùng, tôi chăm sóc sức khỏe thể chất của mình. Tôi (20) ___ ngủ ít nhất tám tiếng mỗi ngày. Tôi chơi bóng đá cùng các bạn cùng lớp hai lần một tuần và đi dạo cùng ông bà vào mỗi sáng sớm. Bên cạnh đó, tôi cũng cố gắng theo (21) ___ chế độ ăn lành mạnh. Tôi ăn nhiều trái cây và rau củ. Tôi ăn ít đồ ăn gây béo và (22) ___ đồ ăn vặt như khoai tây chiên, bánh quy, pizza, v.v."
+    },
+    "questions": [
+      {"q": "17.", "options": ["took", "gave", "made", "did"], "answer": 1, "explanation": "\"give priority to\" = ưu tiên cho.", "vis": ["lấy, cầm", "cho, trao (thuộc cụm \"give priority to\")", "làm, tạo ra", "làm"], "vi": "...và (17) ___ ưu tiên cho một số công việc."},
+      {"q": "18.", "options": ["with", "to", "for", "about"], "answer": 0, "explanation": "\"communicate with sb\" = trao đổi với ai.", "vis": ["với (thuộc cụm \"communicate with\")", "đến, cho", "cho, vì", "về"], "vi": "Tôi trao đổi (18) ___ gia đình, bạn bè và thầy cô về lịch trình bận rộn của mình."},
+      {"q": "19.", "options": ["appropriately", "fortunately", "accidentally", "smoothly"], "answer": 0, "explanation": "\"took breaks appropriately\" = nghỉ ngơi một cách hợp lý.", "vis": ["một cách hợp lý, thích đáng", "may mắn thay", "một cách tình cờ", "một cách suôn sẻ"], "vi": "Tôi cũng nghỉ ngơi (19) ___ vì điều đó giúp giảm căng thẳng và lo âu."},
+      {"q": "20.", "options": ["get", "got", "gets", "getting"], "answer": 1, "explanation": "Thì quá khứ đơn phù hợp với ngữ cảnh kể chuyện: got.", "vis": ["lấy, được (nguyên mẫu)", "đã lấy, đã được (quá khứ đơn)", "lấy, được (ngôi thứ 3 số ít)", "đang lấy, đang được (V-ing)"], "vi": "Tôi (20) ___ ngủ ít nhất tám tiếng mỗi ngày."},
+      {"q": "21.", "options": ["a", "an", "the", "no article"], "answer": 0, "explanation": "\"follow a healthy diet\" = theo một chế độ ăn lành mạnh.", "vis": ["một (mạo từ không xác định, đứng trước phụ âm)", "một (mạo từ không xác định, đứng trước nguyên âm)", "cái, con (mạo từ xác định)", "không có mạo từ"], "vi": "Tôi cũng cố gắng theo (21) ___ chế độ ăn lành mạnh."},
+      {"q": "22.", "options": ["refused", "denied", "avoided", "disliked"], "answer": 2, "explanation": "\"avoided junk food\" = tránh đồ ăn vặt.", "vis": ["từ chối", "phủ nhận", "tránh né", "không thích"], "vi": "Tôi ăn ít đồ ăn gây béo và (22) ___ đồ ăn vặt."}
+    ],
+    "instant": true
+  },
+  {
+    "roman": "IV", "navLabel": "Đọc hiểu", "title": "Đọc hiểu", "icon": "book-open",
+    "instructions": "Đọc đoạn văn, xác định Đúng/Sai và chọn đáp án đúng.", "type": "mcq",
+    "passage": {
+      "title": "Managing Time: Mary and James",
+      "html": "Balance is key for Mary, a busy teenager. She uses an app to stay organized with her assignments and deadlines; the app helps her receive reminders to ensure she doesn't forget anything. Mary also makes a daily to-do list to help her stay focused and motivated. She's mindful of not spending too much time on online social media, limiting her usage to an hour each day to avoid wasting her time. On weekends, Mary enjoys relaxing and socializing with friends, going to the cinema, shopping, or just hanging out. She also does some volunteer work at a local charity, which provides valuable academic experience and looks great on her CV.\n\nJames, an adult working a nine-to-five job, is also aware of the importance of time management. He starts his day by making a to-do list, prioritizing the most urgent or difficult tasks first when he has the most energy. To avoid distractions, James turns off email and social media notifications on his phone and closes his office door, allowing him to concentrate. On the day when he must work overtime, he quickly rearranges his tasks and makes sure everything gets completed on time. When at home, James spends his quality time with his family, playing games or going to the park with his two young children. James and his wife share the housework, taking turns cooking and cleaning, ensuring a great work-life balance. In his free time, James keeps fit by playing football with friends and going to the gym, which helps him relax and clear his mind.",
+      "vi": "Sự cân bằng là chìa khóa đối với Mary, một thiếu niên bận rộn. Cô sử dụng một ứng dụng để sắp xếp các bài tập và hạn chót của mình; ứng dụng giúp cô nhận được lời nhắc để đảm bảo không quên điều gì. Mary cũng lập một danh sách việc cần làm hàng ngày để giúp cô tập trung và có động lực. Cô luôn chú ý không dành quá nhiều thời gian cho mạng xã hội trực tuyến, giới hạn việc sử dụng ở một giờ mỗi ngày để tránh lãng phí thời gian. Vào cuối tuần, Mary thích thư giãn và giao lưu với bạn bè, đi xem phim, mua sắm, hoặc chỉ đơn giản là tụ tập chơi. Cô cũng làm công việc tình nguyện tại một tổ chức từ thiện địa phương, việc này mang lại kinh nghiệm học thuật quý giá và trông rất tốt trong hồ sơ (CV) của cô.\n\nJames, một người trưởng thành làm công việc hành chính giờ hành chính, cũng nhận thức được tầm quan trọng của việc quản lý thời gian. Anh bắt đầu ngày mới bằng cách lập danh sách việc cần làm, ưu tiên những nhiệm vụ khẩn cấp hoặc khó nhất trước tiên khi anh có nhiều năng lượng nhất. Để tránh bị xao nhãng, James tắt thông báo email và mạng xã hội trên điện thoại và đóng cửa văn phòng để có thể tập trung. Vào những ngày phải làm thêm giờ, anh nhanh chóng sắp xếp lại công việc của mình và đảm bảo mọi thứ được hoàn thành đúng hạn. Khi ở nhà, James dành thời gian chất lượng cho gia đình, chơi trò chơi hoặc đi công viên cùng hai con nhỏ. James và vợ cùng chia sẻ việc nhà, thay phiên nhau nấu ăn và dọn dẹp, đảm bảo sự cân bằng tuyệt vời giữa công việc và cuộc sống. Trong thời gian rảnh, James giữ dáng bằng cách chơi bóng đá với bạn bè và đến phòng gym, điều này giúp anh thư giãn và giải tỏa tâm trí."
+    },
+    "questions": [
+      {"q": "23. Mary spends more than two hours every day checking her social media accounts.", "options": ["True", "False"], "answer": 1, "explanation": "Bài đọc: \"limiting her usage to an hour each day\" → Sai.", "vis": ["Đúng", "Sai"], "vi": "Mary dành hơn hai giờ mỗi ngày để kiểm tra các tài khoản mạng xã hội của mình."},
+      {"q": "24. Doing volunteer work at a local charity helps Mary improve her CV.", "options": ["True", "False"], "answer": 0, "explanation": "Bài đọc: \"do some volunteer work at a local charity, which... looks great on her CV\" → Đúng.", "vis": ["Đúng", "Sai"], "vi": "Làm công việc tình nguyện tại một tổ chức từ thiện địa phương giúp Mary cải thiện hồ sơ (CV) của mình."},
+      {"q": "25. James prefers to solve the easiest tasks at the beginning of his workday.", "options": ["True", "False"], "answer": 1, "explanation": "Bài đọc: \"prioritizing the most urgent or difficult tasks first\" → Sai.", "vis": ["Đúng", "Sai"], "vi": "James thích giải quyết những nhiệm vụ dễ nhất vào đầu ngày làm việc."},
+      {"q": "26. James and his wife share domestic chores to maintain a good work-life balance.", "options": ["True", "False"], "answer": 0, "explanation": "Bài đọc: \"James and his wife share the housework, taking turns cooking and cleaning\" → Đúng.", "vis": ["Đúng", "Sai"], "vi": "James và vợ cùng chia sẻ việc nhà để duy trì sự cân bằng tốt giữa công việc và cuộc sống."},
+      {"q": "27. What is the main idea of the passage?", "options": ["The differences in daily entertainment choices between teenagers and adults.", "How a teenager and an adult manage their time to achieve balance in life.", "The negative impacts of social media notifications on work and study.", "The importance of sharing housework and playing sports in a family."], "answer": 1, "explanation": "Bài đọc kể về cách một thiếu niên (Mary) và một người lớn (James) quản lý thời gian để cân bằng cuộc sống.", "vis": ["Sự khác biệt trong lựa chọn giải trí hàng ngày giữa thanh thiếu niên và người lớn.", "Cách một thiếu niên và một người trưởng thành quản lý thời gian để đạt được sự cân bằng trong cuộc sống.", "Tác động tiêu cực của thông báo mạng xã hội đến công việc và học tập.", "Tầm quan trọng của việc chia sẻ việc nhà và chơi thể thao trong gia đình."], "vi": "Ý chính của đoạn văn là gì?"},
+      {"q": "28. Which of the following is NOT true according to the passage?", "options": ["Mary uses a mobile application to get reminders about her deadlines.", "James sometimes has to work extra hours but still finishes his tasks on time.", "James always leaves his office door open to communicate with his colleagues.", "Going to the gym and playing football help James clear his mind."], "answer": 2, "explanation": "Bài đọc: James ĐÓNG cửa văn phòng để tránh xao nhãng, không phải luôn mở cửa → mâu thuẫn với bài đọc.", "vis": ["Mary sử dụng ứng dụng điện thoại để nhận nhắc nhở về hạn chót của mình.", "James đôi khi phải làm thêm giờ nhưng vẫn hoàn thành công việc đúng hạn.", "James luôn để cửa văn phòng mở để giao tiếp với đồng nghiệp.", "Đi tập gym và chơi bóng đá giúp James giải tỏa tâm trí."], "vi": "Điều nào sau đây KHÔNG đúng theo đoạn văn?"}
+    ],
+    "instant": true
+  },
+  {
+    "roman": "V", "navLabel": "Từ loại", "title": "Cho dạng đúng của từ trong ngoặc", "icon": "spell-check",
+    "instructions": "Điền dạng đúng của từ trong ngoặc vào chỗ trống.", "type": "fill",
+    "questions": [
+      {"q": "29. If you follow a ___ schedule, you will feel much better.", "answer": "regular", "explanation": "Tính từ: regularity → regular (đều đặn).", "hint": "(regularity)", "family": ["regularity (n): tính đều đặn", "regular (adj): đều đặn, thường xuyên", "regularly (adv): một cách đều đặn"]},
+      {"q": "30. Creating a ___ bedtime routine can help you fall asleep faster.", "answer": "calm", "explanation": "Tính từ: calmness → calm (bình tĩnh, êm dịu).", "hint": "(calmness)", "family": ["calmness (n): sự bình tĩnh, điềm tĩnh", "calm (adj/v): bình tĩnh; làm dịu", "calmly (adv): một cách bình tĩnh"]},
+      {"q": "31. ___ activity is very beneficial for teenagers' development.", "answer": "Physical", "explanation": "Tính từ: physics → physical (thuộc thể chất).", "hint": "(physics)", "family": ["physics (n): môn vật lý", "physical (adj): thuộc về thể chất", "physically (adv): về mặt thể chất"]},
+      {"q": "32. Regular exercise helps in ___ stress effectively.", "answer": "managing", "explanation": "Động từ dạng V-ing sau giới từ \"in\": manage → managing.", "hint": "(manage)", "family": ["manage (v): quản lý, xoay xở", "management (n): sự quản lý", "manager (n): người quản lý", "manageable (adj): có thể quản lý được"]},
+      {"q": "33. He felt ___ because he couldn't finish his assignment on time.", "answer": "anxious", "explanation": "Tính từ: anxiety → anxious (lo lắng).", "hint": "(anxiety)", "family": ["anxiety (n): sự lo âu", "anxious (adj): lo lắng", "anxiously (adv): một cách lo lắng"]},
+      {"q": "34. The teacher gave us an ___ talk on how to stay focused in class.", "answer": "educational", "explanation": "Tính từ: educate → educational (mang tính giáo dục).", "hint": "(educate)", "family": ["educate (v): giáo dục", "education (n): nền giáo dục", "educational (adj): mang tính giáo dục", "educated (adj): có học thức"]}
+    ]
+  },
+  {
+    "roman": "VI", "navLabel": "Từ điển", "title": "Tra từ điển \"deadline\"", "icon": "book-bookmark",
+    "instructions": "Dựa vào mục từ điển, hoàn thành câu (không quá 3 từ).", "type": "fill",
+    "dict": {
+      "word": "deadline", "ipa": "/ˈdedlaɪn/", "pos": "noun",
+      "senses": [
+        {"def": "a point in time by which something must be done", "examples": ["The deadline for applications is next Friday.", "It is difficult to meet the deadline when you have too much work.", "We are working hard to finish by the deadline.", "I'm afraid I'm going to miss the deadline because my computer broke.", "They decided to extend the deadline by one week to give students more time."]}
+      ],
+      "vi": "<b>deadline</b> /ˈdedlaɪn/ (danh từ)<br>Một mốc thời gian mà trước đó một việc gì đó phải được hoàn thành.<br>• Hạn nộp đơn là thứ Sáu tới.<br>• Thật khó để hoàn thành đúng hạn khi bạn có quá nhiều việc phải làm.<br>• Chúng tôi đang cố gắng hết sức để hoàn thành đúng hạn.<br>• Tôi e là mình sẽ trễ hạn vì máy tính bị hỏng.<br>• Họ quyết định gia hạn thêm một tuần để học sinh có thêm thời gian."
+    },
+    "questions": [
+      {"q": "35. The teacher agreed to ___ so we can finish our project.", "answer": "extend the deadline", "explanation": "Dựa vào ví dụ: extend the deadline.", "vi": "Giáo viên đã đồng ý gia hạn thời hạn để chúng tôi hoàn thành dự án."},
+      {"q": "36. If you don't plan your schedule well, you might ___ for your project.", "answer": "miss the deadline", "explanation": "Dựa vào ví dụ: miss the deadline.", "vi": "Nếu bạn không lên kế hoạch tốt, bạn có thể sẽ trễ hạn nộp dự án của mình."}
+    ]
+  },
+  {
+    "roman": "VII", "navLabel": "Viết lại câu", "title": "Viết lại câu sao cho nghĩa không đổi", "icon": "pen-to-square",
+    "instructions": "Viết lại câu, giữ nguyên nghĩa với câu gốc.", "type": "sentence",
+    "questions": [
+      {"q": "37.", "original": "It is important to take care of both physical and mental health.", "starter": "Taking", "answer": "care of both physical and mental health is important", "explanation": "It is important to V = V-ing... is important.", "vi": "Việc chăm sóc cả sức khỏe thể chất lẫn tinh thần đều quan trọng.", "note": "It is important to V → V-ing + is important<br>Nghĩa đáp án: Việc chăm sóc cả sức khỏe thể chất và tinh thần là quan trọng."},
+      {"q": "38.", "original": "If you don't manage your time well, you will feel stressed out.", "starter": "Unless", "answer": "you manage your time well, you will feel stressed out", "explanation": "If you don't V = Unless you V.", "vi": "Nếu bạn không quản lý thời gian tốt, bạn sẽ cảm thấy căng thẳng.", "note": "If S + don't/doesn't + V, S + will + V → Unless + S + V (khẳng định), S + will + V<br>Nghĩa đáp án: Trừ khi bạn quản lý thời gian tốt, bạn sẽ cảm thấy căng thẳng."},
+      {"q": "39.", "original": "I haven't played football with my classmates for two weeks.", "starter": "The last time", "answer": "I played football with my classmates was two weeks ago", "explanation": "haven't V for a period = The last time + S + V-ed + was + a period + ago.", "vi": "Tôi đã không chơi bóng đá với các bạn cùng lớp được hai tuần rồi.", "note": "S + haven't/hasn't + V(p2) + for + khoảng thời gian → The last time + S + V-ed + was + khoảng thời gian + ago<br>Nghĩa đáp án: Lần cuối cùng tôi chơi bóng đá với các bạn cùng lớp là hai tuần trước."},
+      {"q": "40.", "original": "Your brother might get tired tomorrow because he stays up late tonight.", "starter": "If", "answer": "your brother stays up late tonight, he might get tired tomorrow", "explanation": "because + clause = If + clause (câu điều kiện loại 1).", "vi": "Anh trai bạn có thể sẽ mệt vào ngày mai vì anh ấy thức khuya tối nay.", "note": "S1 + might/will + V + because + S2 + V(hiện tại) → If + S2 + V(hiện tại), S1 + might/will + V (câu điều kiện loại 1)<br>Nghĩa đáp án: Nếu anh trai bạn thức khuya tối nay, anh ấy có thể sẽ mệt vào ngày mai."}
+    ],
+    "instant": true
+  }
+]};
+
+const completedTasks = new Set();
+const scores = {};
+const TOTAL_TASKS = DATA.sections.length;
+
+function normalize(str){
+  return (str||'').trim().toLowerCase()
+    .replace(/[‘’]/g,"'")
+    .replace(/["“”]/g,'')
+    .replace(/[.,!?;:]/g,'')
+    .replace(/\s+/g,' ');
+}
+function widthFor(ref){ const l=(ref||'').length; return l<7?'w-24':l<16?'w-40':'w-full'; }
+
+if('speechSynthesis' in window){ window.speechSynthesis.onvoiceschanged = ()=>{}; }
+function speak(text, btn){
+  try{
+    if(!('speechSynthesis' in window)){ alert('Trình duyệt của bạn không hỗ trợ phát âm tự động. Hãy thử Chrome, Edge hoặc Safari.'); return; }
+    window.speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='en-US'; u.rate=0.9; u.pitch=1;
+    const voices=window.speechSynthesis.getVoices();
+    const en=voices.find(v=>/en[-_]?(us|gb)/i.test(v.lang)) || voices.find(v=>/^en/i.test(v.lang));
+    if(en) u.voice=en;
+    if(btn){ btn.classList.add('speaking'); u.onend=()=>btn.classList.remove('speaking'); u.onerror=()=>btn.classList.remove('speaking'); }
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+function buildNav(){
+  const nav=document.getElementById('navWrap');
+  nav.innerHTML = DATA.sections.map((s,i)=>
+    `<button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600${i===0?' active':''}" id="navbtn_${i}" onclick="showTab(${i})">${s.roman}. ${s.navLabel}</button>`
+  ).join('');
+}
+
+function optionLetter(i){ return ['A','B','C','D'][i]; }
+
+function renderPassage(p, idx){
+  if(!p) return '';
+  const viBlock = p.vi ? `<button onclick="togglePassageVI(${idx})" class="text-xs font-bold bg-white border border-indigo-200 text-indigo-700 px-3 py-1 rounded-full hover:scale-105 transition mt-2"><i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt</button>
+    <p id="passage_vi_${idx}" class="vi-hidden mt-2 pt-2 border-t border-indigo-200 italic text-slate-500">${p.vi}</p>` : '';
+  return `<div class="passage-box mb-4"><p class="font-extrabold text-indigo-900 mb-2"><i class="fa-solid fa-book mr-1"></i>${p.title||''}</p><p id="passage_en_${idx}">${p.html}</p>${viBlock}</div>`;
+}
+function renderDict(d, idx){
+  if(!d) return '';
+  const viBlock = d.vi ? `<button onclick="togglePassageVI(${idx})" class="text-xs font-bold bg-white border border-amber-300 text-amber-700 px-3 py-1 rounded-full hover:scale-105 transition mt-2"><i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt</button>
+    <p id="passage_vi_${idx}" class="vi-hidden mt-2 pt-2 border-t border-amber-300 text-slate-600">${d.vi}</p>` : '';
+  return `<div class="dict-box mb-4"><p class="font-extrabold text-amber-800 mb-1"><i class="fa-solid fa-book-bookmark mr-1"></i>${d.word} <span class="font-normal italic">${d.ipa||''}</span> <span class="font-normal">(${d.pos||''})</span></p>${d.senses.map(x=>`<p class="mb-1">✱ ${x.def}</p>${(x.examples||[]).map(e=>`<p class="ml-4 italic text-slate-600">• ${e}</p>`).join('')}`).join('')}${viBlock}</div>`;
+}
+
+function renderSection(s, idx){
+  let inner = `<h2 class="text-xl md:text-2xl font-extrabold text-indigo-900 flex items-center gap-2 mb-1"><i class="fa-solid fa-${s.icon||'circle-check'} text-amber-400"></i> ${s.roman}. ${s.title}</h2>`;
+  if(s.instructions) inner += `<p class="text-sm text-slate-500 mb-3 italic">${s.instructions}</p>`;
+  inner += renderPassage(s.passage, idx);
+  inner += renderDict(s.dict, idx);
+
+  inner += `<div class="space-y-4">`;
+  s.questions.forEach((q,i)=>{
+    inner += `<div class="task-card bg-white rounded-2xl shadow-md p-4" id="qblock_${idx}_${i}">`;
+    if(q.image) inner += `<div class="mb-3">${q.image}</div>`;
+    inner += `<p class="font-bold text-slate-800 mb-2"><span class="bg-slate-100 text-slate-600 text-xs font-black px-2 py-1 rounded-lg mr-2">${i+1}</span>${q.q}</p>`;
+    if(s.type==='mcq'){
+      inner += `<div class="grid sm:grid-cols-2 gap-2">`;
+      q.options.forEach((opt,j)=>{
+        const ipa = q.ipas ? q.ipas[j] : null;
+        const optVi = q.vis ? q.vis[j] : null;
+        const cleanWord = opt.replace(/<[^>]+>/g,'');
+        const wordBlock = (ipa || optVi)
+          ? `<span class="flex flex-col leading-tight"><span>${opt}</span>${ipa?`<span class="text-[10px] text-slate-400 font-normal mcq-detail-hidden">${ipa}</span>`:''}${optVi?`<span class="text-[10px] text-emerald-500 font-normal italic mcq-detail-hidden">${optVi}</span>`:''}</span>
+             <button type="button" data-w="${cleanWord}" onclick="event.stopPropagation();event.preventDefault();speak(this.dataset.w,this)" class="speak-btn w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 hover:bg-indigo-200 hover:scale-110 transition flex items-center justify-center ml-auto shrink-0 mcq-detail-hidden" title="Nghe phát âm" aria-label="Nghe phát âm ${cleanWord}"><i class="fa-solid fa-volume-high text-[10px]"></i></button>`
+          : `<span>${opt}</span>`;
+        inner += `<label class="option-label rounded-xl px-3 py-2 text-sm font-semibold flex items-center gap-2" id="opt_${idx}_${i}_${j}" onclick="selectMcq(${idx},${i},${j})">
+          <input type="radio" name="mcq_${idx}_${i}" class="accent-indigo-700" style="display:none">
+          <span class="font-black text-indigo-700">${optionLetter(j)}.</span> ${wordBlock}
+        </label>`;
+      });
+      inner += `</div>`;
+    } else if(s.type==='fill'){
+      const w = widthFor(q.answer);
+      const famBlock = q.family ? `<div class="wordfam-box mt-2">${q.family.map(f=>`<div>• ${f}</div>`).join('')}</div>` : '';
+      inner += `<div class="flex items-center gap-2 flex-wrap">`;
+      if(q.hint) inner += `<span class="blank-tag text-xs">${q.hint}</span>`;
+      inner += `<input type="text" id="inp_${idx}_${i}" class="answer-input ${w} px-3 py-1.5 rounded-lg text-sm font-semibold" placeholder="Nhập đáp án..." autocomplete="off" spellcheck="false"></div>${famBlock}`;
+    } else if(s.type==='sentence'){
+      const instantAttr = s.instant ? ` oninput="gradeOneSentence(${idx},${i})"` : '';
+      if(q.starter){
+        inner += `<p class="text-slate-700 text-sm mb-2">${q.original}</p>
+        <div class="flex items-center gap-3 w-full flex-wrap">
+          <span class="text-slate-800 font-extrabold text-base whitespace-nowrap">${q.starter}</span>
+          <input type="text" id="inp_${idx}_${i}" class="answer-input flex-1 min-w-[180px] px-3 py-2 rounded-lg text-sm font-semibold" placeholder="..." autocomplete="off" spellcheck="false"${instantAttr}>
+        </div>`;
+      } else {
+        inner += `<input type="text" id="inp_${idx}_${i}" class="answer-input w-full px-3 py-2 rounded-lg text-sm font-semibold" placeholder="Viết câu trả lời..." autocomplete="off" spellcheck="false"${instantAttr}>`;
+      }
+    }
+    inner += `<div class="explanation-box mt-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-sm text-blue-800" id="fb_${idx}_${i}"></div>`;
+    inner += `</div>`;
+  });
+  inner += `</div>`;
+
+  inner += `<div class="flex flex-wrap gap-2 mt-5">
+    <button onclick="checkSection(${idx})" class="bg-gradient-to-r from-indigo-900 to-pink-600 text-white font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-check mr-1"></i>Kiểm tra</button>
+    <button onclick="revealSection(${idx})" class="bg-white border-2 border-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-eye mr-1"></i>Xem đáp án</button>
+    <button onclick="resetSection(${idx})" class="bg-white border-2 border-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-rotate-left mr-1"></i>Làm lại</button>
+    <span id="score_${idx}" class="hidden ml-auto self-center font-extrabold text-emerald-600 text-sm score-badge"></span>
+  </div>`;
+
+  return `<section id="tab-${idx}" class="section-page${idx===0?' active':''} space-y-4">${inner}</section>`;
+}
+
+function buildMain(){
+  const main=document.getElementById('mainWrap');
+  main.innerHTML = DATA.sections.map((s,i)=>renderSection(s,i)).join('');
+}
+
+function togglePassageVI(idx){ const el=document.getElementById(`passage_vi_${idx}`); if(el) el.classList.toggle('vi-hidden'); }
+function selectMcq(idx,i,j){
+  const q=DATA.sections[idx].questions[i];
+  document.querySelectorAll(`[id^="opt_${idx}_${i}_"]`).forEach(el=>el.classList.remove('selected'));
+  document.getElementById(`opt_${idx}_${i}_${j}`).classList.add('selected');
+  document.getElementById(`opt_${idx}_${i}_${j}`).dataset.chosen = j;
+  if(DATA.sections[idx].instant){ gradeOneMcq(idx,i); }
+}
+
+function gradeOneMcq(idx,i){
+  const s=DATA.sections[idx], q=s.questions[i];
+  const qblock=document.getElementById(`qblock_${idx}_${i}`);
+  if(qblock) qblock.classList.add('show-mcq-detail');
+  const chosenEl=document.querySelector(`#tab-${idx} [id^="opt_${idx}_${i}_"].selected`);
+  const chosen = chosenEl ? parseInt(chosenEl.dataset.chosen) : -1;
+  const ok = chosen === q.answer;
+  const answerLabel = `${optionLetter(q.answer)}. ${q.options[q.answer]}`;
+  q.options.forEach((o,j)=>{
+    const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+    el.classList.remove('correct-opt','wrong-opt');
+    if(j===q.answer) el.classList.add('correct-opt');
+    else if(j===chosen) el.classList.add('wrong-opt');
+  });
+  const fb=document.getElementById(`fb_${idx}_${i}`);
+  fb.innerHTML = feedbackHTML(ok, answerLabel, q.explanation, q.vi, q.note);
+  fb.classList.add('show');
+}
+
+function gradeOneSentence(idx,i){
+  const q=DATA.sections[idx].questions[i];
+  const inp=document.getElementById(`inp_${idx}_${i}`);
+  const fb=document.getElementById(`fb_${idx}_${i}`);
+  if(!inp || !fb) return;
+  const raw=inp.value.trim();
+  if(raw===''){
+    inp.classList.remove('correct-input','wrong-input');
+    fb.classList.remove('show'); fb.innerHTML='';
+    return;
+  }
+  const val=normalize(inp.value);
+  const acc=(q.accepted||[q.answer]).map(normalize);
+  const ok = acc.includes(val);
+  inp.classList.remove('correct-input','wrong-input');
+  inp.classList.add(ok?'correct-input':'wrong-input');
+  fb.innerHTML = feedbackHTML(ok, q.answer, q.explanation, q.vi, q.note);
+  fb.classList.add('show');
+}
+
+function feedbackHTML(ok, answerLabel, explanation, vi, note){
+  const okLine = ok? `<span class="text-emerald-700 font-bold">✅ Chính xác!</span>` : `<span class="text-rose-600 font-bold">❌ Chưa đúng.</span> Đáp án đúng: <b>${answerLabel}</b>`;
+  const expLine = explanation? `<br><span class="text-blue-700">💡 ${explanation}</span>` : '';
+  const viLine = vi? `<span class="text-slate-500">📖 Nghĩa: <i>${vi}</i></span>` : '';
+  const noteLine = note? `<br><span class="text-violet-600">📐 Công thức: <b>${note}</b></span>` : '';
+  if(note){
+    return (viLine?viLine+'<br>':'') + okLine + expLine + noteLine;
+  }
+  return okLine + expLine + (viLine?'<br>'+viLine:'') + noteLine;
+}
+
+function checkSection(idx){
+  const s=DATA.sections[idx];
+  let correct=0;
+  s.questions.forEach((q,i)=>{
+    let ok=false, answerLabel='';
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    if(s.type==='mcq'){
+      const chosenEl=document.querySelector(`#tab-${idx} [id^="opt_${idx}_${i}_"].selected`);
+      const chosen = chosenEl ? parseInt(chosenEl.dataset.chosen) : -1;
+      ok = chosen === q.answer;
+      answerLabel = `${optionLetter(q.answer)}. ${q.options[q.answer]}`;
+      q.options.forEach((o,j)=>{
+        const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+        el.classList.remove('correct-opt','wrong-opt');
+        if(j===q.answer) el.classList.add('correct-opt');
+        else if(j===chosen) el.classList.add('wrong-opt');
+      });
+      const qblock=document.getElementById(`qblock_${idx}_${i}`);
+      if(qblock) qblock.classList.add('show-mcq-detail');
+    } else {
+      const inp=document.getElementById(`inp_${idx}_${i}`);
+      const val=normalize(inp.value);
+      const acc=(q.accepted||[q.answer]).map(normalize);
+      ok = val!=='' && acc.includes(val);
+      inp.classList.remove('correct-input','wrong-input');
+      inp.classList.add(ok?'correct-input':'wrong-input');
+      answerLabel = q.answer;
+    }
+    if(ok) correct++;
+    fb.innerHTML = feedbackHTML(ok, answerLabel, q.explanation, q.vi, q.note);
+    fb.classList.add('show');
+  });
+  const total=s.questions.length;
+  scores[idx]={correct,total};
+  const scoreEl=document.getElementById(`score_${idx}`);
+  scoreEl.textContent = `🏆 Điểm: ${correct}/${total}`;
+  scoreEl.classList.remove('hidden');
+  completedTasks.add(idx);
+  updateProgress();
+  if(completedTasks.size===TOTAL_TASKS) setTimeout(showCompletion,500);
+}
+
+function revealSection(idx){
+  const s=DATA.sections[idx];
+  s.questions.forEach((q,i)=>{
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    let answerLabel = s.type==='mcq' ? `${optionLetter(q.answer)}. ${q.options[q.answer]}` : q.answer;
+    if(s.type==='mcq'){
+      q.options.forEach((o,j)=>{
+        const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+        el.classList.remove('correct-opt','wrong-opt');
+        if(j===q.answer) el.classList.add('correct-opt');
+      });
+      const qblock=document.getElementById(`qblock_${idx}_${i}`);
+      if(qblock) qblock.classList.add('show-mcq-detail');
+    }
+    fb.innerHTML = `👁️ Đáp án: <b>${answerLabel}</b>` + (q.explanation?`<br><span class="text-blue-700">💡 ${q.explanation}</span>`:'') + (q.vi?`<br><span class="text-slate-500">📖 Nghĩa: <i>${q.vi}</i></span>`:'') + (q.note?`<br><span class="text-violet-600">📐 Công thức: <b>${q.note}</b></span>`:'');
+    fb.classList.add('show');
+  });
+}
+
+function resetSection(idx){
+  const s=DATA.sections[idx];
+  s.questions.forEach((q,i)=>{
+    if(s.type==='mcq'){
+      q.options.forEach((o,j)=>{
+        const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+        el.classList.remove('correct-opt','wrong-opt','selected');
+        delete el.dataset.chosen;
+      });
+    } else {
+      const inp=document.getElementById(`inp_${idx}_${i}`);
+      if(inp){ inp.value=''; inp.classList.remove('correct-input','wrong-input'); }
+    }
+    const qblock=document.getElementById(`qblock_${idx}_${i}`);
+    if(qblock) qblock.classList.remove('show-mcq-detail');
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    fb.classList.remove('show'); fb.innerHTML='';
+  });
+  const scoreEl=document.getElementById(`score_${idx}`); scoreEl.classList.add('hidden');
+  completedTasks.delete(idx); delete scores[idx]; updateProgress();
+}
+
+function showTab(idx){
+  document.querySelectorAll('.section-page').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active'); b.classList.add('text-slate-600');});
+  document.getElementById(`tab-${idx}`).classList.add('active');
+  const btn=document.getElementById(`navbtn_${idx}`);
+  btn.classList.add('active'); btn.classList.remove('text-slate-600');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updateProgress(){
+  const done=completedTasks.size;
+  document.getElementById('progressText').textContent = `${done} / ${TOTAL_TASKS} phần`;
+  document.getElementById('progressBar').style.width = `${(done/TOTAL_TASKS)*100}%`;
+}
+
+function showCompletion(){
+  fireConfetti();
+  const banner=document.getElementById('completionBanner');
+  banner.classList.remove('hidden'); banner.classList.add('show');
+  let c=0,t=0; Object.values(scores).forEach(s=>{c+=s.correct; t+=s.total;});
+  document.getElementById('finalScoreDisplay').textContent = `🎯 ${c} / ${t} câu đúng`;
+}
+function closeBanner(){ const b=document.getElementById('completionBanner'); b.classList.remove('show'); b.classList.add('hidden'); }
+function fireConfetti(){
+  const wrap=document.getElementById('confettiWrap'); wrap.innerHTML='';
+  const colors=['#3b0764','#7e22ce','#0891b2','#a855f7','#f59e0b','#6366f1'];
+  for(let i=0;i<90;i++){
+    const p=document.createElement('div'); p.className='confetti-piece';
+    p.style.cssText=`left:${Math.random()*100}vw;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>0.5?'50%':'2px'};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*0.8}s;`;
+    wrap.appendChild(p);
+  }
+  setTimeout(()=>{wrap.innerHTML='';},4000);
+}
+
+buildNav();
+buildMain();
+updateProgress();
+</script>
+</body>
+</html>
