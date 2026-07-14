@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 3 · Practice Test 1 – Tieng Anh 7</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+  :root{ --accent:#9333ea; --accent2:#ec4899; }
+  * { box-sizing: border-box; }
+  body { font-family:'Nunito',sans-serif; background:#f5f3ff; }
+  .hero-gradient{ background: linear-gradient(135deg, #581c87 0%, #9333ea 55%, #ec4899 100%); }
+  .tab-btn{ transition: all .2s ease; }
+  .tab-btn.active{ background: linear-gradient(135deg, #581c87, #ec4899); color:#fff; box-shadow:0 4px 14px rgba(30,27,75,.35); transform:translateY(-1px); }
+  .task-card{ transition: box-shadow .2s, transform .2s; }
+  .task-card:hover{ transform: translateY(-2px); box-shadow:0 8px 30px rgba(0,0,0,.10); }
+  .option-label{ cursor:pointer; transition: all .18s; border:2px solid #e2e8f0; }
+  .option-label:hover{ border-color:var(--accent); background:#f5f3ff; }
+  .option-label.selected{ border-color:#1e1b4b; background:#eef2ff; }
+  .option-label.correct-opt{ border-color:#22c55e !important; background:#f0fdf4 !important; }
+  .option-label.wrong-opt{ border-color:#ef4444 !important; background:#fef2f2 !important; }
+  .mcq-detail-hidden{ display:none; }
+  .show-mcq-detail .mcq-detail-hidden{ display:block; }
+  .speak-btn{ cursor:pointer; }
+  .speak-btn.speaking{ animation: pulseSpeak .7s ease-in-out infinite; }
+  @keyframes pulseSpeak{ 0%,100%{transform:scale(1);} 50%{transform:scale(1.18);} }
+  .vi-hidden{ display:none; }
+  .explanation-box{ display:none; animation: fadeSlide .3s ease forwards; }
+  .explanation-box.show{ display:block; }
+  @keyframes fadeSlide{ from{opacity:0; transform:translateY(-6px);} to{opacity:1; transform:translateY(0);} }
+  input.answer-input{ border:2px solid #cbd5e1; transition:border .18s; outline:none; background:#fff; }
+  input.answer-input:focus{ border-color:var(--accent); }
+  input.correct-input{ border-color:#22c55e !important; background:#f0fdf4; }
+  input.wrong-input{ border-color:#ef4444 !important; background:#fef2f2; }
+  .score-badge{ animation: popIn .35s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn{ from{transform:scale(.4); opacity:0;} to{transform:scale(1); opacity:1;} }
+  .confetti-wrap{ position:fixed; inset:0; pointer-events:none; z-index:9999; }
+  .confetti-piece{ position:absolute; width:10px; height:10px; border-radius:2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall{ 0%{transform:translateY(-20px) rotate(0deg); opacity:1;} 100%{transform:translateY(100vh) rotate(720deg); opacity:0;} }
+  .progress-bar-fill{ transition: width .6s ease; }
+  .section-page{ display:none; }
+  .section-page.active{ display:block; }
+  #completionBanner{ display:none; }
+  #completionBanner.show{ display:flex; }
+  .passage-box{ background:#fff; border:1px solid #e2e8f0; border-radius:1rem; padding:1rem 1.25rem; line-height:1.9; font-size:.95rem; color:#334155; }
+  .dict-box{ background:#fef9c3; border:1px solid #fde68a; border-radius:1rem; padding:1rem 1.25rem; font-size:.9rem; color:#334155; }
+  .blank-tag{ background:#ede9fe; color:#5b21b6; font-weight:800; border-radius:.4rem; padding:0 .35rem; }
+  .wordfam-box{ background:#f5f3ff; border:1px solid #ddd6fe; border-radius:.6rem; padding:.5rem .75rem; font-size:.75rem; color:#5b21b6; line-height:1.6; width:100%; }
+</style>
+</head>
+<body class="min-h-screen">
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<header class="hero-gradient text-white py-8 px-4 text-center shadow-xl relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <div class="absolute top-4 left-8 text-6xl">🤲</div>
+    <div class="absolute top-2 right-12 text-5xl">🌍</div>
+    <div class="absolute bottom-2 left-1/3 text-4xl">📚</div>
+    <div class="absolute bottom-4 right-1/4 text-5xl">❤️</div>
+  </div>
+  <p class="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Tiếng Anh 7 · Unit 3 · Practice Test 1</p>
+  <h1 class="font-['Baloo_2'] text-3xl md:text-5xl font-extrabold drop-shadow-lg">🤲 Unit 3: Community Service 🌍</h1>
+  <p class="mt-2 text-base md:text-lg opacity-90 font-semibold">Practice Test 1 · Luyện tập tương tác</p>
+  <div class="mt-5 max-w-2xl mx-auto">
+    <div class="flex justify-between text-xs font-bold opacity-80 mb-1">
+      <span>Tiến độ hoàn thành</span>
+      <span id="progressText">0 / 7 phần</span>
+    </div>
+    <div class="bg-white/20 rounded-full h-3 overflow-hidden">
+      <div id="progressBar" class="bg-white rounded-full h-3 progress-bar-fill" style="width:0%"></div>
+    </div>
+  </div>
+</header>
+
+<nav class="sticky top-0 z-50 bg-white/90 backdrop-blur shadow-sm px-3 py-2 overflow-x-auto">
+  <div class="flex gap-2 min-w-max mx-auto w-fit" id="navWrap"></div>
+</nav>
+
+<main class="max-w-4xl mx-auto px-4 py-6 pb-20" id="mainWrap"></main>
+
+<div id="completionBanner" class="fixed inset-0 z-[9998] items-center justify-center bg-black/50 px-4">
+  <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center score-badge shadow-2xl">
+    <div class="text-6xl mb-3">🎉</div>
+    <h3 class="text-2xl font-extrabold text-indigo-900 mb-1">Hoàn thành bài luyện tập!</h3>
+    <p class="text-slate-500 mb-4">Bạn đã làm xong tất cả các phần.</p>
+    <p id="finalScoreDisplay" class="text-3xl font-black text-violet-700 mb-5"></p>
+    <button onclick="closeBanner()" class="bg-gradient-to-r from-indigo-900 to-pink-600 text-white font-bold px-6 py-2.5 rounded-full">Đóng</button>
+  </div>
+</div>
+
+<script>
+const DATA = {"unit": 3, "test": 1, "sections": [{"roman":"I","navLabel":"Ngữ âm & Từ vựng","title":"Phát âm – Trọng âm – Từ vựng – Ngữ pháp","icon":"ear-listen","instructions":"Chọn đáp án (A, B, C hoặc D) đúng nhất.","type":"mcq","questions":[{"q":"1. Which word has the underlined part pronounced differently from that of the others?","options":["bl<u>a</u>nket","don<u>a</u>te","c<u>a</u>lorie","<u>a</u>llergy"],"answer":1,"explanation":"\"donate\" có \"a\" phát âm là /eɪ/, ba từ còn lại phát âm là /æ/.","ipas":["/ˈblæŋkɪt/","/dəʊˈneɪt/","/ˈkæləri/","/ˈælədʒi/"],"vis":["cái chăn","quyên góp, tặng","ca-lo","dị ứng"]},{"q":"2. Which word has the underlined part pronounced differently from that of the others?","options":["need<u>ed</u>","visit<u>ed</u>","lov<u>ed</u>","excit<u>ed</u>"],"answer":2,"explanation":"\"loved\" có đuôi -ed phát âm là /d/ vì \"love\" tận cùng bằng âm hữu thanh /v/; ba từ còn lại có đuôi -ed phát âm là /ɪd/ vì tận cùng bằng /d/ hoặc /t/.","ipas":["/ˈniːdɪd/","/ˈvɪzɪtɪd/","/lʌvd/","/ɪkˈsaɪtɪd/"],"vis":["cần","đã đến thăm","đã yêu thích","đã hào hứng"]},{"q":"3. Which word has a different stress pattern from that of the others?","options":["answer","open","expect","follow"],"answer":2,"explanation":"\"expect\" trọng âm rơi vào âm tiết 2, ba từ còn lại trọng âm rơi vào âm tiết 1.","ipas":["/ˈɑːnsə(r)/","/ˈəʊpən/","/ɪkˈspekt/","/ˈfɒləʊ/"],"vis":["trả lời","mở","mong đợi","theo sau"]},{"q":"4. Which word has a different stress pattern from that of the others?","options":["active","careful","homeless","polite"],"answer":3,"explanation":"\"polite\" trọng âm rơi vào âm tiết 2, ba từ còn lại trọng âm rơi vào âm tiết 1.","ipas":["/ˈæktɪv/","/ˈkeəfl/","/ˈhəʊmləs/","/pəˈlaɪt/"],"vis":["năng nổ, tích cực","cẩn thận","vô gia cư","lịch sự"]},{"q":"5. Tom: \"What did you do with your school club last summer, Nam?\"\nNam: \"Last year, I ___ to visit a children's village in Yen Bai with my teachers.\"","options":["goed","to go","went","goes"],"answer":2,"explanation":"\"Last year\" chỉ thời gian trong quá khứ → dùng thì quá khứ đơn: went.","vi":"Tom: 'Năm ngoái cậu đã làm gì với câu lạc bộ ở trường vậy, Nam?' – Nam: 'Năm ngoái, mình đã đi thăm một làng trẻ em ở Yên Bái cùng các thầy cô.'"},{"q":"6. Anna: \"Did you join the environment clean-up activity last March?\"\nMark: \"Yes, we spent the whole morning ___ trash along the riverbank.\"","options":["cleaning","cleaning up","clean up","clean-up"],"answer":1,"explanation":"Cấu trúc \"spend + time + V-ing\"; động từ ghép \"clean up\" (dọn sạch) phù hợp ngữ cảnh dọn rác → cleaning up.","vi":"Anna: 'Cậu có tham gia hoạt động dọn dẹp môi trường vào tháng Ba trước không?' – Mark: 'Có, chúng mình đã dành cả buổi sáng để dọn rác dọc bờ sông.'"},{"q":"7. Jane: \"How was the documentary about street kids you watched last night?\"\nDavid: \"The film that I ___ last night ___ very interesting and moving.\"","options":["saw / was","see / was","saw / were","see / wore"],"answer":0,"explanation":"Cả hai vế chỉ hành động/trạng thái trong quá khứ; chủ ngữ \"The film\" số ít → saw / was.","vi":"Jane: 'Bộ phim tài liệu về trẻ em đường phố cậu xem tối qua thế nào?' – David: 'Bộ phim mình xem tối qua rất thú vị và cảm động.'"},{"q":"8. Mary: \"Look at the trees along the fence. They look a bit dry.\"\nPeter: \"Don't worry. Tom and his friends ___ the plants in their neighborhood every weekend.\"","options":["water","donate","clean","pick up"],"answer":0,"explanation":"Cây bị khô → cần tưới nước: water the plants.","vis":["tưới (nước)","quyên góp","dọn dẹp, lau chùi","nhặt, dọn (rác)"],"vi":"Mary: 'Nhìn những cái cây dọc hàng rào kìa. Chúng trông hơi khô.' – Peter: 'Đừng lo. Tom và các bạn của cậu ấy tưới cây trong khu phố của họ vào mỗi cuối tuần.'"},{"q":"9. Lucy: \"Why do you think the Japanese have such a high life expectancy?\"\nBen: \"The Japanese eat a lot of fish and healthy food, ___ they live for a long time.\"","options":["so","but","or","because"],"answer":0,"explanation":"Quan hệ nguyên nhân – kết quả: ăn uống lành mạnh NÊN sống lâu → so.","vis":["vì vậy","nhưng","hoặc","bởi vì"],"vi":"Lucy: 'Bạn nghĩ tại sao người Nhật lại có tuổi thọ trung bình cao như vậy?' – Ben: 'Người Nhật ăn nhiều cá và thức ăn lành mạnh, nên họ sống lâu.'"},{"q":"10. Teacher: \"Why do you think school students should take part in community work?\"\nStudent: \"People can gain ___ and have lots of fun when doing volunteer work.\"","options":["confide","confidence","confident","confidential"],"answer":1,"explanation":"Sau động từ \"gain\" cần một danh từ → confidence (sự tự tin).","vis":["tâm sự, thổ lộ","sự tự tin","tự tin","bí mật, mật"],"vi":"Giáo viên: 'Em nghĩ tại sao học sinh nên tham gia công việc cộng đồng?' – Học sinh: 'Mọi người có thể có được sự tự tin và có nhiều niềm vui khi làm công việc tình nguyện.'"},{"q":"11. Laura: \"Where does your older sister want to work after graduating from university?\"\nMike: \"She wants to work in a ___ to care for old and lonely people.\"","options":["supermarket","museum","nursing home","theater"],"answer":2,"explanation":"Nơi chăm sóc người già, cô đơn → nursing home (viện dưỡng lão).","vis":["siêu thị","bảo tàng","viện dưỡng lão","nhà hát"],"vi":"Laura: 'Chị gái của cậu muốn làm việc ở đâu sau khi tốt nghiệp đại học?' – Mike: 'Chị ấy muốn làm việc ở một viện dưỡng lão để chăm sóc người già và cô đơn.'"},{"q":"12. John: \"How can we help elderly people at a nursing home effectively?\"\nSarah: \"___\"","options":["Take away their walking aids to make them stronger.","Visit them, talk to them, and help with daily tasks.","Ignore them and let them rest all day.","Tell them to live on their own without help."],"answer":1,"explanation":"Cách giúp đỡ hiệu quả và phù hợp: thăm hỏi, trò chuyện và giúp việc hằng ngày.","vis":["Lấy đi gậy/dụng cụ hỗ trợ đi lại của họ để họ khỏe hơn.","Đến thăm họ, trò chuyện với họ và giúp đỡ các công việc hằng ngày.","Phớt lờ họ và để họ nghỉ ngơi cả ngày.","Bảo họ tự sống một mình mà không cần giúp đỡ."],"vi":"John: 'Làm thế nào chúng ta có thể giúp đỡ người cao tuổi ở viện dưỡng lão một cách hiệu quả?' – Sarah: 'Hãy đến thăm họ, trò chuyện với họ và giúp đỡ các công việc hằng ngày.'"},{"q":"13. Minh: \"I passed my interview to become a volunteer at the local shelter!\"\nLong: \"___\"","options":["I've no idea.","Wow, that must have felt good!","What's happening?","Never mind."],"answer":1,"explanation":"Đáp lại tin vui bằng lời khen, chia sẻ cảm xúc tích cực.","vis":["Mình chẳng biết gì cả.","Wow, chắc hẳn cậu cảm thấy tuyệt lắm!","Có chuyện gì vậy?","Thôi kệ đi, không sao đâu."],"vi":"Minh: 'Mình đã vượt qua buổi phỏng vấn để trở thành tình nguyện viên tại trại tế bần địa phương rồi!' – Long: 'Wow, chắc hẳn cậu cảm thấy tuyệt lắm!'"},{"q":"14. Mai: \"I'm planning to join the community green project this Saturday morning.\"\nLan: \"___\"","options":["Sorry, the bus broke down on the way here.","Yes, it is very old-fashioned.","No, I think it's very dull.","Great! Let's work together to make a difference!"],"answer":3,"explanation":"Phản hồi tích cực, hưởng ứng lời rủ tham gia hoạt động cộng đồng.","vis":["Xin lỗi, xe buýt bị hỏng trên đường đến đây.","Vâng, nó rất lỗi thời.","Không, mình nghĩ nó rất nhàm chán.","Tuyệt quá! Cùng nhau góp sức tạo nên sự khác biệt nhé!"],"vi":"Mai: 'Mình định tham gia dự án xanh của cộng đồng vào sáng thứ Bảy này.' – Lan: 'Tuyệt quá! Cùng nhau góp sức tạo nên sự khác biệt nhé!'"}],"instant":true},{"roman":"II","navLabel":"Biển báo","title":"Biển báo / Thông báo","icon":"traffic-light","instructions":"Đọc biển báo/thông báo và chọn ý đúng nhất.","type":"mcq","questions":[{"q":"15. What does this notice tell the students to do?","options":["Students must clean the classroom by Friday.","Students should register before Saturday to participate in the project.","Class teachers will choose which students have to clean the park.","Only teachers can join the upcoming community activities."],"answer":1,"explanation":"A. Students must clean the classroom by Friday. — Học sinh phải dọn lớp học trước thứ Sáu (sai, thông báo nói về dọn dẹp công viên, không phải lớp học)<br>B. Students should register before Saturday to participate in the project. — Học sinh nên đăng ký trước thứ Bảy để tham gia dự án ✓<br>C. Class teachers will choose which students have to clean the park. — Giáo viên chủ nhiệm sẽ chọn học sinh phải dọn công viên (sai, học sinh tự nguyện đăng ký, không phải do giáo viên chỉ định)<br>D. Only teachers can join the upcoming community activities. — Chỉ giáo viên mới được tham gia hoạt động cộng đồng sắp tới (sai, thông báo dành cho học sinh đăng ký tham gia)","vis":["Học sinh phải dọn dẹp lớp học trước thứ Sáu.","Học sinh nên đăng ký trước thứ Bảy để tham gia dự án.","Giáo viên chủ nhiệm sẽ chọn học sinh phải dọn công viên.","Chỉ giáo viên mới được tham gia các hoạt động cộng đồng sắp tới."],"image":"<div class=\"inline-flex flex-col items-center w-40 bg-white border-2 border-slate-200 rounded-xl p-3 shadow-sm\">\n  <svg viewBox=\"0 0 100 100\" class=\"w-16 h-16\" aria-hidden=\"true\">\n    <rect x=\"16\" y=\"8\" width=\"7\" height=\"18\" fill=\"#92400e\"/>\n    <circle cx=\"19.5\" cy=\"9\" r=\"5\" fill=\"#b45309\"/>\n    <rect x=\"18\" y=\"22\" width=\"64\" height=\"58\" rx=\"4\" fill=\"#fde68a\" stroke=\"#b45309\" stroke-width=\"3\"/>\n    <line x1=\"28\" y1=\"34\" x2=\"72\" y2=\"34\" stroke=\"#78350f\" stroke-width=\"4\" stroke-linecap=\"round\"/>\n    <line x1=\"28\" y1=\"44\" x2=\"72\" y2=\"44\" stroke=\"#78350f\" stroke-width=\"4\" stroke-linecap=\"round\"/>\n    <line x1=\"28\" y1=\"54\" x2=\"58\" y2=\"54\" stroke=\"#78350f\" stroke-width=\"4\" stroke-linecap=\"round\"/>\n    <path d=\"M28 68l8 8 18-18\" fill=\"none\" stroke=\"#16a34a\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n  </svg>\n  <p class=\"text-[11px] font-black text-center text-slate-900 leading-tight mt-1\">PARK CLEAN-UP<br>SIGN UP BY FRIDAY!</p>\n</div>"},{"q":"16. What does this sign mean?","options":["Only children are allowed to run here; adults should walk.","Running is not allowed in this area, so you need to walk instead.","Running is not encouraged here, so you should run as much as you can.","Running is allowed in some specific places, but not here."],"answer":1,"explanation":"A. Only children are allowed to run here; adults should walk. — Chỉ trẻ em mới được chạy ở đây; người lớn nên đi bộ (sai, biển cấm áp dụng cho tất cả mọi người)<br>B. Running is not allowed in this area, so you need to walk instead. — Không được chạy trong khu vực này, vì vậy bạn cần đi bộ thay thế ✓<br>C. Running is not encouraged here, so you should run as much as you can. — Chạy không được khuyến khích ở đây, vì vậy bạn nên chạy càng nhiều càng tốt (sai, mâu thuẫn logic, biển là lệnh cấm chứ không phải chỉ không khuyến khích)<br>D. Running is allowed in some specific places, but not here. — Chạy được cho phép ở một số nơi cụ thể, nhưng không phải ở đây (sai, biển không đề cập đến khu vực khác)","vis":["Chỉ trẻ em mới được chạy ở đây; người lớn nên đi bộ.","Không được chạy trong khu vực này, vì vậy bạn cần đi bộ thay thế.","Chạy không được khuyến khích ở đây, vì vậy bạn nên chạy càng nhiều càng tốt.","Chạy được cho phép ở một số nơi cụ thể, nhưng không phải ở đây."],"image":"<div class=\"inline-flex flex-col items-center w-40 bg-white border-2 border-slate-200 rounded-xl p-3 shadow-sm\">\n  <svg viewBox=\"0 0 100 100\" class=\"w-16 h-16\" aria-hidden=\"true\">\n    <circle cx=\"50\" cy=\"50\" r=\"46\" fill=\"none\" stroke=\"#dc2626\" stroke-width=\"8\"/>\n    <line x1=\"14\" y1=\"86\" x2=\"86\" y2=\"14\" stroke=\"#dc2626\" stroke-width=\"8\" stroke-linecap=\"round\"/>\n    <circle cx=\"42\" cy=\"28\" r=\"7\" fill=\"#1e293b\"/>\n    <path d=\"M42 37 L34 58 L45 63 L38 82\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n    <path d=\"M42 37 L60 44 L66 62\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n    <path d=\"M45 63 L62 72\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n  </svg>\n  <p class=\"text-[11px] font-black text-center text-slate-900 leading-tight mt-1\">NO RUNNING</p>\n</div>"}],"instant":true}, {"roman": "III", "navLabel": "Điền đoạn văn", "title": "Chọn từ thích hợp điền vào đoạn văn", "icon": "file-lines", "instructions": "Chọn đáp án đúng để hoàn thành đoạn văn.", "type": "mcq", "passage": {"title": "Thư về công việc tình nguyện", "html": "Dear Mary,\nToday I will tell you about my volunteer work. Volunteer work has (17)___ popular in Vietnam. Many people have done volunteer work, and I have too. At my age, I can't donate blood, (18)___ I often donate books, toys, and clothes to (19)___ children and elderly people. I often do this work with my mother. Last Sunday, I donated books and clothes to a charity organization. I met the orphans there. They were so lovely. I played (20)___ them, and they were so (21)___. Some people think that doing volunteer work is a (22)___ of time, but in my opinion, it helps me relax after school, and I feel very happy to bring happiness to them. What do you think about volunteer work? Look forward to hearing from you.\nBest regards,\nMai", "vi": "Mary thân mến,\nHôm nay mình sẽ kể cho bạn nghe về công việc tình nguyện của mình. Công việc tình nguyện đã trở nên phổ biến ở Việt Nam. Nhiều người đã làm công việc tình nguyện, và mình cũng vậy. Ở độ tuổi của mình, mình không thể hiến máu, nhưng mình thường quyên góp sách, đồ chơi và quần áo cho trẻ em vô gia cư và người già. Mình thường làm việc này cùng mẹ. Chủ nhật tuần trước, mình đã quyên góp sách và quần áo cho một tổ chức từ thiện. Mình đã gặp các em mồ côi ở đó. Các em rất đáng yêu. Mình đã chơi cùng các em, và các em đã rất vui. Một số người nghĩ rằng làm việc tình nguyện là lãng phí thời gian, nhưng theo mình, nó giúp mình thư giãn sau giờ học, và mình cảm thấy rất hạnh phúc khi mang lại niềm vui cho các em. Bạn nghĩ sao về công việc tình nguyện? Mong sớm nhận được hồi âm của bạn.\nThân ái,\nMai"}, "questions": [{"q": "17.", "options": ["become", "grown", "turned", "made"], "answer": 0, "explanation": "\"has become popular\" = đã trở nên phổ biến.<br>A. become + adj: trở nên (has become popular) ✓<br>B. grown: sai dạng động từ (grow → grown, không hợp cấu trúc)<br>C. turned + adj: cũng có thể mang nghĩa 'trở nên' nhưng không phải cách diễn đạt tự nhiên với 'popular' ở đây<br>D. made: làm, khiến (không hợp cấu trúc 'has made popular')", "vis": ["trở nên (become + adj)", "sai dạng động từ (grow → grown)", "trở nên/biến thành (ít tự nhiên hơn ở đây)", "làm, khiến"], "vi": "Công việc tình nguyện đã (17) ___ phổ biến ở Việt Nam."}, {"q": "18.", "options": ["because", "but", "so", "although"], "answer": 1, "explanation": "Ý tương phản: không thể hiến máu NHƯNG thường quyên góp sách vở → but.<br>A. because: bởi vì (không thể hiện tương phản)<br>B. but: nhưng (thể hiện tương phản) ✓<br>C. so: vì vậy (không hợp quan hệ kết quả)<br>D. although: mặc dù (cần đứng đầu mệnh đề, không hợp vị trí giữa câu này)", "vis": ["bởi vì", "nhưng", "vì vậy", "mặc dù"], "vi": "Ở độ tuổi của mình, mình không thể hiến máu, (18) ___ mình thường quyên góp sách, đồ chơi và quần áo cho trẻ em (19) ___ và người già."}, {"q": "19.", "options": ["rich", "healthy", "homeless", "wealthy"], "answer": 2, "explanation": "Đối tượng cần giúp đỡ: trẻ em vô gia cư → homeless.<br>A. rich: giàu có (trái nghĩa với đối tượng cần giúp đỡ)<br>B. healthy: khỏe mạnh (không hợp nghĩa)<br>C. homeless: vô gia cư (đối tượng từ thiện hướng đến) ✓<br>D. wealthy: giàu có (trái nghĩa với đối tượng cần giúp đỡ)", "vis": ["giàu có", "khỏe mạnh", "vô gia cư", "giàu có, sung túc"], "vi": "Ở độ tuổi của mình, mình không thể hiến máu, (18) ___ mình thường quyên góp sách, đồ chơi và quần áo cho trẻ em (19) ___ và người già."}, {"q": "20.", "options": ["with", "by", "for", "at"], "answer": 0, "explanation": "\"play with sb\" = chơi cùng ai.<br>A. with: cùng (play with sb) ✓<br>B. by: bởi (không hợp cụm từ)<br>C. for: cho (không hợp cụm từ)<br>D. at: tại (không hợp cụm từ)", "vis": ["với, cùng (play with sb)", "bởi", "cho", "tại"], "vi": "Mình đã chơi (20) ___ các em, và các em đã rất (21) ___."}, {"q": "21.", "options": ["scared", "disappointed", "happy", "bored"], "answer": 2, "explanation": "Trẻ mồ côi vui vẻ khi được chơi cùng → happy.<br>A. scared: sợ hãi (trái nghĩa với ngữ cảnh tích cực)<br>B. disappointed: thất vọng (trái nghĩa)<br>C. happy: vui vẻ (phù hợp cảm xúc tích cực) ✓<br>D. bored: chán (trái nghĩa)", "vis": ["sợ hãi", "thất vọng", "vui vẻ, hạnh phúc", "chán"], "vi": "Mình đã chơi (20) ___ các em, và các em đã rất (21) ___."}, {"q": "22.", "options": ["loss", "gain", "waste", "save"], "answer": 2, "explanation": "\"a waste of time\" = lãng phí thời gian.<br>A. loss: sự mất mát (không phải cụm cố định 'a loss of time')<br>B. gain: đạt được (trái nghĩa với ý 'lãng phí')<br>C. waste: a waste of time ✓<br>D. save: tiết kiệm (trái nghĩa)", "vis": ["sự mất mát", "đạt được, thu được", "sự lãng phí (a waste of time)", "tiết kiệm"], "vi": "Một số người nghĩ rằng làm việc tình nguyện là một sự (22) ___ thời gian, nhưng theo mình, nó giúp mình thư giãn sau giờ học và mang lại hạnh phúc cho các em."}], "instant": true}, {"roman": "IV", "navLabel": "Đọc hiểu", "title": "Đọc hiểu", "icon": "book-open", "instructions": "Đọc đoạn văn, xác định Đúng/Sai và chọn đáp án đúng.", "type": "mcq", "passage": {"title": "The Benefits of Voluntary Work", "html": "Nowadays, volunteer work attracts a large number of participants from different age groups because of its huge benefits. Firstly, voluntary work provides adolescents with many precious opportunities to develop social skills, foster independence, and form the ability to deal with difficulties in different situations. Secondly, every member will be taught how to work in a team, the way to make conversation, or the responsibility of finishing a task. The experience you gain will be valuable for your future, helping you tackle serious problems in later life. In addition, volunteer work can help us adapt to something new and make many new friends through regular activities of clubs or organizations. We can also have a chance to travel more and explore more interesting things we have not experienced before. In conclusion, it is very good to do voluntary work.", "vi": "Ngày nay, công việc tình nguyện thu hút một số lượng lớn người tham gia thuộc nhiều nhóm tuổi khác nhau vì những lợi ích to lớn của nó. Thứ nhất, công việc tình nguyện mang đến cho thanh thiếu niên nhiều cơ hội quý báu để phát triển kỹ năng xã hội, nuôi dưỡng tính tự lập và hình thành khả năng đối mặt với khó khăn trong các tình huống khác nhau. Thứ hai, mỗi thành viên sẽ được dạy cách làm việc theo nhóm, cách giao tiếp, hoặc trách nhiệm hoàn thành một nhiệm vụ. Kinh nghiệm bạn có được sẽ rất quý giá cho tương lai, giúp bạn giải quyết những vấn đề nghiêm trọng trong cuộc sống sau này. Ngoài ra, công việc tình nguyện có thể giúp chúng ta thích nghi với những điều mới mẻ và kết bạn với nhiều người bạn mới thông qua các hoạt động thường xuyên của câu lạc bộ hoặc tổ chức. Chúng ta cũng có cơ hội đi du lịch nhiều hơn và khám phá những điều thú vị mà chúng ta chưa từng trải nghiệm. Tóm lại, làm công việc tình nguyện là rất tốt."}, "questions": [{"q": "23. Only young people do volunteer work nowadays.", "options": ["True", "False"], "answer": 1, "explanation": "Bài đọc: \"participants from different age groups\" → Sai.", "vis": ["Đúng", "Sai"], "vi": "Chỉ có người trẻ mới làm công việc tình nguyện hiện nay."}, {"q": "24. Doing volunteer work helps people learn how to work with others in a team.", "options": ["True", "False"], "answer": 0, "explanation": "Bài đọc: \"every member will be taught how to work in a team\" → Đúng.", "vis": ["Đúng", "Sai"], "vi": "Làm công việc tình nguyện giúp mọi người học cách làm việc với người khác trong một nhóm."}, {"q": "25. Volunteer work can help you make new friends.", "options": ["True", "False"], "answer": 0, "explanation": "Bài đọc: \"make many new friends through regular activities\" → Đúng.", "vis": ["Đúng", "Sai"], "vi": "Công việc tình nguyện có thể giúp bạn kết thêm bạn mới."}, {"q": "26. Volunteers have fewer chances to travel to new places.", "options": ["True", "False"], "answer": 1, "explanation": "Bài đọc: \"have a chance to travel more\" → Sai.", "vis": ["Đúng", "Sai"], "vi": "Các tình nguyện viên có ít cơ hội đi đến những nơi mới hơn."}, {"q": "27. What is the word \"adolescents\" in the text closest in meaning to?", "options": ["young people", "old people", "baby twins", "adult workers"], "answer": 0, "explanation": "\"adolescents\" = thanh thiếu niên = young people.", "vis": ["người trẻ", "người già", "cặp song sinh nhỏ", "người lao động trưởng thành"], "vi": "Từ \"adolescents\" trong bài gần nghĩa nhất với từ nào?"}, {"q": "28. What does the text suggest about the experience gained from volunteer work?", "options": ["It helps you deal with difficulties in later life.", "It makes you stay away from future problems.", "It allows you to buy expensive items.", "It is boring and has no real value."], "answer": 0, "explanation": "Bài đọc: \"helping you tackle serious problems in later life\".", "vis": ["Nó giúp bạn đối mặt với khó khăn trong cuộc sống sau này.", "Nó khiến bạn tránh xa được các vấn đề trong tương lai.", "Nó cho phép bạn mua những món đồ đắt tiền.", "Nó nhàm chán và không có giá trị thực sự."], "vi": "Bài đọc gợi ý điều gì về kinh nghiệm có được từ công việc tình nguyện?"}], "instant": true}, {"roman": "V", "navLabel": "Từ loại", "title": "Cho dạng đúng của từ trong ngoặc", "icon": "spell-check", "instructions": "Điền dạng đúng của từ trong ngoặc vào chỗ trống.", "type": "fill", "questions": [{"q": "29. Many teenagers love joining ___ activities during the summer break.", "answer": "voluntary", "explanation": "Tính từ: volunteer → voluntary (tự nguyện).", "hint": "(volunteer)", "family": ["volunteer (n): tình nguyện viên", "volunteer (v): tình nguyện, làm tình nguyện", "voluntary (adj): tự nguyện, tự giác", "voluntarily (adv): một cách tự nguyện"]}, {"q": "30. The local youth club organized a successful neighborhood ___ last Sunday.", "answer": "clean-up", "explanation": "Danh từ ghép: clean + up → clean-up (buổi dọn dẹp).", "hint": "(clean)", "family": ["clean (v): dọn dẹp, làm sạch", "clean (adj): sạch sẽ", "clean-up (n): buổi dọn dẹp", "cleaner (n): người/dụng cụ dọn dẹp"]}, {"q": "31. The students gave a ___ presentation about helping the poor.", "answer": "wonderful", "explanation": "Tính từ: wonder + ful → wonderful (tuyệt vời).", "hint": "(wonder)", "family": ["wonder (v): tự hỏi, thắc mắc", "wonder (n): điều kỳ diệu", "wonderful (adj): tuyệt vời, kỳ diệu", "wonderfully (adv): một cách tuyệt vời"]}, {"q": "32. Doing charity work helps school children build up their ___.", "answer": "confidence", "explanation": "Danh từ: confident → confidence (sự tự tin).", "hint": "(confident)", "family": ["confide (v): tâm sự, thổ lộ", "confident (adj): tự tin", "confidence (n): sự tự tin", "confidently (adv): một cách tự tin"]}, {"q": "33. ___, many people donated books and clothes to the flood victims.", "answer": "Surprisingly", "explanation": "Trạng từ: surprise → surprisingly.", "hint": "(surprise)", "family": ["surprise (n/v): sự ngạc nhiên / làm ngạc nhiên", "surprised (adj): ngạc nhiên (chỉ người)", "surprising (adj): đáng ngạc nhiên (chỉ sự việc)", "surprisingly (adv): một cách đáng ngạc nhiên"]}, {"q": "34. We should ___ old textbooks and warm clothes to children in remote areas.", "answer": "donate", "explanation": "Động từ: donate (quyên góp), theo đáp án gốc của tài liệu.", "hint": "(donation)", "family": ["donate (v): quyên góp, hiến tặng", "donation (n): sự quyên góp, khoản quyên góp", "donor (n): người hiến tặng, người cho"]}]}, {"roman": "VI", "navLabel": "Từ điển", "title": "Tra từ điển \"volunteer\"", "icon": "book-bookmark", "instructions": "Dựa vào mục từ điển, hoàn thành câu (không quá 3 từ).", "type": "fill", "dict": {"word": "volunteer", "ipa": "/ˌvɒlənˈtɪər/", "pos": "noun & verb", "senses": [{"def": "noun: a person who does a job without being paid for it", "examples": ["We need additional volunteers to help clean up the park this weekend.", "She works as a volunteer teacher at a local shelter."]}, {"def": "verb: to offer to do something without being forced or paid", "examples": ["I volunteered to help with the school concert.", "They volunteered their time to organize the charity event."]}], "vi": "<b>volunteer</b> /ˌvɒlənˈtɪər/ (danh từ & động từ)<br>1. (danh từ) một người làm một công việc mà không được trả tiền.<br>• Chúng tôi cần thêm tình nguyện viên để giúp dọn dẹp công viên vào cuối tuần này.<br>• Cô ấy làm giáo viên tình nguyện tại một trại tế bần địa phương.<br>2. (động từ) đề nghị làm điều gì đó mà không bị ép buộc hay được trả tiền.<br>• Tôi đã tình nguyện giúp đỡ buổi hòa nhạc của trường.<br>• Họ đã tình nguyện dành thời gian của mình để tổ chức sự kiện từ thiện."}, "questions": [{"q": "35. After finishing her university degree, Sarah worked as a ___ in a small village.", "answer": "volunteer teacher", "explanation": "Dựa vào ví dụ: volunteer teacher.", "vi": "Sau khi tốt nghiệp đại học, Sarah làm giáo viên tình nguyện ở một ngôi làng nhỏ."}, {"q": "36. Many retired people in the neighborhood ___ at the local library.", "answer": "volunteer their time", "explanation": "Dựa vào ví dụ: volunteer their time.", "vi": "Nhiều người đã nghỉ hưu trong khu phố dành thời gian tình nguyện tại thư viện địa phương."}]}, {"roman": "VII", "navLabel": "Viết lại câu", "title": "Viết lại câu sao cho nghĩa không đổi", "icon": "pen-to-square", "instructions": "Viết lại câu, giữ nguyên nghĩa với câu gốc.", "type": "sentence", "questions": [{"q": "37. Donating blood is good because you can save people's lives.\n→ It's good ___.", "answer": "to donate blood because you can save people's lives", "explanation": "Cấu trúc: V-ing + is good = It's good to V.", "vi": "Hiến máu là tốt vì bạn có thể cứu sống người khác.", "note": "S + V-ing + is good (+ because...) → It's + good + to V (+ because...)<br>Nghĩa đáp án: Thật tốt khi hiến máu vì bạn có thể cứu sống người khác."}, {"q": "38. Mr. Robert was a very good maths teacher.\n→ Mr. Robert taught ___.", "answer": "maths very well", "explanation": "be a good teacher = teach ... very well.", "vi": "Thầy Robert là một giáo viên dạy Toán rất giỏi.", "note": "S + be + a good + teacher (of N) → S + teach + N + well<br>Nghĩa đáp án: Thầy Robert dạy Toán rất giỏi."}, {"q": "39. Volunteers in the community make a big difference.\n→ Volunteering in ___.", "answer": "the community makes a big difference", "explanation": "Danh từ \"Volunteers\" chuyển thành danh động từ \"Volunteering\" làm chủ ngữ.", "vi": "Các tình nguyện viên trong cộng đồng tạo ra sự khác biệt lớn.", "note": "Volunteers (danh từ số nhiều, chủ ngữ) → Volunteering (danh động từ) + V số ít<br>Nghĩa đáp án: Việc làm tình nguyện trong cộng đồng tạo ra sự khác biệt lớn."}, {"q": "40. Every year we collect old books and clothes to help poor children in mountainous areas.\n→ Old books and clothes ___.", "answer": "are collected every year to help poor children in mountainous areas", "explanation": "Chuyển câu chủ động sang bị động.", "vi": "Mỗi năm chúng tôi thu gom sách cũ và quần áo để giúp đỡ trẻ em nghèo ở vùng núi.", "note": "Chủ động: S + V + O (+ trạng ngữ) → Bị động: O + be + V3/ed (+ trạng ngữ)<br>Nghĩa đáp án: Sách cũ và quần áo được thu gom hàng năm để giúp đỡ trẻ em nghèo ở vùng núi."}], "instant": true}]};
+
+const completedTasks = new Set();
+const scores = {};
+const TOTAL_TASKS = DATA.sections.length;
+
+function normalize(str){
+  return (str||'').trim().toLowerCase()
+    .replace(/[\u2018\u2019]/g,"'")
+    .replace(/["\u201C\u201D]/g,'')
+    .replace(/[.,!?;:]/g,'')
+    .replace(/\s+/g,' ');
+}
+function widthFor(ref){ const l=(ref||'').length; return l<7?'w-24':l<16?'w-40':'w-full'; }
+
+if('speechSynthesis' in window){ window.speechSynthesis.onvoiceschanged = ()=>{}; }
+function speak(text, btn){
+  try{
+    if(!('speechSynthesis' in window)){ alert('Trình duyệt của bạn không hỗ trợ phát âm tự động. Hãy thử Chrome, Edge hoặc Safari.'); return; }
+    window.speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='en-US'; u.rate=0.9; u.pitch=1;
+    const voices=window.speechSynthesis.getVoices();
+    const en=voices.find(v=>/en[-_]?(us|gb)/i.test(v.lang)) || voices.find(v=>/^en/i.test(v.lang));
+    if(en) u.voice=en;
+    if(btn){ btn.classList.add('speaking'); u.onend=()=>btn.classList.remove('speaking'); u.onerror=()=>btn.classList.remove('speaking'); }
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+function buildNav(){
+  const nav=document.getElementById('navWrap');
+  nav.innerHTML = DATA.sections.map((s,i)=>
+    `<button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600${i===0?' active':''}" id="navbtn_${i}" onclick="showTab(${i})">${s.roman}. ${s.navLabel}</button>`
+  ).join('');
+}
+
+function optionLetter(i){ return ['A','B','C','D'][i]; }
+
+function renderPassage(p, idx){
+  if(!p) return '';
+  const viBlock = p.vi ? `<button onclick="togglePassageVI(${idx})" class="text-xs font-bold bg-white border border-indigo-200 text-indigo-700 px-3 py-1 rounded-full hover:scale-105 transition mt-2"><i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt</button>
+    <p id="passage_vi_${idx}" class="vi-hidden mt-2 pt-2 border-t border-indigo-200 italic text-slate-500">${p.vi}</p>` : '';
+  return `<div class="passage-box mb-4"><p class="font-extrabold text-indigo-900 mb-2"><i class="fa-solid fa-book mr-1"></i>${p.title||''}</p><p id="passage_en_${idx}">${p.html}</p>${viBlock}</div>`;
+}
+function renderDict(d, idx){
+  if(!d) return '';
+  const viBlock = d.vi ? `<button onclick="togglePassageVI(${idx})" class="text-xs font-bold bg-white border border-amber-300 text-amber-700 px-3 py-1 rounded-full hover:scale-105 transition mt-2"><i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt</button>
+    <p id="passage_vi_${idx}" class="vi-hidden mt-2 pt-2 border-t border-amber-300 text-slate-600">${d.vi}</p>` : '';
+  return `<div class="dict-box mb-4"><p class="font-extrabold text-amber-800 mb-1"><i class="fa-solid fa-book-bookmark mr-1"></i>${d.word} <span class="font-normal italic">${d.ipa||''}</span> <span class="font-normal">(${d.pos||''})</span></p>${d.senses.map(x=>`<p class="mb-1">✱ ${x.def}</p>${(x.examples||[]).map(e=>`<p class="ml-4 italic text-slate-600">• ${e}</p>`).join('')}`).join('')}${viBlock}</div>`;
+}
+
+function renderSection(s, idx){
+  let inner = `<h2 class="text-xl md:text-2xl font-extrabold text-indigo-900 flex items-center gap-2 mb-1"><i class="fa-solid fa-${s.icon||'circle-check'} text-amber-400"></i> ${s.roman}. ${s.title}</h2>`;
+  if(s.instructions) inner += `<p class="text-sm text-slate-500 mb-3 italic">${s.instructions}</p>`;
+  inner += renderPassage(s.passage, idx);
+  inner += renderDict(s.dict, idx);
+
+  inner += `<div class="space-y-4">`;
+  s.questions.forEach((q,i)=>{
+    inner += `<div class="task-card bg-white rounded-2xl shadow-md p-4" id="qblock_${idx}_${i}">`;
+    if(q.image) inner += `<div class="mb-3">${q.image}</div>`;
+    inner += `<p class="font-bold text-slate-800 mb-2"><span class="bg-slate-100 text-slate-600 text-xs font-black px-2 py-1 rounded-lg mr-2">${i+1}</span>${q.q}</p>`;
+    if(s.type==='mcq'){
+      inner += `<div class="grid sm:grid-cols-2 gap-2">`;
+      q.options.forEach((opt,j)=>{
+        const ipa = q.ipas ? q.ipas[j] : null;
+        const optVi = q.vis ? q.vis[j] : null;
+        const cleanWord = opt.replace(/<[^>]+>/g,'');
+        const wordBlock = (ipa || optVi)
+          ? `<span class="flex flex-col leading-tight"><span>${opt}</span>${ipa?`<span class="text-[10px] text-slate-400 font-normal mcq-detail-hidden">${ipa}</span>`:''}${optVi?`<span class="text-[10px] text-emerald-500 font-normal italic mcq-detail-hidden">${optVi}</span>`:''}</span>
+             <button type="button" data-w="${cleanWord}" onclick="event.stopPropagation();event.preventDefault();speak(this.dataset.w,this)" class="speak-btn w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 hover:bg-indigo-200 hover:scale-110 transition flex items-center justify-center ml-auto shrink-0 mcq-detail-hidden" title="Nghe phát âm" aria-label="Nghe phát âm ${cleanWord}"><i class="fa-solid fa-volume-high text-[10px]"></i></button>`
+          : `<span>${opt}</span>`;
+        inner += `<label class="option-label rounded-xl px-3 py-2 text-sm font-semibold flex items-center gap-2" id="opt_${idx}_${i}_${j}" onclick="selectMcq(${idx},${i},${j})">
+          <input type="radio" name="mcq_${idx}_${i}" class="accent-indigo-700" style="display:none">
+          <span class="font-black text-indigo-700">${optionLetter(j)}.</span> ${wordBlock}
+        </label>`;
+      });
+      inner += `</div>`;
+    } else if(s.type==='fill'){
+      const w = widthFor(q.answer);
+      const famBlock = q.family ? `<div class="wordfam-box mt-2">${q.family.map(f=>`<div>• ${f}</div>`).join('')}</div>` : '';
+      inner += `<div class="flex items-center gap-2 flex-wrap">`;
+      if(q.hint) inner += `<span class="blank-tag text-xs">${q.hint}</span>`;
+      inner += `<input type="text" id="inp_${idx}_${i}" class="answer-input ${w} px-3 py-1.5 rounded-lg text-sm font-semibold" placeholder="Nhập đáp án..." autocomplete="off" spellcheck="false"></div>${famBlock}`;
+    } else if(s.type==='sentence'){
+      const instantAttr = s.instant ? ` oninput="gradeOneSentence(${idx},${i})"` : '';
+      if(q.starter){
+        inner += `<p class="text-slate-700 text-sm mb-2">${q.original}</p>
+        <div class="flex items-center gap-3 w-full flex-wrap">
+          <span class="text-slate-800 font-extrabold text-base whitespace-nowrap">${q.starter}</span>
+          <input type="text" id="inp_${idx}_${i}" class="answer-input flex-1 min-w-[180px] px-3 py-2 rounded-lg text-sm font-semibold" placeholder="..." autocomplete="off" spellcheck="false"${instantAttr}>
+        </div>`;
+      } else {
+        inner += `<input type="text" id="inp_${idx}_${i}" class="answer-input w-full px-3 py-2 rounded-lg text-sm font-semibold" placeholder="Viết câu trả lời..." autocomplete="off" spellcheck="false"${instantAttr}>`;
+      }
+    }
+    inner += `<div class="explanation-box mt-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-sm text-blue-800" id="fb_${idx}_${i}"></div>`;
+    inner += `</div>`;
+  });
+  inner += `</div>`;
+
+  inner += `<div class="flex flex-wrap gap-2 mt-5">
+    <button onclick="checkSection(${idx})" class="bg-gradient-to-r from-indigo-900 to-pink-600 text-white font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-check mr-1"></i>Kiểm tra</button>
+    <button onclick="revealSection(${idx})" class="bg-white border-2 border-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-eye mr-1"></i>Xem đáp án</button>
+    <button onclick="resetSection(${idx})" class="bg-white border-2 border-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-rotate-left mr-1"></i>Làm lại</button>
+    <span id="score_${idx}" class="hidden ml-auto self-center font-extrabold text-emerald-600 text-sm score-badge"></span>
+  </div>`;
+
+  return `<section id="tab-${idx}" class="section-page${idx===0?' active':''} space-y-4">${inner}</section>`;
+}
+
+function buildMain(){
+  const main=document.getElementById('mainWrap');
+  main.innerHTML = DATA.sections.map((s,i)=>renderSection(s,i)).join('');
+}
+
+function togglePassageVI(idx){ const el=document.getElementById(`passage_vi_${idx}`); if(el) el.classList.toggle('vi-hidden'); }
+function selectMcq(idx,i,j){
+  const q=DATA.sections[idx].questions[i];
+  document.querySelectorAll(`[id^="opt_${idx}_${i}_"]`).forEach(el=>el.classList.remove('selected'));
+  document.getElementById(`opt_${idx}_${i}_${j}`).classList.add('selected');
+  document.getElementById(`opt_${idx}_${i}_${j}`).dataset.chosen = j;
+  if(DATA.sections[idx].instant){ gradeOneMcq(idx,i); }
+}
+
+function gradeOneMcq(idx,i){
+  const s=DATA.sections[idx], q=s.questions[i];
+  const qblock=document.getElementById(`qblock_${idx}_${i}`);
+  if(qblock) qblock.classList.add('show-mcq-detail');
+  const chosenEl=document.querySelector(`#tab-${idx} [id^="opt_${idx}_${i}_"].selected`);
+  const chosen = chosenEl ? parseInt(chosenEl.dataset.chosen) : -1;
+  const ok = chosen === q.answer;
+  const answerLabel = `${optionLetter(q.answer)}. ${q.options[q.answer]}`;
+  q.options.forEach((o,j)=>{
+    const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+    el.classList.remove('correct-opt','wrong-opt');
+    if(j===q.answer) el.classList.add('correct-opt');
+    else if(j===chosen) el.classList.add('wrong-opt');
+  });
+  const fb=document.getElementById(`fb_${idx}_${i}`);
+  fb.innerHTML = feedbackHTML(ok, answerLabel, q.explanation, q.vi, q.note);
+  fb.classList.add('show');
+}
+
+function gradeOneSentence(idx,i){
+  const q=DATA.sections[idx].questions[i];
+  const inp=document.getElementById(`inp_${idx}_${i}`);
+  const fb=document.getElementById(`fb_${idx}_${i}`);
+  if(!inp || !fb) return;
+  const raw=inp.value.trim();
+  if(raw===''){
+    inp.classList.remove('correct-input','wrong-input');
+    fb.classList.remove('show'); fb.innerHTML='';
+    return;
+  }
+  const val=normalize(inp.value);
+  const acc=(q.accepted||[q.answer]).map(normalize);
+  const ok = acc.includes(val);
+  inp.classList.remove('correct-input','wrong-input');
+  inp.classList.add(ok?'correct-input':'wrong-input');
+  fb.innerHTML = feedbackHTML(ok, q.answer, q.explanation, q.vi, q.note);
+  fb.classList.add('show');
+}
+
+function feedbackHTML(ok, answerLabel, explanation, vi, note){
+  const okLine = ok? `<span class="text-emerald-700 font-bold">✅ Chính xác!</span>` : `<span class="text-rose-600 font-bold">❌ Chưa đúng.</span> Đáp án đúng: <b>${answerLabel}</b>`;
+  const expLine = explanation? `<br><span class="text-blue-700">💡 ${explanation}</span>` : '';
+  const viLine = vi? `<span class="text-slate-500">📖 Nghĩa: <i>${vi}</i></span>` : '';
+  const noteLine = note? `<br><span class="text-violet-600">📐 Công thức: <b>${note}</b></span>` : '';
+  if(note){
+    return (viLine?viLine+'<br>':'') + okLine + expLine + noteLine;
+  }
+  return okLine + expLine + (viLine?'<br>'+viLine:'') + noteLine;
+}
+
+function checkSection(idx){
+  const s=DATA.sections[idx];
+  let correct=0;
+  s.questions.forEach((q,i)=>{
+    let ok=false, answerLabel='';
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    if(s.type==='mcq'){
+      const chosenEl=document.querySelector(`#tab-${idx} [id^="opt_${idx}_${i}_"].selected`);
+      const chosen = chosenEl ? parseInt(chosenEl.dataset.chosen) : -1;
+      ok = chosen === q.answer;
+      answerLabel = `${optionLetter(q.answer)}. ${q.options[q.answer]}`;
+      q.options.forEach((o,j)=>{
+        const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+        el.classList.remove('correct-opt','wrong-opt');
+        if(j===q.answer) el.classList.add('correct-opt');
+        else if(j===chosen) el.classList.add('wrong-opt');
+      });
+      const qblock=document.getElementById(`qblock_${idx}_${i}`);
+      if(qblock) qblock.classList.add('show-mcq-detail');
+    } else {
+      const inp=document.getElementById(`inp_${idx}_${i}`);
+      const val=normalize(inp.value);
+      const acc=(q.accepted||[q.answer]).map(normalize);
+      ok = val!=='' && acc.includes(val);
+      inp.classList.remove('correct-input','wrong-input');
+      inp.classList.add(ok?'correct-input':'wrong-input');
+      answerLabel = q.answer;
+    }
+    if(ok) correct++;
+    fb.innerHTML = feedbackHTML(ok, answerLabel, q.explanation, q.vi, q.note);
+    fb.classList.add('show');
+  });
+  const total=s.questions.length;
+  scores[idx]={correct,total};
+  const scoreEl=document.getElementById(`score_${idx}`);
+  scoreEl.textContent = `🏆 Điểm: ${correct}/${total}`;
+  scoreEl.classList.remove('hidden');
+  completedTasks.add(idx);
+  updateProgress();
+  if(completedTasks.size===TOTAL_TASKS) setTimeout(showCompletion,500);
+}
+
+function revealSection(idx){
+  const s=DATA.sections[idx];
+  s.questions.forEach((q,i)=>{
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    let answerLabel = s.type==='mcq' ? `${optionLetter(q.answer)}. ${q.options[q.answer]}` : q.answer;
+    if(s.type==='mcq'){
+      q.options.forEach((o,j)=>{
+        const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+        el.classList.remove('correct-opt','wrong-opt');
+        if(j===q.answer) el.classList.add('correct-opt');
+      });
+      const qblock=document.getElementById(`qblock_${idx}_${i}`);
+      if(qblock) qblock.classList.add('show-mcq-detail');
+    }
+    fb.innerHTML = `👁️ Đáp án: <b>${answerLabel}</b>` + (q.explanation?`<br><span class="text-blue-700">💡 ${q.explanation}</span>`:'') + (q.vi?`<br><span class="text-slate-500">📖 Nghĩa: <i>${q.vi}</i></span>`:'') + (q.note?`<br><span class="text-violet-600">📐 Công thức: <b>${q.note}</b></span>`:'');
+    fb.classList.add('show');
+  });
+}
+
+function resetSection(idx){
+  const s=DATA.sections[idx];
+  s.questions.forEach((q,i)=>{
+    if(s.type==='mcq'){
+      q.options.forEach((o,j)=>{
+        const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+        el.classList.remove('correct-opt','wrong-opt','selected');
+        delete el.dataset.chosen;
+      });
+    } else {
+      const inp=document.getElementById(`inp_${idx}_${i}`);
+      if(inp){ inp.value=''; inp.classList.remove('correct-input','wrong-input'); }
+    }
+    const qblock=document.getElementById(`qblock_${idx}_${i}`);
+    if(qblock) qblock.classList.remove('show-mcq-detail');
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    fb.classList.remove('show'); fb.innerHTML='';
+  });
+  const scoreEl=document.getElementById(`score_${idx}`); scoreEl.classList.add('hidden');
+  completedTasks.delete(idx); delete scores[idx]; updateProgress();
+}
+
+function showTab(idx){
+  document.querySelectorAll('.section-page').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active'); b.classList.add('text-slate-600');});
+  document.getElementById(`tab-${idx}`).classList.add('active');
+  const btn=document.getElementById(`navbtn_${idx}`);
+  btn.classList.add('active'); btn.classList.remove('text-slate-600');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updateProgress(){
+  const done=completedTasks.size;
+  document.getElementById('progressText').textContent = `${done} / ${TOTAL_TASKS} phần`;
+  document.getElementById('progressBar').style.width = `${(done/TOTAL_TASKS)*100}%`;
+}
+
+function showCompletion(){
+  fireConfetti();
+  const banner=document.getElementById('completionBanner');
+  banner.classList.remove('hidden'); banner.classList.add('show');
+  let c=0,t=0; Object.values(scores).forEach(s=>{c+=s.correct; t+=s.total;});
+  document.getElementById('finalScoreDisplay').textContent = `🎯 ${c} / ${t} câu đúng`;
+}
+function closeBanner(){ const b=document.getElementById('completionBanner'); b.classList.remove('show'); b.classList.add('hidden'); }
+function fireConfetti(){
+  const wrap=document.getElementById('confettiWrap'); wrap.innerHTML='';
+  const colors=['#1e1b4b','#7c3aed','#db2777','#a21caf','#f59e0b','#6366f1'];
+  for(let i=0;i<90;i++){
+    const p=document.createElement('div'); p.className='confetti-piece';
+    p.style.cssText=`left:${Math.random()*100}vw;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>0.5?'50%':'2px'};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*0.8}s;`;
+    wrap.appendChild(p);
+  }
+  setTimeout(()=>{wrap.innerHTML='';},4000);
+}
+
+buildNav();
+buildMain();
+updateProgress();
+</script>
+</body>
+</html>

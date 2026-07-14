@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 2 · Practice Test 1 – Tiếng Anh 6</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+  :root{ --accent:#059669; --accent2:#65a30d; }
+  * { box-sizing: border-box; }
+  body { font-family:'Nunito',sans-serif; background:#f5f3ff; }
+  .hero-gradient{ background: linear-gradient(135deg, #064e3b 0%, #059669 55%, #65a30d 100%); }
+  .tab-btn{ transition: all .2s ease; }
+  .tab-btn.active{ background: linear-gradient(135deg, #064e3b, #65a30d); color:#fff; box-shadow:0 4px 14px rgba(30,27,75,.35); transform:translateY(-1px); }
+  .task-card{ transition: box-shadow .2s, transform .2s; }
+  .task-card:hover{ transform: translateY(-2px); box-shadow:0 8px 30px rgba(0,0,0,.10); }
+  .option-label{ cursor:pointer; transition: all .18s; border:2px solid #e2e8f0; }
+  .option-label:hover{ border-color:var(--accent); background:#f5f3ff; }
+  .option-label.selected{ border-color:#1e1b4b; background:#eef2ff; }
+  .option-label.correct-opt{ border-color:#22c55e !important; background:#f0fdf4 !important; }
+  .option-label.wrong-opt{ border-color:#ef4444 !important; background:#fef2f2 !important; }
+  .mcq-detail-hidden{ display:none; }
+  .show-mcq-detail .mcq-detail-hidden{ display:block; }
+  .speak-btn{ cursor:pointer; }
+  .speak-btn.speaking{ animation: pulseSpeak .7s ease-in-out infinite; }
+  @keyframes pulseSpeak{ 0%,100%{transform:scale(1);} 50%{transform:scale(1.18);} }
+  .vi-hidden{ display:none; }
+  .explanation-box{ display:none; animation: fadeSlide .3s ease forwards; }
+  .explanation-box.show{ display:block; }
+  @keyframes fadeSlide{ from{opacity:0; transform:translateY(-6px);} to{opacity:1; transform:translateY(0);} }
+  input.answer-input{ border:2px solid #cbd5e1; transition:border .18s; outline:none; background:#fff; }
+  input.answer-input:focus{ border-color:var(--accent); }
+  input.correct-input{ border-color:#22c55e !important; background:#f0fdf4; }
+  input.wrong-input{ border-color:#ef4444 !important; background:#fef2f2; }
+  .score-badge{ animation: popIn .35s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn{ from{transform:scale(.4); opacity:0;} to{transform:scale(1); opacity:1;} }
+  .confetti-wrap{ position:fixed; inset:0; pointer-events:none; z-index:9999; }
+  .confetti-piece{ position:absolute; width:10px; height:10px; border-radius:2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall{ 0%{transform:translateY(-20px) rotate(0deg); opacity:1;} 100%{transform:translateY(100vh) rotate(720deg); opacity:0;} }
+  .progress-bar-fill{ transition: width .6s ease; }
+  .section-page{ display:none; }
+  .section-page.active{ display:block; }
+  #completionBanner{ display:none; }
+  #completionBanner.show{ display:flex; }
+  .passage-box{ background:#fff; border:1px solid #e2e8f0; border-radius:1rem; padding:1rem 1.25rem; line-height:1.9; font-size:.95rem; color:#334155; }
+  .dict-box{ background:#fef9c3; border:1px solid #fde68a; border-radius:1rem; padding:1rem 1.25rem; font-size:.9rem; color:#334155; }
+  .blank-tag{ background:#ede9fe; color:#5b21b6; font-weight:800; border-radius:.4rem; padding:0 .35rem; }
+  .wordfam-box{ background:#f5f3ff; border:1px solid #ddd6fe; border-radius:.6rem; padding:.5rem .75rem; font-size:.75rem; color:#5b21b6; line-height:1.6; width:100%; }
+</style>
+</head>
+<body class="min-h-screen">
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<header class="hero-gradient text-white py-8 px-4 text-center shadow-xl relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <div class="absolute top-4 left-8 text-6xl">🏡</div>
+    <div class="absolute top-2 right-12 text-5xl">🌳</div>
+    <div class="absolute bottom-2 left-1/3 text-4xl">🐄</div>
+    <div class="absolute bottom-4 right-1/4 text-5xl">🌾</div>
+  </div>
+  <p class="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Tiếng Anh 6 · Unit 2 · Practice Test 1</p>
+  <h1 class="font-['Baloo_2'] text-3xl md:text-5xl font-extrabold drop-shadow-lg">🏠 Unit 2: Life in the Countryside 🌾</h1>
+  <p class="mt-2 text-base md:text-lg opacity-90 font-semibold">Practice Test 1 · Luyện tập tương tác</p>
+  <div class="mt-5 max-w-2xl mx-auto">
+    <div class="flex justify-between text-xs font-bold opacity-80 mb-1">
+      <span>Tiến độ hoàn thành</span>
+      <span id="progressText">0 / 7 phần</span>
+    </div>
+    <div class="bg-white/20 rounded-full h-3 overflow-hidden">
+      <div id="progressBar" class="bg-white rounded-full h-3 progress-bar-fill" style="width:0%"></div>
+    </div>
+  </div>
+</header>
+
+<nav class="sticky top-0 z-50 bg-white/90 backdrop-blur shadow-sm px-3 py-2 overflow-x-auto">
+  <div class="flex gap-2 min-w-max mx-auto w-fit" id="navWrap"></div>
+</nav>
+
+<main class="max-w-4xl mx-auto px-4 py-6 pb-20" id="mainWrap"></main>
+
+<div id="completionBanner" class="fixed inset-0 z-[9998] items-center justify-center bg-black/50 px-4">
+  <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center score-badge shadow-2xl">
+    <div class="text-6xl mb-3">🎉</div>
+    <h3 class="text-2xl font-extrabold text-indigo-900 mb-1">Hoàn thành bài luyện tập!</h3>
+    <p class="text-slate-500 mb-4">Bạn đã làm xong tất cả các phần.</p>
+    <p id="finalScoreDisplay" class="text-3xl font-black text-violet-700 mb-5"></p>
+    <button onclick="closeBanner()" class="bg-gradient-to-r from-indigo-900 to-pink-600 text-white font-bold px-6 py-2.5 rounded-full">Đóng</button>
+  </div>
+</div>
+
+<script>
+const DATA = {"unit":2,"test":1,"sections":[{"roman":"I","navLabel":"Ngữ âm & Từ vựng","title":"Phát âm – Trọng âm – Từ vựng – Ngữ pháp","icon":"ear-listen","instructions":"Chọn đáp án (A, B, C hoặc D) đúng nhất.","type":"mcq","questions":[{"q":"1. Which word has the underlined part pronounced differently from that of the others?","options":["plant<u>s</u>","lamp<u>s</u>","desk<u>s</u>","window<u>s</u>"],"answer":3,"explanation":"\"windows\" có đuôi \"-s\" phát âm là /z/, ba từ còn lại phát âm là /s/.","ipas":["/plɑːnts/","/læmps/","/desks/","/ˈwɪndəʊz/"],"vis":["cây cối (số nhiều)","đèn (số nhiều)","bàn học (số nhiều)","cửa sổ (số nhiều)"]},{"q":"2. Which word has the underlined part pronounced differently from that of the others?","options":["b<u>oo</u>k","l<u>oo</u>k","c<u>oo</u>k","r<u>oo</u>m"],"answer":3,"explanation":"\"room\" có \"oo\" phát âm là /uː/, ba từ còn lại phát âm là /ʊ/.","ipas":["/bʊk/","/lʊk/","/kʊk/","/ruːm/"],"vis":["sách","nhìn","nấu ăn","phòng"]},{"q":"3. Which word has a different stress pattern from that of the others?","options":["cooker","photo","between","pillow"],"answer":2,"explanation":"\"between\" trọng âm rơi vào âm tiết 2, ba từ còn lại trọng âm rơi vào âm tiết 1.","ipas":["/ˈkʊkə(r)/","/ˈfəʊtəʊ/","/bɪˈtwiːn/","/ˈpɪləʊ/"],"vis":["nồi/bếp nấu","ảnh","ở giữa","cái gối"]},{"q":"4. Which word has a different stress pattern from that of the others?","options":["computer","grandmother","furniture","family"],"answer":0,"explanation":"\"computer\" trọng âm rơi vào âm tiết 2, ba từ còn lại trọng âm rơi vào âm tiết 1.","ipas":["/kəmˈpjuːtə(r)/","/ˈɡrænmʌðə(r)/","/ˈfɜːnɪtʃə(r)/","/ˈfæməli/"],"vis":["máy tính","bà","đồ nội thất","gia đình"]},{"q":"5. - Tom: ___ does Nam go to school every day?\n- Ben: He usually goes by bicycle.","options":["How","What","Which","Who"],"answer":0,"explanation":"Hỏi về phương tiện di chuyển → How.","vi":"Tom: 'Nam đến trường bằng cách nào mỗi ngày?' – Ben: 'Cậu ấy thường đi xe đạp.'"},{"q":"6. - Lan: Look! Cambridge College has a lot of pupils.\n- Hoa: Yes, and it also has many modern ___.","options":["classrooms","classroom","classroom's","classrooms'"],"answer":0,"explanation":"Danh từ số nhiều sau \"many\" → classrooms.","vi":"Lan: 'Nhìn kìa! Trường Cambridge College có rất nhiều học sinh.' – Hoa: 'Ừ, và trường còn có nhiều phòng học hiện đại nữa.'"},{"q":"7. - Phong: Let's go to the football pitch to play, Minh.\n- Minh: We can't. ___ any children in the pitch right now because it's locked.","options":["There is","There are","There aren't","There isn't"],"answer":2,"explanation":"Phủ định với danh từ số nhiều \"children\" → There aren't.","vi":"Phong: 'Mình đi ra sân bóng chơi đi, Minh.' – Minh: 'Không được đâu. Bây giờ không có bạn nào ở sân cả vì sân đang bị khóa.'"},{"q":"8. - Mary: Where is your mother, Peter?\n- Peter: She is in the ___. It is the best place to prepare family meals.","options":["living room","bathroom","bedroom","kitchen"],"answer":3,"explanation":"\"kitchen\" = nơi chuẩn bị bữa ăn.","vis":["phòng khách","phòng tắm","phòng ngủ","nhà bếp"],"vi":"Mary: 'Mẹ của bạn đang ở đâu vậy, Peter?' – Peter: 'Mẹ mình đang ở trong bếp. Đó là nơi tốt nhất để chuẩn bị bữa ăn gia đình.'"},{"q":"9. - Anna: Your room looks so beautiful!\n- Jane: Thanks! I have lots of K-Pop stars' posters ___ the walls.","options":["on","above","under","in"],"answer":0,"explanation":"\"posters on the walls\" = poster trên tường.","vis":["trên (dán sát bề mặt)","phía trên, cao hơn","phía dưới, bên dưới","ở trong, bên trong"],"vi":"Anna: 'Phòng của bạn trông thật đẹp!' – Jane: 'Cảm ơn! Mình có rất nhiều poster thần tượng K-Pop dán trên tường.'"},{"q":"10. - Lucy: Please turn the ___ on, Daisy. It's really hot in this classroom.\n- Daisy: OK, I will do it right now.","options":["light","faucet","fan","television"],"answer":2,"explanation":"Trời nóng → cần bật quạt (fan).","vis":["đèn","vòi nước","quạt","ti vi"],"vi":"Lucy: 'Bật quạt lên đi, Daisy. Lớp học này nóng quá.' – Daisy: 'Được rồi, mình bật ngay đây.'"},{"q":"11. - Mom: My son, your room is so ___! Dirty clothes, toys, and books are everywhere!\n- Son: I'm sorry, Mom. I will clean it up this afternoon.","options":["cozy","crazy","tidy","messy"],"answer":3,"explanation":"Phòng bừa bộn → messy.","vis":["ấm cúng","điên rồ","gọn gàng","bừa bộn"],"vi":"Mẹ: 'Con trai, phòng của con bừa bộn quá! Quần áo bẩn, đồ chơi, sách vở vứt khắp nơi!' – Con: 'Con xin lỗi mẹ. Chiều nay con sẽ dọn dẹp ạ.'"},{"q":"12. - Alan: Where do your grandparents live, Nam?\n- Nam: In a town house ___ in the suburb of the city.","options":["kitchen","bookshelf","floor","located"],"answer":3,"explanation":"\"located in\" = nằm ở, tọa lạc tại.","vis":["nhà bếp","giá sách","sàn nhà","nằm ở, tọa lạc tại"],"vi":"Alan: 'Ông bà bạn sống ở đâu, Nam?' – Nam: 'Ở một căn nhà phố nằm ở ngoại ô thành phố.'"},{"q":"13. - David: Do you like your new house, Phong?\n- Phong: Yes, ___, because it has a big yard for me to play football.","options":["I do","I don't","I can","I am"],"answer":0,"explanation":"Trả lời khẳng định cho câu hỏi Do you...? → I do.","vi":"David: 'Bạn có thích ngôi nhà mới của mình không, Phong?' – Phong: 'Có chứ, vì nhà có một sân rộng để mình chơi bóng đá.'"},{"q":"14. - Nick: My house is too small, but it has a nice balcony where I can read books.\n- Sam: ___! I wish I had a balcony too.","options":["I don't think so","Goodbye","You're welcome","That sounds great"],"answer":3,"explanation":"Phản hồi tích cực với điều bạn vừa kể → That sounds great.","vis":["Mình không nghĩ vậy","Tạm biệt","Không có gì","Nghe thích thật đấy"],"vi":"Nick: 'Nhà mình hơi nhỏ, nhưng có một ban công đẹp để mình đọc sách.' – Sam: 'Nghe thích thật đấy! Ước gì mình cũng có một ban công.'"}],"instant":true},{"roman":"II","navLabel":"Biển báo","title":"Biển báo / Thông báo","icon":"traffic-light","instructions":"Đọc biển báo/thông báo và chọn ý đúng nhất.","type":"mcq","questions":[{"q":"15. What does this message tell you?","options":["The sender wants to chat about music and entertainment.","The sender wants to borrow a textbook from you.","The sender doesn't want to do their homework.","The sender wants help with one specific question."],"answer":3,"explanation":"A. The sender wants to chat about music and entertainment. — sai, tin nhắn không nhắc đến âm nhạc/giải trí<br>B. The sender wants to borrow a textbook from you. — sai, tin nhắn không nói về việc mượn sách<br>C. The sender doesn't want to do their homework. — sai, ngược lại, người gửi đang cố làm bài tập<br>D. The sender wants help with one specific question. — đúng, tin nhắn hỏi giúp câu số 4 cụ thể ✓","vis":["Người gửi muốn trò chuyện về âm nhạc và giải trí.","Người gửi muốn mượn một quyển sách giáo khoa từ bạn.","Người gửi không muốn làm bài tập về nhà.","Người gửi muốn được giúp đỡ với một câu hỏi cụ thể."],"image":"<div class=\"inline-flex flex-col items-start w-56 bg-white border-2 border-slate-200 rounded-xl p-3 shadow-sm\">\n  <div class=\"flex items-center gap-2 mb-1\">\n    <svg viewBox=\"0 0 24 24\" class=\"w-5 h-5 text-emerald-500\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2Z\"/></svg>\n    <span class=\"text-[11px] font-black text-slate-500\">MESSAGE</span>\n  </div>\n  <p class=\"text-xs text-slate-800 leading-snug\">\"Hi! Are you free? Can you help me with number 4 on page 25? I'm stuck on this one. Thanks!\"</p>\n</div>"},{"q":"16. What does this notice mean?","options":["You must take off your footwear before entering.","Please wear your shoes inside the house.","Do not leave your personal shoes outside the door.","New outdoor sandals are allowed inside this house."],"answer":0,"explanation":"A. You must take off your footwear before entering. — đúng, biểu tượng cấm giày = phải cởi giày trước khi vào ✓<br>B. Please wear your shoes inside the house. — sai, ngược với ý nghĩa biển cấm<br>C. Do not leave your personal shoes outside the door. — sai, biển không nói về việc để giày ngoài cửa<br>D. New outdoor sandals are allowed inside this house. — sai, biển cấm mọi loại giày dép, không phải cho phép","vis":["Bạn phải cởi giày dép ra trước khi vào.","Xin hãy mang giày dép khi ở trong nhà.","Không được để giày dép cá nhân ở ngoài cửa.","Dép đi ngoài trời mới được phép mang vào nhà này."],"image":"<div class=\"inline-flex flex-col items-center w-40 bg-white border-2 border-slate-200 rounded-xl p-3 shadow-sm\">\n  <svg viewBox=\"0 0 100 100\" class=\"w-16 h-16\" aria-hidden=\"true\">\n    <circle cx=\"50\" cy=\"50\" r=\"46\" fill=\"none\" stroke=\"#dc2626\" stroke-width=\"8\"/>\n    <line x1=\"14\" y1=\"86\" x2=\"86\" y2=\"14\" stroke=\"#dc2626\" stroke-width=\"8\" stroke-linecap=\"round\"/>\n    <path d=\"M20 66c0-8 8-10 16-14 6-3 10-8 16-8 8 0 6 8 12 10 8 3 14 2 14 10 0 4-3 6-7 6H24c-3 0-4-2-4-4Z\" fill=\"#1e293b\"/>\n  </svg>\n  <p class=\"text-[11px] font-black text-center text-slate-900 leading-tight mt-1\">NO SHOES</p>\n</div>"}],"instant":true},{"roman":"III","navLabel":"Điền đoạn văn","title":"Chọn từ thích hợp điền vào đoạn văn","icon":"file-lines","instructions":"Chọn đáp án đúng để hoàn thành đoạn văn.","type":"mcq","passage":{"title":"Đoạn văn về Nam","html":"This is my friend. He is Nam. He is twelve years old. He is a student. He lives in a big villa <b>(17)</b> ___ the suburb of the city. There are 4 people in his family: his parents, his younger sister and <b>(18)</b> ___. His father works as an engineer. His mother is a teacher. And his younger sister is a <b>(19)</b> ___. There are 5 rooms in his house: a living room, a kitchen, a bathroom, a bedroom and a toilet. The living room is his <b>(20)</b> ___ place because he <b>(21)</b> ___ sit on the armchair and watch television <b>(22)</b> ___ his family.","vi":"Đây là bạn của mình. Bạn ấy tên Nam. Bạn ấy 12 tuổi. Bạn ấy là học sinh. Bạn ấy sống trong một biệt thự lớn (17) ___ ngoại ô thành phố. Gia đình bạn ấy có 4 người: bố mẹ, em gái và (18) ___. Bố bạn ấy làm kỹ sư. Mẹ bạn ấy là giáo viên. Còn em gái bạn ấy là một (19) ___. Nhà bạn ấy có 5 phòng: phòng khách, bếp, phòng tắm, phòng ngủ và nhà vệ sinh. Phòng khách là nơi (20) ___ của bạn ấy vì bạn ấy (21) ___ ngồi trên ghế bành và xem tivi (22) ___ gia đình."},"questions":[{"q":"17.","options":["on","in","to","at"],"answer":1,"explanation":"\"live in the suburb\" = sống ở ngoại ô.<br>A. on: trên<br>B. in: ở, tại ✓<br>C. to: đến<br>D. at: tại (địa điểm cụ thể hơn)","vis":["trên (bề mặt)","ở, tại (thuộc cụm \"in the suburb\")","đến","tại (một điểm cụ thể)"],"vi":"Bạn ấy sống trong một biệt thự lớn (17) ___ ngoại ô thành phố."},{"q":"18.","options":["he","him","himself","his"],"answer":1,"explanation":"Đại từ tân ngữ sau liên từ \"and\" → him.<br>A. he: đại từ chủ ngữ<br>B. him: đại từ tân ngữ ✓<br>C. himself: chính anh ấy<br>D. his: của anh ấy (sở hữu)","vis":["anh ấy (chủ ngữ)","anh ấy (tân ngữ)","chính anh ấy","của anh ấy"],"vi":"Gia đình bạn ấy có 4 người: bố mẹ, em gái và (18) ___."},{"q":"19.","options":["partner","pupil","person","member"],"answer":1,"explanation":"Em gái là học sinh → pupil.<br>A. partner: đối tác<br>B. pupil: học sinh ✓<br>C. person: người (chung chung)<br>D. member: thành viên","vis":["đối tác","học sinh","người (nói chung)","thành viên"],"vi":"Còn em gái bạn ấy là một (19) ___."},{"q":"20.","options":["popular","famous","favorite","pleasant"],"answer":2,"explanation":"\"favorite place\" = nơi ưa thích.<br>A. popular: được ưa chuộng (nhiều người)<br>B. famous: nổi tiếng<br>C. favorite: yêu thích ✓<br>D. pleasant: dễ chịu","vis":["được ưa chuộng","nổi tiếng","yêu thích nhất","dễ chịu"],"vi":"Phòng khách là nơi (20) ___ của bạn ấy..."},{"q":"21.","options":["must","can","should","will"],"answer":1,"explanation":"Khả năng có thể làm gì → can.<br>A. must: phải (bắt buộc)<br>B. can: có thể ✓<br>C. should: nên<br>D. will: sẽ","vis":["phải (bắt buộc)","có thể","nên","sẽ"],"vi":"...vì bạn ấy (21) ___ ngồi trên ghế bành và xem tivi."},{"q":"22.","options":["with","about","by","for"],"answer":0,"explanation":"\"watch television with his family\" = xem TV cùng gia đình.<br>A. with: cùng với ✓<br>B. about: về<br>C. by: bởi, bằng<br>D. for: cho, vì","vis":["cùng với","về","bởi, bằng","cho, vì"],"vi":"...và xem tivi (22) ___ gia đình."}],"instant":true},{"roman":"IV","navLabel":"Đọc hiểu","title":"Đọc hiểu","icon":"book-open","instructions":"Đọc đoạn văn, xác định Đúng/Sai và chọn đáp án đúng.","type":"mcq","passage":{"title":"Mr. Brown's House","html":"Mr. Brown's house has got four bedrooms, a living room, a dining room, a kitchen and a separate toilet. There is a toilet in the bathroom too. The bedrooms and the bathroom are upstairs, and the living room, the dining room, the kitchen and the toilet are downstairs. The first bedroom is Mr. and Mrs. Brown's, the second one is Tom's, the third one is Mary's, and the last one is Anne's. There is a baby bed in her bedroom too, but there is no baby living there. When you enter Mr. Brown's house, the room on the left is the living room, and the room on the right is the dining room. Where is the kitchen? It is behind the dining room. And where is the toilet? It is straight on, in front of you. There is a garden behind the house, but it is not big. Is there a garden in front of the house too? Yes, there is, but it is very narrow. When you go upstairs, Mr. and Mrs. Brown's bedroom is on the left. The bedroom on your right is Tom's, and the bathroom is between his bedroom and Mary's. Anne's bedroom is behind Mary's.","vi":"Nhà của ông Brown có bốn phòng ngủ, một phòng khách, một phòng ăn, một nhà bếp và một nhà vệ sinh riêng. Trong phòng tắm cũng có một nhà vệ sinh. Các phòng ngủ và phòng tắm ở tầng trên, còn phòng khách, phòng ăn, nhà bếp và nhà vệ sinh ở tầng dưới. Phòng ngủ đầu tiên là của ông bà Brown, phòng thứ hai là của Tom, phòng thứ ba là của Mary, và phòng cuối cùng là của Anne. Trong phòng của Anne cũng có một chiếc giường trẻ em, nhưng không có em bé nào sống ở đó. Khi bạn bước vào nhà ông Brown, căn phòng bên trái là phòng khách, còn căn phòng bên phải là phòng ăn. Nhà bếp ở đâu? Nó ở phía sau phòng ăn. Còn nhà vệ sinh ở đâu? Nó ở ngay phía trước bạn. Có một khu vườn phía sau nhà, nhưng không lớn lắm. Phía trước nhà cũng có vườn không? Có, nhưng nó rất hẹp. Khi bạn lên tầng trên, phòng ngủ của ông bà Brown ở bên trái. Phòng bên phải là của Tom, còn phòng tắm nằm giữa phòng của cậu ấy và phòng của Mary. Phòng của Anne ở phía sau phòng của Mary."},"questions":[{"q":"23. There are two toilets in Mr. Brown's house.","options":["True","False"],"answer":0,"explanation":"Có 1 toilet riêng và 1 toilet trong phòng tắm → 2 toilet, đúng.","vis":["Đúng","Sai"],"vi":"Nhà ông Brown có hai nhà vệ sinh."},{"q":"24. The dining room is on the left when you enter the house.","options":["True","False"],"answer":1,"explanation":"Bài đọc: phòng khách bên trái, phòng ăn bên phải → Sai.","vis":["Đúng","Sai"],"vi":"Phòng ăn nằm ở bên trái khi bạn bước vào nhà."},{"q":"25. Tom's bedroom and Mary's bedroom are next to each other.","options":["True","False"],"answer":1,"explanation":"Giữa hai phòng có phòng tắm → không liền kề trực tiếp, Sai.","vis":["Đúng","Sai"],"vi":"Phòng của Tom và phòng của Mary nằm cạnh nhau."},{"q":"26. There is a small garden behind the house.","options":["True","False"],"answer":0,"explanation":"Bài đọc: \"a garden behind the house, but it is not big\" → Đúng.","vis":["Đúng","Sai"],"vi":"Có một khu vườn nhỏ ở phía sau nhà."},{"q":"27. Where is the kitchen located?","options":["Next to the living room.","In front of the toilet.","Behind the dining room.","Upstairs, near the bathroom."],"answer":2,"explanation":"Bài đọc: \"It is behind the dining room\".","vis":["Cạnh phòng khách.","Phía trước nhà vệ sinh.","Phía sau phòng ăn.","Ở tầng trên, gần phòng tắm."],"vi":"Nhà bếp nằm ở đâu?"},{"q":"28. Whose bedroom is located behind Mary's bedroom?","options":["Tom's","Anne's","Mr. and Mrs. Brown's","The baby's"],"answer":1,"explanation":"Bài đọc: \"Anne's bedroom is behind Mary's\".","vis":["Của Tom.","Của Anne.","Của ông bà Brown.","Của em bé."],"vi":"Phòng ngủ của ai nằm ở phía sau phòng của Mary?"}],"instant":true},{"roman":"V","navLabel":"Từ loại","title":"Cho dạng đúng của từ trong ngoặc","icon":"spell-check","instructions":"Điền dạng đúng của từ trong ngoặc vào chỗ trống.","type":"fill","questions":[{"q":"29. There are four ___ in my family: my parents, my sister, and me.","answer":"members","explanation":"Danh từ số nhiều: member → members (thành viên).","hint":"(member)","family":["member (n): thành viên","membership (n): tư cách thành viên","members (n, số nhiều): các thành viên"]},{"q":"30. This living room is Nam's ___ place to watch television.","answer":"favorite","explanation":"Tính từ: favor → favorite (yêu thích nhất).","hint":"(favor)","family":["favor (n/v): sự ưu ái, thích hơn","favorite (adj): yêu thích nhất","favorable (adj): thuận lợi, tốt"]},{"q":"31. Nam is twelve years old and he lives in a big, beautiful ___.","answer":"villa","explanation":"Danh từ giữ nguyên: villa (biệt thự).","hint":"(villa)","family":["villa (n): biệt thự, nhà lớn sang trọng","villas (n, số nhiều): những biệt thự"]},{"q":"32. My house is in a small village, so it is very quiet and ___.","answer":"peaceful","explanation":"Tính từ: peace + ful → peaceful (yên bình).","hint":"(peace)","family":["peace (n): hòa bình, sự yên bình","peaceful (adj): yên bình, thanh bình","peacefully (adv): một cách yên bình"]},{"q":"33. My mother cooks very well; she always makes ___ meals.","answer":"delightful","explanation":"Tính từ: delight + ful → delightful (ngon miệng, thú vị).","hint":"(delight)","family":["delight (n/v): niềm vui thích, làm hài lòng","delightful (adj): thú vị, ngon miệng (chỉ sự việc)","delighted (adj): vui mừng, hài lòng (chỉ người)"]},{"q":"34. In conclusion, my house is a place full of love and ___.","answer":"happiness","explanation":"Danh từ: happy → happiness (hạnh phúc).","hint":"(happy)","family":["happy (adj): hạnh phúc, vui vẻ","happily (adv): một cách hạnh phúc","happiness (n): hạnh phúc","unhappy (adj): không hạnh phúc, buồn"]}]},{"roman":"VI","navLabel":"Từ điển","title":"Tra từ điển \"favorite\"","icon":"book-bookmark","instructions":"Dựa vào mục từ điển, hoàn thành câu (không quá 3 từ).","type":"fill","dict":{"word":"favorite","ipa":"/ˈfeɪvərɪt/","pos":"adjective, noun","senses":[{"def":"adjective: liked more than others of the same kind.","examples":["September is my favorite month of the year.","What is your favorite subject at school?"]},{"def":"noun: a person or thing that is liked more than others.","examples":["This song is an old favorite of mine.","Pizza is a firm favorite among children."]}],"vi":"<b>favorite</b> /ˈfeɪvərɪt/ (tính từ, danh từ)<br>1. (tính từ) được yêu thích hơn những thứ khác cùng loại.<br>• Tháng Chín là tháng yêu thích nhất trong năm của tôi.<br>• Môn học yêu thích của bạn ở trường là môn gì?<br>2. (danh từ) một người hoặc vật được yêu thích hơn những thứ khác.<br>• Bài hát này là một bài hát yêu thích lâu năm của tôi.<br>• Pizza là món ăn được trẻ em rất yêu thích."},"questions":[{"q":"35. Maths is my ___ because I love working with numbers.","answer":"favorite subject","explanation":"Dựa vào ví dụ: favorite subject.","vi":"Môn Toán là môn học yêu thích của tôi vì tôi thích làm việc với các con số."},{"q":"36. My grandmother always sings that song; it is an ___ of hers.","answer":"old favorite","explanation":"Dựa vào ví dụ: an old favorite.","vi":"Bà của tôi luôn hát bài hát đó; đó là một bài hát yêu thích lâu năm của bà."}]},{"roman":"VII","navLabel":"Viết lại câu","title":"Viết lại câu sao cho nghĩa không đổi","icon":"pen-to-square","instructions":"Viết lại câu, giữ nguyên nghĩa với câu gốc.","type":"sentence","questions":[{"q":"37.","answer":"a sink, a fridge, and a cooker","explanation":"There are... in + N chuyển thành N + has...","original":"There are a sink, a fridge, and a cooker in our kitchen.","starter":"Our kitchen has","vi":"Có một bồn rửa, một tủ lạnh và một bếp nấu trong bếp nhà chúng tôi.","note":"There are... in + N → N + has...<br>Nghĩa đáp án: Bếp nhà chúng tôi có một bồn rửa, một tủ lạnh và một bếp nấu."},{"q":"38.","answer":"to the bus station","explanation":"not far from = close to (gần).","original":"The bus station isn't far from the new shopping center.","starter":"The new shopping center is close","vi":"Trạm xe buýt không xa trung tâm mua sắm mới.","note":"not far from → close to<br>Nghĩa đáp án: Trung tâm mua sắm mới gần trạm xe buýt."},{"q":"39.","answer":"my bedroom between them","explanation":"Đảo vị trí chủ ngữ, giữ ý nghĩa vị trí ở giữa.","accepted":["my bedroom between them","my bedroom on either side of it"],"original":"My bedroom is between the bathroom and my parents' bedroom.","starter":"The bathroom and my parents' bedroom have","vi":"Phòng ngủ của tôi nằm giữa phòng tắm và phòng ngủ của bố mẹ tôi.","note":"Đảo vị trí chủ ngữ, giữ nguyên ý nghĩa vị trí ở giữa<br>Nghĩa đáp án: Phòng tắm và phòng ngủ của bố mẹ tôi có phòng ngủ của tôi ở giữa."},{"q":"40.","answer":"comfortable house in the village","explanation":"So sánh hơn phủ định → so sánh nhất khẳng định.","original":"No house in the village is more comfortable than my house.","starter":"My house is the most","vi":"Không ngôi nhà nào trong làng thoải mái hơn nhà tôi.","note":"So sánh hơn phủ định → so sánh nhất khẳng định<br>Nghĩa đáp án: Nhà tôi là ngôi nhà thoải mái nhất trong làng."}],"instant":true}]};
+
+const completedTasks = new Set();
+const scores = {};
+const TOTAL_TASKS = DATA.sections.length;
+
+function normalize(str){
+  return (str||'').trim().toLowerCase()
+    .replace(/[\u2018\u2019]/g,"'")
+    .replace(/["\u201C\u201D]/g,'')
+    .replace(/[.,!?;:]/g,'')
+    .replace(/\s+/g,' ');
+}
+function widthFor(ref){ const l=(ref||'').length; return l<7?'w-24':l<16?'w-40':'w-full'; }
+
+if('speechSynthesis' in window){ window.speechSynthesis.onvoiceschanged = ()=>{}; }
+function speak(text, btn){
+  try{
+    if(!('speechSynthesis' in window)){ alert('Trình duyệt của bạn không hỗ trợ phát âm tự động. Hãy thử Chrome, Edge hoặc Safari.'); return; }
+    window.speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='en-US'; u.rate=0.9; u.pitch=1;
+    const voices=window.speechSynthesis.getVoices();
+    const en=voices.find(v=>/en[-_]?(us|gb)/i.test(v.lang)) || voices.find(v=>/^en/i.test(v.lang));
+    if(en) u.voice=en;
+    if(btn){ btn.classList.add('speaking'); u.onend=()=>btn.classList.remove('speaking'); u.onerror=()=>btn.classList.remove('speaking'); }
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+function buildNav(){
+  const nav=document.getElementById('navWrap');
+  nav.innerHTML = DATA.sections.map((s,i)=>
+    `<button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600${i===0?' active':''}" id="navbtn_${i}" onclick="showTab(${i})">${s.roman}. ${s.navLabel}</button>`
+  ).join('');
+}
+
+function optionLetter(i){ return ['A','B','C','D'][i]; }
+
+function renderPassage(p, idx){
+  if(!p) return '';
+  const viBlock = p.vi ? `<button onclick="togglePassageVI(${idx})" class="text-xs font-bold bg-white border border-indigo-200 text-indigo-700 px-3 py-1 rounded-full hover:scale-105 transition mt-2"><i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt</button>
+    <p id="passage_vi_${idx}" class="vi-hidden mt-2 pt-2 border-t border-indigo-200 italic text-slate-500">${p.vi}</p>` : '';
+  return `<div class="passage-box mb-4"><p class="font-extrabold text-indigo-900 mb-2"><i class="fa-solid fa-book mr-1"></i>${p.title||''}</p><p id="passage_en_${idx}">${p.html}</p>${viBlock}</div>`;
+}
+function renderDict(d, idx){
+  if(!d) return '';
+  const viBlock = d.vi ? `<button onclick="togglePassageVI(${idx})" class="text-xs font-bold bg-white border border-amber-300 text-amber-700 px-3 py-1 rounded-full hover:scale-105 transition mt-2"><i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt</button>
+    <p id="passage_vi_${idx}" class="vi-hidden mt-2 pt-2 border-t border-amber-300 text-slate-600">${d.vi}</p>` : '';
+  return `<div class="dict-box mb-4"><p class="font-extrabold text-amber-800 mb-1"><i class="fa-solid fa-book-bookmark mr-1"></i>${d.word} <span class="font-normal italic">${d.ipa||''}</span> <span class="font-normal">(${d.pos||''})</span></p>${d.senses.map(x=>`<p class="mb-1">✱ ${x.def}</p>${(x.examples||[]).map(e=>`<p class="ml-4 italic text-slate-600">• ${e}</p>`).join('')}`).join('')}${viBlock}</div>`;
+}
+
+function renderSection(s, idx){
+  let inner = `<h2 class="text-xl md:text-2xl font-extrabold text-indigo-900 flex items-center gap-2 mb-1"><i class="fa-solid fa-${s.icon||'circle-check'} text-amber-400"></i> ${s.roman}. ${s.title}</h2>`;
+  if(s.instructions) inner += `<p class="text-sm text-slate-500 mb-3 italic">${s.instructions}</p>`;
+  inner += renderPassage(s.passage, idx);
+  inner += renderDict(s.dict, idx);
+
+  inner += `<div class="space-y-4">`;
+  s.questions.forEach((q,i)=>{
+    inner += `<div class="task-card bg-white rounded-2xl shadow-md p-4" id="qblock_${idx}_${i}">`;
+    if(q.image) inner += `<div class="mb-3">${q.image}</div>`;
+    inner += `<p class="font-bold text-slate-800 mb-2"><span class="bg-slate-100 text-slate-600 text-xs font-black px-2 py-1 rounded-lg mr-2">${i+1}</span>${q.q}</p>`;
+    if(s.type==='mcq'){
+      inner += `<div class="grid sm:grid-cols-2 gap-2">`;
+      q.options.forEach((opt,j)=>{
+        const ipa = q.ipas ? q.ipas[j] : null;
+        const optVi = q.vis ? q.vis[j] : null;
+        const cleanWord = opt.replace(/<[^>]+>/g,'');
+        const wordBlock = (ipa || optVi)
+          ? `<span class="flex flex-col leading-tight"><span>${opt}</span>${ipa?`<span class="text-[10px] text-slate-400 font-normal mcq-detail-hidden">${ipa}</span>`:''}${optVi?`<span class="text-[10px] text-emerald-500 font-normal italic mcq-detail-hidden">${optVi}</span>`:''}</span>
+             <button type="button" data-w="${cleanWord}" onclick="event.stopPropagation();event.preventDefault();speak(this.dataset.w,this)" class="speak-btn w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 hover:bg-indigo-200 hover:scale-110 transition flex items-center justify-center ml-auto shrink-0 mcq-detail-hidden" title="Nghe phát âm" aria-label="Nghe phát âm ${cleanWord}"><i class="fa-solid fa-volume-high text-[10px]"></i></button>`
+          : `<span>${opt}</span>`;
+        inner += `<label class="option-label rounded-xl px-3 py-2 text-sm font-semibold flex items-center gap-2" id="opt_${idx}_${i}_${j}" onclick="selectMcq(${idx},${i},${j})">
+          <input type="radio" name="mcq_${idx}_${i}" class="accent-indigo-700" style="display:none">
+          <span class="font-black text-indigo-700">${optionLetter(j)}.</span> ${wordBlock}
+        </label>`;
+      });
+      inner += `</div>`;
+    } else if(s.type==='fill'){
+      const w = widthFor(q.answer);
+      const famBlock = q.family ? `<div class="wordfam-box mt-2">${q.family.map(f=>`<div>• ${f}</div>`).join('')}</div>` : '';
+      inner += `<div class="flex items-center gap-2 flex-wrap">`;
+      if(q.hint) inner += `<span class="blank-tag text-xs">${q.hint}</span>`;
+      inner += `<input type="text" id="inp_${idx}_${i}" class="answer-input ${w} px-3 py-1.5 rounded-lg text-sm font-semibold" placeholder="Nhập đáp án..." autocomplete="off" spellcheck="false"></div>${famBlock}`;
+    } else if(s.type==='sentence'){
+      const instantAttr = s.instant ? ` oninput="gradeOneSentence(${idx},${i})"` : '';
+      if(q.starter){
+        inner += `<p class="text-slate-700 text-sm mb-2">${q.original}</p>
+        <div class="flex items-center gap-3 w-full flex-wrap">
+          <span class="text-slate-800 font-extrabold text-base whitespace-nowrap">${q.starter}</span>
+          <input type="text" id="inp_${idx}_${i}" class="answer-input flex-1 min-w-[180px] px-3 py-2 rounded-lg text-sm font-semibold" placeholder="..." autocomplete="off" spellcheck="false"${instantAttr}>
+        </div>`;
+      } else {
+        inner += `<input type="text" id="inp_${idx}_${i}" class="answer-input w-full px-3 py-2 rounded-lg text-sm font-semibold" placeholder="Viết câu trả lời..." autocomplete="off" spellcheck="false"${instantAttr}>`;
+      }
+    }
+    inner += `<div class="explanation-box mt-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-sm text-blue-800" id="fb_${idx}_${i}"></div>`;
+    inner += `</div>`;
+  });
+  inner += `</div>`;
+
+  inner += `<div class="flex flex-wrap gap-2 mt-5">
+    <button onclick="checkSection(${idx})" class="bg-gradient-to-r from-indigo-900 to-pink-600 text-white font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-check mr-1"></i>Kiểm tra</button>
+    <button onclick="revealSection(${idx})" class="bg-white border-2 border-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-eye mr-1"></i>Xem đáp án</button>
+    <button onclick="resetSection(${idx})" class="bg-white border-2 border-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-rotate-left mr-1"></i>Làm lại</button>
+    <span id="score_${idx}" class="hidden ml-auto self-center font-extrabold text-emerald-600 text-sm score-badge"></span>
+  </div>`;
+
+  return `<section id="tab-${idx}" class="section-page${idx===0?' active':''} space-y-4">${inner}</section>`;
+}
+
+function buildMain(){
+  const main=document.getElementById('mainWrap');
+  main.innerHTML = DATA.sections.map((s,i)=>renderSection(s,i)).join('');
+}
+
+function togglePassageVI(idx){ const el=document.getElementById(`passage_vi_${idx}`); if(el) el.classList.toggle('vi-hidden'); }
+function selectMcq(idx,i,j){
+  const q=DATA.sections[idx].questions[i];
+  document.querySelectorAll(`[id^="opt_${idx}_${i}_"]`).forEach(el=>el.classList.remove('selected'));
+  document.getElementById(`opt_${idx}_${i}_${j}`).classList.add('selected');
+  document.getElementById(`opt_${idx}_${i}_${j}`).dataset.chosen = j;
+  if(DATA.sections[idx].instant){ gradeOneMcq(idx,i); }
+}
+
+function gradeOneMcq(idx,i){
+  const s=DATA.sections[idx], q=s.questions[i];
+  const qblock=document.getElementById(`qblock_${idx}_${i}`);
+  if(qblock) qblock.classList.add('show-mcq-detail');
+  const chosenEl=document.querySelector(`#tab-${idx} [id^="opt_${idx}_${i}_"].selected`);
+  const chosen = chosenEl ? parseInt(chosenEl.dataset.chosen) : -1;
+  const ok = chosen === q.answer;
+  const answerLabel = `${optionLetter(q.answer)}. ${q.options[q.answer]}`;
+  q.options.forEach((o,j)=>{
+    const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+    el.classList.remove('correct-opt','wrong-opt');
+    if(j===q.answer) el.classList.add('correct-opt');
+    else if(j===chosen) el.classList.add('wrong-opt');
+  });
+  const fb=document.getElementById(`fb_${idx}_${i}`);
+  fb.innerHTML = feedbackHTML(ok, answerLabel, q.explanation, q.vi, q.note);
+  fb.classList.add('show');
+}
+
+function gradeOneSentence(idx,i){
+  const q=DATA.sections[idx].questions[i];
+  const inp=document.getElementById(`inp_${idx}_${i}`);
+  const fb=document.getElementById(`fb_${idx}_${i}`);
+  if(!inp || !fb) return;
+  const raw=inp.value.trim();
+  if(raw===''){
+    inp.classList.remove('correct-input','wrong-input');
+    fb.classList.remove('show'); fb.innerHTML='';
+    return;
+  }
+  const val=normalize(inp.value);
+  const acc=(q.accepted||[q.answer]).map(normalize);
+  const ok = acc.includes(val);
+  inp.classList.remove('correct-input','wrong-input');
+  inp.classList.add(ok?'correct-input':'wrong-input');
+  fb.innerHTML = feedbackHTML(ok, q.answer, q.explanation, q.vi, q.note);
+  fb.classList.add('show');
+}
+
+function feedbackHTML(ok, answerLabel, explanation, vi, note){
+  const okLine = ok? `<span class="text-emerald-700 font-bold">✅ Chính xác!</span>` : `<span class="text-rose-600 font-bold">❌ Chưa đúng.</span> Đáp án đúng: <b>${answerLabel}</b>`;
+  const expLine = explanation? `<br><span class="text-blue-700">💡 ${explanation}</span>` : '';
+  const viLine = vi? `<span class="text-slate-500">📖 Nghĩa: <i>${vi}</i></span>` : '';
+  const noteLine = note? `<br><span class="text-violet-600">📐 Công thức: <b>${note}</b></span>` : '';
+  if(note){
+    return (viLine?viLine+'<br>':'') + okLine + expLine + noteLine;
+  }
+  return okLine + expLine + (viLine?'<br>'+viLine:'') + noteLine;
+}
+
+function checkSection(idx){
+  const s=DATA.sections[idx];
+  let correct=0;
+  s.questions.forEach((q,i)=>{
+    let ok=false, answerLabel='';
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    if(s.type==='mcq'){
+      const chosenEl=document.querySelector(`#tab-${idx} [id^="opt_${idx}_${i}_"].selected`);
+      const chosen = chosenEl ? parseInt(chosenEl.dataset.chosen) : -1;
+      ok = chosen === q.answer;
+      answerLabel = `${optionLetter(q.answer)}. ${q.options[q.answer]}`;
+      q.options.forEach((o,j)=>{
+        const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+        el.classList.remove('correct-opt','wrong-opt');
+        if(j===q.answer) el.classList.add('correct-opt');
+        else if(j===chosen) el.classList.add('wrong-opt');
+      });
+      const qblock=document.getElementById(`qblock_${idx}_${i}`);
+      if(qblock) qblock.classList.add('show-mcq-detail');
+    } else {
+      const inp=document.getElementById(`inp_${idx}_${i}`);
+      const val=normalize(inp.value);
+      const acc=(q.accepted||[q.answer]).map(normalize);
+      ok = val!=='' && acc.includes(val);
+      inp.classList.remove('correct-input','wrong-input');
+      inp.classList.add(ok?'correct-input':'wrong-input');
+      answerLabel = q.answer;
+    }
+    if(ok) correct++;
+    fb.innerHTML = feedbackHTML(ok, answerLabel, q.explanation, q.vi, q.note);
+    fb.classList.add('show');
+  });
+  const total=s.questions.length;
+  scores[idx]={correct,total};
+  const scoreEl=document.getElementById(`score_${idx}`);
+  scoreEl.textContent = `🏆 Điểm: ${correct}/${total}`;
+  scoreEl.classList.remove('hidden');
+  completedTasks.add(idx);
+  updateProgress();
+  if(completedTasks.size===TOTAL_TASKS) setTimeout(showCompletion,500);
+}
+
+function revealSection(idx){
+  const s=DATA.sections[idx];
+  s.questions.forEach((q,i)=>{
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    let answerLabel = s.type==='mcq' ? `${optionLetter(q.answer)}. ${q.options[q.answer]}` : q.answer;
+    if(s.type==='mcq'){
+      q.options.forEach((o,j)=>{
+        const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+        el.classList.remove('correct-opt','wrong-opt');
+        if(j===q.answer) el.classList.add('correct-opt');
+      });
+      const qblock=document.getElementById(`qblock_${idx}_${i}`);
+      if(qblock) qblock.classList.add('show-mcq-detail');
+    }
+    fb.innerHTML = `👁️ Đáp án: <b>${answerLabel}</b>` + (q.explanation?`<br><span class="text-blue-700">💡 ${q.explanation}</span>`:'') + (q.vi?`<br><span class="text-slate-500">📖 Nghĩa: <i>${q.vi}</i></span>`:'') + (q.note?`<br><span class="text-violet-600">📐 Công thức: <b>${q.note}</b></span>`:'');
+    fb.classList.add('show');
+  });
+}
+
+function resetSection(idx){
+  const s=DATA.sections[idx];
+  s.questions.forEach((q,i)=>{
+    if(s.type==='mcq'){
+      q.options.forEach((o,j)=>{
+        const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+        el.classList.remove('correct-opt','wrong-opt','selected');
+        delete el.dataset.chosen;
+      });
+    } else {
+      const inp=document.getElementById(`inp_${idx}_${i}`);
+      if(inp){ inp.value=''; inp.classList.remove('correct-input','wrong-input'); }
+    }
+    const qblock=document.getElementById(`qblock_${idx}_${i}`);
+    if(qblock) qblock.classList.remove('show-mcq-detail');
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    fb.classList.remove('show'); fb.innerHTML='';
+  });
+  const scoreEl=document.getElementById(`score_${idx}`); scoreEl.classList.add('hidden');
+  completedTasks.delete(idx); delete scores[idx]; updateProgress();
+}
+
+function showTab(idx){
+  document.querySelectorAll('.section-page').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active'); b.classList.add('text-slate-600');});
+  document.getElementById(`tab-${idx}`).classList.add('active');
+  const btn=document.getElementById(`navbtn_${idx}`);
+  btn.classList.add('active'); btn.classList.remove('text-slate-600');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updateProgress(){
+  const done=completedTasks.size;
+  document.getElementById('progressText').textContent = `${done} / ${TOTAL_TASKS} phần`;
+  document.getElementById('progressBar').style.width = `${(done/TOTAL_TASKS)*100}%`;
+}
+
+function showCompletion(){
+  fireConfetti();
+  const banner=document.getElementById('completionBanner');
+  banner.classList.remove('hidden'); banner.classList.add('show');
+  let c=0,t=0; Object.values(scores).forEach(s=>{c+=s.correct; t+=s.total;});
+  document.getElementById('finalScoreDisplay').textContent = `🎯 ${c} / ${t} câu đúng`;
+}
+function closeBanner(){ const b=document.getElementById('completionBanner'); b.classList.remove('show'); b.classList.add('hidden'); }
+function fireConfetti(){
+  const wrap=document.getElementById('confettiWrap'); wrap.innerHTML='';
+  const colors=['#1e1b4b','#7c3aed','#db2777','#a21caf','#f59e0b','#6366f1'];
+  for(let i=0;i<90;i++){
+    const p=document.createElement('div'); p.className='confetti-piece';
+    p.style.cssText=`left:${Math.random()*100}vw;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>0.5?'50%':'2px'};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*0.8}s;`;
+    wrap.appendChild(p);
+  }
+  setTimeout(()=>{wrap.innerHTML='';},4000);
+}
+
+buildNav();
+buildMain();
+updateProgress();
+</script>
+</body>
+</html>
