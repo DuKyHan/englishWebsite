@@ -190,6 +190,59 @@ header{position:sticky;top:0;z-index:80;padding:10px 0;background:transparent}
 .step-dots span{width:8px;height:8px;border-radius:99px;background:var(--line)}
 .step-dots span.on{background:var(--p);width:22px;transition:width .3s}
 
+/* ---- Interactive lesson widgets (added for retention/retrieval) ---- */
+.vi-reveal-btn{background:var(--sec-soft);color:var(--sec);border:none;border-radius:99px;padding:3px 11px;font-size:11.5px;font-weight:800;cursor:pointer;margin-top:4px;display:inline-flex;align-items:center;gap:4px}
+.vi-reveal-text{display:none;color:var(--ink-soft);font-weight:600;font-size:13.5px;font-style:italic;margin-top:4px}
+.vi-reveal-text.show{display:block;animation:fadeUp .3s}
+
+.minicheck{background:var(--sub-soft);border:2px solid var(--sub);border-radius:var(--r-sm);padding:16px;margin:16px 0}
+.minicheck .mc-kicker{font-size:11.5px;font-weight:900;letter-spacing:.04em;text-transform:uppercase;color:var(--sub);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.minicheck .mc-q{font-weight:800;font-size:14.5px;margin-bottom:10px}
+.minicheck .mc-opts{display:grid;gap:8px}
+.mc-opt{background:var(--surf);border:2px solid var(--line);border-radius:12px;padding:10px 14px;font-weight:700;font-size:13.5px;cursor:pointer;text-align:left;transition:all .15s}
+.mc-opt:hover:not(:disabled){border-color:var(--sub)}
+.mc-opt.ok{border-color:var(--good);background:var(--good-soft);color:var(--good)}
+.mc-opt.no{border-color:var(--bad);background:var(--bad-soft);color:var(--bad);animation:shake .4s}
+.mc-opt:disabled{cursor:default}
+.mc-exp{margin-top:10px;font-size:13px;font-weight:700;background:rgba(255,255,255,.5);border-radius:10px;padding:8px 12px}
+[data-theme="dark"] .mc-exp{background:rgba(0,0,0,.2)}
+
+.flip-tip{perspective:1000px;height:auto;min-height:64px;cursor:pointer;margin-bottom:10px}
+.flip-tip-in{position:relative;transition:transform .5s cubic-bezier(.4,.1,.2,1.15);transform-style:preserve-3d;min-height:64px}
+.flip-tip.flipped .flip-tip-in{transform:rotateY(180deg)}
+.flip-tip-face{border-radius:var(--r-sm);padding:14px;font-weight:700}
+.flip-tip-face.front{background:var(--gold-soft);display:flex;align-items:center;gap:10px;backface-visibility:hidden}
+.flip-tip-face.back{background:var(--gold-soft);position:absolute;inset:0;backface-visibility:hidden;transform:rotateY(180deg);display:flex;align-items:center}
+.flip-tip-face .fnum{font-size:22px}
+
+.tag-game{background:var(--surf);border:2px dashed var(--p);border-radius:var(--r-sm);padding:16px;margin-top:14px}
+.tag-sentence{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.tag-token{border:2px solid var(--line);background:var(--bg2);border-radius:10px;padding:8px 12px;font-weight:800;font-size:15px;cursor:pointer}
+.tag-token.static{border:none;background:transparent;cursor:default;font-weight:600;padding:8px 2px}
+.tag-token.sel{border-color:var(--p);background:var(--p-soft)}
+.tag-token.tagged{border-style:solid}
+.tag-token.correct-fb{box-shadow:0 0 0 3px var(--good)}
+.tag-token.wrong-fb{box-shadow:0 0 0 3px var(--bad)}
+.tag-roles{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.tag-role-btn{border:none;border-radius:99px;padding:8px 14px;font-weight:800;font-size:13px;cursor:pointer}
+
+.mm-node{cursor:pointer;transition:transform .15s}
+.mm-node:hover{transform:translateY(-2px)}
+.mm-detail{min-height:20px;text-align:center;font-weight:700;font-size:13.5px;color:var(--p);background:var(--p-soft);border-radius:12px;padding:10px;margin-top:10px;display:none}
+.mm-detail.show{display:block;animation:fadeUp .3s}
+
+.flow-box{cursor:default;opacity:0;max-height:0;overflow:hidden;transition:opacity .4s}
+.flow-box.revealed{opacity:1;max-height:200px;margin:4px 0}
+.flow-arrow{opacity:0;transition:opacity .3s}
+.flow-arrow.revealed{opacity:1}
+.flow-next-btn{background:var(--p);color:#fff;border:none;border-radius:99px;padding:8px 18px;font-weight:800;font-size:13px;cursor:pointer;box-shadow:0 3px 0 var(--p-dark)}
+
+.recap-box{margin-top:6px}
+.recap-progress{display:flex;gap:6px;margin-bottom:14px}
+.recap-progress span{flex:1;height:6px;border-radius:99px;background:var(--line)}
+.recap-progress span.done{background:var(--good)}
+.recap-progress span.now{background:var(--p)}
+
 /* ============ QUIZ / EXERCISE PLAYER ============ */
 .quiz-top{display:flex;align-items:center;gap:10px;margin-bottom:14px}
 .quiz-top .hearts{margin-left:auto;font-size:18px;letter-spacing:2px}
@@ -422,17 +475,21 @@ questions: [
 <p>So sánh câu khẳng định và câu hỏi:</p>
 <div class="cmp-table-wrap"><table class="cmp-table">
 <tr><th>Câu khẳng định</th><th>Câu hỏi</th></tr>
-<tr><td>She <span class="hl-aux">is</span> going to school.</td><td><span class="hl-aux">Is</span> she going to school?</td></tr>
-<tr><td>You <span class="hl-aux">do</span> like K-pop.</td><td><span class="hl-aux">Do</span> you like K-pop?</td></tr>
+<tr><td>She <span class="hl-aux">is</span> going to school.<div class="vi">Bạn ấy đang đi học.</div></td><td><span class="hl-aux">Is</span> she going to school?<div class="vi">Bạn ấy có đang đi học không?</div></td></tr>
+<tr><td>You <span class="hl-aux">do</span> like K-pop.<div class="vi">Bạn thích K-pop.</div></td><td><span class="hl-aux">Do</span> you like K-pop?<div class="vi">Bạn có thích K-pop không?</div></td></tr>
+<tr><td>She <span class="hl-aux">is</span> going <u>home</u>.<div class="vi">Bạn ấy đang đi về nhà.</div></td><td><span class="hl-wh">Where</span> <span class="hl-aux">is</span> she going?<div class="vi">Bạn ấy đang đi đâu?</div></td></tr>
+<tr><td>Your name <span class="hl-aux">is</span> <u>Lan</u>.<div class="vi">Tên bạn là Lan.</div></td><td><span class="hl-wh">What</span> <span class="hl-aux">is</span> your name?<div class="vi">Tên bạn là gì?</div></td></tr>
 </table></div>
 <p>👉 Em có nhận ra không? Trợ động từ (is/do/does/can...) đã <b>nhảy lên trước chủ ngữ</b>! Đây chính là quy luật cốt lõi để tạo câu hỏi trong tiếng Anh.</p>
-<p>Ở 2 câu có từ để hỏi (Where/What), ta thấy từ để hỏi luôn đứng <b>đầu câu</b>, trước cả trợ động từ.</p>`},
+<p>Ở 2 câu có từ để hỏi (Where/What) bên trên, ta thấy từ để hỏi luôn đứng <b>đầu câu</b>, trước cả trợ động từ.</p>`,
+check:{q:'Trước khi xem phần Quy tắc: theo em, trợ động từ (is/do...) sẽ chuyển tới đâu khi tạo câu hỏi?', opts:['Đứng trước chủ ngữ','Đứng sau chủ ngữ','Giữ nguyên vị trí'], ans:'Đứng trước chủ ngữ', exp:'Chính xác! Trợ động từ luôn "nhảy" lên trước chủ ngữ để tạo thành câu hỏi.'}},
 
 {badge:'4 · Rule', title:'📐 Quy tắc', body:`
 <p><b>Có 2 loại câu hỏi chính:</b></p>
 <p>🔹 <b>Yes/No Questions</b> — câu hỏi mà câu trả lời chỉ cần <i>Yes</i> hoặc <i>No</i>. Ta đảo trợ động từ (be/do/does/did/can/will...) lên trước chủ ngữ.</p>
 <p>🔹 <b>Wh-questions</b> — câu hỏi dùng từ để hỏi (What, Where, When, Why, Who, Whom, Whose, Which, How...) để hỏi thông tin cụ thể. Từ để hỏi luôn đứng đầu câu.</p>
-<p><b>Nguyên tắc mượn trợ động từ:</b> Nếu câu chưa có sẵn trợ động từ (am/is/are/can/will...), ta phải <b>mượn do/does/did</b> tùy theo thì và chủ ngữ. Nếu đã có sẵn trợ động từ, chỉ cần đảo nó ra trước chủ ngữ, không mượn do/does/did nữa.</p>`},
+<p><b>Nguyên tắc mượn trợ động từ:</b> Nếu câu chưa có sẵn trợ động từ (am/is/are/can/will...), ta phải <b>mượn do/does/did</b> tùy theo thì và chủ ngữ. Nếu đã có sẵn trợ động từ, chỉ cần đảo nó ra trước chủ ngữ, không mượn do/does/did nữa.</p>`,
+check:{q:'Từ để hỏi (Wh-word) luôn đứng ở vị trí nào trong câu?', opts:['Đầu câu','Sau trợ động từ','Cuối câu'], ans:'Đầu câu', exp:'Đúng! Wh-word luôn mở đầu câu hỏi, đứng trước cả trợ động từ.'}},
 
 {badge:'5 · Formula', title:'🧮 Công thức', body:`
 <div class="formula-box">Aux/Be + S + V + ... ?<small>YES/NO QUESTION</small></div>
@@ -445,13 +502,17 @@ questions: [
 <div class="example-box" style="font-size:17px"><span class="hl-wh">Where</span> <span class="hl-aux">do</span> <span class="hl-sub">you</span> <span class="hl-verb">live</span>?</div>
 <div class="example-box" style="font-size:17px"><span class="hl-wh">What</span> <span class="hl-aux">is</span> <span class="hl-sub">your teacher</span> <span class="hl-obj">like</span>?</div>
 <div class="example-box" style="font-size:17px"><span class="hl-wh">Who</span> <span class="hl-verb">teaches</span> <span class="hl-sub">you</span> <span class="hl-obj">English</span>? <small>(Who làm chủ ngữ → không mượn do)</small></div>
-<div class="example-box" style="font-size:17px"><span class="hl-aux">Did</span> <span class="hl-sub">you</span> <span class="hl-verb">go</span> <span class="hl-obj">to school</span> yesterday?</div>`},
+<div class="example-box" style="font-size:17px"><span class="hl-aux">Did</span> <span class="hl-sub">you</span> <span class="hl-verb">go</span> <span class="hl-obj">to school</span> yesterday?</div>`,
+tagGame:{ instruction:'🎮 Đến lượt em! Chạm vào từng từ rồi chọn đúng vai trò của nó trong câu:',
+ tokens:[{text:'Where',role:'wh'},{text:'do',role:'aux'},{text:'you',role:'sub'},{text:'live',role:'verb'},{text:'?',role:null}],
+ roles:[{key:'wh',label:'Wh-word',cls:'hl-wh'},{key:'aux',label:'Trợ động từ',cls:'hl-aux'},{key:'sub',label:'Chủ ngữ',cls:'hl-sub'},{key:'verb',label:'Động từ',cls:'hl-verb'}] }},
 
 {badge:'7 · Common Mistakes', title:'⚠️ Lỗi sai thường gặp', body:`
 <div class="mistake-row"><span class="x">❌</span><div><div>What your name is?</div><div class="fix">✅ What is your name? <small>(phải đảo "is" lên trước chủ ngữ)</small></div></div></div>
 <div class="mistake-row"><span class="x">❌</span><div><div>Where you go yesterday?</div><div class="fix">✅ Where did you go yesterday? <small>(thiếu trợ động từ "did")</small></div></div></div>
 <div class="mistake-row"><span class="x">❌</span><div><div>Who does teach you English?</div><div class="fix">✅ Who teaches you English? <small>("Who" làm chủ ngữ thì KHÔNG mượn do/does)</small></div></div></div>
-<div class="mistake-row"><span class="x">❌</span><div><div>How much people are there?</div><div class="fix">✅ How many people are there? <small>("people" đếm được → dùng "many" không dùng "much")</small></div></div></div>`},
+<div class="mistake-row"><span class="x">❌</span><div><div>How much people are there?</div><div class="fix">✅ How many people are there? <small>("people" đếm được → dùng "many" không dùng "much")</small></div></div></div>`,
+check:{q:'Câu nào sau đây viết ĐÚNG ngữ pháp?', opts:['Who does teach you English?','Who teaches you English?'], ans:'Who teaches you English?', exp:'"Who" làm chủ ngữ nên KHÔNG mượn do/does — chỉ chia động từ chính.'}},
 
 {badge:'8 · Memory Tips', title:'💡 Mẹo ghi nhớ', body:`
 <div class="tip-row">🎯 <div>Hãy nhớ câu thần chú: <b>"Từ hỏi trước — Trợ động từ sau — Chủ ngữ tiếp theo — Động từ cuối cùng"</b>.</div></div>
@@ -466,22 +527,25 @@ questions: [
 <tr><td>Câu trả lời</td><td>Yes / No</td><td>Thông tin cụ thể</td></tr>
 <tr><td>Ví dụ</td><td>Do you like tea?</td><td>What do you like?</td></tr>
 <tr><td>Ngữ điệu</td><td>Lên cuối câu ⬈</td><td>Xuống cuối câu ⬊</td></tr>
-</table>`},
+</table>`,
+check:{q:'"Do you like tea?" thuộc loại câu hỏi nào?', opts:['Yes/No Question','Wh-question'], ans:'Yes/No Question', exp:'Đúng! Câu bắt đầu bằng trợ động từ "Do" và chỉ cần trả lời Yes/No.'}},
 
 {badge:'10 · Mindmap', title:'🧠 Sơ đồ tư duy', body:`
+<p class="section-sub" style="margin:0 0 8px">👆 Chạm vào mỗi nhánh để xem ví dụ minh hoạ.</p>
 <div class="mindmap">
 <div class="mm-node mm-center">QUESTIONS</div>
 </div>
 <div class="mindmap">
-<div class="mm-node" style="background:var(--sub-soft);color:var(--sub)">Yes/No<br>Aux + S + V?</div>
-<div class="mm-node" style="background:var(--wh-soft);color:var(--wh)">Wh-question<br>Wh + Aux + S + V?</div>
-<div class="mm-node" style="background:var(--art-soft);color:var(--art)">Which<br>(lựa chọn giới hạn)</div>
+<div class="mm-node" data-ex="Do you like it? → Yes, I do." style="background:var(--sub-soft);color:var(--sub)">Yes/No<br>Aux + S + V?</div>
+<div class="mm-node" data-ex="Where do you live? → In Ha Noi." style="background:var(--wh-soft);color:var(--wh)">Wh-question<br>Wh + Aux + S + V?</div>
+<div class="mm-node" data-ex="Which do you prefer? → I prefer tea." style="background:var(--art-soft);color:var(--art)">Which<br>(lựa chọn giới hạn)</div>
 </div>
 <div class="mindmap">
-<div class="mm-node" style="background:var(--good-soft);color:var(--good)">Hỏi chủ ngữ<br>Wh + V (ngôi 3)?</div>
-<div class="mm-node" style="background:var(--obj-soft);color:var(--obj)">Hỏi tân ngữ<br>Wh + Aux + S + V?</div>
-<div class="mm-node" style="background:var(--gold-soft);color:var(--gold)">Hỏi bổ ngữ<br>Wh + Be + S?</div>
-</div>`},
+<div class="mm-node" data-ex="Who teaches you? → Mr. Nam does." style="background:var(--good-soft);color:var(--good)">Hỏi chủ ngữ<br>Wh + V (ngôi 3)?</div>
+<div class="mm-node" data-ex="What do you like? → Music." style="background:var(--obj-soft);color:var(--obj)">Hỏi tân ngữ<br>Wh + Aux + S + V?</div>
+<div class="mm-node" data-ex="Who are you? → I'm Lan." style="background:var(--gold-soft);color:var(--gold)">Hỏi bổ ngữ<br>Wh + Be + S?</div>
+</div>
+<div class="mm-detail" id="mmDetail"></div>`},
 
 {badge:'11 · Flowchart', title:'🔀 Sơ đồ ra quyết định', body:`
 <div class="flow">
@@ -496,9 +560,14 @@ questions: [
 <div class="flow-box">✅ Hoàn thành câu hỏi!</div>
 </div>`},
 
-{badge:'12 · Ready', title:'🚀 Sẵn sàng luyện tập!', body:`
-<p>Tuyệt vời! Em đã nắm được lý thuyết về <b>Yes/No Questions</b> và <b>Wh-questions</b>. Bây giờ hãy bước vào phần luyện tập với 10 cấp độ, từ nhận biết đơn giản đến giao tiếp thực tế — độ khó sẽ tăng dần để em làm chủ hoàn toàn chủ điểm này!</p>
-<div class="bubble">💪 "Practice makes perfect!" — Luyện tập tạo nên sự hoàn hảo!</div>`},
+{badge:'12 · Ready', title:'🚀 Kiểm tra nhanh trước khi luyện tập!', body:`
+<p>Trước khi bước vào luyện tập, hãy trả lời nhanh 3 câu hỏi ôn tập dưới đây để chắc chắn em đã nắm vững bài nhé!</p>`,
+recap:[
+ {q:'Loại câu hỏi nào dùng để hỏi thông tin cụ thể (không phải Yes/No)?', opts:['Wh-question','Yes/No question'], ans:'Wh-question', exp:'Đúng! Wh-question dùng từ để hỏi (What/Where/When...) để hỏi thông tin cụ thể.'},
+ {q:'"_____ is your name?" — chọn từ đúng', opts:['What','Who'], ans:'What', exp:'"What" dùng để hỏi tên (sự vật/thông tin), còn "Who" hỏi về người.'},
+ {q:'"Who _____ you English?" (Who làm chủ ngữ) — chọn động từ đúng', opts:['teach','teaches'], ans:'teaches', exp:'"Who" làm chủ ngữ ngôi 3 số ít → động từ chia thêm "-es", KHÔNG mượn do/does.'},
+],
+closing:`<div class="bubble">💪 "Practice makes perfect!" — Luyện tập tạo nên sự hoàn hảo!</div>`},
 ],
 
 articles: [
@@ -511,7 +580,7 @@ articles: [
 <div class="example-box"><span class="hl-art">A</span> ruler, <span class="hl-art">a</span> pig, <span class="hl-art">a</span> student <div class="vi">một cây thước, một con heo, một học sinh</div></div>
 <div class="example-box"><span class="hl-art">An</span> orange, <span class="hl-art">an</span> hour, <span class="hl-art">an</span> honest man <div class="vi">một quả cam, một giờ, một người trung thực</div></div>
 <div class="example-box"><span class="hl-art">The</span> sun, <span class="hl-art">the</span> moon, <span class="hl-art">the</span> tallest student <div class="vi">mặt trời, mặt trăng, học sinh cao nhất</div></div>
-<p>Em thấy 3 mạo từ khác nhau: <b>a</b>, <b>an</b>, và <b>the</b>. Hãy quan sát kỹ âm đầu tiên của từ đứng sau mỗi mạo từ.</p>`},
+<p>Em thấy 3 mạo từ khác nhau: <b>a</b>, <b>an</b>, và <b>the</b>. Với "a/an", hãy quan sát kỹ âm đầu tiên của từ đứng sau. Còn với "the", hãy để ý: đây đều là những thứ chỉ có <b>một</b> trên đời (mặt trời, mặt trăng) hoặc mang tính <b>so sánh hơn nhất</b> (cao nhất lớp).</p>`},
 
 {badge:'3 · Discovery', title:'🔍 Tự khám phá quy luật', body:`
 <p>So sánh 2 nhóm từ:</p>
@@ -520,12 +589,14 @@ articles: [
 <tr><td>a ruler, a pig, a student</td><td>an orange, an hour, an uncle</td></tr>
 </table>
 <p>👉 "a" đứng trước từ bắt đầu bằng <b>âm phụ âm</b>, còn "an" đứng trước từ bắt đầu bằng <b>âm nguyên âm</b> (kể cả khi chữ viết là "h" câm như "hour"!).</p>
-<p>Còn "the" thì sao? "The sun", "the moon" — đây là những vật <b>duy nhất</b>, ai cũng biết. "The tallest student" — đây là <b>so sánh hơn nhất</b>, chỉ có 1 người thỏa mãn.</p>`},
+<p>Còn "the" thì sao? "The sun", "the moon" — đây là những vật <b>duy nhất</b>, ai cũng biết. "The tallest student" — đây là <b>so sánh hơn nhất</b>, chỉ có 1 người thỏa mãn.</p>`,
+check:{q:'"an hour" dùng "an" vì lý do gì?', opts:['Âm đầu là nguyên âm (h câm)','Chữ cái đầu tiên là phụ âm'], ans:'Âm đầu là nguyên âm (h câm)', exp:'Đúng! "hour" có "h" câm nên đọc bắt đầu bằng âm nguyên âm /aʊə/.'}},
 
 {badge:'4 · Rule', title:'📐 Quy tắc', body:`
 <p>🔹 <b>a / an</b> (mạo từ bất định) — dùng trước danh từ đếm được số ít, khi đối tượng <b>chưa xác định</b> hoặc nhắc đến <b>lần đầu tiên</b>.</p>
 <p>🔹 <b>the</b> (mạo từ xác định) — dùng khi đối tượng <b>đã được xác định</b>: nhắc lại lần 2, vật duy nhất, so sánh hơn nhất, hoặc cả người nói và người nghe đều biết rõ.</p>
-<p>🔹 <b>Mạo từ Zero (0 / Ø)</b> — KHÔNG dùng mạo từ khi nói chung chung về danh từ không đếm được hoặc danh từ số nhiều mang nghĩa khái quát.</p>`},
+<p>🔹 <b>Mạo từ Zero (0 / Ø)</b> — KHÔNG dùng mạo từ khi nói chung chung về danh từ không đếm được hoặc danh từ số nhiều mang nghĩa khái quát.</p>`,
+check:{q:'"the" được dùng khi nào?', opts:['Khi vật đã xác định / duy nhất','Khi vật chưa xác định, nhắc lần đầu'], ans:'Khi vật đã xác định / duy nhất', exp:'Chính xác! "the" dùng cho vật đã xác định, duy nhất, hoặc so sánh hơn nhất.'}},
 
 {badge:'5 · Formula', title:'🧮 Công thức', body:`
 <div class="formula-box">a / an + Danh từ đếm được số ít (chưa xác định)<small>a book, an apple</small></div>
@@ -537,13 +608,17 @@ articles: [
 <div class="example-box" style="font-size:17px">I bought <span class="hl-art">a</span> <span class="hl-obj">costume</span> for the festival.</div>
 <div class="example-box" style="font-size:17px">He works as <span class="hl-art">an</span> <span class="hl-obj">electrician</span>.</div>
 <div class="example-box" style="font-size:17px">Have you ever heard about <span class="hl-art">the</span> <span class="hl-obj">River Thames</span>?</div>
-<div class="example-box" style="font-size:17px">Farmers earn a living by raising <span class="hl-obj">poultry</span>. <small>(không mạo từ — danh từ không đếm được, nghĩa chung)</small></div>`},
+<div class="example-box" style="font-size:17px">Farmers earn a living by raising <span class="hl-obj">poultry</span>. <small>(không mạo từ — danh từ không đếm được, nghĩa chung)</small></div>`,
+tagGame:{ instruction:'🎮 Đến lượt em! Chạm vào mỗi mạo từ trong câu rồi chọn đúng loại của nó:',
+ tokens:[{text:'I',role:null},{text:'bought',role:null},{text:'a',role:'indef'},{text:'costume',role:null},{text:'for',role:null},{text:'the',role:'def'},{text:'festival',role:null},{text:'.',role:null}],
+ roles:[{key:'indef',label:'Mạo từ bất định (a/an)',cls:'hl-art'},{key:'def',label:'Mạo từ xác định (the)',cls:'hl-art'}] }},
 
 {badge:'7 · Common Mistakes', title:'⚠️ Lỗi sai thường gặp', body:`
 <div class="mistake-row"><span class="x">❌</span><div><div>There is an big apple in the fridge.</div><div class="fix">✅ There is a big apple. <small>("big" bắt đầu bằng phụ âm /b/ → dùng "a")</small></div></div></div>
 <div class="mistake-row"><span class="x">❌</span><div><div>This is an unique custom.</div><div class="fix">✅ This is a unique custom. <small>("unique" phát âm /juː-/ như phụ âm "y" → dùng "a")</small></div></div></div>
 <div class="mistake-row"><span class="x">❌</span><div><div>It took me the hour to finish.</div><div class="fix">✅ It took me an hour. <small>("hour" là lần đầu nhắc đến, chưa xác định → dùng "an")</small></div></div></div>
-<div class="mistake-row"><span class="x">❌</span><div><div>No one likes drinking a beer.</div><div class="fix">✅ No one likes drinking beer. <small>("beer" không đếm được, nghĩa chung → không dùng mạo từ)</small></div></div></div>`},
+<div class="mistake-row"><span class="x">❌</span><div><div>No one likes drinking a beer.</div><div class="fix">✅ No one likes drinking beer. <small>("beer" không đếm được, nghĩa chung → không dùng mạo từ)</small></div></div></div>`,
+check:{q:'Chọn câu viết ĐÚNG:', opts:['This is a unique custom.','This is an unique custom.'], ans:'This is a unique custom.', exp:'"unique" đọc âm /juː-/ như phụ âm "y" nên phải dùng "a", không dùng "an".'}},
 
 {badge:'8 · Memory Tips', title:'💡 Mẹo ghi nhớ', body:`
 <div class="tip-row">🎯 <div><b>Nghe âm, đừng nhìn chữ!</b> "an hour" /auə/ (âm nguyên âm) nhưng "a university" /juː.../ (âm phụ âm y) — university viết bằng nguyên âm "u" nhưng đọc là phụ âm.</div></div>
@@ -558,16 +633,19 @@ articles: [
 <tr><td>an</td><td>Danh từ số ít, âm đầu là nguyên âm, chưa xác định</td><td>an hour</td></tr>
 <tr><td>the</td><td>Đã xác định / duy nhất / so sánh nhất</td><td>the sun</td></tr>
 <tr><td>Ø (không mạo từ)</td><td>Không đếm được hoặc số nhiều, nghĩa chung</td><td>Ø rice, Ø animals</td></tr>
-</table>`},
+</table>`,
+check:{q:'"Ø rice" (không mạo từ) được dùng khi nào?', opts:['Danh từ không đếm được, nghĩa chung','Danh từ đếm được số ít, chưa xác định'], ans:'Danh từ không đếm được, nghĩa chung', exp:'Đúng! "rice" không đếm được và đang nói chung chung nên không cần mạo từ.'}},
 
 {badge:'10 · Mindmap', title:'🧠 Sơ đồ tư duy', body:`
+<p class="section-sub" style="margin:0 0 8px">👆 Chạm vào mỗi nhánh để xem ví dụ minh hoạ.</p>
 <div class="mindmap"><div class="mm-node mm-center">ARTICLES</div></div>
 <div class="mindmap">
-<div class="mm-node" style="background:var(--sub-soft);color:var(--sub)">a<br>phụ âm, chưa rõ</div>
-<div class="mm-node" style="background:var(--obj-soft);color:var(--obj)">an<br>nguyên âm, chưa rõ</div>
-<div class="mm-node" style="background:var(--good-soft);color:var(--good)">the<br>đã xác định / duy nhất</div>
-<div class="mm-node" style="background:var(--wh-soft);color:var(--wh)">Ø<br>chung chung, không đếm được</div>
-</div>`},
+<div class="mm-node" data-ex="a book, a house, a costume" style="background:var(--sub-soft);color:var(--sub)">a<br>phụ âm, chưa rõ</div>
+<div class="mm-node" data-ex="an apple, an hour, an umbrella" style="background:var(--obj-soft);color:var(--obj)">an<br>nguyên âm, chưa rõ</div>
+<div class="mm-node" data-ex="the sun, the moon, the tallest student" style="background:var(--good-soft);color:var(--good)">the<br>đã xác định / duy nhất</div>
+<div class="mm-node" data-ex="Ø water, Ø rice, Ø books (nói chung)" style="background:var(--wh-soft);color:var(--wh)">Ø<br>chung chung, không đếm được</div>
+</div>
+<div class="mm-detail" id="mmDetail"></div>`},
 
 {badge:'11 · Flowchart', title:'🔀 Sơ đồ ra quyết định', body:`
 <div class="flow">
@@ -580,9 +658,14 @@ articles: [
 <div class="flow-box">✅ Không dùng mạo từ (Ø)</div>
 </div>`},
 
-{badge:'12 · Ready', title:'🚀 Sẵn sàng luyện tập!', body:`
-<p>Tuyệt vời! Em đã nắm được quy tắc dùng <b>a / an / the / Ø</b>. Hãy bước vào phần luyện tập 10 cấp độ để thành thạo hoàn toàn chủ điểm Mạo từ!</p>
-<div class="bubble">💪 "Details make perfection!" — Chi tiết nhỏ tạo nên sự hoàn hảo!</div>`},
+{badge:'12 · Ready', title:'🚀 Kiểm tra nhanh trước khi luyện tập!', body:`
+<p>Trước khi bước vào luyện tập, hãy trả lời nhanh 3 câu hỏi ôn tập dưới đây để chắc chắn em đã nắm vững bài nhé!</p>`,
+recap:[
+ {q:'"_____ elephant" — chọn mạo từ đúng', opts:['a','an'], ans:'an', exp:'"elephant" bắt đầu bằng âm nguyên âm /e/ → dùng "an".'},
+ {q:'"_____ sun is bright." — chọn mạo từ đúng', opts:['A','The'], ans:'The', exp:'"sun" là vật duy nhất → luôn dùng "the".'},
+ {q:'"She is _____ university student." — chọn mạo từ đúng', opts:['a','an'], ans:'a', exp:'"university" đọc âm /juː-/ như phụ âm nên dùng "a".'},
+],
+closing:`<div class="bubble">💪 "Details make perfection!" — Chi tiết nhỏ tạo nên sự hoàn hảo!</div>`},
 ],
 };
 function shuffleFixed(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
@@ -596,103 +679,103 @@ const EX_QUESTIONS = {
 
 /* ---------- LEVEL 1 — Recognition MCQ (Bài 1, 15 gốc + 5 bổ sung) ---------- */
 l1: [
- {t:'mcq', q:"_____ is your cat? — It is two months old.", opts:['How old','When','How much'], ans:'How old', why:"Hỏi tuổi (thời gian đã tồn tại) dùng <b>How old</b>. Câu trả lời xác nhận: 'two months old'."},
- {t:'mcq', q:"_____ did you begin working part-time here?", opts:['How long','When','How much'], ans:'When', why:"Hỏi <b>thời điểm bắt đầu</b> (không phải khoảng thời gian) → dùng <b>When</b>."},
- {t:'mcq', q:"_____ people are there in the conference room?", opts:['How','How many','How much'], ans:'How many', why:"'People' là danh từ đếm được số nhiều → dùng <b>How many</b>."},
- {t:'mcq', q:"_____ time will you spend on your new carpet?", opts:['How long','How many','How much'], ans:'How much', why:"'Time' là danh từ không đếm được, đã có sẵn trong câu → dùng <b>How much</b> + time."},
- {t:'mcq', q:"_____ do these shoes cost?", opts:['How long','How many','How much'], ans:'How much', why:"Hỏi về giá tiền (không đếm được) → <b>How much</b>."},
- {t:'mcq', q:"_____ do you go to the gym?", opts:['How','How often','How long'], ans:'How often', why:"Hỏi <b>tần suất</b> → dùng <b>How often</b>."},
- {t:'mcq', q:"_____ did you get to work yesterday? — I took a taxi.", opts:['How','Why','When'], ans:'How', why:"Hỏi về <b>phương tiện/cách thức</b> → dùng <b>How</b>."},
- {t:'mcq', q:"_____ were you late for work yesterday? — Because of the traffic jam.", opts:['How','Why','When'], ans:'Why', why:"Câu trả lời có 'Because of...' → câu hỏi phải dùng <b>Why</b>."},
- {t:'mcq', q:"_____ does this laptop belong to? — It belongs to Jim.", opts:['Who','Whose','Which'], ans:'Who', why:"'belong to' + người → hỏi người bằng <b>Who</b> (văn nói thường dùng Who thay vì Whom)."},
- {t:'mcq', q:"_____ bag was stolen yesterday?", opts:['Who','Whose','Which'], ans:'Whose', why:"Hỏi về <b>sở hữu</b> (túi của ai) → dùng <b>Whose</b> + danh từ."},
- {t:'mcq', q:"_____ will you travel to this summer? — I haven't decided yet.", opts:['Where','What','Who'], ans:'Where', why:"Hỏi <b>địa điểm</b> đi du lịch → dùng <b>Where</b>."},
- {t:'mcq', q:"_____ did you sell yesterday? — Bread and cupcakes.", opts:['What','Who','Which'], ans:'What', why:"Hỏi về <b>sự vật</b> được bán → dùng <b>What</b>."},
- {t:'mcq', q:"_____ dress did she buy? — The red or the blue one?", opts:['What','Whose','Which'], ans:'Which', why:"Có sự lựa chọn giới hạn (red/blue) → dùng <b>Which</b>."},
- {t:'mcq', q:"_____ is playing the piano upstairs?", opts:['Who','Whose','Whom'], ans:'Who', why:"'Who' làm chủ ngữ của câu → hỏi người thực hiện hành động."},
- {t:'mcq', q:"To _____ should I address the letter?", opts:['Who','Whose','Whom'], ans:'Whom', why:"Sau giới từ 'to' trong câu trang trọng, dùng <b>Whom</b> (không dùng Who)."},
- {t:'mcq', q:"_____ ethnic groups live in Vietnam?", opts:['How many','How much','How'], ans:'How many', why:"'ethnic groups' đếm được, số nhiều → <b>How many</b>."},
- {t:'mcq', q:"_____ do ethnic minority people often wear colourful costumes? — On special occasions.", opts:['When','Where','How'], ans:'When', why:"Câu trả lời chỉ thời điểm ('on special occasions') → dùng <b>When</b>."},
- {t:'mcq', q:"_____ is the communal house used for?", opts:['What','Who','Which'], ans:'What', why:"Hỏi về <b>mục đích/công dụng</b> (sự vật) → dùng <b>What</b>."},
- {t:'mcq', q:"_____ does the Ngoc Lu drum belong to — the Dong Son or the Sa Huynh culture?", opts:['What','Which','Whose'], ans:'Which', why:"Có 2 lựa chọn cụ thể được đưa ra → dùng <b>Which</b>."},
- {t:'mcq', q:"_____ carved the patterns on the bronze drum?", opts:['Who','Whom','Whose'], ans:'Who', why:"'Who' làm chủ ngữ, hỏi người thực hiện hành động 'carved'."},
+ {t:'mcq', q:"_____ is your cat? — It is two months old.", opts:['How old','When','How much'], ans:'How old', why:"Hỏi tuổi (thời gian đã tồn tại) dùng <b>How old</b>. Câu trả lời xác nhận: 'two months old'. <br>💬 <i>Dịch: Mèo của bạn bao nhiêu tuổi? – Nó được hai tháng tuổi.</i>"},
+ {t:'mcq', q:"_____ did you begin working part-time here?", opts:['How long','When','How much'], ans:'When', why:"Hỏi <b>thời điểm bắt đầu</b> (không phải khoảng thời gian) → dùng <b>When</b>. <br>💬 <i>Dịch: Bạn bắt đầu làm việc bán thời gian ở đây khi nào?</i>"},
+ {t:'mcq', q:"_____ people are there in the conference room?", opts:['How','How many','How much'], ans:'How many', why:"'People' là danh từ đếm được số nhiều → dùng <b>How many</b>. <br>💬 <i>Dịch: Có bao nhiêu người trong phòng họp?</i>"},
+ {t:'mcq', q:"_____ time will you spend on your new carpet?", opts:['How long','How many','How much'], ans:'How much', why:"'Time' là danh từ không đếm được, đã có sẵn trong câu → dùng <b>How much</b> + time. <br>💬 <i>Dịch: Bạn sẽ dành bao nhiêu thời gian cho tấm thảm mới?</i>"},
+ {t:'mcq', q:"_____ do these shoes cost?", opts:['How long','How many','How much'], ans:'How much', why:"Hỏi về giá tiền (không đếm được) → <b>How much</b>. <br>💬 <i>Dịch: Đôi giày này giá bao nhiêu?</i>"},
+ {t:'mcq', q:"_____ do you go to the gym?", opts:['How','How often','How long'], ans:'How often', why:"Hỏi <b>tần suất</b> → dùng <b>How often</b>. <br>💬 <i>Dịch: Bạn đi tập gym bao lâu một lần?</i>"},
+ {t:'mcq', q:"_____ did you get to work yesterday? — I took a taxi.", opts:['How','Why','When'], ans:'How', why:"Hỏi về <b>phương tiện/cách thức</b> → dùng <b>How</b>. <br>💬 <i>Dịch: Hôm qua bạn đến chỗ làm bằng cách nào? – Tôi đi taxi.</i>"},
+ {t:'mcq', q:"_____ were you late for work yesterday? — Because of the traffic jam.", opts:['How','Why','When'], ans:'Why', why:"Câu trả lời có 'Because of...' → câu hỏi phải dùng <b>Why</b>. <br>💬 <i>Dịch: Sao hôm qua bạn đi làm trễ vậy? – Vì kẹt xe.</i>"},
+ {t:'mcq', q:"_____ does this laptop belong to? — It belongs to Jim.", opts:['Who','Whose','Which'], ans:'Who', why:"'belong to' + người → hỏi người bằng <b>Who</b> (văn nói thường dùng Who thay vì Whom). <br>💬 <i>Dịch: Chiếc laptop này là của ai? – Nó là của Jim.</i>"},
+ {t:'mcq', q:"_____ bag was stolen yesterday?", opts:['Who','Whose','Which'], ans:'Whose', why:"Hỏi về <b>sở hữu</b> (túi của ai) → dùng <b>Whose</b> + danh từ. <br>💬 <i>Dịch: Túi của ai bị mất trộm hôm qua?</i>"},
+ {t:'mcq', q:"_____ will you travel to this summer? — I haven't decided yet.", opts:['Where','What','Who'], ans:'Where', why:"Hỏi <b>địa điểm</b> đi du lịch → dùng <b>Where</b>. <br>💬 <i>Dịch: Hè này bạn sẽ đi du lịch ở đâu? – Tôi chưa quyết định.</i>"},
+ {t:'mcq', q:"_____ did you sell yesterday? — Bread and cupcakes.", opts:['What','Who','Which'], ans:'What', why:"Hỏi về <b>sự vật</b> được bán → dùng <b>What</b>. <br>💬 <i>Dịch: Hôm qua bạn bán gì? – Bánh mì và bánh cupcake.</i>"},
+ {t:'mcq', q:"_____ dress did she buy? — The red or the blue one?", opts:['What','Whose','Which'], ans:'Which', why:"Có sự lựa chọn giới hạn (red/blue) → dùng <b>Which</b>. <br>💬 <i>Dịch: Cô ấy mua chiếc váy nào? – Chiếc đỏ hay chiếc xanh?</i>"},
+ {t:'mcq', q:"_____ is playing the piano upstairs?", opts:['Who','Whose','Whom'], ans:'Who', why:"'Who' làm chủ ngữ của câu → hỏi người thực hiện hành động. <br>💬 <i>Dịch: Ai đang chơi piano trên lầu vậy?</i>"},
+ {t:'mcq', q:"To _____ should I address the letter?", opts:['Who','Whose','Whom'], ans:'Whom', why:"Sau giới từ 'to' trong câu trang trọng, dùng <b>Whom</b> (không dùng Who). <br>💬 <i>Dịch: Tôi nên đề tên ai trên bức thư?</i>"},
+ {t:'mcq', q:"_____ ethnic groups live in Vietnam?", opts:['How many','How much','How'], ans:'How many', why:"'ethnic groups' đếm được, số nhiều → <b>How many</b>. <br>💬 <i>Dịch: Có bao nhiêu dân tộc sinh sống ở Việt Nam?</i>"},
+ {t:'mcq', q:"_____ do ethnic minority people often wear colourful costumes? — On special occasions.", opts:['When','Where','How'], ans:'When', why:"Câu trả lời chỉ thời điểm ('on special occasions') → dùng <b>When</b>. <br>💬 <i>Dịch: Người dân tộc thiểu số thường mặc trang phục sặc sỡ khi nào? – Vào những dịp đặc biệt.</i>"},
+ {t:'mcq', q:"_____ is the communal house used for?", opts:['What','Who','Which'], ans:'What', why:"Hỏi về <b>mục đích/công dụng</b> (sự vật) → dùng <b>What</b>. <br>💬 <i>Dịch: Nhà cộng đồng được dùng để làm gì?</i>"},
+ {t:'mcq', q:"_____ does the Ngoc Lu drum belong to — the Dong Son or the Sa Huynh culture?", opts:['What','Which','Whose'], ans:'Which', why:"Có 2 lựa chọn cụ thể được đưa ra → dùng <b>Which</b>. <br>💬 <i>Dịch: Trống Ngọc Lũ thuộc nền văn hóa nào — Đông Sơn hay Sa Huỳnh?</i>"},
+ {t:'mcq', q:"_____ carved the patterns on the bronze drum?", opts:['Who','Whom','Whose'], ans:'Who', why:"'Who' làm chủ ngữ, hỏi người thực hiện hành động 'carved'. <br>💬 <i>Dịch: Ai đã khắc hoa văn lên trống đồng?</i>"},
 ],
 
 /* ---------- LEVEL 2 — Fill in the blanks (Bài 2 + Bài 4, 30 mục, chọn ngẫu nhiên) ---------- */
 l2: [
- {t:'fill', q:"_______ have you given up smoking? — For about two years.", ans:['how long'], why:"'For about two years' trả lời cho khoảng thời gian → <b>How long</b>."},
- {t:'fill', q:"_______ place is more densely populated — Ha Noi or Ho Chi Minh City?", ans:['which'], why:"Có 2 lựa chọn cụ thể → <b>Which</b>."},
- {t:'fill', q:"_______'s broken Jane's favorite vase? — Her brother did it.", ans:["who's",'who'], why:"'Who's broken' = 'Who has broken' — Who làm chủ ngữ, không cần mượn trợ động từ do."},
- {t:'fill', q:"_______ does Mr. Brown do? — He's a researcher.", ans:['what'], why:"'What do/does + S + do?' là cấu trúc cố định hỏi về <b>nghề nghiệp</b>."},
- {t:'fill', q:"_______ ethnic groups are there in your country?", ans:['how many'], why:"'ethnic groups' đếm được số nhiều → <b>How many</b>."},
- {t:'fill', q:"_______ is your grandmother? — She's ninety years old.", ans:['how old'], why:"Hỏi tuổi → <b>How old</b>."},
- {t:'fill', q:"_______ does your English teacher look like? — She's young and pretty.", ans:['what'], why:"'What + S + look like?' hỏi về <b>ngoại hình</b>."},
- {t:'fill', q:"_______ water should we drink every day?", ans:['how much'], why:"'water' không đếm được → <b>How much</b>."},
- {t:'fill', q:"_______ did you use to go to school? — I used to go on foot.", ans:['how'], why:"Hỏi <b>cách thức</b> di chuyển → <b>How</b>."},
- {t:'fill', q:"_______ is it from here to the nearest police station?", ans:['how far'], why:"Hỏi <b>khoảng cách</b> → <b>How far</b>."},
- {t:'fill', q:"_______ songs is this singer performing? — He's performing Trinh Cong Son's songs.", ans:['what','which'], why:"Hỏi về loại bài hát cụ thể → <b>What/Which</b> songs."},
- {t:'fill', q:"_______ was Ms Ann born? — She was born in a small village.", ans:['where'], why:"Câu trả lời là địa điểm → <b>Where</b>."},
- {t:'fill', q:"_______ did you have for breakfast? — Bread and eggs.", ans:['what'], why:"Hỏi về sự vật (món ăn) → <b>What</b>."},
- {t:'fill', q:"_______ didn't you invite Jim to the senior prom?", ans:['why'], why:"Hỏi <b>lý do</b> → <b>Why</b>."},
- {t:'fill', q:"_______ do they meet each other? — Almost every day.", ans:['how often'], why:"Hỏi <b>tần suất</b> → <b>How often</b>."},
- {t:'fill', q:"_______ you like chocolate?", ans:['do'], why:"Chủ ngữ 'you', thì hiện tại đơn, chưa có trợ động từ → mượn <b>do</b>."},
- {t:'fill', q:"When _______ you begin studying here? — 2 years ago.", ans:['did'], why:"'ago' → thì quá khứ đơn → mượn <b>did</b>."},
- {t:'fill', q:"Which movie _______ you watch last night?", ans:['did'], why:"'last night' → thì quá khứ đơn → mượn <b>did</b>."},
- {t:'fill', q:"How far _______ it from here to the town center?", ans:['is'], why:"Câu có tobe, chủ ngữ 'it' → dùng <b>is</b>."},
- {t:'fill', q:"How long _______ Ann and James been friends with each other?", ans:['have'], why:"'been' (V3) + friends → thì hiện tại hoàn thành → <b>have</b>."},
- {t:'fill', q:"What _______ you do tomorrow? — I will just lie in my bed.", ans:['will'], why:"Câu trả lời có 'will' → câu hỏi cũng dùng <b>will</b> (thì tương lai đơn)."},
- {t:'fill', q:"Who _______ you pick up yesterday?", ans:['did'], why:"'Who' làm tân ngữ, 'yesterday' → thì quá khứ đơn → mượn <b>did</b>."},
- {t:'fill', q:"How old _______ they?", ans:['are'], why:"Chủ ngữ số nhiều 'they' + tobe → <b>are</b>."},
- {t:'fill', q:"How many rooms _______ there in your house?", ans:['are'], why:"'rooms' số nhiều → 'there' + <b>are</b>."},
- {t:'fill', q:"Who _______ sleeping in your room?", ans:['is'], why:"Thì hiện tại tiếp diễn, 'Who' số ít → <b>is</b> sleeping."},
- {t:'fill', q:"_______ you found your keys? — No, I haven't found them yet.", ans:['have'], why:"'yet' + 'haven't' → thì hiện tại hoàn thành → <b>Have</b>."},
- {t:'fill', q:"_______ you travel to a mountainous area last summer?", ans:['did'], why:"'last summer' → thì quá khứ đơn → <b>Did</b>."},
- {t:'fill', q:"How often _______ Ann visit her grandmother?", ans:['does'], why:"Chủ ngữ 'Ann' (ngôi 3 số ít), thì hiện tại đơn → <b>does</b>."},
- {t:'fill', q:"What _______ you use to do before your retirement?", ans:['did'], why:"'used to' → thì quá khứ đơn → <b>did</b>."},
- {t:'fill', q:"Where _______ Jim going to? — He's going to the library.", ans:['is'], why:"Thì hiện tại tiếp diễn, chủ ngữ 'Jim' → <b>is</b> going."},
+ {t:'fill', q:"_______ have you given up smoking? — For about two years.", ans:['how long'], why:"'For about two years' trả lời cho khoảng thời gian → <b>How long</b>. <br>💬 <i>Dịch: Bạn đã bỏ thuốc lá bao lâu rồi? – Khoảng hai năm.</i>"},
+ {t:'fill', q:"_______ place is more densely populated — Ha Noi or Ho Chi Minh City?", ans:['which'], why:"Có 2 lựa chọn cụ thể → <b>Which</b>. <br>💬 <i>Dịch: Nơi nào đông dân hơn — Hà Nội hay Thành phố Hồ Chí Minh?</i>"},
+ {t:'fill', q:"_______'s broken Jane's favorite vase? — Her brother did it.", ans:["who's",'who'], why:"'Who's broken' = 'Who has broken' — Who làm chủ ngữ, không cần mượn trợ động từ do. <br>💬 <i>Dịch: Ai đã làm vỡ chiếc bình yêu thích của Jane? – Anh trai cô ấy đã làm vỡ.</i>"},
+ {t:'fill', q:"_______ does Mr. Brown do? — He's a researcher.", ans:['what'], why:"'What do/does + S + do?' là cấu trúc cố định hỏi về <b>nghề nghiệp</b>. <br>💬 <i>Dịch: Ông Brown làm nghề gì? – Ông ấy là nhà nghiên cứu.</i>"},
+ {t:'fill', q:"_______ ethnic groups are there in your country?", ans:['how many'], why:"'ethnic groups' đếm được số nhiều → <b>How many</b>. <br>💬 <i>Dịch: Đất nước bạn có bao nhiêu dân tộc?</i>"},
+ {t:'fill', q:"_______ is your grandmother? — She's ninety years old.", ans:['how old'], why:"Hỏi tuổi → <b>How old</b>. <br>💬 <i>Dịch: Bà của bạn bao nhiêu tuổi? – Bà ấy chín mươi tuổi.</i>"},
+ {t:'fill', q:"_______ does your English teacher look like? — She's young and pretty.", ans:['what'], why:"'What + S + look like?' hỏi về <b>ngoại hình</b>. <br>💬 <i>Dịch: Cô giáo tiếng Anh của bạn trông như thế nào? – Cô ấy trẻ và xinh đẹp.</i>"},
+ {t:'fill', q:"_______ water should we drink every day?", ans:['how much'], why:"'water' không đếm được → <b>How much</b>. <br>💬 <i>Dịch: Chúng ta nên uống bao nhiêu nước mỗi ngày?</i>"},
+ {t:'fill', q:"_______ did you use to go to school? — I used to go on foot.", ans:['how'], why:"Hỏi <b>cách thức</b> di chuyển → <b>How</b>. <br>💬 <i>Dịch: Trước đây bạn thường đi học bằng cách nào? – Tôi thường đi bộ.</i>"},
+ {t:'fill', q:"_______ is it from here to the nearest police station?", ans:['how far'], why:"Hỏi <b>khoảng cách</b> → <b>How far</b>. <br>💬 <i>Dịch: Từ đây đến đồn công an gần nhất bao xa?</i>"},
+ {t:'fill', q:"_______ songs is this singer performing? — He's performing Trinh Cong Son's songs.", ans:['what','which'], why:"Hỏi về loại bài hát cụ thể → <b>What/Which</b> songs. <br>💬 <i>Dịch: Ca sĩ này đang biểu diễn những bài hát nào? – Anh ấy đang hát các bài của Trịnh Công Sơn.</i>"},
+ {t:'fill', q:"_______ was Ms Ann born? — She was born in a small village.", ans:['where'], why:"Câu trả lời là địa điểm → <b>Where</b>. <br>💬 <i>Dịch: Cô Ann sinh ra ở đâu? – Cô ấy sinh ra ở một ngôi làng nhỏ.</i>"},
+ {t:'fill', q:"_______ did you have for breakfast? — Bread and eggs.", ans:['what'], why:"Hỏi về sự vật (món ăn) → <b>What</b>. <br>💬 <i>Dịch: Bạn đã ăn gì cho bữa sáng? – Bánh mì và trứng.</i>"},
+ {t:'fill', q:"_______ didn't you invite Jim to the senior prom?", ans:['why'], why:"Hỏi <b>lý do</b> → <b>Why</b>. <br>💬 <i>Dịch: Sao bạn không mời Jim đến dạ hội cuối cấp?</i>"},
+ {t:'fill', q:"_______ do they meet each other? — Almost every day.", ans:['how often'], why:"Hỏi <b>tần suất</b> → <b>How often</b>. <br>💬 <i>Dịch: Họ gặp nhau bao lâu một lần? – Gần như mỗi ngày.</i>"},
+ {t:'fill', q:"_______ you like chocolate?", ans:['do'], why:"Chủ ngữ 'you', thì hiện tại đơn, chưa có trợ động từ → mượn <b>do</b>. <br>💬 <i>Dịch: Bạn có thích sô-cô-la không?</i>"},
+ {t:'fill', q:"When _______ you begin studying here? — 2 years ago.", ans:['did'], why:"'ago' → thì quá khứ đơn → mượn <b>did</b>. <br>💬 <i>Dịch: Bạn bắt đầu học ở đây khi nào? – 2 năm trước.</i>"},
+ {t:'fill', q:"Which movie _______ you watch last night?", ans:['did'], why:"'last night' → thì quá khứ đơn → mượn <b>did</b>. <br>💬 <i>Dịch: Tối qua bạn xem phim nào?</i>"},
+ {t:'fill', q:"How far _______ it from here to the town center?", ans:['is'], why:"Câu có tobe, chủ ngữ 'it' → dùng <b>is</b>. <br>💬 <i>Dịch: Từ đây đến trung tâm thị trấn bao xa?</i>"},
+ {t:'fill', q:"How long _______ Ann and James been friends with each other?", ans:['have'], why:"'been' (V3) + friends → thì hiện tại hoàn thành → <b>have</b>. <br>💬 <i>Dịch: Ann và James đã là bạn của nhau bao lâu rồi?</i>"},
+ {t:'fill', q:"What _______ you do tomorrow? — I will just lie in my bed.", ans:['will'], why:"Câu trả lời có 'will' → câu hỏi cũng dùng <b>will</b> (thì tương lai đơn). <br>💬 <i>Dịch: Ngày mai bạn sẽ làm gì? – Tôi sẽ chỉ nằm nghỉ trên giường thôi.</i>"},
+ {t:'fill', q:"Who _______ you pick up yesterday?", ans:['did'], why:"'Who' làm tân ngữ, 'yesterday' → thì quá khứ đơn → mượn <b>did</b>. <br>💬 <i>Dịch: Hôm qua bạn đã đón ai?</i>"},
+ {t:'fill', q:"How old _______ they?", ans:['are'], why:"Chủ ngữ số nhiều 'they' + tobe → <b>are</b>. <br>💬 <i>Dịch: Họ bao nhiêu tuổi?</i>"},
+ {t:'fill', q:"How many rooms _______ there in your house?", ans:['are'], why:"'rooms' số nhiều → 'there' + <b>are</b>. <br>💬 <i>Dịch: Nhà bạn có bao nhiêu phòng?</i>"},
+ {t:'fill', q:"Who _______ sleeping in your room?", ans:['is'], why:"Thì hiện tại tiếp diễn, 'Who' số ít → <b>is</b> sleeping. <br>💬 <i>Dịch: Ai đang ngủ trong phòng bạn?</i>"},
+ {t:'fill', q:"_______ you found your keys? — No, I haven't found them yet.", ans:['have'], why:"'yet' + 'haven't' → thì hiện tại hoàn thành → <b>Have</b>. <br>💬 <i>Dịch: Bạn đã tìm thấy chìa khóa chưa? – Chưa, tôi vẫn chưa tìm thấy.</i>"},
+ {t:'fill', q:"_______ you travel to a mountainous area last summer?", ans:['did'], why:"'last summer' → thì quá khứ đơn → <b>Did</b>. <br>💬 <i>Dịch: Mùa hè trước bạn có đi du lịch vùng núi không?</i>"},
+ {t:'fill', q:"How often _______ Ann visit her grandmother?", ans:['does'], why:"Chủ ngữ 'Ann' (ngôi 3 số ít), thì hiện tại đơn → <b>does</b>. <br>💬 <i>Dịch: Ann thăm bà bao lâu một lần?</i>"},
+ {t:'fill', q:"What _______ you use to do before your retirement?", ans:['did'], why:"'used to' → thì quá khứ đơn → <b>did</b>. <br>💬 <i>Dịch: Trước khi nghỉ hưu bạn thường làm gì?</i>"},
+ {t:'fill', q:"Where _______ Jim going to? — He's going to the library.", ans:['is'], why:"Thì hiện tại tiếp diễn, chủ ngữ 'Jim' → <b>is</b> going. <br>💬 <i>Dịch: Jim đang đi đâu vậy? – Anh ấy đang đi thư viện.</i>"},
 ],
 
 /* ---------- LEVEL 3 — Drag words: sắp xếp cụm từ (Bài 5, 15 mục) ---------- */
 l3: [
- {t:'build', bank:['How many','groups of people','are','there','in your country'], ans:'How many groups of people are there in your country', why:"'How many' + danh từ đếm được + 'are there' + địa điểm."},
- {t:'build', bank:['How','was','your party','last week'], ans:'How was your party last week', why:"Hỏi cảm nhận/tình trạng bằng tobe 'was' vì chủ ngữ số ít, thì quá khứ."},
- {t:'build', bank:['How','did','you','go to school','yesterday'], ans:'How did you go to school yesterday', why:"'yesterday' → quá khứ đơn, mượn 'did', 'How' hỏi cách thức."},
- {t:'build', bank:['Whose','cat','is','it'], ans:'Whose cat is it', why:"Hỏi sở hữu 'Whose' + danh từ + tobe + chủ ngữ."},
- {t:'build', bank:['Is','Jim','learning','Geography','at the moment'], ans:'Is Jim learning Geography at the moment', why:"'at the moment' → hiện tại tiếp diễn, đảo 'is' lên đầu."},
- {t:'build', bank:['Have','you','ever','seen','terraced fields'], ans:'Have you ever seen terraced fields', why:"'ever' → hiện tại hoàn thành, đảo 'have' lên đầu."},
- {t:'build', bank:['What kind of animal','do','the farmers','raise','in your country'], ans:'What kind of animal do the farmers raise in your country', why:"'What kind of' + danh từ làm tân ngữ, mượn 'do'."},
- {t:'build', bank:['What time','does','the concert','start'], ans:'What time does the concert start', why:"Chủ ngữ 'the concert' ngôi 3 số ít, hiện tại đơn → mượn 'does'."},
- {t:'build', bank:['How far','is','it','from your house to the local school'], ans:'How far is it from your house to the local school', why:"Hỏi khoảng cách với tobe 'is' vì chủ ngữ 'it'."},
- {t:'build', bank:['Are','you','coming','to my birthday party','tomorrow'], ans:'Are you coming to my birthday party tomorrow', why:"'tomorrow' + thì tương lai gần diễn đạt bằng hiện tại tiếp diễn."},
- {t:'build', bank:['Where','did','you','go','last summer'], ans:'Where did you go last summer', why:"'last summer' → quá khứ đơn, mượn 'did'."},
- {t:'build', bank:['How much money','did','you','spend','on clothes last month'], ans:'How much money did you spend on clothes last month', why:"'money' không đếm được → 'How much', quá khứ đơn → 'did'."},
- {t:'build', bank:['How','do','ethnic people','dress','on special occasions'], ans:'How do ethnic people dress on special occasions', why:"Hỏi cách thức ăn mặc, thì hiện tại đơn, chủ ngữ số nhiều → 'do'."},
- {t:'build', bank:['Who','is','swimming','in the swimming pool','now'], ans:'Who is swimming in the swimming pool now', why:"'now' → hiện tại tiếp diễn, 'Who' làm chủ ngữ."},
- {t:'build', bank:['How often','does','Mr. Smith','mow','the lawn'], ans:'How often does Mr. Smith mow the lawn', why:"Chủ ngữ 'Mr. Smith' ngôi 3 số ít → mượn 'does'."},
+ {t:'build', bank:['How many','groups of people','are','there','in your country'], ans:'How many groups of people are there in your country', why:"'How many' + danh từ đếm được + 'are there' + địa điểm. <br>💬 <i>Dịch: Đất nước bạn có bao nhiêu nhóm dân tộc?</i>"},
+ {t:'build', bank:['How','was','your party','last week'], ans:'How was your party last week', why:"Hỏi cảm nhận/tình trạng bằng tobe 'was' vì chủ ngữ số ít, thì quá khứ. <br>💬 <i>Dịch: Bữa tiệc của bạn tuần trước thế nào?</i>"},
+ {t:'build', bank:['How','did','you','go to school','yesterday'], ans:'How did you go to school yesterday', why:"'yesterday' → quá khứ đơn, mượn 'did', 'How' hỏi cách thức. <br>💬 <i>Dịch: Hôm qua bạn đi học bằng cách nào?</i>"},
+ {t:'build', bank:['Whose','cat','is','it'], ans:'Whose cat is it', why:"Hỏi sở hữu 'Whose' + danh từ + tobe + chủ ngữ. <br>💬 <i>Dịch: Con mèo này là của ai?</i>"},
+ {t:'build', bank:['Is','Jim','learning','Geography','at the moment'], ans:'Is Jim learning Geography at the moment', why:"'at the moment' → hiện tại tiếp diễn, đảo 'is' lên đầu. <br>💬 <i>Dịch: Lúc này Jim có đang học Địa lý không?</i>"},
+ {t:'build', bank:['Have','you','ever','seen','terraced fields'], ans:'Have you ever seen terraced fields', why:"'ever' → hiện tại hoàn thành, đảo 'have' lên đầu. <br>💬 <i>Dịch: Bạn đã bao giờ thấy ruộng bậc thang chưa?</i>"},
+ {t:'build', bank:['What kind of animal','do','the farmers','raise','in your country'], ans:'What kind of animal do the farmers raise in your country', why:"'What kind of' + danh từ làm tân ngữ, mượn 'do'. <br>💬 <i>Dịch: Nông dân ở nước bạn nuôi loại vật nào?</i>"},
+ {t:'build', bank:['What time','does','the concert','start'], ans:'What time does the concert start', why:"Chủ ngữ 'the concert' ngôi 3 số ít, hiện tại đơn → mượn 'does'. <br>💬 <i>Dịch: Buổi hòa nhạc bắt đầu lúc mấy giờ?</i>"},
+ {t:'build', bank:['How far','is','it','from your house to the local school'], ans:'How far is it from your house to the local school', why:"Hỏi khoảng cách với tobe 'is' vì chủ ngữ 'it'. <br>💬 <i>Dịch: Từ nhà bạn đến trường học địa phương bao xa?</i>"},
+ {t:'build', bank:['Are','you','coming','to my birthday party','tomorrow'], ans:'Are you coming to my birthday party tomorrow', why:"'tomorrow' + thì tương lai gần diễn đạt bằng hiện tại tiếp diễn. <br>💬 <i>Dịch: Ngày mai bạn có đến dự sinh nhật của tôi không?</i>"},
+ {t:'build', bank:['Where','did','you','go','last summer'], ans:'Where did you go last summer', why:"'last summer' → quá khứ đơn, mượn 'did'. <br>💬 <i>Dịch: Mùa hè trước bạn đã đi đâu?</i>"},
+ {t:'build', bank:['How much money','did','you','spend','on clothes last month'], ans:'How much money did you spend on clothes last month', why:"'money' không đếm được → 'How much', quá khứ đơn → 'did'. <br>💬 <i>Dịch: Tháng trước bạn đã tiêu bao nhiêu tiền cho quần áo?</i>"},
+ {t:'build', bank:['How','do','ethnic people','dress','on special occasions'], ans:'How do ethnic people dress on special occasions', why:"Hỏi cách thức ăn mặc, thì hiện tại đơn, chủ ngữ số nhiều → 'do'. <br>💬 <i>Dịch: Người dân tộc ăn mặc như thế nào vào dịp đặc biệt?</i>"},
+ {t:'build', bank:['Who','is','swimming','in the swimming pool','now'], ans:'Who is swimming in the swimming pool now', why:"'now' → hiện tại tiếp diễn, 'Who' làm chủ ngữ. <br>💬 <i>Dịch: Ai đang bơi trong hồ bơi vậy?</i>"},
+ {t:'build', bank:['How often','does','Mr. Smith','mow','the lawn'], ans:'How often does Mr. Smith mow the lawn', why:"Chủ ngữ 'Mr. Smith' ngôi 3 số ít → mượn 'does'. <br>💬 <i>Dịch: Ông Smith cắt cỏ bao lâu một lần?</i>"},
 ],
 
 /* ---------- LEVEL 4 — Sentence Builder: từ gợi ý → câu hoàn chỉnh (Bài 12 + Bài 10, 20 mục) ---------- */
 l4: [
- {t:'fill', q:"Đặt câu hỏi từ gợi ý: When / bank / open / every day?", ans:['when does the bank open every day'], why:"Thì hiện tại đơn, chủ ngữ số ít 'the bank' → mượn 'does'."},
- {t:'fill', q:"Đặt câu hỏi từ gợi ý: You / have / bread / and / boiled egg / for / breakfast?", ans:['do you have bread and a boiled egg for breakfast','do you have bread and boiled egg for breakfast'], why:"Câu hỏi Yes/No thì hiện tại đơn, chủ ngữ 'you' → mượn 'do'."},
- {t:'fill', q:"Đặt câu hỏi từ gợi ý: Everyone / enjoy / concert / last night?", ans:['did everyone enjoy the concert last night'], why:"'last night' → quá khứ đơn → mượn 'did'."},
- {t:'fill', q:"Đặt câu hỏi từ gợi ý: When / you / start / working / as / officer / in / this company?", ans:['when did you start working as an officer in this company'], why:"Hỏi thời điểm bắt đầu trong quá khứ → 'When did'."},
- {t:'fill', q:"Đặt câu hỏi từ gợi ý: How much / money / you / spend / on / your / last / holiday?", ans:['how much money did you spend on your last holiday'], why:"'money' không đếm được → 'How much', quá khứ đơn → 'did'."},
- {t:'fill', q:"Đặt câu hỏi từ gợi ý: What time / sun / often / rise / in / summer?", ans:['what time does the sun often rise in summer'], why:"Sự thật hiển nhiên, hiện tại đơn → mượn 'does'."},
- {t:'fill', q:"Đặt câu hỏi từ gợi ý: You / like / cup / of / tea?", ans:['would you like a cup of tea','do you like a cup of tea'], why:"Lời mời lịch sự thường dùng 'Would you like...?'"},
- {t:'fill', q:"Đặt câu hỏi từ gợi ý: Train / leave / early / this morning?", ans:['did the train leave early this morning'], why:"'this morning' (đã qua) → quá khứ đơn → 'did'."},
- {t:'fill', q:"Đặt câu hỏi từ gợi ý: Who / play / guitar / upstairs?", ans:['who is playing the guitar upstairs','who plays the guitar upstairs'], why:"'Who' làm chủ ngữ, có thể dùng hiện tại tiếp diễn nếu đang diễn ra."},
- {t:'fill', q:"Đặt câu hỏi từ gợi ý: Who / tallest / person / in / your / class?", ans:['who is the tallest person in your class'], why:"So sánh hơn nhất luôn có 'the' + tobe."},
- {t:'fill', q:"Đặt câu hỏi cho phần gạch chân: Jim has recently experienced [the life of ethnic people] in Vietnam.", ans:['what has jim recently experienced in vietnam'], why:"Phần gạch chân là tân ngữ (sự vật) → hỏi bằng 'What'."},
- {t:'fill', q:"Đặt câu hỏi cho phần gạch chân: The ethnic minorities in Vietnam often live [in mountainous areas].", ans:['where do the ethnic minorities in vietnam often live'], why:"Phần gạch chân chỉ địa điểm → hỏi bằng 'Where'."},
- {t:'fill', q:"Đặt câu hỏi cho phần gạch chân: Their costumes are [colorful and unique].", ans:['what are their costumes like','how are their costumes'], why:"Phần gạch chân là tính chất/miêu tả → 'What...like?' hoặc 'How'."},
- {t:'fill', q:"Đặt câu hỏi cho phần gạch chân: They often gather together [at the communal house] on special occasions.", ans:['where do they often gather together on special occasions'], why:"Phần gạch chân chỉ địa điểm → 'Where'."},
- {t:'fill', q:"Đặt câu hỏi cho phần gạch chân: The chief often [tells tales of heroes to the people] at the communal house.", ans:['what does the chief often do at the communal house'], why:"Phần gạch chân là hành động cụ thể → hỏi bằng 'What...do?'"},
- {t:'fill', q:"Đặt câu hỏi cho phần gạch chân: Ethnic people often hold festivals [in spring].", ans:['when do ethnic people often hold festivals'], why:"Phần gạch chân chỉ thời gian → 'When'."},
- {t:'fill', q:"Đặt câu hỏi cho phần gạch chân: Life in mountainous areas is difficult [because of the extreme weather].", ans:['why is life in mountainous areas difficult'], why:"Phần gạch chân nêu lý do → 'Why'."},
- {t:'fill', q:"Đặt câu hỏi cho phần gạch chân: It may take people [half a day] to travel to the market.", ans:['how long may it take people to travel to the market'], why:"Phần gạch chân chỉ khoảng thời gian → 'How long'."},
- {t:'fill', q:"Đặt câu hỏi cho phần gạch chân: [Shortage in electricity and water supply] makes life in remote areas difficult.", ans:['what makes life in remote areas difficult'], why:"Phần gạch chân là chủ ngữ (nguyên nhân) → 'What' làm chủ ngữ."},
- {t:'fill', q:"Đặt câu hỏi cho phần gạch chân: Local authorities help ethnic minorities [by teaching them farming methods].", ans:['how do the local authorities help the ethnic minorities'], why:"Phần gạch chân nêu cách thức giúp đỡ → 'How'."},
+ {t:'fill', q:"Đặt câu hỏi từ gợi ý: When / bank / open / every day?", ans:['when does the bank open every day'], why:"Thì hiện tại đơn, chủ ngữ số ít 'the bank' → mượn 'does'. <br>💬 <i>Dịch: Ngân hàng mở cửa mỗi ngày khi nào?</i>"},
+ {t:'fill', q:"Đặt câu hỏi từ gợi ý: You / have / bread / and / boiled egg / for / breakfast?", ans:['do you have bread and a boiled egg for breakfast','do you have bread and boiled egg for breakfast'], why:"Câu hỏi Yes/No thì hiện tại đơn, chủ ngữ 'you' → mượn 'do'. <br>💬 <i>Dịch: Bạn có ăn bánh mì và trứng luộc cho bữa sáng không?</i>"},
+ {t:'fill', q:"Đặt câu hỏi từ gợi ý: Everyone / enjoy / concert / last night?", ans:['did everyone enjoy the concert last night'], why:"'last night' → quá khứ đơn → mượn 'did'. <br>💬 <i>Dịch: Mọi người có thích buổi hòa nhạc tối qua không?</i>"},
+ {t:'fill', q:"Đặt câu hỏi từ gợi ý: When / you / start / working / as / officer / in / this company?", ans:['when did you start working as an officer in this company'], why:"Hỏi thời điểm bắt đầu trong quá khứ → 'When did'. <br>💬 <i>Dịch: Bạn bắt đầu làm nhân viên ở công ty này khi nào?</i>"},
+ {t:'fill', q:"Đặt câu hỏi từ gợi ý: How much / money / you / spend / on / your / last / holiday?", ans:['how much money did you spend on your last holiday'], why:"'money' không đếm được → 'How much', quá khứ đơn → 'did'. <br>💬 <i>Dịch: Kỳ nghỉ trước bạn đã tiêu bao nhiêu tiền?</i>"},
+ {t:'fill', q:"Đặt câu hỏi từ gợi ý: What time / sun / often / rise / in / summer?", ans:['what time does the sun often rise in summer'], why:"Sự thật hiển nhiên, hiện tại đơn → mượn 'does'. <br>💬 <i>Dịch: Mùa hè mặt trời thường mọc lúc mấy giờ?</i>"},
+ {t:'fill', q:"Đặt câu hỏi từ gợi ý: You / like / cup / of / tea?", ans:['would you like a cup of tea','do you like a cup of tea'], why:"Lời mời lịch sự thường dùng 'Would you like...?' <br>💬 <i>Dịch: Bạn có muốn dùng một tách trà không?</i>"},
+ {t:'fill', q:"Đặt câu hỏi từ gợi ý: Train / leave / early / this morning?", ans:['did the train leave early this morning'], why:"'this morning' (đã qua) → quá khứ đơn → 'did'. <br>💬 <i>Dịch: Sáng nay tàu có khởi hành sớm không?</i>"},
+ {t:'fill', q:"Đặt câu hỏi từ gợi ý: Who / play / guitar / upstairs?", ans:['who is playing the guitar upstairs','who plays the guitar upstairs'], why:"'Who' làm chủ ngữ, có thể dùng hiện tại tiếp diễn nếu đang diễn ra. <br>💬 <i>Dịch: Ai đang chơi guitar trên lầu vậy?</i>"},
+ {t:'fill', q:"Đặt câu hỏi từ gợi ý: Who / tallest / person / in / your / class?", ans:['who is the tallest person in your class'], why:"So sánh hơn nhất luôn có 'the' + tobe. <br>💬 <i>Dịch: Ai là người cao nhất lớp bạn?</i>"},
+ {t:'fill', q:"Đặt câu hỏi cho phần gạch chân: Jim has recently experienced [the life of ethnic people] in Vietnam.", ans:['what has jim recently experienced in vietnam'], why:"Phần gạch chân là tân ngữ (sự vật) → hỏi bằng 'What'. <br>💬 <i>Dịch: Jim đã trải nghiệm điều gì gần đây ở Việt Nam? (đời sống của người dân tộc)</i>"},
+ {t:'fill', q:"Đặt câu hỏi cho phần gạch chân: The ethnic minorities in Vietnam often live [in mountainous areas].", ans:['where do the ethnic minorities in vietnam often live'], why:"Phần gạch chân chỉ địa điểm → hỏi bằng 'Where'. <br>💬 <i>Dịch: Người dân tộc thiểu số ở Việt Nam thường sống ở đâu? (vùng núi)</i>"},
+ {t:'fill', q:"Đặt câu hỏi cho phần gạch chân: Their costumes are [colorful and unique].", ans:['what are their costumes like','how are their costumes'], why:"Phần gạch chân là tính chất/miêu tả → 'What...like?' hoặc 'How'. <br>💬 <i>Dịch: Trang phục của họ như thế nào? (sặc sỡ và độc đáo)</i>"},
+ {t:'fill', q:"Đặt câu hỏi cho phần gạch chân: They often gather together [at the communal house] on special occasions.", ans:['where do they often gather together on special occasions'], why:"Phần gạch chân chỉ địa điểm → 'Where'. <br>💬 <i>Dịch: Họ thường tụ họp ở đâu vào dịp đặc biệt? (nhà cộng đồng)</i>"},
+ {t:'fill', q:"Đặt câu hỏi cho phần gạch chân: The chief often [tells tales of heroes to the people] at the communal house.", ans:['what does the chief often do at the communal house'], why:"Phần gạch chân là hành động cụ thể → hỏi bằng 'What...do?' <br>💬 <i>Dịch: Già làng thường làm gì ở nhà cộng đồng? (kể chuyện về các anh hùng)</i>"},
+ {t:'fill', q:"Đặt câu hỏi cho phần gạch chân: Ethnic people often hold festivals [in spring].", ans:['when do ethnic people often hold festivals'], why:"Phần gạch chân chỉ thời gian → 'When'. <br>💬 <i>Dịch: Người dân tộc thường tổ chức lễ hội khi nào? (vào mùa xuân)</i>"},
+ {t:'fill', q:"Đặt câu hỏi cho phần gạch chân: Life in mountainous areas is difficult [because of the extreme weather].", ans:['why is life in mountainous areas difficult'], why:"Phần gạch chân nêu lý do → 'Why'. <br>💬 <i>Dịch: Vì sao cuộc sống ở vùng núi khó khăn? (vì thời tiết khắc nghiệt)</i>"},
+ {t:'fill', q:"Đặt câu hỏi cho phần gạch chân: It may take people [half a day] to travel to the market.", ans:['how long may it take people to travel to the market'], why:"Phần gạch chân chỉ khoảng thời gian → 'How long'. <br>💬 <i>Dịch: Mất bao lâu để đi đến chợ? (nửa ngày)</i>"},
+ {t:'fill', q:"Đặt câu hỏi cho phần gạch chân: [Shortage in electricity and water supply] makes life in remote areas difficult.", ans:['what makes life in remote areas difficult'], why:"Phần gạch chân là chủ ngữ (nguyên nhân) → 'What' làm chủ ngữ. <br>💬 <i>Dịch: Điều gì khiến cuộc sống ở vùng sâu vùng xa khó khăn? (thiếu điện và nước)</i>"},
+ {t:'fill', q:"Đặt câu hỏi cho phần gạch chân: Local authorities help ethnic minorities [by teaching them farming methods].", ans:['how do the local authorities help the ethnic minorities'], why:"Phần gạch chân nêu cách thức giúp đỡ → 'How'. <br>💬 <i>Dịch: Chính quyền địa phương giúp người dân tộc thiểu số bằng cách nào? (dạy họ phương pháp canh tác)</i>"},
 ],
 
 /* ---------- LEVEL 5 — Word Order: sắp xếp lại câu bị xáo trộn (tự soạn, 20 mục) ---------- */
@@ -719,103 +802,125 @@ l5: (function(){
   "What kind of music do they play at ceremonies",
   "How do people worship their ancestors in Vietnam",
  ];
- return sentences.map(s=>({t:'build', bank: shuffleFixed(s.split(' ')), ans: s.toLowerCase(), why:"Trật tự chuẩn: <b>Wh-word + trợ động từ + chủ ngữ + động từ + phần còn lại</b>."}));
+ const viTranslations = [
+  "Bạn thường dành kỳ nghỉ hè ở đâu?",
+  "Ngày mai lễ hội bắt đầu lúc mấy giờ?",
+  "Dân làng ghé thăm nhà cộng đồng bao lâu một lần?",
+  "Vì sao nông dân chuyển đến vùng núi?",
+  "Ai đang mặc trang phục truyền thống hôm nay vậy?",
+  "Tỉnh này có bao nhiêu dân tộc sinh sống?",
+  "Bà của bạn thường nấu món gì cho Tết?",
+  "Trống đồng Ngọc Lũ được phát hiện khi nào?",
+  "Từ Hà Nội đến Sa Pa bao xa?",
+  "Bạn thích bộ trang phục nào nhất?",
+  "Ý tưởng đi thăm ruộng bậc thang là của ai?",
+  "Bạn đã học tiếng Anh bao lâu rồi?",
+  "Đặc sản địa phương ở vùng này là gì?",
+  "Già làng sống ở đâu?",
+  "Nông dân thu hoạch bao nhiêu lúa mỗi năm?",
+  "Tối qua bạn có thích buổi biểu diễn xiếc không?",
+  "Dân làng có đang chuẩn bị cho lễ hội không?",
+  "Bạn đã bao giờ thử cốm chưa?",
+  "Họ chơi loại nhạc gì trong các nghi lễ?",
+  "Người Việt Nam thờ cúng tổ tiên như thế nào?",
+ ];
+ return sentences.map((s,i)=>({t:'build', bank: shuffleFixed(s.split(' ')), ans: s.toLowerCase(), why:`Trật tự chuẩn: <b>Wh-word + trợ động từ + chủ ngữ + động từ + phần còn lại</b>. <br>💬 <i>Dịch: ${viTranslations[i]}</i>`}));
 })(),
 
 /* ---------- LEVEL 6 — Error Correction (tự soạn theo lỗi thường gặp, 20 mục) ---------- */
 l6: [
- {t:'tf', q:"What your name is?", correct:false, fix:"What is your name?", why:"Phải đảo trợ động từ 'is' lên trước chủ ngữ trong câu hỏi."},
- {t:'tf', q:"Where you go yesterday?", correct:false, fix:"Where did you go yesterday?", why:"Thì quá khứ đơn cần mượn trợ động từ 'did'."},
- {t:'tf', q:"Who does teach you English?", correct:false, fix:"Who teaches you English?", why:"'Who' làm chủ ngữ thì KHÔNG mượn do/does, chỉ chia động từ chính."},
- {t:'tf', q:"How much people are there in your family?", correct:false, fix:"How many people are there in your family?", why:"'people' đếm được → dùng 'How many' chứ không dùng 'How much'."},
- {t:'tf', q:"Do you like the K-pop music?", correct:true, fix:"Do you like the K-pop music?", why:"Câu hỏi Yes/No đúng cấu trúc: Do + S + V + O?"},
- {t:'tf', q:"What time is the train leaves?", correct:false, fix:"What time does the train leave?", why:"Không dùng cả 'is' và 'leaves' cùng lúc — chỉ cần mượn 'does' + động từ nguyên mẫu."},
- {t:'tf', q:"How long is it take to get there?", correct:false, fix:"How long does it take to get there?", why:"Cấu trúc đúng: 'How long does it take...?' không dùng 'is'."},
- {t:'tf', q:"Whose is this umbrella?", correct:true, fix:"Whose is this umbrella?", why:"Đúng — 'Whose' hỏi bổ ngữ, đảo tobe 'is' lên trước chủ ngữ 'this umbrella'."},
- {t:'tf', q:"Why you didn't come to the party?", correct:false, fix:"Why didn't you come to the party?", why:"Phải đảo trợ động từ phủ định 'didn't' lên trước chủ ngữ."},
- {t:'tf', q:"What does she look like?", correct:true, fix:"What does she look like?", why:"Đúng — cấu trúc cố định hỏi ngoại hình: What + does + S + look like?"},
- {t:'tf', q:"How many money do you need?", correct:false, fix:"How much money do you need?", why:"'money' không đếm được → dùng 'How much'."},
- {t:'tf', q:"Which do you prefer, tea or coffee?", correct:true, fix:"Which do you prefer, tea or coffee?", why:"Đúng — có 2 lựa chọn cụ thể nên dùng 'Which'."},
- {t:'tf', q:"When you were born?", correct:false, fix:"When were you born?", why:"Phải đảo 'were' lên trước chủ ngữ 'you'."},
- {t:'tf', q:"Who is opening the door?", correct:true, fix:"Who is opening the door?", why:"Đúng — 'Who' làm chủ ngữ, chia hiện tại tiếp diễn bình thường."},
- {t:'tf', q:"How often does your father goes fishing?", correct:false, fix:"How often does your father go fishing?", why:"Đã mượn 'does' rồi thì động từ chính phải ở dạng nguyên mẫu, không chia thêm 's'."},
- {t:'tf', q:"What did happen to your bike?", correct:false, fix:"What happened to your bike?", why:"'What' làm chủ ngữ thì không mượn 'did', chỉ chia động từ chính ở quá khứ."},
- {t:'tf', q:"Have you ever seen a terraced field?", correct:true, fix:"Have you ever seen a terraced field?", why:"Đúng — thì hiện tại hoàn thành, đảo 'have' lên trước chủ ngữ."},
- {t:'tf', q:"How far it is from here to the market?", correct:false, fix:"How far is it from here to the market?", why:"Phải đảo 'is' lên trước 'it', không được để nguyên trật tự câu khẳng định."},
- {t:'tf', q:"To whom did you give the gift?", correct:true, fix:"To whom did you give the gift?", why:"Đúng — 'whom' trang trọng sau giới từ 'to', mượn 'did' đúng thì quá khứ."},
- {t:'tf', q:"What kind of costume she is wearing?", correct:false, fix:"What kind of costume is she wearing?", why:"Phải đảo 'is' lên trước chủ ngữ 'she'."},
+ {t:'tf', q:"What your name is?", correct:false, fix:"What is your name?", why:"Phải đảo trợ động từ 'is' lên trước chủ ngữ trong câu hỏi. <br>💬 <i>Dịch câu đúng: Tên bạn là gì?</i>"},
+ {t:'tf', q:"Where you go yesterday?", correct:false, fix:"Where did you go yesterday?", why:"Thì quá khứ đơn cần mượn trợ động từ 'did'. <br>💬 <i>Dịch câu đúng: Hôm qua bạn đi đâu?</i>"},
+ {t:'tf', q:"Who does teach you English?", correct:false, fix:"Who teaches you English?", why:"'Who' làm chủ ngữ thì KHÔNG mượn do/does, chỉ chia động từ chính. <br>💬 <i>Dịch câu đúng: Ai dạy bạn tiếng Anh?</i>"},
+ {t:'tf', q:"How much people are there in your family?", correct:false, fix:"How many people are there in your family?", why:"'people' đếm được → dùng 'How many' chứ không dùng 'How much'. <br>💬 <i>Dịch câu đúng: Gia đình bạn có bao nhiêu người?</i>"},
+ {t:'tf', q:"Do you like the K-pop music?", correct:true, fix:"Do you like the K-pop music?", why:"Câu hỏi Yes/No đúng cấu trúc: Do + S + V + O? <br>💬 <i>Dịch câu đúng: Bạn có thích nhạc K-pop không?</i>"},
+ {t:'tf', q:"What time is the train leaves?", correct:false, fix:"What time does the train leave?", why:"Không dùng cả 'is' và 'leaves' cùng lúc — chỉ cần mượn 'does' + động từ nguyên mẫu. <br>💬 <i>Dịch câu đúng: Mấy giờ tàu khởi hành?</i>"},
+ {t:'tf', q:"How long is it take to get there?", correct:false, fix:"How long does it take to get there?", why:"Cấu trúc đúng: 'How long does it take...?' không dùng 'is'. <br>💬 <i>Dịch câu đúng: Đi đến đó mất bao lâu?</i>"},
+ {t:'tf', q:"Whose is this umbrella?", correct:true, fix:"Whose is this umbrella?", why:"Đúng — 'Whose' hỏi bổ ngữ, đảo tobe 'is' lên trước chủ ngữ 'this umbrella'. <br>💬 <i>Dịch câu đúng: Cái ô này là của ai?</i>"},
+ {t:'tf', q:"Why you didn't come to the party?", correct:false, fix:"Why didn't you come to the party?", why:"Phải đảo trợ động từ phủ định 'didn't' lên trước chủ ngữ. <br>💬 <i>Dịch câu đúng: Sao bạn không đến dự tiệc?</i>"},
+ {t:'tf', q:"What does she look like?", correct:true, fix:"What does she look like?", why:"Đúng — cấu trúc cố định hỏi ngoại hình: What + does + S + look like? <br>💬 <i>Dịch câu đúng: Cô ấy trông như thế nào?</i>"},
+ {t:'tf', q:"How many money do you need?", correct:false, fix:"How much money do you need?", why:"'money' không đếm được → dùng 'How much'. <br>💬 <i>Dịch câu đúng: Bạn cần bao nhiêu tiền?</i>"},
+ {t:'tf', q:"Which do you prefer, tea or coffee?", correct:true, fix:"Which do you prefer, tea or coffee?", why:"Đúng — có 2 lựa chọn cụ thể nên dùng 'Which'. <br>💬 <i>Dịch câu đúng: Bạn thích trà hay cà phê hơn?</i>"},
+ {t:'tf', q:"When you were born?", correct:false, fix:"When were you born?", why:"Phải đảo 'were' lên trước chủ ngữ 'you'. <br>💬 <i>Dịch câu đúng: Bạn sinh khi nào?</i>"},
+ {t:'tf', q:"Who is opening the door?", correct:true, fix:"Who is opening the door?", why:"Đúng — 'Who' làm chủ ngữ, chia hiện tại tiếp diễn bình thường. <br>💬 <i>Dịch câu đúng: Ai đang mở cửa vậy?</i>"},
+ {t:'tf', q:"How often does your father goes fishing?", correct:false, fix:"How often does your father go fishing?", why:"Đã mượn 'does' rồi thì động từ chính phải ở dạng nguyên mẫu, không chia thêm 's'. <br>💬 <i>Dịch câu đúng: Bố bạn đi câu cá bao lâu một lần?</i>"},
+ {t:'tf', q:"What did happen to your bike?", correct:false, fix:"What happened to your bike?", why:"'What' làm chủ ngữ thì không mượn 'did', chỉ chia động từ chính ở quá khứ. <br>💬 <i>Dịch câu đúng: Chuyện gì đã xảy ra với xe đạp của bạn?</i>"},
+ {t:'tf', q:"Have you ever seen a terraced field?", correct:true, fix:"Have you ever seen a terraced field?", why:"Đúng — thì hiện tại hoàn thành, đảo 'have' lên trước chủ ngữ. <br>💬 <i>Dịch câu đúng: Bạn đã bao giờ thấy ruộng bậc thang chưa?</i>"},
+ {t:'tf', q:"How far it is from here to the market?", correct:false, fix:"How far is it from here to the market?", why:"Phải đảo 'is' lên trước 'it', không được để nguyên trật tự câu khẳng định. <br>💬 <i>Dịch câu đúng: Từ đây đến chợ bao xa?</i>"},
+ {t:'tf', q:"To whom did you give the gift?", correct:true, fix:"To whom did you give the gift?", why:"Đúng — 'whom' trang trọng sau giới từ 'to', mượn 'did' đúng thì quá khứ. <br>💬 <i>Dịch câu đúng: Bạn đã tặng quà cho ai?</i>"},
+ {t:'tf', q:"What kind of costume she is wearing?", correct:false, fix:"What kind of costume is she wearing?", why:"Phải đảo 'is' lên trước chủ ngữ 'she'. <br>💬 <i>Dịch câu đúng: Cô ấy đang mặc loại trang phục gì vậy?</i>"},
 ],
 
 /* ---------- LEVEL 7 — Rewrite: viết lại câu hỏi theo từ gợi ý (tự soạn, 20 mục) ---------- */
 l7: [
- {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'When': Tet usually begins in late January or early February.", ans:['when does tet usually begin'], why:"Chuyển câu khẳng định thành câu hỏi, mượn 'does' vì chủ ngữ 'Tet' số ít."},
- {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'Where': The gong festival takes place in the Central Highlands.", ans:['where does the gong festival take place'], why:"Mượn 'does', động từ chính về dạng nguyên mẫu 'take place'."},
- {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'How many': There are 54 ethnic groups in Vietnam.", ans:['how many ethnic groups are there in vietnam'], why:"'ethnic groups' đếm được → 'How many', giữ cấu trúc 'there are'."},
- {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'Why': People light fires to chase away bad spirits.", ans:['why do people light fires'], why:"Mượn 'do' vì chủ ngữ số nhiều 'people', hiện tại đơn."},
- {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'Who': The village chief tells tales of heroes.", ans:['who tells tales of heroes'], why:"'Who' làm chủ ngữ → không mượn do/does, chỉ chia động từ chính."},
- {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'What': Farmers raise poultry and cattle.", ans:['what do farmers raise'], why:"'What' làm tân ngữ → mượn 'do', chủ ngữ số nhiều 'farmers'."},
- {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'How': Ethnic minority people dress in colourful costumes on special occasions.", ans:['how do ethnic minority people dress on special occasions'], why:"Hỏi cách thức, mượn 'do' vì chủ ngữ số nhiều, hiện tại đơn."},
- {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'How long': The festival lasts for three days.", ans:['how long does the festival last'], why:"Mượn 'does' vì chủ ngữ 'the festival' số ít."},
- {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'How far': Sa Pa is about 320 kilometers from Ha Noi.", ans:['how far is sa pa from ha noi'], why:"Câu có tobe 'is' → chỉ cần đảo 'is' lên trước chủ ngữ."},
- {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'What time': The ceremony starts at 8 a.m.", ans:['what time does the ceremony start'], why:"Mượn 'does' vì chủ ngữ 'the ceremony' số ít."},
- {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'Which': She bought the red costume, not the blue one.", ans:['which costume did she buy'], why:"Có sự lựa chọn cụ thể → dùng 'Which', mượn 'did' vì quá khứ."},
- {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'Whose': This ornamental tree belongs to Mr. Nam.", ans:['whose ornamental tree is this'], why:"Hỏi sở hữu bằng 'Whose' + danh từ + tobe."},
- {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'When': The bronze drum was discovered in 1893.", ans:['when was the bronze drum discovered'], why:"Câu bị động ở quá khứ, đảo 'was' lên trước chủ ngữ."},
- {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'Where': The drum is preserved at the National Museum.", ans:['where is the drum preserved'], why:"Câu bị động, đảo 'is' lên trước chủ ngữ."},
- {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'How much': This traditional costume costs two million dong.", ans:['how much does this traditional costume cost'], why:"'money/cost' không đếm được → 'How much', mượn 'does'."},
- {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'Who': Someone is beating the drum at the ceremony.", ans:['who is beating the drum at the ceremony'], why:"'Who' làm chủ ngữ, giữ nguyên thì hiện tại tiếp diễn."},
- {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'Why': Life in remote areas is difficult because of the shortage of water.", ans:['why is life in remote areas difficult'], why:"Câu có tobe 'is' → chỉ cần đảo lên trước chủ ngữ."},
- {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'What': The chief teaches young people traditional skills.", ans:['what does the chief teach young people'], why:"'What' làm tân ngữ → mượn 'does' vì chủ ngữ số ít."},
- {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'How often': Ethnic people hold this festival once a year.", ans:['how often do ethnic people hold this festival'], why:"Hỏi tần suất, mượn 'do' vì chủ ngữ số nhiều."},
- {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'What kind of': They raise buffalo and poultry on the farm.", ans:['what kind of animal do they raise on the farm','what kind of animals do they raise on the farm'], why:"'What kind of' + danh từ làm tân ngữ, mượn 'do'."},
+ {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'When': Tet usually begins in late January or early February.", ans:['when does tet usually begin'], why:"Chuyển câu khẳng định thành câu hỏi, mượn 'does' vì chủ ngữ 'Tet' số ít. <br>💬 <i>Dịch câu gốc: Tết thường bắt đầu vào cuối tháng Một hoặc đầu tháng Hai.</i>"},
+ {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'Where': The gong festival takes place in the Central Highlands.", ans:['where does the gong festival take place'], why:"Mượn 'does', động từ chính về dạng nguyên mẫu 'take place'. <br>💬 <i>Dịch câu gốc: Lễ hội cồng chiêng diễn ra ở Tây Nguyên.</i>"},
+ {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'How many': There are 54 ethnic groups in Vietnam.", ans:['how many ethnic groups are there in vietnam'], why:"'ethnic groups' đếm được → 'How many', giữ cấu trúc 'there are'. <br>💬 <i>Dịch câu gốc: Việt Nam có 54 dân tộc.</i>"},
+ {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'Why': People light fires to chase away bad spirits.", ans:['why do people light fires'], why:"Mượn 'do' vì chủ ngữ số nhiều 'people', hiện tại đơn. <br>💬 <i>Dịch câu gốc: Người ta đốt lửa để xua đuổi tà ma.</i>"},
+ {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'Who': The village chief tells tales of heroes.", ans:['who tells tales of heroes'], why:"'Who' làm chủ ngữ → không mượn do/does, chỉ chia động từ chính. <br>💬 <i>Dịch câu gốc: Già làng kể chuyện về các anh hùng.</i>"},
+ {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'What': Farmers raise poultry and cattle.", ans:['what do farmers raise'], why:"'What' làm tân ngữ → mượn 'do', chủ ngữ số nhiều 'farmers'. <br>💬 <i>Dịch câu gốc: Nông dân nuôi gia cầm và gia súc.</i>"},
+ {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'How': Ethnic minority people dress in colourful costumes on special occasions.", ans:['how do ethnic minority people dress on special occasions'], why:"Hỏi cách thức, mượn 'do' vì chủ ngữ số nhiều, hiện tại đơn. <br>💬 <i>Dịch câu gốc: Người dân tộc thiểu số mặc trang phục sặc sỡ vào dịp đặc biệt.</i>"},
+ {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'How long': The festival lasts for three days.", ans:['how long does the festival last'], why:"Mượn 'does' vì chủ ngữ 'the festival' số ít. <br>💬 <i>Dịch câu gốc: Lễ hội kéo dài ba ngày.</i>"},
+ {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'How far': Sa Pa is about 320 kilometers from Ha Noi.", ans:['how far is sa pa from ha noi'], why:"Câu có tobe 'is' → chỉ cần đảo 'is' lên trước chủ ngữ. <br>💬 <i>Dịch câu gốc: Sa Pa cách Hà Nội khoảng 320 ki-lô-mét.</i>"},
+ {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'What time': The ceremony starts at 8 a.m.", ans:['what time does the ceremony start'], why:"Mượn 'does' vì chủ ngữ 'the ceremony' số ít. <br>💬 <i>Dịch câu gốc: Buổi lễ bắt đầu lúc 8 giờ sáng.</i>"},
+ {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'Which': She bought the red costume, not the blue one.", ans:['which costume did she buy'], why:"Có sự lựa chọn cụ thể → dùng 'Which', mượn 'did' vì quá khứ. <br>💬 <i>Dịch câu gốc: Cô ấy đã mua bộ trang phục màu đỏ, không phải màu xanh.</i>"},
+ {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'Whose': This ornamental tree belongs to Mr. Nam.", ans:['whose ornamental tree is this'], why:"Hỏi sở hữu bằng 'Whose' + danh từ + tobe. <br>💬 <i>Dịch câu gốc: Cây cảnh này là của ông Nam.</i>"},
+ {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'When': The bronze drum was discovered in 1893.", ans:['when was the bronze drum discovered'], why:"Câu bị động ở quá khứ, đảo 'was' lên trước chủ ngữ. <br>💬 <i>Dịch câu gốc: Trống đồng được phát hiện vào năm 1893.</i>"},
+ {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'Where': The drum is preserved at the National Museum.", ans:['where is the drum preserved'], why:"Câu bị động, đảo 'is' lên trước chủ ngữ. <br>💬 <i>Dịch câu gốc: Chiếc trống được lưu giữ tại Bảo tàng Quốc gia.</i>"},
+ {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'How much': This traditional costume costs two million dong.", ans:['how much does this traditional costume cost'], why:"'money/cost' không đếm được → 'How much', mượn 'does'. <br>💬 <i>Dịch câu gốc: Bộ trang phục truyền thống này giá hai triệu đồng.</i>"},
+ {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'Who': Someone is beating the drum at the ceremony.", ans:['who is beating the drum at the ceremony'], why:"'Who' làm chủ ngữ, giữ nguyên thì hiện tại tiếp diễn. <br>💬 <i>Dịch câu gốc: Có ai đó đang đánh trống trong buổi lễ.</i>"},
+ {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'Why': Life in remote areas is difficult because of the shortage of water.", ans:['why is life in remote areas difficult'], why:"Câu có tobe 'is' → chỉ cần đảo lên trước chủ ngữ. <br>💬 <i>Dịch câu gốc: Cuộc sống ở vùng sâu vùng xa khó khăn vì thiếu nước.</i>"},
+ {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'What': The chief teaches young people traditional skills.", ans:['what does the chief teach young people'], why:"'What' làm tân ngữ → mượn 'does' vì chủ ngữ số ít. <br>💬 <i>Dịch câu gốc: Già làng dạy các kỹ năng truyền thống cho người trẻ.</i>"},
+ {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'How often': Ethnic people hold this festival once a year.", ans:['how often do ethnic people hold this festival'], why:"Hỏi tần suất, mượn 'do' vì chủ ngữ số nhiều. <br>💬 <i>Dịch câu gốc: Người dân tộc tổ chức lễ hội này mỗi năm một lần.</i>"},
+ {t:'fill', q:"Viết lại thành câu hỏi bắt đầu bằng 'What kind of': They raise buffalo and poultry on the farm.", ans:['what kind of animal do they raise on the farm','what kind of animals do they raise on the farm'], why:"'What kind of' + danh từ làm tân ngữ, mượn 'do'. <br>💬 <i>Dịch câu gốc: Họ nuôi trâu và gia cầm ở trang trại.</i>"},
 ],
 
 /* ---------- LEVEL 8 — Dialogue completion (tự soạn, 20 mục) ---------- */
 l8: [
- {t:'mcq', q:"A: _____ are you from? B: I'm from a small village in Sa Pa.", opts:['Where','What','Who'], ans:'Where', why:"Trả lời về nơi chốn → 'Where'."},
- {t:'mcq', q:"A: _____ do you usually do at Tet? B: I visit my grandparents.", opts:['What','Who','Whose'], ans:'What', why:"Trả lời là hành động (sự việc) → 'What'."},
- {t:'mcq', q:"A: _____ is the communal house? B: It's at the centre of the village.", opts:['Where','When','Why'], ans:'Where', why:"Trả lời là địa điểm → 'Where'."},
- {t:'mcq', q:"A: _____ does the festival start? B: At 7 o'clock in the morning.", opts:['What time','How long','How often'], ans:'What time', why:"Trả lời là mốc thời gian cụ thể → 'What time'."},
- {t:'mcq', q:"A: _____ people came to the festival? B: About five hundred.", opts:['How many','How much','How'], ans:'How many', why:"'people' đếm được, trả lời là con số → 'How many'."},
- {t:'mcq', q:"A: _____ did you buy this costume? B: I bought it in a small market.", opts:['Where','When','Why'], ans:'Where', why:"Trả lời là địa điểm mua → 'Where'."},
- {t:'mcq', q:"A: _____ is that man? B: He's the chief of our village.", opts:['Who','Whom','Whose'], ans:'Who', why:"Hỏi danh tính người → 'Who'."},
- {t:'mcq', q:"A: _____ did you feel about the ceremony? B: I felt very proud and moved.", opts:['How','What','Why'], ans:'How', why:"Hỏi cảm xúc → 'How did you feel?'"},
- {t:'mcq', q:"A: _____ are you going with? B: I'm going with my classmates.", opts:['Who','Whom','What'], ans:'Who', why:"Hỏi người đi cùng, văn nói thường dùng 'Who' thay vì 'Whom'."},
- {t:'mcq', q:"A: _____ long does the ceremony last? B: About two hours.", opts:['How','What','Why'], ans:'How', why:"'How long' hỏi khoảng thời gian kéo dài."},
- {t:'mcq', q:"A: _____ is your favourite specialty? B: Young rice, definitely.", opts:['What','Which','Who'], ans:'What', why:"Hỏi chung, không có lựa chọn cụ thể → 'What'."},
- {t:'mcq', q:"A: _____ often do you visit the pagoda? B: Once a month.", opts:['How','How often','How long'], ans:'How often', why:"Trả lời là tần suất → 'How often'."},
- {t:'mcq', q:"A: _____ made this beautiful lantern? B: My grandmother did.", opts:['Who','Whom','What'], ans:'Who', why:"'Who' làm chủ ngữ, hỏi người thực hiện hành động."},
- {t:'mcq', q:"A: _____ is it from your house to the communal house? B: Only about ten minutes on foot.", opts:['How far','How long','How much'], ans:'How far', why:"Trả lời là khoảng cách/thời gian đi lại → 'How far'."},
- {t:'mcq', q:"A: _____ colour is the traditional costume? B: It's mostly red and gold.", opts:['What','Which','Who'], ans:'What', why:"Hỏi màu sắc chung → 'What colour'."},
- {t:'mcq', q:"A: _____ dish do you prefer, banh chung or banh giay? B: I prefer banh chung.", opts:['What','Which','Whose'], ans:'Which', why:"Có 2 lựa chọn cụ thể → 'Which'."},
- {t:'mcq', q:"A: _____ is this lantern? B: It's mine.", opts:['Whose','Who','Which'], ans:'Whose', why:"Hỏi sở hữu → 'Whose'."},
- {t:'mcq', q:"A: _____ didn't you come to the ceremony? B: Because I was sick.", opts:['Why','When','How'], ans:'Why', why:"Trả lời nêu lý do ('Because...') → 'Why'."},
- {t:'mcq', q:"A: _____ have you lived in this village? B: Since I was born.", opts:['How long','How often','When'], ans:'How long', why:"Trả lời chỉ khoảng thời gian ('Since...') → 'How long'."},
- {t:'mcq', q:"A: _____ will the next festival be held? B: Next spring.", opts:['When','Where','Who'], ans:'When', why:"Trả lời là thời gian trong tương lai → 'When'."},
+ {t:'mcq', q:"A: _____ are you from? B: I'm from a small village in Sa Pa.", opts:['Where','What','Who'], ans:'Where', why:"Trả lời về nơi chốn → 'Where'. <br>💬 <i>Dịch: Bạn đến từ đâu? – Tôi đến từ một ngôi làng nhỏ ở Sa Pa.</i> <br>💬 <i>Dịch: Cái đó là gì vậy? – Đó là một chiếc đèn lồng truyền thống.</i>"},
+ {t:'mcq', q:"A: _____ do you usually do at Tet? B: I visit my grandparents.", opts:['What','Who','Whose'], ans:'What', why:"Trả lời là hành động (sự việc) → 'What'. <br>💬 <i>Dịch: Bạn thường làm gì vào dịp Tết? – Tôi thăm ông bà.</i> <br>💬 <i>Dịch: Ông ấy là ai vậy? – Ông ấy là một vị tổ tiên của tôi.</i>"},
+ {t:'mcq', q:"A: _____ is the communal house? B: It's at the centre of the village.", opts:['Where','When','Why'], ans:'Where', why:"Trả lời là địa điểm → 'Where'. <br>💬 <i>Dịch: Nhà cộng đồng ở đâu? – Nó ở trung tâm làng.</i> <br>💬 <i>Dịch: Bạn sống ở đâu? – Tôi sống gần một nhà cộng đồng cũ.</i>"},
+ {t:'mcq', q:"A: _____ does the festival start? B: At 7 o'clock in the morning.", opts:['What time','How long','How often'], ans:'What time', why:"Trả lời là mốc thời gian cụ thể → 'What time'. <br>💬 <i>Dịch: Lễ hội bắt đầu khi nào? – Lúc 7 giờ sáng.</i> <br>💬 <i>Dịch: Thời tiết thế nào? – Mặt trời đang chiếu sáng rực rỡ.</i>"},
+ {t:'mcq', q:"A: _____ people came to the festival? B: About five hundred.", opts:['How many','How much','How'], ans:'How many', why:"'people' đếm được, trả lời là con số → 'How many'. <br>💬 <i>Dịch: Bao nhiêu người đã đến lễ hội? – Khoảng năm trăm người.</i> <br>💬 <i>Dịch: Bạn có biết anh ấy không? – Có, anh ấy là một người trung thực.</i>"},
+ {t:'mcq', q:"A: _____ did you buy this costume? B: I bought it in a small market.", opts:['Where','When','Why'], ans:'Where', why:"Trả lời là địa điểm mua → 'Where'. <br>💬 <i>Dịch: Bạn mua bộ trang phục này ở đâu? – Tôi mua ở một khu chợ nhỏ.</i> <br>💬 <i>Dịch: Cô ấy đã mua gì? – Cô ấy đã mua một bộ trang phục cho lễ hội.</i>"},
+ {t:'mcq', q:"A: _____ is that man? B: He's the chief of our village.", opts:['Who','Whom','Whose'], ans:'Who', why:"Hỏi danh tính người → 'Who'. <br>💬 <i>Dịch: Người đàn ông đó là ai vậy? – Ông ấy là già làng của chúng tôi.</i> <br>💬 <i>Dịch: Buổi lễ thế nào? – Đó là sự kiện đáng nhớ nhất trong năm.</i>"},
+ {t:'mcq', q:"A: _____ did you feel about the ceremony? B: I felt very proud and moved.", opts:['How','What','Why'], ans:'How', why:"Hỏi cảm xúc → 'How did you feel?' <br>💬 <i>Dịch: Bạn cảm thấy thế nào về buổi lễ? – Tôi cảm thấy rất tự hào và xúc động.</i> <br>💬 <i>Dịch: Nông dân ở đây nuôi gì? – Họ nuôi gia cầm và gia súc.</i>"},
+ {t:'mcq', q:"A: _____ are you going with? B: I'm going with my classmates.", opts:['Who','Whom','What'], ans:'Who', why:"Hỏi người đi cùng, văn nói thường dùng 'Who' thay vì 'Whom'. <br>💬 <i>Dịch: Bạn đi cùng với ai? – Tôi đi cùng các bạn cùng lớp.</i> <br>💬 <i>Dịch: Gần đây có chợ không? – Có, có một khu chợ nhỏ ở góc phố.</i>"},
+ {t:'mcq', q:"A: _____ long does the ceremony last? B: About two hours.", opts:['How','What','Why'], ans:'How', why:"'How long' hỏi khoảng thời gian kéo dài. <br>💬 <i>Dịch: Buổi lễ kéo dài bao lâu? – Khoảng hai tiếng.</i> <br>💬 <i>Dịch: Công việc của bạn là gì? – Tôi là giảng viên đại học.</i>"},
+ {t:'mcq', q:"A: _____ is your favourite specialty? B: Young rice, definitely.", opts:['What','Which','Who'], ans:'What', why:"Hỏi chung, không có lựa chọn cụ thể → 'What'. <br>💬 <i>Dịch: Đặc sản yêu thích của bạn là gì? – Chắc chắn là cốm.</i> <br>💬 <i>Dịch: Trống được cất giữ ở đâu? – Nó được cất tại Bảo tàng Quốc gia.</i>"},
+ {t:'mcq', q:"A: _____ often do you visit the pagoda? B: Once a month.", opts:['How','How often','How long'], ans:'How often', why:"Trả lời là tần suất → 'How often'. <br>💬 <i>Dịch: Bạn đi chùa bao lâu một lần? – Một tháng một lần.</i> <br>💬 <i>Dịch: Bạn muốn uống gì? – Cho tôi nước cam.</i>"},
+ {t:'mcq', q:"A: _____ made this beautiful lantern? B: My grandmother did.", opts:['Who','Whom','What'], ans:'Who', why:"'Who' làm chủ ngữ, hỏi người thực hiện hành động. <br>💬 <i>Dịch: Ai đã làm chiếc đèn lồng xinh đẹp này? – Bà tôi đã làm.</i> <br>💬 <i>Dịch: Bạn có xem buổi biểu diễn không? – Có, đó là một trải nghiệm khó quên.</i>"},
+ {t:'mcq', q:"A: _____ is it from your house to the communal house? B: Only about ten minutes on foot.", opts:['How far','How long','How much'], ans:'How far', why:"Trả lời là khoảng cách/thời gian đi lại → 'How far'. <br>💬 <i>Dịch: Từ nhà bạn đến nhà cộng đồng bao xa? – Chỉ khoảng mười phút đi bộ.</i> <br>💬 <i>Dịch: Mất bao lâu vậy? – Mất một tiếng rưỡi.</i>"},
+ {t:'mcq', q:"A: _____ colour is the traditional costume? B: It's mostly red and gold.", opts:['What','Which','Who'], ans:'What', why:"Hỏi màu sắc chung → 'What colour'. <br>💬 <i>Dịch: Trang phục truyền thống màu gì? – Chủ yếu là đỏ và vàng.</i> <br>💬 <i>Dịch: Phong tục này nói về điều gì? – Đó là một truyền thống độc đáo của làng chúng tôi.</i>"},
+ {t:'mcq', q:"A: _____ dish do you prefer, banh chung or banh giay? B: I prefer banh chung.", opts:['What','Which','Whose'], ans:'Which', why:"Có 2 lựa chọn cụ thể → 'Which'. <br>💬 <i>Dịch: Bạn thích món nào hơn, bánh chưng hay bánh giầy? – Tôi thích bánh chưng hơn.</i> <br>💬 <i>Dịch: Ai sống ở đó? – Một cặp vợ chồng già sống ở đó.</i>"},
+ {t:'mcq', q:"A: _____ is this lantern? B: It's mine.", opts:['Whose','Who','Which'], ans:'Whose', why:"Hỏi sở hữu → 'Whose'. <br>💬 <i>Dịch: Chiếc đèn lồng này là của ai? – Của tôi.</i> <br>💬 <i>Dịch: Tòa nhà đó là gì? – Đó là một ngôi chùa được xây dựng 200 năm trước.</i>"},
+ {t:'mcq', q:"A: _____ didn't you come to the ceremony? B: Because I was sick.", opts:['Why','When','How'], ans:'Why', why:"Trả lời nêu lý do ('Because...') → 'Why'. <br>💬 <i>Dịch: Sao bạn không đến dự buổi lễ? – Vì tôi bị ốm.</i> <br>💬 <i>Dịch: Bạn có thích đọc sách không? – Có, tôi thích đọc sách nói chung.</i>"},
+ {t:'mcq', q:"A: _____ have you lived in this village? B: Since I was born.", opts:['How long','How often','When'], ans:'How long', why:"Trả lời chỉ khoảng thời gian ('Since...') → 'How long'. <br>💬 <i>Dịch: Bạn đã sống ở làng này bao lâu? – Từ khi tôi sinh ra.</i> <br>💬 <i>Dịch: Anh ấy đã tặng cô ấy gì? – Anh ấy tặng cô ấy một chiếc ô làm quà.</i>"},
+ {t:'mcq', q:"A: _____ will the next festival be held? B: Next spring.", opts:['When','Where','Who'], ans:'When', why:"Trả lời là thời gian trong tương lai → 'When'. <br>💬 <i>Dịch: Lễ hội tiếp theo sẽ được tổ chức khi nào? – Vào mùa xuân tới.</i> <br>💬 <i>Dịch: Ngọn núi nào vậy? – Đó là ngọn núi cao nhất vùng.</i>"},
 ],
 
 /* ---------- LEVEL 9 — Real Communication: sản xuất tự do (tự soạn, 20 mục) ---------- */
 l9: [
- {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'Where' để hỏi bạn cùng lớp về quê quán của bạn ấy.", ans:['where'], keyword:'where', why:"Chỉ cần chứa từ 'Where' và có dấu '?' — ví dụ: 'Where are you from?'"},
- {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'What' để hỏi về món ăn truyền thống yêu thích của bạn ấy.", ans:['what'], keyword:'what', why:"Ví dụ: 'What is your favourite traditional dish?'"},
- {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'How often' để hỏi tần suất đi lễ hội của bạn ấy.", ans:['how often'], keyword:'how often', why:"Ví dụ: 'How often do you go to festivals?'"},
- {t:'fill', q:"Hãy đặt một câu hỏi Yes/No để hỏi bạn ấy có thích mặc trang phục truyền thống không.", ans:['do'], keyword:'do', why:"Ví dụ: 'Do you like wearing traditional costumes?'"},
- {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'Why' để hỏi lý do bạn ấy thích một lễ hội nào đó.", ans:['why'], keyword:'why', why:"Ví dụ: 'Why do you like that festival?'"},
- {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'How long' để hỏi bạn ấy đã sống ở đó bao lâu.", ans:['how long'], keyword:'how long', why:"Ví dụ: 'How long have you lived there?'"},
- {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'Who' để hỏi ai dạy bạn ấy về phong tục gia đình.", ans:['who'], keyword:'who', why:"Ví dụ: 'Who taught you about your family customs?'"},
- {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'When' để hỏi khi nào gia đình bạn ấy tổ chức sum họp.", ans:['when'], keyword:'when', why:"Ví dụ: 'When does your family have a reunion?'"},
- {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'How many' để hỏi có bao nhiêu dân tộc ở tỉnh của bạn ấy.", ans:['how many'], keyword:'how many', why:"Ví dụ: 'How many ethnic groups are there in your province?'"},
- {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'What' để hỏi ý nghĩa của một phong tục nào đó.", ans:['what'], keyword:'what', why:"Ví dụ: 'What does this custom mean?'"},
- {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'Which' để hỏi bạn ấy thích lễ hội nào hơn.", ans:['which'], keyword:'which', why:"Ví dụ: 'Which festival do you prefer?'"},
- {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'How' để hỏi cảm nhận của bạn ấy khi tham gia lễ hội.", ans:['how'], keyword:'how', why:"Ví dụ: 'How do you feel when you join the festival?'"},
- {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'Whose' để hỏi cây nêu đó là của gia đình nào.", ans:['whose'], keyword:'whose', why:"Ví dụ: 'Whose bamboo pole is that?'"},
- {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'Where' để hỏi nơi tổ chức lễ hội cồng chiêng.", ans:['where'], keyword:'where', why:"Ví dụ: 'Where is the gong festival held?'"},
- {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'What time' để hỏi giờ bắt đầu của nghi lễ.", ans:['what time'], keyword:'what time', why:"Ví dụ: 'What time does the ceremony start?'"},
- {t:'fill', q:"Hãy đặt một câu hỏi Yes/No để hỏi bạn ấy đã từng xem múa xiếc dân gian chưa.", ans:['have'], keyword:'have', why:"Ví dụ: 'Have you ever watched a folk acrobatics show?'"},
- {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'How much' để hỏi giá của một bộ trang phục truyền thống.", ans:['how much'], keyword:'how much', why:"Ví dụ: 'How much does a traditional costume cost?'"},
- {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'What kind of' để hỏi loại nhạc cụ được dùng trong lễ hội.", ans:['what kind of'], keyword:'what kind of', why:"Ví dụ: 'What kind of instrument is used in the festival?'"},
- {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'Why' để hỏi tại sao người dân thờ cúng tổ tiên.", ans:['why'], keyword:'why', why:"Ví dụ: 'Why do people worship their ancestors?'"},
- {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'How far' để hỏi khoảng cách từ nhà bạn ấy đến chợ phiên.", ans:['how far'], keyword:'how far', why:"Ví dụ: 'How far is it from your house to the market fair?'"},
+ {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'Where' để hỏi bạn cùng lớp về quê quán của bạn ấy.", ans:['where'], keyword:'where', why:"Chỉ cần chứa từ 'Where' và có dấu '?' — ví dụ: 'Where are you from?' <br>💬 <i>(Bạn đến từ đâu?)</i>"},
+ {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'What' để hỏi về món ăn truyền thống yêu thích của bạn ấy.", ans:['what'], keyword:'what', why:"Ví dụ: 'What is your favourite traditional dish?' <br>💬 <i>(Món ăn truyền thống yêu thích của bạn là gì?)</i>"},
+ {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'How often' để hỏi tần suất đi lễ hội của bạn ấy.", ans:['how often'], keyword:'how often', why:"Ví dụ: 'How often do you go to festivals?' <br>💬 <i>(Bạn đi lễ hội bao lâu một lần?)</i>"},
+ {t:'fill', q:"Hãy đặt một câu hỏi Yes/No để hỏi bạn ấy có thích mặc trang phục truyền thống không.", ans:['do'], keyword:'do', why:"Ví dụ: 'Do you like wearing traditional costumes?' <br>💬 <i>(Bạn có thích mặc trang phục truyền thống không?)</i>"},
+ {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'Why' để hỏi lý do bạn ấy thích một lễ hội nào đó.", ans:['why'], keyword:'why', why:"Ví dụ: 'Why do you like that festival?' <br>💬 <i>(Sao bạn thích lễ hội đó?)</i>"},
+ {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'How long' để hỏi bạn ấy đã sống ở đó bao lâu.", ans:['how long'], keyword:'how long', why:"Ví dụ: 'How long have you lived there?' <br>💬 <i>(Bạn đã sống ở đó bao lâu rồi?)</i>"},
+ {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'Who' để hỏi ai dạy bạn ấy về phong tục gia đình.", ans:['who'], keyword:'who', why:"Ví dụ: 'Who taught you about your family customs?' <br>💬 <i>(Ai đã dạy bạn về phong tục gia đình?)</i>"},
+ {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'When' để hỏi khi nào gia đình bạn ấy tổ chức sum họp.", ans:['when'], keyword:'when', why:"Ví dụ: 'When does your family have a reunion?' <br>💬 <i>(Gia đình bạn tổ chức sum họp khi nào?)</i>"},
+ {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'How many' để hỏi có bao nhiêu dân tộc ở tỉnh của bạn ấy.", ans:['how many'], keyword:'how many', why:"Ví dụ: 'How many ethnic groups are there in your province?' <br>💬 <i>(Tỉnh của bạn có bao nhiêu dân tộc?)</i>"},
+ {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'What' để hỏi ý nghĩa của một phong tục nào đó.", ans:['what'], keyword:'what', why:"Ví dụ: 'What does this custom mean?' <br>💬 <i>(Phong tục này có ý nghĩa gì?)</i>"},
+ {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'Which' để hỏi bạn ấy thích lễ hội nào hơn.", ans:['which'], keyword:'which', why:"Ví dụ: 'Which festival do you prefer?' <br>💬 <i>(Bạn thích lễ hội nào hơn?)</i>"},
+ {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'How' để hỏi cảm nhận của bạn ấy khi tham gia lễ hội.", ans:['how'], keyword:'how', why:"Ví dụ: 'How do you feel when you join the festival?' <br>💬 <i>(Bạn cảm thấy thế nào khi tham gia lễ hội?)</i>"},
+ {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'Whose' để hỏi cây nêu đó là của gia đình nào.", ans:['whose'], keyword:'whose', why:"Ví dụ: 'Whose bamboo pole is that?' <br>💬 <i>(Cây nêu đó là của ai?)</i>"},
+ {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'Where' để hỏi nơi tổ chức lễ hội cồng chiêng.", ans:['where'], keyword:'where', why:"Ví dụ: 'Where is the gong festival held?' <br>💬 <i>(Lễ hội cồng chiêng được tổ chức ở đâu?)</i>"},
+ {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'What time' để hỏi giờ bắt đầu của nghi lễ.", ans:['what time'], keyword:'what time', why:"Ví dụ: 'What time does the ceremony start?' <br>💬 <i>(Buổi lễ bắt đầu lúc mấy giờ?)</i>"},
+ {t:'fill', q:"Hãy đặt một câu hỏi Yes/No để hỏi bạn ấy đã từng xem múa xiếc dân gian chưa.", ans:['have'], keyword:'have', why:"Ví dụ: 'Have you ever watched a folk acrobatics show?' <br>💬 <i>(Bạn đã bao giờ xem một buổi biểu diễn xiếc dân gian chưa?)</i>"},
+ {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'How much' để hỏi giá của một bộ trang phục truyền thống.", ans:['how much'], keyword:'how much', why:"Ví dụ: 'How much does a traditional costume cost?' <br>💬 <i>(Một bộ trang phục truyền thống giá bao nhiêu?)</i>"},
+ {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'What kind of' để hỏi loại nhạc cụ được dùng trong lễ hội.", ans:['what kind of'], keyword:'what kind of', why:"Ví dụ: 'What kind of instrument is used in the festival?' <br>💬 <i>(Loại nhạc cụ nào được dùng trong lễ hội?)</i>"},
+ {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'Why' để hỏi tại sao người dân thờ cúng tổ tiên.", ans:['why'], keyword:'why', why:"Ví dụ: 'Why do people worship their ancestors?' <br>💬 <i>(Sao người ta thờ cúng tổ tiên?)</i>"},
+ {t:'fill', q:"Hãy đặt một câu hỏi Wh- với từ 'How far' để hỏi khoảng cách từ nhà bạn ấy đến chợ phiên.", ans:['how far'], keyword:'how far', why:"Ví dụ: 'How far is it from your house to the market fair?' <br>💬 <i>(Từ nhà bạn đến chợ phiên bao xa?)</i>"},
 ],
 };
 /* ============================================================
@@ -825,170 +930,170 @@ const EX_ARTICLES = {
 
 /* ---------- LEVEL 1 — Recognition MCQ: a hay an? (Bài 6, 17 mục) ---------- */
 l1: [
- {t:'mcq', q:"_____ ancestor", opts:['a','an'], ans:'an', why:"'ancestor' bắt đầu bằng âm nguyên âm /æ/ → <b>an</b>."},
- {t:'mcq', q:"_____ aunt", opts:['a','an'], ans:'an', why:"'aunt' bắt đầu bằng âm nguyên âm → <b>an</b>."},
- {t:'mcq', q:"_____ photograph", opts:['a','an'], ans:'a', why:"'photograph' bắt đầu bằng âm phụ âm /f/ → <b>a</b>."},
- {t:'mcq', q:"_____ costume", opts:['a','an'], ans:'a', why:"'costume' bắt đầu bằng âm phụ âm /k/ → <b>a</b>."},
- {t:'mcq', q:"_____ custom", opts:['a','an'], ans:'a', why:"'custom' bắt đầu bằng âm phụ âm /k/ → <b>a</b>."},
- {t:'mcq', q:"_____ honor", opts:['a','an'], ans:'an', why:"'honor' có 'h' câm, đọc bắt đầu bằng nguyên âm /ɒ/ → <b>an</b>."},
- {t:'mcq', q:"_____ specialty", opts:['a','an'], ans:'a', why:"'specialty' bắt đầu bằng âm phụ âm /s/ → <b>a</b>."},
- {t:'mcq', q:"_____ hour", opts:['a','an'], ans:'an', why:"'hour' có 'h' câm, đọc là /aʊə/ → <b>an</b>."},
- {t:'mcq', q:"_____ person", opts:['a','an'], ans:'a', why:"'person' bắt đầu bằng âm phụ âm /p/ → <b>a</b>."},
- {t:'mcq', q:"_____ house", opts:['a','an'], ans:'a', why:"'house' bắt đầu bằng âm phụ âm /h/ → <b>a</b>."},
- {t:'mcq', q:"_____ region", opts:['a','an'], ans:'a', why:"'region' bắt đầu bằng âm phụ âm /r/ → <b>a</b>."},
- {t:'mcq', q:"_____ student", opts:['a','an'], ans:'a', why:"'student' bắt đầu bằng âm phụ âm /s/ → <b>a</b>."},
- {t:'mcq', q:"_____ picture", opts:['a','an'], ans:'a', why:"'picture' bắt đầu bằng âm phụ âm /p/ → <b>a</b>."},
- {t:'mcq', q:"_____ uniform", opts:['a','an'], ans:'a', why:"'uniform' đọc là /juː-/, âm /j/ là phụ âm → <b>a</b>."},
- {t:'mcq', q:"_____ mountain", opts:['a','an'], ans:'a', why:"'mountain' bắt đầu bằng âm phụ âm /m/ → <b>a</b>."},
- {t:'mcq', q:"_____ university", opts:['a','an'], ans:'a', why:"'university' đọc là /juː-/, âm /j/ là phụ âm → <b>a</b>."},
- {t:'mcq', q:"_____ way", opts:['a','an'], ans:'a', why:"'way' bắt đầu bằng âm phụ âm /w/ → <b>a</b>."},
- {t:'mcq', q:"_____ umbrella", opts:['a','an'], ans:'an', why:"'umbrella' bắt đầu bằng âm nguyên âm /ʌ/ → <b>an</b>."},
- {t:'mcq', q:"_____ ethnic group", opts:['a','an'], ans:'an', why:"'ethnic' bắt đầu bằng âm nguyên âm /e/ → <b>an</b>."},
- {t:'mcq', q:"_____ elephant", opts:['a','an'], ans:'an', why:"'elephant' bắt đầu bằng âm nguyên âm /e/ → <b>an</b>."},
+ {t:'mcq', q:"_____ ancestor", opts:['a','an'], ans:'an', why:"'ancestor' bắt đầu bằng âm nguyên âm /æ/ → <b>an</b>. <br>💬 <i>Nghĩa: tổ tiên</i>"},
+ {t:'mcq', q:"_____ aunt", opts:['a','an'], ans:'an', why:"'aunt' bắt đầu bằng âm nguyên âm → <b>an</b>. <br>💬 <i>Nghĩa: cô/dì</i>"},
+ {t:'mcq', q:"_____ photograph", opts:['a','an'], ans:'a', why:"'photograph' bắt đầu bằng âm phụ âm /f/ → <b>a</b>. <br>💬 <i>Nghĩa: tấm ảnh</i>"},
+ {t:'mcq', q:"_____ costume", opts:['a','an'], ans:'a', why:"'costume' bắt đầu bằng âm phụ âm /k/ → <b>a</b>. <br>💬 <i>Nghĩa: trang phục</i>"},
+ {t:'mcq', q:"_____ custom", opts:['a','an'], ans:'a', why:"'custom' bắt đầu bằng âm phụ âm /k/ → <b>a</b>. <br>💬 <i>Nghĩa: phong tục</i>"},
+ {t:'mcq', q:"_____ honor", opts:['a','an'], ans:'an', why:"'honor' có 'h' câm, đọc bắt đầu bằng nguyên âm /ɒ/ → <b>an</b>. <br>💬 <i>Nghĩa: danh dự</i>"},
+ {t:'mcq', q:"_____ specialty", opts:['a','an'], ans:'a', why:"'specialty' bắt đầu bằng âm phụ âm /s/ → <b>a</b>. <br>💬 <i>Nghĩa: đặc sản/sở trường</i>"},
+ {t:'mcq', q:"_____ hour", opts:['a','an'], ans:'an', why:"'hour' có 'h' câm, đọc là /aʊə/ → <b>an</b>. <br>💬 <i>Nghĩa: giờ đồng hồ</i>"},
+ {t:'mcq', q:"_____ person", opts:['a','an'], ans:'a', why:"'person' bắt đầu bằng âm phụ âm /p/ → <b>a</b>. <br>💬 <i>Nghĩa: người</i>"},
+ {t:'mcq', q:"_____ house", opts:['a','an'], ans:'a', why:"'house' bắt đầu bằng âm phụ âm /h/ → <b>a</b>. <br>💬 <i>Nghĩa: ngôi nhà</i>"},
+ {t:'mcq', q:"_____ region", opts:['a','an'], ans:'a', why:"'region' bắt đầu bằng âm phụ âm /r/ → <b>a</b>. <br>💬 <i>Nghĩa: vùng miền</i>"},
+ {t:'mcq', q:"_____ student", opts:['a','an'], ans:'a', why:"'student' bắt đầu bằng âm phụ âm /s/ → <b>a</b>. <br>💬 <i>Nghĩa: học sinh/sinh viên</i>"},
+ {t:'mcq', q:"_____ picture", opts:['a','an'], ans:'a', why:"'picture' bắt đầu bằng âm phụ âm /p/ → <b>a</b>. <br>💬 <i>Nghĩa: bức tranh</i>"},
+ {t:'mcq', q:"_____ uniform", opts:['a','an'], ans:'a', why:"'uniform' đọc là /juː-/, âm /j/ là phụ âm → <b>a</b>. <br>💬 <i>Nghĩa: đồng phục</i>"},
+ {t:'mcq', q:"_____ mountain", opts:['a','an'], ans:'a', why:"'mountain' bắt đầu bằng âm phụ âm /m/ → <b>a</b>. <br>💬 <i>Nghĩa: ngọn núi</i>"},
+ {t:'mcq', q:"_____ university", opts:['a','an'], ans:'a', why:"'university' đọc là /juː-/, âm /j/ là phụ âm → <b>a</b>. <br>💬 <i>Nghĩa: trường đại học</i>"},
+ {t:'mcq', q:"_____ way", opts:['a','an'], ans:'a', why:"'way' bắt đầu bằng âm phụ âm /w/ → <b>a</b>. <br>💬 <i>Nghĩa: con đường/cách thức</i>"},
+ {t:'mcq', q:"_____ umbrella", opts:['a','an'], ans:'an', why:"'umbrella' bắt đầu bằng âm nguyên âm /ʌ/ → <b>an</b>. <br>💬 <i>Nghĩa: cái ô</i>"},
+ {t:'mcq', q:"_____ ethnic group", opts:['a','an'], ans:'an', why:"'ethnic' bắt đầu bằng âm nguyên âm /e/ → <b>an</b>. <br>💬 <i>Nghĩa: nhóm dân tộc</i>"},
+ {t:'mcq', q:"_____ elephant", opts:['a','an'], ans:'an', why:"'elephant' bắt đầu bằng âm nguyên âm /e/ → <b>an</b>. <br>💬 <i>Nghĩa: con voi</i>"},
 ],
 
 /* ---------- LEVEL 2 — Fill blanks: a / an / 0 (Bài 7, 15 + 5 bổ sung) ---------- */
 l2: [
- {t:'fill', q:"She asked me for _____ information about the meeting.", ans:['0','ø','no article','(no article)'], why:"'information' không đếm được, nghĩa chung → <b>không dùng mạo từ (0)</b>."},
- {t:'fill', q:"They will move to _____ mansion next month.", ans:['a'], why:"'mansion' đếm được số ít, lần đầu nhắc đến → <b>a</b>."},
- {t:'fill', q:"I'd like _____ grapefruit and _____ orange juice.", ans:['a . 0','a; 0','a and 0','a, 0'], why:"'grapefruit' đếm được → <b>a</b>; 'orange juice' không đếm được → <b>0</b>."},
- {t:'fill', q:"_____ award was given to Jim yesterday.", ans:['an'], why:"'award' bắt đầu bằng nguyên âm /ə/ → <b>an</b>."},
- {t:'fill', q:"We read _____ books and play _____ games when we have free time.", ans:['0 . 0','0; 0','0 and 0','0, 0'], why:"Danh từ số nhiều, nghĩa chung chung → <b>0</b>."},
- {t:'fill', q:"Jim doesn't want to borrow _____ money from anyone.", ans:['0','ø'], why:"'money' không đếm được → <b>0</b>."},
- {t:'fill', q:"My friend and I threw _____ party last week.", ans:['a'], why:"'party' đếm được số ít, lần đầu nhắc → <b>a</b>."},
- {t:'fill', q:"It was _____ honor to be invited here today.", ans:['an'], why:"'honor' có 'h' câm, âm bắt đầu là nguyên âm → <b>an</b>."},
- {t:'fill', q:"I've bought _____ umbrella for my sister.", ans:['an'], why:"'umbrella' bắt đầu bằng nguyên âm → <b>an</b>."},
- {t:'fill', q:"My family often have _____ eggs for breakfast.", ans:['0','ø'], why:"'eggs' số nhiều, nghĩa chung chung → <b>0</b>."},
- {t:'fill', q:"Would you like _____ cup of tea?", ans:['a'], why:"'cup' đếm được số ít → <b>a</b>."},
- {t:'fill', q:"My brother doesn't like _____ cats.", ans:['0','ø'], why:"'cats' số nhiều, nghĩa khái quát (loài mèo nói chung) → <b>0</b>."},
- {t:'fill', q:"Is there _____ post office here?", ans:['a'], why:"'post office' đếm được số ít, chưa xác định → <b>a</b>."},
- {t:'fill', q:"I spend _____ hours on my DIY project.", ans:['0','ø'], why:"'hours' số nhiều, nghĩa chung chung (không đếm cụ thể) → <b>0</b>."},
- {t:'fill', q:"Mr. Peter used to be _____ famous vet.", ans:['a'], why:"'famous' bắt đầu bằng phụ âm /f/ → <b>a</b>."},
- {t:'fill', q:"He gave me _____ interesting idea about the festival.", ans:['an'], why:"'interesting' bắt đầu bằng nguyên âm /ɪ/ → <b>an</b>."},
- {t:'fill', q:"They usually eat _____ rice at every meal.", ans:['0','ø'], why:"'rice' không đếm được, nghĩa chung → <b>0</b>."},
- {t:'fill', q:"She wore _____ elegant costume to the ceremony.", ans:['an'], why:"'elegant' bắt đầu bằng nguyên âm /e/ → <b>an</b>."},
- {t:'fill', q:"We need _____ hour to reach the communal house.", ans:['an'], why:"'hour' có 'h' câm → <b>an</b>."},
- {t:'fill', q:"Do you want _____ advice on choosing a costume?", ans:['0','ø'], why:"'advice' không đếm được → <b>0</b>."},
+ {t:'fill', q:"She asked me for _____ information about the meeting.", ans:['0','ø','no article','(no article)'], why:"'information' không đếm được, nghĩa chung → <b>không dùng mạo từ (0)</b>. <br>💬 <i>Dịch: Cô ấy hỏi tôi thông tin về cuộc họp.</i>"},
+ {t:'fill', q:"They will move to _____ mansion next month.", ans:['a'], why:"'mansion' đếm được số ít, lần đầu nhắc đến → <b>a</b>. <br>💬 <i>Dịch: Tháng sau họ sẽ chuyển đến một biệt thự.</i>"},
+ {t:'fill', q:"I'd like _____ grapefruit and _____ orange juice.", ans:['a . 0','a; 0','a and 0','a, 0'], why:"'grapefruit' đếm được → <b>a</b>; 'orange juice' không đếm được → <b>0</b>. <br>💬 <i>Dịch: Tôi muốn một quả bưởi chùm và nước cam.</i>"},
+ {t:'fill', q:"_____ award was given to Jim yesterday.", ans:['an'], why:"'award' bắt đầu bằng nguyên âm /ə/ → <b>an</b>. <br>💬 <i>Dịch: Hôm qua Jim được trao một giải thưởng.</i>"},
+ {t:'fill', q:"We read _____ books and play _____ games when we have free time.", ans:['0 . 0','0; 0','0 and 0','0, 0'], why:"Danh từ số nhiều, nghĩa chung chung → <b>0</b>. <br>💬 <i>Dịch: Chúng tôi đọc sách và chơi trò chơi lúc rảnh rỗi.</i>"},
+ {t:'fill', q:"Jim doesn't want to borrow _____ money from anyone.", ans:['0','ø'], why:"'money' không đếm được → <b>0</b>. <br>💬 <i>Dịch: Jim không muốn mượn tiền của ai cả.</i>"},
+ {t:'fill', q:"My friend and I threw _____ party last week.", ans:['a'], why:"'party' đếm được số ít, lần đầu nhắc → <b>a</b>. <br>💬 <i>Dịch: Tôi và bạn tôi đã tổ chức một bữa tiệc tuần trước.</i>"},
+ {t:'fill', q:"It was _____ honor to be invited here today.", ans:['an'], why:"'honor' có 'h' câm, âm bắt đầu là nguyên âm → <b>an</b>. <br>💬 <i>Dịch: Được mời đến đây hôm nay là một vinh dự.</i>"},
+ {t:'fill', q:"I've bought _____ umbrella for my sister.", ans:['an'], why:"'umbrella' bắt đầu bằng nguyên âm → <b>an</b>. <br>💬 <i>Dịch: Tôi đã mua một cái ô cho em gái tôi.</i>"},
+ {t:'fill', q:"My family often have _____ eggs for breakfast.", ans:['0','ø'], why:"'eggs' số nhiều, nghĩa chung chung → <b>0</b>. <br>💬 <i>Dịch: Gia đình tôi thường ăn trứng vào bữa sáng.</i>"},
+ {t:'fill', q:"Would you like _____ cup of tea?", ans:['a'], why:"'cup' đếm được số ít → <b>a</b>. <br>💬 <i>Dịch: Bạn có muốn dùng một tách trà không?</i>"},
+ {t:'fill', q:"My brother doesn't like _____ cats.", ans:['0','ø'], why:"'cats' số nhiều, nghĩa khái quát (loài mèo nói chung) → <b>0</b>. <br>💬 <i>Dịch: Anh trai tôi không thích mèo.</i>"},
+ {t:'fill', q:"Is there _____ post office here?", ans:['a'], why:"'post office' đếm được số ít, chưa xác định → <b>a</b>. <br>💬 <i>Dịch: Ở đây có bưu điện không?</i>"},
+ {t:'fill', q:"I spend _____ hours on my DIY project.", ans:['0','ø'], why:"'hours' số nhiều, nghĩa chung chung (không đếm cụ thể) → <b>0</b>. <br>💬 <i>Dịch: Tôi dành nhiều giờ cho dự án tự làm của mình.</i>"},
+ {t:'fill', q:"Mr. Peter used to be _____ famous vet.", ans:['a'], why:"'famous' bắt đầu bằng phụ âm /f/ → <b>a</b>. <br>💬 <i>Dịch: Ông Peter từng là một bác sĩ thú y nổi tiếng.</i>"},
+ {t:'fill', q:"He gave me _____ interesting idea about the festival.", ans:['an'], why:"'interesting' bắt đầu bằng nguyên âm /ɪ/ → <b>an</b>. <br>💬 <i>Dịch: Anh ấy cho tôi một ý tưởng thú vị về lễ hội.</i>"},
+ {t:'fill', q:"They usually eat _____ rice at every meal.", ans:['0','ø'], why:"'rice' không đếm được, nghĩa chung → <b>0</b>. <br>💬 <i>Dịch: Họ thường ăn cơm trong mỗi bữa.</i>"},
+ {t:'fill', q:"She wore _____ elegant costume to the ceremony.", ans:['an'], why:"'elegant' bắt đầu bằng nguyên âm /e/ → <b>an</b>. <br>💬 <i>Dịch: Cô ấy mặc một bộ trang phục thanh lịch đến buổi lễ.</i>"},
+ {t:'fill', q:"We need _____ hour to reach the communal house.", ans:['an'], why:"'hour' có 'h' câm → <b>an</b>. <br>💬 <i>Dịch: Chúng tôi cần một giờ để đến nhà cộng đồng.</i>"},
+ {t:'fill', q:"Do you want _____ advice on choosing a costume?", ans:['0','ø'], why:"'advice' không đếm được → <b>0</b>. <br>💬 <i>Dịch: Bạn có muốn lời khuyên về việc chọn trang phục không?</i>"},
 ],
 
 /* ---------- LEVEL 3 — Chip multi-blank: a / an / the (Bài 8, 20 mục) ---------- */
 l3: [
- {t:'multi', parts:["We have ","{}"," cat and ","{}"," dog, ","{}"," cat doesn't get on well with ","{}"," dog."], blanks:['a','a','the','the'], bank:['a','an','the'], why:"Lần đầu nhắc → a/a; lần nhắc lại (đã xác định) → the/the."},
- {t:'multi', parts:["You can see ","{}"," moon clearly in the Mid-Autumn festival."], blanks:['the'], bank:['a','an','the'], why:"'moon' là vật duy nhất → luôn dùng <b>the</b>."},
- {t:'multi', parts:["He is ","{}"," famous actor."], blanks:['a'], bank:['a','an','the'], why:"'famous' bắt đầu bằng phụ âm, nghề nghiệp chưa xác định cụ thể → <b>a</b>."},
- {t:'multi', parts:["My brother doesn't like ","{}"," present I gave him."], blanks:['the'], bank:['a','an','the'], why:"Món quà đã được xác định (present tôi đã tặng) → <b>the</b>."},
- {t:'multi', parts:["Where is ","{}"," book I lent you last week?"], blanks:['the'], bank:['a','an','the'], why:"Cuốn sách đã xác định rõ (đã cho mượn) → <b>the</b>."},
- {t:'multi', parts:["My father works as ","{}"," electrician."], blanks:['an'], bank:['a','an','the'], why:"'electrician' bắt đầu bằng nguyên âm /ɪ/ → <b>an</b>."},
- {t:'multi', parts:["Have you ever heard about ","{}"," River Thames?"], blanks:['the'], bank:['a','an','the'], why:"Tên riêng của sông luôn đi với <b>the</b>."},
- {t:'multi', parts:["I want to travel around ","{}"," world when I grow up."], blanks:['the'], bank:['a','an','the'], why:"'world' là danh từ duy nhất → <b>the</b>."},
- {t:'multi', parts:["Yesterday my mother had ","{}"," terrible headache."], blanks:['a'], bank:['a','an','the'], why:"'terrible' bắt đầu bằng phụ âm /t/ → <b>a</b>."},
- {t:'multi', parts:["Where are ","{}"," kids? They are playing outside."], blanks:['the'], bank:['a','an','the'], why:"Những đứa trẻ đã xác định (con của người nói) → <b>the</b>."},
- {t:'multi', parts:["Peter is ","{}"," most hard-working student I've ever known."], blanks:['the'], bank:['a','an','the'], why:"So sánh hơn nhất luôn dùng <b>the</b>."},
- {t:'multi', parts:["It is cold because ","{}"," heating system is broken."], blanks:['the'], bank:['a','an','the'], why:"Hệ thống sưởi đã xác định (của nhà mình) → <b>the</b>."},
- {t:'multi', parts:["Did you buy ","{}"," pair of shoes yesterday?"], blanks:['a'], bank:['a','an','the'], why:"'pair' bắt đầu bằng phụ âm /p/, chưa xác định → <b>a</b>."},
- {t:'multi', parts:["{}"," Earth orbits around ","{}"," Sun."], blanks:['the','the'], bank:['a','an','the'], why:"Earth và Sun là vật duy nhất → <b>the / the</b>."},
- {t:'multi', parts:["She took ","{}"," hamburger and ","{}"," apple, but she didn't eat ","{}"," apple."], blanks:['a','an','the'], bank:['a','an','the'], why:"Lần đầu: a/an; lần nhắc lại 'apple': the."},
- {t:'multi', parts:["A boy and a girl are arguing over there, I think I know ","{}"," boy."], blanks:['the'], bank:['a','an','the'], why:"'boy' đã được nhắc đến trước đó → <b>the</b>."},
- {t:'multi', parts:["My grandfather sent me ","{}"," letter and ","{}"," gift but I haven't received ","{}"," letter."], blanks:['a','a','the'], bank:['a','an','the'], why:"Lần đầu: a/a; lần nhắc lại 'letter': the."},
- {t:'multi', parts:["My mom is ","{}"," best mom in ","{}"," world."], blanks:['the','the'], bank:['a','an','the'], why:"So sánh hơn nhất + 'world' duy nhất → <b>the / the</b>."},
- {t:'multi', parts:["Would you like ","{}"," glass of water?"], blanks:['a'], bank:['a','an','the'], why:"'glass' bắt đầu bằng phụ âm, chưa xác định → <b>a</b>."},
- {t:'multi', parts:["James offered me ","{}"," cup of coffee and ","{}"," piece of cake. ","{}"," cake was delicious."], blanks:['a','a','the'], bank:['a','an','the'], why:"Lần đầu: a/a; lần nhắc lại 'cake': the."},
+ {t:'multi', parts:["We have ","{}"," cat and ","{}"," dog, ","{}"," cat doesn't get on well with ","{}"," dog."], blanks:['a','a','the','the'], bank:['a','an','the'], why:"Lần đầu nhắc → a/a; lần nhắc lại (đã xác định) → the/the. <br>💬 <i>Dịch: Chúng tôi có một con mèo và một con chó, con mèo không hợp với con chó.</i>"},
+ {t:'multi', parts:["You can see ","{}"," moon clearly in the Mid-Autumn festival."], blanks:['the'], bank:['a','an','the'], why:"'moon' là vật duy nhất → luôn dùng <b>the</b>. <br>💬 <i>Dịch: Bạn có thể thấy trăng rất rõ vào Tết Trung Thu.</i>"},
+ {t:'multi', parts:["He is ","{}"," famous actor."], blanks:['a'], bank:['a','an','the'], why:"'famous' bắt đầu bằng phụ âm, nghề nghiệp chưa xác định cụ thể → <b>a</b>. <br>💬 <i>Dịch: Anh ấy là một diễn viên nổi tiếng.</i>"},
+ {t:'multi', parts:["My brother doesn't like ","{}"," present I gave him."], blanks:['the'], bank:['a','an','the'], why:"Món quà đã được xác định (present tôi đã tặng) → <b>the</b>. <br>💬 <i>Dịch: Anh trai tôi không thích món quà tôi đã tặng anh ấy.</i>"},
+ {t:'multi', parts:["Where is ","{}"," book I lent you last week?"], blanks:['the'], bank:['a','an','the'], why:"Cuốn sách đã xác định rõ (đã cho mượn) → <b>the</b>. <br>💬 <i>Dịch: Cuốn sách tôi cho bạn mượn tuần trước đâu rồi?</i>"},
+ {t:'multi', parts:["My father works as ","{}"," electrician."], blanks:['an'], bank:['a','an','the'], why:"'electrician' bắt đầu bằng nguyên âm /ɪ/ → <b>an</b>. <br>💬 <i>Dịch: Bố tôi làm thợ điện.</i>"},
+ {t:'multi', parts:["Have you ever heard about ","{}"," River Thames?"], blanks:['the'], bank:['a','an','the'], why:"Tên riêng của sông luôn đi với <b>the</b>. <br>💬 <i>Dịch: Bạn đã bao giờ nghe về sông Thames chưa?</i>"},
+ {t:'multi', parts:["I want to travel around ","{}"," world when I grow up."], blanks:['the'], bank:['a','an','the'], why:"'world' là danh từ duy nhất → <b>the</b>. <br>💬 <i>Dịch: Tôi muốn đi khắp thế giới khi lớn lên.</i>"},
+ {t:'multi', parts:["Yesterday my mother had ","{}"," terrible headache."], blanks:['a'], bank:['a','an','the'], why:"'terrible' bắt đầu bằng phụ âm /t/ → <b>a</b>. <br>💬 <i>Dịch: Hôm qua mẹ tôi bị đau đầu dữ dội.</i>"},
+ {t:'multi', parts:["Where are ","{}"," kids? They are playing outside."], blanks:['the'], bank:['a','an','the'], why:"Những đứa trẻ đã xác định (con của người nói) → <b>the</b>. <br>💬 <i>Dịch: Bọn trẻ đâu rồi? Chúng đang chơi bên ngoài.</i>"},
+ {t:'multi', parts:["Peter is ","{}"," most hard-working student I've ever known."], blanks:['the'], bank:['a','an','the'], why:"So sánh hơn nhất luôn dùng <b>the</b>. <br>💬 <i>Dịch: Peter là học sinh chăm chỉ nhất mà tôi từng biết.</i>"},
+ {t:'multi', parts:["It is cold because ","{}"," heating system is broken."], blanks:['the'], bank:['a','an','the'], why:"Hệ thống sưởi đã xác định (của nhà mình) → <b>the</b>. <br>💬 <i>Dịch: Trời lạnh vì hệ thống sưởi bị hỏng.</i>"},
+ {t:'multi', parts:["Did you buy ","{}"," pair of shoes yesterday?"], blanks:['a'], bank:['a','an','the'], why:"'pair' bắt đầu bằng phụ âm /p/, chưa xác định → <b>a</b>. <br>💬 <i>Dịch: Hôm qua bạn có mua đôi giày không?</i>"},
+ {t:'multi', parts:["{}"," Earth orbits around ","{}"," Sun."], blanks:['the','the'], bank:['a','an','the'], why:"Earth và Sun là vật duy nhất → <b>the / the</b>. <br>💬 <i>Dịch: Trái Đất quay quanh Mặt Trời.</i>"},
+ {t:'multi', parts:["She took ","{}"," hamburger and ","{}"," apple, but she didn't eat ","{}"," apple."], blanks:['a','an','the'], bank:['a','an','the'], why:"Lần đầu: a/an; lần nhắc lại 'apple': the. <br>💬 <i>Dịch: Cô ấy lấy một cái hamburger và một quả táo, nhưng không ăn quả táo.</i>"},
+ {t:'multi', parts:["A boy and a girl are arguing over there, I think I know ","{}"," boy."], blanks:['the'], bank:['a','an','the'], why:"'boy' đã được nhắc đến trước đó → <b>the</b>. <br>💬 <i>Dịch: Một cậu bé và một cô bé đang cãi nhau đằng kia, tôi nghĩ tôi biết cậu bé đó.</i>"},
+ {t:'multi', parts:["My grandfather sent me ","{}"," letter and ","{}"," gift but I haven't received ","{}"," letter."], blanks:['a','a','the'], bank:['a','an','the'], why:"Lần đầu: a/a; lần nhắc lại 'letter': the. <br>💬 <i>Dịch: Ông tôi gửi cho tôi một lá thư và một món quà nhưng tôi chưa nhận được lá thư.</i>"},
+ {t:'multi', parts:["My mom is ","{}"," best mom in ","{}"," world."], blanks:['the','the'], bank:['a','an','the'], why:"So sánh hơn nhất + 'world' duy nhất → <b>the / the</b>. <br>💬 <i>Dịch: Mẹ tôi là người mẹ tuyệt vời nhất trên thế giới.</i>"},
+ {t:'multi', parts:["Would you like ","{}"," glass of water?"], blanks:['a'], bank:['a','an','the'], why:"'glass' bắt đầu bằng phụ âm, chưa xác định → <b>a</b>. <br>💬 <i>Dịch: Bạn có muốn một ly nước không?</i>"},
+ {t:'multi', parts:["James offered me ","{}"," cup of coffee and ","{}"," piece of cake. ","{}"," cake was delicious."], blanks:['a','a','the'], bank:['a','an','the'], why:"Lần đầu: a/a; lần nhắc lại 'cake': the. <br>💬 <i>Dịch: James mời tôi một tách cà phê và một miếng bánh. Miếng bánh rất ngon.</i>"},
 ],
 
 /* ---------- LEVEL 4 — Fill: a / an / the / 0 (Bài 11, 10 + 10 bổ sung) ---------- */
 l4: [
- {t:'fill', q:"Farmers in my hometown earn a living by raising _____ poultry.", ans:['0','ø'], why:"'poultry' không đếm được, nghĩa chung → <b>0</b>."},
- {t:'fill', q:"Some villagers play _____ flute on special occasions.", ans:['the'], why:"Chơi nhạc cụ dùng cấu trúc 'play + the + nhạc cụ'."},
- {t:'fill', q:"Do you know there is _____ local folk festival tonight?", ans:['a'], why:"Lễ hội chưa xác định, lần đầu nhắc → <b>a</b>."},
- {t:'fill', q:"I like _____ colourful costumes of _____ ethnic minority people in Vietnam.", ans:['the . 0','the; 0','the, 0','the and 0'], why:"'colourful costumes' đã xác định → the; 'ethnic minority people' nghĩa chung → 0."},
- {t:'fill', q:"_____ cattle are often raised in the rural areas in my country.", ans:['0','ø'], why:"'cattle' số nhiều nghĩa chung → <b>0</b>."},
- {t:'fill', q:"When I travel to _____ foreign country, I always want to try _____ local specialities first.", ans:['a . the','a; the','a, the','a and the'], why:"'a foreign country' chưa xác định; 'the local specialities' đã xác định theo ngữ cảnh."},
- {t:'fill', q:"Have you ever been to _____ remote area?", ans:['a'], why:"'remote' bắt đầu bằng nguyên âm nhưng đọc /rɪ-/ là phụ âm → <b>a</b>."},
- {t:'fill', q:"Ethnic minority people often gather together at _____ communal house.", ans:['the'], why:"Nhà cộng đồng cụ thể của làng, cả người nói và người nghe đều biết → <b>the</b>."},
- {t:'fill', q:"In Tay Nguyen, people sometimes ride _____ elephants.", ans:['0','ø'], why:"'elephants' số nhiều, nghĩa chung → <b>0</b>."},
- {t:'fill', q:"_____ traditional customs of Vietnam are different from _____ customs of Western countries.", ans:['the . the','the; the','the, the','the and the'], why:"Cả 2 đều đã xác định rõ (của Việt Nam / của phương Tây) → <b>the / the</b>."},
- {t:'fill', q:"_____ ancestor of this family was a famous craftsman.", ans:['the','an'], why:"Có thể dùng 'The ancestor' (xác định) hoặc 'An ancestor' (chưa xác định) tùy ngữ cảnh; ở đây nói về tổ tiên cụ thể của gia đình → <b>the</b>."},
- {t:'fill', q:"She bought _____ unique souvenir at the market.", ans:['a'], why:"'unique' đọc /juː-/ như phụ âm → <b>a</b>."},
- {t:'fill', q:"_____ region in the north is famous for terraced fields.", ans:['the'], why:"Vùng cụ thể đang được nói tới, xác định bởi mệnh đề sau → <b>the</b>."},
- {t:'fill', q:"They celebrate _____ festival every spring.", ans:['a'], why:"Lễ hội chưa xác định cụ thể trước đó → <b>a</b>."},
- {t:'fill', q:"_____ costume she wore yesterday was beautiful.", ans:['the'], why:"'costume' đã xác định bởi mệnh đề quan hệ phía sau → <b>the</b>."},
- {t:'fill', q:"We should protect _____ environment for future generations.", ans:['the'], why:"'environment' là khái niệm duy nhất, mọi người đều hiểu chung → <b>the</b>."},
- {t:'fill', q:"He is _____ honest person.", ans:['an'], why:"'honest' có 'h' câm, âm bắt đầu là nguyên âm → <b>an</b>."},
- {t:'fill', q:"_____ specialty of this region is grilled fish.", ans:['the'], why:"Đặc sản của vùng cụ thể đang nói tới → <b>the</b>."},
- {t:'fill', q:"I saw _____ interesting ceremony last week.", ans:['an'], why:"'interesting' bắt đầu bằng nguyên âm → <b>an</b>."},
- {t:'fill', q:"_____ children in the village love listening to old tales.", ans:['0','the'], why:"'children' nghĩa chung (mọi trẻ em) → 0; nếu chỉ nhóm trẻ cụ thể trong làng → the (cả 2 đều chấp nhận tùy ngữ cảnh)."},
+ {t:'fill', q:"Farmers in my hometown earn a living by raising _____ poultry.", ans:['0','ø'], why:"'poultry' không đếm được, nghĩa chung → <b>0</b>. <br>💬 <i>Dịch: Nông dân ở quê tôi kiếm sống bằng cách nuôi gia cầm.</i>"},
+ {t:'fill', q:"Some villagers play _____ flute on special occasions.", ans:['the'], why:"Chơi nhạc cụ dùng cấu trúc 'play + the + nhạc cụ'. <br>💬 <i>Dịch: Một số dân làng thổi sáo vào những dịp đặc biệt.</i>"},
+ {t:'fill', q:"Do you know there is _____ local folk festival tonight?", ans:['a'], why:"Lễ hội chưa xác định, lần đầu nhắc → <b>a</b>. <br>💬 <i>Dịch: Bạn có biết tối nay có lễ hội dân gian địa phương không?</i>"},
+ {t:'fill', q:"I like _____ colourful costumes of _____ ethnic minority people in Vietnam.", ans:['the . 0','the; 0','the, 0','the and 0'], why:"'colourful costumes' đã xác định → the; 'ethnic minority people' nghĩa chung → 0. <br>💬 <i>Dịch: Tôi thích những bộ trang phục sặc sỡ của người dân tộc thiểu số ở Việt Nam.</i>"},
+ {t:'fill', q:"_____ cattle are often raised in the rural areas in my country.", ans:['0','ø'], why:"'cattle' số nhiều nghĩa chung → <b>0</b>. <br>💬 <i>Dịch: Gia súc thường được nuôi ở các vùng nông thôn nước tôi.</i>"},
+ {t:'fill', q:"When I travel to _____ foreign country, I always want to try _____ local specialities first.", ans:['a . the','a; the','a, the','a and the'], why:"'a foreign country' chưa xác định; 'the local specialities' đã xác định theo ngữ cảnh. <br>💬 <i>Dịch: Khi đi đến một đất nước xa lạ, tôi luôn muốn thử đặc sản địa phương trước.</i>"},
+ {t:'fill', q:"Have you ever been to _____ remote area?", ans:['a'], why:"'remote' bắt đầu bằng nguyên âm nhưng đọc /rɪ-/ là phụ âm → <b>a</b>. <br>💬 <i>Dịch: Bạn đã bao giờ đến một vùng hẻo lánh chưa?</i>"},
+ {t:'fill', q:"Ethnic minority people often gather together at _____ communal house.", ans:['the'], why:"Nhà cộng đồng cụ thể của làng, cả người nói và người nghe đều biết → <b>the</b>. <br>💬 <i>Dịch: Người dân tộc thiểu số thường tụ họp tại nhà cộng đồng.</i>"},
+ {t:'fill', q:"In Tay Nguyen, people sometimes ride _____ elephants.", ans:['0','ø'], why:"'elephants' số nhiều, nghĩa chung → <b>0</b>. <br>💬 <i>Dịch: Ở Tây Nguyên, người ta thỉnh thoảng cưỡi voi.</i>"},
+ {t:'fill', q:"_____ traditional customs of Vietnam are different from _____ customs of Western countries.", ans:['the . the','the; the','the, the','the and the'], why:"Cả 2 đều đã xác định rõ (của Việt Nam / của phương Tây) → <b>the / the</b>. <br>💬 <i>Dịch: Phong tục truyền thống của Việt Nam khác với phong tục của các nước phương Tây.</i>"},
+ {t:'fill', q:"_____ ancestor of this family was a famous craftsman.", ans:['the','an'], why:"Có thể dùng 'The ancestor' (xác định) hoặc 'An ancestor' (chưa xác định) tùy ngữ cảnh; ở đây nói về tổ tiên cụ thể của gia đình → <b>the</b>. <br>💬 <i>Dịch: Tổ tiên của gia đình này từng là một nghệ nhân nổi tiếng.</i>"},
+ {t:'fill', q:"She bought _____ unique souvenir at the market.", ans:['a'], why:"'unique' đọc /juː-/ như phụ âm → <b>a</b>. <br>💬 <i>Dịch: Cô ấy đã mua một món quà lưu niệm độc đáo ở chợ.</i>"},
+ {t:'fill', q:"_____ region in the north is famous for terraced fields.", ans:['the'], why:"Vùng cụ thể đang được nói tới, xác định bởi mệnh đề sau → <b>the</b>. <br>💬 <i>Dịch: Vùng ở phía bắc nổi tiếng với ruộng bậc thang.</i>"},
+ {t:'fill', q:"They celebrate _____ festival every spring.", ans:['a'], why:"Lễ hội chưa xác định cụ thể trước đó → <b>a</b>. <br>💬 <i>Dịch: Họ tổ chức lễ hội mỗi mùa xuân.</i>"},
+ {t:'fill', q:"_____ costume she wore yesterday was beautiful.", ans:['the'], why:"'costume' đã xác định bởi mệnh đề quan hệ phía sau → <b>the</b>. <br>💬 <i>Dịch: Bộ trang phục cô ấy mặc hôm qua rất đẹp.</i>"},
+ {t:'fill', q:"We should protect _____ environment for future generations.", ans:['the'], why:"'environment' là khái niệm duy nhất, mọi người đều hiểu chung → <b>the</b>. <br>💬 <i>Dịch: Chúng ta nên bảo vệ môi trường cho các thế hệ tương lai.</i>"},
+ {t:'fill', q:"He is _____ honest person.", ans:['an'], why:"'honest' có 'h' câm, âm bắt đầu là nguyên âm → <b>an</b>. <br>💬 <i>Dịch: Anh ấy là một người trung thực.</i>"},
+ {t:'fill', q:"_____ specialty of this region is grilled fish.", ans:['the'], why:"Đặc sản của vùng cụ thể đang nói tới → <b>the</b>. <br>💬 <i>Dịch: Đặc sản của vùng này là cá nướng.</i>"},
+ {t:'fill', q:"I saw _____ interesting ceremony last week.", ans:['an'], why:"'interesting' bắt đầu bằng nguyên âm → <b>an</b>. <br>💬 <i>Dịch: Tuần trước tôi đã xem một buổi lễ thú vị.</i>"},
+ {t:'fill', q:"_____ children in the village love listening to old tales.", ans:['0','the'], why:"'children' nghĩa chung (mọi trẻ em) → 0; nếu chỉ nhóm trẻ cụ thể trong làng → the (cả 2 đều chấp nhận tùy ngữ cảnh). <br>💬 <i>Dịch: Bọn trẻ trong làng thích nghe kể chuyện xưa.</i>"},
 ],
 
 /* ---------- LEVEL 5 — Chọn câu đúng (tự soạn, 20 mục) ---------- */
 l5: [
- {t:'mcq', q:"Chọn câu đúng:", opts:["I saw a elephant at the zoo.","I saw an elephant at the zoo."], ans:"I saw an elephant at the zoo.", why:"'elephant' bắt đầu bằng nguyên âm → phải dùng 'an'."},
- {t:'mcq', q:"Chọn câu đúng:", opts:["She is an university student.","She is a university student."], ans:"She is a university student.", why:"'university' đọc là /juː-/ (âm phụ âm) → dùng 'a'."},
- {t:'mcq', q:"Chọn câu đúng:", opts:["The moon is bright tonight.","A moon is bright tonight."], ans:"The moon is bright tonight.", why:"'moon' là vật duy nhất → luôn dùng 'the'."},
- {t:'mcq', q:"Chọn câu đúng:", opts:["He gave me an honest answer.","He gave me a honest answer."], ans:"He gave me an honest answer.", why:"'honest' có 'h' câm, âm bắt đầu là nguyên âm → dùng 'an'."},
- {t:'mcq', q:"Chọn câu đúng:", opts:["Water is essential for life.","The water is essential for life."], ans:"Water is essential for life.", why:"Nói chung về nước (không đếm được, nghĩa khái quát) → không dùng mạo từ."},
- {t:'mcq', q:"Chọn câu đúng:", opts:["This is a most beautiful festival I've seen.","This is the most beautiful festival I've seen."], ans:"This is the most beautiful festival I've seen.", why:"So sánh hơn nhất luôn dùng 'the'."},
- {t:'mcq', q:"Chọn câu đúng:", opts:["I need an hour to finish this.","I need a hour to finish this."], ans:"I need an hour to finish this.", why:"'hour' có 'h' câm → dùng 'an'."},
- {t:'mcq', q:"Chọn câu đúng:", opts:["Farmers raise a poultry on the farm.","Farmers raise poultry on the farm."], ans:"Farmers raise poultry on the farm.", why:"'poultry' không đếm được → không dùng mạo từ."},
- {t:'mcq', q:"Chọn câu đúng:", opts:["My mother works as the doctor.","My mother works as a doctor."], ans:"My mother works as a doctor.", why:"Nghề nghiệp chưa xác định cụ thể → dùng 'a'."},
- {t:'mcq', q:"Chọn câu đúng:", opts:["The sun rises in the east.","A sun rises in the east."], ans:"The sun rises in the east.", why:"'sun' là vật duy nhất → luôn dùng 'the'."},
- {t:'mcq', q:"Chọn câu đúng:", opts:["This is an unique tradition.","This is a unique tradition."], ans:"This is a unique tradition.", why:"'unique' đọc là /juː-/ (âm phụ âm) → dùng 'a'."},
- {t:'mcq', q:"Chọn câu đúng:", opts:["We visited the National Museum yesterday.","We visited a National Museum yesterday."], ans:"We visited the National Museum yesterday.", why:"Tên riêng của địa danh/công trình cụ thể → dùng 'the'."},
- {t:'mcq', q:"Chọn câu đúng:", opts:["I don't like drinking a beer.","I don't like drinking beer."], ans:"I don't like drinking beer.", why:"'beer' không đếm được, nghĩa chung → không dùng mạo từ."},
- {t:'mcq', q:"Chọn câu đúng:", opts:["Peter is a friend of mine.","Peter is friend of mine."], ans:"Peter is a friend of mine.", why:"'friend' đếm được số ít, chưa xác định cụ thể → dùng 'a'."},
- {t:'mcq', q:"Chọn câu đúng:", opts:["It took the hour to finish my homework.","It took an hour to finish my homework."], ans:"It took an hour to finish my homework.", why:"'hour' có 'h' câm, lần đầu nhắc đến → dùng 'an'."},
- {t:'mcq', q:"Chọn câu đúng:", opts:["Mary is studying at a university in Ha Noi.","Mary is studying at an university in Ha Noi."], ans:"Mary is studying at a university in Ha Noi.", why:"'university' đọc /juː-/ (âm phụ âm) → dùng 'a'."},
- {t:'mcq', q:"Chọn câu đúng:", opts:["I know a full name of my manager.","I know the full name of my manager."], ans:"I know the full name of my manager.", why:"Họ tên cụ thể, đã xác định → dùng 'the'."},
- {t:'mcq', q:"Chọn câu đúng:", opts:["They are the most beautiful creatures on earth.","They are most beautiful creature on earth."], ans:"They are the most beautiful creatures on earth.", why:"So sánh hơn nhất + số nhiều 'creatures' → 'the most beautiful creatures'."},
- {t:'mcq', q:"Chọn câu đúng:", opts:["Did you enjoy the party last night?","Did you enjoy a party last night?"], ans:"Did you enjoy the party last night?", why:"Bữa tiệc cụ thể đã được nhắc/biết đến ('last night') → dùng 'the'."},
- {t:'mcq', q:"Chọn câu đúng:", opts:["There is a big apple in the fridge.","There is an big apple in the fridge."], ans:"There is a big apple in the fridge.", why:"'big' bắt đầu bằng phụ âm /b/ → dùng 'a'."},
+ {t:'mcq', q:"Chọn câu đúng:", opts:["I saw a elephant at the zoo.","I saw an elephant at the zoo."], ans:"I saw an elephant at the zoo.", why:"'elephant' bắt đầu bằng nguyên âm → phải dùng 'an'. <br>💬 <i>Dịch câu đúng: Tôi đã thấy một con voi ở sở thú.</i>"},
+ {t:'mcq', q:"Chọn câu đúng:", opts:["She is an university student.","She is a university student."], ans:"She is a university student.", why:"'university' đọc là /juː-/ (âm phụ âm) → dùng 'a'. <br>💬 <i>Dịch câu đúng: Cô ấy là sinh viên đại học.</i>"},
+ {t:'mcq', q:"Chọn câu đúng:", opts:["The moon is bright tonight.","A moon is bright tonight."], ans:"The moon is bright tonight.", why:"'moon' là vật duy nhất → luôn dùng 'the'. <br>💬 <i>Dịch câu đúng: Trăng đêm nay sáng quá.</i>"},
+ {t:'mcq', q:"Chọn câu đúng:", opts:["He gave me an honest answer.","He gave me a honest answer."], ans:"He gave me an honest answer.", why:"'honest' có 'h' câm, âm bắt đầu là nguyên âm → dùng 'an'. <br>💬 <i>Dịch câu đúng: Anh ấy đã cho tôi một câu trả lời trung thực.</i>"},
+ {t:'mcq', q:"Chọn câu đúng:", opts:["Water is essential for life.","The water is essential for life."], ans:"Water is essential for life.", why:"Nói chung về nước (không đếm được, nghĩa khái quát) → không dùng mạo từ. <br>💬 <i>Dịch câu đúng: Nước là thiết yếu cho sự sống.</i>"},
+ {t:'mcq', q:"Chọn câu đúng:", opts:["This is a most beautiful festival I've seen.","This is the most beautiful festival I've seen."], ans:"This is the most beautiful festival I've seen.", why:"So sánh hơn nhất luôn dùng 'the'. <br>💬 <i>Dịch câu đúng: Đây là lễ hội đẹp nhất mà tôi từng thấy.</i>"},
+ {t:'mcq', q:"Chọn câu đúng:", opts:["I need an hour to finish this.","I need a hour to finish this."], ans:"I need an hour to finish this.", why:"'hour' có 'h' câm → dùng 'an'. <br>💬 <i>Dịch câu đúng: Tôi cần một tiếng để làm xong việc này.</i>"},
+ {t:'mcq', q:"Chọn câu đúng:", opts:["Farmers raise a poultry on the farm.","Farmers raise poultry on the farm."], ans:"Farmers raise poultry on the farm.", why:"'poultry' không đếm được → không dùng mạo từ. <br>💬 <i>Dịch câu đúng: Nông dân nuôi gia cầm ở trang trại.</i>"},
+ {t:'mcq', q:"Chọn câu đúng:", opts:["My mother works as the doctor.","My mother works as a doctor."], ans:"My mother works as a doctor.", why:"Nghề nghiệp chưa xác định cụ thể → dùng 'a'. <br>💬 <i>Dịch câu đúng: Mẹ tôi làm bác sĩ.</i>"},
+ {t:'mcq', q:"Chọn câu đúng:", opts:["The sun rises in the east.","A sun rises in the east."], ans:"The sun rises in the east.", why:"'sun' là vật duy nhất → luôn dùng 'the'. <br>💬 <i>Dịch câu đúng: Mặt trời mọc ở hướng đông.</i>"},
+ {t:'mcq', q:"Chọn câu đúng:", opts:["This is an unique tradition.","This is a unique tradition."], ans:"This is a unique tradition.", why:"'unique' đọc là /juː-/ (âm phụ âm) → dùng 'a'. <br>💬 <i>Dịch câu đúng: Đây là một truyền thống độc đáo.</i>"},
+ {t:'mcq', q:"Chọn câu đúng:", opts:["We visited the National Museum yesterday.","We visited a National Museum yesterday."], ans:"We visited the National Museum yesterday.", why:"Tên riêng của địa danh/công trình cụ thể → dùng 'the'. <br>💬 <i>Dịch câu đúng: Hôm qua chúng tôi đã thăm Bảo tàng Quốc gia.</i>"},
+ {t:'mcq', q:"Chọn câu đúng:", opts:["I don't like drinking a beer.","I don't like drinking beer."], ans:"I don't like drinking beer.", why:"'beer' không đếm được, nghĩa chung → không dùng mạo từ. <br>💬 <i>Dịch câu đúng: Tôi không thích uống bia.</i>"},
+ {t:'mcq', q:"Chọn câu đúng:", opts:["Peter is a friend of mine.","Peter is friend of mine."], ans:"Peter is a friend of mine.", why:"'friend' đếm được số ít, chưa xác định cụ thể → dùng 'a'. <br>💬 <i>Dịch câu đúng: Peter là bạn của tôi.</i>"},
+ {t:'mcq', q:"Chọn câu đúng:", opts:["It took the hour to finish my homework.","It took an hour to finish my homework."], ans:"It took an hour to finish my homework.", why:"'hour' có 'h' câm, lần đầu nhắc đến → dùng 'an'. <br>💬 <i>Dịch câu đúng: Tôi mất một tiếng để làm xong bài tập.</i>"},
+ {t:'mcq', q:"Chọn câu đúng:", opts:["Mary is studying at a university in Ha Noi.","Mary is studying at an university in Ha Noi."], ans:"Mary is studying at a university in Ha Noi.", why:"'university' đọc /juː-/ (âm phụ âm) → dùng 'a'. <br>💬 <i>Dịch câu đúng: Mary đang học ở một trường đại học tại Hà Nội.</i>"},
+ {t:'mcq', q:"Chọn câu đúng:", opts:["I know a full name of my manager.","I know the full name of my manager."], ans:"I know the full name of my manager.", why:"Họ tên cụ thể, đã xác định → dùng 'the'. <br>💬 <i>Dịch câu đúng: Tôi biết họ tên đầy đủ của quản lý mình.</i>"},
+ {t:'mcq', q:"Chọn câu đúng:", opts:["They are the most beautiful creatures on earth.","They are most beautiful creature on earth."], ans:"They are the most beautiful creatures on earth.", why:"So sánh hơn nhất + số nhiều 'creatures' → 'the most beautiful creatures'. <br>💬 <i>Dịch câu đúng: Chúng là những sinh vật đẹp nhất trên Trái Đất.</i>"},
+ {t:'mcq', q:"Chọn câu đúng:", opts:["Did you enjoy the party last night?","Did you enjoy a party last night?"], ans:"Did you enjoy the party last night?", why:"Bữa tiệc cụ thể đã được nhắc/biết đến ('last night') → dùng 'the'. <br>💬 <i>Dịch câu đúng: Tối qua bạn có thích bữa tiệc không?</i>"},
+ {t:'mcq', q:"Chọn câu đúng:", opts:["There is a big apple in the fridge.","There is an big apple in the fridge."], ans:"There is a big apple in the fridge.", why:"'big' bắt đầu bằng phụ âm /b/ → dùng 'a'. <br>💬 <i>Dịch câu đúng: Trong tủ lạnh có một quả táo to.</i>"},
 ],
 
 /* ---------- LEVEL 6 — Error Correction (Bài 9, 10 + 10 bổ sung) ---------- */
 l6: [
- {t:'tf', q:"There is an big apple in the refrigerator.", correct:false, fix:"There is a big apple in the refrigerator.", why:"'big' bắt đầu bằng phụ âm → dùng 'a' chứ không phải 'an'."},
- {t:'tf', q:"It took me the hour to finish my homework.", correct:false, fix:"It took me an hour to finish my homework.", why:"Lần đầu nhắc 'hour' (có h câm) → dùng 'an' chứ không phải 'the'."},
- {t:'tf', q:"I don't know a full name of my manager.", correct:false, fix:"I don't know the full name of my manager.", why:"Họ tên cụ thể của một người đã xác định → dùng 'the'."},
- {t:'tf', q:"They are most beautiful creature on earth.", correct:false, fix:"They are the most beautiful creatures on earth.", why:"So sánh hơn nhất phải có 'the', và danh từ 'creature' phải ở số nhiều."},
- {t:'tf', q:"Mary is studying at a university in Hanoi.", correct:true, fix:"Mary is studying at a university in Hanoi.", why:"Đúng — 'university' đọc âm /juː-/ như phụ âm nên dùng 'a'."},
- {t:'tf', q:"This is an unique custom of this ethnic group.", correct:false, fix:"This is a unique custom of this ethnic group.", why:"'unique' đọc âm /juː-/ như phụ âm → dùng 'a' chứ không phải 'an'."},
- {t:'tf', q:"Did you enjoy a party last night?", correct:false, fix:"Did you enjoy the party last night?", why:"Bữa tiệc cụ thể tối qua đã xác định trong ngữ cảnh → dùng 'the'."},
- {t:'tf', q:"The sun is shining brightly.", correct:true, fix:"The sun is shining brightly.", why:"Đúng — 'sun' là vật duy nhất, luôn dùng 'the'."},
- {t:'tf', q:"No one in my family likes drinking a beer.", correct:false, fix:"No one in my family likes drinking beer.", why:"'beer' không đếm được, nghĩa chung → không dùng mạo từ."},
- {t:'tf', q:"Peter is a friend of mine.", correct:true, fix:"Peter is a friend of mine.", why:"Đúng — 'friend' đếm được số ít, chưa xác định cụ thể."},
- {t:'tf', q:"She is a honest and hard-working student.", correct:false, fix:"She is an honest and hard-working student.", why:"'honest' có 'h' câm, âm bắt đầu là nguyên âm → dùng 'an'."},
- {t:'tf', q:"He works as the electrician in this factory.", correct:false, fix:"He works as an electrician in this factory.", why:"Nghề nghiệp chưa xác định cụ thể, lần đầu nhắc → dùng 'an', không dùng 'the'."},
- {t:'tf', q:"The Earth orbits around the Sun.", correct:true, fix:"The Earth orbits around the Sun.", why:"Đúng — Earth và Sun là các vật thể duy nhất, luôn dùng 'the'."},
- {t:'tf', q:"I need an new umbrella for the rainy season.", correct:false, fix:"I need a new umbrella for the rainy season.", why:"'new' bắt đầu bằng phụ âm /n/ → dùng 'a' chứ không phải 'an'."},
- {t:'tf', q:"Farmers in my village raise the poultry for a living.", correct:false, fix:"Farmers in my village raise poultry for a living.", why:"'poultry' không đếm được, nghĩa chung → không dùng mạo từ."},
- {t:'tf', q:"This is the most unique festival in our region.", correct:true, fix:"This is the most unique festival in our region.", why:"Đúng — so sánh hơn nhất luôn có 'the'."},
- {t:'tf', q:"My grandmother told me an old tale about our ancestors.", correct:true, fix:"My grandmother told me an old tale about our ancestors.", why:"Đúng — 'old' bắt đầu bằng nguyên âm → dùng 'an'."},
- {t:'tf', q:"We should preserve a traditional customs of our people.", correct:false, fix:"We should preserve the traditional customs of our people.", why:"'customs' số nhiều đã xác định (của dân tộc mình) → dùng 'the', không dùng 'a'."},
- {t:'tf', q:"There is post office near my house.", correct:false, fix:"There is a post office near my house.", why:"Thiếu mạo từ 'a' trước danh từ đếm được số ít 'post office'."},
- {t:'tf', q:"He gave a interesting speech about ethnic culture.", correct:false, fix:"He gave an interesting speech about ethnic culture.", why:"'interesting' bắt đầu bằng nguyên âm /ɪ/ → dùng 'an'."},
+ {t:'tf', q:"There is an big apple in the refrigerator.", correct:false, fix:"There is a big apple in the refrigerator.", why:"'big' bắt đầu bằng phụ âm → dùng 'a' chứ không phải 'an'. <br>💬 <i>Dịch câu đúng: Trong tủ lạnh có một quả táo to.</i>"},
+ {t:'tf', q:"It took me the hour to finish my homework.", correct:false, fix:"It took me an hour to finish my homework.", why:"Lần đầu nhắc 'hour' (có h câm) → dùng 'an' chứ không phải 'the'. <br>💬 <i>Dịch câu đúng: Tôi mất một tiếng để làm xong bài tập.</i>"},
+ {t:'tf', q:"I don't know a full name of my manager.", correct:false, fix:"I don't know the full name of my manager.", why:"Họ tên cụ thể của một người đã xác định → dùng 'the'. <br>💬 <i>Dịch câu đúng: Tôi không biết họ tên đầy đủ của quản lý mình.</i>"},
+ {t:'tf', q:"They are most beautiful creature on earth.", correct:false, fix:"They are the most beautiful creatures on earth.", why:"So sánh hơn nhất phải có 'the', và danh từ 'creature' phải ở số nhiều. <br>💬 <i>Dịch câu đúng: Chúng là những sinh vật đẹp nhất trên Trái Đất.</i>"},
+ {t:'tf', q:"Mary is studying at a university in Hanoi.", correct:true, fix:"Mary is studying at a university in Hanoi.", why:"Đúng — 'university' đọc âm /juː-/ như phụ âm nên dùng 'a'. <br>💬 <i>Dịch câu đúng: Mary đang học ở một trường đại học tại Hà Nội.</i>"},
+ {t:'tf', q:"This is an unique custom of this ethnic group.", correct:false, fix:"This is a unique custom of this ethnic group.", why:"'unique' đọc âm /juː-/ như phụ âm → dùng 'a' chứ không phải 'an'. <br>💬 <i>Dịch câu đúng: Đây là một phong tục độc đáo của dân tộc này.</i>"},
+ {t:'tf', q:"Did you enjoy a party last night?", correct:false, fix:"Did you enjoy the party last night?", why:"Bữa tiệc cụ thể tối qua đã xác định trong ngữ cảnh → dùng 'the'. <br>💬 <i>Dịch câu đúng: Tối qua bạn có thích bữa tiệc không?</i>"},
+ {t:'tf', q:"The sun is shining brightly.", correct:true, fix:"The sun is shining brightly.", why:"Đúng — 'sun' là vật duy nhất, luôn dùng 'the'. <br>💬 <i>Dịch câu đúng: Mặt trời đang chiếu sáng rực rỡ.</i>"},
+ {t:'tf', q:"No one in my family likes drinking a beer.", correct:false, fix:"No one in my family likes drinking beer.", why:"'beer' không đếm được, nghĩa chung → không dùng mạo từ. <br>💬 <i>Dịch câu đúng: Không ai trong gia đình tôi thích uống bia.</i>"},
+ {t:'tf', q:"Peter is a friend of mine.", correct:true, fix:"Peter is a friend of mine.", why:"Đúng — 'friend' đếm được số ít, chưa xác định cụ thể. <br>💬 <i>Dịch câu đúng: Peter là bạn của tôi.</i>"},
+ {t:'tf', q:"She is a honest and hard-working student.", correct:false, fix:"She is an honest and hard-working student.", why:"'honest' có 'h' câm, âm bắt đầu là nguyên âm → dùng 'an'. <br>💬 <i>Dịch câu đúng: Cô ấy là một học sinh trung thực và chăm chỉ.</i>"},
+ {t:'tf', q:"He works as the electrician in this factory.", correct:false, fix:"He works as an electrician in this factory.", why:"Nghề nghiệp chưa xác định cụ thể, lần đầu nhắc → dùng 'an', không dùng 'the'. <br>💬 <i>Dịch câu đúng: Anh ấy làm thợ điện ở nhà máy này.</i>"},
+ {t:'tf', q:"The Earth orbits around the Sun.", correct:true, fix:"The Earth orbits around the Sun.", why:"Đúng — Earth và Sun là các vật thể duy nhất, luôn dùng 'the'. <br>💬 <i>Dịch câu đúng: Trái Đất quay quanh Mặt Trời.</i>"},
+ {t:'tf', q:"I need an new umbrella for the rainy season.", correct:false, fix:"I need a new umbrella for the rainy season.", why:"'new' bắt đầu bằng phụ âm /n/ → dùng 'a' chứ không phải 'an'. <br>💬 <i>Dịch câu đúng: Tôi cần một cái ô mới cho mùa mưa.</i>"},
+ {t:'tf', q:"Farmers in my village raise the poultry for a living.", correct:false, fix:"Farmers in my village raise poultry for a living.", why:"'poultry' không đếm được, nghĩa chung → không dùng mạo từ. <br>💬 <i>Dịch câu đúng: Nông dân trong làng tôi nuôi gia cầm để kiếm sống.</i>"},
+ {t:'tf', q:"This is the most unique festival in our region.", correct:true, fix:"This is the most unique festival in our region.", why:"Đúng — so sánh hơn nhất luôn có 'the'. <br>💬 <i>Dịch câu đúng: Đây là lễ hội độc đáo nhất vùng chúng tôi.</i>"},
+ {t:'tf', q:"My grandmother told me an old tale about our ancestors.", correct:true, fix:"My grandmother told me an old tale about our ancestors.", why:"Đúng — 'old' bắt đầu bằng nguyên âm → dùng 'an'. <br>💬 <i>Dịch câu đúng: Bà tôi kể cho tôi nghe một câu chuyện cổ về tổ tiên chúng tôi.</i>"},
+ {t:'tf', q:"We should preserve a traditional customs of our people.", correct:false, fix:"We should preserve the traditional customs of our people.", why:"'customs' số nhiều đã xác định (của dân tộc mình) → dùng 'the', không dùng 'a'. <br>💬 <i>Dịch câu đúng: Chúng ta nên gìn giữ những phong tục truyền thống của dân tộc mình.</i>"},
+ {t:'tf', q:"There is post office near my house.", correct:false, fix:"There is a post office near my house.", why:"Thiếu mạo từ 'a' trước danh từ đếm được số ít 'post office'. <br>💬 <i>Dịch câu đúng: Gần nhà tôi có một bưu điện.</i>"},
+ {t:'tf', q:"He gave a interesting speech about ethnic culture.", correct:false, fix:"He gave an interesting speech about ethnic culture.", why:"'interesting' bắt đầu bằng nguyên âm /ɪ/ → dùng 'an'. <br>💬 <i>Dịch câu đúng: Anh ấy đã có một bài phát biểu thú vị về văn hóa dân tộc.</i>"},
 ],
 
 /* ---------- LEVEL 7 — Rewrite: mẫu "1st time a/an → 2nd time the" (tự soạn, 20 mục) ---------- */
 l7: [
- {t:'multi', parts:["I bought ","{}"," costume yesterday. ","{}"," costume was very colourful."], blanks:['a','the'], bank:['a','an','the'], why:"Lần đầu nhắc 'costume' → a; lần nhắc lại → the."},
- {t:'multi', parts:["We visited ","{}"," communal house. ","{}"," communal house was over 100 years old."], blanks:['a','the'], bank:['a','an','the'], why:"Lần đầu → a; lần nhắc lại (đã xác định) → the."},
- {t:'multi', parts:["She told me about ","{}"," old custom. ","{}"," custom is still practised today."], blanks:['an','the'], bank:['a','an','the'], why:"'old' bắt đầu bằng nguyên âm → an; nhắc lại → the."},
- {t:'multi', parts:["I saw ","{}"," lantern at the shop. ","{}"," lantern was beautifully decorated."], blanks:['a','the'], bank:['a','an','the'], why:"Lần đầu → a; lần nhắc lại → the."},
- {t:'multi', parts:["He told us about ","{}"," ancestor of his family. ","{}"," ancestor was a famous craftsman."], blanks:['an','the'], bank:['a','an','the'], why:"'ancestor' bắt đầu bằng nguyên âm → an; nhắc lại → the."},
- {t:'multi', parts:["There was ","{}"," ceremony in our village. ","{}"," ceremony lasted three days."], blanks:['a','the'], bank:['a','an','the'], why:"Lần đầu → a; lần nhắc lại → the."},
- {t:'multi', parts:["I met ","{}"," ethnic minority family. ","{}"," family was very friendly."], blanks:['an','the'], bank:['a','an','the'], why:"'ethnic' bắt đầu bằng nguyên âm → an; nhắc lại → the."},
- {t:'multi', parts:["We found ","{}"," ornamental tree in the garden. ","{}"," tree was full of flowers."], blanks:['an','the'], bank:['a','an','the'], why:"'ornamental' bắt đầu bằng nguyên âm → an; nhắc lại → the."},
- {t:'multi', parts:["They organised ","{}"," festival last spring. ","{}"," festival attracted many tourists."], blanks:['a','the'], bank:['a','an','the'], why:"Lần đầu → a; lần nhắc lại → the."},
- {t:'multi', parts:["I read ","{}"," article about bronze drums. ","{}"," article was very informative."], blanks:['an','the'], bank:['a','an','the'], why:"'article' bắt đầu bằng nguyên âm → an; nhắc lại → the."},
- {t:'multi', parts:["We watched ","{}"," acrobatics performance. ","{}"," performance was amazing."], blanks:['an','the'], bank:['a','an','the'], why:"'acrobatics' bắt đầu bằng nguyên âm → an; nhắc lại → the."},
- {t:'multi', parts:["She wore ","{}"," unique costume. ","{}"," costume made her stand out."], blanks:['a','the'], bank:['a','an','the'], why:"'unique' đọc là phụ âm → a; nhắc lại → the."},
- {t:'multi', parts:["He gave me ","{}"," offering to place on the altar. ","{}"," offering was made of fruit."], blanks:['an','the'], bank:['a','an','the'], why:"'offering' bắt đầu bằng nguyên âm → an; nhắc lại → the."},
- {t:'multi', parts:["I visited ","{}"," region in the north. ","{}"," region is famous for terraced fields."], blanks:['a','the'], bank:['a','an','the'], why:"Lần đầu → a; lần nhắc lại → the."},
- {t:'multi', parts:["We saw ","{}"," carp released into the river. ","{}"," carp swam away quickly."], blanks:['a','the'], bank:['a','an','the'], why:"Lần đầu → a; lần nhắc lại → the."},
- {t:'multi', parts:["He told a story about ","{}"," monk. ","{}"," monk lived in the mountains."], blanks:['a','the'], bank:['a','an','the'], why:"Lần đầu → a; lần nhắc lại → the."},
- {t:'multi', parts:["I bought ","{}"," bamboo pole for Tet. ","{}"," pole was put in front of the house."], blanks:['a','the'], bank:['a','an','the'], why:"Lần đầu → a; lần nhắc lại → the."},
- {t:'multi', parts:["We tried ","{}"," local specialty. ","{}"," specialty was delicious."], blanks:['a','the'], bank:['a','an','the'], why:"Lần đầu → a; lần nhắc lại → the."},
- {t:'multi', parts:["She showed me ","{}"," old photograph. ","{}"," photograph was of her grandparents."], blanks:['an','the'], bank:['a','an','the'], why:"'old' bắt đầu bằng nguyên âm → an; nhắc lại → the."},
- {t:'multi', parts:["I heard ","{}"," interesting story about the village. ","{}"," story was about a bad spirit."], blanks:['an','the'], bank:['a','an','the'], why:"'interesting' bắt đầu bằng nguyên âm → an; nhắc lại → the."},
+ {t:'multi', parts:["I bought ","{}"," costume yesterday. ","{}"," costume was very colourful."], blanks:['a','the'], bank:['a','an','the'], why:"Lần đầu nhắc 'costume' → a; lần nhắc lại → the. <br>💬 <i>Dịch: Hôm qua tôi đã mua một bộ trang phục. Bộ trang phục đó rất sặc sỡ.</i>"},
+ {t:'multi', parts:["We visited ","{}"," communal house. ","{}"," communal house was over 100 years old."], blanks:['a','the'], bank:['a','an','the'], why:"Lần đầu → a; lần nhắc lại (đã xác định) → the. <br>💬 <i>Dịch: Chúng tôi đã thăm một nhà cộng đồng. Nhà cộng đồng đó đã hơn 100 năm tuổi.</i>"},
+ {t:'multi', parts:["She told me about ","{}"," old custom. ","{}"," custom is still practised today."], blanks:['an','the'], bank:['a','an','the'], why:"'old' bắt đầu bằng nguyên âm → an; nhắc lại → the. <br>💬 <i>Dịch: Cô ấy kể tôi nghe về một phong tục cổ. Phong tục đó vẫn được thực hành ngày nay.</i>"},
+ {t:'multi', parts:["I saw ","{}"," lantern at the shop. ","{}"," lantern was beautifully decorated."], blanks:['a','the'], bank:['a','an','the'], why:"Lần đầu → a; lần nhắc lại → the. <br>💬 <i>Dịch: Tôi thấy một chiếc đèn lồng ở cửa hàng. Chiếc đèn lồng được trang trí rất đẹp.</i>"},
+ {t:'multi', parts:["He told us about ","{}"," ancestor of his family. ","{}"," ancestor was a famous craftsman."], blanks:['an','the'], bank:['a','an','the'], why:"'ancestor' bắt đầu bằng nguyên âm → an; nhắc lại → the. <br>💬 <i>Dịch: Anh ấy kể cho chúng tôi về một tổ tiên của gia đình anh ấy. Người tổ tiên đó là một nghệ nhân nổi tiếng.</i>"},
+ {t:'multi', parts:["There was ","{}"," ceremony in our village. ","{}"," ceremony lasted three days."], blanks:['a','the'], bank:['a','an','the'], why:"Lần đầu → a; lần nhắc lại → the. <br>💬 <i>Dịch: Có một buổi lễ ở làng chúng tôi. Buổi lễ kéo dài ba ngày.</i>"},
+ {t:'multi', parts:["I met ","{}"," ethnic minority family. ","{}"," family was very friendly."], blanks:['an','the'], bank:['a','an','the'], why:"'ethnic' bắt đầu bằng nguyên âm → an; nhắc lại → the. <br>💬 <i>Dịch: Tôi gặp một gia đình dân tộc thiểu số. Gia đình đó rất thân thiện.</i>"},
+ {t:'multi', parts:["We found ","{}"," ornamental tree in the garden. ","{}"," tree was full of flowers."], blanks:['an','the'], bank:['a','an','the'], why:"'ornamental' bắt đầu bằng nguyên âm → an; nhắc lại → the. <br>💬 <i>Dịch: Chúng tôi tìm thấy một cây cảnh trong vườn. Cây đó đầy hoa.</i>"},
+ {t:'multi', parts:["They organised ","{}"," festival last spring. ","{}"," festival attracted many tourists."], blanks:['a','the'], bank:['a','an','the'], why:"Lần đầu → a; lần nhắc lại → the. <br>💬 <i>Dịch: Họ tổ chức một lễ hội vào mùa xuân trước. Lễ hội đó thu hút nhiều du khách.</i>"},
+ {t:'multi', parts:["I read ","{}"," article about bronze drums. ","{}"," article was very informative."], blanks:['an','the'], bank:['a','an','the'], why:"'article' bắt đầu bằng nguyên âm → an; nhắc lại → the. <br>💬 <i>Dịch: Tôi đọc một bài báo về trống đồng. Bài báo rất bổ ích.</i>"},
+ {t:'multi', parts:["We watched ","{}"," acrobatics performance. ","{}"," performance was amazing."], blanks:['an','the'], bank:['a','an','the'], why:"'acrobatics' bắt đầu bằng nguyên âm → an; nhắc lại → the. <br>💬 <i>Dịch: Chúng tôi xem một buổi biểu diễn xiếc. Buổi biểu diễn rất tuyệt vời.</i>"},
+ {t:'multi', parts:["She wore ","{}"," unique costume. ","{}"," costume made her stand out."], blanks:['a','the'], bank:['a','an','the'], why:"'unique' đọc là phụ âm → a; nhắc lại → the. <br>💬 <i>Dịch: Cô ấy mặc một bộ trang phục độc đáo. Bộ trang phục khiến cô ấy nổi bật.</i>"},
+ {t:'multi', parts:["He gave me ","{}"," offering to place on the altar. ","{}"," offering was made of fruit."], blanks:['an','the'], bank:['a','an','the'], why:"'offering' bắt đầu bằng nguyên âm → an; nhắc lại → the. <br>💬 <i>Dịch: Anh ấy đưa tôi một lễ vật để đặt lên bàn thờ. Lễ vật được làm từ trái cây.</i>"},
+ {t:'multi', parts:["I visited ","{}"," region in the north. ","{}"," region is famous for terraced fields."], blanks:['a','the'], bank:['a','an','the'], why:"Lần đầu → a; lần nhắc lại → the. <br>💬 <i>Dịch: Tôi đã thăm một vùng ở phía bắc. Vùng đó nổi tiếng với ruộng bậc thang.</i>"},
+ {t:'multi', parts:["We saw ","{}"," carp released into the river. ","{}"," carp swam away quickly."], blanks:['a','the'], bank:['a','an','the'], why:"Lần đầu → a; lần nhắc lại → the. <br>💬 <i>Dịch: Chúng tôi thấy một con cá chép được thả xuống sông. Con cá chép bơi đi rất nhanh.</i>"},
+ {t:'multi', parts:["He told a story about ","{}"," monk. ","{}"," monk lived in the mountains."], blanks:['a','the'], bank:['a','an','the'], why:"Lần đầu → a; lần nhắc lại → the. <br>💬 <i>Dịch: Anh ấy kể một câu chuyện về một nhà sư. Nhà sư đó sống trên núi.</i>"},
+ {t:'multi', parts:["I bought ","{}"," bamboo pole for Tet. ","{}"," pole was put in front of the house."], blanks:['a','the'], bank:['a','an','the'], why:"Lần đầu → a; lần nhắc lại → the. <br>💬 <i>Dịch: Tôi mua một cây nêu cho Tết. Cây nêu được dựng trước nhà.</i>"},
+ {t:'multi', parts:["We tried ","{}"," local specialty. ","{}"," specialty was delicious."], blanks:['a','the'], bank:['a','an','the'], why:"Lần đầu → a; lần nhắc lại → the. <br>💬 <i>Dịch: Chúng tôi thử một đặc sản địa phương. Đặc sản đó rất ngon.</i>"},
+ {t:'multi', parts:["She showed me ","{}"," old photograph. ","{}"," photograph was of her grandparents."], blanks:['an','the'], bank:['a','an','the'], why:"'old' bắt đầu bằng nguyên âm → an; nhắc lại → the. <br>💬 <i>Dịch: Cô ấy cho tôi xem một tấm ảnh cũ. Tấm ảnh chụp ông bà cô ấy.</i>"},
+ {t:'multi', parts:["I heard ","{}"," interesting story about the village. ","{}"," story was about a bad spirit."], blanks:['an','the'], bank:['a','an','the'], why:"'interesting' bắt đầu bằng nguyên âm → an; nhắc lại → the. <br>💬 <i>Dịch: Tôi nghe một câu chuyện thú vị về làng. Câu chuyện kể về một hồn ma.</i>"},
 ],
 
 /* ---------- LEVEL 8 — Dialogue completion (tự soạn, 20 mục) ---------- */
@@ -1024,18 +1129,18 @@ l9: [
  {t:'fill', q:"Hãy viết 1 câu so sánh hơn nhất về một lễ hội em từng tham gia, dùng 'the'.", ans:['the'], keyword:'the', why:"So sánh hơn nhất luôn có 'the': 'It is the most exciting festival.'"},
  {t:'fill', q:"Hãy viết 1 câu miêu tả trang phục truyền thống, dùng đúng mạo từ phù hợp.", ans:['a','an','the'], keyword:'a|an|the', why:"Tuỳ ngữ cảnh chọn a/an (chưa xác định) hoặc the (đã xác định)."},
  {t:'fill', q:"Hãy viết 1 câu về một địa danh nổi tiếng ở Việt Nam, dùng 'the' nếu cần.", ans:['the','0'], keyword:'', why:"Tên sông/dãy núi/quần đảo dùng 'the', tên thành phố/tỉnh thường không dùng mạo từ."},
- {t:'fill', q:"Hãy viết 1 câu về một người trong gia đình dùng danh từ bắt đầu bằng nguyên âm + 'an'.", ans:['an'], keyword:'an', why:"Ví dụ: 'My uncle is an engineer.'"},
- {t:'fill', q:"Hãy viết 1 câu về sở thích, dùng danh từ số nhiều không mạo từ (nghĩa chung).", ans:['0'], keyword:'', why:"Ví dụ: 'I like reading books.' — không cần mạo từ trước danh từ số nhiều chung chung."},
+ {t:'fill', q:"Hãy viết 1 câu về một người trong gia đình dùng danh từ bắt đầu bằng nguyên âm + 'an'.", ans:['an'], keyword:'an', why:"Ví dụ: 'My uncle is an engineer.' <br>💬 <i>(Chú tôi là kỹ sư.)</i>"},
+ {t:'fill', q:"Hãy viết 1 câu về sở thích, dùng danh từ số nhiều không mạo từ (nghĩa chung).", ans:['0'], keyword:'', why:"Ví dụ: 'I like reading books.' <br>💬 <i>(Tôi thích đọc sách.)</i> — không cần mạo từ trước danh từ số nhiều chung chung."},
  {t:'fill', q:"Hãy viết 1 câu nhắc đến một đồ vật lần đầu (dùng a/an) rồi nhắc lại lần 2 (dùng the).", ans:['a','an','the'], keyword:'the', why:"Mẫu câu chuẩn: 'I bought a lantern. The lantern is beautiful.'"},
- {t:'fill', q:"Hãy viết 1 câu hỏi bắt đầu bằng 'Is there a...?' để hỏi về một địa điểm gần nhà em.", ans:['a'], keyword:'a', why:"Ví dụ: 'Is there a market near your house?'"},
+ {t:'fill', q:"Hãy viết 1 câu hỏi bắt đầu bằng 'Is there a...?' để hỏi về một địa điểm gần nhà em.", ans:['a'], keyword:'a', why:"Ví dụ: 'Is there a market near your house?' <br>💬 <i>(Gần nhà bạn có chợ không?)</i>"},
  {t:'fill', q:"Hãy viết 1 câu về một truyền thống độc đáo của dân tộc em, dùng 'a unique...' (không dùng 'an').", ans:['a'], keyword:'a', why:"'unique' đọc âm phụ âm /juː-/ nên phải dùng 'a', đây là lỗi rất hay gặp."},
- {t:'fill', q:"Hãy viết 1 câu về khoảng thời gian bạn dành cho việc học, dùng 'hours' không mạo từ.", ans:['0'], keyword:'', why:"Ví dụ: 'I spend two hours studying every day.'"},
+ {t:'fill', q:"Hãy viết 1 câu về khoảng thời gian bạn dành cho việc học, dùng 'hours' không mạo từ.", ans:['0'], keyword:'', why:"Ví dụ: 'I spend two hours studying every day.' <br>💬 <i>(Tôi dành hai giờ để học mỗi ngày.)</i>"},
  {t:'fill', q:"Hãy viết 1 câu về ngôi chùa hoặc nhà thờ ở địa phương em, dùng mạo từ phù hợp.", ans:['a','the'], keyword:'a|the', why:"Tuỳ vào việc đã xác định hay chưa mà chọn a hoặc the."},
  {t:'fill', q:"Hãy viết 1 câu miêu tả Trái Đất hoặc thế giới, dùng 'the'.", ans:['the'], keyword:'the', why:"'the Earth' / 'the world' luôn có 'the'."},
- {t:'fill', q:"Hãy viết 1 câu về việc uống trà/cà phê, dùng 'a cup of...'.", ans:['a'], keyword:'a', why:"Ví dụ: 'I'd like a cup of tea.'"},
- {t:'fill', q:"Hãy viết 1 câu về động vật nuôi ở trang trại, dùng danh từ số nhiều không mạo từ.", ans:['0'], keyword:'', why:"Ví dụ: 'Farmers raise cattle and poultry.'"},
- {t:'fill', q:"Hãy viết 1 câu về giờ học, dùng 'an hour' (h câm).", ans:['an'], keyword:'an', why:"Ví dụ: 'The lesson lasts an hour.'"},
- {t:'fill', q:"Hãy viết 1 câu về người bạn thân nhất, dùng 'a friend of mine'.", ans:['a'], keyword:'a', why:"Ví dụ: 'She is a friend of mine.'"},
+ {t:'fill', q:"Hãy viết 1 câu về việc uống trà/cà phê, dùng 'a cup of...'.", ans:['a'], keyword:'a', why:"Ví dụ: 'I'd like a cup of tea.' <br>💬 <i>(Tôi muốn một tách trà.)</i>"},
+ {t:'fill', q:"Hãy viết 1 câu về động vật nuôi ở trang trại, dùng danh từ số nhiều không mạo từ.", ans:['0'], keyword:'', why:"Ví dụ: 'Farmers raise cattle and poultry.' <br>💬 <i>(Nông dân nuôi gia súc và gia cầm.)</i>"},
+ {t:'fill', q:"Hãy viết 1 câu về giờ học, dùng 'an hour' (h câm).", ans:['an'], keyword:'an', why:"Ví dụ: 'The lesson lasts an hour.' <br>💬 <i>(Bài học kéo dài một tiếng.)</i>"},
+ {t:'fill', q:"Hãy viết 1 câu về người bạn thân nhất, dùng 'a friend of mine'.", ans:['a'], keyword:'a', why:"Ví dụ: 'She is a friend of mine.' <br>💬 <i>(Cô ấy là bạn của tôi.)</i>"},
  {t:'fill', q:"Hãy viết 1 câu miêu tả bầu trời đêm, dùng 'the sky' hoặc 'the stars'.", ans:['the'], keyword:'the', why:"'sky' và các vật thể trên trời (được xem là duy nhất trong ngữ cảnh) thường đi với 'the'."},
 ],
 };
@@ -1051,6 +1156,13 @@ const READING_CLOZE = {
    "However, the elephants in Tay Nguyen are in (5)___ now. In recent years, climate change has decreased the area of natural forests. Illegal deforestation has also threatened the elephants.",
    "Besides, illegal hunting for tusks, bones and tail hair has killed many of (6)___ animals. (7)___ can we protect the elephants?",
    "It is important that both the authorities and the local people join hands to save the elephants from (8)___."
+ ],
+ vi: [
+   "Voi là biểu tượng văn hóa độc đáo của Tây Nguyên và Đắk Lắk được coi là vùng đất của voi ở Việt Nam.",
+   "Trước đây, Tây Nguyên từng có những đàn voi lớn sống trên núi. Chúng giúp đỡ người dân địa phương và sống hòa hợp với con người.",
+   "Tuy nhiên, voi ở Tây Nguyên hiện đang gặp nguy hiểm. Những năm gần đây, biến đổi khí hậu đã làm giảm diện tích rừng tự nhiên. Nạn phá rừng trái phép cũng đe dọa loài voi.",
+   "Bên cạnh đó, nạn săn bắt trái phép để lấy ngà, xương và lông đuôi đã giết chết nhiều con voi. Làm sao chúng ta có thể bảo vệ loài voi?",
+   "Điều quan trọng là cả chính quyền và người dân địa phương cùng chung tay cứu loài voi khỏi nguy cơ tuyệt chủng."
  ],
  blanks: [
    {n:1, opts:['a','an','the','0'], ans:'a', why:"'unique' đọc âm /juː-/ như phụ âm → dùng 'a'."},
@@ -1071,13 +1183,18 @@ const READING_COMP = {
   "This drum has a large size and an ancient look with many decorative patterns. These patterns include a multi-ray star (symbolizing the shining sun) and in between the star rays are designs of stylized peacock feathers. Bands of geometrical patterns with small dots surround the star. The band of human figures presents two people pounding rice, some other standing or sitting inside the house, some beating the drum and many others dancing. In between those human patterns are the curved-roof stilted house, bronze drum, bronze bells, weapons, musical instruments and so on. The bands of animal figures include short-bill birds, the long-bill birds and deer.",
   "The Ngoc Lu bronze drum is the most typical one in the bronze drum system of Vietnam, and at the same time it symbolizes the brilliant peak of the Dong Son culture. The drum represents the scientific knowledge and the artistic talent and mind of the ancient Viet."
  ],
+ vi: [
+  "Trống đồng Đông Sơn rất nổi tiếng vì giá trị văn hóa của chúng. Chúng thường được dùng làm nhạc cụ trong các lễ hội và nghi lễ. Trong khoảng 200 chiếc trống được phát hiện, trống đồng Ngọc Lũ được coi là chiếc trống đẹp nhất của văn hóa Đông Sơn từng được tìm thấy ở Việt Nam. Hiện nay trống được lưu giữ tại Bảo tàng Lịch sử Quốc gia Việt Nam ở Hà Nội.",
+  "Chiếc trống này có kích thước lớn và vẻ ngoài cổ kính với nhiều hoa văn trang trí. Các hoa văn gồm một ngôi sao nhiều cánh (tượng trưng cho mặt trời tỏa sáng) và giữa các cánh sao là hình lông công cách điệu. Các dải hoa văn hình học với những chấm nhỏ bao quanh ngôi sao. Dải hình người thể hiện hai người giã gạo, một số người đứng hoặc ngồi trong nhà, một số đánh trống và nhiều người khác đang nhảy múa. Xen giữa các hình người là nhà sàn mái cong, trống đồng, chuông đồng, vũ khí, nhạc cụ và nhiều thứ khác. Các dải hình động vật gồm chim mỏ ngắn, chim mỏ dài và hươu.",
+  "Trống đồng Ngọc Lũ là chiếc trống tiêu biểu nhất trong hệ thống trống đồng Việt Nam, đồng thời tượng trưng cho đỉnh cao rực rỡ của văn hóa Đông Sơn. Chiếc trống thể hiện tri thức khoa học cũng như tài năng nghệ thuật và tâm hồn của người Việt cổ."
+ ],
  questions: [
-  {q:"What are Dong Son bronze drums famous for?", keyword:'cultural', model:"They are famous for their cultural value."},
-  {q:"Which bronze drum is considered the most beautiful drum of the Dong Son culture?", keyword:'ngoc lu', model:"The Ngoc Lu bronze drum is considered the most beautiful one."},
-  {q:"Where is the Ngoc Lu bronze drum preserved now?", keyword:'museum', model:"It is preserved at the National Museum of Vietnamese History in Hanoi."},
-  {q:"What decorative patterns are in between the star rays?", keyword:'peacock', model:"Designs of stylized peacock feathers are in between the star rays."},
-  {q:"What does the band of animal figures include?", keyword:'bird', model:"It includes short-bill birds, long-bill birds, and deer."},
-  {q:"What does the Ngoc Lu bronze drum symbolize?", keyword:'dong son', model:"It symbolizes the brilliant peak of the Dong Son culture."},
+  {q:"What are Dong Son bronze drums famous for?", keyword:'cultural', model:"They are famous for their cultural value.", vi:"Trống đồng Đông Sơn nổi tiếng vì điều gì? — Chúng nổi tiếng vì giá trị văn hóa."},
+  {q:"Which bronze drum is considered the most beautiful drum of the Dong Son culture?", keyword:'ngoc lu', model:"The Ngoc Lu bronze drum is considered the most beautiful one.", vi:"Chiếc trống đồng nào được coi là đẹp nhất của văn hóa Đông Sơn? — Trống đồng Ngọc Lũ được coi là đẹp nhất."},
+  {q:"Where is the Ngoc Lu bronze drum preserved now?", keyword:'museum', model:"It is preserved at the National Museum of Vietnamese History in Hanoi.", vi:"Trống đồng Ngọc Lũ hiện được lưu giữ ở đâu? — Nó được lưu giữ tại Bảo tàng Lịch sử Quốc gia Việt Nam ở Hà Nội."},
+  {q:"What decorative patterns are in between the star rays?", keyword:'peacock', model:"Designs of stylized peacock feathers are in between the star rays.", vi:"Hoa văn trang trí nào nằm giữa các cánh sao? — Đó là hình lông công cách điệu."},
+  {q:"What does the band of animal figures include?", keyword:'bird', model:"It includes short-bill birds, long-bill birds, and deer.", vi:"Dải hình động vật gồm những gì? — Gồm chim mỏ ngắn, chim mỏ dài và hươu."},
+  {q:"What does the Ngoc Lu bronze drum symbolize?", keyword:'dong son', model:"It symbolizes the brilliant peak of the Dong Son culture.", vi:"Trống đồng Ngọc Lũ tượng trưng cho điều gì? — Nó tượng trưng cho đỉnh cao rực rỡ của văn hóa Đông Sơn."},
  ]
 };
 
@@ -1367,23 +1484,221 @@ function openModule(mod){
    LESSON (PRESENTATION) PLAYER
 ============================================================ */
 let lessonState = {topic:null, idx:0, steps:[]};
+let recapProgress = {}; // per lesson-session: {stepKey: {answeredCount, correctCount, done}}
 function startLesson(topic){
   lessonState = {topic, idx:0, steps: LESSONS[topic]};
+  recapProgress = {};
   showScreen('lesson');
   renderLesson();
 }
 function renderLesson(){
-  const {steps, idx} = lessonState;
+  const {steps, idx, topic} = lessonState;
   const s = steps[idx];
+  let bodyHtml = s.body;
   document.getElementById('lessonCard').innerHTML = `
     <div class="lesson-step-badge">${s.badge}</div>
     <h2 class="lesson-title">${s.title}</h2>
-    <div class="lesson-body">${s.body}</div>`;
+    <div class="lesson-body" id="lessonBodyInner">${bodyHtml}</div>
+    <div id="lessonExtra"></div>`;
   const dots = document.getElementById('lessonDots');
   dots.innerHTML = steps.map((_,i)=>`<span class="${i===idx?'on':''}"></span>`).join('');
-  document.getElementById('lessonPrev').disabled = idx===0;
   document.getElementById('lessonPrev').style.visibility = idx===0 ? 'hidden' : 'visible';
   document.getElementById('lessonNext').textContent = idx===steps.length-1 ? '✅ Hoàn thành bài giảng' : 'Tiếp theo ➡️';
+
+  // 1) Vietnamese "tap to reveal" — turns passive translation into active recall
+  document.querySelectorAll('#lessonBodyInner .vi').forEach(el=>{
+    if(el.dataset.wrapped) return; el.dataset.wrapped='1';
+    el.classList.add('vi-reveal-text');
+    const btn = document.createElement('button');
+    btn.className = 'vi-reveal-btn'; btn.type='button';
+    btn.innerHTML = '👁️ Đoán xong? Xem nghĩa';
+    btn.onclick = ()=>{ soundClick(); el.classList.add('show'); btn.style.display='none'; };
+    el.parentNode.insertBefore(btn, el);
+  });
+
+  // 2) Flip-cards for Memory Tips rows
+  document.querySelectorAll('#lessonBodyInner .tip-row').forEach((row,i)=>{
+    if(row.dataset.flipped) return; row.dataset.flipped='1';
+    const inner = row.innerHTML;
+    row.classList.remove('tip-row'); row.classList.add('flip-tip');
+    row.innerHTML = `<div class="flip-tip-in">
+      <div class="flip-tip-face front"><span class="fnum">🎯</span><b>Mẹo #${i+1} — Chạm để xem!</b></div>
+      <div class="flip-tip-face back">${inner}</div>
+    </div>`;
+    row.onclick = ()=>{ soundClick(); row.classList.toggle('flipped'); };
+  });
+
+  // 3) Interactive flowchart — reveal boxes one at a time
+  const flowBoxes = document.querySelectorAll('#lessonBodyInner .flow-box');
+  const flowArrows = document.querySelectorAll('#lessonBodyInner .flow-arrow');
+  if(flowBoxes.length){
+    const seq = []; document.querySelectorAll('#lessonBodyInner .flow > *').forEach(el=>seq.push(el));
+    seq.forEach(el=>{ el.classList.remove('revealed'); });
+    let revealIdx = 0;
+    function revealNext(){
+      if(revealIdx < seq.length){ seq[revealIdx].classList.add('revealed'); revealIdx++; }
+      if(revealIdx < seq.length){
+        setTimeout(revealNext, 50);
+      }
+    }
+    if(seq.length) seq[0].classList.add('revealed');
+    const flowDiv = document.querySelector('#lessonBodyInner .flow');
+    if(flowDiv){
+      const btn = document.createElement('button');
+      btn.className = 'flow-next-btn'; btn.style.marginTop='10px'; btn.textContent = '👉 Xem bước tiếp theo';
+      btn.onclick = ()=>{
+        soundClick();
+        let shown=0;
+        for(let i=0;i<seq.length;i++){ if(seq[i].classList.contains('revealed')) shown=i+1; }
+        if(shown < seq.length){ seq[shown].classList.add('revealed'); }
+        if(shown+1 >= seq.length){ btn.style.display='none'; }
+      };
+      flowDiv.after(btn);
+    }
+  }
+
+  // 4) Mindmap — click node to reveal example
+  document.querySelectorAll('#lessonBodyInner .mm-node[data-ex]').forEach(node=>{
+    node.onclick = ()=>{
+      soundClick();
+      const det = document.getElementById('mmDetail');
+      if(det){ det.textContent = '💬 ' + node.dataset.ex; det.classList.add('show'); }
+    };
+  });
+
+  const extra = document.getElementById('lessonExtra');
+
+  // 5) Mini retrieval-check box
+  if(s.check){ extra.appendChild(buildMiniCheck(s.check)); }
+
+  // 6) Interactive tag-the-sentence game
+  if(s.tagGame){ extra.appendChild(buildTagGame(s.tagGame)); }
+
+  // 7) Recap quiz (Ready step) — gates completion
+  if(s.recap){
+    const stepKey = topic+'_recap_'+idx;
+    if(!recapProgress[stepKey]) recapProgress[stepKey] = {i:0, correct:0, done:false};
+    extra.appendChild(buildRecapQuiz(s.recap, stepKey, s.closing||''));
+  }
+  updateNextButtonState();
+}
+function buildMiniCheck(check){
+  const wrap = document.createElement('div');
+  wrap.className = 'minicheck';
+  wrap.innerHTML = `<div class="mc-kicker">🧠 Kiểm tra nhanh — Em đoán xem?</div>
+    <div class="mc-q">${check.q}</div>
+    <div class="mc-opts">${check.opts.map(o=>`<button class="mc-opt" data-v="${o.replace(/"/g,'&quot;')}">${o}</button>`).join('')}</div>
+    <div class="mc-exp" style="display:none"></div>`;
+  wrap.querySelectorAll('.mc-opt').forEach(btn=>{
+    btn.onclick = ()=>{
+      wrap.querySelectorAll('.mc-opt').forEach(b=>b.disabled=true);
+      const ok = btn.dataset.v===check.ans;
+      if(ok){ btn.classList.add('ok'); soundOk(); } else { btn.classList.add('no'); soundNo();
+        wrap.querySelectorAll('.mc-opt').forEach(b=>{ if(b.dataset.v===check.ans) b.classList.add('ok'); }); }
+      const exp = wrap.querySelector('.mc-exp');
+      exp.style.display='block'; exp.innerHTML = (ok?'✅ ':'💡 ') + check.exp;
+    };
+  });
+  return wrap;
+}
+function buildTagGame(cfg){
+  const wrap = document.createElement('div');
+  wrap.className = 'tag-game';
+  let selected = null;
+  const state = cfg.tokens.map(t=>({...t, tagged:null}));
+  wrap.innerHTML = `<b>${cfg.instruction}</b>
+    <div class="tag-sentence" id="tgSentence"></div>
+    <div class="tag-roles" id="tgRoles">${cfg.roles.map(r=>`<button class="tag-role-btn ${r.cls}" data-k="${r.key}" style="background:var(--${r.cls==='hl-wh'?'wh':r.cls==='hl-aux'?'aux':r.cls==='hl-sub'?'sub':r.cls==='hl-verb'?'good':'art'}-soft);color:var(--${r.cls==='hl-wh'?'wh':r.cls==='hl-aux'?'aux':r.cls==='hl-sub'?'sub':r.cls==='hl-verb'?'good':'art'})">${r.label}</button>`).join('')}</div>
+    <button class="btn small" id="tgCheck">Kiểm tra</button>
+    <div class="mc-exp" id="tgFb" style="display:none"></div>`;
+  function renderSentence(){
+    wrap.querySelector('#tgSentence').innerHTML = state.map((t,i)=>{
+      if(t.role===null) return `<span class="tag-token static">${t.text}</span>`;
+      const cls = t.tagged ? (cfg.roles.find(r=>r.key===t.tagged)||{}).cls : '';
+      return `<button class="tag-token ${selected===i?'sel':''} ${t.tagged?'tagged '+cls:''}" data-i="${i}">${t.text}</button>`;
+    }).join('');
+    wrap.querySelectorAll('#tgSentence .tag-token:not(.static)').forEach(btn=>{
+      btn.onclick = ()=>{ soundClick(); selected = +btn.dataset.i; renderSentence(); };
+    });
+  }
+  renderSentence();
+  wrap.querySelectorAll('#tgRoles .tag-role-btn').forEach(btn=>{
+    btn.onclick = ()=>{
+      if(selected===null){ toast('👆 Hãy chạm vào 1 từ trước!'); return; }
+      soundClick();
+      state[selected].tagged = btn.dataset.k;
+      selected = null; renderSentence();
+    };
+  });
+  wrap.querySelector('#tgCheck').onclick = ()=>{
+    const taggable = state.filter(t=>t.role!==null);
+    if(taggable.some(t=>!t.tagged)){ toast('👆 Gán vai trò cho tất cả các từ trước nhé!'); return; }
+    let correctCount = 0;
+    document.querySelectorAll('#tgSentence .tag-token:not(.static)').forEach((btn,idx)=>{
+      const t = state[+btn.dataset.i];
+      if(t.tagged===t.role){ btn.classList.add('correct-fb'); correctCount++; }
+      else { btn.classList.add('wrong-fb'); }
+    });
+    const allOk = correctCount===taggable.length;
+    const fb = wrap.querySelector('#tgFb');
+    fb.style.display='block';
+    fb.innerHTML = allOk ? '✅ Chính xác 100%! Em đã nắm vững cấu trúc câu rồi!' : `💡 Đúng ${correctCount}/${taggable.length} — thử xem lại các từ có viền đỏ nhé!`;
+    if(allOk){ soundOk(); confettiBurst(16); } else soundNo();
+  };
+  return wrap;
+}
+function buildRecapQuiz(recap, stepKey, closingHtml){
+  const wrap = document.createElement('div');
+  wrap.className = 'recap-box';
+  const prog = recapProgress[stepKey];
+  function render(){
+    if(prog.i >= recap.length){
+      wrap.innerHTML = `<div class="recap-progress">${recap.map(()=>'<span class="done"></span>').join('')}</div>
+        <div class="feedback ok"><div class="head ok">🎉 Hoàn thành ôn tập nhanh!</div>
+        <div class="body">Em trả lời đúng ${prog.correct}/${recap.length} câu. ${prog.correct===recap.length?'Xuất sắc — trí nhớ tuyệt vời!':'Không sao, hãy tiếp tục luyện tập ở phần sau nhé!'}</div></div>
+        ${closingHtml}`;
+      prog.done = true;
+      updateNextButtonState();
+      return;
+    }
+    const q = recap[prog.i];
+    wrap.innerHTML = `<div class="recap-progress">${recap.map((_,i)=>`<span class="${i<prog.i?'done':i===prog.i?'now':''}"></span>`).join('')}</div>
+      <div class="minicheck">
+        <div class="mc-kicker">🧠 Câu ${prog.i+1}/${recap.length}</div>
+        <div class="mc-q">${q.q}</div>
+        <div class="mc-opts">${q.opts.map(o=>`<button class="mc-opt" data-v="${o.replace(/"/g,'&quot;')}">${o}</button>`).join('')}</div>
+        <div class="mc-exp" style="display:none"></div>
+      </div>`;
+    wrap.querySelectorAll('.mc-opt').forEach(btn=>{
+      btn.onclick=()=>{
+        wrap.querySelectorAll('.mc-opt').forEach(b=>b.disabled=true);
+        const ok = btn.dataset.v===q.ans;
+        if(ok){ btn.classList.add('ok'); soundOk(); prog.correct++; } else { btn.classList.add('no'); soundNo();
+          wrap.querySelectorAll('.mc-opt').forEach(b=>{ if(b.dataset.v===q.ans) b.classList.add('ok'); }); }
+        const exp = wrap.querySelector('.mc-exp'); exp.style.display='block'; exp.innerHTML=(ok?'✅ ':'💡 ')+q.exp;
+        const nb = document.createElement('button');
+        nb.className='btn small'; nb.style.marginTop='10px'; nb.textContent='Câu tiếp theo ➡️';
+        nb.onclick = ()=>{ soundClick(); prog.i++; render(); };
+        wrap.appendChild(nb);
+      };
+    });
+  }
+  render();
+  updateNextButtonState();
+  return wrap;
+}
+function updateNextButtonState(){
+  const s = lessonState.steps[lessonState.idx];
+  const nextBtn = document.getElementById('lessonNext');
+  if(s && s.recap){
+    const stepKey = lessonState.topic+'_recap_'+lessonState.idx;
+    const prog = recapProgress[stepKey];
+    const done = prog && prog.done;
+    nextBtn.disabled = !done;
+    nextBtn.style.opacity = done ? '1' : '.5';
+  } else {
+    nextBtn.disabled = false; nextBtn.style.opacity='1';
+  }
 }
 document.getElementById('lessonPrev').onclick = ()=>{ soundClick(); if(lessonState.idx>0){ lessonState.idx--; renderLesson(); } };
 document.getElementById('lessonNext').onclick = ()=>{
@@ -1587,7 +1902,7 @@ function handleAnswer(isOk, ctx){
     quiz.wrong++; quiz.hearts = Math.max(0, quiz.hearts-1); soundNo();
     let answerLine = '';
     if(item.t==='mcq') answerLine = `Đáp án đúng: <b>${item.ans}</b>`;
-    else if(item.t==='fill' && item.ans && item.keyword===undefined) answerLine = `Đáp án gợi ý: <b>${item.ans[0]}</b>`;
+    else if(item.t==='fill' && item.ans) answerLine = `Đáp án gợi ý: <b>${item.ans[0]}</b>`;
     else if(item.t==='build') answerLine = `Đáp án đúng: <b>${item.ans}</b>`;
     else if(item.t==='tf') answerLine = `Sửa lại: <b>${item.fix}</b>`;
     else if(item.t==='multi') answerLine = `Đáp án đúng: <b>${item.blanks.join(' / ')}</b>`;
@@ -1658,9 +1973,13 @@ function renderFinal(){
     const b = READING_CLOZE.blanks[finalState.idx];
     panel.innerHTML = `<div class="q-kicker">📖 ${READING_CLOZE.title} · Điền từ ${finalState.idx+1}/${READING_CLOZE.blanks.length}</div>
       <div class="glass" style="padding:14px;margin-bottom:14px;font-size:14px;line-height:1.8;font-weight:600">${READING_CLOZE.passage.join(' ')}</div>
+      <button class="vi-reveal-btn" id="clozeViBtn" type="button" style="margin-bottom:12px">👁️ Xem nghĩa tiếng Việt</button>
+      <div class="glass vi-reveal-text" id="clozeViBox" style="padding:14px;margin-bottom:14px;font-size:13.5px;line-height:1.8">${(READING_CLOZE.vi||[]).join(' ')}</div>
       <div class="q-prompt">Chọn đáp án đúng cho chỗ trống số (${b.n}):</div>
       <div class="opt-grid">${b.opts.map((o,i)=>`<button class="opt" data-v="${escAttr(o)}"><span class="k">${String.fromCharCode(65+i)}</span>${o}</button>`).join('')}</div>
       <div id="fbSlot"></div>`;
+    const clozeViBtn = document.getElementById('clozeViBtn');
+    if(clozeViBtn) clozeViBtn.onclick = ()=>{ soundClick(); document.getElementById('clozeViBox').classList.add('show'); clozeViBtn.style.display='none'; };
     panel.querySelectorAll('.opt').forEach(btn=>btn.onclick=()=>{
       if(finalState.locked) return; finalState.locked=true;
       const ok = btn.dataset.v===b.ans;
@@ -1681,9 +2000,13 @@ function renderFinal(){
     const q = READING_COMP.questions[finalState.idx];
     panel.innerHTML = `<div class="q-kicker">📖 ${READING_COMP.title} · Câu hỏi ${finalState.idx+1}/${READING_COMP.questions.length}</div>
       <div class="glass" style="padding:14px;margin-bottom:14px;font-size:13.5px;line-height:1.8;font-weight:600">${READING_COMP.passage.join('<br><br>')}</div>
+      <button class="vi-reveal-btn" id="compViBtn" type="button" style="margin-bottom:12px">👁️ Xem nghĩa tiếng Việt</button>
+      <div class="glass vi-reveal-text" id="compViBox" style="padding:14px;margin-bottom:14px;font-size:13px;line-height:1.8">${(READING_COMP.vi||[]).join('<br><br>')}</div>
       <div class="q-prompt">${q.q}</div>
       <div class="text-input-row"><input class="text-input" id="rcInput" placeholder="Trả lời bằng câu đầy đủ..." autocomplete="off"><button class="btn" id="rcCheck">Kiểm tra</button></div>
       <div id="fbSlot"></div>`;
+    const compViBtn = document.getElementById('compViBtn');
+    if(compViBtn) compViBtn.onclick = ()=>{ soundClick(); document.getElementById('compViBox').classList.add('show'); compViBtn.style.display='none'; };
     const inp = document.getElementById('rcInput'); inp.focus();
     const go = ()=>{
       if(finalState.locked) return;
@@ -1693,7 +2016,7 @@ function renderFinal(){
       inp.classList.add(ok?'ok':'no'); inp.disabled=true; document.getElementById('rcCheck').disabled=true;
       if(ok){ finalState.correct++; finalState.xpGain+=5; soundOk(); } else { finalState.wrong++; finalState.hearts=Math.max(0,finalState.hearts-1); soundNo(); }
       const fb=document.getElementById('fbSlot');
-      fb.innerHTML = `<div class="feedback ${ok?'ok':'no'}"><div class="head ${ok?'ok':'no'}">${ok?'✅ Chính xác!':'❌ Chưa đúng ý'}</div><div class="body">Câu trả lời gợi ý: <b>${q.model}</b></div></div>`;
+      fb.innerHTML = `<div class="feedback ${ok?'ok':'no'}"><div class="head ${ok?'ok':'no'}">${ok?'✅ Chính xác!':'❌ Chưa đúng ý'}</div><div class="body">Câu trả lời gợi ý: <b>${q.model}</b>${q.vi?`<br>💬 <i>${q.vi}</i>`:''}</div></div>`;
       const nb=document.createElement('button'); nb.className='btn full'; nb.style.marginTop='14px';
       nb.textContent = finalState.idx>=READING_COMP.questions.length-1 ? '🏁 Hoàn thành' : 'Tiếp tục ➡️';
       nb.onclick=()=>{ soundClick(); finalState.idx++; finalState.locked=false;
