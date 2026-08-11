@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Unit 1: Leisure Time">
+<meta name="theme-color" content="#ea580c">
+<meta name="format-detection" content="telephone=no">
+<title>Unit 1: Leisure Time - Tiếng Anh 8 (Global Success)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+  :root{ --accent:#1d4ed8; --accent2:#0891b2; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html{ -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  body { font-family:'Nunito',sans-serif; background:#f5f3ff; overscroll-behavior-y: none; }
+  header.hero-gradient{ padding-top: calc(2rem + env(safe-area-inset-top)); }
+  nav.sticky{ top: env(safe-area-inset-top); }
+  button, .tab-btn, .option-label, .speak-btn, [onclick]{ touch-action: manipulation; -webkit-user-select: none; user-select: none; }
+  input.answer-input, textarea.answer-input{ -webkit-user-select: text; user-select: text; }
+  nav{ -webkit-overflow-scrolling: touch; }
+  .hero-gradient{ background: linear-gradient(135deg, #7c2d12 0%, #ea580c 55%, #f59e0b 100%); }
+  .tab-btn{ transition: all .2s ease; }
+  .tab-btn.active{ background: linear-gradient(135deg, #7c2d12, #f59e0b); color:#fff; box-shadow:0 4px 14px rgba(124,45,18,.35); transform:translateY(-1px); }
+  .task-card{ transition: box-shadow .2s, transform .2s; }
+  .task-card:hover{ transform: translateY(-2px); box-shadow:0 8px 30px rgba(0,0,0,.10); }
+  .option-label{ cursor:pointer; transition: all .18s; border:2px solid #e2e8f0; }
+  .option-label:hover{ border-color:var(--accent); background:#f5f3ff; }
+  .option-label.selected{ border-color:#1e1b4b; background:#eef2ff; }
+  .option-label.correct-opt{ border-color:#22c55e !important; background:#f0fdf4 !important; }
+  .option-label.wrong-opt{ border-color:#ef4444 !important; background:#fef2f2 !important; }
+  .mcq-detail-hidden{ display:none; }
+  .show-mcq-detail .mcq-detail-hidden{ display:block; }
+  .speak-btn{ cursor:pointer; }
+  .speak-btn.speaking{ animation: pulseSpeak .7s ease-in-out infinite; }
+  @keyframes pulseSpeak{ 0%,100%{transform:scale(1);} 50%{transform:scale(1.18);} }
+  .vi-hidden{ display:none; }
+  .explanation-box{ display:none; animation: fadeSlide .3s ease forwards; }
+  .explanation-box.show{ display:block; }
+  @keyframes fadeSlide{ from{opacity:0; transform:translateY(-6px);} to{opacity:1; transform:translateY(0);} }
+  input.answer-input, textarea.answer-input{ border:2px solid #cbd5e1; transition:border .18s; outline:none; background:#fff; font-size:16px !important; }
+  input.answer-input:focus, textarea.answer-input:focus{ border-color:var(--accent); }
+  @media (min-width: 640px){ input.answer-input, textarea.answer-input{ font-size:0.875rem !important; } }
+  input.correct-input{ border-color:#22c55e !important; background:#f0fdf4; }
+  input.wrong-input{ border-color:#ef4444 !important; background:#fef2f2; }
+  .score-badge{ animation: popIn .35s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn{ from{transform:scale(.4); opacity:0;} to{transform:scale(1); opacity:1;} }
+  .confetti-wrap{ position:fixed; inset:0; pointer-events:none; z-index:9999; }
+  .confetti-piece{ position:absolute; width:10px; height:10px; border-radius:2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall{ 0%{transform:translateY(-20px) rotate(0deg); opacity:1;} 100%{transform:translateY(100vh) rotate(720deg); opacity:0;} }
+  .progress-bar-fill{ transition: width .6s ease; }
+  .section-page{ display:none; }
+  .section-page.active{ display:block; }
+  #completionBanner{ display:none; }
+  #completionBanner.show{ display:flex; }
+  .passage-box{ background:#fff; border:1px solid #e2e8f0; border-radius:1rem; padding:1rem 1.25rem; line-height:1.9; font-size:.95rem; color:#334155; }
+  .dict-box{ background:#fef9c3; border:1px solid #fde68a; border-radius:1rem; padding:1rem 1.25rem; font-size:.9rem; color:#334155; }
+  .blank-tag{ background:#ffedd5; color:#9a3412; font-weight:800; border-radius:.4rem; padding:0 .35rem; }
+  .wordfam-box{ background:#fff7ed; border:1px solid #fed7aa; border-radius:.6rem; padding:.5rem .75rem; font-size:.75rem; color:#9a3412; line-height:1.6; width:100%; }
+  .wordbox-strip{ background:#eff6ff; border:1px dashed #93c5fd; border-radius:.8rem; padding:.6rem .8rem; margin-bottom:1rem; }
+  .listen-bar{ margin-bottom:1rem; }
+  .sample-box{ display:none; background:#f0fdf4; border:1px solid #86efac; border-radius:.7rem; padding:.75rem 1rem; font-size:.85rem; color:#166534; margin-top:.5rem; white-space:pre-line; }
+  .sample-box.show{ display:block; }
+  textarea.answer-input{ resize:vertical; min-height:70px; }
+</style>
+</head>
+<body class="min-h-screen">
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<header class="hero-gradient text-white py-8 px-4 text-center shadow-xl relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <div class="absolute top-4 left-8 text-6xl">🚲</div>
+    <div class="absolute top-2 right-12 text-5xl">🧶</div>
+    <div class="absolute bottom-2 left-1/3 text-4xl">🧩</div>
+    <div class="absolute bottom-4 right-1/4 text-5xl">🎬</div>
+  </div>
+  <p class="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Tiếng Anh 8 · Global Success · Unit 1</p>
+  <h1 class="font-['Baloo_2'] text-3xl md:text-5xl font-extrabold drop-shadow-lg">🎨 Unit 1: Leisure Time 🚴</h1>
+  <p class="mt-2 text-base md:text-lg opacity-90 font-semibold">Luyện tập tương tác · Từ vựng - Ngữ pháp - Phát âm - Kỹ năng</p>
+  <div class="mt-5 max-w-2xl mx-auto">
+    <div class="flex justify-between text-xs font-bold opacity-80 mb-1">
+      <span>Tiến độ hoàn thành</span>
+      <span id="progressText">0 / 29 phần</span>
+    </div>
+    <div class="bg-white/20 rounded-full h-3 overflow-hidden">
+      <div id="progressBar" class="bg-white rounded-full h-3 progress-bar-fill" style="width:0%"></div>
+    </div>
+  </div>
+</header>
+
+<nav class="sticky top-0 z-50 bg-white/90 backdrop-blur shadow-sm px-3 py-2 overflow-x-auto">
+  <div class="flex gap-2 min-w-max mx-auto w-fit" id="navWrap"></div>
+</nav>
+
+<main class="max-w-4xl mx-auto px-4 py-6 pb-20" id="mainWrap"></main>
+
+<footer class="text-center text-xs text-slate-400 pb-8 px-4">
+  Nội dung bài học: Sách học sinh &amp; Sách giáo viên Tiếng Anh 8 – Global Success (NXB Giáo dục Việt Nam), Unit 1: Leisure Time.
+</footer>
+
+<div id="completionBanner" class="fixed inset-0 z-[9998] items-center justify-center bg-black/50 px-4">
+  <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center score-badge shadow-2xl">
+    <div class="text-6xl mb-3">🎉</div>
+    <h3 class="text-2xl font-extrabold text-orange-900 mb-1">Hoàn thành bài luyện tập!</h3>
+    <p class="text-slate-500 mb-4">Bạn đã làm xong tất cả các phần của Unit 1.</p>
+    <p id="finalScoreDisplay" class="text-3xl font-black text-orange-700 mb-5"></p>
+    <button onclick="closeBanner()" class="bg-gradient-to-r from-orange-900 to-amber-500 text-white font-bold px-6 py-2.5 rounded-full">Đóng</button>
+  </div>
+</div>
+
+<script>
+const DATA = {"unit":1,"title":"Leisure Time","sections":[
+
+{"roman":"1","navLabel":"Getting Started (1-2)","title":"GETTING STARTED — I'm keen on doing DIY","icon":"comments","instructions":"Nghe/đọc hội thoại giữa Tom và Trang, sau đó đọc lại và hoàn thành các câu bên dưới bằng 1 từ/cụm từ phù hợp.","type":"fill","instant":false,
+"passage":{"title":"1. Listen and read.","html":"<b>Tom:</b> Hi, Trang. Surprised to see you. What brings you here?<br><b>Trang:</b> Oh, hello Tom. I'm looking for a knitting kit.<br><b>Tom:</b> A knitting kit? I didn't know you like knitting.<br><b>Trang:</b> Actually, I'm keen on many DIY activities. In my leisure time, I love knitting, building dollhouses, and making paper flowers.<br><b>Tom:</b> I see. So, you like spending time on your own.<br><b>Trang:</b> Yeah. What do you do in your free time?<br><b>Tom:</b> I'm a bit different. I usually hang out with my friends. We go to the cinema, go cycling, or play sport in the park.<br><b>Trang:</b> You love spending free time with other people, don't you?<br><b>Tom:</b> That's right. By the way, would you like to go to the cinema with me and Mark this Sunday? There's a new comedy at New World Cinema.<br><b>Trang:</b> Yes, I'd love to. Can I ask Mai to join us?<br><b>Tom:</b> Sure. Let's meet outside the cinema at 9 a.m.","vi":"Tom: Chào Trang. Ngạc nhiên khi gặp cậu. Điều gì đưa cậu đến đây? Trang: À, chào Tom. Mình đang tìm một bộ dụng cụ đan len. Tom: Bộ dụng cụ đan len? Mình không biết cậu thích đan len đấy. Trang: Thật ra mình rất mê nhiều hoạt động DIY. Trong thời gian rảnh, mình thích đan len, làm nhà búp bê và làm hoa giấy. Tom: Mình hiểu rồi. Vậy là cậu thích dành thời gian một mình. Trang: Ừ. Thế cậu làm gì trong thời gian rảnh? Tom: Mình thì hơi khác. Mình thường đi chơi với bạn bè. Chúng mình đi xem phim, đạp xe, hoặc chơi thể thao trong công viên. Trang: Cậu thích dành thời gian rảnh với người khác nhỉ? Tom: Đúng vậy. Nhân tiện, cậu có muốn đi xem phim với mình và Mark vào Chủ nhật này không? Có một phim hài mới ở rạp New World Cinema. Trang: Có chứ, mình rất thích. Mình rủ Mai đi cùng được không? Tom: Được chứ. Hẹn gặp nhau ở ngoài rạp lúc 9 giờ sáng nhé."},
+"listenText":"Hi, Trang. Surprised to see you. What brings you here? Oh, hello Tom. I'm looking for a knitting kit. A knitting kit? I didn't know you like knitting. Actually, I'm keen on many DIY activities. In my leisure time, I love knitting, building dollhouses, and making paper flowers. I see. So, you like spending time on your own. Yeah. What do you do in your free time? I'm a bit different. I usually hang out with my friends. We go to the cinema, go cycling, or play sport in the park. You love spending free time with other people, don't you? That's right. By the way, would you like to go to the cinema with me and Mark this Sunday? There's a new comedy at New World Cinema. Yes, I'd love to. Can I ask Mai to join us? Sure. Let's meet outside the cinema at 9 a.m.",
+"questions":[
+{"q":"Trang is looking for a ________.","answer":"knitting kit","explanation":"Trang nói: \"I'm looking for a knitting kit.\"","vi":"Trang đang tìm một bộ dụng cụ đan len."},
+{"q":"She likes doing DIY in her ________.","answer":"leisure time","accepted":["leisure time","free time"],"explanation":"Trang nói: \"In my leisure time, I love knitting, building dollhouses...\"","vi":"Cô ấy thích làm đồ DIY trong thời gian rảnh."},
+{"q":"Tom loves spending his free time with ________.","answer":"other people","explanation":"Trang nhận xét: \"You love spending free time with other people.\"","vi":"Tom thích dành thời gian rảnh với người khác."},
+{"q":"Tom and his friends usually ________ together.","answer":"hang out","explanation":"Tom nói: \"I usually hang out with my friends.\"","vi":"Tom và bạn bè thường đi chơi cùng nhau."},
+{"q":"Tom, Mark, Trang, and Mai are going to see a comedy this ________.","answer":"Sunday","explanation":"Tom rủ đi xem phim \"this Sunday\".","vi":"Tom, Mark, Trang và Mai sẽ đi xem phim hài vào Chủ nhật này."}
+]},
+
+{"roman":"2","navLabel":"Getting Started (3)","title":"GETTING STARTED — Ex 3: Leisure activities","icon":"images","instructions":"Làm việc theo cặp. Viết tên hoạt động (trong khung) vào đúng ô dưới mỗi hình.","type":"fill","instant":false,
+"wordbox":["doing DIY","doing puzzles","surfing the net","cooking","playing sport","messaging friends"],
+"questions":[
+{"q":"📱💬 (hai bạn nhắn tin qua điện thoại)","answer":"messaging friends","explanation":"Hình mô tả hai bạn nhắn tin cho nhau.","vi":"nhắn tin cho bạn bè"},
+{"q":"🍳🥕 (một bạn đang nấu ăn trong bếp)","answer":"cooking","explanation":"Hình mô tả một bạn đang nấu ăn.","vi":"nấu ăn"},
+{"q":"🏀🤾 (các bạn đang chơi bóng rổ)","answer":"playing sport","explanation":"Hình mô tả các bạn đang chơi thể thao.","vi":"chơi thể thao"},
+{"q":"🧩✏️ (một bàn tay đang giải ô chữ/sudoku)","answer":"doing puzzles","explanation":"Hình mô tả một bạn đang giải câu đố.","vi":"chơi trò chơi đố (giải câu đố)"},
+{"q":"✂️🎨 (đôi tay đang cắt/làm đồ thủ công)","answer":"doing DIY","explanation":"Hình mô tả một bạn đang tự làm đồ thủ công.","vi":"làm đồ tự chế (DIY)"},
+{"q":"💻🌐 (một bạn đang dùng laptop)","answer":"surfing the net","explanation":"Hình mô tả một bạn đang lướt mạng bằng laptop.","vi":"lướt mạng"}
+]},
+
+{"roman":"3","navLabel":"Getting Started (4)","title":"GETTING STARTED — Ex 4: Guess the activity","icon":"lightbulb","instructions":"Làm việc theo cặp. Đọc từ/cụm từ gợi ý và đoán xem đó là hoạt động nào trong bài tập 3 (mục 2 ở trên).","type":"mcq","instant":true,
+"questions":[
+{"q":"improve memory, a mental exercise","options":["doing DIY","cooking","doing puzzles","playing sport","surfing the net","messaging friends"],"answer":2,"explanation":"Giải đố giúp cải thiện trí nhớ, là một bài tập cho trí não.","vi":"cải thiện trí nhớ, một bài tập cho trí óc → doing puzzles (chơi trò chơi đố)"},
+{"q":"save money, increase creativity","options":["doing DIY","cooking","doing puzzles","playing sport","surfing the net","messaging friends"],"answer":0,"explanation":"Tự làm đồ (DIY) giúp tiết kiệm tiền và tăng khả năng sáng tạo.","vi":"tiết kiệm tiền, tăng khả năng sáng tạo → doing DIY (làm đồ tự chế)"},
+{"q":"improve physical health, make friends","options":["doing DIY","cooking","doing puzzles","playing sport","surfing the net","messaging friends"],"answer":3,"explanation":"Chơi thể thao giúp cải thiện sức khỏe thể chất và kết bạn.","vi":"cải thiện sức khỏe thể chất, kết bạn → playing sport (chơi thể thao)"},
+{"q":"keep in touch, relaxation","options":["doing DIY","cooking","doing puzzles","playing sport","surfing the net","messaging friends"],"answer":5,"explanation":"Nhắn tin giúp giữ liên lạc với bạn bè và thư giãn.","vi":"giữ liên lạc, thư giãn → messaging friends (nhắn tin cho bạn bè)"},
+{"q":"learn something about IT, computer skills","options":["doing DIY","cooking","doing puzzles","playing sport","surfing the net","messaging friends"],"answer":4,"explanation":"Lướt mạng giúp học hỏi về công nghệ thông tin và kỹ năng máy tính.","vi":"học hỏi về CNTT, kỹ năng máy tính → surfing the net (lướt mạng)"}
+]},
+
+{"roman":"4","navLabel":"Getting Started (5)","title":"GETTING STARTED — Ex 5: Group discussion","icon":"users","instructions":"Làm việc theo nhóm. Hỏi và trả lời câu hỏi dưới đây. Sau đó báo cáo kết quả trước lớp.","type":"open",
+"questions":[
+{"q":"If you have some free time this weekend, what will you do?","sample":"Ví dụ: If I have some free time this weekend, I will go cycling with my friends and then watch a movie at the cinema.","vi":"Nếu bạn có thời gian rảnh vào cuối tuần này, bạn sẽ làm gì?"}
+]},
+
+{"roman":"5","navLabel":"Vocabulary (1)","title":"A CLOSER LOOK 1 — Vocabulary Ex 1: Matching","icon":"link","instructions":"Nối một từ/cụm từ ở cột A với một từ ở cột B để tạo thành cụm từ diễn tả sự yêu thích.","type":"mcq","instant":true,
+"questions":[
+{"q":"be fond ___","options":["about","in","on","into","of"],"answer":4,"explanation":"be fond of = thích cái gì / ai đó.","vi":"be fond of: thích"},
+{"q":"be keen ___","options":["about","in","on","into","of"],"answer":2,"explanation":"be keen on = rất thích, mê.","vi":"be keen on: rất thích, mê"},
+{"q":"be interested ___","options":["about","in","on","into","of"],"answer":1,"explanation":"be interested in = quan tâm, hứng thú với.","vi":"be interested in: quan tâm, hứng thú"},
+{"q":"be crazy ___","options":["about","in","on","into","of"],"answer":0,"explanation":"be crazy about = rất mê, cuồng nhiệt với.","vi":"be crazy about: rất mê, cuồng nhiệt"},
+{"q":"be ___","options":["about","in","on","into","of"],"answer":3,"explanation":"be into = thích, đam mê (thân mật).","vi":"be into: thích, đam mê"}
+]},
+
+{"roman":"6","navLabel":"Vocabulary (2)","title":"A CLOSER LOOK 1 — Vocabulary Ex 2","icon":"pen","instructions":"Điền vào mỗi chỗ trống một từ thích hợp trong khung: into, fond, keen, interested, about.","type":"fill","instant":false,
+"wordbox":["into","fond","keen","interested","about"],
+"questions":[
+{"q":"I'm ________ of taking photos. In my free time, I usually go out and take photos of people and things.","answer":"fond","explanation":"be fond of = thích.","vi":"Tôi thích chụp ảnh. Trong thời gian rảnh, tôi thường ra ngoài và chụp ảnh mọi người và mọi thứ."},
+{"q":"Mai is ________ in history. She often goes to museums to see new exhibits and learn about the past.","answer":"interested","explanation":"be interested in = quan tâm, hứng thú.","vi":"Mai hứng thú với lịch sử. Cô ấy thường đến bảo tàng để xem trưng bày mới và tìm hiểu về quá khứ."},
+{"q":"My sister is ________ on cooking. She wants to become a chef in the future.","answer":"keen","explanation":"be keen on = rất thích, mê.","vi":"Chị tôi rất mê nấu ăn. Chị ấy muốn trở thành đầu bếp trong tương lai."},
+{"q":"My brother spends lots of time surfing the net, but I'm not ________ it.","answer":"into","explanation":"be into = thích, đam mê.","vi":"Anh trai tôi dành nhiều thời gian lướt mạng, nhưng tôi thì không thích việc đó."},
+{"q":"I'm not crazy ________ doing DIY. I'm never able to finish any DIY projects I start.","answer":"about","explanation":"be crazy about = rất mê.","vi":"Tôi không mê làm đồ DIY. Tôi chẳng bao giờ hoàn thành được dự án DIY nào tôi bắt đầu."}
+]},
+
+{"roman":"7","navLabel":"Vocabulary (3)","title":"A CLOSER LOOK 1 — Vocabulary Ex 3: About you","icon":"heart","instructions":"Hoàn thành các câu về những gì bạn thích/không thích làm. Dùng từ/cụm từ trong khung hoặc ý tưởng của riêng bạn.","type":"open",
+"wordbox":["cooking","doing DIY","surfing the net","playing sport","doing puzzles","messaging friends"],
+"questions":[
+{"q":"I'm crazy about ________.","sample":"Ví dụ: I'm crazy about playing sport.","vi":"Tôi rất mê ________."},
+{"q":"I'm keen on ________.","sample":"Ví dụ: I'm keen on doing puzzles.","vi":"Tôi rất thích ________."},
+{"q":"I'm fond of ________.","sample":"Ví dụ: I'm fond of cooking.","vi":"Tôi thích ________."},
+{"q":"I'm not interested in ________.","sample":"Ví dụ: I'm not interested in surfing the net.","vi":"Tôi không hứng thú với ________."},
+{"q":"I'm not into ________.","sample":"Ví dụ: I'm not into messaging friends.","vi":"Tôi không thích ________."}
+]},
+
+{"roman":"8","navLabel":"Pronunciation (4)","title":"A CLOSER LOOK 1 — Pronunciation Ex 4: /ʊ/ và /uː/","icon":"volume-high","instructions":"Nghe và lặp lại các từ sau. Chú ý các âm /ʊ/ và /uː/. Sau đó xếp từ vào đúng cột.","type":"mcq","instant":true,
+"questions":[
+{"q":"cook","options":["/ʊ/","/uː/"],"answer":0,"explanation":"cook /kʊk/ có âm /ʊ/ (âm ngắn).","vi":"nấu ăn"},
+{"q":"group","options":["/ʊ/","/uː/"],"answer":1,"explanation":"group /ɡruːp/ có âm /uː/ (âm dài).","vi":"nhóm"},
+{"q":"push","options":["/ʊ/","/uː/"],"answer":0,"explanation":"push /pʊʃ/ có âm /ʊ/.","vi":"đẩy"},
+{"q":"June","options":["/ʊ/","/uː/"],"answer":1,"explanation":"June /dʒuːn/ có âm /uː/.","vi":"tháng Sáu"},
+{"q":"school","options":["/ʊ/","/uː/"],"answer":1,"explanation":"school /skuːl/ có âm /uː/.","vi":"trường học"},
+{"q":"would","options":["/ʊ/","/uː/"],"answer":0,"explanation":"would /wʊd/ có âm /ʊ/.","vi":"(động từ khuyết thiếu)"},
+{"q":"woman","options":["/ʊ/","/uː/"],"answer":0,"explanation":"woman /ˈwʊmən/ có âm /ʊ/.","vi":"người phụ nữ"},
+{"q":"move","options":["/ʊ/","/uː/"],"answer":1,"explanation":"move /muːv/ có âm /uː/.","vi":"di chuyển"}
+]},
+
+{"roman":"9","navLabel":"Pronunciation (5)","title":"A CLOSER LOOK 1 — Pronunciation Ex 5: Identify the sound","icon":"ear-listen","instructions":"Nghe và luyện các câu sau. Trong mỗi câu có 2 từ in đậm — hãy xác định từ nào chứa âm /uː/ (từ còn lại chứa âm /ʊ/).","type":"mcq","instant":true,
+"questions":[
+{"q":"She likes reading BOOKS and swimming in the POOL.","options":["books","pool"],"answer":1,"explanation":"pool /puːl/ có âm /uː/ (được khoanh tròn); books /bʊks/ có âm /ʊ/ (được gạch chân).","vi":"Cô ấy thích đọc sách và bơi trong hồ bơi."},
+{"q":"When it is COOL, we like to play FOOTBALL.","options":["cool","football"],"answer":0,"explanation":"cool /kuːl/ có âm /uː/; football /ˈfʊtbɔːl/ có âm /ʊ/.","vi":"Khi trời mát, chúng tôi thích chơi bóng đá."},
+{"q":"She DREW and made PUDDINGS in her free time.","options":["drew","puddings"],"answer":0,"explanation":"drew /druː/ có âm /uː/; puddings /ˈpʊdɪŋz/ có âm /ʊ/.","vi":"Cô ấy vẽ tranh và làm bánh pudding trong thời gian rảnh."},
+{"q":"My mum loves pumpkin SOUP and coffee with a little SUGAR.","options":["soup","sugar"],"answer":0,"explanation":"soup /suːp/ có âm /uː/; sugar /ˈʃʊɡər/ có âm /ʊ/.","vi":"Mẹ tôi thích súp bí đỏ và cà phê với một chút đường."},
+{"q":"My brother is fond of watching the CARTOON about a clever WOLF.","options":["cartoon","wolf"],"answer":0,"explanation":"cartoon /kɑːrˈtuːn/ có âm /uː/; wolf /wʊlf/ có âm /ʊ/.","vi":"Anh tôi thích xem phim hoạt hình về một con sói khôn ngoan."}
+]},
+
+{"roman":"10","navLabel":"Grammar (1)","title":"A CLOSER LOOK 2 — Grammar Ex 1: Gerund or to-infinitive?","icon":"table-list","instructions":"Làm việc theo cặp. Xếp các động từ sau vào đúng cột: love, like, dislike, enjoy, detest, hate, fancy, prefer.","type":"mcq","instant":true,
+"questions":[
+{"q":"love","options":["Chỉ theo sau bởi V-ing (gerund)","Theo sau bởi cả V-ing và to-V"],"answer":1,"explanation":"love có thể theo sau bởi cả gerund và to-infinitive.","vi":"thích, yêu"},
+{"q":"like","options":["Chỉ theo sau bởi V-ing (gerund)","Theo sau bởi cả V-ing và to-V"],"answer":1,"explanation":"like có thể theo sau bởi cả gerund và to-infinitive.","vi":"thích"},
+{"q":"dislike","options":["Chỉ theo sau bởi V-ing (gerund)","Theo sau bởi cả V-ing và to-V"],"answer":0,"explanation":"dislike chỉ theo sau bởi gerund.","vi":"không thích"},
+{"q":"enjoy","options":["Chỉ theo sau bởi V-ing (gerund)","Theo sau bởi cả V-ing và to-V"],"answer":0,"explanation":"enjoy chỉ theo sau bởi gerund.","vi":"thích thú"},
+{"q":"detest","options":["Chỉ theo sau bởi V-ing (gerund)","Theo sau bởi cả V-ing và to-V"],"answer":0,"explanation":"detest chỉ theo sau bởi gerund.","vi":"ghét cay ghét đắng"},
+{"q":"hate","options":["Chỉ theo sau bởi V-ing (gerund)","Theo sau bởi cả V-ing và to-V"],"answer":1,"explanation":"hate có thể theo sau bởi cả gerund và to-infinitive.","vi":"ghét"},
+{"q":"fancy","options":["Chỉ theo sau bởi V-ing (gerund)","Theo sau bởi cả V-ing và to-V"],"answer":0,"explanation":"fancy chỉ theo sau bởi gerund.","vi":"thích, muốn"},
+{"q":"prefer","options":["Chỉ theo sau bởi V-ing (gerund)","Theo sau bởi cả V-ing và to-V"],"answer":1,"explanation":"prefer có thể theo sau bởi cả gerund và to-infinitive.","vi":"thích hơn"}
+]},
+
+{"roman":"11","navLabel":"Grammar (2)","title":"A CLOSER LOOK 2 — Grammar Ex 2: Choose A, B or C","icon":"square-check","instructions":"Chọn đáp án đúng A, B hoặc C.","type":"mcq","instant":true,
+"questions":[
+{"q":"I love ________, so in my leisure time, I go to some villages near Ha Noi to relax and enjoy the outdoors.","options":["travelling","travelled","a travel"],"answer":0,"explanation":"love + V-ing (gerund).","vi":"Tôi rất thích du lịch, vì vậy trong thời gian rảnh, tôi đến thăm một số ngôi làng gần Hà Nội để thư giãn và tận hưởng không khí ngoài trời."},
+{"q":"Tom enjoys ________ puzzles, especially Sudoku.","options":["doing","do","to do"],"answer":0,"explanation":"enjoy chỉ theo sau bởi gerund: doing.","vi":"Tom thích giải các câu đố, đặc biệt là Sudoku."},
+{"q":"When do you like ________ TV?","options":["watched","watch","watching"],"answer":2,"explanation":"like + V-ing (gerund): watching.","vi":"Khi nào bạn thích xem TV?"},
+{"q":"Do you fancy ________ to the cinema this weekend?","options":["go","going","to go"],"answer":1,"explanation":"fancy chỉ theo sau bởi gerund: going.","vi":"Bạn có thích đi xem phim cuối tuần này không?"},
+{"q":"I detest ________. I think it's cruel to harm animals.","options":["hunting","to hunt","hunt"],"answer":0,"explanation":"detest chỉ theo sau bởi gerund: hunting.","vi":"Tôi ghét cay ghét đắng việc săn bắn. Tôi nghĩ làm hại động vật là tàn nhẫn."}
+]},
+
+{"roman":"12","navLabel":"Grammar (3)","title":"A CLOSER LOOK 2 — Grammar Ex 3: Complete the sentences","icon":"images","instructions":"Nhìn hình và hoàn thành câu, dùng động từ trong ngoặc ở dạng thích hợp.","type":"fill","instant":false,
+"questions":[
+{"q":"Mark ________. (like) — 💻 (Mark đang dùng laptop lướt mạng)","answer":"likes surfing the net","accepted":["likes surfing the net","likes to surf the net"],"displayAnswer":"likes surfing / to surf the net","explanation":"like + V-ing/to-V đều đúng.","vi":"Mark thích lướt mạng."},
+{"q":"The girls ________. (enjoy) — 🧶 (hai bạn đang đan len)","answer":"enjoy knitting","explanation":"enjoy chỉ theo sau bởi gerund.","vi":"Các bạn gái thích đan len."},
+{"q":"My cousin ________. (dislike) — 👩‍🍳 (một bạn đang nấu ăn với vẻ không thích)","answer":"dislikes cooking","explanation":"dislike chỉ theo sau bởi gerund.","vi":"Anh/chị họ tôi không thích nấu ăn."},
+{"q":"My father ________. (hate) — 🛒 (bố đang đi mua sắm với vẻ không vui)","answer":"hates going shopping","accepted":["hates going shopping","hates to go shopping"],"displayAnswer":"hates going / to go shopping","explanation":"hate + V-ing/to-V đều đúng.","vi":"Bố tôi ghét đi mua sắm."},
+{"q":"Tom and his sister ________. (prefer) — 🧩 (hai anh em đang chơi ghép hình)","answer":"prefer doing puzzles","accepted":["prefer doing puzzles","prefer to do puzzles"],"displayAnswer":"prefer doing / to do puzzles","explanation":"prefer + V-ing/to-V đều đúng.","vi":"Tom và em gái thích chơi trò chơi ghép hình hơn."}
+]},
+
+{"roman":"13","navLabel":"Grammar (4-5)","title":"A CLOSER LOOK 2 — Ex 4 (About me) & Ex 5 (Game)","icon":"gamepad","instructions":"Ex4: Hoàn thành các câu về bản thân bạn. Ex5: GAME — Đố vui thích/không thích. Làm việc nhóm, một bạn diễn tả (mime) một hoạt động giải trí mà bạn ấy thích/không thích, các bạn khác đoán bằng câu hỏi Yes/No dùng các động từ đã học.","type":"open",
+"questions":[
+{"q":"I like ________.","sample":"Ví dụ: I like playing badminton.","vi":"Tôi thích ________."},
+{"q":"I prefer ________.","sample":"Ví dụ: I prefer reading books to watching TV.","vi":"Tôi thích ________ hơn."},
+{"q":"I love ________.","sample":"Ví dụ: I love cycling with my friends.","vi":"Tôi rất thích ________."},
+{"q":"I dislike ________.","sample":"Ví dụ: I dislike doing puzzles.","vi":"Tôi không thích ________."},
+{"q":"I hate ________.","sample":"Ví dụ: I hate getting up early.","vi":"Tôi ghét ________."},
+{"q":"I detest ________.","sample":"Ví dụ: I detest watching horror movies.","vi":"Tôi ghét cay ghét đắng ________."},
+{"q":"GAME — Ví dụ: A: Do you like surfing the net? B: No, I don't. C: Do you love messaging your friends? B: Yes, I do.","sample":"Hãy chơi cùng nhóm của bạn theo mẫu ví dụ trên.","vi":"Trò chơi đố vui thích/không thích."}
+]},
+
+{"roman":"14","navLabel":"Communication (1-2)","title":"COMMUNICATION — Inviting and accepting invitations","icon":"envelope-open-text","instructions":"Nghe và đọc các hội thoại mẫu, chú ý phần được tô sáng. Sau đó, thực hành mời và nhận lời mời trong các tình huống cho sẵn.","type":"open",
+"passage":{"title":"1. Listen and read the dialogues below.","html":"① <b>Trang:</b> <span style='background:#fef08a'>Would you like</span> to go to the cooking club with me this Sunday?<br><b>Ann:</b> <span style='background:#fef08a'>I'd love to. Thanks.</span><br><br>② <b>Tom:</b> <span style='background:#fed7aa'>Do you fancy</span> going for a walk?<br><b>Mark:</b> <span style='background:#fed7aa'>That's great. Thanks.</span>","vi":"① Trang: Cậu có muốn đi câu lạc bộ nấu ăn với mình Chủ nhật này không? Ann: Mình rất thích. Cảm ơn cậu. ② Tom: Cậu có thích đi dạo không? Mark: Hay đấy. Cảm ơn cậu."},
+"listenText":"Would you like to go to the cooking club with me this Sunday? I'd love to. Thanks. Do you fancy going for a walk? That's great. Thanks.",
+"questions":[
+{"q":"Thực hành: Mời bạn chơi cầu lông (play badminton). Viết đoạn hội thoại mời và chấp nhận lời mời.","sample":"A: Would you like to play badminton with me? B: I'd love to. Thanks.","vi":"Bạn mời bạn của mình chơi cầu lông."},
+{"q":"Thực hành: Mời bạn làm hoa giấy cùng bạn (make paper flowers).","sample":"A: Do you fancy making paper flowers with me? B: That's great. Thanks.","vi":"Bạn mời bạn của mình làm hoa giấy cùng."},
+{"q":"Thực hành: Mời bạn nếm thử pizza tự làm (try your home-made pizza).","sample":"A: Would you like to try my home-made pizza? B: I'd love to. Thanks.","vi":"Bạn mời bạn của mình nếm thử bánh pizza tự làm."}
+]},
+
+{"roman":"15","navLabel":"Communication (3-4)","title":"COMMUNICATION — Teens' leisure activities around the world","icon":"earth-asia","instructions":"Ex3: Đoán hoạt động trong mỗi hình. Ex4: Đọc 3 đoạn văn ngắn của Sakura, Eric và Lan, hoàn thành bảng thông tin.","type":"fill","instant":false,
+"passage":{"title":"4. Read what three teenagers say about their leisure activities.","html":"<div style='background:#fef9c3;border:1px solid #fde047;border-radius:.6rem;padding:.6rem .9rem;margin-bottom:.5rem;'><b>Sakura (Kyoto, Japan):</b> Origami is the art of paper folding. I love doing it on my own in my free time. With just some sheets of paper, I can create almost anything: flowers, birds, or fans. Doing origami helps me to relax.</div><div style='background:#fecaca;border:1px solid #fca5a5;border-radius:.6rem;padding:.6rem .9rem;margin-bottom:.5rem;'><b>Eric (St. Gallen, Switzerland):</b> My home town has some famous ski resorts. I'm into snowboarding and usually go to a nearby ski resort with my parents at weekends. Snowboarding improves my overall health and balance.</div><div style='background:#99f6e4;border:1px solid #5eead4;border-radius:.6rem;padding:.6rem .9rem;'><b>Lan (Quang Binh, Viet Nam):</b> I'm keen on playing sport, especially badminton. My best friend lives next door, so we play badminton almost every afternoon. It's an easy sport, and it also improves my muscle strength and helps reduce stress.</div>","vi":"Sakura (Kyoto, Nhật Bản): Origami là nghệ thuật gấp giấy. Tôi thích tự làm một mình trong thời gian rảnh. Chỉ với vài tờ giấy, tôi có thể tạo ra gần như mọi thứ: hoa, chim, hoặc quạt. Gấp giấy giúp tôi thư giãn. Eric (St. Gallen, Thụy Sĩ): Quê tôi có vài khu nghỉ dưỡng trượt tuyết nổi tiếng. Tôi mê trượt ván tuyết và thường đến khu nghỉ dưỡng gần nhà cùng bố mẹ vào cuối tuần. Trượt ván tuyết giúp cải thiện sức khỏe tổng thể và khả năng giữ thăng bằng của tôi. Lan (Quảng Bình, Việt Nam): Tôi rất thích chơi thể thao, đặc biệt là cầu lông. Bạn thân của tôi sống ngay bên cạnh, nên chúng tôi chơi cầu lông gần như mỗi buổi chiều. Đây là môn thể thao dễ chơi, và nó cũng giúp tăng cường sức mạnh cơ bắp và giảm căng thẳng."},
+"questions":[
+{"q":"Hình a — hai bạn nữ đang gấp giấy thành hình bông hoa/chim. Đây là hoạt động gì?","answer":"doing origami","explanation":"Xem đoạn văn của Sakura.","vi":"gấp giấy (origami)"},
+{"q":"Hình b — hai bạn đang chơi vợt trên bãi cỏ. Đây là hoạt động gì?","answer":"playing badminton","explanation":"Xem đoạn văn của Lan.","vi":"chơi cầu lông"},
+{"q":"Hình c — hai người đang trượt trên tuyết. Đây là hoạt động gì?","answer":"snowboarding","explanation":"Xem đoạn văn của Eric.","vi":"trượt ván tuyết"},
+{"q":"Sakura — Leisure activity","answer":"doing origami","explanation":"\"Origami is the art of paper folding. I love doing it...\"","vi":"Hoạt động giải trí của Sakura"},
+{"q":"Sakura — Person/People to do the activity with","answer":"no one","accepted":["no one","on her own","alone"],"explanation":"\"I love doing it on my own.\"","vi":"Người cùng làm hoạt động với Sakura"},
+{"q":"Sakura — Benefits of the activity","answer":"helps her to relax","accepted":["helps her to relax","helps her relax","relax"],"explanation":"\"Doing origami helps me to relax.\"","vi":"Lợi ích của hoạt động"},
+{"q":"Eric — Leisure activity","answer":"snowboarding","explanation":"\"I'm into snowboarding...\"","vi":"Hoạt động giải trí của Eric"},
+{"q":"Eric — Person/People to do the activity with","answer":"parents","accepted":["parents","his parents"],"explanation":"\"...usually go to a nearby ski resort with my parents.\"","vi":"Người cùng làm hoạt động với Eric"},
+{"q":"Eric — Benefits of the activity","answer":"improves his overall health and balance","accepted":["improves his overall health and balance","improves overall health and balance"],"explanation":"\"Snowboarding improves my overall health and balance.\"","vi":"Lợi ích của hoạt động"},
+{"q":"Lan — Leisure activity","answer":"playing badminton","explanation":"\"I'm keen on playing sport, especially badminton.\"","vi":"Hoạt động giải trí của Lan"},
+{"q":"Lan — Person/People to do the activity with","answer":"best friend","accepted":["best friend","her best friend"],"explanation":"\"My best friend lives next door, so we play badminton...\"","vi":"Người cùng làm hoạt động với Lan"},
+{"q":"Lan — Benefits of the activity","answer":"improves her muscle strength and reduces stress","accepted":["improves her muscle strength and reduces stress","improves muscle strength and reduces stress","improves her muscle strength","reduces stress"],"explanation":"\"...improves my muscle strength and helps reduce stress.\"","vi":"Lợi ích của hoạt động"}
+]},
+
+{"roman":"16","navLabel":"Communication (5)","title":"COMMUNICATION — Ex 5: Group discussion","icon":"comment-dots","instructions":"Làm việc nhóm. Hỏi và trả lời các câu hỏi sau. Báo cáo kết quả nhóm trước lớp.","type":"open",
+"questions":[
+{"q":"– Which of the activities in 4 do you want to try?","sample":"Ví dụ: I want to try snowboarding.","vi":"Bạn muốn thử hoạt động nào trong số các hoạt động ở bài 4?"},
+{"q":"– Why do you want to try it?","sample":"Ví dụ: Because it looks exciting and it can improve my health and balance.","vi":"Vì sao bạn muốn thử hoạt động đó?"}
+]},
+
+{"roman":"17","navLabel":"Reading (1)","title":"SKILLS 1 — Reading Ex 1: Look at the pictures","icon":"image","instructions":"Nhìn các hình và cho biết đó là hoạt động gì.","type":"fill","instant":false,
+"questions":[
+{"q":"a. 🚴‍♀️🚴 (gia đình đang đạp xe trên đường)","answer":"riding bikes","accepted":["riding bikes","cycling"],"explanation":"Hình mô tả gia đình đang đạp xe đạp.","vi":"đạp xe"},
+{"q":"b. 👗📏 (mẹ đang đo và may một chiếc váy)","answer":"making a dress","explanation":"Hình mô tả mẹ đang may một chiếc váy.","vi":"may váy"},
+{"q":"c. 🍳👨‍👩‍👧 (gia đình đang nấu ăn cùng nhau)","answer":"cooking","explanation":"Hình mô tả gia đình đang nấu ăn cùng nhau.","vi":"nấu ăn"}
+]},
+
+{"roman":"18","navLabel":"Reading (2)","title":"SKILLS 1 — Reading Ex 2: Choose the correct answer","icon":"file-lines","instructions":"Đọc về các hoạt động giải trí của Trang. Chọn đáp án đúng.","type":"mcq","instant":true,
+"passage":{"title":"Trang's leisure activities","html":"Some teenagers enjoy spending free time with their friends. Others prefer doing leisure activities with their family members. I love spending time with my family because it's a great way to connect with them.<br><br>At the weekend, we usually go for a bike ride. We cycle to some nearby villages to enjoy the fresh air. We take photos and look at them later. My big brother and I are also into cooking. My brother looks for easy recipes. After that, we prepare the ingredients and cook. Sometimes the food is good, but sometimes it isn't; nevertheless, we love whatever we cook. The leisure activity I like the most is doing DIY projects with my mum. She teaches me to make my own dresses and doll clothes. On special occasions, we make special dresses together. Once I won the first prize in a costume contest at my school.","vi":"Một số bạn thanh thiếu niên thích dành thời gian rảnh với bạn bè. Một số khác lại thích các hoạt động giải trí cùng gia đình. Tôi thích dành thời gian với gia đình vì đó là cách tuyệt vời để gắn kết với họ. Vào cuối tuần, chúng tôi thường đi đạp xe. Chúng tôi đạp xe đến các ngôi làng gần đó để tận hưởng không khí trong lành. Chúng tôi chụp ảnh và xem lại sau. Anh trai tôi và tôi cũng thích nấu ăn. Anh tôi tìm công thức đơn giản. Sau đó chúng tôi chuẩn bị nguyên liệu và nấu. Đôi khi món ăn ngon, đôi khi không; tuy nhiên chúng tôi vẫn thích bất cứ món gì mình nấu. Hoạt động tôi thích nhất là làm đồ DIY cùng mẹ. Mẹ dạy tôi cách tự may váy và quần áo búp bê. Vào dịp đặc biệt, chúng tôi cùng may những chiếc váy đặc biệt. Có lần tôi đã giành giải nhất trong cuộc thi trang phục ở trường."},
+"questions":[
+{"q":"The text is about Trang's leisure activities ________.","options":["in the past","with her friends","with her family"],"answer":2,"explanation":"Toàn bài nói về các hoạt động giải trí Trang làm cùng gia đình.","vi":"Bài đọc nói về các hoạt động giải trí của Trang cùng với gia đình."},
+{"q":"The word \"connect\" is closest in meaning to ________.","options":["join with something","better understand someone","speak to someone by phone"],"answer":1,"explanation":"\"connect with them\" nghĩa là hiểu và gắn kết với ai đó tốt hơn.","vi":"\"connect\" gần nghĩa nhất với \"hiểu ai đó tốt hơn\"."}
+]},
+
+{"roman":"19","navLabel":"Reading (3)","title":"SKILLS 1 — Reading Ex 3: Answer the questions","icon":"circle-question","instructions":"Đọc lại bài và trả lời các câu hỏi.","type":"sentence","instant":true,
+"passage":{"title":"Trang's leisure activities (đọc lại)","html":"Some teenagers enjoy spending free time with their friends. Others prefer doing leisure activities with their family members. I love spending time with my family because it's a great way to connect with them.<br><br>At the weekend, we usually go for a bike ride. We cycle to some nearby villages to enjoy the fresh air. We take photos and look at them later. My big brother and I are also into cooking. My brother looks for easy recipes. After that, we prepare the ingredients and cook. Sometimes the food is good, but sometimes it isn't; nevertheless, we love whatever we cook. The leisure activity I like the most is doing DIY projects with my mum. She teaches me to make my own dresses and doll clothes. On special occasions, we make special dresses together. Once I won the first prize in a costume contest at my school."},
+"questions":[
+{"q":"What does Trang do with her family members at the weekend?","answer":"She goes for a bike ride, takes photos, cooks, and does DIY projects.","accepted":["she goes for a bike ride, takes photos, cooks, and does diy projects","she goes for a bike ride takes photos cooks and does diy projects"],"explanation":"Trả lời dựa trên toàn bài: đạp xe, chụp ảnh, nấu ăn, làm đồ DIY.","vi":"Trang đi đạp xe, chụp ảnh, nấu ăn và làm các dự án DIY cùng gia đình."},
+{"q":"Who looks for recipes when Trang and her brother cook?","answer":"Her brother does.","accepted":["her brother does","her brother","her big brother"],"explanation":"\"My brother looks for easy recipes.\"","vi":"Anh trai của Trang là người tìm công thức nấu ăn."},
+{"q":"Which leisure activity does she love the most?","answer":"She loves doing DIY projects with her mum the most.","accepted":["she loves doing diy projects with her mum the most","doing diy projects with her mum"],"explanation":"\"The leisure activity I like the most is doing DIY projects with my mum.\"","vi":"Cô ấy thích nhất là làm các dự án DIY cùng mẹ."},
+{"q":"What does Trang's mum teach her to do?","answer":"Her mum teaches her to make her own dresses and doll clothes.","accepted":["her mum teaches her to make her own dresses and doll clothes","to make her own dresses and doll clothes"],"explanation":"\"She teaches me to make my own dresses and doll clothes.\"","vi":"Mẹ Trang dạy cô ấy tự may váy và quần áo búp bê."},
+{"q":"What did she win?","answer":"She won the first prize in a costume contest at her school.","accepted":["she won the first prize in a costume contest at her school","the first prize in a costume contest"],"explanation":"\"Once I won the first prize in a costume contest at my school.\"","vi":"Cô ấy đã giành giải nhất trong cuộc thi trang phục ở trường."}
+]},
+
+{"roman":"20","navLabel":"Speaking","title":"SKILLS 1 — Speaking Ex 4-5","icon":"microphone","instructions":"Làm việc nhóm. Lần lượt hỏi và trả lời các câu hỏi. Ghi lại câu trả lời của bạn vào bảng, sau đó báo cáo trước lớp.","type":"open",
+"questions":[
+{"q":"What leisure activities do you usually do with your family?","sample":"Ví dụ: I usually go for a walk and cook dinner with my family.","vi":"Bạn thường làm hoạt động giải trí gì cùng gia đình?"},
+{"q":"Which one do you like the most? Why?","sample":"Ví dụ: I like cooking the most because I can learn new recipes and spend time with my mum.","vi":"Bạn thích hoạt động nào nhất? Vì sao?"},
+{"q":"How do you feel when you spend time with your family members?","sample":"Ví dụ: I feel happy and relaxed when I spend time with my family.","vi":"Bạn cảm thấy thế nào khi dành thời gian cho gia đình?"},
+{"q":"Report your group members' answers to the class. What activities are the most common?","sample":"Ví dụ: Most of my friends like cooking and cycling with their families.","vi":"Báo cáo câu trả lời của các bạn trong nhóm trước lớp."}
+]},
+
+{"roman":"21","navLabel":"Listening (1)","title":"SKILLS 2 — Listening Ex 1: Warm-up","icon":"ear-listen","instructions":"Trả lời các câu hỏi sau trước khi nghe.","type":"open",
+"questions":[
+{"q":"In your opinion, what activities can we do with our friends in our leisure time?","sample":"Ví dụ: We can go to the cinema, play sports, or go cycling with our friends.","vi":"Theo bạn, chúng ta có thể làm gì cùng bạn bè trong thời gian rảnh?"},
+{"q":"Why should we spend time with our friends?","sample":"Ví dụ: Because it helps us relax, have fun, and build stronger friendships.","vi":"Vì sao chúng ta nên dành thời gian cho bạn bè?"}
+]},
+
+{"roman":"22","navLabel":"Listening (2)","title":"SKILLS 2 — Listening Ex 2: Choose the correct answer","icon":"headphones","instructions":"Nghe bài phỏng vấn với Mark về hoạt động giải trí của bạn ấy. Chọn đáp án đúng. (Bấm nút Nghe để nghe văn bản bằng giọng đọc máy)","type":"mcq","instant":true,
+"listenText":"Interviewer: When do you usually have free time? Mark: I usually have free time at the weekend. Interviewer: So how do you spend it? Mark: I spend time to connect with my family on Saturdays. We do puzzles, play board games, or go camping. Interviewer: What about Sundays? Mark: I usually spend Sundays with my friends. I have a group of friends and we do lots of things together. Interviewer: For example? Mark: Sometimes I invite them to my house. We cook our favourite food and watch a video. It's fun and better than going to the cinema. Interviewer: Do you do outdoor activities together? Mark: Yes, we love spending time outdoors. We go to the park to play volleyball or skateboard. It helps us stay in shape. Sometimes we go for a bike ride around our city. This gives us a chance to see different places in our city. Interviewer: Thanks for answering my questions.",
+"questions":[
+{"q":"When does Mark usually have free time?","options":["At weekends.","On Sundays.","On Saturdays."],"answer":0,"explanation":"Mark nói: \"I usually have free time at the weekend.\"","vi":"Mark thường có thời gian rảnh vào cuối tuần."},
+{"q":"Who does he spend his free time with?","options":["His neighbours and friends.","His family and relatives.","His family and friends."],"answer":2,"explanation":"Mark dành thời gian với gia đình vào thứ Bảy và với bạn bè vào Chủ nhật.","vi":"Mark dành thời gian rảnh với gia đình và bạn bè."}
+]},
+
+{"roman":"23","navLabel":"Listening (3)","title":"SKILLS 2 — Listening Ex 3: Fill in the table","icon":"table","instructions":"Nghe lại bài phỏng vấn. Điền vào mỗi chỗ trống trong bảng không quá HAI từ.","type":"fill","instant":false,
+"listenText":"Interviewer: When do you usually have free time? Mark: I usually have free time at the weekend. Interviewer: So how do you spend it? Mark: I spend time to connect with my family on Saturdays. We do puzzles, play board games, or go camping. Interviewer: What about Sundays? Mark: I usually spend Sundays with my friends. I have a group of friends and we do lots of things together. Interviewer: For example? Mark: Sometimes I invite them to my house. We cook our favourite food and watch a video. It's fun and better than going to the cinema. Interviewer: Do you do outdoor activities together? Mark: Yes, we love spending time outdoors. We go to the park to play volleyball or skateboard. It helps us stay in shape. Sometimes we go for a bike ride around our city. This gives us a chance to see different places in our city. Interviewer: Thanks for answering my questions.",
+"questions":[
+{"q":"Activity: Inviting friends to his house – Cooking and watching a (1) ________","answer":"video","explanation":"\"We cook our favourite food and watch a video.\"","vi":"nấu ăn và xem một video"},
+{"q":"Reason: Fun and better than going to the (2) ________","answer":"cinema","explanation":"\"It's fun and better than going to the cinema.\"","vi":"vui hơn và tốt hơn so với việc đi xem phim"},
+{"q":"Activity: Going to the (3) ________ to play volleyball or skateboard","answer":"park","explanation":"\"We go to the park to play volleyball or skateboard.\"","vi":"đi đến công viên để chơi bóng chuyền hoặc trượt ván"},
+{"q":"Reason: Stay in (4) ________","answer":"shape","explanation":"\"It helps us stay in shape.\"","vi":"giữ dáng, giữ sức khỏe"},
+{"q":"Activity: Going for a (5) ________ around our city","answer":"bike ride","explanation":"\"Sometimes we go for a bike ride around our city.\"","vi":"đi đạp xe quanh thành phố"},
+{"q":"Reason: See different (6) ________","answer":"places","explanation":"\"This gives us a chance to see different places in our city.\"","vi":"xem những địa điểm khác nhau"}
+]},
+
+{"roman":"24","navLabel":"Writing","title":"SKILLS 2 — Writing Ex 4-5: Email to a penfriend","icon":"pen-nib","instructions":"Ex4: Hỏi và trả lời các câu hỏi chuẩn bị ý tưởng. Ex5: Viết một email (80-100 từ) cho bạn qua thư kể về những gì bạn thường làm cùng bạn bè trong thời gian rảnh.","type":"open",
+"questions":[
+{"q":"When do you usually have free time?","sample":"Ví dụ: I usually have free time at weekends.","vi":"Bạn thường có thời gian rảnh khi nào?"},
+{"q":"What do you usually do with your friends in your free time?","sample":"Ví dụ: I usually play badminton and cycle around the neighbourhood with my friends.","vi":"Bạn thường làm gì cùng bạn bè trong thời gian rảnh?"},
+{"q":"Why do you do these activities?","sample":"Ví dụ: Because they help me relax and stay healthy.","vi":"Vì sao bạn làm những hoạt động này?"},
+{"q":"Write an email (80-100 words) to a penfriend to tell him/her about what you usually do with your friends in your free time. Start: \"Hi ___, It's nice to hear from you again. Let me tell you about ___\" End: \"Bye for now,\"","sample":"Hi Ann,\nIt's nice to hear from you again. Let me tell you about the things I usually do with my friends in my free time.\nI usually have free time at weekends, and I often spend Sunday mornings with my friends. I have three close friends, and they live near my house. We usually play badminton together for about one hour in the playground. After that, we cycle around the neighbourhood. It's a lot of fun.\nWhat about you? What do you usually do with your friends in your free time?\nTell me in your next email.\nBye for now,\nMi","vi":"Đây là bài mẫu (Suggested answer) trong Sách giáo viên."}
+]},
+
+{"roman":"25","navLabel":"Looking Back (V-1)","title":"LOOKING BACK — Vocabulary Ex 1","icon":"rotate-left","instructions":"Hoàn thành các câu với hoạt động giải trí phù hợp.","type":"fill","instant":false,
+"questions":[
+{"q":"Mai loves ________ online for about 30 minutes a day. She thinks puzzles are good for the brain.","answer":"doing puzzles","explanation":"Mai thích giải các câu đố trực tuyến.","vi":"Mai rất thích giải các câu đố trực tuyến khoảng 30 phút mỗi ngày. Cô ấy nghĩ các câu đố tốt cho não bộ."},
+{"q":"My favourite leisure activity is ________. I can make many things myself, such as paper flowers and bracelets.","answer":"doing DIY","explanation":"Tự làm hoa giấy, vòng tay là hoạt động DIY.","vi":"Hoạt động giải trí yêu thích của tôi là làm đồ tự chế (DIY). Tôi có thể tự làm nhiều thứ như hoa giấy và vòng tay."},
+{"q":"________ is a popular way for teens to spend their free time. Many of them send messages to each other every day.","answer":"Messaging friends","accepted":["messaging friends","messaging"],"explanation":"Nhắn tin cho bạn bè là hoạt động phổ biến của thanh thiếu niên.","vi":"Nhắn tin cho bạn bè là cách phổ biến để thanh thiếu niên sử dụng thời gian rảnh. Nhiều bạn nhắn tin cho nhau mỗi ngày."},
+{"q":"My brother is fond of ________ with his friends. On Sundays, he usually plays football, goes swimming, or plays badminton with them.","answer":"playing sport","explanation":"Chơi bóng đá, bơi, cầu lông đều là chơi thể thao.","vi":"Anh tôi thích chơi thể thao cùng bạn bè. Vào Chủ nhật, anh ấy thường chơi bóng đá, bơi, hoặc chơi cầu lông cùng họ."},
+{"q":"Tom spends one hour on the Internet almost every day. He is keen on ________.","answer":"surfing the net","explanation":"Dành thời gian trên Internet là lướt mạng.","vi":"Tom dành một tiếng trên Internet hầu như mỗi ngày. Cậu ấy rất thích lướt mạng."}
+]},
+
+{"roman":"26","navLabel":"Looking Back (V-2)","title":"LOOKING BACK — Vocabulary Ex 2: Sentence writing","icon":"pen-fancy","instructions":"Viết câu hoàn chỉnh từ những gợi ý cho sẵn.","type":"sentence","instant":true,
+"questions":[
+{"q":"","original":"my cousin / crazy about / play / computer / games.","answer":"My cousin is crazy about playing computer games.","accepted":["my cousin is crazy about playing computer games"],"explanation":"be crazy about + V-ing.","vi":"Anh/chị họ tôi rất mê chơi trò chơi điện tử."},
+{"q":"","original":"they / interested / play / badminton / after / school?","answer":"Are they interested in playing badminton after school?","accepted":["are they interested in playing badminton after school"],"explanation":"be interested in + V-ing, câu hỏi Yes/No.","vi":"Họ có hứng thú chơi cầu lông sau giờ học không?"},
+{"q":"","original":"I / not / fond / make models / because / I / not patient.","answer":"I'm not fond of making models because I'm not patient.","accepted":["i'm not fond of making models because i'm not patient","i am not fond of making models because i am not patient"],"explanation":"be fond of + V-ing (dạng phủ định).","vi":"Tôi không thích làm mô hình vì tôi không kiên nhẫn."},
+{"q":"","original":"why / you / not into / cook? – because / often / burn myself.","answer":"Why are you not into cooking? – Because I often burn myself.","accepted":["why are you not into cooking because i often burn myself","why are you not into cooking - because i often burn myself"],"explanation":"be into + V-ing.","vi":"Vì sao bạn không thích nấu ăn? – Vì tôi thường bị bỏng."},
+{"q":"","original":"my friends / keen / do judo / and / they / go / judo club / every Sunday.","answer":"My friends are keen on doing judo, and they go to the judo club every Sunday.","accepted":["my friends are keen on doing judo and they go to the judo club every sunday"],"explanation":"be keen on + V-ing.","vi":"Bạn bè tôi rất thích học judo, và họ đến câu lạc bộ judo mỗi Chủ nhật."}
+]},
+
+{"roman":"27","navLabel":"Looking Back (G-3)","title":"LOOKING BACK — Grammar Ex 3","icon":"square-check","instructions":"Điền vào mỗi chỗ trống dạng đúng của động từ trong ngoặc.","type":"fill","instant":false,
+"questions":[
+{"q":"Does Tom enjoy (cycle) ________ in the park with his friends?","answer":"cycling","explanation":"enjoy chỉ theo sau bởi gerund.","vi":"Tom có thích đạp xe trong công viên với bạn bè không?"},
+{"q":"Some teenagers don't like (read) ________ comic books.","answer":"reading","accepted":["reading","to read"],"displayAnswer":"reading / to read","explanation":"like + V-ing/to-V đều đúng.","vi":"Một số bạn thanh thiếu niên không thích đọc truyện tranh."},
+{"q":"Mai detests (play) ________ sport because it's tiring.","answer":"playing","explanation":"detest chỉ theo sau bởi gerund.","vi":"Mai ghét chơi thể thao vì nó mệt."},
+{"q":"Trang and Ann love (chat) ________ with each other in their free time.","answer":"chatting","accepted":["chatting","to chat"],"displayAnswer":"chatting / to chat","explanation":"love + V-ing/to-V đều đúng.","vi":"Trang và Ann rất thích trò chuyện với nhau trong thời gian rảnh."},
+{"q":"What do Nam and Mark prefer (do) ________ at the weekend?","answer":"to do","accepted":["to do","doing"],"displayAnswer":"to do / doing","explanation":"prefer + V-ing/to-V đều đúng.","vi":"Nam và Mark thích làm gì hơn vào cuối tuần?"}
+]},
+
+{"roman":"28","navLabel":"Looking Back (G-4)","title":"LOOKING BACK — Grammar Ex 4: Complete the passage","icon":"file-pen","instructions":"Hoàn thành đoạn văn. Dùng dạng đúng của động từ trong ngoặc và các hình gợi ý. Thêm từ nếu cần.","type":"fill","instant":false,
+"passage":{"title":"Ann is my best friend...","html":"Ann is my best friend. She usually has free time at the weekend. She adores <b>(1. ride) riding a horse</b> at the riding club. Sometimes, she likes <b>(2. read) ________</b> or <b>(3. message) ________</b>. She also loves <b>(4. make) ________</b> and <b>(5. knit) ________</b>. There is one thing she doesn't like doing in her free time. She dislikes <b>(6. play) ________</b>.","vi":"Ann là bạn thân của tôi. Cô ấy thường có thời gian rảnh vào cuối tuần. Cô ấy rất thích cưỡi ngựa tại câu lạc bộ cưỡi ngựa. Đôi khi, cô ấy thích đọc sách hoặc nhắn tin. Cô ấy cũng thích làm hoa giấy và đan len. Có một điều cô ấy không thích làm trong thời gian rảnh. Cô ấy không thích chơi gôn (đánh golf)."},
+"questions":[
+{"q":"(2. read) Sometimes, she likes ________ or ...","answer":"reading books","accepted":["reading books","to read books","reading","to read"],"displayAnswer":"reading / to read books","explanation":"like + V-ing/to-V; gợi ý hình quyển sách.","vi":"đọc sách"},
+{"q":"(3. message) ... or ________. She also loves ...","answer":"messaging her friends","accepted":["messaging her friends","to message her friends","messaging","to message"],"displayAnswer":"messaging / to message her friends","explanation":"like + V-ing/to-V; gợi ý hình điện thoại.","vi":"nhắn tin cho bạn bè"},
+{"q":"(4. make) She also loves ________ and ...","answer":"making paper flowers","accepted":["making paper flowers","to make paper flowers","making","to make"],"displayAnswer":"making / to make paper flowers","explanation":"love + V-ing/to-V; gợi ý hình hoa giấy.","vi":"làm hoa giấy"},
+{"q":"(5. knit) ... and ________. There is one thing...","answer":"knitting","accepted":["knitting","to knit"],"displayAnswer":"knitting / to knit","explanation":"love + V-ing/to-V; gợi ý hình đan len.","vi":"đan len"},
+{"q":"(6. play) She dislikes ________.","answer":"playing golf","accepted":["playing golf","playing"],"explanation":"dislike chỉ theo sau bởi gerund; gợi ý hình gậy đánh golf.","vi":"chơi gôn (đánh golf)"}
+]},
+
+{"roman":"29","navLabel":"Project","title":"PROJECT — Leisure Time Survey","icon":"clipboard-list","instructions":"Làm việc nhóm. Phỏng vấn một số bạn trong lớp (hoặc lớp khác) bằng các câu hỏi dưới đây, ghi lại kết quả, rồi báo cáo trước lớp.","type":"open",
+"questions":[
+{"q":"When do you have free time?","sample":"Ghi lại câu trả lời của bạn được phỏng vấn.","vi":"Bạn có thời gian rảnh khi nào?"},
+{"q":"What do you like doing with your family in your free time?","sample":"Ghi lại câu trả lời của bạn được phỏng vấn.","vi":"Bạn thích làm gì cùng gia đình trong thời gian rảnh?"},
+{"q":"What do you like doing with your friends in your free time?","sample":"Ghi lại câu trả lời của bạn được phỏng vấn.","vi":"Bạn thích làm gì cùng bạn bè trong thời gian rảnh?"},
+{"q":"What leisure activities do you like doing on your own?","sample":"Ghi lại câu trả lời của bạn được phỏng vấn.","vi":"Bạn thích tự làm hoạt động giải trí gì một mình?"},
+{"q":"What leisure activities would you like to try in the future?","sample":"Ghi lại câu trả lời của bạn được phỏng vấn.","vi":"Bạn muốn thử hoạt động giải trí gì trong tương lai?"},
+{"q":"Báo cáo nhóm: How many students did you interview? / When do the students have free time? / What are the most popular activities they do with their family? / with their friends? / on their own? / What leisure activities would they like to try in the future?","sample":"Tổng hợp và trình bày kết quả khảo sát của nhóm trước lớp.","vi":"Báo cáo kết quả khảo sát của nhóm dựa trên các câu hỏi định hướng."}
+]}
+
+]};
+const completedTasks = new Set();
+const scores = {};
+const TOTAL_TASKS = DATA.sections.length;
+
+function normalize(str){
+  return (str||'').trim().toLowerCase()
+    .replace(/['']/g,"'")
+    .replace(/["""]/g,'')
+    .replace(/[.,!?;:]/g,'')
+    .replace(/\s+/g,' ');
+}
+function widthFor(ref){ const l=(ref||'').length; return l<7?'w-24':l<16?'w-40':'w-full'; }
+
+let cachedVoices = [];
+let currentUtterance = null; // keep a global reference — iOS/Safari can garbage-collect the
+                              // SpeechSynthesisUtterance mid-speech if it's only referenced locally,
+                              // which silently cuts off audio on iPhone/iPad.
+let voicesReady = false;
+if('speechSynthesis' in window){
+  const refreshVoices = ()=>{ cachedVoices = window.speechSynthesis.getVoices()||[]; if(cachedVoices.length) voicesReady = true; };
+  window.speechSynthesis.onvoiceschanged = refreshVoices;
+  refreshVoices();
+  // iOS Safari often has an empty voice list on first paint; retry a few times.
+  let voiceTries = 0;
+  const voiceRetryTimer = setInterval(()=>{
+    refreshVoices();
+    voiceTries++;
+    if(voicesReady || voiceTries>10) clearInterval(voiceRetryTimer);
+  }, 300);
+}
+function pickEnglishVoice(){
+  const voices = cachedVoices.length ? cachedVoices : (window.speechSynthesis.getVoices()||[]);
+  return voices.find(v=>/en[-_]?(us|gb)/i.test(v.lang)) || voices.find(v=>/^en/i.test(v.lang)) || null;
+}
+function speak(text, btn){
+  try{
+    if(!('speechSynthesis' in window)){ alert('Trình duyệt của bạn không hỗ trợ phát âm tự động. Hãy thử Chrome, Safari hoặc Edge.'); return; }
+    window.speechSynthesis.cancel();
+    const doSpeak = ()=>{
+      const u=new SpeechSynthesisUtterance(text);
+      currentUtterance = u; // prevent premature garbage collection on iOS Safari
+      u.lang='en-US'; u.rate=0.92; u.pitch=1; u.volume=1;
+      const en=pickEnglishVoice();
+      if(en) u.voice=en;
+      if(btn){
+        btn.classList.add('speaking');
+        const stop=()=>btn.classList.remove('speaking');
+        u.onend=stop; u.onerror=stop;
+      }
+      window.speechSynthesis.speak(u);
+    };
+    // iOS Safari needs a brief tick between cancel() and speak() or the new utterance
+    // is silently dropped; this delay is inaudible but fixes that race condition.
+    setTimeout(doSpeak, 60);
+  }catch(e){}
+}
+
+function buildNav(){
+  const nav=document.getElementById('navWrap');
+  nav.innerHTML = DATA.sections.map((s,i)=>
+    `<button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600${i===0?' active':''}" id="navbtn_${i}" onclick="showTab(${i})">${s.roman}. ${s.navLabel}</button>`
+  ).join('');
+}
+
+function optionLetter(i){ return ['A','B','C','D','E','F'][i]; }
+
+function renderPassage(p, idx){
+  if(!p) return '';
+  const viBlock = p.vi ? `<button onclick="togglePassageVI(${idx})" class="text-xs font-bold bg-white border border-indigo-200 text-indigo-700 px-3 py-1 rounded-full hover:scale-105 transition mt-2"><i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt</button>
+    <p id="passage_vi_${idx}" class="vi-hidden mt-2 pt-2 border-t border-indigo-200 italic text-slate-500">${p.vi}</p>` : '';
+  return `<div class="passage-box mb-4"><p class="font-extrabold text-indigo-900 mb-2"><i class="fa-solid fa-book mr-1"></i>${p.title||''}</p><p id="passage_en_${idx}">${p.html}</p>${viBlock}</div>`;
+}
+
+function renderListenBar(s, idx){
+  if(!s.listenText) return '';
+  return `<div class="listen-bar"><button type="button" onclick="speak(DATA.sections[${idx}].listenText, this)" class="speak-btn bg-cyan-600 hover:bg-cyan-700 text-white font-bold px-4 py-2 rounded-full text-sm shadow"><i class="fa-solid fa-volume-high mr-1"></i>Nghe bài (giọng đọc máy)</button></div>`;
+}
+
+function renderWordbox(s){
+  if(!s.wordbox) return '';
+  return `<div class="wordbox-strip"><p class="text-[11px] font-black uppercase text-blue-500 mb-1">Gợi ý từ</p><div class="flex flex-wrap gap-2">${s.wordbox.map(w=>`<span class="bg-white text-blue-700 text-xs font-bold px-3 py-1 rounded-full border border-blue-300">${w}</span>`).join('')}</div></div>`;
+}
+
+function renderSection(s, idx){
+  let inner = `<h2 class="text-xl md:text-2xl font-extrabold text-indigo-900 flex items-center gap-2 mb-1"><i class="fa-solid fa-${s.icon||'circle-check'} text-amber-400"></i> ${s.roman}. ${s.title}</h2>`;
+  if(s.instructions) inner += `<p class="text-sm text-slate-500 mb-3 italic">${s.instructions}</p>`;
+  inner += renderListenBar(s, idx);
+  inner += renderPassage(s.passage, idx);
+  inner += renderWordbox(s);
+
+  inner += `<div class="space-y-4">`;
+  s.questions.forEach((q,i)=>{
+    inner += `<div class="task-card bg-white rounded-2xl shadow-md p-4" id="qblock_${idx}_${i}">`;
+    if(q.image) inner += `<div class="mb-3">${q.image}</div>`;
+    inner += `<p class="font-bold text-slate-800 mb-2"><span class="bg-slate-100 text-slate-600 text-xs font-black px-2 py-1 rounded-lg mr-2">${i+1}</span>${q.q}</p>`;
+    if(s.type==='mcq'){
+      inner += `<div class="grid sm:grid-cols-2 gap-2">`;
+      q.options.forEach((opt,j)=>{
+        const ipa = q.ipas ? q.ipas[j] : null;
+        const optVi = q.vis ? q.vis[j] : null;
+        const cleanWord = opt.replace(/<[^>]+>/g,'');
+        const wordBlock = (ipa || optVi)
+          ? `<span class="flex flex-col leading-tight"><span>${opt}</span>${ipa?`<span class="text-[10px] text-slate-400 font-normal mcq-detail-hidden">${ipa}</span>`:''}${optVi?`<span class="text-[10px] text-emerald-500 font-normal italic mcq-detail-hidden">${optVi}</span>`:''}</span>
+             <button type="button" data-w="${cleanWord}" onclick="event.stopPropagation();event.preventDefault();speak(this.dataset.w,this)" class="speak-btn w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 hover:bg-indigo-200 hover:scale-110 transition flex items-center justify-center ml-auto shrink-0 mcq-detail-hidden" title="Nghe phát âm" aria-label="Nghe phát âm ${cleanWord}"><i class="fa-solid fa-volume-high text-[10px]"></i></button>`
+          : `<span>${opt}</span>`;
+        inner += `<label class="option-label rounded-xl px-3 py-2 text-sm font-semibold flex items-center gap-2" id="opt_${idx}_${i}_${j}" onclick="selectMcq(${idx},${i},${j})">
+          <input type="radio" name="mcq_${idx}_${i}" class="accent-indigo-700" style="display:none">
+          <span class="font-black text-indigo-700">${optionLetter(j)}.</span> ${wordBlock}
+        </label>`;
+      });
+      inner += `</div>`;
+    } else if(s.type==='fill'){
+      const w = widthFor(q.answer);
+      const famBlock = q.family ? `<div class="wordfam-box mt-2">${q.family.map(f=>`<div>• ${f}</div>`).join('')}</div>` : '';
+      inner += `<div class="flex items-center gap-2 flex-wrap">`;
+      if(q.hint) inner += `<span class="blank-tag text-xs">${q.hint}</span>`;
+      inner += `<input type="text" id="inp_${idx}_${i}" class="answer-input ${w} px-3 py-1.5 rounded-lg text-sm font-semibold" placeholder="Nhập đáp án..." autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"></div>${famBlock}`;
+    } else if(s.type==='sentence'){
+      const instantAttr = s.instant ? ` oninput="gradeOneSentence(${idx},${i})"` : '';
+      if(q.starter){
+        inner += `<p class="text-slate-700 text-sm mb-2">${q.original}</p>
+        <div class="flex items-center gap-3 w-full flex-wrap">
+          <span class="text-slate-800 font-extrabold text-base whitespace-nowrap">${q.starter}</span>
+          <input type="text" id="inp_${idx}_${i}" class="answer-input flex-1 min-w-[180px] px-3 py-2 rounded-lg text-sm font-semibold" placeholder="..." autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"${instantAttr}>
+        </div>`;
+      } else if(q.original){
+        inner += `<p class="text-slate-700 text-sm mb-2"><i class="fa-solid fa-lightbulb text-amber-400 mr-1"></i>Gợi ý: ${q.original}</p>
+        <input type="text" id="inp_${idx}_${i}" class="answer-input w-full px-3 py-2 rounded-lg text-sm font-semibold" placeholder="Viết câu hoàn chỉnh..." autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"${instantAttr}>`;
+      } else {
+        inner += `<input type="text" id="inp_${idx}_${i}" class="answer-input w-full px-3 py-2 rounded-lg text-sm font-semibold" placeholder="Viết câu trả lời..." autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"${instantAttr}>`;
+      }
+    } else if(s.type==='open'){
+      inner += `<textarea id="inp_${idx}_${i}" class="answer-input w-full px-3 py-2 rounded-lg text-sm font-semibold" placeholder="Viết câu trả lời của bạn (không bắt buộc đúng/sai)..." autocapitalize="sentences" autocorrect="off" spellcheck="false"></textarea>`;
+      if(q.sample){
+        inner += `<div class="mt-2"><button type="button" onclick="toggleSample(${idx},${i})" class="text-xs font-bold bg-white border border-emerald-300 text-emerald-700 px-3 py-1 rounded-full hover:scale-105 transition"><i class="fa-solid fa-lightbulb mr-1"></i>Xem gợi ý / đáp án mẫu</button>
+        <div id="sample_${idx}_${i}" class="sample-box">${q.sample}</div></div>`;
+      }
+    }
+    inner += `<div class="explanation-box mt-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-sm text-blue-800" id="fb_${idx}_${i}"></div>`;
+    inner += `</div>`;
+  });
+  inner += `</div>`;
+
+  const checkLabel = s.type==='open' ? 'Đánh dấu hoàn thành' : 'Kiểm tra';
+  const checkIcon = s.type==='open' ? 'flag-checkered' : 'check';
+  inner += `<div class="flex flex-wrap gap-2 mt-5">
+    <button onclick="checkSection(${idx})" class="bg-gradient-to-r from-indigo-900 to-pink-600 text-white font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-${checkIcon} mr-1"></i>${checkLabel}</button>
+    <button onclick="revealSection(${idx})" class="bg-white border-2 border-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-eye mr-1"></i>Xem đáp án</button>
+    <button onclick="resetSection(${idx})" class="bg-white border-2 border-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-rotate-left mr-1"></i>Làm lại</button>
+    <span id="score_${idx}" class="hidden ml-auto self-center font-extrabold text-emerald-600 text-sm score-badge"></span>
+  </div>`;
+
+  return `<section id="tab-${idx}" class="section-page${idx===0?' active':''} space-y-4">${inner}</section>`;
+}
+
+function buildMain(){
+  const main=document.getElementById('mainWrap');
+  main.innerHTML = DATA.sections.map((s,i)=>renderSection(s,i)).join('');
+}
+
+function togglePassageVI(idx){ const el=document.getElementById(`passage_vi_${idx}`); if(el) el.classList.toggle('vi-hidden'); }
+function toggleSample(idx,i){ const el=document.getElementById(`sample_${idx}_${i}`); if(el) el.classList.toggle('show'); }
+
+function selectMcq(idx,i,j){
+  const q=DATA.sections[idx].questions[i];
+  document.querySelectorAll(`[id^="opt_${idx}_${i}_"]`).forEach(el=>el.classList.remove('selected'));
+  document.getElementById(`opt_${idx}_${i}_${j}`).classList.add('selected');
+  document.getElementById(`opt_${idx}_${i}_${j}`).dataset.chosen = j;
+  if(DATA.sections[idx].instant){ gradeOneMcq(idx,i); }
+}
+
+function gradeOneMcq(idx,i){
+  const s=DATA.sections[idx], q=s.questions[i];
+  const qblock=document.getElementById(`qblock_${idx}_${i}`);
+  if(qblock) qblock.classList.add('show-mcq-detail');
+  const chosenEl=document.querySelector(`#tab-${idx} [id^="opt_${idx}_${i}_"].selected`);
+  const chosen = chosenEl ? parseInt(chosenEl.dataset.chosen) : -1;
+  const ok = chosen === q.answer;
+  const answerLabel = `${optionLetter(q.answer)}. ${q.options[q.answer]}`;
+  q.options.forEach((o,j)=>{
+    const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+    el.classList.remove('correct-opt','wrong-opt');
+    if(j===q.answer) el.classList.add('correct-opt');
+    else if(j===chosen) el.classList.add('wrong-opt');
+  });
+  const fb=document.getElementById(`fb_${idx}_${i}`);
+  fb.innerHTML = feedbackHTML(ok, answerLabel, q.explanation, q.vi, q.note);
+  fb.classList.add('show');
+}
+
+function gradeOneSentence(idx,i){
+  const q=DATA.sections[idx].questions[i];
+  const inp=document.getElementById(`inp_${idx}_${i}`);
+  const fb=document.getElementById(`fb_${idx}_${i}`);
+  if(!inp || !fb) return;
+  const raw=inp.value.trim();
+  if(raw===''){
+    inp.classList.remove('correct-input','wrong-input');
+    fb.classList.remove('show'); fb.innerHTML='';
+    return;
+  }
+  const val=normalize(inp.value);
+  const acc=(q.accepted||[q.answer]).map(normalize);
+  const ok = acc.includes(val);
+  inp.classList.remove('correct-input','wrong-input');
+  inp.classList.add(ok?'correct-input':'wrong-input');
+  fb.innerHTML = feedbackHTML(ok, q.displayAnswer||q.answer, q.explanation, q.vi, q.note);
+  fb.classList.add('show');
+}
+
+function feedbackHTML(ok, answerLabel, explanation, vi, note){
+  const okLine = ok? `<span class="text-emerald-700 font-bold">✅ Chính xác!</span>` : `<span class="text-rose-600 font-bold">❌ Chưa đúng.</span> Đáp án đúng: <b>${answerLabel}</b>`;
+  const expLine = explanation? `<br><span class="text-blue-700">💡 ${explanation}</span>` : '';
+  const viLine = vi? `<span class="text-slate-500">📖 Nghĩa: <i>${vi}</i></span>` : '';
+  const noteLine = note? `<br><span class="text-violet-600">📐 ${note}</span>` : '';
+  if(note){
+    return (viLine?viLine+'<br>':'') + okLine + expLine + noteLine;
+  }
+  return okLine + expLine + (viLine?'<br>'+viLine:'') + noteLine;
+}
+
+function checkSection(idx){
+  const s=DATA.sections[idx];
+  let correct=0;
+  const total=s.questions.length;
+
+  if(s.type==='open'){
+    s.questions.forEach((q,i)=>{
+      const inp=document.getElementById(`inp_${idx}_${i}`);
+      const fb=document.getElementById(`fb_${idx}_${i}`);
+      const attempted = inp && inp.value.trim()!=='';
+      if(attempted) correct++;
+      let msg = attempted ? `<span class="text-emerald-700 font-bold">✅ Đã ghi nhận câu trả lời của bạn.</span>` : `<span class="text-amber-600 font-bold">✍️ Đây là câu hỏi mở — hãy thử viết câu trả lời của bạn!</span>`;
+      if(q.sample){ msg += `<br><span class="text-blue-700">💡 Gợi ý: ${q.sample}</span>`; const sb=document.getElementById(`sample_${idx}_${i}`); if(sb) sb.classList.add('show'); }
+      if(q.vi) msg += `<br><span class="text-slate-500">📖 ${q.vi}</span>`;
+      fb.innerHTML = msg;
+      fb.classList.add('show');
+    });
+    scores[idx]={correct: total, total}; // open sections count as fully completed once checked
+    const scoreEl=document.getElementById(`score_${idx}`);
+    scoreEl.textContent = `✅ Đã hoàn thành phần mở (${total} câu)`;
+    scoreEl.classList.remove('hidden');
+    completedTasks.add(idx);
+    updateProgress();
+    if(completedTasks.size===TOTAL_TASKS) setTimeout(showCompletion,500);
+    return;
+  }
+
+  s.questions.forEach((q,i)=>{
+    let ok=false, answerLabel='';
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    if(s.type==='mcq'){
+      const chosenEl=document.querySelector(`#tab-${idx} [id^="opt_${idx}_${i}_"].selected`);
+      const chosen = chosenEl ? parseInt(chosenEl.dataset.chosen) : -1;
+      ok = chosen === q.answer;
+      answerLabel = `${optionLetter(q.answer)}. ${q.options[q.answer]}`;
+      q.options.forEach((o,j)=>{
+        const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+        el.classList.remove('correct-opt','wrong-opt');
+        if(j===q.answer) el.classList.add('correct-opt');
+        else if(j===chosen) el.classList.add('wrong-opt');
+      });
+      const qblock=document.getElementById(`qblock_${idx}_${i}`);
+      if(qblock) qblock.classList.add('show-mcq-detail');
+    } else {
+      const inp=document.getElementById(`inp_${idx}_${i}`);
+      const val=normalize(inp.value);
+      const acc=(q.accepted||[q.answer]).map(normalize);
+      ok = val!=='' && acc.includes(val);
+      inp.classList.remove('correct-input','wrong-input');
+      inp.classList.add(ok?'correct-input':'wrong-input');
+      answerLabel = q.displayAnswer||q.answer;
+    }
+    if(ok) correct++;
+    fb.innerHTML = feedbackHTML(ok, answerLabel, q.explanation, q.vi, q.note);
+    fb.classList.add('show');
+  });
+  scores[idx]={correct,total};
+  const scoreEl=document.getElementById(`score_${idx}`);
+  scoreEl.textContent = `🏆 Điểm: ${correct}/${total}`;
+  scoreEl.classList.remove('hidden');
+  completedTasks.add(idx);
+  updateProgress();
+  if(completedTasks.size===TOTAL_TASKS) setTimeout(showCompletion,500);
+}
+
+function revealSection(idx){
+  const s=DATA.sections[idx];
+  s.questions.forEach((q,i)=>{
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    if(s.type==='open'){
+      let msg = q.sample ? `👁️ Gợi ý / đáp án mẫu: <b>${q.sample}</b>` : `👁️ Đây là câu hỏi mở, không có đáp án cố định.`;
+      if(q.vi) msg += `<br><span class="text-slate-500">📖 ${q.vi}</span>`;
+      fb.innerHTML = msg; fb.classList.add('show');
+      const sb=document.getElementById(`sample_${idx}_${i}`); if(sb) sb.classList.add('show');
+      return;
+    }
+    let answerLabel = s.type==='mcq' ? `${optionLetter(q.answer)}. ${q.options[q.answer]}` : (q.displayAnswer||q.answer);
+    if(s.type==='mcq'){
+      q.options.forEach((o,j)=>{
+        const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+        el.classList.remove('correct-opt','wrong-opt');
+        if(j===q.answer) el.classList.add('correct-opt');
+      });
+      const qblock=document.getElementById(`qblock_${idx}_${i}`);
+      if(qblock) qblock.classList.add('show-mcq-detail');
+    }
+    fb.innerHTML = `👁️ Đáp án: <b>${answerLabel}</b>` + (q.explanation?`<br><span class="text-blue-700">💡 ${q.explanation}</span>`:'') + (q.vi?`<br><span class="text-slate-500">📖 Nghĩa: <i>${q.vi}</i></span>`:'') + (q.note?`<br><span class="text-violet-600">📐 ${q.note}</span>`:'');
+    fb.classList.add('show');
+  });
+}
+
+function resetSection(idx){
+  const s=DATA.sections[idx];
+  s.questions.forEach((q,i)=>{
+    if(s.type==='mcq'){
+      q.options.forEach((o,j)=>{
+        const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+        el.classList.remove('correct-opt','wrong-opt','selected');
+        delete el.dataset.chosen;
+      });
+      const qblock=document.getElementById(`qblock_${idx}_${i}`);
+      if(qblock) qblock.classList.remove('show-mcq-detail');
+    } else {
+      const inp=document.getElementById(`inp_${idx}_${i}`);
+      if(inp){ inp.value=''; inp.classList.remove('correct-input','wrong-input'); }
+      if(s.type==='open'){
+        const sb=document.getElementById(`sample_${idx}_${i}`); if(sb) sb.classList.remove('show');
+      }
+    }
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    fb.classList.remove('show'); fb.innerHTML='';
+  });
+  const scoreEl=document.getElementById(`score_${idx}`); scoreEl.classList.add('hidden');
+  completedTasks.delete(idx); delete scores[idx]; updateProgress();
+}
+
+function showTab(idx){
+  document.querySelectorAll('.section-page').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active'); b.classList.add('text-slate-600');});
+  document.getElementById(`tab-${idx}`).classList.add('active');
+  const btn=document.getElementById(`navbtn_${idx}`);
+  btn.classList.add('active'); btn.classList.remove('text-slate-600');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updateProgress(){
+  const done=completedTasks.size;
+  document.getElementById('progressText').textContent = `${done} / ${TOTAL_TASKS} phần`;
+  document.getElementById('progressBar').style.width = `${(done/TOTAL_TASKS)*100}%`;
+}
+
+function showCompletion(){
+  fireConfetti();
+  const banner=document.getElementById('completionBanner');
+  banner.classList.remove('hidden'); banner.classList.add('show');
+  let c=0,t=0; Object.values(scores).forEach(s=>{c+=s.correct; t+=s.total;});
+  document.getElementById('finalScoreDisplay').textContent = `🎯 ${c} / ${t} câu đúng`;
+}
+function closeBanner(){ const b=document.getElementById('completionBanner'); b.classList.remove('show'); b.classList.add('hidden'); }
+function fireConfetti(){
+  const wrap=document.getElementById('confettiWrap'); wrap.innerHTML='';
+  const colors=['#7c2d12','#ea580c','#f59e0b','#fbbf24','#0891b2','#6366f1'];
+  for(let i=0;i<90;i++){
+    const p=document.createElement('div'); p.className='confetti-piece';
+    p.style.cssText=`left:${Math.random()*100}vw;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>0.5?'50%':'2px'};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*0.8}s;`;
+    wrap.appendChild(p);
+  }
+  setTimeout(()=>{wrap.innerHTML='';},4000);
+}
+
+buildNav();
+buildMain();
+updateProgress();
+</script>
+</body>
+</html>

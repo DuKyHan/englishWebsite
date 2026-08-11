@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Unit 2: Life in the Countryside">
+<meta name="theme-color" content="#ea580c">
+<meta name="format-detection" content="telephone=no">
+<title>Unit 2: Life in the Countryside - Tiếng Anh 8 (Global Success)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+  :root{ --accent:#1d4ed8; --accent2:#0891b2; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html{ -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  body { font-family:'Nunito',sans-serif; background:#f5f3ff; overscroll-behavior-y: none; }
+  header.hero-gradient{ padding-top: calc(2rem + env(safe-area-inset-top)); }
+  nav.sticky{ top: env(safe-area-inset-top); }
+  button, .tab-btn, .option-label, .speak-btn, [onclick]{ touch-action: manipulation; -webkit-user-select: none; user-select: none; }
+  input.answer-input, textarea.answer-input{ -webkit-user-select: text; user-select: text; }
+  nav{ -webkit-overflow-scrolling: touch; }
+  .hero-gradient{ background: linear-gradient(135deg, #7c2d12 0%, #ea580c 55%, #f59e0b 100%); }
+  .tab-btn{ transition: all .2s ease; }
+  .tab-btn.active{ background: linear-gradient(135deg, #7c2d12, #f59e0b); color:#fff; box-shadow:0 4px 14px rgba(124,45,18,.35); transform:translateY(-1px); }
+  .task-card{ transition: box-shadow .2s, transform .2s; }
+  .task-card:hover{ transform: translateY(-2px); box-shadow:0 8px 30px rgba(0,0,0,.10); }
+  .option-label{ cursor:pointer; transition: all .18s; border:2px solid #e2e8f0; }
+  .option-label:hover{ border-color:var(--accent); background:#f5f3ff; }
+  .option-label.selected{ border-color:#1e1b4b; background:#eef2ff; }
+  .option-label.correct-opt{ border-color:#22c55e !important; background:#f0fdf4 !important; }
+  .option-label.wrong-opt{ border-color:#ef4444 !important; background:#fef2f2 !important; }
+  .mcq-detail-hidden{ display:none; }
+  .show-mcq-detail .mcq-detail-hidden{ display:block; }
+  .speak-btn{ cursor:pointer; }
+  .speak-btn.speaking{ animation: pulseSpeak .7s ease-in-out infinite; }
+  @keyframes pulseSpeak{ 0%,100%{transform:scale(1);} 50%{transform:scale(1.18);} }
+  .vi-hidden{ display:none; }
+  .explanation-box{ display:none; animation: fadeSlide .3s ease forwards; }
+  .explanation-box.show{ display:block; }
+  @keyframes fadeSlide{ from{opacity:0; transform:translateY(-6px);} to{opacity:1; transform:translateY(0);} }
+  input.answer-input, textarea.answer-input{ border:2px solid #cbd5e1; transition:border .18s; outline:none; background:#fff; font-size:16px !important; }
+  input.answer-input:focus, textarea.answer-input:focus{ border-color:var(--accent); }
+  @media (min-width: 640px){ input.answer-input, textarea.answer-input{ font-size:0.875rem !important; } }
+  input.correct-input{ border-color:#22c55e !important; background:#f0fdf4; }
+  input.wrong-input{ border-color:#ef4444 !important; background:#fef2f2; }
+  .score-badge{ animation: popIn .35s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn{ from{transform:scale(.4); opacity:0;} to{transform:scale(1); opacity:1;} }
+  .confetti-wrap{ position:fixed; inset:0; pointer-events:none; z-index:9999; }
+  .confetti-piece{ position:absolute; width:10px; height:10px; border-radius:2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall{ 0%{transform:translateY(-20px) rotate(0deg); opacity:1;} 100%{transform:translateY(100vh) rotate(720deg); opacity:0;} }
+  .progress-bar-fill{ transition: width .6s ease; }
+  .section-page{ display:none; }
+  .section-page.active{ display:block; }
+  #completionBanner{ display:none; }
+  #completionBanner.show{ display:flex; }
+  .passage-box{ background:#fff; border:1px solid #e2e8f0; border-radius:1rem; padding:1rem 1.25rem; line-height:1.9; font-size:.95rem; color:#334155; }
+  .dict-box{ background:#fef9c3; border:1px solid #fde68a; border-radius:1rem; padding:1rem 1.25rem; font-size:.9rem; color:#334155; }
+  .blank-tag{ background:#ffedd5; color:#9a3412; font-weight:800; border-radius:.4rem; padding:0 .35rem; }
+  .wordfam-box{ background:#fff7ed; border:1px solid #fed7aa; border-radius:.6rem; padding:.5rem .75rem; font-size:.75rem; color:#9a3412; line-height:1.6; width:100%; }
+  .wordbox-strip{ background:#eff6ff; border:1px dashed #93c5fd; border-radius:.8rem; padding:.6rem .8rem; margin-bottom:1rem; }
+  .listen-bar{ margin-bottom:1rem; }
+  .sample-box{ display:none; background:#f0fdf4; border:1px solid #86efac; border-radius:.7rem; padding:.75rem 1rem; font-size:.85rem; color:#166534; margin-top:.5rem; white-space:pre-line; }
+  .sample-box.show{ display:block; }
+  textarea.answer-input{ resize:vertical; min-height:70px; }
+  .match-chip{ border:2px solid #e2e8f0; border-radius:.8rem; padding:.7rem .6rem; text-align:center; font-weight:700; cursor:pointer; transition: all .12s; font-size:.85rem; background:#fff; }
+  .match-chip:hover{ border-color:#1d4ed8; background:#f5f3ff; }
+  .match-chip.selected{ border-color:#1d4ed8; background:#eef2ff; }
+  .match-chip.matched{ border-color:#22c55e; background:#f0fdf4; opacity:.65; pointer-events:none; }
+  .match-chip.wrongflash{ animation: matchShake .3s; border-color:#ef4444; background:#fef2f2; }
+  @keyframes matchShake{ 0%,100%{transform:translateX(0);} 25%{transform:translateX(-6px);} 75%{transform:translateX(6px);} }
+</style>
+</head>
+<body class="min-h-screen">
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<header class="hero-gradient text-white py-8 px-4 text-center shadow-xl relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <div class="absolute top-4 left-8 text-6xl">🚲</div>
+    <div class="absolute top-2 right-12 text-5xl">🧶</div>
+    <div class="absolute bottom-2 left-1/3 text-4xl">🧩</div>
+    <div class="absolute bottom-4 right-1/4 text-5xl">🎬</div>
+  </div>
+  <p class="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Tiếng Anh 8 · Global Success · Unit 2</p>
+  <h1 class="font-['Baloo_2'] text-3xl md:text-5xl font-extrabold drop-shadow-lg">🌾 Unit 2: Life in the Countryside 🐃</h1>
+  <p class="mt-2 text-base md:text-lg opacity-90 font-semibold">Luyện tập tương tác · Từ vựng - Ngữ pháp - Phát âm - Kỹ năng</p>
+  <div class="mt-5 max-w-2xl mx-auto">
+    <div class="flex justify-between text-xs font-bold opacity-80 mb-1">
+      <span>Tiến độ hoàn thành</span>
+      <span id="progressText">0 / 29 phần</span>
+    </div>
+    <div class="bg-white/20 rounded-full h-3 overflow-hidden">
+      <div id="progressBar" class="bg-white rounded-full h-3 progress-bar-fill" style="width:0%"></div>
+    </div>
+  </div>
+</header>
+
+<nav class="sticky top-0 z-50 bg-white/90 backdrop-blur shadow-sm px-3 py-2 overflow-x-auto">
+  <div class="flex gap-2 min-w-max mx-auto w-fit" id="navWrap"></div>
+</nav>
+
+<main class="max-w-4xl mx-auto px-4 py-6 pb-20" id="mainWrap"></main>
+
+<footer class="text-center text-xs text-slate-400 pb-8 px-4">
+  Nội dung bài học: Sách học sinh &amp; Sách giáo viên Tiếng Anh 8 – Global Success (NXB Giáo dục Việt Nam), Unit 2: Life in the Countryside.
+</footer>
+
+<div id="completionBanner" class="fixed inset-0 z-[9998] items-center justify-center bg-black/50 px-4">
+  <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center score-badge shadow-2xl">
+    <div class="text-6xl mb-3">🎉</div>
+    <h3 class="text-2xl font-extrabold text-orange-900 mb-1">Hoàn thành bài luyện tập!</h3>
+    <p class="text-slate-500 mb-4">Bạn đã làm xong tất cả các phần của Unit 2.</p>
+    <p id="finalScoreDisplay" class="text-3xl font-black text-orange-700 mb-5"></p>
+    <button onclick="closeBanner()" class="bg-gradient-to-r from-orange-900 to-amber-500 text-white font-bold px-6 py-2.5 rounded-full">Đóng</button>
+  </div>
+</div>
+
+<script>const DATA = {"unit":2,"title":"Life in the Countryside","sections":[{"roman": "1", "navLabel": "Getting Started (2)", "title": "GETTING STARTED — Bài 2", "icon": "comments", "instructions": "📚 Bài tập SGK — dùng đúng nội dung sách giáo khoa.", "type": "mcq", "passage": {"title": "Last summer holiday", "html": "<b>Nick:</b> You look great with a tan, Mai!<br><b>Mai:</b> Thank you. I've just come back from a very enjoyable summer holiday.<br><b>Nick:</b> Really? Where did you stay?<br><b>Mai:</b> I stayed at my uncle's house in a small village in Bac Giang Province.<br><b>Nick:</b> What did you do there?<br><b>Mai:</b> A lot of things. It was harvest time. The villagers were harvesting rice with a combine harvester. I helped them load the rice onto a truck. Then we unloaded the rice and dried it.<br><b>Nick:</b> Sounds great!<br><b>Mai:</b> And sometimes I went with the village children to herd the buffaloes and cows. I made friends with them on my first day.<br><b>Nick:</b> Were they friendly?<br><b>Mai:</b> Yes, they were. They took me to the paddy fields to fly kites. And in the evening, we played traditional games like bamboo dancing and dragon-snake.<br><b>Nick:</b> Oh, I envy you!<br><b>Mai:</b> Things move more slowly there than in our city, but people seem to have a healthier life."}, "listenText": "You look great with a tan, Mai! Thank you. I've just come back from a very enjoyable summer holiday. Really? Where did you stay? I stayed at my uncle's house in a small village in Bac Giang Province. What did you do there? A lot of things. It was harvest time. The villagers were harvesting rice with a combine harvester. I helped them load the rice onto a truck. Then we unloaded the rice and dried it. Sounds great! And sometimes I went with the village children to herd the buffaloes and cows. I made friends with them on my first day. Were they friendly? Yes, they were. They took me to the paddy fields to fly kites. And in the evening, we played traditional games like bamboo dancing and dragon-snake. Oh, I envy you! Things move more slowly there than in our city, but people seem to have a healthier life.", "questions": [{"q": "1. How does Mai feel about her summer holiday?", "explanation": "Mai nói \"a very enjoyable summer holiday\" → cô ấy thích kỳ nghỉ.", "options": ["She likes it.", "She doesn't like it.", "She thinks it was fine."], "answer": 0}, {"q": "2. Where did she stay during her summer holiday?", "explanation": "\"I stayed at my uncle's house in a small village in Bac Giang Province.\"", "options": ["At her friend's house.", "At her uncle's house.", "At her grandparents' house."], "answer": 1}, {"q": "3. During harvest time, people harvest rice by ________.", "explanation": "\"The villagers were harvesting rice with a combine harvester.\"", "options": ["themselves", "using a truck", "using a combine harvester"], "answer": 2}, {"q": "4. What did Mai do with the village children?", "explanation": "\"Sometimes I went with the village children to herd the buffaloes and cows.\" They also took her to the paddy fields to fly kites and played traditional games in the evening.", "options": ["She went herding buffaloes and cows and played traditional games.", "She went shopping in the city.", "She stayed at home and watched TV."], "answer": 0}, {"q": "5. Mai thinks people in the countryside lead ________.", "explanation": "\"...people seem to have a healthier life.\"", "options": ["a healthy life", "an exciting life", "an interesting life"], "answer": 0}], "instant": true}, {"roman": "2", "navLabel": "Getting Started (2) 🎯", "title": "GETTING STARTED — Luyện thêm (Extra Practice) · Bài 2", "icon": "comments", "instructions": "🎯 Luyện tập thêm — cùng kiến thức, hình thức khác.", "type": "mcq", "passage": {"title": "Last summer holiday", "html": "<b>Nick:</b> You look great with a tan, Mai!<br><b>Mai:</b> Thank you. I've just come back from a very enjoyable summer holiday.<br><b>Nick:</b> Really? Where did you stay?<br><b>Mai:</b> I stayed at my uncle's house in a small village in Bac Giang Province.<br><b>Nick:</b> What did you do there?<br><b>Mai:</b> A lot of things. It was harvest time. The villagers were harvesting rice with a combine harvester. I helped them load the rice onto a truck. Then we unloaded the rice and dried it.<br><b>Nick:</b> Sounds great!<br><b>Mai:</b> And sometimes I went with the village children to herd the buffaloes and cows. I made friends with them on my first day.<br><b>Nick:</b> Were they friendly?<br><b>Mai:</b> Yes, they were. They took me to the paddy fields to fly kites. And in the evening, we played traditional games like bamboo dancing and dragon-snake.<br><b>Nick:</b> Oh, I envy you!<br><b>Mai:</b> Things move more slowly there than in our city, but people seem to have a healthier life."}, "listenText": "You look great with a tan, Mai! Thank you. I've just come back from a very enjoyable summer holiday. Really? Where did you stay? I stayed at my uncle's house in a small village in Bac Giang Province. What did you do there? A lot of things. It was harvest time. The villagers were harvesting rice with a combine harvester. I helped them load the rice onto a truck. Then we unloaded the rice and dried it. Sounds great! And sometimes I went with the village children to herd the buffaloes and cows. I made friends with them on my first day. Were they friendly? Yes, they were. They took me to the paddy fields to fly kites. And in the evening, we played traditional games like bamboo dancing and dragon-snake. Oh, I envy you! Things move more slowly there than in our city, but people seem to have a healthier life.", "questions": [{"q": "Mai made friends with the village children on her first day.", "explanation": "\"I made friends with them on my first day.\"", "options": ["True", "False"], "answer": 0}, {"q": "In the evening, Mai and the village children watched TV together.", "explanation": "\"...we played traditional games like bamboo dancing and dragon-snake\" — không phải xem TV.", "options": ["True", "False"], "answer": 1}, {"q": "Nick says he envies Mai's experience in the countryside.", "explanation": "\"Oh, I envy you!\"", "options": ["True", "False"], "answer": 0}], "instant": true}, {"roman": "3", "navLabel": "Getting Started (3)", "title": "GETTING STARTED — Bài 3", "icon": "comments", "instructions": "📚 Bài tập SGK — dùng đúng nội dung sách giáo khoa.", "type": "fill", "questions": [{"q": "1. It took them an hour to ________ all the goods onto the truck.", "explanation": "to load = chất, xếp (hàng lên xe).", "answer": "load", "accepted": ["load"]}, {"q": "2. Nowadays, people in my village use a ________ to harvest their rice and separate the grains from the rest of the plant.", "explanation": "combine harvester = máy gặt đập liên hợp.", "answer": "combine harvester", "accepted": ["combine harvester"]}, {"q": "3. Today it is my turn to ________ the cows.", "explanation": "to herd = chăn, lùa (gia súc).", "answer": "herd", "accepted": ["herd"]}, {"q": "4. A place in which people grow rice is called a ________.", "explanation": "paddy field = ruộng lúa.", "answer": "paddy field", "accepted": ["paddy field"]}, {"q": "5. A busy time when people cut and gather their crops is called ________.", "explanation": "harvest time = mùa thu hoạch.", "answer": "harvest time", "accepted": ["harvest time"]}]}, {"roman": "4", "navLabel": "Getting Started (3) 🎯", "title": "GETTING STARTED — Luyện thêm (Extra Practice) · Bài 3", "icon": "comments", "instructions": "🎯 Luyện tập thêm — cùng kiến thức, hình thức khác.", "type": "mcq", "questions": [{"q": "🎯 \"Ruộng lúa\" trong tiếng Anh là gì?", "explanation": "paddy field = ruộng lúa.", "options": ["paddy field", "combine harvester", "harvest time", "herd"], "answer": 0}, {"q": "🎯 Which word means \"to put a large quantity of something onto a vehicle\"?", "explanation": "to load = chất hàng lên xe/phương tiện.", "options": ["load", "herd", "catch", "cultivate"], "answer": 0}, {"q": "🎯 A machine that harvests rice and separates the grains is called a ________.", "explanation": "combine harvester = máy gặt đập liên hợp.", "options": ["combine harvester", "paddy field", "harvest time", "truck"], "answer": 0}], "instant": true}, {"roman": "5", "navLabel": "Getting Started (4)", "title": "GETTING STARTED — Bài 4", "icon": "comments", "instructions": "Match the activities (1-6) with the pictures (a-f) that people living in the countryside often do.", "type": "match", "pairs": [{"left": "1. unloading rice", "right": "Hình d 🚛 (bốc dỡ bao tải lên/xuống xe tải)"}, {"left": "2. ploughing fields", "right": "Hình a 🐃 (cày ruộng)"}, {"left": "3. milking cows", "right": "Hình f 🐄 (vắt sữa bò)"}, {"left": "4. feeding pigs", "right": "Hình e 🐖 (cho lợn ăn)"}, {"left": "5. catching fish", "right": "Hình b 🎣 (bắt cá dưới nước)"}, {"left": "6. drying rice", "right": "Hình c ☀️ (phơi lúa trên sân)"}], "explanation": "Key (SGV): 1.d 2.a 3.f 4.e 5.b 6.c"}, {"roman": "6", "navLabel": "Getting Started (4) 🎯", "title": "GETTING STARTED — Luyện thêm (Extra Practice) · Bài 4", "icon": "comments", "instructions": "🎯 Luyện tập thêm — cùng kiến thức, hình thức khác.", "type": "mcq", "questions": [{"q": "🎯 \"Cày ruộng\" trong tiếng Anh là gì?", "explanation": "ploughing fields = cày ruộng.", "options": ["ploughing fields", "milking cows", "feeding pigs", "catching fish"], "answer": 0}, {"q": "🎯 \"Vắt sữa bò\" trong tiếng Anh là gì?", "explanation": "milking cows = vắt sữa bò.", "options": ["milking cows", "unloading rice", "drying rice", "herding buffaloes"], "answer": 0}, {"q": "🎯 \"Phơi lúa\" trong tiếng Anh là gì?", "explanation": "drying rice = phơi lúa.", "options": ["drying rice", "unloading rice", "catching fish", "feeding pigs"], "answer": 0}], "instant": true}, {"roman": "7", "navLabel": "Getting Started (5)", "title": "GETTING STARTED — Bài 5", "icon": "comments", "instructions": "📚 Bài tập SGK — dùng đúng nội dung sách giáo khoa.", "type": "open", "questions": [{"q": "Work in pairs. Ask and answer about the pictures in 4. Example: A: What are they doing in picture a? B: They're ploughing fields.", "vi": "Hỏi và trả lời về các hình trong bài 4.", "sample": "A: What are they doing in picture b? B: They're catching fish."}]}, {"roman": "8", "navLabel": "A Closer Look 1 (1)", "title": "A CLOSER LOOK 1 — Bài 1", "icon": "book", "instructions": "📚 Bài tập SGK — dùng đúng nội dung sách giáo khoa.", "type": "mcq", "questions": [{"q": "1. We helped the farmers herd cattle / poultry.", "explanation": "cattle = gia súc (trâu, bò) — herd cattle: chăn gia súc. poultry = gia cầm, không dùng với herd.", "options": ["cattle", "poultry"], "answer": 0}, {"q": "2. They are helping their parents pick plants / fruit in the orchard.", "explanation": "pick fruit = hái quả (trong vườn cây ăn trái).", "options": ["plants", "fruit"], "answer": 1}, {"q": "3. At harvest time farmers are busy cutting and collecting food / crops.", "explanation": "crops = mùa màng, nông sản — cutting and collecting crops: thu hoạch mùa màng.", "options": ["food", "crops"], "answer": 1}, {"q": "4. The driver loaded / unloaded the rice from the back of the truck.", "explanation": "unloaded ... from the truck = dỡ (lúa) xuống khỏi xe tải.", "options": ["loaded", "unloaded"], "answer": 1}, {"q": "5. People here live by catching / holding fish from nearby lakes and ponds.", "explanation": "catching fish = bắt cá.", "options": ["catching", "holding"], "answer": 0}], "instant": true}, {"roman": "9", "navLabel": "A Closer Look 1 (1) 🎯", "title": "A CLOSER LOOK 1 — Luyện thêm (Extra Practice) · Bài 1", "icon": "book", "instructions": "🎯 Luyện tập thêm — cùng kiến thức, hình thức khác.", "type": "mcq", "questions": [{"q": "🎯 \"Cattle\" refers to cows and water buffaloes.", "explanation": "Đúng — theo giải thích trong SGV: Cattle refers to cows and water buffaloes.", "options": ["True", "False"], "answer": 0}, {"q": "🎯 \"Poultry\" refers to birds we raise, like chickens and ducks.", "explanation": "Đúng — Poultry refers to birds we raise, like chickens and ducks.", "options": ["True", "False"], "answer": 0}, {"q": "🎯 To \"load\" something means to ________.", "explanation": "to load = chất, xếp một lượng lớn đồ vào phương tiện/thùng chứa.", "options": ["put a large quantity of something in a vehicle or container", "grab something moving in the air or water", "keep something in your hand", "grow plants for food"], "answer": 0}], "instant": true}, {"roman": "10", "navLabel": "A Closer Look 1 (2)", "title": "A CLOSER LOOK 1 — Bài 2", "icon": "book", "instructions": "Match the following adjectives with their definitions.", "type": "match", "pairs": [{"left": "1. vast", "right": "c. extremely large in area, size, amount, etc."}, {"left": "2. hospitable", "right": "d. pleased to welcome guests; generous and friendly to visitors"}, {"left": "3. well-trained", "right": "e. having received good or thorough training"}, {"left": "4. surrounded", "right": "b. having something near or around"}, {"left": "5. picturesque", "right": "a. pretty, especially in a way that looks old-fashioned"}], "explanation": "Key (SGV): 1.c 2.d 3.e 4.b 5.a"}, {"roman": "11", "navLabel": "A Closer Look 1 (2) 🎯", "title": "A CLOSER LOOK 1 — Luyện thêm (Extra Practice) · Bài 2", "icon": "book", "instructions": "🎯 Luyện tập thêm — cùng kiến thức, hình thức khác.", "type": "mcq", "questions": [{"q": "🎯 \"Rộng lớn, bao la\" trong tiếng Anh là gì?", "explanation": "vast = rộng lớn, bao la.", "options": ["vast", "hospitable", "well-trained", "surrounded"], "answer": 0}, {"q": "🎯 \"Hiếu khách\" trong tiếng Anh là gì?", "explanation": "hospitable = hiếu khách, mến khách.", "options": ["hospitable", "picturesque", "well-trained", "vast"], "answer": 0}], "instant": true}, {"roman": "12", "navLabel": "A Closer Look 1 (3)", "title": "A CLOSER LOOK 1 — Bài 3", "icon": "book", "instructions": "📚 Bài tập SGK — dùng đúng nội dung sách giáo khoa.", "type": "fill", "questions": [{"q": "1. The local people are kind and ________ to visitors.", "explanation": "hospitable = hiếu khách.", "answer": "hospitable", "accepted": ["hospitable"]}, {"q": "2. Our factory needs a lot of ________ workers.", "explanation": "well-trained = được đào tạo bài bản.", "answer": "well-trained", "accepted": ["well-trained", "well trained"]}, {"q": "3. While travelling up the mountain, people always stop and take photos of the ________ scenery.", "explanation": "picturesque scenery = phong cảnh đẹp như tranh vẽ.", "answer": "picturesque", "accepted": ["picturesque"]}, {"q": "4. The Sahara is a ________ desert that covers parts of eleven countries in northern Africa.", "explanation": "vast desert = sa mạc rộng lớn.", "answer": "vast", "accepted": ["vast"]}, {"q": "5. The lake is ________ by a lot of trees.", "explanation": "surrounded by = được bao quanh bởi.", "answer": "surrounded", "accepted": ["surrounded"]}]}, {"roman": "13", "navLabel": "A Closer Look 1 (3) 🎯", "title": "A CLOSER LOOK 1 — Luyện thêm (Extra Practice) · Bài 3", "icon": "book", "instructions": "🎯 Luyện tập thêm — cùng kiến thức, hình thức khác.", "type": "mcq", "questions": [{"q": "🎯 Which word best completes: \"The village is famous for its ___ landscape, attracting many photographers.\"", "explanation": "picturesque landscape = phong cảnh đẹp như tranh.", "options": ["picturesque", "well-trained", "hospitable", "surrounded"], "answer": 0}], "instant": true}, {"roman": "14", "navLabel": "A Closer Look 1 (4)", "title": "A CLOSER LOOK 1 — Bài 4", "icon": "book", "instructions": "📚 Bài tập SGK — dùng đúng nội dung sách giáo khoa.", "type": "mcq", "questions": [{"q": "1. activity — âm nào?", "explanation": "activity có âm /ə/.", "options": ["/ə/", "/ɪ/"], "answer": 0}, {"q": "2. pick — âm nào?", "explanation": "pick có âm /ɪ/.", "options": ["/ə/", "/ɪ/"], "answer": 1}, {"q": "3. hospitable — âm nào?", "explanation": "hospitable có âm /ə/.", "options": ["/ə/", "/ɪ/"], "answer": 0}, {"q": "4. village — âm nào?", "explanation": "village có âm /ɪ/.", "options": ["/ə/", "/ɪ/"], "answer": 1}, {"q": "5. garden — âm nào?", "explanation": "garden có âm /ə/.", "options": ["/ə/", "/ɪ/"], "answer": 0}, {"q": "6. harvest — âm nào?", "explanation": "harvest có âm /ɪ/.", "options": ["/ə/", "/ɪ/"], "answer": 1}, {"q": "7. picturesque — âm nào?", "explanation": "picturesque có âm /ə/.", "options": ["/ə/", "/ɪ/"], "answer": 0}, {"q": "8. busy — âm nào?", "explanation": "busy có âm /ɪ/.", "options": ["/ə/", "/ɪ/"], "answer": 1}, {"q": "9. collect — âm nào?", "explanation": "collect có âm /ə/.", "options": ["/ə/", "/ɪ/"], "answer": 0}, {"q": "10. cottage — âm nào?", "explanation": "cottage có âm /ɪ/.", "options": ["/ə/", "/ɪ/"], "answer": 1}], "instant": true}, {"roman": "15", "navLabel": "A Closer Look 1 (5)", "title": "A CLOSER LOOK 1 — Bài 5", "icon": "book", "instructions": "📚 Bài tập SGK — dùng đúng nội dung sách giáo khoa.", "type": "mcq", "questions": [{"q": "1. There is a lot of WATER IN the bottle. Từ nào có âm /ɪ/?", "explanation": "\"in\" có âm /ɪ/ (khoanh tròn); \"water\" có âm /ə/ (gạch chân).", "options": ["water", "in"], "answer": 1}, {"q": "2. The FARMERS here are HARD-WORKING. Từ nào có âm /ɪ/?", "explanation": "\"hard-working\" có âm /ɪ/; \"farmers\" có âm /ə/.", "options": ["farmers", "hard-working"], "answer": 1}, {"q": "3. They are PICKING fruits in the ORCHARD. Từ nào có âm /ɪ/?", "explanation": "\"picking\" có âm /ɪ/; \"orchard\" có âm /ə/.", "options": ["picking", "orchard"], "answer": 0}, {"q": "4. People in my VILLAGE usually GATHER at weekends. Từ nào có âm /ɪ/?", "explanation": "\"village\" có âm /ɪ/; \"gather\" có âm /ə/.", "options": ["village", "gather"], "answer": 0}, {"q": "5. Please buy some MILK and PASTA at the supermarket. Từ nào có âm /ɪ/?", "explanation": "\"milk\" có âm /ɪ/; \"pasta\" có âm /ə/.", "options": ["milk", "pasta"], "answer": 0}], "instant": true}, {"roman": "16", "navLabel": "A Closer Look 2 (1)", "title": "A CLOSER LOOK 2 — Bài 1", "icon": "brain", "instructions": "📚 Bài tập SGK — dùng đúng nội dung sách giáo khoa.", "type": "fill", "questions": [{"q": "Viết dạng so sánh hơn của trạng từ: long", "explanation": "long → longer (thêm -er).", "answer": "longer", "accepted": ["longer"]}, {"q": "Viết dạng so sánh hơn của trạng từ: high", "explanation": "high → higher (thêm -er).", "answer": "higher", "accepted": ["higher"]}, {"q": "Viết dạng so sánh hơn của trạng từ: late", "explanation": "late → later (thêm -er).", "answer": "later", "accepted": ["later"]}, {"q": "Viết dạng so sánh hơn của trạng từ: quickly", "explanation": "quickly → more quickly (trạng từ 2+ âm tiết, thêm more).", "answer": "more quickly", "accepted": ["more quickly"]}, {"q": "Viết dạng so sánh hơn của trạng từ: frequently", "explanation": "frequently → more frequently.", "answer": "more frequently", "accepted": ["more frequently"]}, {"q": "Viết dạng so sánh hơn của trạng từ: early", "explanation": "early → earlier (y → ier).", "answer": "earlier", "accepted": ["earlier"]}, {"q": "Viết dạng so sánh hơn của trạng từ: much", "explanation": "much → more (bất quy tắc).", "answer": "more", "accepted": ["more"]}, {"q": "Viết dạng so sánh hơn của trạng từ: little", "explanation": "little → less (bất quy tắc).", "answer": "less", "accepted": ["less"]}]}, {"roman": "17", "navLabel": "A Closer Look 2 (1) 🎯", "title": "A CLOSER LOOK 2 — Luyện thêm (Extra Practice) · Bài 1", "icon": "brain", "instructions": "🎯 Luyện tập thêm — cùng kiến thức, hình thức khác.", "type": "mcq", "questions": [{"q": "🎯 Which is the correct comparative form of \"badly\"?", "explanation": "badly → worse (dạng so sánh bất quy tắc trong bảng Remember).", "options": ["worse", "more badly", "badlier", "baddier"], "answer": 0}, {"q": "🎯 Which is the correct comparative form of \"well\"?", "explanation": "well → better (trạng từ bất quy tắc).", "options": ["better", "more well", "weller", "gooder"], "answer": 0}, {"q": "🎯 Which is the correct comparative form of \"fast\"?", "explanation": "fast có dạng giống tính từ → thêm -er: faster.", "options": ["faster", "more fast", "fastlier", "most fast"], "answer": 0}], "instant": true}, {"roman": "18", "navLabel": "A Closer Look 2 (2)", "title": "A CLOSER LOOK 2 — Bài 2", "icon": "brain", "instructions": "📚 Bài tập SGK — dùng đúng nội dung sách giáo khoa.", "type": "fill", "questions": [{"q": "1. Mai dances (beautifully) ________ than Hoa does.", "explanation": "beautifully → more beautifully.", "answer": "more beautifully", "accepted": ["more beautifully"]}, {"q": "2. Please write (clearly) ________. I can't read it.", "explanation": "clearly → more clearly.", "answer": "more clearly", "accepted": ["more clearly"]}, {"q": "3. Life in the city seems to move (fast) ________ than that in the countryside.", "explanation": "fast → faster.", "answer": "faster", "accepted": ["faster"]}, {"q": "4. If you want to get better marks, you must work much (hard) ________.", "explanation": "hard → harder.", "answer": "harder", "accepted": ["harder"]}, {"q": "5. Today it's raining (heavily) ________ than it was yesterday.", "explanation": "heavily → more heavily.", "answer": "more heavily", "accepted": ["more heavily"]}]}, {"roman": "19", "navLabel": "A Closer Look 2 (2) 🎯", "title": "A CLOSER LOOK 2 — Luyện thêm (Extra Practice) · Bài 2", "icon": "brain", "instructions": "🎯 Luyện tập thêm — cùng kiến thức, hình thức khác.", "type": "mcq", "questions": [{"q": "🎯 The comparative form of \"fast\" is \"more fast\".", "explanation": "SAI — fast có dạng giống tính từ, thêm -er: faster (không dùng more).", "options": ["True", "False"], "answer": 1}], "instant": true}, {"roman": "20", "navLabel": "A Closer Look 2 (3)", "title": "A CLOSER LOOK 2 — Bài 3", "icon": "brain", "instructions": "📚 Bài tập SGK — dùng đúng nội dung sách giáo khoa.", "type": "fill", "questions": [{"q": "1. After his accident last month, he is driving ________ now. (box: early, carefully, soundly, fast, quietly)", "explanation": "carefully → more carefully.", "answer": "more carefully", "accepted": ["more carefully"]}, {"q": "2. A horse can run ________ than a buffalo. (box: early, carefully, soundly, fast, quietly)", "explanation": "fast → faster.", "answer": "faster", "accepted": ["faster"]}, {"q": "3. You're too loud. Can you speak a bit ________? (box: early, carefully, soundly, fast, quietly)", "explanation": "quietly → more quietly.", "answer": "more quietly", "accepted": ["more quietly"]}, {"q": "4. After working hard all day on the farm, we slept ________ than ever before. (box: early, carefully, soundly, fast, quietly)", "explanation": "soundly → more soundly.", "answer": "more soundly", "accepted": ["more soundly"]}, {"q": "5. The farmers started harvesting their crops ________ than expected. (box: early, carefully, soundly, fast, quietly)", "explanation": "early → earlier.", "answer": "earlier", "accepted": ["earlier"]}]}, {"roman": "21", "navLabel": "A Closer Look 2 (4)", "title": "A CLOSER LOOK 2 — Bài 4", "icon": "brain", "instructions": "📚 Bài tập SGK — dùng đúng nội dung sách giáo khoa.", "type": "fill", "questions": [{"q": "1. The red car can run 200 km/h while the black car can run 160 km/h. Complete: The red car can run ________. (fast)", "explanation": "So sánh tốc độ hai xe: The red car can run faster than the black car (can).", "answer": "faster than the black car", "accepted": ["faster than the black car", "faster than the black car can"]}, {"q": "2. Nick can jump 1.5 m high while Tom can jump only 1.3 m. Complete: Nick can jump ________. (high)", "explanation": "Nick can jump higher than Tom (can).", "answer": "higher than Tom", "accepted": ["higher than Tom", "higher than Tom can"]}, {"q": "3. Mai and Hoa both did well on the exam. Hoa got 80% and Mai got 90%. Complete: Mai did ________. (well)", "explanation": "Mai did better on the exam than Hoa (did).", "answer": "better on the exam than Hoa", "accepted": ["better on the exam than hoa", "better than hoa", "better on the exam than hoa did"]}, {"q": "4. My dad expected the workers to arrive at 7 a.m. But they arrived at 6:30 a.m. Complete: The workers arrived ________. (early)", "explanation": "The workers arrived earlier than my dad expected.", "answer": "earlier than my dad expected", "accepted": ["earlier than my dad expected", "earlier than expected"]}, {"q": "5. The buses run every 15 minutes. The trains run every 30 minutes. Complete: The buses run ________. (frequently)", "explanation": "The buses run more frequently than the trains (do).", "answer": "more frequently than the trains", "accepted": ["more frequently than the trains", "more frequently than the trains do"]}]}, {"roman": "22", "navLabel": "A Closer Look 2 (4) 🎯", "title": "A CLOSER LOOK 2 — Luyện thêm (Extra Practice) · Bài 4", "icon": "brain", "instructions": "🎯 Luyện tập thêm — cùng kiến thức, hình thức khác.", "type": "mcq", "questions": [{"q": "🎯 Nick can jump 1.5m, Tom can jump 1.3m. Who jumps higher?", "explanation": "Nick can jump higher than Tom (1.5m > 1.3m).", "options": ["Nick", "Tom", "They jump the same height", "Not mentioned"], "answer": 0}], "instant": true}, {"roman": "23", "navLabel": "A Closer Look 2 (5)", "title": "A CLOSER LOOK 2 — Bài 5", "icon": "brain", "instructions": "📚 Bài tập SGK — dùng đúng nội dung sách giáo khoa.", "type": "open", "questions": [{"q": "Work in pairs. Ask and answer to find out who: can run faster / can jump higher / stays up later at night / gets up earlier in the morning.", "sample": "A: How fast can you run? B: I can run 15 kilometres an hour. A: OK, you can run faster than me."}]}, {"roman": "24", "navLabel": "Communication (2)", "title": "COMMUNICATION — Bài 2", "icon": "comment-dots", "instructions": "📚 Bài tập SGK — dùng đúng nội dung sách giáo khoa.", "type": "open", "passage": {"title": "Giving and responding to compliments", "html": "① <b>Tom:</b> What a beautiful kite you have, Mai!<br><b>Mai:</b> Thank you, Tom. My dad made it for me last weekend.<br><br>② <b>Nick:</b> You really have a nice dress, Hoa.<br><b>Hoa:</b> I'm glad you like it, Nick. I think its colour really suits me."}, "listenText": "What a beautiful kite you have, Mai! Thank you, Tom. My dad made it for me last weekend. You really have a nice dress, Hoa. I'm glad you like it, Nick. I think its colour really suits me.", "questions": [{"q": "Work in pairs. Make a similar conversation to practise giving and responding to compliments, using the cue: a shirt.", "sample": "A: What a nice shirt you have! B: Thank you. I bought it last week."}, {"q": "Work in pairs. Make a similar conversation using the cue: a bicycle.", "sample": "A: You really have a nice bicycle! B: Thanks, my parents gave it to me on my birthday."}, {"q": "Work in pairs. Make a similar conversation using the cue: a school bag.", "sample": "A: What a lovely school bag! B: Thank you, I'm glad you like it."}]}, {"roman": "25", "navLabel": "Communication (3)", "title": "COMMUNICATION — Bài 3", "icon": "comment-dots", "instructions": "📚 Bài tập SGK — dùng đúng nội dung sách giáo khoa.", "type": "mcq", "passage": {"title": "Adverts for beautiful villages", "html": "<b>Duong Lam Village:</b> Duong Lam, one of the most ancient villages in Ha Noi, is situated in Son Tay. Visitors can get there from the centre of Ha Noi by car, bus or even by bicycle. It is famous for its ancient pagoda, traditional houses, and temples. Besides these, visitors can observe the locals making specialities, such as keo doi, che lam, etc. and then try them.<br><br><b>Hollum Village:</b> Hollum is one of the ancient villages on the island of Ameland, the Netherlands. Many visitors come to the village because of its historical and cultural values. It is full of fascinating sights, such as traditional houses, a museum, a church, a lighthouse, etc. Besides sightseeing, visitors can also take part in sports like flying kites, surfing, etc. Visitors can reach the village by air or ferry."}, "questions": [{"q": "1. It's an ancient village. — Statement describes:", "explanation": "Cả hai đều là làng cổ: \"one of the most ancient villages\" và \"one of the ancient villages\".", "options": ["Duong Lam only", "Hollum only", "Both Duong Lam and Hollum", "Neither"], "answer": 2}, {"q": "2. We can visit an ancient pagoda, traditional houses, and temples in this village. — Statement describes:", "explanation": "\"famous for its ancient pagoda, traditional houses, and temples\" — chỉ có ở Duong Lam.", "options": ["Duong Lam only", "Hollum only", "Both Duong Lam and Hollum", "Neither"], "answer": 0}, {"q": "3. We can get there by plane or ferry. — Statement describes:", "explanation": "\"Visitors can reach the village by air or ferry\" — chỉ có ở Hollum.", "options": ["Duong Lam only", "Hollum only", "Both Duong Lam and Hollum", "Neither"], "answer": 1}, {"q": "4. We can go there by car, bus, or bike. — Statement describes:", "explanation": "\"Visitors can get there... by car, bus or even by bicycle\" — chỉ có ở Duong Lam.", "options": ["Duong Lam only", "Hollum only", "Both Duong Lam and Hollum", "Neither"], "answer": 0}, {"q": "5. It has a lighthouse. — Statement describes:", "explanation": "\"...traditional houses, a museum, a church, a lighthouse\" — chỉ có ở Hollum.", "options": ["Duong Lam only", "Hollum only", "Both Duong Lam and Hollum", "Neither"], "answer": 1}], "instant": true}, {"roman": "26", "navLabel": "Communication (3) 🎯", "title": "COMMUNICATION — Luyện thêm (Extra Practice) · Bài 3", "icon": "comment-dots", "instructions": "🎯 Luyện tập thêm — cùng kiến thức, hình thức khác.", "type": "mcq", "passage": {"title": "Adverts for beautiful villages", "html": "<b>Duong Lam Village:</b> Duong Lam, one of the most ancient villages in Ha Noi, is situated in Son Tay. Visitors can get there from the centre of Ha Noi by car, bus or even by bicycle. It is famous for its ancient pagoda, traditional houses, and temples. Besides these, visitors can observe the locals making specialities, such as keo doi, che lam, etc. and then try them.<br><br><b>Hollum Village:</b> Hollum is one of the ancient villages on the island of Ameland, the Netherlands. Many visitors come to the village because of its historical and cultural values. It is full of fascinating sights, such as traditional houses, a museum, a church, a lighthouse, etc. Besides sightseeing, visitors can also take part in sports like flying kites, surfing, etc. Visitors can reach the village by air or ferry."}, "questions": [{"q": "🎯 Duong Lam Village is situated in Son Tay, Ha Noi.", "explanation": "\"Duong Lam... is situated in Son Tay.\"", "options": ["True", "False"], "answer": 0}, {"q": "🎯 In Duong Lam, visitors cannot try any local specialities.", "explanation": "SAI — \"visitors can observe the locals making specialities... and then try them.\"", "options": ["True", "False"], "answer": 1}, {"q": "🎯 Hollum is located on the island of Ameland, the Netherlands.", "explanation": "\"Hollum is one of the ancient villages on the island of Ameland, the Netherlands.\"", "options": ["True", "False"], "answer": 0}, {"q": "🎯 What sports can visitors do in Hollum?", "explanation": "\"visitors can also take part in sports like flying kites, surfing, etc.\"", "options": ["Flying kites and surfing", "Swimming and football", "Skiing and skating", "Cycling and hiking"], "answer": 0}], "instant": true}, {"roman": "27", "navLabel": "Communication (4)", "title": "COMMUNICATION — Bài 4", "icon": "comment-dots", "instructions": "📚 Bài tập SGK — dùng đúng nội dung sách giáo khoa.", "type": "open", "questions": [{"q": "Work in groups. Take turns to talk about the similarities and differences between Duong Lam and Hollum.", "sample": "Duong Lam and Hollum are both ancient villages, but Duong Lam is famous for its pagoda and temples, while Hollum has a lighthouse and a museum."}]}, {"roman": "28", "navLabel": "Communication (5)", "title": "COMMUNICATION — Bài 5", "icon": "comment-dots", "instructions": "📚 Bài tập SGK — dùng đúng nội dung sách giáo khoa.", "type": "open", "questions": [{"q": "Work in pairs. Which village in 3 would you like to visit for a holiday? Explain your choice to your partner.", "sample": "A: Which village would you like to visit for a holiday? B: Duong Lam, of course! A: Why? B: Because I love watching the locals making specialities and trying traditional food."}]}, {"roman": "29", "navLabel": "Skills 1 (1)", "title": "SKILLS 1 — Bài 1", "icon": "book-open", "instructions": "📚 Bài tập SGK — dùng đúng nội dung sách giáo khoa.", "type": "mcq", "questions": [{"q": "\"Peaceful\" is one of the adjectives that can describe the picture.", "explanation": "Đáp án đúng gồm: peaceful, vast, picturesque.", "options": ["True", "False"], "answer": 0}, {"q": "\"Crowded\" is one of the adjectives that can describe the picture.", "explanation": "SAI — \"crowded\" không phù hợp; đáp án đúng gồm: peaceful, vast, picturesque.", "options": ["True", "False"], "answer": 1}, {"q": "\"Vast\" is one of the adjectives that can describe the picture.", "explanation": "Đáp án đúng gồm: peaceful, vast, picturesque.", "options": ["True", "False"], "answer": 0}, {"q": "\"Noisy\" is one of the adjectives that can describe the picture.", "explanation": "SAI — \"noisy\" không phù hợp; đáp án đúng gồm: peaceful, vast, picturesque.", "options": ["True", "False"], "answer": 1}, {"q": "\"Picturesque\" is one of the adjectives that can describe the picture.", "explanation": "Đáp án đúng gồm: peaceful, vast, picturesque.", "options": ["True", "False"], "answer": 0}], "instant": true}, {"roman": "30", "navLabel": "Skills 1 (2)", "title": "SKILLS 1 — Bài 2", "icon": "book-open", "instructions": "Match the highlighted words in the text with their meanings.", "type": "match", "passage": {"title": "Life in a village in Viet Nam", "html": "I feel fortunate that I am living in a peaceful village in southern Viet Nam. The scenery here is beautiful and picturesque with vast fields <u>stretching</u> long distances. The houses are surrounded by green trees. There are lakes, ponds, and <u>canals</u> here and there. The air is fresh and cool.<br><br>Life here seems to move more slowly than in cities. The people work very hard. They grow vegetables, <u>cultivate</u> rice, and raise cattle. At harvest time, they use combine harvesters to harvest their crops. Many families live by growing fruit trees in the <u>orchards</u>. Others live by fishing in lakes, ponds, and canals.<br><br>Life in the village is very comfortable for children. They play traditional games. Sometimes they help their parents pick fruit and herd cattle.<br><br>People in my village know each other well. They are friendly and hospitable. They often meet each other in the evening, eating fruit, playing chess, singing folk songs, and chatting about everyday activities."}, "pairs": [{"left": "1. stretching", "right": "c. covering a large area of land"}, {"left": "2. canals", "right": "a. small passages used for carrying water to fields, crops, etc."}, {"left": "3. cultivate", "right": "d. to grow plants or crops"}, {"left": "4. orchards", "right": "b. places where people grow fruit trees"}], "explanation": "Key (SGV): 1.c 2.a 3.d 4.b"}, {"roman": "31", "navLabel": "Skills 1 (2) 🎯", "title": "SKILLS 1 — Luyện thêm (Extra Practice) · Bài 2", "icon": "book-open", "instructions": "🎯 Luyện tập thêm — cùng kiến thức, hình thức khác.", "type": "mcq", "passage": {"title": "Life in a village in Viet Nam", "html": "I feel fortunate that I am living in a peaceful village in southern Viet Nam. The scenery here is beautiful and picturesque with vast fields <u>stretching</u> long distances. The houses are surrounded by green trees. There are lakes, ponds, and <u>canals</u> here and there. The air is fresh and cool.<br><br>Life here seems to move more slowly than in cities. The people work very hard. They grow vegetables, <u>cultivate</u> rice, and raise cattle. At harvest time, they use combine harvesters to harvest their crops. Many families live by growing fruit trees in the <u>orchards</u>. Others live by fishing in lakes, ponds, and canals.<br><br>Life in the village is very comfortable for children. They play traditional games. Sometimes they help their parents pick fruit and herd cattle.<br><br>People in my village know each other well. They are friendly and hospitable. They often meet each other in the evening, eating fruit, playing chess, singing folk songs, and chatting about everyday activities."}, "questions": [{"q": "🎯 \"Kênh, mương dẫn nước\" trong tiếng Anh là gì?", "explanation": "canals = kênh, mương.", "options": ["canals", "orchards", "crops", "cattle"], "answer": 0}], "instant": true}, {"roman": "32", "navLabel": "Skills 1 (3)", "title": "SKILLS 1 — Bài 3", "icon": "book-open", "instructions": "📚 Bài tập SGK — dùng đúng nội dung sách giáo khoa.", "type": "mcq", "passage": {"title": "Life in a village in Viet Nam", "html": "I feel fortunate that I am living in a peaceful village in southern Viet Nam. The scenery here is beautiful and picturesque with vast fields <u>stretching</u> long distances. The houses are surrounded by green trees. There are lakes, ponds, and <u>canals</u> here and there. The air is fresh and cool.<br><br>Life here seems to move more slowly than in cities. The people work very hard. They grow vegetables, <u>cultivate</u> rice, and raise cattle. At harvest time, they use combine harvesters to harvest their crops. Many families live by growing fruit trees in the <u>orchards</u>. Others live by fishing in lakes, ponds, and canals.<br><br>Life in the village is very comfortable for children. They play traditional games. Sometimes they help their parents pick fruit and herd cattle.<br><br>People in my village know each other well. They are friendly and hospitable. They often meet each other in the evening, eating fruit, playing chess, singing folk songs, and chatting about everyday activities."}, "questions": [{"q": "1. Life in the author's village is very peaceful.", "explanation": "\"I feel fortunate that I am living in a peaceful village...\"", "options": ["True", "False"], "answer": 0}, {"q": "2. The people in the village work very hard.", "explanation": "\"The people work very hard.\"", "options": ["True", "False"], "answer": 0}, {"q": "3. Villagers live only by catching fish in lakes, ponds, and canals.", "explanation": "SAI — họ còn trồng rau, trồng lúa, chăn nuôi, làm vườn cây ăn trái, không phải \"chỉ\" đánh bắt cá.", "options": ["True", "False"], "answer": 1}, {"q": "4. The children are always busy helping their parents.", "explanation": "SAI — bài đọc nói trẻ em chơi trò chơi truyền thống, \"sometimes\" mới giúp bố mẹ (không phải luôn luôn).", "options": ["True", "False"], "answer": 1}, {"q": "5. The villagers get along well.", "explanation": "\"People in my village know each other well. They are friendly and hospitable.\"", "options": ["True", "False"], "answer": 0}], "instant": true}, {"roman": "33", "navLabel": "Skills 1 (3) 🎯", "title": "SKILLS 1 — Luyện thêm (Extra Practice) · Bài 3", "icon": "book-open", "instructions": "🎯 Luyện tập thêm — cùng kiến thức, hình thức khác.", "type": "mcq", "passage": {"title": "Life in a village in Viet Nam", "html": "I feel fortunate that I am living in a peaceful village in southern Viet Nam. The scenery here is beautiful and picturesque with vast fields <u>stretching</u> long distances. The houses are surrounded by green trees. There are lakes, ponds, and <u>canals</u> here and there. The air is fresh and cool.<br><br>Life here seems to move more slowly than in cities. The people work very hard. They grow vegetables, <u>cultivate</u> rice, and raise cattle. At harvest time, they use combine harvesters to harvest their crops. Many families live by growing fruit trees in the <u>orchards</u>. Others live by fishing in lakes, ponds, and canals.<br><br>Life in the village is very comfortable for children. They play traditional games. Sometimes they help their parents pick fruit and herd cattle.<br><br>People in my village know each other well. They are friendly and hospitable. They often meet each other in the evening, eating fruit, playing chess, singing folk songs, and chatting about everyday activities."}, "questions": [{"q": "🎯 What do villagers do in the evening, according to the text?", "explanation": "\"They often meet each other in the evening, eating fruit, playing chess, singing folk songs, and chatting about everyday activities.\"", "options": ["Eating fruit, playing chess, singing folk songs, chatting", "Watching TV all night", "Going to the cinema", "Working in the fields"], "answer": 0}, {"q": "🎯 What do many families in the village live by, besides fishing?", "explanation": "\"Many families live by growing fruit trees in the orchards.\"", "options": ["Growing fruit trees in orchards", "Working in factories", "Running shops", "Teaching in schools"], "answer": 0}, {"q": "🎯 Bản dịch đúng của câu: \"The air is fresh and cool.\"", "explanation": "fresh and cool = trong lành và mát mẻ.", "options": ["Không khí trong lành và mát mẻ.", "Không khí ô nhiễm và nóng bức.", "Không khí ẩm ướt.", "Không khí khô và bụi."], "answer": 0}], "instant": true}, {"roman": "34", "navLabel": "Skills 1 (4)", "title": "SKILLS 1 — Bài 4", "icon": "book-open", "instructions": "📚 Bài tập SGK — dùng đúng nội dung sách giáo khoa.", "type": "open", "questions": [{"q": "Make notes about the village or town where you live or which you know: Name, Location, Scenery, How people live, Activities adults/children often do, Relationships among the people, Special features.", "sample": "Name: Duong Lam. Location: Son Tay, Ha Noi. Scenery: ancient houses, pagoda. People: friendly, hospitable..."}]}, {"roman": "35", "navLabel": "Skills 1 (5)", "title": "SKILLS 1 — Bài 5", "icon": "book-open", "instructions": "📚 Bài tập SGK — dùng đúng nội dung sách giáo khoa.", "type": "open", "questions": [{"q": "Work in groups. Take turns to talk about the village or town where you live or which you know. Use the information in 4.", "sample": "I live in Duong Lam. It's an old village outside Ha Noi. It has..."}]}, {"roman": "36", "navLabel": "Skills 2 (1)", "title": "SKILLS 2 — Bài 1", "icon": "headphones", "instructions": "📚 Bài tập SGK — dùng đúng nội dung sách giáo khoa.", "type": "open", "questions": [{"q": "Work in pairs. Discuss: What do you like or dislike about life in the countryside?", "sample": "I like the fresh air and peaceful atmosphere, but I dislike the lack of entertainment."}]}, {"roman": "37", "navLabel": "Skills 2 (2)", "title": "SKILLS 2 — Bài 2", "icon": "headphones", "instructions": "📚 Bài tập SGK — dùng đúng nội dung sách giáo khoa.", "type": "mcq", "passage": {"title": "Three people talking about life in the countryside", "html": "<b>Speaker 1:</b> I chose to live in a village because the relationships between people here are very good. There is a great sense of community here. The people welcome neighbours to their homes. They are always willing to help each other. They share almost everything with one another.<br><br><b>Speaker 2:</b> There are many things I don't like about life in the countryside. There aren't many good schools or colleges. It's boring here because there aren't many places for entertainment like theatres, cinemas, etc. Transportation is another big problem. There are few means of public transport. And in general, there are many things that we should do to improve the life of villagers.<br><br><b>Speaker 3:</b> I love to live in the countryside. It is spacious. We can do many, many things that are hard to do in the city. We can go swimming, play football, fly kites, and do other interesting things. Life is also peaceful and simple here."}, "listenText": "Speaker 1. I chose to live in a village because the relationships between people here are very good. There is a great sense of community here. The people welcome neighbours to their homes. They are always willing to help each other. They share almost everything with one another. Speaker 2. There are many things I don't like about life in the countryside. There aren't many good schools or colleges. It's boring here because there aren't many places for entertainment like theatres, cinemas, etc. Transportation is another big problem. There are few means of public transport. And in general, there are many things that we should do to improve the life of villagers. Speaker 3. I love to live in the countryside. It is spacious. We can do many, many things that are hard to do in the city. We can go swimming, play football, fly kites, and do other interesting things. Life is also peaceful and simple here.", "questions": [{"q": "Speaker 1 expresses which opinion?", "explanation": "Speaker 1: \"...the relationships between people here are very good... a great sense of community.\" → ý B.", "options": ["A. I don't like rural life because there are not many good schools and colleges. And entertainment and means of transport are very poor.", "B. I like rural life because the people here are close to each other.", "C. I want to live in the countryside because there are many things I can't easily do in the city."], "answer": 1}, {"q": "Speaker 2 expresses which opinion?", "explanation": "Speaker 2: \"There aren't many good schools or colleges... Transportation is another big problem.\" → ý A.", "options": ["A. I don't like rural life because there are not many good schools and colleges. And entertainment and means of transport are very poor.", "B. I like rural life because the people here are close to each other.", "C. I want to live in the countryside because there are many things I can't easily do in the city."], "answer": 0}, {"q": "Speaker 3 expresses which opinion?", "explanation": "Speaker 3: \"We can do many, many things that are hard to do in the city.\" → ý C.", "options": ["A. I don't like rural life because there are not many good schools and colleges. And entertainment and means of transport are very poor.", "B. I like rural life because the people here are close to each other.", "C. I want to live in the countryside because there are many things I can't easily do in the city."], "answer": 2}], "instant": true}, {"roman": "38", "navLabel": "Skills 2 (3)", "title": "SKILLS 2 — Bài 3", "icon": "headphones", "instructions": "📚 Bài tập SGK — dùng đúng nội dung sách giáo khoa.", "type": "mcq", "passage": {"title": "Three people talking about life in the countryside", "html": "<b>Speaker 1:</b> I chose to live in a village because the relationships between people here are very good. There is a great sense of community here. The people welcome neighbours to their homes. They are always willing to help each other. They share almost everything with one another.<br><br><b>Speaker 2:</b> There are many things I don't like about life in the countryside. There aren't many good schools or colleges. It's boring here because there aren't many places for entertainment like theatres, cinemas, etc. Transportation is another big problem. There are few means of public transport. And in general, there are many things that we should do to improve the life of villagers.<br><br><b>Speaker 3:</b> I love to live in the countryside. It is spacious. We can do many, many things that are hard to do in the city. We can go swimming, play football, fly kites, and do other interesting things. Life is also peaceful and simple here."}, "listenText": "Speaker 1. I chose to live in a village because the relationships between people here are very good. There is a great sense of community here. The people welcome neighbours to their homes. They are always willing to help each other. They share almost everything with one another. Speaker 2. There are many things I don't like about life in the countryside. There aren't many good schools or colleges. It's boring here because there aren't many places for entertainment like theatres, cinemas, etc. Transportation is another big problem. There are few means of public transport. And in general, there are many things that we should do to improve the life of villagers. Speaker 3. I love to live in the countryside. It is spacious. We can do many, many things that are hard to do in the city. We can go swimming, play football, fly kites, and do other interesting things. Life is also peaceful and simple here.", "questions": [{"q": "1. According to speaker 1, there is a great sense of ________ in his village.", "explanation": "\"There is a great sense of community here.\"", "options": ["security", "duty", "community"], "answer": 2}, {"q": "2. Speaker 1 says that people in his village are very ________.", "explanation": "Người dân sẵn lòng giúp đỡ nhau, chia sẻ mọi thứ → supportive (hỗ trợ, giúp đỡ nhau).", "options": ["supportive", "unsociable", "well-trained"], "answer": 0}, {"q": "3. In speaker 2's opinion, ________ is a big problem in the countryside.", "explanation": "\"Transportation is another big problem.\"", "options": ["the cost of living", "safety", "transportation"], "answer": 2}, {"q": "4. Speaker 2 says that they should ________ in the countryside.", "explanation": "\"...there are many things that we should do to improve the life of villagers.\"", "options": ["improve the lives of people", "prevent crime", "protect nature"], "answer": 0}, {"q": "5. According to speaker 3, life in the countryside is peaceful and ________.", "explanation": "\"Life is also peaceful and simple here.\"", "options": ["slow", "simple", "safe"], "answer": 1}], "instant": true}, {"roman": "39", "navLabel": "Skills 2 (3) 🎯", "title": "SKILLS 2 — Luyện thêm (Extra Practice) · Bài 3", "icon": "headphones", "instructions": "🎯 Luyện tập thêm — cùng kiến thức, hình thức khác.", "type": "mcq", "passage": {"title": "Three people talking about life in the countryside", "html": "<b>Speaker 1:</b> I chose to live in a village because the relationships between people here are very good. There is a great sense of community here. The people welcome neighbours to their homes. They are always willing to help each other. They share almost everything with one another.<br><br><b>Speaker 2:</b> There are many things I don't like about life in the countryside. There aren't many good schools or colleges. It's boring here because there aren't many places for entertainment like theatres, cinemas, etc. Transportation is another big problem. There are few means of public transport. And in general, there are many things that we should do to improve the life of villagers.<br><br><b>Speaker 3:</b> I love to live in the countryside. It is spacious. We can do many, many things that are hard to do in the city. We can go swimming, play football, fly kites, and do other interesting things. Life is also peaceful and simple here."}, "listenText": "Speaker 1. I chose to live in a village because the relationships between people here are very good. There is a great sense of community here. The people welcome neighbours to their homes. They are always willing to help each other. They share almost everything with one another. Speaker 2. There are many things I don't like about life in the countryside. There aren't many good schools or colleges. It's boring here because there aren't many places for entertainment like theatres, cinemas, etc. Transportation is another big problem. There are few means of public transport. And in general, there are many things that we should do to improve the life of villagers. Speaker 3. I love to live in the countryside. It is spacious. We can do many, many things that are hard to do in the city. We can go swimming, play football, fly kites, and do other interesting things. Life is also peaceful and simple here.", "questions": [{"q": "🎯 Speaker 3 says life in the countryside is spacious.", "explanation": "\"It is spacious.\"", "options": ["True", "False"], "answer": 0}, {"q": "🎯 Speaker 2 thinks life in the countryside has plenty of entertainment.", "explanation": "SAI — \"there aren't many places for entertainment like theatres, cinemas, etc.\"", "options": ["True", "False"], "answer": 1}, {"q": "🎯 (Ghi nhớ, không xem lại) What can Speaker 3 do in the countryside that is hard to do in the city?", "explanation": "\"We can go swimming, play football, fly kites, and do other interesting things.\"", "options": ["Go swimming, play football, fly kites", "Go shopping in malls", "Visit museums", "Take the subway"], "answer": 0}], "instant": true}, {"roman": "40", "navLabel": "Skills 2 (4)", "title": "SKILLS 2 — Bài 4", "icon": "headphones", "instructions": "📚 Bài tập SGK — dùng đúng nội dung sách giáo khoa.", "type": "open", "questions": [{"q": "Work in groups. Discuss and write what you like or dislike about life in the countryside. (LIKE: low cost of living, many cheap things... / DISLIKE: not many entertainment places, poor means of transport...)", "sample": "LIKE: fresh air, peaceful, low cost of living. DISLIKE: few entertainment places, poor transport."}]}, {"roman": "41", "navLabel": "Skills 2 (5)", "title": "SKILLS 2 — Bài 5", "icon": "headphones", "instructions": "📚 Bài tập SGK — dùng đúng nội dung sách giáo khoa.", "type": "open", "questions": [{"q": "Write a paragraph (80-100 words) about what you like OR dislike about life in the countryside.", "vi": "Đây là bài mẫu (Suggested answer) trong Sách giáo viên.", "sample": "There are some things I like about life in the countryside. One of the main attractions is its peacefulness. This helps people living there feel comfortable and relaxed. Additionally, I enjoy its natural beauty. The countryside often offers picturesque views of rolling hills, rolling meadows, and vast green fields. This can be a great source of inspiration. Finally, I appreciate the strong sense of community in rural areas. Rural people are very tight-knit and always willing to help their neighbours. Overall, these are just some of the many things I enjoy about rural life."}]}, {"roman": "42", "navLabel": "Looking Back (1)", "title": "LOOKING BACK — Bài 1", "icon": "rotate-left", "instructions": "Write a phrase from the box under the correct picture.", "type": "match", "pairs": [{"left": "Picture 1 🐃 (kéo cày trên ruộng)", "right": "ploughing fields"}, {"left": "Picture 2 🎣 (bắt cá dưới nước)", "right": "catching fish"}, {"left": "Picture 3 ☀️ (phơi lúa trên sân)", "right": "drying rice"}, {"left": "Picture 4 🚛 (dỡ bao tải từ xe tải)", "right": "unloading rice"}, {"left": "Picture 5 🐖 (cho lợn ăn)", "right": "feeding pigs"}, {"left": "Picture 6 🐄 (vắt sữa bò)", "right": "milking cows"}], "explanation": "Key (SGV): 1.ploughing fields 2.catching fish 3.drying rice 4.unloading rice 5.feeding pigs 6.milking cows"}, {"roman": "43", "navLabel": "Looking Back (2)", "title": "LOOKING BACK — Bài 2", "icon": "rotate-left", "instructions": "📚 Bài tập SGK — dùng đúng nội dung sách giáo khoa.", "type": "mcq", "questions": [{"q": "1. There is a huge cloud ________ as far as the eye can see.", "explanation": "stretching = trải dài, kéo dài.", "options": ["surrounded", "stretching", "vast"], "answer": 1}, {"q": "2. People in my village are really ________; they are always generous and friendly to visitors.", "explanation": "hospitable = hiếu khách.", "options": ["well-trained", "funny", "hospitable"], "answer": 2}, {"q": "3. The development of cities destroys ________ areas of countryside.", "explanation": "vast areas = những vùng đất rộng lớn.", "options": ["vast", "much", "stretching"], "answer": 0}, {"q": "4. The workers in our factory are very ________ because they took a lot of good training courses.", "explanation": "well-trained = được đào tạo bài bản.", "options": ["hospitable", "kind", "well-trained"], "answer": 2}, {"q": "5. The area around the village is famous for its ________ landscape.", "explanation": "picturesque landscape = phong cảnh đẹp như tranh.", "options": ["picturesque", "boring", "dull"], "answer": 0}], "instant": true}, {"roman": "44", "navLabel": "Looking Back (2) 🎯", "title": "LOOKING BACK — Luyện thêm (Extra Practice) · Bài 2", "icon": "rotate-left", "instructions": "🎯 Luyện tập thêm — cùng kiến thức, hình thức khác.", "type": "mcq", "questions": [{"q": "🎯 \"Được đào tạo bài bản\" trong tiếng Anh là gì?", "explanation": "well-trained = được đào tạo bài bản.", "options": ["well-trained", "hospitable", "vast", "picturesque"], "answer": 0}], "instant": true}, {"roman": "45", "navLabel": "Looking Back (3)", "title": "LOOKING BACK — Bài 3", "icon": "rotate-left", "instructions": "📚 Bài tập SGK — dùng đúng nội dung sách giáo khoa.", "type": "fill", "questions": [{"q": "1. Every morning Nick gets up ten minutes (early) ________ than his sister.", "explanation": "early → earlier.", "answer": "earlier", "accepted": ["earlier"]}, {"q": "2. I speak French (fluently) ________ now than I did last year.", "explanation": "fluently → more fluently.", "answer": "more fluently", "accepted": ["more fluently"]}, {"q": "3. You'll find your way around the village (easily) ________ if you have a good map.", "explanation": "easily → more easily.", "answer": "more easily", "accepted": ["more easily"]}, {"q": "4. It rained (heavily) ________ today than it did yesterday.", "explanation": "heavily → more heavily.", "answer": "more heavily", "accepted": ["more heavily"]}, {"q": "5. If you work (hard) ________, you will do ...well below... in your exam. (chỗ trống thứ nhất)", "explanation": "hard → harder.", "answer": "harder", "accepted": ["harder"]}, {"q": "5. If you work harder, you will do (well) ________ in your exam. (chỗ trống thứ hai)", "explanation": "well → better.", "answer": "better", "accepted": ["better"]}]}, {"roman": "46", "navLabel": "Looking Back (4)", "title": "LOOKING BACK — Bài 4", "icon": "rotate-left", "instructions": "📚 Bài tập SGK — dùng đúng nội dung sách giáo khoa.", "type": "fill", "questions": [{"q": "1. Find and correct the mistake: \"I run faster AS my brother does.\" — Từ sai là \"as\", hãy sửa lại thành:", "explanation": "So sánh hơn dùng \"than\", không dùng \"as\": I run faster THAN my brother does.", "answer": "than", "accepted": ["than"]}, {"q": "2. Find and correct the mistake: \"People in the city seem to react QUICKLIER to changes than those in the country.\" — Sửa lại \"quicklier\" thành:", "explanation": "quickly là trạng từ 2 âm tiết → so sánh hơn: more quickly (không thêm -er/-ier).", "answer": "more quickly", "accepted": ["more quickly"]}, {"q": "3. Find and correct the mistake: \"We need to work MORE HARDLY, especially at exam time.\" — Sửa lại \"more hardly\" thành:", "explanation": "hard có dạng giống tính từ → so sánh hơn: harder (không dùng more hardly).", "answer": "harder", "accepted": ["harder"]}, {"q": "4. Find and correct the mistake: \"You must finish harvesting the rice THE EARLIER this year than you did last year.\" — Sửa lại \"the earlier\" thành:", "explanation": "So sánh hơn của trạng từ không dùng \"the\" ở trước: earlier (bỏ \"the\").", "answer": "earlier", "accepted": ["earlier"]}, {"q": "5. Find and correct the mistake: \"As they climbed MORE HIGHLY up the mountain, the air became cooler.\" — Sửa lại \"more highly\" thành:", "explanation": "high có dạng giống tính từ → so sánh hơn: higher (không dùng more highly).", "answer": "higher", "accepted": ["higher"]}]}, {"roman": "47", "navLabel": "Looking Back (4) 🎯", "title": "LOOKING BACK — Luyện thêm (Extra Practice) · Bài 4", "icon": "rotate-left", "instructions": "🎯 Luyện tập thêm — cùng kiến thức, hình thức khác.", "type": "mcq", "questions": [{"q": "🎯 Which sentence is grammatically CORRECT?", "explanation": "beautifully (2+ âm tiết) → so sánh hơn: more beautifully.", "options": ["She sings more beautifully than her sister.", "She sings beautifuller than her sister.", "She sings more beautiful than her sister.", "She sings beautifully more than her sister."], "answer": 0}], "instant": true}]};const completedTasks = new Set();
+const scores = {};
+const TOTAL_TASKS = DATA.sections.length;
+
+function normalize(str){
+  return (str||'').trim().toLowerCase()
+    .replace(/['']/g,"'")
+    .replace(/["""]/g,'')
+    .replace(/[.,!?;:]/g,'')
+    .replace(/\s+/g,' ');
+}
+function widthFor(ref){ const l=(ref||'').length; return l<7?'w-24':l<16?'w-40':'w-full'; }
+
+let cachedVoices = [];
+let currentUtterance = null; // keep a global reference — iOS/Safari can garbage-collect the
+                              // SpeechSynthesisUtterance mid-speech if it's only referenced locally,
+                              // which silently cuts off audio on iPhone/iPad.
+let voicesReady = false;
+if('speechSynthesis' in window){
+  const refreshVoices = ()=>{ cachedVoices = window.speechSynthesis.getVoices()||[]; if(cachedVoices.length) voicesReady = true; };
+  window.speechSynthesis.onvoiceschanged = refreshVoices;
+  refreshVoices();
+  // iOS Safari often has an empty voice list on first paint; retry a few times.
+  let voiceTries = 0;
+  const voiceRetryTimer = setInterval(()=>{
+    refreshVoices();
+    voiceTries++;
+    if(voicesReady || voiceTries>10) clearInterval(voiceRetryTimer);
+  }, 300);
+}
+function pickEnglishVoice(){
+  const voices = cachedVoices.length ? cachedVoices : (window.speechSynthesis.getVoices()||[]);
+  return voices.find(v=>/en[-_]?(us|gb)/i.test(v.lang)) || voices.find(v=>/^en/i.test(v.lang)) || null;
+}
+function speak(text, btn){
+  try{
+    if(!('speechSynthesis' in window)){ alert('Trình duyệt của bạn không hỗ trợ phát âm tự động. Hãy thử Chrome, Safari hoặc Edge.'); return; }
+    window.speechSynthesis.cancel();
+    const doSpeak = ()=>{
+      const u=new SpeechSynthesisUtterance(text);
+      currentUtterance = u; // prevent premature garbage collection on iOS Safari
+      u.lang='en-US'; u.rate=0.92; u.pitch=1; u.volume=1;
+      const en=pickEnglishVoice();
+      if(en) u.voice=en;
+      if(btn){
+        btn.classList.add('speaking');
+        const stop=()=>btn.classList.remove('speaking');
+        u.onend=stop; u.onerror=stop;
+      }
+      window.speechSynthesis.speak(u);
+    };
+    // iOS Safari needs a brief tick between cancel() and speak() or the new utterance
+    // is silently dropped; this delay is inaudible but fixes that race condition.
+    setTimeout(doSpeak, 60);
+  }catch(e){}
+}
+
+function buildNav(){
+  const nav=document.getElementById('navWrap');
+  nav.innerHTML = DATA.sections.map((s,i)=>
+    `<button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600${i===0?' active':''}" id="navbtn_${i}" onclick="showTab(${i})">${s.roman}. ${s.navLabel}</button>`
+  ).join('');
+}
+
+function optionLetter(i){ return ['A','B','C','D','E','F'][i]; }
+
+function renderPassage(p, idx){
+  if(!p) return '';
+  const viBlock = p.vi ? `<button onclick="togglePassageVI(${idx})" class="text-xs font-bold bg-white border border-indigo-200 text-indigo-700 px-3 py-1 rounded-full hover:scale-105 transition mt-2"><i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt</button>
+    <p id="passage_vi_${idx}" class="vi-hidden mt-2 pt-2 border-t border-indigo-200 italic text-slate-500">${p.vi}</p>` : '';
+  return `<div class="passage-box mb-4"><p class="font-extrabold text-indigo-900 mb-2"><i class="fa-solid fa-book mr-1"></i>${p.title||''}</p><p id="passage_en_${idx}">${p.html}</p>${viBlock}</div>`;
+}
+
+function renderListenBar(s, idx){
+  if(!s.listenText) return '';
+  return `<div class="listen-bar"><button type="button" onclick="speak(DATA.sections[${idx}].listenText, this)" class="speak-btn bg-cyan-600 hover:bg-cyan-700 text-white font-bold px-4 py-2 rounded-full text-sm shadow"><i class="fa-solid fa-volume-high mr-1"></i>Nghe bài (giọng đọc máy)</button></div>`;
+}
+
+function renderWordbox(s){
+  if(!s.wordbox) return '';
+  return `<div class="wordbox-strip"><p class="text-[11px] font-black uppercase text-blue-500 mb-1">Gợi ý từ</p><div class="flex flex-wrap gap-2">${s.wordbox.map(w=>`<span class="bg-white text-blue-700 text-xs font-bold px-3 py-1 rounded-full border border-blue-300">${w}</span>`).join('')}</div></div>`;
+}
+
+function renderSection(s, idx){
+  let inner = `<h2 class="text-xl md:text-2xl font-extrabold text-indigo-900 flex items-center gap-2 mb-1"><i class="fa-solid fa-${s.icon||'circle-check'} text-amber-400"></i> ${s.roman}. ${s.title}</h2>`;
+  if(s.instructions) inner += `<p class="text-sm text-slate-500 mb-3 italic">${s.instructions}</p>`;
+  inner += renderListenBar(s, idx);
+  inner += renderPassage(s.passage, idx);
+  inner += renderWordbox(s);
+
+  if(s.type==='match'){
+    inner += renderMatchWidget(s, idx);
+    inner += `<div class="explanation-box mt-3 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-sm text-blue-800" id="fb_${idx}_match"></div>`;
+    const checkLabel2 = 'Kiểm tra';
+    inner += `<div class="flex flex-wrap gap-2 mt-5">
+      <button onclick="checkSection(${idx})" class="bg-gradient-to-r from-indigo-900 to-pink-600 text-white font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-check mr-1"></i>${checkLabel2}</button>
+      <button onclick="revealSection(${idx})" class="bg-white border-2 border-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-eye mr-1"></i>Xem đáp án</button>
+      <button onclick="resetSection(${idx})" class="bg-white border-2 border-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-rotate-left mr-1"></i>Làm lại</button>
+      <span id="score_${idx}" class="hidden ml-auto self-center font-extrabold text-emerald-600 text-sm score-badge"></span>
+    </div>`;
+    return `<section id="tab-${idx}" class="section-page${idx===0?' active':''} space-y-4">${inner}</section>`;
+  }
+
+  inner += `<div class="space-y-4">`;
+  s.questions.forEach((q,i)=>{
+    inner += `<div class="task-card bg-white rounded-2xl shadow-md p-4" id="qblock_${idx}_${i}">`;
+    if(q.image) inner += `<div class="mb-3">${q.image}</div>`;
+    inner += `<p class="font-bold text-slate-800 mb-2"><span class="bg-slate-100 text-slate-600 text-xs font-black px-2 py-1 rounded-lg mr-2">${i+1}</span>${q.q}</p>`;
+    if(s.type==='mcq'){
+      inner += `<div class="grid sm:grid-cols-2 gap-2">`;
+      q.options.forEach((opt,j)=>{
+        const ipa = q.ipas ? q.ipas[j] : null;
+        const optVi = q.vis ? q.vis[j] : null;
+        const cleanWord = opt.replace(/<[^>]+>/g,'');
+        const wordBlock = (ipa || optVi)
+          ? `<span class="flex flex-col leading-tight"><span>${opt}</span>${ipa?`<span class="text-[10px] text-slate-400 font-normal mcq-detail-hidden">${ipa}</span>`:''}${optVi?`<span class="text-[10px] text-emerald-500 font-normal italic mcq-detail-hidden">${optVi}</span>`:''}</span>
+             <button type="button" data-w="${cleanWord}" onclick="event.stopPropagation();event.preventDefault();speak(this.dataset.w,this)" class="speak-btn w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 hover:bg-indigo-200 hover:scale-110 transition flex items-center justify-center ml-auto shrink-0 mcq-detail-hidden" title="Nghe phát âm" aria-label="Nghe phát âm ${cleanWord}"><i class="fa-solid fa-volume-high text-[10px]"></i></button>`
+          : `<span>${opt}</span>`;
+        inner += `<label class="option-label rounded-xl px-3 py-2 text-sm font-semibold flex items-center gap-2" id="opt_${idx}_${i}_${j}" onclick="selectMcq(${idx},${i},${j})">
+          <input type="radio" name="mcq_${idx}_${i}" class="accent-indigo-700" style="display:none">
+          <span class="font-black text-indigo-700">${optionLetter(j)}.</span> ${wordBlock}
+        </label>`;
+      });
+      inner += `</div>`;
+    } else if(s.type==='fill'){
+      const w = widthFor(q.answer);
+      const famBlock = q.family ? `<div class="wordfam-box mt-2">${q.family.map(f=>`<div>• ${f}</div>`).join('')}</div>` : '';
+      inner += `<div class="flex items-center gap-2 flex-wrap">`;
+      if(q.hint) inner += `<span class="blank-tag text-xs">${q.hint}</span>`;
+      inner += `<input type="text" id="inp_${idx}_${i}" class="answer-input ${w} px-3 py-1.5 rounded-lg text-sm font-semibold" placeholder="Nhập đáp án..." autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"></div>${famBlock}`;
+    } else if(s.type==='sentence'){
+      const instantAttr = s.instant ? ` oninput="gradeOneSentence(${idx},${i})"` : '';
+      if(q.starter){
+        inner += `<p class="text-slate-700 text-sm mb-2">${q.original}</p>
+        <div class="flex items-center gap-3 w-full flex-wrap">
+          <span class="text-slate-800 font-extrabold text-base whitespace-nowrap">${q.starter}</span>
+          <input type="text" id="inp_${idx}_${i}" class="answer-input flex-1 min-w-[180px] px-3 py-2 rounded-lg text-sm font-semibold" placeholder="..." autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"${instantAttr}>
+        </div>`;
+      } else if(q.original){
+        inner += `<p class="text-slate-700 text-sm mb-2"><i class="fa-solid fa-lightbulb text-amber-400 mr-1"></i>Gợi ý: ${q.original}</p>
+        <input type="text" id="inp_${idx}_${i}" class="answer-input w-full px-3 py-2 rounded-lg text-sm font-semibold" placeholder="Viết câu hoàn chỉnh..." autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"${instantAttr}>`;
+      } else {
+        inner += `<input type="text" id="inp_${idx}_${i}" class="answer-input w-full px-3 py-2 rounded-lg text-sm font-semibold" placeholder="Viết câu trả lời..." autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"${instantAttr}>`;
+      }
+    } else if(s.type==='open'){
+      inner += `<textarea id="inp_${idx}_${i}" class="answer-input w-full px-3 py-2 rounded-lg text-sm font-semibold" placeholder="Viết câu trả lời của bạn (không bắt buộc đúng/sai)..." autocapitalize="sentences" autocorrect="off" spellcheck="false"></textarea>`;
+      if(q.sample){
+        inner += `<div class="mt-2"><button type="button" onclick="toggleSample(${idx},${i})" class="text-xs font-bold bg-white border border-emerald-300 text-emerald-700 px-3 py-1 rounded-full hover:scale-105 transition"><i class="fa-solid fa-lightbulb mr-1"></i>Xem gợi ý / đáp án mẫu</button>
+        <div id="sample_${idx}_${i}" class="sample-box">${q.sample}</div></div>`;
+      }
+    }
+    inner += `<div class="explanation-box mt-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-sm text-blue-800" id="fb_${idx}_${i}"></div>`;
+    inner += `</div>`;
+  });
+  inner += `</div>`;
+
+  const checkLabel = s.type==='open' ? 'Đánh dấu hoàn thành' : 'Kiểm tra';
+  const checkIcon = s.type==='open' ? 'flag-checkered' : 'check';
+  inner += `<div class="flex flex-wrap gap-2 mt-5">
+    <button onclick="checkSection(${idx})" class="bg-gradient-to-r from-indigo-900 to-pink-600 text-white font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-${checkIcon} mr-1"></i>${checkLabel}</button>
+    <button onclick="revealSection(${idx})" class="bg-white border-2 border-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-eye mr-1"></i>Xem đáp án</button>
+    <button onclick="resetSection(${idx})" class="bg-white border-2 border-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-rotate-left mr-1"></i>Làm lại</button>
+    <span id="score_${idx}" class="hidden ml-auto self-center font-extrabold text-emerald-600 text-sm score-badge"></span>
+  </div>`;
+
+  return `<section id="tab-${idx}" class="section-page${idx===0?' active':''} space-y-4">${inner}</section>`;
+}
+
+function buildMain(){
+  const main=document.getElementById('mainWrap');
+  main.innerHTML = DATA.sections.map((s,i)=>renderSection(s,i)).join('');
+}
+
+/* ---------------- Match-type (tap-to-pair) ---------------- */
+const matchStates = {};
+function shuffleArr(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function initMatchState(s){
+  const left = shuffleArr(s.pairs.map((p,i)=>({key:'L'+i, text:p.left, pairIdx:i})));
+  const right = shuffleArr(s.pairs.map((p,i)=>({key:'R'+i, text:p.right, pairIdx:i})));
+  return { left, right, pickedLeft:null, pickedRight:null, matched:[], mistakes:0, flashWrongLeft:-1, flashWrongRight:-1, done:false };
+}
+function renderMatchWidget(s, idx){
+  if(!matchStates[idx]) matchStates[idx] = initMatchState(s);
+  const st = matchStates[idx];
+  const leftCol = st.left.map((w,i)=>{
+    let cls='match-chip';
+    if(st.matched.includes(w.key)) cls+=' matched';
+    else if(st.pickedLeft===i) cls+=' selected';
+    if(st.flashWrongLeft===i) cls+=' wrongflash';
+    return `<div class="${cls}" onclick="matchPick(${idx},'left',${i})">${w.text}</div>`;
+  }).join('');
+  const rightCol = st.right.map((w,i)=>{
+    let cls='match-chip';
+    if(st.matched.includes(w.key)) cls+=' matched';
+    else if(st.pickedRight===i) cls+=' selected';
+    if(st.flashWrongRight===i) cls+=' wrongflash';
+    return `<div class="${cls}" onclick="matchPick(${idx},'right',${i})">${w.text}</div>`;
+  }).join('');
+  return `<div class="grid grid-cols-2 gap-3 mt-2" id="matchwrap_${idx}">
+    <div class="space-y-2">${leftCol}</div>
+    <div class="space-y-2">${rightCol}</div>
+  </div>`;
+}
+function refreshMatchWidget(idx){
+  const s=DATA.sections[idx];
+  const wrap=document.getElementById(`matchwrap_${idx}`);
+  if(wrap) wrap.outerHTML = renderMatchWidget(s, idx);
+}
+function matchPick(idx, side, i){
+  const st = matchStates[idx];
+  if(side==='left'){
+    if(st.matched.includes(st.left[i].key)) return;
+    st.pickedLeft=i;
+  } else {
+    if(st.matched.includes(st.right[i].key)) return;
+    st.pickedRight=i;
+  }
+  refreshMatchWidget(idx);
+  if(st.pickedLeft!==null && st.pickedRight!==null){
+    const L=st.left[st.pickedLeft], R=st.right[st.pickedRight];
+    if(L.pairIdx===R.pairIdx){
+      st.matched.push(L.key, R.key);
+      st.pickedLeft=null; st.pickedRight=null;
+      refreshMatchWidget(idx);
+    } else {
+      st.mistakes++;
+      st.flashWrongLeft=st.pickedLeft; st.flashWrongRight=st.pickedRight;
+      refreshMatchWidget(idx);
+      setTimeout(()=>{ st.pickedLeft=null; st.pickedRight=null; st.flashWrongLeft=-1; st.flashWrongRight=-1; refreshMatchWidget(idx); }, 500);
+    }
+  }
+}
+
+function togglePassageVI(idx){ const el=document.getElementById(`passage_vi_${idx}`); if(el) el.classList.toggle('vi-hidden'); }
+function toggleSample(idx,i){ const el=document.getElementById(`sample_${idx}_${i}`); if(el) el.classList.toggle('show'); }
+
+function selectMcq(idx,i,j){
+  const q=DATA.sections[idx].questions[i];
+  document.querySelectorAll(`[id^="opt_${idx}_${i}_"]`).forEach(el=>el.classList.remove('selected'));
+  document.getElementById(`opt_${idx}_${i}_${j}`).classList.add('selected');
+  document.getElementById(`opt_${idx}_${i}_${j}`).dataset.chosen = j;
+  if(DATA.sections[idx].instant){ gradeOneMcq(idx,i); }
+}
+
+function gradeOneMcq(idx,i){
+  const s=DATA.sections[idx], q=s.questions[i];
+  const qblock=document.getElementById(`qblock_${idx}_${i}`);
+  if(qblock) qblock.classList.add('show-mcq-detail');
+  const chosenEl=document.querySelector(`#tab-${idx} [id^="opt_${idx}_${i}_"].selected`);
+  const chosen = chosenEl ? parseInt(chosenEl.dataset.chosen) : -1;
+  const ok = chosen === q.answer;
+  const answerLabel = `${optionLetter(q.answer)}. ${q.options[q.answer]}`;
+  q.options.forEach((o,j)=>{
+    const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+    el.classList.remove('correct-opt','wrong-opt');
+    if(j===q.answer) el.classList.add('correct-opt');
+    else if(j===chosen) el.classList.add('wrong-opt');
+  });
+  const fb=document.getElementById(`fb_${idx}_${i}`);
+  fb.innerHTML = feedbackHTML(ok, answerLabel, q.explanation, q.vi, q.note);
+  fb.classList.add('show');
+}
+
+function gradeOneSentence(idx,i){
+  const q=DATA.sections[idx].questions[i];
+  const inp=document.getElementById(`inp_${idx}_${i}`);
+  const fb=document.getElementById(`fb_${idx}_${i}`);
+  if(!inp || !fb) return;
+  const raw=inp.value.trim();
+  if(raw===''){
+    inp.classList.remove('correct-input','wrong-input');
+    fb.classList.remove('show'); fb.innerHTML='';
+    return;
+  }
+  const val=normalize(inp.value);
+  const acc=(q.accepted||[q.answer]).map(normalize);
+  const ok = acc.includes(val);
+  inp.classList.remove('correct-input','wrong-input');
+  inp.classList.add(ok?'correct-input':'wrong-input');
+  fb.innerHTML = feedbackHTML(ok, q.displayAnswer||q.answer, q.explanation, q.vi, q.note);
+  fb.classList.add('show');
+}
+
+function feedbackHTML(ok, answerLabel, explanation, vi, note){
+  const okLine = ok? `<span class="text-emerald-700 font-bold">✅ Chính xác!</span>` : `<span class="text-rose-600 font-bold">❌ Chưa đúng.</span> Đáp án đúng: <b>${answerLabel}</b>`;
+  const expLine = explanation? `<br><span class="text-blue-700">💡 ${explanation}</span>` : '';
+  const viLine = vi? `<span class="text-slate-500">📖 Nghĩa: <i>${vi}</i></span>` : '';
+  const noteLine = note? `<br><span class="text-violet-600">📐 ${note}</span>` : '';
+  if(note){
+    return (viLine?viLine+'<br>':'') + okLine + expLine + noteLine;
+  }
+  return okLine + expLine + (viLine?'<br>'+viLine:'') + noteLine;
+}
+
+function checkSection(idx){
+  const s=DATA.sections[idx];
+  let correct=0;
+  const total = s.type==='match' ? s.pairs.length : s.questions.length;
+
+  if(s.type==='match'){
+    if(!matchStates[idx]) matchStates[idx]=initMatchState(s);
+    const st=matchStates[idx];
+    const fb=document.getElementById(`fb_${idx}_match`);
+    const allMatched = st.matched.length === s.pairs.length*2;
+    const scoreCount = Math.max(0, s.pairs.length - st.mistakes);
+    const ok = allMatched && st.mistakes===0;
+    let msg;
+    if(!allMatched){
+      msg = `<span class="text-amber-600 font-bold">✍️ Hãy nối hết các cặp trước khi kiểm tra! (${st.matched.length/2}/${s.pairs.length} cặp đã nối)</span>`;
+    } else {
+      msg = ok
+        ? `<span class="text-emerald-700 font-bold">✅ Chính xác! Bạn đã nối đúng tất cả ${s.pairs.length} cặp.</span>`
+        : `<span class="text-rose-600 font-bold">❌ Bạn đã nối xong nhưng có ${st.mistakes} lần nhầm.</span> <span class="text-blue-700">Điểm: ${scoreCount}/${s.pairs.length} cặp.</span>`;
+      if(s.explanation) msg += `<br><span class="text-blue-700">💡 ${s.explanation}</span>`;
+    }
+    fb.innerHTML = msg; fb.classList.add('show');
+    if(allMatched){
+      scores[idx]={correct:scoreCount, total:s.pairs.length};
+      const scoreEl=document.getElementById(`score_${idx}`);
+      scoreEl.textContent = `🏆 Điểm: ${scoreCount}/${s.pairs.length}`;
+      scoreEl.classList.remove('hidden');
+      completedTasks.add(idx);
+      updateProgress();
+      if(completedTasks.size===TOTAL_TASKS) setTimeout(showCompletion,500);
+    }
+    return;
+  }
+
+  if(s.type==='open'){
+    s.questions.forEach((q,i)=>{
+      const inp=document.getElementById(`inp_${idx}_${i}`);
+      const fb=document.getElementById(`fb_${idx}_${i}`);
+      const attempted = inp && inp.value.trim()!=='';
+      if(attempted) correct++;
+      let msg = attempted ? `<span class="text-emerald-700 font-bold">✅ Đã ghi nhận câu trả lời của bạn.</span>` : `<span class="text-amber-600 font-bold">✍️ Đây là câu hỏi mở — hãy thử viết câu trả lời của bạn!</span>`;
+      if(q.sample){ msg += `<br><span class="text-blue-700">💡 Gợi ý: ${q.sample}</span>`; const sb=document.getElementById(`sample_${idx}_${i}`); if(sb) sb.classList.add('show'); }
+      if(q.vi) msg += `<br><span class="text-slate-500">📖 ${q.vi}</span>`;
+      fb.innerHTML = msg;
+      fb.classList.add('show');
+    });
+    scores[idx]={correct: total, total}; // open sections count as fully completed once checked
+    const scoreEl=document.getElementById(`score_${idx}`);
+    scoreEl.textContent = `✅ Đã hoàn thành phần mở (${total} câu)`;
+    scoreEl.classList.remove('hidden');
+    completedTasks.add(idx);
+    updateProgress();
+    if(completedTasks.size===TOTAL_TASKS) setTimeout(showCompletion,500);
+    return;
+  }
+
+  s.questions.forEach((q,i)=>{
+    let ok=false, answerLabel='';
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    if(s.type==='mcq'){
+      const chosenEl=document.querySelector(`#tab-${idx} [id^="opt_${idx}_${i}_"].selected`);
+      const chosen = chosenEl ? parseInt(chosenEl.dataset.chosen) : -1;
+      ok = chosen === q.answer;
+      answerLabel = `${optionLetter(q.answer)}. ${q.options[q.answer]}`;
+      q.options.forEach((o,j)=>{
+        const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+        el.classList.remove('correct-opt','wrong-opt');
+        if(j===q.answer) el.classList.add('correct-opt');
+        else if(j===chosen) el.classList.add('wrong-opt');
+      });
+      const qblock=document.getElementById(`qblock_${idx}_${i}`);
+      if(qblock) qblock.classList.add('show-mcq-detail');
+    } else {
+      const inp=document.getElementById(`inp_${idx}_${i}`);
+      const val=normalize(inp.value);
+      const acc=(q.accepted||[q.answer]).map(normalize);
+      ok = val!=='' && acc.includes(val);
+      inp.classList.remove('correct-input','wrong-input');
+      inp.classList.add(ok?'correct-input':'wrong-input');
+      answerLabel = q.displayAnswer||q.answer;
+    }
+    if(ok) correct++;
+    fb.innerHTML = feedbackHTML(ok, answerLabel, q.explanation, q.vi, q.note);
+    fb.classList.add('show');
+  });
+  scores[idx]={correct,total};
+  const scoreEl=document.getElementById(`score_${idx}`);
+  scoreEl.textContent = `🏆 Điểm: ${correct}/${total}`;
+  scoreEl.classList.remove('hidden');
+  completedTasks.add(idx);
+  updateProgress();
+  if(completedTasks.size===TOTAL_TASKS) setTimeout(showCompletion,500);
+}
+
+function revealSection(idx){
+  const s=DATA.sections[idx];
+  if(s.type==='match'){
+    matchStates[idx] = { left: s.pairs.map((p,i)=>({key:'L'+i,text:p.left,pairIdx:i})),
+                          right: s.pairs.map((p,i)=>({key:'R'+i,text:p.right,pairIdx:i})),
+                          pickedLeft:null, pickedRight:null,
+                          matched: s.pairs.map((p,i)=>['L'+i,'R'+i]).flat(),
+                          mistakes:0, flashWrongLeft:-1, flashWrongRight:-1 };
+    refreshMatchWidget(idx);
+    const fb=document.getElementById(`fb_${idx}_match`);
+    fb.innerHTML = `👁️ Đáp án đúng đã được hiển thị (các cặp đã được nối sẵn ở trên).` + (s.explanation?`<br><span class="text-blue-700">💡 ${s.explanation}</span>`:'');
+    fb.classList.add('show');
+    return;
+  }
+  s.questions.forEach((q,i)=>{
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    if(s.type==='open'){
+      let msg = q.sample ? `👁️ Gợi ý / đáp án mẫu: <b>${q.sample}</b>` : `👁️ Đây là câu hỏi mở, không có đáp án cố định.`;
+      if(q.vi) msg += `<br><span class="text-slate-500">📖 ${q.vi}</span>`;
+      fb.innerHTML = msg; fb.classList.add('show');
+      const sb=document.getElementById(`sample_${idx}_${i}`); if(sb) sb.classList.add('show');
+      return;
+    }
+    let answerLabel = s.type==='mcq' ? `${optionLetter(q.answer)}. ${q.options[q.answer]}` : (q.displayAnswer||q.answer);
+    if(s.type==='mcq'){
+      q.options.forEach((o,j)=>{
+        const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+        el.classList.remove('correct-opt','wrong-opt');
+        if(j===q.answer) el.classList.add('correct-opt');
+      });
+      const qblock=document.getElementById(`qblock_${idx}_${i}`);
+      if(qblock) qblock.classList.add('show-mcq-detail');
+    }
+    fb.innerHTML = `👁️ Đáp án: <b>${answerLabel}</b>` + (q.explanation?`<br><span class="text-blue-700">💡 ${q.explanation}</span>`:'') + (q.vi?`<br><span class="text-slate-500">📖 Nghĩa: <i>${q.vi}</i></span>`:'') + (q.note?`<br><span class="text-violet-600">📐 ${q.note}</span>`:'');
+    fb.classList.add('show');
+  });
+}
+
+
+function resetSection(idx){
+  const s=DATA.sections[idx];
+  if(s.type==='match'){
+    matchStates[idx] = initMatchState(s);
+    refreshMatchWidget(idx);
+    const fb=document.getElementById(`fb_${idx}_match`); if(fb){ fb.classList.remove('show'); fb.innerHTML=''; }
+    const scoreEl=document.getElementById(`score_${idx}`); scoreEl.classList.add('hidden');
+    completedTasks.delete(idx); delete scores[idx]; updateProgress();
+    return;
+  }
+  s.questions.forEach((q,i)=>{
+    if(s.type==='mcq'){
+      q.options.forEach((o,j)=>{
+        const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+        el.classList.remove('correct-opt','wrong-opt','selected');
+        delete el.dataset.chosen;
+      });
+      const qblock=document.getElementById(`qblock_${idx}_${i}`);
+      if(qblock) qblock.classList.remove('show-mcq-detail');
+    } else {
+      const inp=document.getElementById(`inp_${idx}_${i}`);
+      if(inp){ inp.value=''; inp.classList.remove('correct-input','wrong-input'); }
+      if(s.type==='open'){
+        const sb=document.getElementById(`sample_${idx}_${i}`); if(sb) sb.classList.remove('show');
+      }
+    }
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    fb.classList.remove('show'); fb.innerHTML='';
+  });
+  const scoreEl=document.getElementById(`score_${idx}`); scoreEl.classList.add('hidden');
+  completedTasks.delete(idx); delete scores[idx]; updateProgress();
+}
+
+function showTab(idx){
+  document.querySelectorAll('.section-page').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active'); b.classList.add('text-slate-600');});
+  document.getElementById(`tab-${idx}`).classList.add('active');
+  const btn=document.getElementById(`navbtn_${idx}`);
+  btn.classList.add('active'); btn.classList.remove('text-slate-600');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updateProgress(){
+  const done=completedTasks.size;
+  document.getElementById('progressText').textContent = `${done} / ${TOTAL_TASKS} phần`;
+  document.getElementById('progressBar').style.width = `${(done/TOTAL_TASKS)*100}%`;
+}
+
+function showCompletion(){
+  fireConfetti();
+  const banner=document.getElementById('completionBanner');
+  banner.classList.remove('hidden'); banner.classList.add('show');
+  let c=0,t=0; Object.values(scores).forEach(s=>{c+=s.correct; t+=s.total;});
+  document.getElementById('finalScoreDisplay').textContent = `🎯 ${c} / ${t} câu đúng`;
+}
+function closeBanner(){ const b=document.getElementById('completionBanner'); b.classList.remove('show'); b.classList.add('hidden'); }
+function fireConfetti(){
+  const wrap=document.getElementById('confettiWrap'); wrap.innerHTML='';
+  const colors=['#7c2d12','#ea580c','#f59e0b','#fbbf24','#0891b2','#6366f1'];
+  for(let i=0;i<90;i++){
+    const p=document.createElement('div'); p.className='confetti-piece';
+    p.style.cssText=`left:${Math.random()*100}vw;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>0.5?'50%':'2px'};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*0.8}s;`;
+    wrap.appendChild(p);
+  }
+  setTimeout(()=>{wrap.innerHTML='';},4000);
+}
+
+buildNav();
+buildMain();
+updateProgress();
+</script>
+</body>
+</html>
