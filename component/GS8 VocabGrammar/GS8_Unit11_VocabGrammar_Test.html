@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 11 - Test Trắc nghiệm Từ vựng & Ngữ pháp - Tiếng Anh 8</title>
+<meta name="apple-mobile-web-app-title" content="U11 Vocab-Grammar Test">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+  :root{ --accent:#1e3a8a; --accent2:#059669; }
+  * { box-sizing: border-box; }
+  body { font-family:'Nunito',sans-serif; background:#f0fdfa; }
+  h1,h2,.baloo{ font-family:'Baloo 2',sans-serif; }
+  .hero-gradient{ background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 45%, #059669 100%); }
+  .qcard{ background:#fff; border-radius:1.1rem; box-shadow:0 1px 4px rgba(0,0,0,.06); border:2px solid #e2e8f0; transition:border .2s, box-shadow .2s; }
+  .qcard.answered{ border-color:#bfdbfe; }
+  .qcard.correct{ border-color:#22c55e; background:#f0fdf4; }
+  .qcard.wrong{ border-color:#ef4444; background:#fef2f2; }
+  .opt-row{ cursor:pointer; transition: all .15s; border:2px solid #e2e8f0; border-radius:.8rem; }
+  .opt-row:hover{ border-color:var(--accent); background:#eff6ff; }
+  .opt-row.selected{ border-color:#1e3a8a; background:#dbeafe; font-weight:800; }
+  .opt-row.correct-opt{ border-color:#22c55e !important; background:#dcfce7 !important; font-weight:800; }
+  .opt-row.wrong-opt{ border-color:#ef4444 !important; background:#fee2e2 !important; font-weight:800; }
+  .opt-row.locked{ cursor:default; pointer-events:none; }
+  .explain-box{ display:none; background:#ecfdf5; border:1px solid #6ee7b7; border-radius:.7rem; padding:.6rem .9rem; font-size:.85rem; color:#334155; }
+  .explain-box.show{ display:block; }
+  .sticky-bar{ position:sticky; bottom:0; z-index:40; }
+  .progress-fill{ transition: width .3s ease; }
+  .badge-pill{ background:#fff; border:2px solid #6ee7b7; border-radius:999px; padding:.3rem .8rem; font-size:.75rem; font-weight:800; color:#065f46; }
+  .score-ring{ animation: popIn .4s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn{ from{transform:scale(.5); opacity:0;} to{transform:scale(1); opacity:1;} }
+  .confetti-wrap{ position:fixed; inset:0; pointer-events:none; z-index:9999; }
+  .confetti-piece{ position:absolute; width:10px; height:10px; border-radius:2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall{ 0%{transform:translateY(-20px) rotate(0deg); opacity:1;} 100%{transform:translateY(100vh) rotate(720deg); opacity:0;} }
+  .section-divider{ background:linear-gradient(135deg,#1e3a8a,#059669); }
+  #resultBanner{ display:none; }
+  #resultBanner.show{ display:block; }
+  .timer-pill{ font-variant-numeric: tabular-nums; }
+  .timer-pill.low{ color:#fca5a5 !important; }
+  .accordion-btn{ cursor:pointer; transition: background .15s; }
+  .accordion-body{ display:none; }
+  .accordion-body.open{ display:block; }
+  .accordion-chevron{ transition: transform .2s; }
+  .accordion-btn.open .accordion-chevron{ transform: rotate(180deg); }
+  .vocab-row{ border-bottom:1px solid #f1f5f9; padding:.55rem 0; }
+  .vocab-row:last-child{ border-bottom:none; }
+  .passage-en{ background:#fff; border:1px solid #e2e8f0; border-radius:.9rem; padding:.9rem 1.1rem; line-height:1.85; font-size:.92rem; color:#334155; }
+  .passage-vi{ display:none; background:#ecfdf5; border:1px solid #6ee7b7; border-radius:.9rem; padding:.9rem 1.1rem; margin-top:.6rem; line-height:1.85; font-size:.92rem; color:#334155; }
+  .passage-vi.show{ display:block; }
+  .grammar-tip-box{ background:#eff6ff; border:1px solid #bfdbfe; border-radius:.9rem; padding:1rem 1.2rem; line-height:1.9; font-size:.92rem; color:#334155; }
+</style>
+</head>
+<body class="min-h-screen pb-10">
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<header class="hero-gradient text-white py-8 px-4 text-center shadow-xl relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <div class="absolute top-4 left-8 text-6xl">🤖</div>
+    <div class="absolute top-2 right-12 text-5xl">💻</div>
+    <div class="absolute bottom-2 left-1/3 text-4xl">🔬</div>
+    <div class="absolute bottom-4 right-1/4 text-5xl">⚙️</div>
+  </div>
+  <p class="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Tiếng Anh 8 · Unit 11 · Science and Technology</p>
+  <h1 class="text-3xl md:text-5xl font-extrabold drop-shadow-lg">📝 Test trắc nghiệm: Từ vựng &amp; Ngữ pháp</h1>
+  <p class="mt-2 text-base md:text-lg opacity-90 font-semibold">75 câu hỏi · Từ vựng, Ngữ pháp, Đọc hiểu &amp; Dịch nghĩa</p>
+  <div class="mt-5 max-w-2xl mx-auto flex flex-wrap items-center justify-center gap-3">
+    <span class="badge-pill"><i class="fa-solid fa-star mr-1"></i>Điểm cao nhất: <span id="bestScoreLabel">--</span></span>
+    <span class="badge-pill"><i class="fa-solid fa-rotate mr-1"></i>Số lần làm: <span id="attemptCountLabel">0</span></span>
+    <span class="badge-pill timer-pill"><i class="fa-solid fa-clock mr-1"></i><span id="timerLabel">35:00</span></span>
+  </div>
+  <div class="mt-4 max-w-2xl mx-auto">
+    <div class="flex justify-between text-xs font-bold opacity-80 mb-1">
+      <span>Tiến độ trả lời</span>
+      <span id="progressText">0 / 75 câu</span>
+    </div>
+    <div class="bg-white/20 rounded-full h-3 overflow-hidden">
+      <div id="progressBar" class="bg-white rounded-full h-3 progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-3xl mx-auto px-4 mt-6">
+
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 mb-6 text-sm text-slate-600">
+    <p class="font-bold text-slate-700 mb-1"><i class="fa-solid fa-circle-info text-blue-800 mr-1"></i>Hướng dẫn làm bài</p>
+    <p>Trước khi làm bài, hãy mở phần <b>"🤖 Ôn tập & Dịch nghĩa Unit 11"</b> bên dưới để xem lại từ vựng, ngữ pháp và bản dịch tiếng Việt của các bài đọc/nghe trong Unit 11 (Getting Started, Skills 1, Communication). Sau đó chọn <b>1 đáp án đúng</b> cho mỗi câu hỏi trắc nghiệm — gồm từ vựng, ngữ pháp, đọc hiểu bài đọc và luyện dịch nghĩa. Bấm <b>"Nộp bài"</b> để xem điểm và giải thích. Bấm <b>"Làm lại"</b> để nhận đề mới và luyện tập không giới hạn số lần.</p>
+  </div>
+
+  <!-- ============ REVIEW & TRANSLATION SECTION ============ -->
+  <div class="bg-white rounded-2xl shadow-sm border-2 border-blue-200 mb-6 overflow-hidden">
+    <button class="accordion-btn open w-full flex items-center justify-between px-4 py-3 bg-blue-50 font-extrabold text-blue-900" onclick="toggleAccordion('reviewMain')">
+      <span><i class="fa-solid fa-book-open-reader mr-2"></i>🤖 Ôn tập &amp; Dịch nghĩa Unit 11</span>
+      <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+    </button>
+    <div class="accordion-body open px-4 py-4 space-y-4" id="acc_reviewMain">
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('vocabList')">
+          <span>💻 Từ vựng Unit 11 (30 từ/cụm từ)</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-2" id="acc_vocabList"></div>
+      </div>
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('grammarTip')">
+          <span>📐 Ngữ pháp: Câu tường thuật (Reported Speech - câu kể)</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-3" id="acc_grammarTip">
+          <div class="grammar-tip-box">
+            <b>1. Reported speech (câu tường thuật)</b> dùng để thuật lại lời người khác đã nói.<br>
+            Ví dụ: <i>Mi said, "I want a new computer."</i> → <i>Mi said (that) she wanted a new computer.</i><br><br>
+            <b>2. Lùi thì động từ (backshift)</b> khi động từ tường thuật (said) ở thì quá khứ:<br>
+            &nbsp;&nbsp;• Hiện tại đơn → Quá khứ đơn: <i>Mi said, "I love science." → Mi said (that) she loved science.</i><br>
+            &nbsp;&nbsp;• Hiện tại tiếp diễn → Quá khứ tiếp diễn: <i>Mi said, "I am learning English." → Mi said (that) she was learning English.</i><br>
+            &nbsp;&nbsp;• will → would: <i>"I will become a scientist," he said. → He said (that) he would become a scientist.</i><br>
+            &nbsp;&nbsp;• can → could (áp dụng tương tự will → would): <i>"I can speak English," she said. → She said (that) she could speak English.</i><br><br>
+            <b>3. Đổi trạng từ chỉ thời gian/nơi chốn:</b><br>
+            now → then &nbsp;|&nbsp; today → that day &nbsp;|&nbsp; ago → before &nbsp;|&nbsp; tomorrow → the following day / the next day &nbsp;|&nbsp; this week → that week &nbsp;|&nbsp; here → there<br><br>
+            <b>4. Đổi đại từ</b> theo đúng ngôi trong câu tường thuật: I → he/she &nbsp;|&nbsp; we → they &nbsp;|&nbsp; me → him/her ...<br><br>
+            <b>5. Say vs Tell:</b> <i>said (that) + mệnh đề</i> (không có tân ngữ chỉ người) hoặc <i>told + tân ngữ + (that) + mệnh đề</i>. Ví dụ: <i>He said (that) the robot would mark our work. / He told us (that) the robot would mark our work.</i>
+          </div>
+        </div>
+      </div>
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('passages')">
+          <span>📖 Bài đọc &amp; hội thoại Unit 11 (có bản dịch)</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-3 space-y-4" id="acc_passages"></div>
+      </div>
+
+    </div>
+  </div>
+  <!-- ============ END REVIEW SECTION ============ -->
+
+  <div id="resultBanner" class="mb-6">
+    <div class="bg-white rounded-2xl shadow-lg border-2 border-emerald-300 p-6 text-center score-ring">
+      <p id="resultEmoji" class="text-5xl mb-2">🎉</p>
+      <h2 class="text-2xl font-extrabold text-blue-900" id="resultTitle">Hoàn thành!</h2>
+      <p class="text-4xl font-black text-slate-800 mt-2"><span id="resultScore">0</span>/75</p>
+      <p class="text-slate-500 font-bold mt-1"><span id="resultPct">0</span>% chính xác · Thời gian: <span id="resultTime">0:00</span></p>
+      <div class="flex flex-wrap justify-center gap-3 mt-4">
+        <button onclick="retryTest()" class="bg-blue-900 hover:bg-blue-950 text-white font-bold px-5 py-2.5 rounded-xl shadow"><i class="fa-solid fa-rotate-right mr-1"></i>Làm lại (đề mới)</button>
+        <button onclick="scrollToReview()" class="bg-white border-2 border-emerald-300 text-emerald-700 font-bold px-5 py-2.5 rounded-xl"><i class="fa-solid fa-magnifying-glass mr-1"></i>Xem lại chi tiết</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="quizArea"></div>
+
+  <div class="sticky-bar bg-white/95 backdrop-blur border-t border-slate-200 mt-6 py-3 px-4 rounded-t-2xl shadow-[0_-4px_14px_rgba(0,0,0,.06)] flex items-center justify-between gap-3">
+    <span class="text-xs md:text-sm font-bold text-slate-500"><span id="answeredCount">0</span>/75 câu đã trả lời</span>
+    <button id="submitBtn" onclick="submitTest()" class="bg-gradient-to-r from-blue-900 to-emerald-500 text-white font-extrabold px-6 py-2.5 rounded-xl shadow-lg hover:brightness-110"><i class="fa-solid fa-flag-checkered mr-1"></i>Nộp bài</button>
+  </div>
+
+</main>
+
+<script>
+/* ============================================================
+   REVIEW CONTENT: Unit 11 Vocabulary, Grammar rule, Passages (EN+VI)
+   ============================================================ */
+const VOCAB_LIST = [
+  {word:"face recognition", vi:"nhận diện khuôn mặt", example:"Schools can use face recognition to check students' attendance.", exVi:"Trường học có thể dùng công nghệ nhận diện khuôn mặt để điểm danh học sinh."},
+  {word:"video conferencing", vi:"hội nghị truyền hình (họp trực tuyến)", example:"Our teacher uses Google Meet for video conferencing.", exVi:"Giáo viên của chúng tôi dùng Google Meet để họp trực tuyến."},
+  {word:"fingerprint scanner", vi:"máy quét vân tay", example:"Scan your finger on this fingerprint scanner to check attendance, please.", exVi:"Hãy quét ngón tay vào máy quét vân tay này để điểm danh."},
+  {word:"eye-tracking", vi:"công nghệ theo dõi chuyển động mắt", example:"Teachers can use eye-tracking technology to check students' understanding of a lesson.", exVi:"Giáo viên có thể dùng công nghệ theo dõi mắt để kiểm tra mức độ hiểu bài của học sinh."},
+  {word:"experiment", vi:"thí nghiệm", example:"Scientists have carried out many experiments to find a cure for cancer.", exVi:"Các nhà khoa học đã tiến hành nhiều thí nghiệm để tìm cách chữa ung thư."},
+  {word:"digital communication", vi:"giao tiếp kỹ thuật số", example:"Video conferencing is a common form of digital communication today.", exVi:"Hội nghị truyền hình là một hình thức giao tiếp kỹ thuật số phổ biến hiện nay."},
+  {word:"invent", vi:"phát minh, sáng chế", example:"Alexander Graham Bell invented the telephone in 1876.", exVi:"Alexander Graham Bell đã phát minh ra điện thoại vào năm 1876."},
+  {word:"discover", vi:"khám phá, phát hiện", example:"Sir Alexander Fleming discovered the world's first antibiotic in 1928.", exVi:"Ngài Alexander Fleming đã khám phá ra loại kháng sinh đầu tiên trên thế giới năm 1928."},
+  {word:"create", vi:"tạo ra", example:"Sarah Gilbert is the creator of a vaccine. She created it in 2020.", exVi:"Sarah Gilbert là người tạo ra một loại vắc-xin. Bà đã tạo ra nó vào năm 2020."},
+  {word:"develop", vi:"phát triển", example:"Scientists will develop more applications to support human teachers at schools.", exVi:"Các nhà khoa học sẽ phát triển thêm nhiều ứng dụng để hỗ trợ giáo viên ở trường học."},
+  {word:"face-to-face class", vi:"lớp học trực tiếp", example:"Ann prefers having face-to-face classes because she can interact with her classmates.", exVi:"Ann thích học trực tiếp hơn vì có thể tương tác với các bạn cùng lớp."},
+  {word:"online class", vi:"lớp học trực tuyến", example:"Minh thinks online classes are convenient during bad weather or epidemics.", exVi:"Minh nghĩ lớp học trực tuyến rất tiện lợi khi thời tiết xấu hoặc có dịch bệnh."},
+  {word:"interact", vi:"tương tác", example:"Students can still interact when they are in breakout rooms.", exVi:"Học sinh vẫn có thể tương tác khi ở trong các phòng thảo luận nhóm."},
+  {word:"convenient", vi:"thuận tiện", example:"Online learning is convenient, but some students don't have computers or smartphones.", exVi:"Học trực tuyến rất tiện lợi, nhưng một số học sinh không có máy tính hay điện thoại thông minh."},
+  {word:"epidemic", vi:"dịch bệnh", example:"Online classes are useful during bad weather or epidemics.", exVi:"Lớp học trực tuyến hữu ích trong thời tiết xấu hoặc dịch bệnh."},
+  {word:"breakout room", vi:"phòng thảo luận nhóm", example:"We use Zoom and interact in breakout rooms to discuss ideas.", exVi:"Chúng tôi dùng Zoom và tương tác trong các phòng thảo luận nhóm để trao đổi ý kiến."},
+  {word:"Internet connection", vi:"kết nối Internet", example:"I'm not happy about the Internet connection at times.", exVi:"Đôi khi tôi không hài lòng về kết nối Internet."},
+  {word:"3D contact lens", vi:"kính áp tròng 3D", example:"With 3D contact lenses, our eyes won't get tired when looking at a computer screen for a long time.", exVi:"Với kính áp tròng 3D, mắt chúng ta sẽ không bị mỏi khi nhìn màn hình máy tính lâu."},
+  {word:"computer screen", vi:"màn hình máy tính", example:"My eyes get tired when I work in front of the computer screen for a long time.", exVi:"Mắt tôi bị mỏi khi làm việc trước màn hình máy tính quá lâu."},
+  {word:"robot teacher", vi:"giáo viên robot", example:"Another helpful invention is robot teachers. They will teach us when our human teachers are not available.", exVi:"Một phát minh hữu ích khác là giáo viên robot. Chúng sẽ dạy chúng ta khi giáo viên con người không có mặt."},
+  {word:"mark (v)", vi:"chấm điểm, chấm bài", example:"The robots would be able to mark our work and give us feedback too.", exVi:"Robot sẽ có thể chấm bài của chúng ta và đưa ra phản hồi nữa."},
+  {word:"feedback", vi:"phản hồi, nhận xét", example:"My uncle said the robots would be able to give us feedback.", exVi:"Chú tôi nói rằng robot sẽ có thể đưa ra phản hồi cho chúng ta."},
+  {word:"attendance", vi:"sự điểm danh, sự có mặt", example:"Schools can quickly and effectively check attendance using fingerprint scanners.", exVi:"Trường học có thể điểm danh nhanh chóng và hiệu quả bằng máy quét vân tay."},
+  {word:"application (app)", vi:"ứng dụng", example:"They will develop more applications to support human teachers at schools.", exVi:"Họ sẽ phát triển thêm nhiều ứng dụng để hỗ trợ giáo viên ở trường học."},
+  {word:"biometrics", vi:"công nghệ sinh trắc học", example:"Fingerprint scanners and face recognition are examples of biometric applications.", exVi:"Máy quét vân tay và nhận diện khuôn mặt là những ví dụ về ứng dụng sinh trắc học."},
+  {word:"nanolearning", vi:"học tập vi mô (Nanolearning)", example:"Nanolearning provides you with small amounts of information over a short period of time.", exVi:"Nanolearning cung cấp cho bạn lượng thông tin nhỏ trong khoảng thời gian ngắn."},
+  {word:"voice recognition", vi:"nhận diện giọng nói", example:"Siri, the voice recognition technology, is an application of biometric technology.", exVi:"Siri, công nghệ nhận diện giọng nói, là một ứng dụng của công nghệ sinh trắc học."},
+  {word:"smart cooker", vi:"nồi cơm thông minh", example:"My mum said that they would invent a smart cooker this year.", exVi:"Mẹ tôi nói rằng họ sẽ phát minh ra một chiếc nồi cơm thông minh trong năm nay."},
+  {word:"vaccine", vi:"vắc-xin", example:"Sarah Gilbert invented a vaccine. She created it in 2020.", exVi:"Sarah Gilbert đã phát minh ra một loại vắc-xin. Bà đã tạo ra nó vào năm 2020."},
+  {word:"World Wide Web", vi:"mạng lưới toàn cầu (web)", example:"Tim Berners-Lee invented the World Wide Web in 1989. It links information sources so everyone can access them.", exVi:"Tim Berners-Lee đã phát minh ra mạng lưới toàn cầu (web) năm 1989. Nó liên kết các nguồn thông tin để mọi người có thể truy cập."},
+];
+
+const PASSAGES_REVIEW = [
+  {
+    title:"📄 Bài đọc 1 (Getting Started): Great news for students",
+    en:"<b>Minh:</b> Ann, do you like yesterday's lesson? I really enjoy learning online.<br><b>Ann:</b> I prefer having face-to-face classes because I like to interact with my classmates during the lessons.<br><b>Minh:</b> I think online classes are convenient during bad weather or epidemics. Also, students can still interact when they are in breakout rooms.<br><b>Ann:</b> But the Internet connection doesn't always work well enough for us to learn online. And my eyes get tired when I work in front of the computer screen for a long time.<br><b>Minh:</b> I know what you mean. But there's some great news for us. 3D contact lenses will soon be available. With them, our eyes won't get tired when looking at a computer screen for a long time.<br><b>Ann:</b> Wow, that's brilliant!<br><b>Minh:</b> Another helpful invention is robot teachers. They will teach us when our human teachers are not available or get ill. My uncle said the robots would be able to mark our work and give us feedback too.<br><b>Ann:</b> Fantastic! I can't wait.",
+    vi:"<b>Minh:</b> Ann, cậu có thích bài học hôm qua không? Mình thực sự thích học trực tuyến.<br><b>Ann:</b> Mình thích học trực tiếp hơn vì mình thích tương tác với các bạn cùng lớp trong giờ học.<br><b>Minh:</b> Mình nghĩ lớp học trực tuyến rất tiện lợi khi thời tiết xấu hoặc có dịch bệnh. Ngoài ra, học sinh vẫn có thể tương tác khi ở trong các phòng thảo luận nhóm.<br><b>Ann:</b> Nhưng kết nối Internet không phải lúc nào cũng đủ tốt để chúng ta học trực tuyến. Và mắt mình bị mỏi khi làm việc trước màn hình máy tính quá lâu.<br><b>Minh:</b> Mình hiểu ý cậu. Nhưng có tin vui cho chúng ta đây. Kính áp tròng 3D sẽ sớm có mặt. Với chúng, mắt chúng ta sẽ không bị mỏi khi nhìn màn hình máy tính lâu.<br><b>Ann:</b> Ồ, tuyệt vời quá!<br><b>Minh:</b> Một phát minh hữu ích khác là giáo viên robot. Chúng sẽ dạy chúng ta khi giáo viên con người không có mặt hoặc bị ốm. Chú mình nói rằng robot sẽ có thể chấm bài của chúng ta và đưa ra phản hồi nữa.<br><b>Ann:</b> Tuyệt vời! Mình không thể chờ được."
+  },
+  {
+    title:"📄 Bài đọc 2 (Skills 1 - Reading): Biometrics &amp; Nanolearning",
+    en:"<b>Biometrics</b><br>No more worries about truancy and cheating! Just introduce biometric applications at your school. With fingerprint scanners, or facial or voice recognition technologies, schools will be able to check students' attendance. Teachers will no longer need to call students' names to find out who is absent. This will save time for other activities!<br>Schools can also use these biometric applications for students who borrow books and equipment. Even more amazing, teachers can even use the eye-tracking technology to check students' understanding of a lesson and to motivate students to learn.<br>For more information, visit www.biometricappsolution.com<br><br><b>Nanolearning</b><br>Tired of sitting in front of a computer all day long? Unable to concentrate for very long in your classes? Or frequently forgetting large amounts of information? The solution to this is Nanolearning created by Junglemap in 2006.<br>Nanolearning provides you with small amounts of information over a short period of time. Your learning will become effortless.<br>Believe us! Receive bits of information within the two to five minutes via our platform, and you will increase your learning attention and ability. Our app also reports your study activities and results to your teacher.<br>Contact us at: www.nanolearningsolution.edu.au",
+    vi:"<b>Sinh trắc học</b><br>Không còn lo lắng về việc trốn học và gian lận nữa! Hãy áp dụng ngay các ứng dụng sinh trắc học tại trường của bạn. Với máy quét vân tay, hoặc công nghệ nhận diện khuôn mặt hay giọng nói, các trường học sẽ có thể điểm danh học sinh. Giáo viên sẽ không còn cần gọi tên học sinh để biết ai vắng mặt nữa. Điều này sẽ tiết kiệm thời gian cho các hoạt động khác!<br>Trường học cũng có thể dùng các ứng dụng sinh trắc học này cho học sinh mượn sách và thiết bị. Thậm chí tuyệt vời hơn, giáo viên còn có thể dùng công nghệ theo dõi mắt để kiểm tra mức độ hiểu bài của học sinh và tạo động lực học tập cho các em.<br>Để biết thêm thông tin, hãy truy cập www.biometricappsolution.com<br><br><b>Học tập vi mô (Nanolearning)</b><br>Chán ngồi trước máy tính cả ngày dài? Không thể tập trung lâu trong các tiết học của bạn? Hay thường xuyên quên lượng lớn thông tin? Giải pháp cho việc này là Nanolearning, được tạo ra bởi Junglemap vào năm 2006.<br>Nanolearning cung cấp cho bạn lượng thông tin nhỏ trong khoảng thời gian ngắn. Việc học của bạn sẽ trở nên nhẹ nhàng, không tốn sức.<br>Hãy tin chúng tôi! Nhận các mẩu thông tin trong vòng hai đến năm phút qua nền tảng của chúng tôi, và bạn sẽ tăng khả năng tập trung và tiếp thu khi học. Ứng dụng của chúng tôi còn báo cáo hoạt động học tập và kết quả của bạn cho giáo viên.<br>Liên hệ với chúng tôi tại: www.nanolearningsolution.edu.au"
+  },
+  {
+    title:"💬 Bài đọc 3 (Communication): Giving good news &amp; Online learning",
+    en:"<b>Nick:</b> Great news for us. We'll have school clouds so we won't have to carry lots of books to school.<br><b>Mi:</b> Great!<br><b>Nick:</b> And my dad promised to get me a new iPad to read books from the school clouds.<br><b>Mi:</b> Congratulations!<br><br><b>Tom:</b> Our teacher uses Google Meet for video conferencing. It's quite convenient, and we don't have to get up early. Still, I prefer to study face to face. I want to see my classmates.<br><b>Phong:</b> We use Microsoft Teams. I don't like online learning. My eyes get tired. I can't concentrate well. But online learning helps us become more independent.<br><b>Nick:</b> We use Zoom to discuss and share ideas. It also helps us avoid traffic jams. We interact in breakout rooms. But I'm not happy about the Internet connection at times.<br><b>Mi:</b> Our teacher uses Zoom to teach. But some students don't have computers or smartphones. Others complain about the poor connection. I also feel more stressed when learning online.",
+    vi:"<b>Nick:</b> Tin vui cho chúng ta đây. Chúng ta sẽ có 'đám mây trường học' nên sẽ không phải mang nhiều sách đến trường nữa.<br><b>Mi:</b> Tuyệt quá!<br><b>Nick:</b> Và bố mình đã hứa mua cho mình một chiếc iPad mới để đọc sách từ đám mây trường học.<br><b>Mi:</b> Chúc mừng cậu!<br><br><b>Tom:</b> Giáo viên của chúng mình dùng Google Meet để họp trực tuyến. Khá tiện lợi, và chúng mình không phải dậy sớm. Nhưng mình vẫn thích học trực tiếp hơn. Mình muốn được gặp các bạn cùng lớp.<br><b>Phong:</b> Chúng mình dùng Microsoft Teams. Mình không thích học trực tuyến. Mắt mình bị mỏi. Mình không thể tập trung tốt. Nhưng học trực tuyến giúp chúng mình trở nên tự lập hơn.<br><b>Nick:</b> Chúng mình dùng Zoom để thảo luận và chia sẻ ý kiến. Nó cũng giúp chúng mình tránh tắc đường. Chúng mình tương tác trong các phòng thảo luận nhóm. Nhưng đôi khi mình không hài lòng về kết nối Internet.<br><b>Mi:</b> Giáo viên của chúng mình dùng Zoom để dạy học. Nhưng một số học sinh không có máy tính hoặc điện thoại thông minh. Số khác phàn nàn về kết nối kém. Mình cũng cảm thấy căng thẳng hơn khi học trực tuyến."
+  }
+];
+
+function renderReviewSection(){
+  document.getElementById('acc_vocabList').innerHTML = VOCAB_LIST.map(v=>`
+    <div class="vocab-row flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+      <div><span class="font-extrabold text-blue-900">${v.word}</span> <span class="text-slate-400">— ${v.vi}</span></div>
+      <div class="text-xs text-slate-400 italic sm:text-right sm:max-w-[55%]">${v.example}<br>${v.exVi}</div>
+    </div>`).join('');
+
+  document.getElementById('acc_passages').innerHTML = PASSAGES_REVIEW.map((p,i)=>`
+    <div>
+      <p class="font-bold text-slate-700 text-sm mb-2">${p.title}</p>
+      <div class="passage-en">${p.en}</div>
+      <button type="button" onclick="togglePassageVi(${i})" class="mt-2 text-xs font-bold bg-white border-2 border-emerald-300 text-emerald-700 px-3 py-1.5 rounded-full">
+        <i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt
+      </button>
+      <div class="passage-vi" id="passvi_${i}"><b>🇻🇳 Bản dịch</b><br>${p.vi}</div>
+    </div>`).join('');
+}
+function togglePassageVi(i){ document.getElementById('passvi_'+i).classList.toggle('show'); }
+function toggleAccordion(key){
+  const btn = event.currentTarget;
+  btn.classList.toggle('open');
+  document.getElementById('acc_'+key).classList.toggle('open');
+}
+
+/* ============================================================
+   CONTENT: Unit 11 Vocabulary, Grammar, Reading & Translation Test
+   ============================================================ */
+const VOCAB_TEST = [
+  {id:"v1", prompt:"\"Face recognition\" nghĩa là gì?", options:["nhận diện khuôn mặt","nhận diện giọng nói","máy quét vân tay","theo dõi chuyển động mắt"], answer:0, explanation:"face recognition = nhận diện khuôn mặt.", vi:"face recognition = nhận diện khuôn mặt."},
+  {id:"v2", prompt:"\"Video conferencing\" nghĩa là gì?", options:["chơi game trực tuyến","hội nghị truyền hình (họp trực tuyến)","gửi email","nghe nhạc trực tuyến"], answer:1, explanation:"video conferencing = hội nghị truyền hình/họp video trực tuyến.", vi:"video conferencing = họp trực tuyến."},
+  {id:"v3", prompt:"\"Fingerprint scanner\" nghĩa là gì?", options:["máy quét vân tay","máy quét mã vạch","máy in 3D","máy ảnh kỹ thuật số"], answer:0, explanation:"fingerprint scanner = máy quét vân tay.", vi:"fingerprint scanner = máy quét vân tay."},
+  {id:"v4", prompt:"\"Eye-tracking\" nghĩa là gì?", options:["công nghệ theo dõi chuyển động mắt","kính áp tròng thông thường","máy quét vân tay","phần mềm diệt virus"], answer:0, explanation:"eye-tracking = công nghệ theo dõi chuyển động mắt.", vi:"eye-tracking = theo dõi chuyển động mắt."},
+  {id:"v5", prompt:"\"Experiment\" nghĩa là gì?", options:["thí nghiệm","phát minh","ứng dụng","phản hồi"], answer:0, explanation:"experiment = thí nghiệm.", vi:"experiment = thí nghiệm."},
+  {id:"v6", prompt:"\"Digital communication\" nghĩa là gì?", options:["giao tiếp kỹ thuật số","giao tiếp bằng thư tay","giao tiếp phi ngôn ngữ","giao tiếp truyền thống"], answer:0, explanation:"digital communication = giao tiếp kỹ thuật số.", vi:"digital communication = giao tiếp kỹ thuật số."},
+  {id:"v7", prompt:"Điền từ: Alexander Graham Bell ________ the telephone in 1876.", options:["invented","discovered","created","developed"], answer:0, explanation:"invent = phát minh (ra một thiết bị mới); Bell invented the telephone.", vi:"invent = phát minh."},
+  {id:"v8", prompt:"Điền từ: Sir Alexander Fleming ________ the world's first antibiotic in 1928.", options:["invented","discovered","created","developed"], answer:1, explanation:"discover = khám phá, tìm ra (một điều đã tồn tại sẵn); Fleming discovered penicillin.", vi:"discover = khám phá, phát hiện."},
+  {id:"v9", prompt:"Điền từ: Sarah Gilbert is the ________ of a vaccine. She ________ it in 2020.", options:["creator / created","inventor / discovered","discoverer / invented","developer / found"], answer:0, explanation:"create = tạo ra; creator = người tạo ra.", vi:"create = tạo ra, creator = người tạo ra."},
+  {id:"v10", prompt:"\"Develop\" trong câu \"Scientists will develop more applications\" nghĩa là gì?", options:["phát triển","phá hủy","phát minh ra lần đầu","khám phá"], answer:0, explanation:"develop = phát triển (một thứ đã có sẵn thành tốt hơn).", vi:"develop = phát triển."},
+  {id:"v11", prompt:"\"Face-to-face class\" nghĩa là gì?", options:["lớp học trực tiếp","lớp học trực tuyến","lớp học phụ đạo","lớp học buổi tối"], answer:0, explanation:"face-to-face class = lớp học trực tiếp (mặt đối mặt).", vi:"face-to-face class = lớp học trực tiếp."},
+  {id:"v12", prompt:"Điền từ: Minh thinks ________ classes are convenient during bad weather or epidemics.", options:["online","face-to-face","evening","private"], answer:0, explanation:"online classes = lớp học trực tuyến, tiện lợi khi thời tiết xấu hoặc dịch bệnh.", vi:"online class = lớp học trực tuyến."},
+  {id:"v13", prompt:"\"Interact\" nghĩa là gì?", options:["tương tác","tránh né","phản đối","im lặng"], answer:0, explanation:"interact = tương tác.", vi:"interact = tương tác."},
+  {id:"v14", prompt:"\"Convenient\" nghĩa là gì?", options:["thuận tiện","phức tạp","tốn kém","nguy hiểm"], answer:0, explanation:"convenient = thuận tiện.", vi:"convenient = thuận tiện."},
+  {id:"v15", prompt:"\"Epidemic\" nghĩa là gì?", options:["dịch bệnh","lễ hội","kỳ nghỉ","cuộc thi"], answer:0, explanation:"epidemic = dịch bệnh.", vi:"epidemic = dịch bệnh."},
+  {id:"v16", prompt:"\"Breakout room\" (trong học trực tuyến) nghĩa là gì?", options:["phòng thảo luận nhóm","phòng thi","phòng chờ giáo viên","phòng thí nghiệm"], answer:0, explanation:"breakout room = phòng thảo luận nhóm nhỏ khi học trực tuyến.", vi:"breakout room = phòng thảo luận nhóm."},
+  {id:"v17", prompt:"\"Internet connection\" nghĩa là gì?", options:["kết nối Internet","máy tính bảng","ổ cứng","bộ nhớ đám mây"], answer:0, explanation:"Internet connection = kết nối Internet.", vi:"Internet connection = kết nối Internet."},
+  {id:"v18", prompt:"Điền từ: With 3D contact ________, our eyes won't get tired when looking at a screen.", options:["lenses","screens","scanners","cookers"], answer:0, explanation:"3D contact lenses = kính áp tròng 3D.", vi:"3D contact lens = kính áp tròng 3D."},
+  {id:"v19", prompt:"\"Computer screen\" nghĩa là gì?", options:["màn hình máy tính","bàn phím máy tính","chuột máy tính","loa máy tính"], answer:0, explanation:"computer screen = màn hình máy tính.", vi:"computer screen = màn hình máy tính."},
+  {id:"v20", prompt:"\"Robot teacher\" nghĩa là gì?", options:["giáo viên robot","học sinh robot","người máy giúp việc","máy chấm thi"], answer:0, explanation:"robot teacher = giáo viên robot.", vi:"robot teacher = giáo viên robot."},
+  {id:"v21", prompt:"Điền từ: The robots would be able to ________ our work and give us feedback.", options:["mark","cook","drive","clean"], answer:0, explanation:"mark = chấm điểm, chấm bài.", vi:"mark = chấm điểm, chấm bài."},
+  {id:"v22", prompt:"\"Feedback\" nghĩa là gì?", options:["phản hồi, nhận xét","bài kiểm tra","điểm danh","bài tập về nhà"], answer:0, explanation:"feedback = phản hồi, nhận xét.", vi:"feedback = phản hồi."},
+  {id:"v23", prompt:"\"Attendance\" nghĩa là gì?", options:["sự điểm danh, sự có mặt","sự vắng mặt kéo dài","kỳ thi cuối kỳ","giờ ra chơi"], answer:0, explanation:"attendance = sự điểm danh, sự có mặt.", vi:"attendance = sự điểm danh."},
+  {id:"v24", prompt:"\"Application\" (app) nghĩa là gì?", options:["ứng dụng","đơn xin việc","bài luận","tấm bằng"], answer:0, explanation:"application (app) = ứng dụng (phần mềm).", vi:"application = ứng dụng."},
+  {id:"v25", prompt:"\"Biometrics\" nghĩa là gì?", options:["công nghệ sinh trắc học","công nghệ in 3D","công nghệ vệ tinh","công nghệ robot"], answer:0, explanation:"biometrics = công nghệ sinh trắc học (nhận diện qua vân tay, khuôn mặt, giọng nói...).", vi:"biometrics = công nghệ sinh trắc học."},
+  {id:"v26", prompt:"Theo bài đọc, Nanolearning được tạo ra bởi ai và vào năm nào?", options:["Junglemap, năm 2006","Google, năm 2000","Biometric App Solution, năm 2010","Microsoft, năm 1999"], answer:0, explanation:"\"Nanolearning created by Junglemap in 2006.\"", vi:"Nanolearning được Junglemap tạo ra năm 2006."},
+  {id:"v27", prompt:"\"Voice recognition\" nghĩa là gì?", options:["nhận diện giọng nói","nhận diện khuôn mặt","nhận diện vân tay","nhận diện chữ viết tay"], answer:0, explanation:"voice recognition = nhận diện giọng nói.", vi:"voice recognition = nhận diện giọng nói."},
+  {id:"v28", prompt:"\"Smart cooker\" nghĩa là gì?", options:["nồi cơm thông minh","tủ lạnh thông minh","đồng hồ thông minh","điện thoại thông minh"], answer:0, explanation:"smart cooker = nồi cơm thông minh.", vi:"smart cooker = nồi cơm thông minh."},
+  {id:"v29", prompt:"\"Vaccine\" nghĩa là gì?", options:["vắc-xin","kháng sinh","ống nghiệm","kính hiển vi"], answer:0, explanation:"vaccine = vắc-xin.", vi:"vaccine = vắc-xin."},
+  {id:"v30", prompt:"Điền từ: Tim Berners-Lee invented the ________ in 1989. It links information sources so everyone can access them.", options:["World Wide Web","smart cooker","fingerprint scanner","antibiotic"], answer:0, explanation:"World Wide Web = mạng lưới toàn cầu (web), do Tim Berners-Lee phát minh năm 1989.", vi:"World Wide Web = mạng lưới toàn cầu (web)."},
+];
+
+const GRAMMAR_TEST = [
+  {id:"g1", prompt:"Mi said, \"I love science.\" → Reported speech: Mi said (that) she ___ science.", options:["loves","loved","will love","is loving"], answer:1, explanation:"Hiện tại đơn → Quá khứ đơn: love → loved.", vi:"Mi nói rằng cô ấy yêu thích khoa học."},
+  {id:"g2", prompt:"Mi said, \"I am learning English.\" → Mi said (that) she ___ English.", options:["is learning","was learning","learns","will learn"], answer:1, explanation:"Hiện tại tiếp diễn → Quá khứ tiếp diễn: am learning → was learning.", vi:"Mi nói rằng cô ấy đang học tiếng Anh."},
+  {id:"g3", prompt:"\"I will become a scientist,\" he said. → He said (that) he ___ a scientist.", options:["will become","would become","becomes","became"], answer:1, explanation:"will → would trong câu tường thuật.", vi:"Anh ấy nói rằng anh ấy sẽ trở thành một nhà khoa học."},
+  {id:"g4", prompt:"\"I am a member of the IT club,\" Minh said. → Minh said (that) he ___ a member of the IT club.", options:["is","was","has been","will be"], answer:1, explanation:"Hiện tại đơn (am) → Quá khứ đơn (was).", vi:"Minh nói rằng cậu ấy là thành viên của câu lạc bộ Tin học."},
+  {id:"g5", prompt:"\"Mai will take an online course to improve her speaking,\" Nam said. → Nam said (that) Mai ___ an online course to improve her speaking.", options:["will take","would take","takes","took"], answer:1, explanation:"will → would.", vi:"Nam nói rằng Mai sẽ tham gia một khóa học trực tuyến để cải thiện kỹ năng nói."},
+  {id:"g6", prompt:"\"I am talking to Phong on the phone,\" Tom said. → Tom said (that) he ___ to Phong on the phone.", options:["is talking","was talking","talks","talked"], answer:1, explanation:"Hiện tại tiếp diễn → Quá khứ tiếp diễn.", vi:"Tom nói rằng cậu ấy đang nói chuyện điện thoại với Phong."},
+  {id:"g7", prompt:"\"They are going to send me an email,\" he said. → He said (that) they ___ send him an email.", options:["are going to","were going to","will","would have"], answer:1, explanation:"are going to → were going to (lùi thì).", vi:"Anh ấy nói rằng họ sẽ gửi email cho anh ấy."},
+  {id:"g8", prompt:"\"I don't have an iPod to listen to music,\" she said. → She said (that) she ___ an iPod to listen to music.", options:["doesn't have","didn't have","hasn't had","won't have"], answer:1, explanation:"don't have → didn't have.", vi:"Cô ấy nói rằng cô ấy không có iPod để nghe nhạc."},
+  {id:"g9", prompt:"\"I'm having a science test tomorrow,\" Mary said. → Mary said she was having a science test ___.", options:["tomorrow","the next day","yesterday","that day"], answer:1, explanation:"tomorrow → the next day trong câu tường thuật.", vi:"Mary nói rằng cô ấy sẽ có bài kiểm tra khoa học vào ngày hôm sau."},
+  {id:"g10", prompt:"\"The group is working on their project now,\" Tom said. → Tom said the group was working on their project ___.", options:["now","then","today","here"], answer:1, explanation:"now → then trong câu tường thuật.", vi:"Tom nói rằng nhóm của cậu ấy đang làm dự án vào lúc đó."},
+  {id:"g11", prompt:"\"Mai is reading about Thomas Edison today,\" the teacher said. → The teacher said that Mai was reading about Thomas Edison ___.", options:["today","that day","tomorrow","this week"], answer:1, explanation:"today → that day.", vi:"Cô giáo nói rằng Mai đang đọc về Thomas Edison vào ngày hôm đó."},
+  {id:"g12", prompt:"\"They will invent a smart cooker this year,\" my mum said. → My mum said that they would invent a smart cooker ___.", options:["this year","that year","next year","last year"], answer:1, explanation:"this year → that year.", vi:"Mẹ tôi nói rằng họ sẽ phát minh ra nồi cơm thông minh vào năm đó."},
+  {id:"g13", prompt:"\"My teacher will park her car here,\" said Mi. → Mi said her teacher would park her car ___.", options:["here","there","this place","near"], answer:1, explanation:"here → there.", vi:"Mi nói rằng giáo viên của cô ấy sẽ đỗ xe ở đó."},
+  {id:"g14", prompt:"\"We will live much longer in the future,\" said the scientist. → The scientist said that ___ would live much longer in the future.", options:["we","they","he","you"], answer:1, explanation:"we → they (đổi đại từ theo ngôi tường thuật).", vi:"Nhà khoa học nói rằng họ sẽ sống lâu hơn nhiều trong tương lai."},
+  {id:"g15", prompt:"\"Our school is going to have a new laboratory here,\" said our teacher. → Our teacher said that their school was going to have a new laboratory ___.", options:["here","there","now","today"], answer:1, explanation:"here → there.", vi:"Giáo viên nói rằng trường của họ sẽ có một phòng thí nghiệm mới ở đó."},
+  {id:"g16", prompt:"\"They are developing technology to monitor students better,\" said my dad. → My dad said that they ___ developing technology to monitor students better.", options:["are","were","will be","have been"], answer:1, explanation:"are developing → were developing.", vi:"Bố tôi nói rằng họ đang phát triển công nghệ để theo dõi học sinh tốt hơn."},
+  {id:"g17", prompt:"\"There are no classes tomorrow because our teacher is ill,\" Tom said. → Tom said that there were no classes ___ because their teacher was ill.", options:["tomorrow","the next day","yesterday","that time"], answer:1, explanation:"tomorrow → the next day.", vi:"Tom nói rằng không có lớp học vào ngày hôm sau vì giáo viên của họ bị ốm."},
+  {id:"g18", prompt:"\"We want some students to join the science club next semester,\" the teacher said. → The teacher said (that) ___ wanted some students to join the science club the following semester.", options:["we","they","she","I"], answer:1, explanation:"we → they.", vi:"Giáo viên nói rằng họ muốn một số học sinh tham gia câu lạc bộ khoa học vào học kỳ sau."},
+  {id:"g19", prompt:"Trong câu tường thuật, động từ khuyết thiếu \"can\" thường được lùi thì thành gì?", options:["could","would","might","should"], answer:0, explanation:"can → could là quy tắc lùi thì phổ biến trong câu tường thuật, tương tự will → would.", vi:"can lùi thì thành could."},
+  {id:"g20", prompt:"Câu nào diễn đạt đúng quy tắc chung của câu tường thuật (reported speech) cho câu kể (statements)?", options:["Reported speech is used to report what someone said, and we usually change the verb forms (backshift), pronouns, and time/place expressions.", "Reported speech never changes any verb forms.", "Reported speech only works with questions, not statements.", "Reported speech always keeps the exact same words as direct speech."], answer:0, explanation:"Đây là quy tắc chung: câu tường thuật dùng để thuật lại lời nói, cần lùi thì, đổi đại từ và trạng từ chỉ thời gian/nơi chốn.", vi:"Câu tường thuật dùng để thuật lại lời nói của ai đó, cần lùi thì, đổi đại từ và trạng từ chỉ thời gian/nơi chốn."},
+];
+
+const READING_TEST = [
+  // ---- Passage 1: Great news for students (Getting Started) ----
+  {id:"r1", prompt:"[Bài đọc 1] Why does Ann prefer face-to-face classes?", options:["Because she can interact with her classmates during the lessons.","Because there is no homework.","Because the Internet connection is bad.","Because robot teachers are not ready yet."], answer:0, explanation:"\"I prefer having face-to-face classes because I like to interact with my classmates during the lessons.\"", vi:"Ann thích học trực tiếp hơn vì có thể tương tác với các bạn cùng lớp."},
+  {id:"r2", prompt:"[Bài đọc 1] According to Minh, when are online classes convenient?", options:["During bad weather or epidemics.","Only on weekends.","When teachers are on holiday.","When there is no Internet connection."], answer:0, explanation:"\"I think online classes are convenient during bad weather or epidemics.\"", vi:"Lớp học trực tuyến tiện lợi khi thời tiết xấu hoặc có dịch bệnh."},
+  {id:"r3", prompt:"[Bài đọc 1] What problem does Ann mention about online classes?", options:["The Internet connection doesn't always work well and her eyes get tired.","She has too much homework.","She can't hear the teacher.","Her computer often breaks down."], answer:0, explanation:"\"the Internet connection doesn't always work well... my eyes get tired when I work in front of the computer screen for a long time.\"", vi:"Kết nối Internet không phải lúc nào cũng tốt và mắt cô ấy bị mỏi."},
+  {id:"r4", prompt:"[Bài đọc 1] What will soon be available to help students' eyes not get tired when looking at a screen?", options:["3D contact lenses.","New glasses.","Bigger screens.","Robot teachers."], answer:0, explanation:"\"3D contact lenses will soon be available. With them, our eyes won't get tired...\"", vi:"Kính áp tròng 3D sẽ sớm có mặt để mắt không bị mỏi."},
+  {id:"r5", prompt:"[Bài đọc 1] According to Minh's uncle, what would the robot teachers be able to do?", options:["Mark students' work and give them feedback.","Cook meals for students.","Drive students to school.","Clean the classroom."], answer:0, explanation:"\"My uncle said the robots would be able to mark our work and give us feedback too.\"", vi:"Chú của Minh nói robot sẽ có thể chấm bài và đưa ra phản hồi cho học sinh."},
+  // ---- Passage 2: Biometrics & Nanolearning (Skills 1) ----
+  {id:"r6", prompt:"[Bài đọc 2] What can schools use biometric applications to check?", options:["Students' attendance.","Students' height.","Students' favourite food.","Students' handwriting."], answer:0, explanation:"\"schools will be able to check students' attendance\" using biometric applications.", vi:"Trường học có thể dùng ứng dụng sinh trắc học để điểm danh học sinh."},
+  {id:"r7", prompt:"[Bài đọc 2] Which technology can teachers use to check students' understanding of a lesson?", options:["Eye-tracking technology.","Fingerprint scanners.","Voice recognition.","Video conferencing."], answer:0, explanation:"\"teachers can even use the eye-tracking technology to check students' understanding of a lesson.\"", vi:"Giáo viên có thể dùng công nghệ theo dõi mắt để kiểm tra mức độ hiểu bài."},
+  {id:"r8", prompt:"[Bài đọc 2] Who created Nanolearning, and when?", options:["Junglemap, in 2006.","Biometric App Solution, in 2010.","Google, in 2000.","A school teacher, in 1999."], answer:0, explanation:"\"Nanolearning created by Junglemap in 2006.\"", vi:"Nanolearning được tạo ra bởi Junglemap vào năm 2006."},
+  {id:"r9", prompt:"[Bài đọc 2] What does Nanolearning provide, according to the advertisement?", options:["Small amounts of information over a short period of time.","A free laptop for every student.","Long video lectures every day.","A printed textbook for each subject."], answer:0, explanation:"\"Nanolearning provides you with small amounts of information over a short period of time.\"", vi:"Nanolearning cung cấp lượng thông tin nhỏ trong thời gian ngắn."},
+  {id:"r10", prompt:"[Bài đọc 2] What does the Nanolearning app report to the teacher?", options:["Students' study activities and results.","Students' home address.","Students' medical records.","Students' payment history."], answer:0, explanation:"\"Our app also reports your study activities and results to your teacher.\"", vi:"Ứng dụng báo cáo hoạt động học tập và kết quả của học sinh cho giáo viên."},
+  // ---- Passage 3: Communication (good news & online learning) ----
+  {id:"r11", prompt:"[Bài đọc 3] What good news does Nick share with Mi?", options:["They'll have school clouds so they won't have to carry lots of books to school.","Their school will close early.","They'll have a new robot teacher.","They won a competition."], answer:0, explanation:"\"Great news for us. We'll have school clouds so we won't have to carry lots of books to school.\"", vi:"Nick báo tin vui: họ sẽ có 'đám mây trường học' nên không cần mang nhiều sách đến trường."},
+  {id:"r12", prompt:"[Bài đọc 3] What does Tom prefer, and why?", options:["Studying face to face, because he wants to see his classmates.","Studying online, because it's more convenient.","Studying alone, because it's quieter.","Studying at night, because he is busy in the day."], answer:0, explanation:"\"Still, I prefer to study face to face. I want to see my classmates.\"", vi:"Tom thích học trực tiếp hơn vì muốn gặp các bạn cùng lớp."},
+  {id:"r13", prompt:"[Bài đọc 3] What problem does Phong mention about online learning?", options:["His eyes get tired and he can't concentrate well.","He doesn't have a computer.","His Internet is too fast.","He doesn't like his teacher."], answer:0, explanation:"\"My eyes get tired. I can't concentrate well.\"", vi:"Phong bị mỏi mắt và không tập trung tốt khi học trực tuyến."},
+  {id:"r14", prompt:"[Bài đọc 3] What does Nick use Zoom for?", options:["To discuss and share ideas, interacting in breakout rooms.","To watch movies with friends.","To play online games.","To do his homework alone."], answer:0, explanation:"\"We use Zoom to discuss and share ideas... We interact in breakout rooms.\"", vi:"Nick dùng Zoom để thảo luận, chia sẻ ý kiến và tương tác trong các phòng thảo luận nhóm."},
+  {id:"r15", prompt:"[Bài đọc 3] According to Mi, what problems do some students have with online classes?", options:["They don't have computers or smartphones, and some complain about poor connection.","They have too many teachers.","They don't like their classmates.","Classes are too short."], answer:0, explanation:"\"some students don't have computers or smartphones. Others complain about the poor connection.\"", vi:"Một số học sinh không có máy tính/điện thoại thông minh, một số phàn nàn về kết nối kém."},
+];
+
+const TRANSLATION_TEST = [
+  {id:"t1", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"Online classes are convenient during bad weather or epidemics.\"", options:["Lớp học trực tuyến rất tiện lợi khi thời tiết xấu hoặc có dịch bệnh.","Lớp học trực tuyến luôn đắt hơn lớp học trực tiếp.","Lớp học trực tuyến chỉ dành cho học sinh giỏi.","Lớp học trực tuyến không bao giờ bị gián đoạn."], answer:0, explanation:"online classes are convenient during bad weather or epidemics = lớp học trực tuyến tiện lợi khi thời tiết xấu hoặc có dịch bệnh.", vi:""},
+  {id:"t2", prompt:"Chọn bản dịch tiếng Anh đúng: \"Với kính áp tròng 3D, mắt chúng ta sẽ không bị mỏi khi nhìn màn hình máy tính lâu.\"", options:["With 3D contact lenses, our eyes won't get tired when looking at a computer screen for a long time.","With new glasses, we can see better in the dark.","With a bigger screen, we can work faster.","With a robot teacher, we don't need to study."], answer:0, explanation:"kính áp tròng 3D = 3D contact lenses; mắt không bị mỏi = eyes won't get tired.", vi:""},
+  {id:"t3", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"Schools can use biometric applications such as fingerprint scanners and face recognition to check students' attendance.\"", options:["Trường học có thể dùng các ứng dụng sinh trắc học như máy quét vân tay và nhận diện khuôn mặt để điểm danh học sinh.","Trường học có thể dùng máy tính bảng để dạy học sinh vẽ tranh.","Trường học có thể dùng camera để quay phim tài liệu.","Trường học có thể dùng loa để phát nhạc giờ ra chơi."], answer:0, explanation:"biometric applications... to check students' attendance = ứng dụng sinh trắc học để điểm danh học sinh.", vi:""},
+  {id:"t4", prompt:"Chọn bản dịch tiếng Anh đúng: \"Giáo viên có thể dùng công nghệ theo dõi mắt để kiểm tra mức độ hiểu bài của học sinh.\"", options:["Teachers can use eye-tracking technology to check students' understanding of a lesson.","Teachers can use robots to clean the classroom.","Teachers can use loudspeakers to call students' names.","Teachers can use calculators to mark exams."], answer:0, explanation:"công nghệ theo dõi mắt = eye-tracking technology; kiểm tra mức độ hiểu bài = check students' understanding of a lesson.", vi:""},
+  {id:"t5", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"Nanolearning provides you with small amounts of information over a short period of time.\"", options:["Nanolearning cung cấp cho bạn lượng thông tin nhỏ trong khoảng thời gian ngắn.","Nanolearning giúp học sinh chơi game trong giờ học.","Nanolearning là một loại vắc-xin mới.","Nanolearning là một môn thể thao học đường."], answer:0, explanation:"provides you with small amounts of information over a short period of time = cung cấp lượng thông tin nhỏ trong thời gian ngắn.", vi:""},
+  {id:"t6", prompt:"Chọn bản dịch tiếng Anh đúng: \"Một phát minh hữu ích khác là giáo viên robot. Chúng sẽ dạy chúng ta khi giáo viên con người không có mặt.\"", options:["Another helpful invention is robot teachers. They will teach us when our human teachers are not available.","Another helpful invention is smartphones. They will replace all books at school.","Another helpful invention is 3D printers. They will build new schools.","Another helpful invention is drones. They will deliver our homework."], answer:0, explanation:"another helpful invention is robot teachers = một phát minh hữu ích khác là giáo viên robot.", vi:""},
+  {id:"t7", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"My uncle said the robots would be able to mark our work and give us feedback too.\"", options:["Chú tôi nói rằng robot sẽ có thể chấm bài của chúng tôi và đưa ra phản hồi nữa.","Chú tôi nói rằng robot sẽ nấu ăn cho cả gia đình.","Chú tôi nói rằng robot sẽ thay thế bác sĩ trong bệnh viện.","Chú tôi nói rằng robot sẽ lái xe đưa đón học sinh."], answer:0, explanation:"the robots would be able to mark our work and give us feedback = robot sẽ có thể chấm bài và đưa ra phản hồi.", vi:""},
+  {id:"t8", prompt:"Chọn bản dịch tiếng Anh đúng: \"Chúng tôi dùng Zoom để thảo luận và chia sẻ ý kiến. Nó cũng giúp chúng tôi tránh tắc đường.\"", options:["We use Zoom to discuss and share ideas. It also helps us avoid traffic jams.","We use Zoom to watch movies at night. It also helps us sleep better.","We use Zoom to order food online. It also helps us save money.","We use Zoom to play sports games. It also helps us stay healthy."], answer:0, explanation:"dùng Zoom để thảo luận và chia sẻ ý kiến = use Zoom to discuss and share ideas; tránh tắc đường = avoid traffic jams.", vi:""},
+  {id:"t9", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"Some students don't have computers or smartphones. Others complain about the poor connection.\"", options:["Một số học sinh không có máy tính hoặc điện thoại thông minh. Một số khác phàn nàn về kết nối kém.","Một số học sinh không thích môn Tiếng Anh. Một số khác thích môn Toán.","Một số học sinh đi học muộn. Một số khác nghỉ học.","Một số học sinh mang theo sách vở. Một số khác quên mang."], answer:0, explanation:"some students don't have computers or smartphones... complain about the poor connection = không có máy tính/điện thoại, phàn nàn về kết nối kém.", vi:""},
+  {id:"t10", prompt:"Chọn bản dịch tiếng Anh đúng: \"Sir Alexander Fleming đã khám phá ra loại kháng sinh đầu tiên trên thế giới vào năm 1928.\"", options:["Sir Alexander Fleming discovered the world's first antibiotic in 1928.","Sir Alexander Fleming invented the telephone in 1876.","Sir Alexander Fleming created the World Wide Web in 1989.","Sir Alexander Fleming developed a smart cooker in 2000."], answer:0, explanation:"khám phá ra loại kháng sinh đầu tiên trên thế giới năm 1928 = discovered the world's first antibiotic in 1928.", vi:""},
+];
+
+VOCAB_TEST.forEach(q=>q.section='vocab');
+GRAMMAR_TEST.forEach(q=>q.section='grammar');
+READING_TEST.forEach(q=>q.section='reading');
+TRANSLATION_TEST.forEach(q=>q.section='translation');
+const TOTAL = VOCAB_TEST.length + GRAMMAR_TEST.length + READING_TEST.length + TRANSLATION_TEST.length;
+const STORAGE_KEY = 'u11_vocabgrammar_test_v1';
+
+/* ---------------- utility ---------------- */
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+function loadHistory(){
+  try{ const raw=localStorage.getItem(STORAGE_KEY); return raw? JSON.parse(raw) : {best:0, attempts:0}; }
+  catch(e){ return {best:0, attempts:0}; }
+}
+function saveHistory(h){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(h)); }catch(e){} }
+
+/* ---------------- state ---------------- */
+let state = { questions:[], answers:{}, submitted:false, timeLeft: 35*60, timerId:null, startedAt:null };
+
+function buildQuestionSet(){
+  const all = shuffle(VOCAB_TEST.concat(GRAMMAR_TEST).concat(READING_TEST).concat(TRANSLATION_TEST).map(q=>{
+    const optOrder = shuffle(q.options.map((o,i)=>i));
+    return Object.assign({}, q, { displayOptions: optOrder.map(i=>q.options[i]), correctDisplayIndex: optOrder.indexOf(q.answer) });
+  }));
+  return all;
+}
+
+function init(){
+  renderReviewSection();
+  state.questions = buildQuestionSet();
+  state.answers = {};
+  state.submitted = false;
+  state.timeLeft = 35*60;
+  state.startedAt = Date.now();
+  document.getElementById('resultBanner').classList.remove('show');
+  renderQuiz();
+  updateProgress();
+  updateHistoryLabels();
+  startTimer();
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = false; btn.classList.remove('opacity-50');
+}
+
+function updateHistoryLabels(){
+  const h = loadHistory();
+  document.getElementById('bestScoreLabel').textContent = h.attempts>0 ? (h.best+'/'+TOTAL) : '--';
+  document.getElementById('attemptCountLabel').textContent = h.attempts||0;
+}
+
+function startTimer(){
+  if(state.timerId) clearInterval(state.timerId);
+  state.timerId = setInterval(()=>{
+    if(state.submitted){ clearInterval(state.timerId); return; }
+    state.timeLeft--;
+    renderTimer();
+    if(state.timeLeft<=0){ clearInterval(state.timerId); submitTest(true); }
+  },1000);
+  renderTimer();
+}
+function renderTimer(){
+  const m = Math.floor(Math.max(0,state.timeLeft)/60), s = Math.max(0,state.timeLeft)%60;
+  const label = document.getElementById('timerLabel');
+  label.textContent = String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  label.classList.toggle('low', state.timeLeft<=60);
+}
+
+function renderQuiz(){
+  const vocabQs = state.questions.filter(q=>q.section==='vocab');
+  const grammarQs = state.questions.filter(q=>q.section==='grammar');
+  const readingQs = state.questions.filter(q=>q.section==='reading');
+  const translationQs = state.questions.filter(q=>q.section==='translation');
+  let html = '';
+  html += sectionDivider('📚 Phần 1 · Vocabulary (Khoa học & công nghệ)', vocabQs.length);
+  vocabQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('📐 Phần 2 · Grammar (Câu tường thuật - Reported Speech: câu kể)', grammarQs.length);
+  grammarQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('📖 Phần 3 · Đọc hiểu (Reading Comprehension)', readingQs.length);
+  readingQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('🇻🇳 Phần 4 · Luyện dịch nghĩa (Translation Practice)', translationQs.length);
+  translationQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  document.getElementById('quizArea').innerHTML = html;
+}
+
+function sectionDivider(title, count){
+  return `<div class="section-divider text-white rounded-xl px-4 py-2.5 mb-4 mt-2 font-extrabold text-sm md:text-base shadow flex items-center justify-between">
+    <span>${title}</span><span class="text-xs font-bold opacity-80">${count} câu</span>
+  </div>`;
+}
+
+function renderQuestionCard(q, num){
+  const letters=['A','B','C','D'];
+  const optsHtml = q.displayOptions.map((opt,i)=>{
+    return `<div class="opt-row px-3 py-2.5 flex items-start gap-2 text-sm md:text-[15px]" data-qid="${q.id}" data-idx="${i}" onclick="selectAnswer('${q.id}',${i})">
+      <span class="font-black text-blue-900">${letters[i]}.</span><span class="flex-1">${opt}</span>
+    </div>`;
+  }).join('');
+  return `<div class="qcard p-4 mb-3" id="qcard_${q.id}">
+    <p class="font-extrabold text-slate-800 text-sm md:text-base mb-2"><span class="text-blue-800">Câu ${num}.</span> ${q.prompt}</p>
+    <div class="grid gap-2" id="opts_${q.id}">${optsHtml}</div>
+    <div class="explain-box mt-3" id="explain_${q.id}"></div>
+  </div>`;
+}
+
+function selectAnswer(qid, idx){
+  if(state.submitted) return;
+  state.answers[qid] = idx;
+  const wrap = document.getElementById('opts_'+qid);
+  wrap.querySelectorAll('.opt-row').forEach(el=>{
+    el.classList.toggle('selected', parseInt(el.dataset.idx,10)===idx);
+  });
+  document.getElementById('qcard_'+qid).classList.add('answered');
+  updateProgress();
+}
+
+function updateProgress(){
+  const answered = Object.keys(state.answers).length;
+  document.getElementById('progressText').textContent = answered+' / '+TOTAL+' câu';
+  document.getElementById('progressBar').style.width = Math.round(answered/TOTAL*100)+'%';
+  document.getElementById('answeredCount').textContent = answered;
+}
+
+function submitTest(auto){
+  if(state.submitted) return;
+  const answeredCount = Object.keys(state.answers).length;
+  if(!auto && answeredCount < TOTAL){
+    const proceed = confirm('Bạn còn '+(TOTAL-answeredCount)+' câu chưa trả lời. Vẫn muốn nộp bài?');
+    if(!proceed) return;
+  }
+  state.submitted = true;
+  if(state.timerId) clearInterval(state.timerId);
+  const elapsed = Math.round((Date.now()-state.startedAt)/1000);
+
+  let correct = 0;
+  state.questions.forEach(q=>{
+    const sel = state.answers[q.id];
+    const isCorrect = sel === q.correctDisplayIndex;
+    if(isCorrect) correct++;
+    const card = document.getElementById('qcard_'+q.id);
+    card.classList.add(isCorrect?'correct':'wrong');
+    const wrap = document.getElementById('opts_'+q.id);
+    wrap.querySelectorAll('.opt-row').forEach(el=>{
+      const idx = parseInt(el.dataset.idx,10);
+      el.classList.add('locked');
+      if(idx===q.correctDisplayIndex) el.classList.add('correct-opt');
+      else if(idx===sel && !isCorrect) el.classList.add('wrong-opt');
+    });
+    const exp = document.getElementById('explain_'+q.id);
+    exp.classList.add('show');
+    const viLine = q.vi ? `<p class="text-slate-500 italic mt-1">🇻🇳 ${q.vi}</p>` : '';
+    exp.innerHTML = `<p class="${isCorrect?'text-emerald-700':'text-rose-600'} font-bold">${isCorrect?'✅ Chính xác!':(sel===undefined?'⚪ Bạn chưa chọn đáp án.':'❌ Chưa đúng.')} ${q.explanation}</p>${viLine}`;
+  });
+
+  const pct = Math.round(correct/TOTAL*100);
+  document.getElementById('resultScore').textContent = correct;
+  document.getElementById('resultPct').textContent = pct;
+  const mm = Math.floor(elapsed/60), ss = elapsed%60;
+  document.getElementById('resultTime').textContent = mm+':'+String(ss).padStart(2,'0');
+  let emoji='🙂', title='Đã hoàn thành!';
+  if(pct>=90){ emoji='🏆'; title='Xuất sắc!'; }
+  else if(pct>=70){ emoji='🎉'; title='Làm tốt lắm!'; }
+  else if(pct>=50){ emoji='💪'; title='Khá ổn, cố gắng thêm nhé!'; }
+  else { emoji='📖'; title='Cần ôn tập thêm!'; }
+  document.getElementById('resultEmoji').textContent = emoji;
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultBanner').classList.add('show');
+  document.getElementById('resultBanner').scrollIntoView({behavior:'smooth', block:'start'});
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true; btn.classList.add('opacity-50');
+
+  const h = loadHistory();
+  h.attempts = (h.attempts||0)+1;
+  h.best = Math.max(h.best||0, correct);
+  saveHistory(h);
+  updateHistoryLabels();
+
+  if(pct>=70) launchConfetti();
+}
+
+function retryTest(){ init(); window.scrollTo({top:0, behavior:'smooth'}); }
+
+function scrollToReview(){
+  document.getElementById('quizArea').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function launchConfetti(){
+  const wrap = document.getElementById('confettiWrap');
+  const colors=['#1e3a8a','#059669','#0ea5e9','#facc15','#0f766e'];
+  for(let i=0;i<50;i++){
+    const el=document.createElement('div');
+    el.className='confetti-piece';
+    el.style.left=(Math.random()*100)+'vw';
+    el.style.background=colors[Math.floor(Math.random()*colors.length)];
+    el.style.animationDuration=(2+Math.random()*1.5)+'s';
+    el.style.top='-20px';
+    wrap.appendChild(el);
+    setTimeout(()=>el.remove(), 3600);
+  }
+}
+
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 3 - Test Trắc nghiệm Từ vựng & Ngữ pháp - Tiếng Anh 8</title>
+<meta name="apple-mobile-web-app-title" content="U3 Vocab-Grammar Test">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+  :root{ --accent:#6d28d9; --accent2:#db2777; }
+  * { box-sizing: border-box; }
+  body { font-family:'Nunito',sans-serif; background:#faf5ff; }
+  h1,h2,.baloo{ font-family:'Baloo 2',sans-serif; }
+  .hero-gradient{ background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 55%, #db2777 100%); }
+  .qcard{ background:#fff; border-radius:1.1rem; box-shadow:0 1px 4px rgba(0,0,0,.06); border:2px solid #e2e8f0; transition:border .2s, box-shadow .2s; }
+  .qcard.answered{ border-color:#ddd6fe; }
+  .qcard.correct{ border-color:#22c55e; background:#f0fdf4; }
+  .qcard.wrong{ border-color:#ef4444; background:#fef2f2; }
+  .opt-row{ cursor:pointer; transition: all .15s; border:2px solid #e2e8f0; border-radius:.8rem; }
+  .opt-row:hover{ border-color:var(--accent); background:#faf5ff; }
+  .opt-row.selected{ border-color:#6d28d9; background:#f3e8ff; font-weight:800; }
+  .opt-row.correct-opt{ border-color:#22c55e !important; background:#dcfce7 !important; font-weight:800; }
+  .opt-row.wrong-opt{ border-color:#ef4444 !important; background:#fee2e2 !important; font-weight:800; }
+  .opt-row.locked{ cursor:default; pointer-events:none; }
+  .explain-box{ display:none; background:#fffbeb; border:1px solid #fde68a; border-radius:.7rem; padding:.6rem .9rem; font-size:.85rem; color:#334155; }
+  .explain-box.show{ display:block; }
+  .sticky-bar{ position:sticky; bottom:0; z-index:40; }
+  .progress-fill{ transition: width .3s ease; }
+  .badge-pill{ background:#fff; border:2px solid #ddd6fe; border-radius:999px; padding:.3rem .8rem; font-size:.75rem; font-weight:800; color:#5b21b6; }
+  .score-ring{ animation: popIn .4s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn{ from{transform:scale(.5); opacity:0;} to{transform:scale(1); opacity:1;} }
+  .confetti-wrap{ position:fixed; inset:0; pointer-events:none; z-index:9999; }
+  .confetti-piece{ position:absolute; width:10px; height:10px; border-radius:2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall{ 0%{transform:translateY(-20px) rotate(0deg); opacity:1;} 100%{transform:translateY(100vh) rotate(720deg); opacity:0;} }
+  .section-divider{ background:linear-gradient(135deg,#4c1d95,#db2777); }
+  #resultBanner{ display:none; }
+  #resultBanner.show{ display:block; }
+  .timer-pill{ font-variant-numeric: tabular-nums; }
+  .timer-pill.low{ color:#fca5a5 !important; }
+  .accordion-btn{ cursor:pointer; transition: background .15s; }
+  .accordion-body{ display:none; }
+  .accordion-body.open{ display:block; }
+  .accordion-chevron{ transition: transform .2s; }
+  .accordion-btn.open .accordion-chevron{ transform: rotate(180deg); }
+  .vocab-row{ border-bottom:1px solid #f1f5f9; padding:.55rem 0; }
+  .vocab-row:last-child{ border-bottom:none; }
+  .passage-en{ background:#fff; border:1px solid #e2e8f0; border-radius:.9rem; padding:.9rem 1.1rem; line-height:1.85; font-size:.92rem; color:#334155; }
+  .passage-vi{ display:none; background:#fffbeb; border:1px solid #fde68a; border-radius:.9rem; padding:.9rem 1.1rem; margin-top:.6rem; line-height:1.85; font-size:.92rem; color:#334155; }
+  .passage-vi.show{ display:block; }
+  .grammar-tip-box{ background:#eff6ff; border:1px solid #bfdbfe; border-radius:.9rem; padding:1rem 1.2rem; line-height:1.9; font-size:.92rem; color:#334155; }
+</style>
+</head>
+<body class="min-h-screen pb-10">
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<header class="hero-gradient text-white py-8 px-4 text-center shadow-xl relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <div class="absolute top-4 left-8 text-6xl">📱</div>
+    <div class="absolute top-2 right-12 text-5xl">🎮</div>
+    <div class="absolute bottom-2 left-1/3 text-4xl">♟️</div>
+    <div class="absolute bottom-4 right-1/4 text-5xl">🎨</div>
+  </div>
+  <p class="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Tiếng Anh 8 · Unit 3 · Teenagers</p>
+  <h1 class="text-3xl md:text-5xl font-extrabold drop-shadow-lg">📝 Test trắc nghiệm: Từ vựng &amp; Ngữ pháp</h1>
+  <p class="mt-2 text-base md:text-lg opacity-90 font-semibold">75 câu hỏi · Từ vựng, Ngữ pháp, Đọc hiểu &amp; Dịch nghĩa</p>
+  <div class="mt-5 max-w-2xl mx-auto flex flex-wrap items-center justify-center gap-3">
+    <span class="badge-pill"><i class="fa-solid fa-star mr-1"></i>Điểm cao nhất: <span id="bestScoreLabel">--</span></span>
+    <span class="badge-pill"><i class="fa-solid fa-rotate mr-1"></i>Số lần làm: <span id="attemptCountLabel">0</span></span>
+    <span class="badge-pill timer-pill"><i class="fa-solid fa-clock mr-1"></i><span id="timerLabel">35:00</span></span>
+  </div>
+  <div class="mt-4 max-w-2xl mx-auto">
+    <div class="flex justify-between text-xs font-bold opacity-80 mb-1">
+      <span>Tiến độ trả lời</span>
+      <span id="progressText">0 / 75 câu</span>
+    </div>
+    <div class="bg-white/20 rounded-full h-3 overflow-hidden">
+      <div id="progressBar" class="bg-white rounded-full h-3 progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-3xl mx-auto px-4 mt-6">
+
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 mb-6 text-sm text-slate-600">
+    <p class="font-bold text-slate-700 mb-1"><i class="fa-solid fa-circle-info text-violet-600 mr-1"></i>Hướng dẫn làm bài</p>
+    <p>Trước khi làm bài, hãy mở phần <b>"📚 Ôn tập & Dịch nghĩa Unit 3"</b> bên dưới để xem lại từ vựng, ngữ pháp và bản dịch tiếng Việt của các bài đọc trong Unit 3. Sau đó chọn <b>1 đáp án đúng</b> cho mỗi câu hỏi trắc nghiệm — gồm từ vựng, ngữ pháp, đọc hiểu bài đọc và luyện dịch nghĩa. Bấm <b>"Nộp bài"</b> để xem điểm và giải thích. Bấm <b>"Làm lại"</b> để nhận đề mới và luyện tập không giới hạn số lần.</p>
+  </div>
+
+  <!-- ============ REVIEW & TRANSLATION SECTION ============ -->
+  <div class="bg-white rounded-2xl shadow-sm border-2 border-violet-200 mb-6 overflow-hidden">
+    <button class="accordion-btn open w-full flex items-center justify-between px-4 py-3 bg-violet-50 font-extrabold text-violet-800" onclick="toggleAccordion('reviewMain')">
+      <span><i class="fa-solid fa-book-open-reader mr-2"></i>📚 Ôn tập &amp; Dịch nghĩa Unit 3</span>
+      <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+    </button>
+    <div class="accordion-body open px-4 py-4 space-y-4" id="acc_reviewMain">
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('vocabList')">
+          <span>🌱 Từ vựng Unit 3 (30 từ/cụm từ)</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-2" id="acc_vocabList"></div>
+      </div>
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('grammarTip')">
+          <span>📐 Ngữ pháp: câu đơn &amp; câu ghép</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-3" id="acc_grammarTip">
+          <div class="grammar-tip-box">
+            <b>Câu đơn (Simple sentence):</b> chỉ có 1 mệnh đề độc lập.<br>
+            Ví dụ: <i>Minh has some problems with his schoolwork.</i><br><br>
+            <b>Câu ghép (Compound sentence):</b> có 2 mệnh đề độc lập trở lên, nối với nhau bằng:<br>
+            – <b>Liên từ kết hợp</b> (coordinating conjunction): <b>for, and, nor, but, or, yet, so</b>.<br>
+            Ví dụ: <i>Mai bought many books, but she likes chess more.</i><br>
+            – <b>Trạng từ liên kết</b> (conjunctive adverb): <b>however, therefore, otherwise</b> — thường đứng sau dấu chấm phẩy ";" và trước dấu phẩy ",".<br>
+            Ví dụ: <i>Mark is hard-working; therefore, he usually gets high scores on exams.</i>
+          </div>
+        </div>
+      </div>
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('passages')">
+          <span>📖 Bài đọc Unit 3 (có bản dịch)</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-3 space-y-4" id="acc_passages"></div>
+      </div>
+
+    </div>
+  </div>
+  <!-- ============ END REVIEW SECTION ============ -->
+
+  <div id="resultBanner" class="mb-6">
+    <div class="bg-white rounded-2xl shadow-lg border-2 border-violet-300 p-6 text-center score-ring">
+      <p id="resultEmoji" class="text-5xl mb-2">🎉</p>
+      <h2 class="text-2xl font-extrabold text-violet-700" id="resultTitle">Hoàn thành!</h2>
+      <p class="text-4xl font-black text-slate-800 mt-2"><span id="resultScore">0</span>/75</p>
+      <p class="text-slate-500 font-bold mt-1"><span id="resultPct">0</span>% chính xác · Thời gian: <span id="resultTime">0:00</span></p>
+      <div class="flex flex-wrap justify-center gap-3 mt-4">
+        <button onclick="retryTest()" class="bg-violet-700 hover:bg-violet-800 text-white font-bold px-5 py-2.5 rounded-xl shadow"><i class="fa-solid fa-rotate-right mr-1"></i>Làm lại (đề mới)</button>
+        <button onclick="scrollToReview()" class="bg-white border-2 border-violet-300 text-violet-700 font-bold px-5 py-2.5 rounded-xl"><i class="fa-solid fa-magnifying-glass mr-1"></i>Xem lại chi tiết</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="quizArea"></div>
+
+  <div class="sticky-bar bg-white/95 backdrop-blur border-t border-slate-200 mt-6 py-3 px-4 rounded-t-2xl shadow-[0_-4px_14px_rgba(0,0,0,.06)] flex items-center justify-between gap-3">
+    <span class="text-xs md:text-sm font-bold text-slate-500"><span id="answeredCount">0</span>/75 câu đã trả lời</span>
+    <button id="submitBtn" onclick="submitTest()" class="bg-gradient-to-r from-violet-800 to-pink-600 text-white font-extrabold px-6 py-2.5 rounded-xl shadow-lg hover:brightness-110"><i class="fa-solid fa-flag-checkered mr-1"></i>Nộp bài</button>
+  </div>
+
+</main>
+
+<script>
+/* ============================================================
+   REVIEW CONTENT: Unit 3 Vocabulary, Grammar rule, Passages (EN+VI)
+   ============================================================ */
+const VOCAB_LIST = [
+  {word:"upload", vi:"tải lên", example:"I love to upload pictures of my daily life on Instagram.", exVi:"Tôi thích tải ảnh về cuộc sống hằng ngày lên Instagram."},
+  {word:"download", vi:"tải xuống", example:"He downloaded a new app to chat with his friends.", exVi:"Cậu ấy tải một ứng dụng mới để trò chuyện với bạn bè."},
+  {word:"browse", vi:"lướt, duyệt (web)", example:"She likes to browse new websites in her free time.", exVi:"Cô ấy thích lướt các trang web mới lúc rảnh rỗi."},
+  {word:"check notifications", vi:"kiểm tra thông báo", example:"I usually check notifications first thing in the morning.", exVi:"Tôi thường kiểm tra thông báo ngay khi thức dậy."},
+  {word:"log on", vi:"đăng nhập", example:"You need to log on to your account first.", exVi:"Bạn cần đăng nhập vào tài khoản trước."},
+  {word:"connect with friends", vi:"kết nối với bạn bè", example:"Social media helps me connect with friends.", exVi:"Mạng xã hội giúp tôi kết nối với bạn bè."},
+  {word:"forum", vi:"diễn đàn", example:"Our class has a forum where we discuss homework.", exVi:"Lớp tôi có một diễn đàn để thảo luận bài tập."},
+  {word:"club", vi:"câu lạc bộ", example:"She joined the chess club this year.", exVi:"Cô ấy đã tham gia câu lạc bộ cờ vua năm nay."},
+  {word:"pressure", vi:"áp lực", example:"Teens often feel a lot of pressure from exams.", exVi:"Thanh thiếu niên thường chịu nhiều áp lực từ các kỳ thi."},
+  {word:"expectations", vi:"kỳ vọng", example:"It's hard to meet our parents' expectations.", exVi:"Thật khó để đáp ứng kỳ vọng của bố mẹ."},
+  {word:"bully", vi:"kẻ bắt nạt / bắt nạt", example:"Nobody likes a bully at school.", exVi:"Không ai thích một kẻ bắt nạt ở trường."},
+  {word:"concentrate", vi:"tập trung", example:"It's hard to concentrate when it's noisy.", exVi:"Thật khó để tập trung khi ồn ào."},
+  {word:"coach", vi:"huấn luyện viên / huấn luyện", example:"Who will coach the new music club?", exVi:"Ai sẽ huấn luyện câu lạc bộ âm nhạc mới?"},
+  {word:"user-friendly", vi:"dễ sử dụng, thân thiện với người dùng", example:"I chose this app because it's user-friendly.", exVi:"Tôi chọn ứng dụng này vì nó dễ sử dụng."},
+  {word:"stress", vi:"căng thẳng", example:"Too much schoolwork can cause a lot of stress.", exVi:"Quá nhiều bài vở có thể gây ra nhiều căng thẳng."},
+  {word:"midterm test", vi:"bài kiểm tra giữa kỳ", example:"We are preparing for our midterm test.", exVi:"Chúng tôi đang chuẩn bị cho bài kiểm tra giữa kỳ."},
+  {word:"peer pressure", vi:"áp lực từ bạn bè cùng trang lứa", example:"Teenagers sometimes give in to peer pressure.", exVi:"Thanh thiếu niên đôi khi nhượng bộ trước áp lực bạn bè."},
+  {word:"schoolwork", vi:"bài vở, việc học ở trường", example:"She has too much schoolwork this week.", exVi:"Tuần này cô ấy có quá nhiều bài vở."},
+  {word:"sensitive", vi:"nhạy cảm", example:"Be careful, she's very sensitive about her weight.", exVi:"Cẩn thận, cô ấy rất nhạy cảm về cân nặng của mình."},
+  {word:"request", vi:"yêu cầu, đề nghị", example:"Can you request more information about the club?", exVi:"Bạn có thể yêu cầu thêm thông tin về câu lạc bộ không?"},
+  {word:"tolerant", vi:"khoan dung, bao dung", example:"Teens need tolerant teachers at schools.", exVi:"Thanh thiếu niên cần những giáo viên khoan dung."},
+  {word:"talkative", vi:"hay nói, hoạt ngôn", example:"Teenagers are often very active and talkative.", exVi:"Thanh thiếu niên thường rất năng động và hoạt ngôn."},
+  {word:"active", vi:"năng động, tích cực", example:"She is an active member of our club.", exVi:"Cô ấy là một thành viên năng động của câu lạc bộ."},
+  {word:"relaxing", vi:"thư giãn, giúp thư giãn", example:"Playing badminton is very relaxing.", exVi:"Chơi cầu lông rất giúp thư giãn."},
+  {word:"confident", vi:"tự tin", example:"You should feel confident about yourself.", exVi:"Bạn nên cảm thấy tự tin về bản thân."},
+  {word:"hobby", vi:"sở thích, thú vui", example:"Reading is my favourite hobby.", exVi:"Đọc sách là sở thích yêu thích của tôi."},
+  {word:"get along with", vi:"hòa hợp với", example:"I get along well with my classmates.", exVi:"Tôi hòa hợp tốt với các bạn cùng lớp."},
+  {word:"role model", vi:"tấm gương, hình mẫu", example:"My mother is my role model.", exVi:"Mẹ tôi là tấm gương của tôi."},
+  {word:"argument", vi:"cuộc tranh cãi, tranh luận", example:"They had a small argument about the club rules.", exVi:"Họ có một cuộc tranh cãi nhỏ về quy định câu lạc bộ."},
+  {word:"supportive", vi:"hay giúp đỡ, ủng hộ", example:"My friends are always supportive when I have problems.", exVi:"Bạn bè tôi luôn ủng hộ khi tôi gặp khó khăn."},
+];
+
+const PASSAGES_REVIEW = [
+  {
+    title:"📄 Bài đọc: Which club did you join? (Mai & Tom)",
+    en:"<b>Mai:</b> Tom, so which club did you join?<br><b>Tom:</b> I'm interested in two clubs: badminton and chess.<br><b>Mai:</b> I like badminton, too. It's relaxing.<br><b>Tom:</b> Yes, I play it to keep fit. So let's join that club together.<br><b>Mai:</b> OK. It's on Tuesdays and Fridays from 5:00 p.m. to 6:30 p.m. It starts 30 minutes after school, so we have enough time to get some snacks beforehand. I know you like chess. Will you join the chess club?<br><b>Tom:</b> Well, I started playing it five years ago. My mum first sent me to a chess club because she wanted me to be more focused. Now I find that I can concentrate better. Do you like chess?<br><b>Mai:</b> Let's join the chess club too. Actually, this year there is a new arts and crafts club, and I want to join it. I hear that the members will work together in small community service projects. Members can do art projects and also improve their practical skills too.<br><b>Tom:</b> Awesome, Mai. Who will coach that club?<br><b>Mai:</b> Ms Hoa, the art teacher. She will help us connect with the community.",
+    vi:"<b>Mai:</b> Tom, vậy bạn đã tham gia câu lạc bộ nào?<br><b>Tom:</b> Mình quan tâm đến hai câu lạc bộ: cầu lông và cờ vua.<br><b>Mai:</b> Mình cũng thích cầu lông. Nó giúp thư giãn.<br><b>Tom:</b> Ừ, mình chơi để giữ dáng khỏe mạnh. Vậy chúng ta cùng tham gia câu lạc bộ đó nhé.<br><b>Mai:</b> Được. Câu lạc bộ sinh hoạt vào thứ Ba và thứ Sáu, từ 5 giờ đến 6 giờ 30 chiều. Nó bắt đầu 30 phút sau khi tan học, nên chúng ta có đủ thời gian ăn nhẹ trước. Mình biết bạn thích cờ vua. Bạn có tham gia câu lạc bộ cờ vua không?<br><b>Tom:</b> À, mình bắt đầu chơi cờ vua từ năm năm trước. Lúc đầu mẹ mình gửi mình đến câu lạc bộ cờ vua vì bà muốn mình tập trung hơn. Giờ mình thấy mình có thể tập trung tốt hơn. Bạn có thích cờ vua không?<br><b>Mai:</b> Chúng ta cùng tham gia câu lạc bộ cờ vua luôn nhé. Thật ra, năm nay có một câu lạc bộ mỹ thuật - thủ công mới, và mình muốn tham gia. Mình nghe nói các thành viên sẽ cùng làm các dự án phục vụ cộng đồng nhỏ. Thành viên có thể làm các dự án nghệ thuật và cải thiện kỹ năng thực hành.<br><b>Tom:</b> Tuyệt quá, Mai. Ai sẽ huấn luyện câu lạc bộ đó?<br><b>Mai:</b> Cô Hoa, giáo viên mỹ thuật. Cô ấy sẽ giúp chúng ta kết nối với cộng đồng."
+  },
+  {
+    title:"📄 Bài đọc: Social media popular among teens",
+    en:"<b>Ann:</b> I think YouTube is the most popular social media site. I log on to it daily. I upload videos and watch other people's videos.<br><br><b>Tom:</b> I use Facebook to connect with friends, post pictures, and share others' posts. I use it daily. It's user-friendly.<br><br><b>Trang:</b> I love Instagram. It's really fun, and easy to browse. People like my photos, so I feel happy. That's why I often check my notifications.<br><br><b>Nam:</b> I have a Facebook page. I don't often update it, but I often use Messenger to discuss schoolwork with my classmates.",
+    vi:"<b>Ann:</b> Mình nghĩ YouTube là trang mạng xã hội phổ biến nhất. Mình đăng nhập vào đó hằng ngày. Mình tải video lên và xem video của người khác.<br><br><b>Tom:</b> Mình dùng Facebook để kết nối với bạn bè, đăng ảnh, và chia sẻ bài viết của người khác. Mình dùng nó hằng ngày. Nó rất dễ sử dụng.<br><br><b>Trang:</b> Mình rất thích Instagram. Nó thực sự thú vị và dễ lướt xem. Mọi người thích ảnh của mình, nên mình cảm thấy vui. Đó là lý do mình thường kiểm tra thông báo.<br><br><b>Nam:</b> Mình có một trang Facebook. Mình không thường cập nhật nó, nhưng mình thường dùng Messenger để thảo luận bài vở với các bạn cùng lớp."
+  }
+];
+
+function renderReviewSection(){
+  document.getElementById('acc_vocabList').innerHTML = VOCAB_LIST.map(v=>`
+    <div class="vocab-row flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+      <div><span class="font-extrabold text-violet-700">${v.word}</span> <span class="text-slate-400">— ${v.vi}</span></div>
+      <div class="text-xs text-slate-400 italic sm:text-right sm:max-w-[55%]">${v.example}<br>${v.exVi}</div>
+    </div>`).join('');
+
+  document.getElementById('acc_passages').innerHTML = PASSAGES_REVIEW.map((p,i)=>`
+    <div>
+      <p class="font-bold text-slate-700 text-sm mb-2">${p.title}</p>
+      <div class="passage-en">${p.en}</div>
+      <button type="button" onclick="togglePassageVi(${i})" class="mt-2 text-xs font-bold bg-white border-2 border-amber-300 text-amber-700 px-3 py-1.5 rounded-full">
+        <i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt
+      </button>
+      <div class="passage-vi" id="passvi_${i}"><b>🇻🇳 Bản dịch</b><br>${p.vi}</div>
+    </div>`).join('');
+}
+function togglePassageVi(i){ document.getElementById('passvi_'+i).classList.toggle('show'); }
+function toggleAccordion(key){
+  const btn = event.currentTarget;
+  btn.classList.toggle('open');
+  document.getElementById('acc_'+key).classList.toggle('open');
+}
+
+/* ============================================================
+   CONTENT: Unit 3 Vocabulary, Grammar, Reading & Translation Test
+   ============================================================ */
+const VOCAB_TEST = [
+  {id:"v1", prompt:"\"Upload\" nghĩa là gì?", options:["tải lên","lướt, duyệt web","kiểm tra","đăng nhập"], answer:0, explanation:"upload = tải lên.", vi:"upload = tải lên."},
+  {id:"v2", prompt:"\"Download\" nghĩa là gì?", options:["tải xuống","tải lên","chia sẻ","xóa"], answer:0, explanation:"download = tải xuống.", vi:"download = tải xuống."},
+  {id:"v3", prompt:"\"Browse\" nghĩa là gì?", options:["lướt, duyệt (web)","tải lên","kết nối","đăng nhập"], answer:0, explanation:"browse = lướt, duyệt web.", vi:"browse = lướt web."},
+  {id:"v4", prompt:"\"Check notifications\" nghĩa là gì?", options:["kiểm tra thông báo","tải video lên","đăng bài viết","xóa tài khoản"], answer:0, explanation:"check notifications = kiểm tra thông báo.", vi:"check notifications = kiểm tra thông báo."},
+  {id:"v5", prompt:"\"Log on\" nghĩa là gì?", options:["đăng nhập","đăng xuất","xóa dữ liệu","chia sẻ bài viết"], answer:0, explanation:"log on = đăng nhập.", vi:"log on = đăng nhập."},
+  {id:"v6", prompt:"\"Connect with friends\" nghĩa là gì?", options:["kết nối với bạn bè","chặn bạn bè","báo cáo bạn bè","theo dõi người lạ"], answer:0, explanation:"connect with friends = kết nối với bạn bè.", vi:"connect with friends = kết nối với bạn bè."},
+  {id:"v7", prompt:"Điền từ: Our class has a ________ where we discuss homework.", options:["forum","office","team","coach"], answer:0, explanation:"forum = diễn đàn.", vi:"Lớp chúng tôi có một diễn đàn để thảo luận bài tập."},
+  {id:"v8", prompt:"\"Pressure\" nghĩa là gì?", options:["áp lực","niềm vui","sự tự do","sự thư giãn"], answer:0, explanation:"pressure = áp lực.", vi:"pressure = áp lực."},
+  {id:"v9", prompt:"\"Expectations\" nghĩa là gì?", options:["kỳ vọng","thất vọng","sự sợ hãi","sự tức giận"], answer:0, explanation:"expectations = kỳ vọng.", vi:"expectations = kỳ vọng."},
+  {id:"v10", prompt:"\"Bully\" nghĩa là gì?", options:["kẻ bắt nạt","người bạn tốt","giáo viên","huấn luyện viên"], answer:0, explanation:"bully = kẻ bắt nạt.", vi:"bully = kẻ bắt nạt."},
+  {id:"v11", prompt:"\"Concentrate\" nghĩa là gì?", options:["tập trung","thư giãn","lo lắng","ngủ"], answer:0, explanation:"concentrate = tập trung.", vi:"concentrate = tập trung."},
+  {id:"v12", prompt:"\"Coach\" (trong ngữ cảnh câu lạc bộ) nghĩa là gì?", options:["huấn luyện viên","học sinh","phụ huynh","hiệu trưởng"], answer:0, explanation:"coach = huấn luyện viên.", vi:"coach = huấn luyện viên."},
+  {id:"v13", prompt:"\"User-friendly\" nghĩa là gì?", options:["dễ sử dụng","khó sử dụng","đắt tiền","lỗi thời"], answer:0, explanation:"user-friendly = dễ sử dụng, thân thiện với người dùng.", vi:"user-friendly = dễ sử dụng."},
+  {id:"v14", prompt:"\"Stress\" nghĩa là gì?", options:["căng thẳng","hạnh phúc","bình yên","tự tin"], answer:0, explanation:"stress = căng thẳng.", vi:"stress = căng thẳng."},
+  {id:"v15", prompt:"\"Midterm test\" nghĩa là gì?", options:["bài kiểm tra giữa kỳ","bài tập về nhà","kỳ nghỉ","dự án nhóm"], answer:0, explanation:"midterm test = bài kiểm tra giữa kỳ.", vi:"midterm test = bài kiểm tra giữa kỳ."},
+  {id:"v16", prompt:"\"Peer pressure\" nghĩa là gì?", options:["áp lực từ bạn bè cùng trang lứa","áp lực từ giáo viên","áp lực công việc","áp lực gia đình"], answer:0, explanation:"peer pressure = áp lực từ bạn bè cùng trang lứa.", vi:"peer pressure = áp lực từ bạn bè."},
+  {id:"v17", prompt:"\"Schoolwork\" nghĩa là gì?", options:["bài vở, việc học ở trường","việc nhà","công việc làm thêm","hoạt động thể thao"], answer:0, explanation:"schoolwork = bài vở ở trường.", vi:"schoolwork = bài vở ở trường."},
+  {id:"v18", prompt:"\"Sensitive\" nghĩa là gì?", options:["nhạy cảm","mạnh mẽ","vô tâm","vui vẻ"], answer:0, explanation:"sensitive = nhạy cảm.", vi:"sensitive = nhạy cảm."},
+  {id:"v19", prompt:"Điền từ: Can you ________ more information about the club?", options:["request","reject","report","relax"], answer:0, explanation:"request = yêu cầu, đề nghị.", vi:"Bạn có thể yêu cầu thêm thông tin về câu lạc bộ không?"},
+  {id:"v20", prompt:"\"Tolerant\" nghĩa là gì?", options:["khoan dung, bao dung","nghiêm khắc","nóng nảy","ích kỷ"], answer:0, explanation:"tolerant = khoan dung, bao dung.", vi:"tolerant = khoan dung."},
+  {id:"v21", prompt:"\"Talkative\" nghĩa là gì?", options:["hay nói, hoạt ngôn","ít nói","nhút nhát","trầm lặng"], answer:0, explanation:"talkative = hay nói, hoạt ngôn.", vi:"talkative = hay nói."},
+  {id:"v22", prompt:"\"Active\" nghĩa là gì?", options:["năng động, tích cực","lười biếng","chậm chạp","thụ động"], answer:0, explanation:"active = năng động, tích cực.", vi:"active = năng động."},
+  {id:"v23", prompt:"\"Relaxing\" nghĩa là gì?", options:["thư giãn","căng thẳng","mệt mỏi","áp lực"], answer:0, explanation:"relaxing = giúp thư giãn.", vi:"relaxing = giúp thư giãn."},
+  {id:"v24", prompt:"\"Confident\" nghĩa là gì?", options:["tự tin","rụt rè","lo lắng","xấu hổ"], answer:0, explanation:"confident = tự tin.", vi:"confident = tự tin."},
+  {id:"v25", prompt:"\"Hobby\" nghĩa là gì?", options:["sở thích, thú vui","áp lực","kỳ vọng","bài kiểm tra"], answer:0, explanation:"hobby = sở thích, thú vui.", vi:"hobby = sở thích."},
+  {id:"v26", prompt:"\"Get along with\" nghĩa là gì?", options:["hòa hợp với","cãi nhau với","tránh xa","cạnh tranh với"], answer:0, explanation:"get along with = hòa hợp với.", vi:"get along with = hòa hợp với."},
+  {id:"v27", prompt:"\"Role model\" nghĩa là gì?", options:["tấm gương, hình mẫu","kẻ bắt nạt","người lạ","đối thủ"], answer:0, explanation:"role model = tấm gương, hình mẫu.", vi:"role model = tấm gương."},
+  {id:"v28", prompt:"\"Argument\" nghĩa là gì?", options:["cuộc tranh cãi, tranh luận","cuộc gặp gỡ vui vẻ","lời khen","lời xin lỗi"], answer:0, explanation:"argument = cuộc tranh cãi, tranh luận.", vi:"argument = tranh cãi."},
+  {id:"v29", prompt:"\"Supportive\" nghĩa là gì?", options:["hay giúp đỡ, ủng hộ","thờ ơ, lãnh đạm","ích kỷ","đố kỵ"], answer:0, explanation:"supportive = hay giúp đỡ, ủng hộ.", vi:"supportive = hay giúp đỡ."},
+  {id:"v30", prompt:"Điền từ: I chose this app because it's ________.", options:["user-friendly","expensive","boring","old-fashioned"], answer:0, explanation:"user-friendly = dễ sử dụng.", vi:"Tôi chọn ứng dụng này vì nó dễ sử dụng."},
+];
+
+const GRAMMAR_TEST = [
+  {id:"g1", prompt:"A compound sentence needs at least how many independent clauses?", options:["Two","One","Three","Four"], answer:0, explanation:"Câu ghép cần ít nhất 2 mệnh đề độc lập.", vi:"Câu ghép gồm 2 mệnh đề độc lập trở lên."},
+  {id:"g2", prompt:"Which of these is a coordinating conjunction?", options:["but","however","otherwise","therefore"], answer:0, explanation:"but nằm trong nhóm for/and/nor/but/or/yet/so.", vi:"but = nhưng (liên từ kết hợp)."},
+  {id:"g3", prompt:"Which of these is a conjunctive adverb?", options:["however","and","but","or"], answer:0, explanation:"however là trạng từ liên kết.", vi:"however = tuy nhiên (trạng từ liên kết)."},
+  {id:"g4", prompt:"Choose the SIMPLE sentence.", options:["Sports activities at school help me relax.","She plays chess well, and she won a prize.","He is a club member, but he never participates.","Teens should learn teamwork, and they should have communication skills."], answer:0, explanation:"Câu này chỉ có 1 mệnh đề → câu đơn.", vi:"Các hoạt động thể thao ở trường giúp tôi thư giãn."},
+  {id:"g5", prompt:"Choose the COMPOUND sentence.", options:["She is a smart student, and she is an active club member.","We work together on different projects.","Teens need good friends and tolerant teachers.","Sports activities at school help me relax."], answer:0, explanation:"Có 2 mệnh đề nối bằng \"and\" → câu ghép.", vi:"Cô ấy là học sinh giỏi, và cô ấy là thành viên tích cực của câu lạc bộ."},
+  {id:"g6", prompt:"Parents should give teens some freedom, ________ they should also set limits.", options:["but","for","so","and"], answer:0, explanation:"but thể hiện sự tương phản.", vi:"Bố mẹ nên cho con một số tự do, nhưng cũng nên đặt giới hạn."},
+  {id:"g7", prompt:"We don't cheat on exams, ________ it is a wrong thing to do.", options:["for","but","so","or"], answer:0, explanation:"for mang nghĩa \"bởi vì\".", vi:"Chúng tôi không gian lận thi cử, vì đó là việc làm sai trái."},
+  {id:"g8", prompt:"Mai bought many books, ________ she likes chess more.", options:["but","so","for","and"], answer:0, explanation:"but thể hiện sự tương phản.", vi:"Mai mua nhiều sách, nhưng cô ấy thích chơi cờ hơn."},
+  {id:"g9", prompt:"Tom felt stressed; ________, he tried to finish his homework.", options:["however","therefore","otherwise","so"], answer:0, explanation:"however thể hiện sự tương phản.", vi:"Tom cảm thấy căng thẳng; tuy nhiên, cậu ấy vẫn cố hoàn thành bài tập."},
+  {id:"g10", prompt:"Lan wanted to join the school music club; ________ she can't sing or play any instruments.", options:["however","therefore","otherwise","so"], answer:0, explanation:"however thể hiện sự tương phản.", vi:"Lan muốn tham gia câu lạc bộ âm nhạc; tuy nhiên cô ấy không biết hát hay chơi nhạc cụ nào."},
+  {id:"g11", prompt:"He isn't a member of the chess club; ________ he didn't join the chess competition.", options:["therefore","however","otherwise","but"], answer:0, explanation:"therefore thể hiện kết quả.", vi:"Cậu ấy không phải thành viên câu lạc bộ cờ vua; vì vậy cậu ấy không tham gia cuộc thi."},
+  {id:"g12", prompt:"We will have a short holiday; ________ we will feel very stressed.", options:["otherwise","however","therefore","so"], answer:0, explanation:"otherwise = nếu không thì.", vi:"Chúng ta sẽ có kỳ nghỉ ngắn; nếu không chúng ta sẽ cảm thấy rất căng thẳng."},
+  {id:"g13", prompt:"Mai is the head of the music club, ________ she knows the members very well.", options:["so","but","or","however"], answer:0, explanation:"so thể hiện kết quả.", vi:"Mai là trưởng câu lạc bộ âm nhạc, nên cô ấy biết rõ các thành viên."},
+  {id:"g14", prompt:"My friend likes showing off her new things; ________, she often posts pictures on social media.", options:["therefore","however","otherwise","but"], answer:0, explanation:"therefore thể hiện kết quả.", vi:"Bạn tôi thích khoe đồ mới; vì vậy cô ấy thường đăng ảnh lên mạng xã hội."},
+  {id:"g15", prompt:"Choose the sentence that correctly uses a semicolon + conjunctive adverb.", options:["She is very sensitive; therefore, don't comment on her hairstyle.","She is very sensitive, therefore don't comment on her hairstyle.","She is very sensitive but therefore don't comment.","She is very sensitive; but don't comment."], answer:0, explanation:"Trạng từ liên kết thường đứng sau \";\" và trước \",\".", vi:"Cô ấy rất nhạy cảm; vì vậy đừng bình luận về kiểu tóc của cô ấy."},
+  {id:"g16", prompt:"Choose the sentence that is grammatically INCORRECT as a compound sentence.", options:["She likes badminton she plays it every week.","She likes badminton, and she plays it every week.","She likes badminton, but she doesn't like chess.","She likes badminton; however, she doesn't like chess."], answer:0, explanation:"Thiếu liên từ/dấu câu nối 2 mệnh đề → lỗi câu chạy (run-on sentence).", vi:"Câu A thiếu liên từ hoặc dấu câu để nối hai mệnh đề."},
+  {id:"g17", prompt:"\"Teenagers are often very active and talkative.\" — This sentence is ________.", options:["simple","compound"], answer:0, explanation:"\"and\" nối 2 tính từ, không nối 2 mệnh đề → câu đơn.", vi:"Thanh thiếu niên thường rất năng động và hoạt ngôn."},
+  {id:"g18", prompt:"\"He often chats with his friends on Facebook Messenger.\" — This sentence is ________.", options:["simple","compound"], answer:0, explanation:"Chỉ có 1 mệnh đề → câu đơn.", vi:"Cậu ấy thường trò chuyện với bạn bè qua Facebook Messenger."},
+  {id:"g19", prompt:"\"She is a smart student, and she is an active member of our club.\" — This sentence is ________.", options:["compound","simple"], answer:0, explanation:"Có 2 mệnh đề nối bằng \"and\" → câu ghép.", vi:"Cô ấy là học sinh giỏi, và cô ấy là thành viên tích cực của câu lạc bộ."},
+  {id:"g20", prompt:"\"My friends and I joined a sports competition last year.\" — This sentence is ________.", options:["simple","compound"], answer:0, explanation:"\"and\" nối 2 chủ ngữ, chỉ có 1 mệnh đề → câu đơn.", vi:"Bạn bè tôi và tôi đã tham gia một cuộc thi thể thao năm ngoái."},
+];
+
+const READING_TEST = [
+  // ---- Passage 1: Which club did you join? (Mai & Tom) ----
+  {id:"r1", prompt:"[Bài đọc 1] Which two clubs is Tom interested in?", options:["Badminton and chess.","Music and art.","Football and swimming.","Reading and chess."], answer:0, explanation:"\"I'm interested in two clubs: badminton and chess.\"", vi:"Tom quan tâm đến câu lạc bộ cầu lông và cờ vua."},
+  {id:"r2", prompt:"[Bài đọc 1] What time does the badminton club meet?", options:["5:00 p.m. to 6:30 p.m. on Tuesdays and Fridays.","4:00 p.m. to 5:00 p.m. on Mondays.","After school every day.","Only on Sundays."], answer:0, explanation:"\"It's on Tuesdays and Fridays from 5:00 p.m. to 6:30 p.m.\"", vi:"Câu lạc bộ cầu lông sinh hoạt từ 5 giờ đến 6 giờ 30 chiều thứ Ba và thứ Sáu."},
+  {id:"r3", prompt:"[Bài đọc 1] Why did Tom's mum first send him to the chess club?", options:["Because she wanted him to be more focused.","Because he was too active.","Because he wanted to become a professional player.","Because it was compulsory at school."], answer:0, explanation:"\"My mum first sent me to a chess club because she wanted me to be more focused.\"", vi:"Mẹ Tom muốn cậu tập trung hơn."},
+  {id:"r4", prompt:"[Bài đọc 1] What will members of the new arts and crafts club do?", options:["Work together on small community service projects.","Only paint pictures at home.","Compete in national art contests.","Sell their artwork online."], answer:0, explanation:"\"the members will work together in small community service projects.\"", vi:"Thành viên sẽ cùng làm các dự án phục vụ cộng đồng nhỏ."},
+  {id:"r5", prompt:"[Bài đọc 1] Who will coach the arts and crafts club?", options:["Ms Hoa, the art teacher.","Tom's mother.","The school principal.","A professional artist from the city."], answer:0, explanation:"\"Ms Hoa, the art teacher. She will help us connect with the community.\"", vi:"Cô Hoa, giáo viên mỹ thuật, sẽ huấn luyện câu lạc bộ."},
+  // ---- Passage 2: Social media popular among teens ----
+  {id:"r6", prompt:"[Bài đọc 2] What does Ann do on YouTube?", options:["Uploads videos and watches other people's videos.","Only chats with friends.","Sells products online.","Studies for exams."], answer:0, explanation:"\"I upload videos and watch other people's videos.\"", vi:"Ann tải video lên và xem video của người khác."},
+  {id:"r7", prompt:"[Bài đọc 2] Why does Tom like using Facebook?", options:["Because it's user-friendly.","Because it's expensive.","Because it has no ads.","Because it's very new."], answer:0, explanation:"\"It's user-friendly.\"", vi:"Vì Facebook dễ sử dụng."},
+  {id:"r8", prompt:"[Bài đọc 2] Why does Trang often check her notifications?", options:["Because people like her photos and she feels happy.","Because she is worried about exams.","Because she wants to sell things online.","Because her phone reminds her every hour."], answer:0, explanation:"\"People like my photos, so I feel happy. That's why I often check my notifications.\"", vi:"Vì mọi người thích ảnh của cô ấy nên cô ấy cảm thấy vui."},
+  {id:"r9", prompt:"[Bài đọc 2] What does Nam use Messenger for?", options:["To discuss schoolwork with his classmates.","To watch videos.","To play online games.","To upload photos."], answer:0, explanation:"\"I often use Messenger to discuss schoolwork with my classmates.\"", vi:"Nam dùng Messenger để thảo luận bài vở với bạn cùng lớp."},
+  {id:"r10", prompt:"[Bài đọc 2] According to Trang, Instagram is ________ and easy to browse.", options:["really fun","really boring","very expensive","very old-fashioned"], answer:0, explanation:"\"I love Instagram. It's really fun, and easy to browse.\"", vi:"Instagram rất thú vị và dễ lướt xem."},
+];
+
+const TRANSLATION_TEST = [
+  {id:"t1", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"I'm interested in two clubs: badminton and chess.\"", options:["Mình quan tâm đến hai câu lạc bộ: cầu lông và cờ vua.","Mình chỉ thích chơi cờ vua.","Mình không thích bất kỳ câu lạc bộ nào.","Mình muốn thành lập một câu lạc bộ mới."], answer:0, explanation:"be interested in = quan tâm đến.", vi:""},
+  {id:"t2", prompt:"Chọn bản dịch tiếng Anh đúng: \"Cô ấy luôn sẵn lòng giúp đỡ bạn bè.\"", options:["She is always willing to help her friends.","She never helps her friends.","She often argues with her friends.","She avoids her friends."], answer:0, explanation:"luôn sẵn lòng giúp đỡ = always willing to help.", vi:""},
+  {id:"t3", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"Too much schoolwork can cause a lot of stress.\"", options:["Quá nhiều bài vở có thể gây ra nhiều căng thẳng.","Bài vở giúp học sinh thư giãn hơn.","Bài vở không ảnh hưởng đến học sinh.","Học sinh thích làm bài tập về nhà."], answer:0, explanation:"cause a lot of stress = gây ra nhiều căng thẳng.", vi:""},
+  {id:"t4", prompt:"Chọn bản dịch tiếng Anh đúng: \"Tôi chọn ứng dụng này vì nó dễ sử dụng.\"", options:["I chose this app because it's user-friendly.","I chose this app because it's expensive.","I chose this app because it's new.","I chose this app because it's popular."], answer:0, explanation:"dễ sử dụng = user-friendly.", vi:""},
+  {id:"t5", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"It's hard to concentrate when it's noisy.\"", options:["Thật khó để tập trung khi ồn ào.","Thật dễ để tập trung khi ồn ào.","Trời ồn ào giúp học tốt hơn.","Sự yên tĩnh khiến ta mất tập trung."], answer:0, explanation:"concentrate = tập trung.", vi:""},
+  {id:"t6", prompt:"Chọn bản dịch tiếng Anh đúng: \"Thanh thiếu niên cần bạn bè tốt và giáo viên khoan dung.\"", options:["Teens need good friends and tolerant teachers.","Teens need strict teachers and no friends.","Teens need money and free time.","Teens need less schoolwork and more games."], answer:0, explanation:"khoan dung = tolerant.", vi:""},
+  {id:"t7", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"She is very sensitive about her weight.\"", options:["Cô ấy rất nhạy cảm về cân nặng của mình.","Cô ấy không quan tâm đến cân nặng.","Cô ấy tự hào về cân nặng của mình.","Cô ấy muốn tăng cân."], answer:0, explanation:"sensitive about = nhạy cảm về.", vi:""},
+  {id:"t8", prompt:"Chọn bản dịch tiếng Anh đúng: \"Mạng xã hội giúp tôi kết nối với bạn bè.\"", options:["Social media helps me connect with friends.","Social media stops me from meeting friends.","Social media makes me feel lonely.","Social media is not useful at all."], answer:0, explanation:"kết nối với bạn bè = connect with friends.", vi:""},
+  {id:"t9", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"My mum first sent me to a chess club because she wanted me to be more focused.\"", options:["Lúc đầu mẹ tôi gửi tôi đến câu lạc bộ cờ vua vì bà muốn tôi tập trung hơn.","Mẹ tôi không muốn tôi chơi cờ vua.","Tôi tự đăng ký câu lạc bộ cờ vua vì thích chơi.","Câu lạc bộ cờ vua bắt buộc với mọi học sinh."], answer:0, explanation:"wanted me to be more focused = muốn tôi tập trung hơn.", vi:""},
+  {id:"t10", prompt:"Chọn bản dịch tiếng Anh đúng: \"Cô ấy là một thành viên tích cực của câu lạc bộ.\"", options:["She is an active member of the club.","She is a lazy member of the club.","She never joins the club activities.","She dislikes the club."], answer:0, explanation:"thành viên tích cực = active member.", vi:""},
+  {id:"t11", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"People like my photos, so I feel happy.\"", options:["Mọi người thích ảnh của tôi, nên tôi cảm thấy vui.","Mọi người không thích ảnh của tôi.","Tôi không đăng ảnh lên mạng xã hội.","Tôi cảm thấy buồn vì không ai bình luận."], answer:0, explanation:"so I feel happy = nên tôi cảm thấy vui.", vi:""},
+  {id:"t12", prompt:"Chọn bản dịch tiếng Anh đúng: \"Chơi cầu lông rất giúp thư giãn.\"", options:["Playing badminton is very relaxing.","Playing badminton is very stressful.","Playing badminton is very expensive.","Playing badminton is very dangerous."], answer:0, explanation:"giúp thư giãn = relaxing.", vi:""},
+  {id:"t13", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"Nobody likes a bully at school.\"", options:["Không ai thích một kẻ bắt nạt ở trường.","Ai cũng thích kẻ bắt nạt ở trường.","Kẻ bắt nạt luôn được yêu quý.","Trường học không có kẻ bắt nạt."], answer:0, explanation:"a bully = kẻ bắt nạt.", vi:""},
+  {id:"t14", prompt:"Chọn bản dịch tiếng Anh đúng: \"Tôi thường dùng Messenger để thảo luận bài vở với bạn cùng lớp.\"", options:["I often use Messenger to discuss schoolwork with my classmates.","I never use Messenger.","I use Messenger to play games only.","I use Messenger to upload photos."], answer:0, explanation:"thảo luận bài vở = discuss schoolwork.", vi:""},
+  {id:"t15", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"You should feel confident about yourself.\"", options:["Bạn nên cảm thấy tự tin về bản thân.","Bạn nên cảm thấy lo lắng về bản thân.","Bạn không nên quan tâm đến bản thân.","Bạn nên so sánh mình với người khác."], answer:0, explanation:"confident = tự tin.", vi:""},
+];
+
+VOCAB_TEST.forEach(q=>q.section='vocab');
+GRAMMAR_TEST.forEach(q=>q.section='grammar');
+READING_TEST.forEach(q=>q.section='reading');
+TRANSLATION_TEST.forEach(q=>q.section='translation');
+const TOTAL = VOCAB_TEST.length + GRAMMAR_TEST.length + READING_TEST.length + TRANSLATION_TEST.length;
+const STORAGE_KEY = 'u3_vocabgrammar_test_v2';
+
+/* ---------------- utility ---------------- */
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+function loadHistory(){
+  try{ const raw=localStorage.getItem(STORAGE_KEY); return raw? JSON.parse(raw) : {best:0, attempts:0}; }
+  catch(e){ return {best:0, attempts:0}; }
+}
+function saveHistory(h){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(h)); }catch(e){} }
+
+/* ---------------- state ---------------- */
+let state = { questions:[], answers:{}, submitted:false, timeLeft: 35*60, timerId:null, startedAt:null };
+
+function buildQuestionSet(){
+  const all = shuffle(VOCAB_TEST.concat(GRAMMAR_TEST).concat(READING_TEST).concat(TRANSLATION_TEST).map(q=>{
+    const optOrder = shuffle(q.options.map((o,i)=>i));
+    return Object.assign({}, q, { displayOptions: optOrder.map(i=>q.options[i]), correctDisplayIndex: optOrder.indexOf(q.answer) });
+  }));
+  return all;
+}
+
+function init(){
+  renderReviewSection();
+  state.questions = buildQuestionSet();
+  state.answers = {};
+  state.submitted = false;
+  state.timeLeft = 35*60;
+  state.startedAt = Date.now();
+  document.getElementById('resultBanner').classList.remove('show');
+  renderQuiz();
+  updateProgress();
+  updateHistoryLabels();
+  startTimer();
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = false; btn.classList.remove('opacity-50');
+}
+
+function updateHistoryLabels(){
+  const h = loadHistory();
+  document.getElementById('bestScoreLabel').textContent = h.attempts>0 ? (h.best+'/'+TOTAL) : '--';
+  document.getElementById('attemptCountLabel').textContent = h.attempts||0;
+}
+
+function startTimer(){
+  if(state.timerId) clearInterval(state.timerId);
+  state.timerId = setInterval(()=>{
+    if(state.submitted){ clearInterval(state.timerId); return; }
+    state.timeLeft--;
+    renderTimer();
+    if(state.timeLeft<=0){ clearInterval(state.timerId); submitTest(true); }
+  },1000);
+  renderTimer();
+}
+function renderTimer(){
+  const m = Math.floor(Math.max(0,state.timeLeft)/60), s = Math.max(0,state.timeLeft)%60;
+  const label = document.getElementById('timerLabel');
+  label.textContent = String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  label.classList.toggle('low', state.timeLeft<=60);
+}
+
+function renderQuiz(){
+  const vocabQs = state.questions.filter(q=>q.section==='vocab');
+  const grammarQs = state.questions.filter(q=>q.section==='grammar');
+  const readingQs = state.questions.filter(q=>q.section==='reading');
+  const translationQs = state.questions.filter(q=>q.section==='translation');
+  let html = '';
+  html += sectionDivider('📚 Phần 1 · Vocabulary', vocabQs.length);
+  vocabQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('📐 Phần 2 · Grammar (Câu đơn &amp; câu ghép)', grammarQs.length);
+  grammarQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('📖 Phần 3 · Đọc hiểu (Reading Comprehension)', readingQs.length);
+  readingQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('🇻🇳 Phần 4 · Luyện dịch nghĩa (Translation Practice)', translationQs.length);
+  translationQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  document.getElementById('quizArea').innerHTML = html;
+}
+
+function sectionDivider(title, count){
+  return `<div class="section-divider text-white rounded-xl px-4 py-2.5 mb-4 mt-2 font-extrabold text-sm md:text-base shadow flex items-center justify-between">
+    <span>${title}</span><span class="text-xs font-bold opacity-80">${count} câu</span>
+  </div>`;
+}
+
+function renderQuestionCard(q, num){
+  const letters=['A','B','C','D'];
+  const optsHtml = q.displayOptions.map((opt,i)=>{
+    return `<div class="opt-row px-3 py-2.5 flex items-start gap-2 text-sm md:text-[15px]" data-qid="${q.id}" data-idx="${i}" onclick="selectAnswer('${q.id}',${i})">
+      <span class="font-black text-violet-700">${letters[i]}.</span><span class="flex-1">${opt}</span>
+    </div>`;
+  }).join('');
+  return `<div class="qcard p-4 mb-3" id="qcard_${q.id}">
+    <p class="font-extrabold text-slate-800 text-sm md:text-base mb-2"><span class="text-violet-600">Câu ${num}.</span> ${q.prompt}</p>
+    <div class="grid gap-2" id="opts_${q.id}">${optsHtml}</div>
+    <div class="explain-box mt-3" id="explain_${q.id}"></div>
+  </div>`;
+}
+
+function selectAnswer(qid, idx){
+  if(state.submitted) return;
+  state.answers[qid] = idx;
+  const wrap = document.getElementById('opts_'+qid);
+  wrap.querySelectorAll('.opt-row').forEach(el=>{
+    el.classList.toggle('selected', parseInt(el.dataset.idx,10)===idx);
+  });
+  document.getElementById('qcard_'+qid).classList.add('answered');
+  updateProgress();
+}
+
+function updateProgress(){
+  const answered = Object.keys(state.answers).length;
+  document.getElementById('progressText').textContent = answered+' / '+TOTAL+' câu';
+  document.getElementById('progressBar').style.width = Math.round(answered/TOTAL*100)+'%';
+  document.getElementById('answeredCount').textContent = answered;
+}
+
+function submitTest(auto){
+  if(state.submitted) return;
+  const answeredCount = Object.keys(state.answers).length;
+  if(!auto && answeredCount < TOTAL){
+    const proceed = confirm('Bạn còn '+(TOTAL-answeredCount)+' câu chưa trả lời. Vẫn muốn nộp bài?');
+    if(!proceed) return;
+  }
+  state.submitted = true;
+  if(state.timerId) clearInterval(state.timerId);
+  const elapsed = Math.round((Date.now()-state.startedAt)/1000);
+
+  let correct = 0;
+  state.questions.forEach(q=>{
+    const sel = state.answers[q.id];
+    const isCorrect = sel === q.correctDisplayIndex;
+    if(isCorrect) correct++;
+    const card = document.getElementById('qcard_'+q.id);
+    card.classList.add(isCorrect?'correct':'wrong');
+    const wrap = document.getElementById('opts_'+q.id);
+    wrap.querySelectorAll('.opt-row').forEach(el=>{
+      const idx = parseInt(el.dataset.idx,10);
+      el.classList.add('locked');
+      if(idx===q.correctDisplayIndex) el.classList.add('correct-opt');
+      else if(idx===sel && !isCorrect) el.classList.add('wrong-opt');
+    });
+    const exp = document.getElementById('explain_'+q.id);
+    exp.classList.add('show');
+    const viLine = q.vi ? `<p class="text-slate-500 italic mt-1">🇻🇳 ${q.vi}</p>` : '';
+    exp.innerHTML = `<p class="${isCorrect?'text-emerald-700':'text-rose-600'} font-bold">${isCorrect?'✅ Chính xác!':(sel===undefined?'⚪ Bạn chưa chọn đáp án.':'❌ Chưa đúng.')} ${q.explanation}</p>${viLine}`;
+  });
+
+  const pct = Math.round(correct/TOTAL*100);
+  document.getElementById('resultScore').textContent = correct;
+  document.getElementById('resultPct').textContent = pct;
+  const mm = Math.floor(elapsed/60), ss = elapsed%60;
+  document.getElementById('resultTime').textContent = mm+':'+String(ss).padStart(2,'0');
+  let emoji='🙂', title='Đã hoàn thành!';
+  if(pct>=90){ emoji='🏆'; title='Xuất sắc!'; }
+  else if(pct>=70){ emoji='🎉'; title='Làm tốt lắm!'; }
+  else if(pct>=50){ emoji='💪'; title='Khá ổn, cố gắng thêm nhé!'; }
+  else { emoji='📖'; title='Cần ôn tập thêm!'; }
+  document.getElementById('resultEmoji').textContent = emoji;
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultBanner').classList.add('show');
+  document.getElementById('resultBanner').scrollIntoView({behavior:'smooth', block:'start'});
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true; btn.classList.add('opacity-50');
+
+  const h = loadHistory();
+  h.attempts = (h.attempts||0)+1;
+  h.best = Math.max(h.best||0, correct);
+  saveHistory(h);
+  updateHistoryLabels();
+
+  if(pct>=70) launchConfetti();
+}
+
+function retryTest(){ init(); window.scrollTo({top:0, behavior:'smooth'}); }
+
+function scrollToReview(){
+  document.getElementById('quizArea').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function launchConfetti(){
+  const wrap = document.getElementById('confettiWrap');
+  const colors=['#7c3aed','#db2777','#f59e0b','#4c1d95','#22c55e'];
+  for(let i=0;i<50;i++){
+    const el=document.createElement('div');
+    el.className='confetti-piece';
+    el.style.left=(Math.random()*100)+'vw';
+    el.style.background=colors[Math.floor(Math.random()*colors.length)];
+    el.style.animationDuration=(2+Math.random()*1.5)+'s';
+    el.style.top='-20px';
+    wrap.appendChild(el);
+    setTimeout(()=>el.remove(), 3600);
+  }
+}
+
+init();
+</script>
+</body>
+</html>

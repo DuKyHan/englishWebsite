@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 12 - Test Trắc nghiệm Từ vựng & Ngữ pháp - Tiếng Anh 8</title>
+<meta name="apple-mobile-web-app-title" content="U12 Vocab-Grammar Test">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+  :root{ --accent:#1e1b4b; --accent2:#db2777; }
+  * { box-sizing: border-box; }
+  body { font-family:'Nunito',sans-serif; background:#faf5ff; }
+  h1,h2,.baloo{ font-family:'Baloo 2',sans-serif; }
+  .hero-gradient{ background: linear-gradient(135deg, #1e1b4b 0%, #4c1d95 55%, #db2777 100%); }
+  .qcard{ background:#fff; border-radius:1.1rem; box-shadow:0 1px 4px rgba(0,0,0,.06); border:2px solid #e2e8f0; transition:border .2s, box-shadow .2s; }
+  .qcard.answered{ border-color:#f5d0fe; }
+  .qcard.correct{ border-color:#22c55e; background:#f0fdf4; }
+  .qcard.wrong{ border-color:#ef4444; background:#fef2f2; }
+  .opt-row{ cursor:pointer; transition: all .15s; border:2px solid #e2e8f0; border-radius:.8rem; }
+  .opt-row:hover{ border-color:var(--accent); background:#faf5ff; }
+  .opt-row.selected{ border-color:#1e1b4b; background:#ede9fe; font-weight:800; }
+  .opt-row.correct-opt{ border-color:#22c55e !important; background:#dcfce7 !important; font-weight:800; }
+  .opt-row.wrong-opt{ border-color:#ef4444 !important; background:#fee2e2 !important; font-weight:800; }
+  .opt-row.locked{ cursor:default; pointer-events:none; }
+  .explain-box{ display:none; background:#fdf2f8; border:1px solid #f9a8d4; border-radius:.7rem; padding:.6rem .9rem; font-size:.85rem; color:#334155; }
+  .explain-box.show{ display:block; }
+  .sticky-bar{ position:sticky; bottom:0; z-index:40; }
+  .progress-fill{ transition: width .3s ease; }
+  .badge-pill{ background:#fff; border:2px solid #f9a8d4; border-radius:999px; padding:.3rem .8rem; font-size:.75rem; font-weight:800; color:#831843; }
+  .score-ring{ animation: popIn .4s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn{ from{transform:scale(.5); opacity:0;} to{transform:scale(1); opacity:1;} }
+  .confetti-wrap{ position:fixed; inset:0; pointer-events:none; z-index:9999; }
+  .confetti-piece{ position:absolute; width:10px; height:10px; border-radius:2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall{ 0%{transform:translateY(-20px) rotate(0deg); opacity:1;} 100%{transform:translateY(100vh) rotate(720deg); opacity:0;} }
+  .section-divider{ background:linear-gradient(135deg,#1e1b4b,#db2777); }
+  #resultBanner{ display:none; }
+  #resultBanner.show{ display:block; }
+  .timer-pill{ font-variant-numeric: tabular-nums; }
+  .timer-pill.low{ color:#fca5a5 !important; }
+  .accordion-btn{ cursor:pointer; transition: background .15s; }
+  .accordion-body{ display:none; }
+  .accordion-body.open{ display:block; }
+  .accordion-chevron{ transition: transform .2s; }
+  .accordion-btn.open .accordion-chevron{ transform: rotate(180deg); }
+  .vocab-row{ border-bottom:1px solid #f1f5f9; padding:.55rem 0; }
+  .vocab-row:last-child{ border-bottom:none; }
+  .passage-en{ background:#fff; border:1px solid #e2e8f0; border-radius:.9rem; padding:.9rem 1.1rem; line-height:1.85; font-size:.92rem; color:#334155; }
+  .passage-vi{ display:none; background:#fdf2f8; border:1px solid #f9a8d4; border-radius:.9rem; padding:.9rem 1.1rem; margin-top:.6rem; line-height:1.85; font-size:.92rem; color:#334155; }
+  .passage-vi.show{ display:block; }
+  .grammar-tip-box{ background:#eef2ff; border:1px solid #c7d2fe; border-radius:.9rem; padding:1rem 1.2rem; line-height:1.9; font-size:.92rem; color:#334155; }
+</style>
+</head>
+<body class="min-h-screen pb-10">
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<header class="hero-gradient text-white py-8 px-4 text-center shadow-xl relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <div class="absolute top-4 left-8 text-6xl">🪐</div>
+    <div class="absolute top-2 right-12 text-5xl">👽</div>
+    <div class="absolute bottom-2 left-1/3 text-4xl">🚀</div>
+    <div class="absolute bottom-4 right-1/4 text-5xl">🌌</div>
+  </div>
+  <p class="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Tiếng Anh 8 · Unit 12 · Life on Other Planets</p>
+  <h1 class="text-3xl md:text-5xl font-extrabold drop-shadow-lg">📝 Test trắc nghiệm: Từ vựng &amp; Ngữ pháp</h1>
+  <p class="mt-2 text-base md:text-lg opacity-90 font-semibold">75 câu hỏi · Từ vựng, Ngữ pháp, Đọc hiểu &amp; Dịch nghĩa</p>
+  <div class="mt-5 max-w-2xl mx-auto flex flex-wrap items-center justify-center gap-3">
+    <span class="badge-pill"><i class="fa-solid fa-star mr-1"></i>Điểm cao nhất: <span id="bestScoreLabel">--</span></span>
+    <span class="badge-pill"><i class="fa-solid fa-rotate mr-1"></i>Số lần làm: <span id="attemptCountLabel">0</span></span>
+    <span class="badge-pill timer-pill"><i class="fa-solid fa-clock mr-1"></i><span id="timerLabel">35:00</span></span>
+  </div>
+  <div class="mt-4 max-w-2xl mx-auto">
+    <div class="flex justify-between text-xs font-bold opacity-80 mb-1">
+      <span>Tiến độ trả lời</span>
+      <span id="progressText">0 / 75 câu</span>
+    </div>
+    <div class="bg-white/20 rounded-full h-3 overflow-hidden">
+      <div id="progressBar" class="bg-white rounded-full h-3 progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-3xl mx-auto px-4 mt-6">
+
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 mb-6 text-sm text-slate-600">
+    <p class="font-bold text-slate-700 mb-1"><i class="fa-solid fa-circle-info text-indigo-900 mr-1"></i>Hướng dẫn làm bài</p>
+    <p>Trước khi làm bài, hãy mở phần <b>"🌌 Ôn tập & Dịch nghĩa Unit 12"</b> bên dưới để xem lại từ vựng, ngữ pháp và bản dịch tiếng Việt của các bài đọc/nghe trong Unit 12 (cả SGK). Sau đó chọn <b>1 đáp án đúng</b> cho mỗi câu hỏi trắc nghiệm — gồm từ vựng, ngữ pháp, đọc hiểu bài đọc và luyện dịch nghĩa. Bấm <b>"Nộp bài"</b> để xem điểm và giải thích. Bấm <b>"Làm lại"</b> để nhận đề mới và luyện tập không giới hạn số lần.</p>
+  </div>
+
+  <!-- ============ REVIEW & TRANSLATION SECTION ============ -->
+  <div class="bg-white rounded-2xl shadow-sm border-2 border-indigo-200 mb-6 overflow-hidden">
+    <button class="accordion-btn open w-full flex items-center justify-between px-4 py-3 bg-indigo-50 font-extrabold text-indigo-900" onclick="toggleAccordion('reviewMain')">
+      <span><i class="fa-solid fa-book-open-reader mr-2"></i>🌌 Ôn tập &amp; Dịch nghĩa Unit 12</span>
+      <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+    </button>
+    <div class="accordion-body open px-4 py-4 space-y-4" id="acc_reviewMain">
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('vocabList')">
+          <span>🪐 Từ vựng Unit 12 (30 từ/cụm từ - Outer Space)</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-2" id="acc_vocabList"></div>
+      </div>
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('grammarTip')">
+          <span>📐 Ngữ pháp: Câu tường thuật - Reported Speech (câu hỏi)</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-3" id="acc_grammarTip">
+          <div class="grammar-tip-box">
+            <b>1. Động từ giới thiệu:</b> ta thường dùng <b>ask, wonder, want to know</b> để tường thuật câu hỏi.<br><br>
+            <b>2. Trật tự từ:</b> trong câu hỏi tường thuật, ta dùng <u>cùng trật tự từ như câu khẳng định</u> (S + V), <u>không đảo động từ lên trước chủ ngữ</u>, <u>không dùng trợ động từ do/does/did</u>, và <u>bỏ dấu chấm hỏi</u>.<br><br>
+            <b>3. Câu hỏi Yes/No</b> (bắt đầu bằng động từ tobe/trợ động từ/động từ khiếm khuyết): thêm <b>if</b> hoặc <b>whether</b> trước S + V.<br>
+            &nbsp;&nbsp;VD: Nick asked, "Do you think Mars may support life?" → Nick asked <b>if/whether</b> I thought Mars <b>might</b> support life.<br><br>
+            <b>4. Câu hỏi Wh-</b> (What/Where/When/Who/Why/How...): giữ nguyên từ hỏi, theo sau là S + V (không đảo ngữ, không do/does/did).<br>
+            &nbsp;&nbsp;VD: She asked me, <i>"What are you doing now?"</i> → She asked me <b>what I was doing then</b>.<br>
+            &nbsp;&nbsp;VD: "How fast can a UFO travel?" I asked my father. → I asked my father <b>how fast a UFO could travel</b>.<br>
+            &nbsp;&nbsp;VD: "Who will be the first to step on Mars?" Mary asked the scientist. → Mary asked the scientist <b>who would be the first to step on Mars</b>.<br><br>
+            <b>5. Lùi thì (backshift)</b> và thay đổi đại từ/tính từ sở hữu/trạng từ chỉ nơi chốn, thời gian giống như trong câu tường thuật khẳng định:<br>
+            &nbsp;&nbsp;• now → then &nbsp;&nbsp;• here → there &nbsp;&nbsp;• today → that day<br>
+            &nbsp;&nbsp;• can → could &nbsp;&nbsp;• will → would &nbsp;&nbsp;• do/does/did → (biến mất, lùi thì động từ chính)<br>
+            &nbsp;&nbsp;VD: The student asked his friend, <i>"How many craters does the moon have?"</i> → The student asked his friend how many craters the moon <b>had</b>.
+          </div>
+        </div>
+      </div>
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('passages')">
+          <span>📖 Bài đọc &amp; hội thoại Unit 12 (có bản dịch)</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-3 space-y-4" id="acc_passages"></div>
+      </div>
+
+    </div>
+  </div>
+  <!-- ============ END REVIEW SECTION ============ -->
+
+  <div id="resultBanner" class="mb-6">
+    <div class="bg-white rounded-2xl shadow-lg border-2 border-indigo-300 p-6 text-center score-ring">
+      <p id="resultEmoji" class="text-5xl mb-2">🎉</p>
+      <h2 class="text-2xl font-extrabold text-indigo-900" id="resultTitle">Hoàn thành!</h2>
+      <p class="text-4xl font-black text-slate-800 mt-2"><span id="resultScore">0</span>/75</p>
+      <p class="text-slate-500 font-bold mt-1"><span id="resultPct">0</span>% chính xác · Thời gian: <span id="resultTime">0:00</span></p>
+      <div class="flex flex-wrap justify-center gap-3 mt-4">
+        <button onclick="retryTest()" class="bg-indigo-900 hover:bg-indigo-950 text-white font-bold px-5 py-2.5 rounded-xl shadow"><i class="fa-solid fa-rotate-right mr-1"></i>Làm lại (đề mới)</button>
+        <button onclick="scrollToReview()" class="bg-white border-2 border-indigo-300 text-indigo-900 font-bold px-5 py-2.5 rounded-xl"><i class="fa-solid fa-magnifying-glass mr-1"></i>Xem lại chi tiết</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="quizArea"></div>
+
+  <div class="sticky-bar bg-white/95 backdrop-blur border-t border-slate-200 mt-6 py-3 px-4 rounded-t-2xl shadow-[0_-4px_14px_rgba(0,0,0,.06)] flex items-center justify-between gap-3">
+    <span class="text-xs md:text-sm font-bold text-slate-500"><span id="answeredCount">0</span>/75 câu đã trả lời</span>
+    <button id="submitBtn" onclick="submitTest()" class="bg-gradient-to-r from-indigo-900 to-pink-600 text-white font-extrabold px-6 py-2.5 rounded-xl shadow-lg hover:brightness-110"><i class="fa-solid fa-flag-checkered mr-1"></i>Nộp bài</button>
+  </div>
+
+</main>
+
+<script>
+/* ============================================================
+   REVIEW CONTENT: Unit 12 Vocabulary, Grammar rule, Passages (EN+VI)
+   ============================================================ */
+const VOCAB_LIST = [
+  {word:"outer space", vi:"không gian vũ trụ", example:"Scientists are exploring outer space to find new planets.", exVi:"Các nhà khoa học đang khám phá không gian vũ trụ để tìm ra những hành tinh mới."},
+  {word:"planet", vi:"hành tinh", example:"Mars is a planet like Earth.", exVi:"Sao Hỏa là một hành tinh giống Trái Đất."},
+  {word:"science fiction", vi:"khoa học viễn tưởng", example:"Nick is reading a science fiction novel about aliens.", exVi:"Nick đang đọc một cuốn tiểu thuyết khoa học viễn tưởng về người ngoài hành tinh."},
+  {word:"creature", vi:"sinh vật", example:"The novel is about four creatures who travel back to their home planet.", exVi:"Cuốn tiểu thuyết kể về bốn sinh vật trở về hành tinh quê hương của chúng."},
+  {word:"spaceship", vi:"tàu vũ trụ", example:"Their spaceship breaks down, so they have to land on Earth.", exVi:"Tàu vũ trụ của họ bị hỏng nên họ phải hạ cánh xuống Trái Đất."},
+  {word:"commander", vi:"chỉ huy", example:"Their commander forces them to return to Earth to destroy it.", exVi:"Chỉ huy của chúng buộc chúng phải quay lại Trái Đất để phá hủy nó."},
+  {word:"oppose", vi:"phản đối, chống lại", example:"Tommy and the four creatures try to oppose the commander.", exVi:"Tommy và bốn sinh vật cố gắng chống lại viên chỉ huy."},
+  {word:"alien", vi:"người ngoài hành tinh", example:"What do you think about the possibility of aliens attacking Earth?", exVi:"Bạn nghĩ gì về khả năng người ngoài hành tinh tấn công Trái Đất?"},
+  {word:"possibility", vi:"khả năng", example:"There is a possibility that we might visit Mars in the near future.", exVi:"Có khả năng chúng ta sẽ đến thăm Sao Hỏa trong tương lai gần."},
+  {word:"telescope", vi:"kính viễn vọng", example:"We need to use a telescope to clearly see the surface of the moon.", exVi:"Chúng ta cần dùng kính viễn vọng để nhìn rõ bề mặt mặt trăng."},
+  {word:"UFO", vi:"vật thể bay không xác định", example:"UFOs are spaceships from another planet.", exVi:"UFO là những con tàu vũ trụ từ hành tinh khác."},
+  {word:"rocket", vi:"tên lửa", example:"A rocket is in the shape of a big tube, used for travelling into space.", exVi:"Tên lửa có hình dạng như một ống lớn, dùng để di chuyển vào vũ trụ."},
+  {word:"galaxy", vi:"thiên hà", example:"The Milky Way is the galaxy that includes our solar system.", exVi:"Dải Ngân Hà là thiên hà bao gồm hệ mặt trời của chúng ta."},
+  {word:"crater", vi:"miệng hố (trên mặt trăng)", example:"There are many craters on the surface of the moon.", exVi:"Có rất nhiều miệng hố trên bề mặt mặt trăng."},
+  {word:"the sun", vi:"mặt trời", example:"The eight planets go around the sun.", exVi:"Tám hành tinh quay quanh mặt trời."},
+  {word:"Mercury", vi:"Sao Thủy", example:"Mercury is the smallest and closest planet to the sun.", exVi:"Sao Thủy là hành tinh nhỏ nhất và gần mặt trời nhất."},
+  {word:"Venus", vi:"Sao Kim", example:"Venus is the second closest planet to the sun.", exVi:"Sao Kim là hành tinh gần mặt trời thứ hai."},
+  {word:"Earth", vi:"Trái Đất", example:"Earth is the only planet known to support life.", exVi:"Trái Đất là hành tinh duy nhất được biết là có sự sống."},
+  {word:"Mars", vi:"Sao Hỏa", example:"Mars is one of the most promising planets for life.", exVi:"Sao Hỏa là một trong những hành tinh có triển vọng nhất cho sự sống."},
+  {word:"Jupiter", vi:"Sao Mộc", example:"Jupiter is the largest and stormiest planet.", exVi:"Sao Mộc là hành tinh lớn nhất và có nhiều bão nhất."},
+  {word:"Saturn", vi:"Sao Thổ", example:"Saturn is one of the outer planets made up mostly of gas.", exVi:"Sao Thổ là một trong các hành tinh ngoài chủ yếu cấu tạo từ khí."},
+  {word:"Uranus", vi:"Sao Thiên Vương", example:"Uranus is farther from the sun than Saturn.", exVi:"Sao Thiên Vương xa mặt trời hơn Sao Thổ."},
+  {word:"Neptune", vi:"Sao Hải Vương", example:"Neptune is the farthest planet from the sun.", exVi:"Sao Hải Vương là hành tinh xa mặt trời nhất."},
+  {word:"liquid", vi:"(chất) lỏng", example:"Planets need liquid water to support life.", exVi:"Các hành tinh cần nước ở dạng lỏng để duy trì sự sống."},
+  {word:"gravity", vi:"lực hấp dẫn", example:"If a planet is too small, its gravity is not strong enough to hold an atmosphere.", exVi:"Nếu một hành tinh quá nhỏ, lực hấp dẫn của nó không đủ mạnh để giữ bầu khí quyển."},
+  {word:"habitable", vi:"có thể ở được", example:"Scientists are using space telescopes to find habitable planets.", exVi:"Các nhà khoa học dùng kính viễn vọng vũ trụ để tìm những hành tinh có thể ở được."},
+  {word:"promising", vi:"đầy hứa hẹn, có triển vọng", example:"Mars is one of the most promising planets for life.", exVi:"Sao Hỏa là một trong những hành tinh hứa hẹn nhất cho sự sống."},
+  {word:"traces", vi:"dấu vết", example:"There seem to be traces of water on Mars' surface.", exVi:"Dường như có dấu vết của nước trên bề mặt Sao Hỏa."},
+  {word:"atmosphere", vi:"khí quyển", example:"Mercury has no atmosphere, so there is no wind or weather on it.", exVi:"Sao Thủy không có khí quyển nên không có gió hay thời tiết trên đó."},
+  {word:"moon", vi:"mặt trăng", example:"Mercury and Venus have no moon.", exVi:"Sao Thủy và Sao Kim không có mặt trăng."},
+];
+
+const PASSAGES_REVIEW = [
+  {
+    title:"📄 Bài hội thoại (Getting Started): A thrilling science fiction novel",
+    en:"<b>Mai:</b> What book are you reading, Nick?<br><b>Nick:</b> A journey back to Soduka. I'm on the last page.<br><b>Mai:</b> That's a science fiction book, isn't it? What's it about?<br><b>Nick:</b> Yes, it is. It's about four creatures Titu, Kaku, Hub, and Barb. They're travelling back to Soduka, a planet like Earth. Along the way they have to land on Earth because their spaceship breaks down. They meet Tommy and become friends with him.<br><b>Mai:</b> What happens next?<br><b>Nick:</b> Tommy helps the four creatures repair their spaceship, so they can travel back to their home planet. But their commander forces them to return to Earth to destroy it. Tommy and the four creatures try to oppose the commander.<br><b>Mai:</b> Sounds thrilling!<br><b>Nick:</b> Tommy and the four creatures manage to stop the commander from destroying Earth.<br><b>Mai:</b> So it has a happy ending! What do you think about the possibility of aliens attacking Earth?<br><b>Nick:</b> I'm not sure about it. But I'm starting to think about it. I sometimes ask myself what we would do if aliens took over our planet.",
+    vi:"<b>Mai:</b> Bạn đang đọc sách gì vậy, Nick?<br><b>Nick:</b> Cuốn 'Hành trình trở về Soduka'. Mình đang đọc trang cuối rồi.<br><b>Mai:</b> Đó là truyện khoa học viễn tưởng đúng không? Nó nói về điều gì vậy?<br><b>Nick:</b> Đúng vậy. Truyện kể về bốn sinh vật tên Titu, Kaku, Hub và Barb. Chúng đang trên đường trở về Soduka, một hành tinh giống Trái Đất. Trên đường đi, chúng phải hạ cánh xuống Trái Đất vì tàu vũ trụ bị hỏng. Chúng gặp Tommy và trở thành bạn của cậu ấy.<br><b>Mai:</b> Chuyện gì xảy ra tiếp theo?<br><b>Nick:</b> Tommy giúp bốn sinh vật sửa lại tàu vũ trụ để chúng có thể trở về hành tinh quê hương. Nhưng viên chỉ huy của chúng lại ép chúng quay lại Trái Đất để phá hủy nó. Tommy và bốn sinh vật cố gắng chống lại viên chỉ huy.<br><b>Mai:</b> Nghe hồi hộp quá!<br><b>Nick:</b> Tommy và bốn sinh vật đã ngăn được viên chỉ huy phá hủy Trái Đất.<br><b>Mai:</b> Vậy là có một kết thúc có hậu! Bạn nghĩ gì về khả năng người ngoài hành tinh tấn công Trái Đất?<br><b>Nick:</b> Mình không chắc lắm. Nhưng mình bắt đầu suy nghĩ về điều đó. Đôi khi mình tự hỏi bản thân chúng ta sẽ làm gì nếu người ngoài hành tinh chiếm lấy hành tinh của chúng ta."
+  },
+  {
+    title:"📄 Bài đọc (Skills 1): The possibility of life on other planets",
+    en:"Nowadays humans are still wondering what planets in outer space might support life. Scientists say planets need to meet three main conditions to support life. Firstly, they must have liquid water, so their temperature must not be too high or too low. Secondly, the planets need to have the correct amount of air so that they can hold an atmosphere around it. Finally, their size is also important. If a planet is too small, its gravity is not strong enough to hold an amount of air. If it is too big, its gravity will be so strong that it will hold too much air. Scientists are using space telescopes to find habitable planets. According to them, Mars is one of the most promising planets for life in our solar system. It is a planet like Earth. Its days last for 24.5 hours and its seasons are similar to Earth's. Although scientists have not found actual water on Mars, there seems to be traces of it on the planet's surface. However, the climate on Mars is unsuitable for human life because it is too cold and Mars lacks oxygen to support human life.",
+    vi:"Ngày nay con người vẫn đang tự hỏi những hành tinh nào trong vũ trụ có thể duy trì sự sống. Các nhà khoa học cho rằng các hành tinh cần đáp ứng ba điều kiện chính để có sự sống. Thứ nhất, chúng phải có nước ở dạng lỏng, vì vậy nhiệt độ không được quá cao hoặc quá thấp. Thứ hai, các hành tinh cần có lượng không khí phù hợp để có thể giữ được bầu khí quyển xung quanh nó. Cuối cùng, kích thước của hành tinh cũng rất quan trọng. Nếu một hành tinh quá nhỏ, lực hấp dẫn của nó không đủ mạnh để giữ một lượng không khí. Nếu nó quá lớn, lực hấp dẫn sẽ quá mạnh khiến nó giữ lại quá nhiều không khí. Các nhà khoa học đang sử dụng kính viễn vọng vũ trụ để tìm những hành tinh có thể ở được. Theo họ, Sao Hỏa là một trong những hành tinh hứa hẹn nhất cho sự sống trong hệ mặt trời của chúng ta. Đây là một hành tinh giống Trái Đất. Một ngày trên Sao Hỏa kéo dài 24,5 giờ và các mùa của nó tương tự như Trái Đất. Mặc dù các nhà khoa học chưa tìm thấy nước thực sự trên Sao Hỏa, nhưng dường như có dấu vết của nước trên bề mặt hành tinh này. Tuy nhiên, khí hậu trên Sao Hỏa không thích hợp cho sự sống của con người vì nó quá lạnh và Sao Hỏa thiếu oxy để duy trì sự sống của con người."
+  },
+  {
+    title:"🎧 Bài hội thoại (Communication): Three planets in the solar system",
+    en:"<b>Mercury</b> — smallest and closest to the sun with no moon; very hot in the daytime but very cold at night; no atmosphere, so there is no wind or weather on it.<br><b>Venus</b> — hottest planet with no moon; nearly as big as Earth; often very bright in the early morning, so people call it the morning star.<br><b>Jupiter</b> — largest planet with about 63 moons; stormiest planet; third brightest object in the night sky.",
+    vi:"<b>Sao Thủy</b> — hành tinh nhỏ nhất và gần mặt trời nhất, không có mặt trăng; ban ngày rất nóng nhưng ban đêm rất lạnh; không có khí quyển nên không có gió hay thời tiết trên đó.<br><b>Sao Kim</b> — hành tinh nóng nhất, không có mặt trăng; kích thước gần bằng Trái Đất; thường rất sáng vào sáng sớm nên được gọi là sao Mai.<br><b>Sao Mộc</b> — hành tinh lớn nhất với khoảng 63 mặt trăng; hành tinh nhiều bão nhất; là vật thể sáng thứ ba trên bầu trời đêm."
+  }
+];
+
+function renderReviewSection(){
+  document.getElementById('acc_vocabList').innerHTML = VOCAB_LIST.map(v=>`
+    <div class="vocab-row flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+      <div><span class="font-extrabold text-indigo-900">${v.word}</span> <span class="text-slate-400">— ${v.vi}</span></div>
+      <div class="text-xs text-slate-400 italic sm:text-right sm:max-w-[55%]">${v.example}<br>${v.exVi}</div>
+    </div>`).join('');
+
+  document.getElementById('acc_passages').innerHTML = PASSAGES_REVIEW.map((p,i)=>`
+    <div>
+      <p class="font-bold text-slate-700 text-sm mb-2">${p.title}</p>
+      <div class="passage-en">${p.en}</div>
+      <button type="button" onclick="togglePassageVi(${i})" class="mt-2 text-xs font-bold bg-white border-2 border-pink-300 text-pink-700 px-3 py-1.5 rounded-full">
+        <i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt
+      </button>
+      <div class="passage-vi" id="passvi_${i}"><b>🇻🇳 Bản dịch</b><br>${p.vi}</div>
+    </div>`).join('');
+}
+function togglePassageVi(i){ document.getElementById('passvi_'+i).classList.toggle('show'); }
+function toggleAccordion(key){
+  const btn = event.currentTarget;
+  btn.classList.toggle('open');
+  document.getElementById('acc_'+key).classList.toggle('open');
+}
+
+/* ============================================================
+   CONTENT: Unit 12 Vocabulary, Grammar, Reading & Translation Test
+   ============================================================ */
+const VOCAB_TEST = [
+  {id:"v1", prompt:"\"Outer space\" nghĩa là gì?", options:["không gian vũ trụ","hành tinh","mặt trăng","thiên hà"], answer:0, explanation:"outer space = không gian vũ trụ.", vi:"outer space = không gian vũ trụ."},
+  {id:"v2", prompt:"\"Planet\" nghĩa là gì?", options:["ngôi sao","hành tinh","sao chổi","vệ tinh nhân tạo"], answer:1, explanation:"planet = hành tinh.", vi:"planet = hành tinh."},
+  {id:"v3", prompt:"\"Science fiction\" nghĩa là gì?", options:["khoa học viễn tưởng","khoa học tự nhiên","lịch sử","địa lí"], answer:0, explanation:"science fiction = khoa học viễn tưởng.", vi:"science fiction = khoa học viễn tưởng."},
+  {id:"v4", prompt:"\"Creature\" nghĩa là gì?", options:["sinh vật","con người","cây cối","đồ vật"], answer:0, explanation:"creature = sinh vật (thật hoặc tưởng tượng).", vi:"creature = sinh vật."},
+  {id:"v5", prompt:"\"Spaceship\" nghĩa là gì?", options:["tàu vũ trụ","tàu hỏa","tàu ngầm","máy bay"], answer:0, explanation:"spaceship = tàu vũ trụ.", vi:"spaceship = tàu vũ trụ."},
+  {id:"v6", prompt:"Điền từ: Their ________ forces them to return to Earth to destroy it.", options:["commander","teacher","neighbour","student"], answer:0, explanation:"commander = chỉ huy, sĩ quan chỉ huy.", vi:"Chỉ huy của chúng ép chúng quay lại Trái Đất để phá hủy nó."},
+  {id:"v7", prompt:"\"Oppose\" nghĩa là gì?", options:["phản đối, chống lại","ủng hộ","giúp đỡ","làm bạn với"], answer:0, explanation:"oppose = phản đối, chống lại.", vi:"oppose = phản đối, chống lại."},
+  {id:"v8", prompt:"\"Alien\" nghĩa là gì?", options:["người ngoài hành tinh","phi hành gia","nhà khoa học","robot"], answer:0, explanation:"alien = người/sinh vật ngoài hành tinh.", vi:"alien = người ngoài hành tinh."},
+  {id:"v9", prompt:"Điền từ: There is a ________ that we might visit Mars in the near future.", options:["possibility","commander","gravity","telescope"], answer:0, explanation:"possibility = khả năng (điều gì đó có thể xảy ra nhưng chưa chắc chắn).", vi:"Có khả năng chúng ta sẽ đến thăm Sao Hỏa trong tương lai gần."},
+  {id:"v10", prompt:"\"Telescope\" nghĩa là gì?", options:["kính viễn vọng","kính hiển vi","ống nhòm","máy ảnh"], answer:0, explanation:"telescope = kính viễn vọng.", vi:"telescope = kính viễn vọng."},
+  {id:"v11", prompt:"\"UFO\" nghĩa là gì?", options:["vật thể bay không xác định","tàu vũ trụ có người lái của NASA","vệ tinh nhân tạo","trạm vũ trụ"], answer:0, explanation:"UFO (Unidentified Flying Object) = vật thể bay không xác định.", vi:"UFO = vật thể bay không xác định."},
+  {id:"v12", prompt:"\"Rocket\" nghĩa là gì?", options:["tên lửa","kính viễn vọng","hố thiên thạch","thiên hà"], answer:0, explanation:"rocket = tên lửa, có hình ống lớn dùng để bay vào không gian.", vi:"rocket = tên lửa."},
+  {id:"v13", prompt:"\"Galaxy\" nghĩa là gì?", options:["thiên hà","hành tinh","vệ tinh","ngôi sao"], answer:0, explanation:"galaxy = thiên hà; the Milky Way is the galaxy that includes our solar system.", vi:"galaxy = thiên hà."},
+  {id:"v14", prompt:"\"Crater\" nghĩa là gì?", options:["miệng hố (trên mặt trăng)","ngọn núi","đại dương","hoang mạc"], answer:0, explanation:"crater = miệng hố trên bề mặt (mặt trăng, hành tinh).", vi:"crater = miệng hố."},
+  {id:"v15", prompt:"Sắp xếp các hành tinh theo thứ tự gần mặt trời nhất, hành tinh nào đứng đầu tiên?", options:["Mercury","Venus","Earth","Mars"], answer:0, explanation:"Mercury (Sao Thủy) là hành tinh gần mặt trời nhất.", vi:"Mercury = Sao Thủy, gần mặt trời nhất."},
+  {id:"v16", prompt:"Hành tinh nào gần mặt trời thứ hai, sau Mercury?", options:["Venus","Earth","Mars","Jupiter"], answer:0, explanation:"Venus (Sao Kim) là hành tinh gần mặt trời thứ hai.", vi:"Venus = Sao Kim, gần mặt trời thứ hai."},
+  {id:"v17", prompt:"\"Earth\" nghĩa là gì?", options:["Trái Đất","Sao Hỏa","Sao Kim","Sao Mộc"], answer:0, explanation:"Earth = Trái Đất.", vi:"Earth = Trái Đất."},
+  {id:"v18", prompt:"\"Mars\" nghĩa là gì?", options:["Sao Hỏa","Sao Thủy","Sao Thổ","Sao Hải Vương"], answer:0, explanation:"Mars = Sao Hỏa.", vi:"Mars = Sao Hỏa."},
+  {id:"v19", prompt:"Hành tinh nào lớn nhất và có nhiều bão nhất theo bài học?", options:["Jupiter","Saturn","Uranus","Neptune"], answer:0, explanation:"Jupiter (Sao Mộc) là hành tinh lớn nhất và có nhiều bão nhất.", vi:"Jupiter = Sao Mộc, lớn nhất và nhiều bão nhất."},
+  {id:"v20", prompt:"\"Saturn\" nghĩa là gì?", options:["Sao Thổ","Sao Thiên Vương","Sao Hải Vương","Sao Mộc"], answer:0, explanation:"Saturn = Sao Thổ.", vi:"Saturn = Sao Thổ."},
+  {id:"v21", prompt:"Hành tinh nào xa mặt trời nhất trong 8 hành tinh?", options:["Neptune","Uranus","Saturn","Jupiter"], answer:0, explanation:"Neptune (Sao Hải Vương) là hành tinh xa mặt trời nhất.", vi:"Neptune = Sao Hải Vương, xa mặt trời nhất."},
+  {id:"v22", prompt:"Điền từ: Planets need ________ water so their temperature must not be too high or too low.", options:["liquid","solid","frozen","gas"], answer:0, explanation:"liquid water = nước ở dạng lỏng.", vi:"liquid = (chất) lỏng."},
+  {id:"v23", prompt:"\"Gravity\" nghĩa là gì?", options:["lực hấp dẫn","áp suất không khí","nhiệt độ","tốc độ quay"], answer:0, explanation:"gravity = lực hấp dẫn, lực khiến vật rơi xuống đất.", vi:"gravity = lực hấp dẫn."},
+  {id:"v24", prompt:"\"Habitable\" (planet) nghĩa là gì?", options:["có thể ở được","không có sự sống","quá nóng","quá lạnh"], answer:0, explanation:"habitable = phù hợp/có thể sinh sống được.", vi:"habitable = có thể ở được."},
+  {id:"v25", prompt:"\"Promising\" (trong \"the most promising planets\") nghĩa là gì?", options:["đầy hứa hẹn, có triển vọng","nguy hiểm","xa xôi","lạnh lẽo"], answer:0, explanation:"promising = đầy hứa hẹn, có triển vọng tốt.", vi:"promising = đầy hứa hẹn."},
+  {id:"v26", prompt:"\"Traces\" (of water) nghĩa là gì?", options:["dấu vết","biển cả","sông ngòi","hơi nước"], answer:0, explanation:"traces = dấu vết (của điều gì từng tồn tại).", vi:"traces = dấu vết."},
+  {id:"v27", prompt:"\"Atmosphere\" nghĩa là gì?", options:["khí quyển","trọng lực","nhiệt độ","ánh sáng"], answer:0, explanation:"atmosphere = khí quyển, lớp không khí bao quanh hành tinh.", vi:"atmosphere = khí quyển."},
+  {id:"v28", prompt:"Điền từ: Mercury and Venus have no ________.", options:["moon","atmosphere","gravity","name"], answer:0, explanation:"Cả hai hành tinh này đều không có mặt trăng (moon).", vi:"Sao Thủy và Sao Kim không có mặt trăng."},
+  {id:"v29", prompt:"Vì sao khí hậu Sao Hỏa không thích hợp cho con người theo bài đọc Skills 1?", options:["Vì quá lạnh và thiếu oxy","Vì quá nóng và có quá nhiều nước","Vì không có trọng lực","Vì có quá nhiều mặt trăng"], answer:0, explanation:"\"the climate on Mars is unsuitable for human life because it is too cold and Mars lacks oxygen.\"", vi:"Sao Hỏa quá lạnh và thiếu oxy nên không thích hợp cho con người."},
+  {id:"v30", prompt:"\"Moon\" nghĩa là gì?", options:["mặt trăng","mặt trời","ngôi sao","sao chổi"], answer:0, explanation:"moon = mặt trăng (vệ tinh tự nhiên của hành tinh).", vi:"moon = mặt trăng."},
+];
+
+const GRAMMAR_TEST = [
+  {id:"g1", prompt:"\"What are you doing now?\" she asked me. → She asked me ________.", options:["what I was doing then","what was I doing then","what did I do then","what I am doing now"], answer:0, explanation:"Câu hỏi Wh- giữ từ hỏi + S + V, lùi thì (am→was), now→then.", vi:"She asked me what I was doing then."},
+  {id:"g2", prompt:"\"Where do you live?\" he asked me. → He asked me ________.", options:["where I lived","where did I live","where I live","where lived I"], answer:0, explanation:"Không dùng trợ động từ 'did', lùi thì live→lived, S trước V.", vi:"He asked me where I lived."},
+  {id:"g3", prompt:"\"Can Mars support life?\" Nick asked. → Nick asked ________.", options:["if Mars could support life","did Mars support life","if could Mars support life","that Mars could support life"], answer:0, explanation:"Câu hỏi Yes/No dùng if/whether + S + V, can→could.", vi:"Nick asked if Mars could support life."},
+  {id:"g4", prompt:"\"Will you travel to Mars?\" she asked me. → She asked me ________.", options:["if I would travel to Mars","if will I travel to Mars","that I would travel to Mars","would I travel to Mars"], answer:0, explanation:"Yes/No question: if + S + V, will→would.", vi:"She asked me if I would travel to Mars."},
+  {id:"g5", prompt:"\"How many moons does Venus have?\" my brother asked. → My brother asked ________.", options:["how many moons Venus had","how many moons did Venus have","how many moons Venus has","how many moons had Venus"], answer:0, explanation:"Bỏ trợ động từ 'does', lùi thì have→had, S trước V.", vi:"My brother asked how many moons Venus had."},
+  {id:"g6", prompt:"Trong câu hỏi tường thuật, ta thường dùng những động từ giới thiệu nào?", options:["ask, wonder, want to know","say, tell, speak","think, believe, hope","order, command, forbid"], answer:0, explanation:"Theo Remember box A Closer Look 2: ask, wonder, want to know.", vi:"Động từ giới thiệu: ask, wonder, want to know."},
+  {id:"g7", prompt:"Trong câu hỏi Wh- tường thuật, ta có giữ trợ động từ do/does/did không?", options:["Không, ta bỏ nó và lùi thì động từ chính","Có, luôn giữ nguyên","Chỉ giữ trong câu hỏi Yes/No","Chỉ giữ với 'did'"], answer:0, explanation:"Không dùng do/does/did trong câu hỏi tường thuật; động từ chính lùi thì.", vi:"Không dùng do/does/did trong câu hỏi tường thuật."},
+  {id:"g8", prompt:"\"Who will be the first to step on Mars?\" Mary asked the scientist. → Mary asked the scientist ________.", options:["who would be the first to step on Mars","who will be the first to step on Mars","who is the first to step on Mars","was who the first to step on Mars"], answer:0, explanation:"will → would (lùi thì).", vi:"Mary asked the scientist who would be the first to step on Mars."},
+  {id:"g9", prompt:"\"How fast can a UFO travel?\" I asked my father. → I asked my father ________.", options:["how fast a UFO could travel","how fast could a UFO travel","how fast a UFO can travel","how fast can a UFO travel"], answer:0, explanation:"can → could, S trước V, không đảo ngữ.", vi:"I asked my father how fast a UFO could travel."},
+  {id:"g10", prompt:"\"How many craters does the moon have?\" the student asked his friend. → The student asked his friend ________.", options:["how many craters the moon had","how many craters did the moon have","how many craters the moon has","how many craters had the moon"], answer:0, explanation:"Bỏ 'does', have→had (lùi thì).", vi:"The student asked his friend how many craters the moon had."},
+  {id:"g11", prompt:"\"Where can we find information about the solar system?\" the pupils asked the teacher. → The pupils asked the teacher ________.", options:["where they could find information about the solar system","where could they find information about the solar system","where they can find information about the solar system","where can they find information about the solar system"], answer:0, explanation:"we→they, can→could, không đảo ngữ.", vi:"The pupils asked the teacher where they could find information about the solar system."},
+  {id:"g12", prompt:"\"What is the weather on Mars like?\" I asked my teacher. → I asked my teacher ________.", options:["what the weather on Mars was like","what was the weather on Mars like","what the weather on Mars is like","what is the weather on Mars like"], answer:0, explanation:"is→was (lùi thì), S trước V.", vi:"I asked my teacher what the weather on Mars was like."},
+  {id:"g13", prompt:"Khi chuyển một câu hỏi trực tiếp sang câu hỏi tường thuật, ta có giữ dấu chấm hỏi không?", options:["Không, ta bỏ dấu chấm hỏi","Có, luôn giữ nguyên","Chỉ giữ với câu hỏi Wh-","Chỉ giữ với câu hỏi Yes/No"], answer:0, explanation:"Câu hỏi tường thuật có cấu trúc như câu khẳng định nên không có dấu chấm hỏi.", vi:"Câu hỏi tường thuật không có dấu chấm hỏi."},
+  {id:"g14", prompt:"Trong câu hỏi tường thuật, ta sử dụng trật tự từ giống như trong loại câu nào?", options:["câu khẳng định (statements)","câu hỏi trực tiếp","câu mệnh lệnh","câu cảm thán"], answer:0, explanation:"Ta dùng cùng trật tự từ như trong câu khẳng định (S + V).", vi:"Trật tự từ giống câu khẳng định."},
+  {id:"g15", prompt:"\"What kind of book is it?\" An asked Mai. → An asked Mai ________.", options:["what kind of book it was","what kind of book was it","what kind of book it is","what kind of book is it"], answer:0, explanation:"is→was, S trước V.", vi:"An asked Mai what kind of book it was."},
+  {id:"g16", prompt:"Chọn câu đúng theo quy tắc câu hỏi tường thuật.", options:["He phoned to ask his mother what she was doing then.","He phoned to ask his mother what she is doing now.","He phoned to ask his mother what was she doing then.","He phoned to ask his mother what she doing was then."], answer:0, explanation:"Đúng trật tự từ và lùi thì: is→was, now→then.", vi:"He phoned to ask his mother what she was doing then."},
+  {id:"g17", prompt:"\"What plants do Vietnamese people grow for food?\" Ann wondered. → Ann wondered ________.", options:["what plants Vietnamese people grew for food","what plants did Vietnamese people grow for food","what plants Vietnamese people grow for food","what plants grew Vietnamese people for food"], answer:0, explanation:"Bỏ 'do', grow→grew (lùi thì).", vi:"Ann wondered what plants Vietnamese people grew for food."},
+  {id:"g18", prompt:"Câu sau có một lỗi sai, tìm lỗi: \"My father wondered me what I was going to do the following weekend.\"", options:["\"wondered me\" sai, 'wonder' không đi với tân ngữ trực tiếp như vậy (nên dùng 'asked me')","\"was going to do\" sai","\"the following weekend\" sai","Câu này không có lỗi sai"], answer:0, explanation:"'wonder' thường không đi trực tiếp với tân ngữ chỉ người như 'ask'; nên sửa thành 'asked me' hoặc bỏ 'me'.", vi:"'wonder' không dùng như 'ask + somebody'."},
+  {id:"g19", prompt:"Câu sau có một lỗi sai, tìm lỗi: \"I asked my teacher what food spacemen eat when they were travelling in a spacecraft.\"", options:["\"eat\" sai, cần lùi thì thành \"ate\"","\"were travelling\" sai","\"spacemen\" sai, cần viết là \"spaceman\"","Câu này không có lỗi sai"], answer:0, explanation:"Động từ chính trong câu hỏi tường thuật cần lùi thì: eat → ate.", vi:"eat cần lùi thì thành ate."},
+  {id:"g20", prompt:"\"Who's your favourite actor, Nick?\" I said. → I asked Nick ________.", options:["who his favourite actor was","who was his favourite actor","who is his favourite actor","who his favourite actor is"], answer:0, explanation:"is→was, S trước V, đại từ your→his.", vi:"I asked Nick who his favourite actor was."},
+];
+
+const READING_TEST = [
+  // ---- Passage 1: A thrilling science fiction novel (Getting Started) ----
+  {id:"r1", prompt:"[Bài đọc 1] What is Nick reading?", options:["A science fiction novel about creatures returning to their home planet.","A history book about ancient Rome.","A cookbook.","A comic book about superheroes."], answer:0, explanation:"\"A journey back to Soduka\" is a science fiction book about four creatures travelling back to their home planet.", vi:"Nick đang đọc truyện khoa học viễn tưởng về các sinh vật trở về hành tinh quê hương."},
+  {id:"r2", prompt:"[Bài đọc 1] Why do the four creatures have to land on Earth?", options:["Because their spaceship breaks down.","Because they want to visit Tommy.","Because Earth is their home planet.","Because they are being chased by another spaceship."], answer:0, explanation:"\"Along the way they have to land on Earth because their spaceship breaks down.\"", vi:"Vì tàu vũ trụ của chúng bị hỏng."},
+  {id:"r3", prompt:"[Bài đọc 1] What does the commander force the four creatures to do?", options:["Return to Earth to destroy it.","Stay on Earth forever.","Help Tommy build a new spaceship.","Travel to another galaxy."], answer:0, explanation:"\"their commander forces them to return to Earth to destroy it.\"", vi:"Viên chỉ huy ép chúng quay lại Trái Đất để phá hủy nó."},
+  {id:"r4", prompt:"[Bài đọc 1] How does the novel end?", options:["Tommy and the four creatures manage to stop the commander from destroying Earth.","The commander destroys Earth.","Tommy travels to Soduka with the creatures.","The four creatures are captured by the army."], answer:0, explanation:"\"Tommy and the four creatures manage to stop the commander from destroying Earth.\"", vi:"Tommy và bốn sinh vật ngăn được viên chỉ huy phá hủy Trái Đất."},
+  {id:"r5", prompt:"[Bài đọc 1] What does Nick sometimes ask himself?", options:["What we would do if aliens took over our planet.","Whether Soduka really exists.","How long it takes to travel to Mars.","Why Mai doesn't like science fiction."], answer:0, explanation:"\"I sometimes ask myself what we would do if aliens took over our planet.\"", vi:"Nick tự hỏi chúng ta sẽ làm gì nếu người ngoài hành tinh chiếm lấy hành tinh của chúng ta."},
+  // ---- Passage 2: The possibility of life on other planets (Skills 1) ----
+  {id:"r6", prompt:"[Bài đọc 2] According to the text, why must planets have liquid water?", options:["Their temperature must not be too high or too low.","They must be very large.","They must have many moons.","They must be close to a telescope."], answer:0, explanation:"\"they must have liquid water, so their temperature must not be too high or too low.\"", vi:"Để có nước lỏng, nhiệt độ không được quá cao hoặc quá thấp."},
+  {id:"r7", prompt:"[Bài đọc 2] Why does a planet need the correct amount of air?", options:["So that it can hold an atmosphere around it.","So that it can support many moons.","So that it can be seen with a telescope.","So that it can create craters."], answer:0, explanation:"\"the planets need to have the correct amount of air so that they can hold an atmosphere around it.\"", vi:"Để giữ được bầu khí quyển xung quanh hành tinh."},
+  {id:"r8", prompt:"[Bài đọc 2] What happens if a planet is too small?", options:["Its gravity is not strong enough to hold enough air.","Its gravity becomes too strong.","It becomes too hot to support life.","It loses all its craters."], answer:0, explanation:"\"If a planet is too small, its gravity is not strong enough to hold an amount of air.\"", vi:"Nếu hành tinh quá nhỏ, lực hấp dẫn không đủ mạnh để giữ đủ không khí."},
+  {id:"r9", prompt:"[Bài đọc 2] Why is Mars considered one of the most promising planets for life?", options:["Its days last about 24.5 hours and its seasons are similar to Earth's.","It has liquid water on its surface.","It has many moons like Jupiter.","It is the closest planet to the sun."], answer:0, explanation:"\"Its days last for 24.5 hours and its seasons are similar to Earth's.\"", vi:"Một ngày trên Sao Hỏa dài 24,5 giờ và các mùa tương tự Trái Đất."},
+  {id:"r10", prompt:"[Bài đọc 2] Why is the climate on Mars unsuitable for human life?", options:["Because it is too cold and Mars lacks oxygen.","Because it is too hot and has no gravity.","Because it has too many craters.","Because it has too much liquid water."], answer:0, explanation:"\"the climate on Mars is unsuitable for human life because it is too cold and Mars lacks oxygen.\"", vi:"Vì Sao Hỏa quá lạnh và thiếu oxy."},
+  // ---- Passage 3: Three planets in the solar system (Communication) ----
+  {id:"r11", prompt:"[Bài đọc 3] Which planet is the smallest and closest to the sun with no moon?", options:["Mercury","Venus","Jupiter","Mars"], answer:0, explanation:"\"Mercury - smallest and closest to the sun with no moon.\"", vi:"Sao Thủy là hành tinh nhỏ nhất và gần mặt trời nhất, không có mặt trăng."},
+  {id:"r12", prompt:"[Bài đọc 3] Which planet is nearly as big as Earth and is called the morning star?", options:["Venus","Mercury","Jupiter","Saturn"], answer:0, explanation:"\"Venus - nearly as big as Earth; ...people call it the morning star.\"", vi:"Sao Kim gần bằng kích thước Trái Đất và được gọi là sao Mai."},
+  {id:"r13", prompt:"[Bài đọc 3] Which planet is the largest, with about 63 moons?", options:["Jupiter","Mercury","Venus","Earth"], answer:0, explanation:"\"Jupiter - largest planet with about 63 moons.\"", vi:"Sao Mộc là hành tinh lớn nhất với khoảng 63 mặt trăng."},
+  {id:"r14", prompt:"[Bài đọc 3] Why is there no wind or weather on Mercury?", options:["Because it has no atmosphere.","Because it is too far from the sun.","Because it has no moon.","Because it is the largest planet."], answer:0, explanation:"\"no atmosphere -> no wind or weather on it.\"", vi:"Vì Sao Thủy không có khí quyển."},
+  {id:"r15", prompt:"[Bài đọc 3] Which planet is described as the stormiest planet and the third brightest object in the night sky?", options:["Jupiter","Venus","Mercury","Mars"], answer:0, explanation:"\"Jupiter - stormiest planet; third brightest object in the night sky.\"", vi:"Sao Mộc là hành tinh nhiều bão nhất và là vật thể sáng thứ ba trên bầu trời đêm."},
+];
+
+const TRANSLATION_TEST = [
+  {id:"t1", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"Scientists are using space telescopes to find habitable planets.\"", options:["Các nhà khoa học đang dùng kính viễn vọng vũ trụ để tìm những hành tinh có thể ở được.","Các nhà khoa học đang xây dựng trạm vũ trụ trên Sao Hỏa.","Các nhà khoa học đang tìm kiếm người ngoài hành tinh trên Trái Đất.","Các nhà khoa học đang chế tạo tên lửa mới."], answer:0, explanation:"space telescopes = kính viễn vọng vũ trụ; habitable planets = hành tinh có thể ở được.", vi:""},
+  {id:"t2", prompt:"Chọn bản dịch tiếng Anh đúng: \"Nếu một hành tinh quá nhỏ, lực hấp dẫn của nó không đủ mạnh để giữ bầu khí quyển.\"", options:["If a planet is too small, its gravity is not strong enough to hold an atmosphere.","If a planet is too big, its gravity will be too strong to hold an atmosphere.","If a planet has no moon, it cannot support life.","If a planet is too far from the sun, it becomes too cold."], answer:0, explanation:"quá nhỏ = too small; lực hấp dẫn không đủ mạnh = gravity is not strong enough.", vi:""},
+  {id:"t3", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"Mars is one of the most promising planets for life in our solar system.\"", options:["Sao Hỏa là một trong những hành tinh hứa hẹn nhất cho sự sống trong hệ mặt trời của chúng ta.","Sao Hỏa là hành tinh xa mặt trời nhất trong hệ mặt trời.","Sao Hỏa là hành tinh duy nhất có nước ở dạng lỏng.","Sao Hỏa là hành tinh lớn nhất trong hệ mặt trời."], answer:0, explanation:"most promising planets for life = những hành tinh hứa hẹn nhất cho sự sống.", vi:""},
+  {id:"t4", prompt:"Chọn bản dịch tiếng Anh đúng: \"Bốn sinh vật phải hạ cánh xuống Trái Đất vì tàu vũ trụ của chúng bị hỏng.\"", options:["The four creatures have to land on Earth because their spaceship breaks down.","The four creatures decide to visit Earth for a holiday.","The four creatures build a new spaceship on Earth.","The four creatures are attacked by aliens on Earth."], answer:0, explanation:"phải hạ cánh vì tàu vũ trụ bị hỏng = have to land because their spaceship breaks down.", vi:""},
+  {id:"t5", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"Tommy and the four creatures manage to stop the commander from destroying Earth.\"", options:["Tommy và bốn sinh vật đã ngăn được viên chỉ huy phá hủy Trái Đất.","Tommy và bốn sinh vật giúp viên chỉ huy phá hủy Trái Đất.","Tommy và bốn sinh vật rời khỏi Trái Đất mãi mãi.","Tommy và bốn sinh vật trở thành chỉ huy mới."], answer:0, explanation:"manage to stop the commander from destroying Earth = ngăn được viên chỉ huy phá hủy Trái Đất.", vi:""},
+  {id:"t6", prompt:"Chọn bản dịch tiếng Anh đúng: \"Sao Thủy là hành tinh nhỏ nhất và gần mặt trời nhất, không có mặt trăng.\"", options:["Mercury is the smallest and closest planet to the sun, with no moon.","Mercury is the largest planet, with many moons.","Venus is the smallest planet in the solar system.","Mercury is the hottest planet with no atmosphere."], answer:0, explanation:"nhỏ nhất và gần mặt trời nhất, không có mặt trăng = smallest and closest planet to the sun, with no moon.", vi:""},
+  {id:"t7", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"There seem to be traces of water on Mars' surface.\"", options:["Dường như có dấu vết của nước trên bề mặt Sao Hỏa.","Có rất nhiều nước trên bề mặt Sao Hỏa.","Không có dấu vết gì của nước trên Sao Hỏa.","Nước trên Sao Hỏa đã bốc hơi hết."], answer:0, explanation:"traces of water on Mars' surface = dấu vết của nước trên bề mặt Sao Hỏa.", vi:""},
+  {id:"t8", prompt:"Chọn bản dịch tiếng Anh đúng: \"Khí hậu trên Sao Hỏa không thích hợp cho con người vì nó quá lạnh và thiếu oxy.\"", options:["The climate on Mars is unsuitable for human life because it is too cold and Mars lacks oxygen.","The climate on Mars is perfect for human life all year round.","Mars is too hot for humans to live on.","Mars has enough oxygen but too little water."], answer:0, explanation:"không thích hợp = unsuitable; quá lạnh và thiếu oxy = too cold and lacks oxygen.", vi:""},
+  {id:"t9", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"Jupiter is the largest planet, with about 63 moons, and it is the stormiest planet.\"", options:["Sao Mộc là hành tinh lớn nhất, có khoảng 63 mặt trăng, và là hành tinh nhiều bão nhất.","Sao Mộc là hành tinh nhỏ nhất trong hệ mặt trời.","Sao Mộc không có mặt trăng nào.","Sao Mộc là hành tinh gần mặt trời nhất."], answer:0, explanation:"largest planet, about 63 moons, stormiest planet = lớn nhất, khoảng 63 mặt trăng, nhiều bão nhất.", vi:""},
+  {id:"t10", prompt:"Chọn bản dịch tiếng Anh đúng: \"Con người vẫn đang tự hỏi những hành tinh nào trong vũ trụ có thể duy trì sự sống.\"", options:["Humans are still wondering what planets in outer space might support life.","Humans have already found life on every planet.","Humans no longer study other planets.","Humans are building spaceships to leave Earth forever."], answer:0, explanation:"vẫn đang tự hỏi = are still wondering; hành tinh nào có thể duy trì sự sống = what planets might support life.", vi:""},
+];
+
+VOCAB_TEST.forEach(q=>q.section='vocab');
+GRAMMAR_TEST.forEach(q=>q.section='grammar');
+READING_TEST.forEach(q=>q.section='reading');
+TRANSLATION_TEST.forEach(q=>q.section='translation');
+const TOTAL = VOCAB_TEST.length + GRAMMAR_TEST.length + READING_TEST.length + TRANSLATION_TEST.length;
+const STORAGE_KEY = 'u12_vocabgrammar_test_v1';
+
+/* ---------------- utility ---------------- */
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+function loadHistory(){
+  try{ const raw=localStorage.getItem(STORAGE_KEY); return raw? JSON.parse(raw) : {best:0, attempts:0}; }
+  catch(e){ return {best:0, attempts:0}; }
+}
+function saveHistory(h){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(h)); }catch(e){} }
+
+/* ---------------- state ---------------- */
+let state = { questions:[], answers:{}, submitted:false, timeLeft: 35*60, timerId:null, startedAt:null };
+
+function buildQuestionSet(){
+  const all = shuffle(VOCAB_TEST.concat(GRAMMAR_TEST).concat(READING_TEST).concat(TRANSLATION_TEST).map(q=>{
+    const optOrder = shuffle(q.options.map((o,i)=>i));
+    return Object.assign({}, q, { displayOptions: optOrder.map(i=>q.options[i]), correctDisplayIndex: optOrder.indexOf(q.answer) });
+  }));
+  return all;
+}
+
+function init(){
+  renderReviewSection();
+  state.questions = buildQuestionSet();
+  state.answers = {};
+  state.submitted = false;
+  state.timeLeft = 35*60;
+  state.startedAt = Date.now();
+  document.getElementById('resultBanner').classList.remove('show');
+  renderQuiz();
+  updateProgress();
+  updateHistoryLabels();
+  startTimer();
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = false; btn.classList.remove('opacity-50');
+}
+
+function updateHistoryLabels(){
+  const h = loadHistory();
+  document.getElementById('bestScoreLabel').textContent = h.attempts>0 ? (h.best+'/'+TOTAL) : '--';
+  document.getElementById('attemptCountLabel').textContent = h.attempts||0;
+}
+
+function startTimer(){
+  if(state.timerId) clearInterval(state.timerId);
+  state.timerId = setInterval(()=>{
+    if(state.submitted){ clearInterval(state.timerId); return; }
+    state.timeLeft--;
+    renderTimer();
+    if(state.timeLeft<=0){ clearInterval(state.timerId); submitTest(true); }
+  },1000);
+  renderTimer();
+}
+function renderTimer(){
+  const m = Math.floor(Math.max(0,state.timeLeft)/60), s = Math.max(0,state.timeLeft)%60;
+  const label = document.getElementById('timerLabel');
+  label.textContent = String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  label.classList.toggle('low', state.timeLeft<=60);
+}
+
+function renderQuiz(){
+  const vocabQs = state.questions.filter(q=>q.section==='vocab');
+  const grammarQs = state.questions.filter(q=>q.section==='grammar');
+  const readingQs = state.questions.filter(q=>q.section==='reading');
+  const translationQs = state.questions.filter(q=>q.section==='translation');
+  let html = '';
+  html += sectionDivider('🪐 Phần 1 · Vocabulary (Outer Space)', vocabQs.length);
+  vocabQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('📐 Phần 2 · Grammar (Câu tường thuật - Reported Speech: câu hỏi)', grammarQs.length);
+  grammarQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('📖 Phần 3 · Đọc hiểu (Reading Comprehension)', readingQs.length);
+  readingQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('🇻🇳 Phần 4 · Luyện dịch nghĩa (Translation Practice)', translationQs.length);
+  translationQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  document.getElementById('quizArea').innerHTML = html;
+}
+
+function sectionDivider(title, count){
+  return `<div class="section-divider text-white rounded-xl px-4 py-2.5 mb-4 mt-2 font-extrabold text-sm md:text-base shadow flex items-center justify-between">
+    <span>${title}</span><span class="text-xs font-bold opacity-80">${count} câu</span>
+  </div>`;
+}
+
+function renderQuestionCard(q, num){
+  const letters=['A','B','C','D'];
+  const optsHtml = q.displayOptions.map((opt,i)=>{
+    return `<div class="opt-row px-3 py-2.5 flex items-start gap-2 text-sm md:text-[15px]" data-qid="${q.id}" data-idx="${i}" onclick="selectAnswer('${q.id}',${i})">
+      <span class="font-black text-indigo-900">${letters[i]}.</span><span class="flex-1">${opt}</span>
+    </div>`;
+  }).join('');
+  return `<div class="qcard p-4 mb-3" id="qcard_${q.id}">
+    <p class="font-extrabold text-slate-800 text-sm md:text-base mb-2"><span class="text-pink-600">Câu ${num}.</span> ${q.prompt}</p>
+    <div class="grid gap-2" id="opts_${q.id}">${optsHtml}</div>
+    <div class="explain-box mt-3" id="explain_${q.id}"></div>
+  </div>`;
+}
+
+function selectAnswer(qid, idx){
+  if(state.submitted) return;
+  state.answers[qid] = idx;
+  const wrap = document.getElementById('opts_'+qid);
+  wrap.querySelectorAll('.opt-row').forEach(el=>{
+    el.classList.toggle('selected', parseInt(el.dataset.idx,10)===idx);
+  });
+  document.getElementById('qcard_'+qid).classList.add('answered');
+  updateProgress();
+}
+
+function updateProgress(){
+  const answered = Object.keys(state.answers).length;
+  document.getElementById('progressText').textContent = answered+' / '+TOTAL+' câu';
+  document.getElementById('progressBar').style.width = Math.round(answered/TOTAL*100)+'%';
+  document.getElementById('answeredCount').textContent = answered;
+}
+
+function submitTest(auto){
+  if(state.submitted) return;
+  const answeredCount = Object.keys(state.answers).length;
+  if(!auto && answeredCount < TOTAL){
+    const proceed = confirm('Bạn còn '+(TOTAL-answeredCount)+' câu chưa trả lời. Vẫn muốn nộp bài?');
+    if(!proceed) return;
+  }
+  state.submitted = true;
+  if(state.timerId) clearInterval(state.timerId);
+  const elapsed = Math.round((Date.now()-state.startedAt)/1000);
+
+  let correct = 0;
+  state.questions.forEach(q=>{
+    const sel = state.answers[q.id];
+    const isCorrect = sel === q.correctDisplayIndex;
+    if(isCorrect) correct++;
+    const card = document.getElementById('qcard_'+q.id);
+    card.classList.add(isCorrect?'correct':'wrong');
+    const wrap = document.getElementById('opts_'+q.id);
+    wrap.querySelectorAll('.opt-row').forEach(el=>{
+      const idx = parseInt(el.dataset.idx,10);
+      el.classList.add('locked');
+      if(idx===q.correctDisplayIndex) el.classList.add('correct-opt');
+      else if(idx===sel && !isCorrect) el.classList.add('wrong-opt');
+    });
+    const exp = document.getElementById('explain_'+q.id);
+    exp.classList.add('show');
+    const viLine = q.vi ? `<p class="text-slate-500 italic mt-1">🇻🇳 ${q.vi}</p>` : '';
+    exp.innerHTML = `<p class="${isCorrect?'text-emerald-700':'text-rose-600'} font-bold">${isCorrect?'✅ Chính xác!':(sel===undefined?'⚪ Bạn chưa chọn đáp án.':'❌ Chưa đúng.')} ${q.explanation}</p>${viLine}`;
+  });
+
+  const pct = Math.round(correct/TOTAL*100);
+  document.getElementById('resultScore').textContent = correct;
+  document.getElementById('resultPct').textContent = pct;
+  const mm = Math.floor(elapsed/60), ss = elapsed%60;
+  document.getElementById('resultTime').textContent = mm+':'+String(ss).padStart(2,'0');
+  let emoji='🙂', title='Đã hoàn thành!';
+  if(pct>=90){ emoji='🏆'; title='Xuất sắc!'; }
+  else if(pct>=70){ emoji='🎉'; title='Làm tốt lắm!'; }
+  else if(pct>=50){ emoji='💪'; title='Khá ổn, cố gắng thêm nhé!'; }
+  else { emoji='📖'; title='Cần ôn tập thêm!'; }
+  document.getElementById('resultEmoji').textContent = emoji;
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultBanner').classList.add('show');
+  document.getElementById('resultBanner').scrollIntoView({behavior:'smooth', block:'start'});
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true; btn.classList.add('opacity-50');
+
+  const h = loadHistory();
+  h.attempts = (h.attempts||0)+1;
+  h.best = Math.max(h.best||0, correct);
+  saveHistory(h);
+  updateHistoryLabels();
+
+  if(pct>=70) launchConfetti();
+}
+
+function retryTest(){ init(); window.scrollTo({top:0, behavior:'smooth'}); }
+
+function scrollToReview(){
+  document.getElementById('quizArea').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function launchConfetti(){
+  const wrap = document.getElementById('confettiWrap');
+  const colors=['#1e1b4b','#4c1d95','#db2777','#a21caf','#f472b6'];
+  for(let i=0;i<50;i++){
+    const el=document.createElement('div');
+    el.className='confetti-piece';
+    el.style.left=(Math.random()*100)+'vw';
+    el.style.background=colors[Math.floor(Math.random()*colors.length)];
+    el.style.animationDuration=(2+Math.random()*1.5)+'s';
+    el.style.top='-20px';
+    wrap.appendChild(el);
+    setTimeout(()=>el.remove(), 3600);
+  }
+}
+
+init();
+</script>
+</body>
+</html>

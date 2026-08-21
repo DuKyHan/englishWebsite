@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 9 - Test Trắc nghiệm Từ vựng & Ngữ pháp - Tiếng Anh 8</title>
+<meta name="apple-mobile-web-app-title" content="U9 Vocab-Grammar Test">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+  :root{ --accent:#334155; --accent2:#dc2626; }
+  * { box-sizing: border-box; }
+  body { font-family:'Nunito',sans-serif; background:#f8fafc; }
+  h1,h2,.baloo{ font-family:'Baloo 2',sans-serif; }
+  .hero-gradient{ background: linear-gradient(135deg, #0f172a 0%, #334155 45%, #dc2626 100%); }
+  .qcard{ background:#fff; border-radius:1.1rem; box-shadow:0 1px 4px rgba(0,0,0,.06); border:2px solid #e2e8f0; transition:border .2s, box-shadow .2s; }
+  .qcard.answered{ border-color:#fecaca; }
+  .qcard.correct{ border-color:#22c55e; background:#f0fdf4; }
+  .qcard.wrong{ border-color:#ef4444; background:#fef2f2; }
+  .opt-row{ cursor:pointer; transition: all .15s; border:2px solid #e2e8f0; border-radius:.8rem; }
+  .opt-row:hover{ border-color:var(--accent); background:#f8fafc; }
+  .opt-row.selected{ border-color:#dc2626; background:#fee2e2; font-weight:800; }
+  .opt-row.correct-opt{ border-color:#22c55e !important; background:#dcfce7 !important; font-weight:800; }
+  .opt-row.wrong-opt{ border-color:#ef4444 !important; background:#fee2e2 !important; font-weight:800; }
+  .opt-row.locked{ cursor:default; pointer-events:none; }
+  .explain-box{ display:none; background:#f1f5f9; border:1px solid #cbd5e1; border-radius:.7rem; padding:.6rem .9rem; font-size:.85rem; color:#334155; }
+  .explain-box.show{ display:block; }
+  .sticky-bar{ position:sticky; bottom:0; z-index:40; }
+  .progress-fill{ transition: width .3s ease; }
+  .badge-pill{ background:#fff; border:2px solid #cbd5e1; border-radius:999px; padding:.3rem .8rem; font-size:.75rem; font-weight:800; color:#334155; }
+  .score-ring{ animation: popIn .4s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn{ from{transform:scale(.5); opacity:0;} to{transform:scale(1); opacity:1;} }
+  .confetti-wrap{ position:fixed; inset:0; pointer-events:none; z-index:9999; }
+  .confetti-piece{ position:absolute; width:10px; height:10px; border-radius:2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall{ 0%{transform:translateY(-20px) rotate(0deg); opacity:1;} 100%{transform:translateY(100vh) rotate(720deg); opacity:0;} }
+  .section-divider{ background:linear-gradient(135deg,#334155,#dc2626); }
+  #resultBanner{ display:none; }
+  #resultBanner.show{ display:block; }
+  .timer-pill{ font-variant-numeric: tabular-nums; }
+  .timer-pill.low{ color:#fca5a5 !important; }
+  .accordion-btn{ cursor:pointer; transition: background .15s; }
+  .accordion-body{ display:none; }
+  .accordion-body.open{ display:block; }
+  .accordion-chevron{ transition: transform .2s; }
+  .accordion-btn.open .accordion-chevron{ transform: rotate(180deg); }
+  .vocab-row{ border-bottom:1px solid #f1f5f9; padding:.55rem 0; }
+  .vocab-row:last-child{ border-bottom:none; }
+  .passage-en{ background:#fff; border:1px solid #e2e8f0; border-radius:.9rem; padding:.9rem 1.1rem; line-height:1.85; font-size:.92rem; color:#334155; }
+  .passage-vi{ display:none; background:#f1f5f9; border:1px solid #cbd5e1; border-radius:.9rem; padding:.9rem 1.1rem; margin-top:.6rem; line-height:1.85; font-size:.92rem; color:#334155; }
+  .passage-vi.show{ display:block; }
+  .grammar-tip-box{ background:#f1f5f9; border:1px solid #cbd5e1; border-radius:.9rem; padding:1rem 1.2rem; line-height:1.9; font-size:.92rem; color:#334155; }
+</style>
+</head>
+<body class="min-h-screen pb-10">
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<header class="hero-gradient text-white py-8 px-4 text-center shadow-xl relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <div class="absolute top-4 left-8 text-6xl">🌪️</div>
+    <div class="absolute top-2 right-12 text-5xl">🌊</div>
+    <div class="absolute bottom-2 left-1/3 text-4xl">⛈️</div>
+    <div class="absolute bottom-4 right-1/4 text-5xl">🏚️</div>
+  </div>
+  <p class="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Tiếng Anh 8 · Unit 9 · Natural Disasters</p>
+  <h1 class="text-3xl md:text-5xl font-extrabold drop-shadow-lg">📝 Test trắc nghiệm: Từ vựng &amp; Ngữ pháp</h1>
+  <p class="mt-2 text-base md:text-lg opacity-90 font-semibold">75 câu hỏi · Từ vựng, Ngữ pháp, Đọc hiểu &amp; Dịch nghĩa</p>
+  <div class="mt-5 max-w-2xl mx-auto flex flex-wrap items-center justify-center gap-3">
+    <span class="badge-pill"><i class="fa-solid fa-star mr-1"></i>Điểm cao nhất: <span id="bestScoreLabel">--</span></span>
+    <span class="badge-pill"><i class="fa-solid fa-rotate mr-1"></i>Số lần làm: <span id="attemptCountLabel">0</span></span>
+    <span class="badge-pill timer-pill"><i class="fa-solid fa-clock mr-1"></i><span id="timerLabel">35:00</span></span>
+  </div>
+  <div class="mt-4 max-w-2xl mx-auto">
+    <div class="flex justify-between text-xs font-bold opacity-80 mb-1">
+      <span>Tiến độ trả lời</span>
+      <span id="progressText">0 / 75 câu</span>
+    </div>
+    <div class="bg-white/20 rounded-full h-3 overflow-hidden">
+      <div id="progressBar" class="bg-white rounded-full h-3 progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-3xl mx-auto px-4 mt-6">
+
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 mb-6 text-sm text-slate-600">
+    <p class="font-bold text-slate-700 mb-1"><i class="fa-solid fa-circle-info text-red-600 mr-1"></i>Hướng dẫn làm bài</p>
+    <p>Trước khi làm bài, hãy mở phần <b>"📚 Ôn tập & Dịch nghĩa Unit 9"</b> bên dưới để xem lại từ vựng, ngữ pháp và bản dịch tiếng Việt của các bài đọc/nghe trong Unit 9 (cả SGK). Sau đó chọn <b>1 đáp án đúng</b> cho mỗi câu hỏi trắc nghiệm — gồm từ vựng, ngữ pháp, đọc hiểu bài đọc và luyện dịch nghĩa. Bấm <b>"Nộp bài"</b> để xem điểm và giải thích. Bấm <b>"Làm lại"</b> để nhận đề mới và luyện tập không giới hạn số lần.</p>
+  </div>
+
+  <!-- ============ REVIEW & TRANSLATION SECTION ============ -->
+  <div class="bg-white rounded-2xl shadow-sm border-2 border-red-200 mb-6 overflow-hidden">
+    <button class="accordion-btn open w-full flex items-center justify-between px-4 py-3 bg-red-50 font-extrabold text-red-800" onclick="toggleAccordion('reviewMain')">
+      <span><i class="fa-solid fa-book-open-reader mr-2"></i>📚 Ôn tập &amp; Dịch nghĩa Unit 9</span>
+      <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+    </button>
+    <div class="accordion-body open px-4 py-4 space-y-4" id="acc_reviewMain">
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('vocabList')">
+          <span>🌪️ Từ vựng Unit 9 (30 từ/cụm từ)</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-2" id="acc_vocabList"></div>
+      </div>
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('grammarTip')">
+          <span>📐 Ngữ pháp: Thì quá khứ tiếp diễn (Past Continuous)</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-3" id="acc_grammarTip">
+          <div class="grammar-tip-box">
+            <b>1. Hình thức (Form):</b> S + <b>was/were</b> + V-ing<br>
+            &nbsp;&nbsp;• I / He / She / It <b>was</b> + V-ing<br>
+            &nbsp;&nbsp;• You / We / They <b>were</b> + V-ing<br>
+            &nbsp;&nbsp;• Phủ định: S + was/were + <b>not</b> + V-ing (wasn't / weren't)<br>
+            &nbsp;&nbsp;• Nghi vấn: <b>Was/Were</b> + S + V-ing?<br><br>
+            <b>2. Cách dùng (Usage) — theo phần Remember trong sách:</b><br>
+            &nbsp;&nbsp;• Diễn tả <u>một hành động đang xảy ra tại một thời điểm cụ thể trong quá khứ</u>.<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;Ví dụ: <i>I was having dinner at 6 p.m. yesterday.</i> — <i>Were you having dinner at 6 p.m. yesterday? – Yes, I was.</i><br>
+            &nbsp;&nbsp;• Diễn tả <u>một hành động đang xảy ra trong quá khứ thì bị một hành động khác xen vào làm gián đoạn</u>. Hành động xen vào được chia ở <b>thì quá khứ đơn (past simple)</b>.<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;Ví dụ: <i>When / While we were watching TV, we felt the earthquake.</i> — <i>What were you doing when you felt the earthquake? – We were watching TV.</i><br><br>
+            <b>3. Ghi chú (Notes):</b><br>
+            &nbsp;&nbsp;• Ta có thể dùng <b>when</b> hoặc <b>while</b> trước mệnh đề ở thì quá khứ tiếp diễn.<br>
+            &nbsp;&nbsp;• Ta chỉ dùng <b>when</b> trước mệnh đề ở thì quá khứ đơn (hành động xen vào, gây gián đoạn).
+          </div>
+        </div>
+      </div>
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('passages')">
+          <span>📖 Bài đọc &amp; hội thoại Unit 9 (có bản dịch)</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-3 space-y-4" id="acc_passages"></div>
+      </div>
+
+    </div>
+  </div>
+  <!-- ============ END REVIEW SECTION ============ -->
+
+  <div id="resultBanner" class="mb-6">
+    <div class="bg-white rounded-2xl shadow-lg border-2 border-red-300 p-6 text-center score-ring">
+      <p id="resultEmoji" class="text-5xl mb-2">🎉</p>
+      <h2 class="text-2xl font-extrabold text-red-700" id="resultTitle">Hoàn thành!</h2>
+      <p class="text-4xl font-black text-slate-800 mt-2"><span id="resultScore">0</span>/75</p>
+      <p class="text-slate-500 font-bold mt-1"><span id="resultPct">0</span>% chính xác · Thời gian: <span id="resultTime">0:00</span></p>
+      <div class="flex flex-wrap justify-center gap-3 mt-4">
+        <button onclick="retryTest()" class="bg-red-800 hover:bg-red-900 text-white font-bold px-5 py-2.5 rounded-xl shadow"><i class="fa-solid fa-rotate-right mr-1"></i>Làm lại (đề mới)</button>
+        <button onclick="scrollToReview()" class="bg-white border-2 border-red-300 text-red-700 font-bold px-5 py-2.5 rounded-xl"><i class="fa-solid fa-magnifying-glass mr-1"></i>Xem lại chi tiết</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="quizArea"></div>
+
+  <div class="sticky-bar bg-white/95 backdrop-blur border-t border-slate-200 mt-6 py-3 px-4 rounded-t-2xl shadow-[0_-4px_14px_rgba(0,0,0,.06)] flex items-center justify-between gap-3">
+    <span class="text-xs md:text-sm font-bold text-slate-500"><span id="answeredCount">0</span>/75 câu đã trả lời</span>
+    <button id="submitBtn" onclick="submitTest()" class="bg-gradient-to-r from-slate-800 to-red-600 text-white font-extrabold px-6 py-2.5 rounded-xl shadow-lg hover:brightness-110"><i class="fa-solid fa-flag-checkered mr-1"></i>Nộp bài</button>
+  </div>
+
+</main>
+
+<script>
+/* ============================================================
+   REVIEW CONTENT: Unit 9 Vocabulary, Grammar rule, Passages (EN+VI)
+   ============================================================ */
+const VOCAB_LIST = [
+  {word:"flood", vi:"lũ lụt", example:"A flood destroyed my grandparents' house last week.", exVi:"Một trận lũ đã phá hủy nhà của ông bà tôi tuần trước."},
+  {word:"storm", vi:"cơn bão, giông bão", example:"A tornado is a violent storm that moves in a circle with very strong winds.", exVi:"Lốc xoáy là một cơn bão dữ dội di chuyển theo hình xoáy với sức gió rất mạnh."},
+  {word:"tornado", vi:"lốc xoáy", example:"We saw a giant funnel of wind moving towards us during the tornado.", exVi:"Chúng tôi thấy một cột gió khổng lồ di chuyển về phía mình trong trận lốc xoáy."},
+  {word:"landslide", vi:"sạt lở đất, lở đất", example:"Some big rocks and mud came down the mountain during the landslide.", exVi:"Nhiều tảng đá lớn và bùn đã đổ xuống từ núi trong trận sạt lở đất."},
+  {word:"volcanic eruption", vi:"núi lửa phun trào", example:"I watched the news about a volcanic eruption at 9 o'clock yesterday morning.", exVi:"Tôi xem tin tức về vụ núi lửa phun trào lúc 9 giờ sáng hôm qua."},
+  {word:"earthquake", vi:"động đất", example:"Suddenly everything in our living room began to shake because of the earthquake.", exVi:"Đột nhiên mọi thứ trong phòng khách nhà tôi bắt đầu rung chuyển vì trận động đất."},
+  {word:"tsunami", vi:"sóng thần", example:"The eruption caused a tsunami which flooded properties in Tonga's capital.", exVi:"Vụ phun trào đã gây ra một trận sóng thần làm ngập tài sản ở thủ đô Tonga."},
+  {word:"destroy", vi:"phá hủy", example:"A flood destroyed their house and damaged all of their crops.", exVi:"Một trận lũ đã phá hủy nhà của họ và làm hư hại hết mùa màng."},
+  {word:"destruction", vi:"sự phá hủy", example:"Last year, earthquakes caused great destruction to a lot of houses in Japan.", exVi:"Năm ngoái, các trận động đất đã gây ra sự phá hủy lớn đối với nhiều ngôi nhà ở Nhật Bản."},
+  {word:"erupt", vi:"phun trào", example:"A volcano in the South Pacific erupted violently last Saturday.", exVi:"Một ngọn núi lửa ở Nam Thái Bình Dương đã phun trào dữ dội vào thứ Bảy tuần trước."},
+  {word:"eruption", vi:"sự phun trào", example:"The eruption sent a cloud of ash and gas into the air.", exVi:"Vụ phun trào đã đẩy một đám mây tro bụi và khí vào không trung."},
+  {word:"warn", vi:"cảnh báo", example:"The local authorities warned the villagers about a landslide yesterday.", exVi:"Chính quyền địa phương đã cảnh báo dân làng về một trận sạt lở đất hôm qua."},
+  {word:"warning", vi:"lời cảnh báo, sự cảnh báo", example:"Local authorities gave a flood warning yesterday, so today people are moving to safer places.", exVi:"Chính quyền địa phương đã đưa ra cảnh báo lũ lụt hôm qua, vì vậy hôm nay mọi người đang chuyển đến nơi an toàn hơn."},
+  {word:"predict", vi:"dự đoán", example:"It's hard to believe that we cannot predict when earthquakes will happen.", exVi:"Thật khó tin rằng chúng ta không thể dự đoán khi nào động đất sẽ xảy ra."},
+  {word:"prediction", vi:"dự đoán (danh từ)", example:"We are donating money to help the victims, based on the prediction of local authorities.", exVi:"Chúng tôi đang quyên góp tiền để giúp nạn nhân, dựa theo dự đoán của chính quyền địa phương."},
+  {word:"damage", vi:"thiệt hại, sự hư hại", example:"The tornado damaged the roof of our house and pulled up some trees in our yard.", exVi:"Trận lốc xoáy đã làm hỏng mái nhà và bật gốc vài cây trong sân nhà tôi."},
+  {word:"emergency kit", vi:"bộ dụng cụ khẩn cấp", example:"To prepare for a natural disaster, we should make an emergency kit.", exVi:"Để chuẩn bị cho một thiên tai, chúng ta nên chuẩn bị một bộ dụng cụ khẩn cấp."},
+  {word:"rescue worker", vi:"nhân viên cứu hộ", example:"Rescue workers are trying hard to save people in the flooded area.", exVi:"Các nhân viên cứu hộ đang cố gắng hết sức để cứu người trong khu vực bị ngập lụt."},
+  {word:"victim", vi:"nạn nhân", example:"We are donating money and food to help the landslide victims.", exVi:"Chúng tôi đang quyên góp tiền và thực phẩm để giúp đỡ các nạn nhân của trận sạt lở đất."},
+  {word:"whistle", vi:"còi", example:"The rescue worker used a whistle to call for help.", exVi:"Nhân viên cứu hộ đã dùng còi để kêu gọi giúp đỡ."},
+  {word:"property", vi:"tài sản", example:"Natural disasters can cause serious damage to property.", exVi:"Thiên tai có thể gây thiệt hại nghiêm trọng cho tài sản."},
+  {word:"dangerous", vi:"nguy hiểm", example:"Avoid dangerous places, such as windows or bookcases, during an earthquake.", exVi:"Tránh những nơi nguy hiểm, như cửa sổ hoặc kệ sách, trong khi động đất."},
+  {word:"numerous", vi:"nhiều, vô số", example:"There are numerous tropical storms in this area every year.", exVi:"Có vô số cơn bão nhiệt đới ở khu vực này mỗi năm."},
+  {word:"poisonous", vi:"độc hại, có độc", example:"She gave us practical tips about treating poisonous wastes.", exVi:"Cô ấy đã cho chúng tôi những lời khuyên thiết thực về việc xử lý chất thải độc hại."},
+  {word:"practical", vi:"thực tế, thiết thực", example:"It is practical to prepare an emergency kit before a storm comes.", exVi:"Việc chuẩn bị một bộ dụng cụ khẩn cấp trước khi bão đến là rất thiết thực."},
+  {word:"marvellous", vi:"tuyệt vời, kỳ diệu", example:"It was marvellous that no one was hurt after such a violent tornado.", exVi:"Thật kỳ diệu là không ai bị thương sau trận lốc xoáy dữ dội như vậy."},
+  {word:"violently", vi:"một cách dữ dội, mãnh liệt", example:"A volcano in the South Pacific erupted violently last Saturday.", exVi:"Một ngọn núi lửa ở Nam Thái Bình Dương đã phun trào dữ dội vào thứ Bảy tuần trước."},
+  {word:"missing", vi:"mất tích", example:"More than twenty people on these islands are still missing.", exVi:"Hơn hai mươi người trên những hòn đảo này vẫn còn mất tích."},
+  {word:"trembling", vi:"rung chuyển, run rẩy", example:"My building started trembling and books, lights, and other things moved.", exVi:"Tòa nhà của tôi bắt đầu rung chuyển và sách vở, đèn cùng những đồ vật khác cũng bị xê dịch."},
+  {word:"fear", vi:"sự sợ hãi", example:"Many people living in the building ran out of their homes in fear.", exVi:"Nhiều người sống trong tòa nhà đã chạy ra khỏi nhà vì sợ hãi."},
+];
+
+const PASSAGES_REVIEW = [
+  {
+    title:"📄 Bài đọc (Getting Started): We are all safe!",
+    en:"<b>Tom:</b> You look pretty sad, Mi. What's the matter?<br><b>Mi:</b> My uncle called us this morning. Our home town has been affected by a flood. It's the second time this year.<br><b>Tom:</b> I'm sorry to hear that. How are things there now?<br><b>Mi:</b> My uncle, his wife, and his children are all safe. They moved everything to the second floor of their house last night. Are there natural disasters in your home town in the US?<br><b>Tom:</b> Yes, we sometimes have tornadoes.<br><b>Mi:</b> Tornadoes? Sounds strange. What's a tornado?<br><b>Tom:</b> It's a violent storm that moves in a circle with very strong winds. I still remember the tornado we had last year.<br><b>Mi:</b> What happened?<br><b>Tom:</b> One evening my parents and I were having dinner. Suddenly we heard a very loud noise. When we looked out of the window, we saw a giant funnel of wind moving towards us.<br><b>Mi:</b> Did it cause any damage?<br><b>Tom:</b> Yes, a lot. It damaged the roof of our house and pulled up some trees in our yard. Fortunately, no one was hurt.",
+    vi:"<b>Tom:</b> Trông cậu có vẻ buồn quá, Mi. Có chuyện gì vậy?<br><b>Mi:</b> Chú tớ gọi điện cho bọn tớ sáng nay. Quê tớ vừa bị ảnh hưởng bởi một trận lũ lụt. Đây là lần thứ hai trong năm nay rồi.<br><b>Tom:</b> Tớ rất tiếc khi nghe vậy. Bây giờ tình hình ở đó thế nào rồi?<br><b>Mi:</b> Chú tớ, vợ chú và các con đều an toàn cả. Họ đã chuyển hết đồ đạc lên tầng hai của ngôi nhà vào tối qua. Ở quê cậu bên Mỹ có thiên tai không?<br><b>Tom:</b> Có chứ, thỉnh thoảng bọn tớ có lốc xoáy.<br><b>Mi:</b> Lốc xoáy? Nghe lạ nhỉ. Lốc xoáy là gì vậy?<br><b>Tom:</b> Đó là một cơn bão dữ dội di chuyển theo hình xoáy tròn với sức gió rất mạnh. Tớ vẫn còn nhớ trận lốc xoáy năm ngoái nhà tớ gặp phải.<br><b>Mi:</b> Chuyện gì đã xảy ra vậy?<br><b>Tom:</b> Một buổi tối, bố mẹ tớ và tớ đang ăn tối. Bỗng nhiên bọn tớ nghe thấy một tiếng động rất lớn. Khi nhìn ra cửa sổ, bọn tớ thấy một cột gió khổng lồ đang di chuyển về phía mình.<br><b>Mi:</b> Nó có gây thiệt hại gì không?<br><b>Tom:</b> Có chứ, nhiều thiệt hại lắm. Nó làm hỏng mái nhà và bật gốc vài cây trong sân nhà tớ. May mắn là không ai bị thương."
+  },
+  {
+    title:"📄 Bài đọc (Skills 1): Two News Reports about natural disasters",
+    en:"<b>Report 1 — Tonga:</b> A volcano in the South Pacific erupted violently last Saturday. It hit Tonga, an island country in the area. The eruption sent a cloud of ash and gas into the air. People could see this cloud from 20 kilometres away. The eruption also caused a tsunami which flooded properties in Tonga's capital. Besides, it destroyed hundreds of homes on some small islands. More than twenty people on these islands are still missing. New Zealand sent two big ships to Tonga to help the victims yesterday.<br><br><b>Report 2 — Ha Noi:</b> Residents in tall buildings in Ha Noi were frightened when they felt a slight shaking for about 20 seconds last night. 'I was watching TV when my building started trembling. Books, lights, and other things also moved,' Ms Nguyen Ha, a resident in the Sunshine Building, shared. Many people living in the building ran out of their homes in fear. According to scientists, a strong earthquake in China caused this shaking. Luckily, there was no damage.",
+    vi:"<b>Bản tin 1 — Tonga:</b> Một ngọn núi lửa ở Nam Thái Bình Dương đã phun trào dữ dội vào thứ Bảy tuần trước. Nó ảnh hưởng đến Tonga, một quốc gia đảo trong khu vực. Vụ phun trào đã đẩy một đám mây tro bụi và khí vào không trung. Người ta có thể nhìn thấy đám mây này từ khoảng cách 20 km. Vụ phun trào còn gây ra một trận sóng thần làm ngập tài sản ở thủ đô của Tonga. Ngoài ra, nó còn phá hủy hàng trăm ngôi nhà trên một số đảo nhỏ. Hơn hai mươi người trên những hòn đảo này vẫn còn mất tích. New Zealand đã gửi hai con tàu lớn đến Tonga để giúp đỡ các nạn nhân vào hôm qua.<br><br><b>Bản tin 2 — Hà Nội:</b> Cư dân sống trong các tòa nhà cao tầng ở Hà Nội đã hoảng sợ khi cảm nhận một cơn rung lắc nhẹ kéo dài khoảng 20 giây vào đêm qua. \"Tôi đang xem ti vi thì tòa nhà của tôi bắt đầu rung chuyển. Sách vở, đèn và các đồ vật khác cũng bị xê dịch,\" chị Nguyễn Hà, một cư dân sống tại tòa nhà Sunshine, chia sẻ. Nhiều người sống trong tòa nhà đã chạy ra khỏi nhà vì sợ hãi. Theo các nhà khoa học, một trận động đất mạnh ở Trung Quốc đã gây ra rung lắc này. May mắn là không có thiệt hại nào xảy ra."
+  },
+  {
+    title:"💬 Communication: Giving/responding to bad news &amp; Knowledge of natural disasters",
+    en:"<b>Mark:</b> Phong, why are you so sad?<br><b>Phong:</b> My grandparents called this morning. A flood destroyed their house.<br><b>Mark:</b> I'm sorry to hear that.<br><b>Phong:</b> It also damaged all of their crops.<br><b>Mark:</b> That's awful. I hope your grandparents are safe.<br><br><b>Nam:</b> We were travelling on the road near a mountain. Suddenly a lot of rocks and mud came down the mountain.<br><b>Ann:</b> While I was working in the garden, I saw a big funnel of wind moving towards us very quickly.<br><b>Tom:</b> Suddenly everything in our living room began to shake. My sister and I quickly hid under the table.",
+    vi:"<b>Mark:</b> Phong, sao cậu buồn vậy?<br><b>Phong:</b> Ông bà tớ gọi điện sáng nay. Một trận lũ đã phá hủy nhà của ông bà.<br><b>Mark:</b> Tớ rất tiếc khi nghe điều đó.<br><b>Phong:</b> Nó còn làm hư hại hết mùa màng của ông bà nữa.<br><b>Mark:</b> Thật kinh khủng. Tớ mong ông bà cậu vẫn an toàn.<br><br><b>Nam:</b> Chúng tôi đang đi trên đường gần một ngọn núi. Đột nhiên rất nhiều đá và bùn đổ xuống từ trên núi. (Sạt lở đất)<br><b>Ann:</b> Trong khi tôi đang làm việc trong vườn, tôi nhìn thấy một cột gió lớn đang di chuyển về phía chúng tôi rất nhanh. (Lốc xoáy)<br><b>Tom:</b> Đột nhiên mọi thứ trong phòng khách nhà tôi bắt đầu rung lắc. Chị gái tôi và tôi vội trốn xuống dưới gầm bàn. (Động đất)"
+  }
+];
+
+function renderReviewSection(){
+  document.getElementById('acc_vocabList').innerHTML = VOCAB_LIST.map(v=>`
+    <div class="vocab-row flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+      <div><span class="font-extrabold text-red-700">${v.word}</span> <span class="text-slate-400">— ${v.vi}</span></div>
+      <div class="text-xs text-slate-400 italic sm:text-right sm:max-w-[55%]">${v.example}<br>${v.exVi}</div>
+    </div>`).join('');
+
+  document.getElementById('acc_passages').innerHTML = PASSAGES_REVIEW.map((p,i)=>`
+    <div>
+      <p class="font-bold text-slate-700 text-sm mb-2">${p.title}</p>
+      <div class="passage-en">${p.en}</div>
+      <button type="button" onclick="togglePassageVi(${i})" class="mt-2 text-xs font-bold bg-white border-2 border-slate-300 text-slate-700 px-3 py-1.5 rounded-full">
+        <i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt
+      </button>
+      <div class="passage-vi" id="passvi_${i}"><b>🇻🇳 Bản dịch</b><br>${p.vi}</div>
+    </div>`).join('');
+}
+function togglePassageVi(i){ document.getElementById('passvi_'+i).classList.toggle('show'); }
+function toggleAccordion(key){
+  const btn = event.currentTarget;
+  btn.classList.toggle('open');
+  document.getElementById('acc_'+key).classList.toggle('open');
+}
+
+/* ============================================================
+   CONTENT: Unit 9 Vocabulary, Grammar, Reading & Translation Test
+   ============================================================ */
+const VOCAB_TEST = [
+  {id:"v1", prompt:"\"Flood\" nghĩa là gì?", options:["lũ lụt","hạn hán","động đất","sóng thần"], answer:0, explanation:"flood = lũ lụt.", vi:"flood = lũ lụt."},
+  {id:"v2", prompt:"\"Storm\" nghĩa là gì?", options:["cơn bão, giông bão","nắng nóng","gió nhẹ","mưa phùn"], answer:0, explanation:"storm = cơn bão, giông bão.", vi:"storm = cơn bão."},
+  {id:"v3", prompt:"\"Tornado\" nghĩa là gì?", options:["lốc xoáy","sóng thần","hạn hán","sạt lở đất"], answer:0, explanation:"tornado = lốc xoáy.", vi:"tornado = lốc xoáy."},
+  {id:"v4", prompt:"\"Landslide\" nghĩa là gì?", options:["sạt lở đất","động đất","núi lửa phun trào","bão"], answer:0, explanation:"landslide = sạt lở đất, lở đất.", vi:"landslide = sạt lở đất."},
+  {id:"v5", prompt:"\"Volcanic eruption\" nghĩa là gì?", options:["núi lửa phun trào","lũ quét","sóng thần","lốc xoáy"], answer:0, explanation:"volcanic eruption = núi lửa phun trào.", vi:"volcanic eruption = núi lửa phun trào."},
+  {id:"v6", prompt:"\"Earthquake\" nghĩa là gì?", options:["động đất","sạt lở đất","bão","lũ lụt"], answer:0, explanation:"earthquake = động đất.", vi:"earthquake = động đất."},
+  {id:"v7", prompt:"\"Tsunami\" nghĩa là gì?", options:["sóng thần","lốc xoáy","hạn hán","sạt lở đất"], answer:0, explanation:"tsunami = sóng thần.", vi:"tsunami = sóng thần."},
+  {id:"v8", prompt:"Danh từ (noun) của động từ \"destroy\" là gì?", options:["destruction","destroyment","destroyation","destroily"], answer:0, explanation:"destroy (v) → destruction (n) = sự phá hủy.", vi:"destroy → destruction = sự phá hủy."},
+  {id:"v9", prompt:"Danh từ (noun) của động từ \"erupt\" là gì?", options:["eruption","eruptness","eruptation","eruptive"], answer:0, explanation:"erupt (v) → eruption (n) = sự phun trào.", vi:"erupt → eruption = sự phun trào."},
+  {id:"v10", prompt:"Danh từ (noun) của động từ \"warn\" là gì?", options:["warning","warnment","warnation","warnness"], answer:0, explanation:"warn (v) → warning (n) = lời cảnh báo.", vi:"warn → warning = lời cảnh báo."},
+  {id:"v11", prompt:"Danh từ (noun) của động từ \"predict\" là gì?", options:["prediction","predictment","predictation","predictly"], answer:0, explanation:"predict (v) → prediction (n) = dự đoán.", vi:"predict → prediction = dự đoán."},
+  {id:"v12", prompt:"\"Damage\" (danh từ) nghĩa là gì?", options:["thiệt hại, sự hư hại","lợi ích","sự an toàn","sự may mắn"], answer:0, explanation:"damage = thiệt hại, sự hư hại.", vi:"damage = thiệt hại."},
+  {id:"v13", prompt:"\"Emergency kit\" nghĩa là gì?", options:["bộ dụng cụ khẩn cấp","đội cứu hỏa","trạm y tế","túi xách thời trang"], answer:0, explanation:"emergency kit = bộ dụng cụ khẩn cấp.", vi:"emergency kit = bộ dụng cụ khẩn cấp."},
+  {id:"v14", prompt:"\"Rescue worker\" nghĩa là gì?", options:["nhân viên cứu hộ","nạn nhân","cảnh sát giao thông","phóng viên"], answer:0, explanation:"rescue worker = nhân viên cứu hộ.", vi:"rescue worker = nhân viên cứu hộ."},
+  {id:"v15", prompt:"\"Victim\" nghĩa là gì?", options:["nạn nhân","người cứu hộ","nhân chứng","tình nguyện viên"], answer:0, explanation:"victim = nạn nhân.", vi:"victim = nạn nhân."},
+  {id:"v16", prompt:"\"Whistle\" (dụng cụ khẩn cấp trong bài) nghĩa là gì?", options:["còi","đèn pin","túi cứu thương","bản đồ"], answer:0, explanation:"whistle = còi.", vi:"whistle = còi."},
+  {id:"v17", prompt:"\"Property\" nghĩa là gì?", options:["tài sản","con người","thiên nhiên","thời tiết"], answer:0, explanation:"property = tài sản.", vi:"property = tài sản."},
+  {id:"v18", prompt:"Điền từ: \"Avoid ________ places, such as windows or bookcases, during an earthquake.\"", options:["dangerous","practical","marvellous","numerous"], answer:0, explanation:"dangerous = nguy hiểm.", vi:"Tránh những nơi nguy hiểm, như cửa sổ hoặc kệ sách, trong khi động đất."},
+  {id:"v19", prompt:"\"Numerous\" (trong \"numerous tropical storms\") nghĩa là gì?", options:["nhiều, vô số","hiếm hoi","nguy hiểm","độc hại"], answer:0, explanation:"numerous = nhiều, vô số.", vi:"numerous = nhiều, vô số."},
+  {id:"v20", prompt:"\"Poisonous\" nghĩa là gì?", options:["độc hại, có độc","an toàn","mạnh mẽ","nhẹ nhàng"], answer:0, explanation:"poisonous = độc hại, có độc.", vi:"poisonous = độc hại."},
+  {id:"v21", prompt:"\"Practical\" (trong \"practical tips\") nghĩa là gì?", options:["thực tế, thiết thực","nguy hiểm","kỳ diệu","độc hại"], answer:0, explanation:"practical = thực tế, thiết thực.", vi:"practical = thực tế, thiết thực."},
+  {id:"v22", prompt:"\"Marvellous\" nghĩa là gì?", options:["tuyệt vời, kỳ diệu","đáng sợ","bình thường","nguy hiểm"], answer:0, explanation:"marvellous = tuyệt vời, kỳ diệu.", vi:"marvellous = tuyệt vời."},
+  {id:"v23", prompt:"\"Violently\" (trong \"erupted violently\") nghĩa là gì?", options:["một cách dữ dội, mãnh liệt","một cách nhẹ nhàng","một cách chậm rãi","một cách an toàn"], answer:0, explanation:"violently = một cách dữ dội, mãnh liệt.", vi:"violently = một cách dữ dội."},
+  {id:"v24", prompt:"\"Missing\" (trong \"still missing\") nghĩa là gì?", options:["mất tích","bị thương","đã được cứu","đã qua đời"], answer:0, explanation:"missing = mất tích.", vi:"missing = mất tích."},
+  {id:"v25", prompt:"\"Trembling\" nghĩa là gì?", options:["rung chuyển, run rẩy","im lặng","sáng chói","vững chắc"], answer:0, explanation:"trembling = rung chuyển, run rẩy.", vi:"trembling = rung chuyển."},
+  {id:"v26", prompt:"\"Fear\" nghĩa là gì?", options:["sự sợ hãi","sự vui mừng","sự tức giận","sự ngạc nhiên"], answer:0, explanation:"fear = sự sợ hãi.", vi:"fear = sự sợ hãi."},
+  {id:"v27", prompt:"Điền từ: \"Local authorities gave a flood ________ yesterday, so today people are moving to safer places.\"", options:["warning","damage","property","emergency kit"], answer:0, explanation:"warning = lời cảnh báo.", vi:"Chính quyền địa phương đã đưa ra cảnh báo lũ lụt hôm qua."},
+  {id:"v28", prompt:"Điền từ: \"To prepare for a natural disaster, we should make an ________.\"", options:["emergency kit","property","warning","prediction"], answer:0, explanation:"make an emergency kit = chuẩn bị bộ dụng cụ khẩn cấp.", vi:"Để chuẩn bị cho một thiên tai, chúng ta nên chuẩn bị một bộ dụng cụ khẩn cấp."},
+  {id:"v29", prompt:"Điền từ: \"It's hard to believe that we cannot ________ when earthquakes will happen.\"", options:["predict","damage","warn","property"], answer:0, explanation:"predict = dự đoán.", vi:"Thật khó tin rằng chúng ta không thể dự đoán khi nào động đất sẽ xảy ra."},
+  {id:"v30", prompt:"Điền từ: \"They lost all of their ________ because of the volcanic eruption.\"", options:["property","warning","prediction","emergency kit"], answer:0, explanation:"property = tài sản.", vi:"Họ mất hết tài sản vì vụ núi lửa phun trào."},
+];
+
+const GRAMMAR_TEST = [
+  {id:"g1", prompt:"They ________ (help) the flood victims at 10 o'clock last night.", options:["were helping","helped","are helping","help"], answer:0, explanation:"Hành động đang xảy ra tại một thời điểm cụ thể trong quá khứ (10 o'clock last night) → quá khứ tiếp diễn.", vi:"Họ đang giúp đỡ các nạn nhân lũ lụt lúc 10 giờ tối qua."},
+  {id:"g2", prompt:"It ________ (not snow) when I left home this afternoon.", options:["wasn't snowing","didn't snow","isn't snowing","doesn't snow"], answer:0, explanation:"Hành động nền đang diễn ra thì bị \"I left home\" (quá khứ đơn) xen vào → quá khứ tiếp diễn phủ định.", vi:"Trời không có tuyết rơi khi tôi rời nhà chiều nay."},
+  {id:"g3", prompt:"While she ________ (work) in the field, the tornado came.", options:["was working","worked","is working","works"], answer:0, explanation:"\"While\" + quá khứ tiếp diễn (hành động nền), \"came\" là quá khứ đơn (hành động xen vào).", vi:"Trong khi cô ấy đang làm việc ngoài đồng, trận lốc xoáy ập đến."},
+  {id:"g4", prompt:"What ________ you (do) at 9 o'clock yesterday morning?", options:["were...doing","did...do","are...doing","do...do"], answer:0, explanation:"Hỏi về hành động đang diễn ra tại một thời điểm cụ thể trong quá khứ → \"were you doing\".", vi:"Bạn đang làm gì lúc 9 giờ sáng hôm qua?"},
+  {id:"g5", prompt:"– What were you doing at 9 o'clock yesterday morning? – I ________ (watch) the news about a volcanic eruption.", options:["was watching","watched","am watching","watch"], answer:0, explanation:"Trả lời cho câu hỏi về hành động đang diễn ra tại thời điểm cụ thể → quá khứ tiếp diễn.", vi:"Tôi đang xem tin tức về vụ núi lửa phun trào."},
+  {id:"g6", prompt:"________ you (cry) when I saw you two days ago? – No, I wasn't.", options:["Were","Did","Are","Do"], answer:0, explanation:"Câu trả lời \"No, I wasn't\" cho biết câu hỏi ở thì quá khứ tiếp diễn → \"Were you crying...?\"", vi:"Bạn có đang khóc khi tôi thấy bạn hai ngày trước không? – Không, tôi không khóc."},
+  {id:"g7", prompt:"We ________ (donate) money to help the earthquake victims last month.", options:["donated","were donating","are donating","donate"], answer:0, explanation:"Đây là một hành động đã hoàn tất, xảy ra và kết thúc trong quá khứ (last month) → dùng quá khứ đơn, không phải hành động nền bị gián đoạn.", vi:"Chúng tôi đã quyên góp tiền để giúp các nạn nhân động đất tháng trước."},
+  {id:"g8", prompt:"– What ________ when the volcano erupted?", options:["were you doing","did you do","are you doing","do you do"], answer:0, explanation:"\"erupted\" (quá khứ đơn) là hành động xen vào một hành động đang diễn ra → \"were you doing\".", vi:"Bạn đang làm gì khi núi lửa phun trào?"},
+  {id:"g9", prompt:"While they ________ (camp) near the river, the flood suddenly came.", options:["were camping","camped","are camping","camp"], answer:0, explanation:"\"While\" + quá khứ tiếp diễn, \"came\" (quá khứ đơn) là hành động xen vào.", vi:"Trong khi họ đang cắm trại gần sông, trận lũ bất ngờ ập đến."},
+  {id:"g10", prompt:"After Tom ran out of his house, he ________ (move) quickly to a safer place.", options:["moved","was moving","moves","is moving"], answer:0, explanation:"Đây là hai hành động nối tiếp nhau, đều đã hoàn tất → quá khứ đơn, không phải hành động nền.", vi:"Sau khi Tom chạy ra khỏi nhà, cậu ấy nhanh chóng di chuyển đến nơi an toàn hơn."},
+  {id:"g11", prompt:"I ________ a newspaper at 9 a.m. yesterday, but I ________ the news about the tornado.", options:["wasn't reading / was watching","didn't read / watched","wasn't reading / watched","didn't read / was watching"], answer:0, explanation:"Cả hai đều là hành động đang diễn ra tại một thời điểm cụ thể trong quá khứ (9 a.m. yesterday) → quá khứ tiếp diễn.", vi:"Tôi không đọc báo lúc 9 giờ sáng hôm qua, mà tôi đang xem tin tức về trận lốc xoáy."},
+  {id:"g12", prompt:"What ________ you (do) at 8 o'clock yesterday morning?", options:["were...doing","did...do","are...doing","do...do"], answer:0, explanation:"Hỏi về hành động đang diễn ra tại một thời điểm cụ thể → \"were you doing\".", vi:"Bạn đang làm gì lúc 8 giờ sáng hôm qua?"},
+  {id:"g13", prompt:"Last year, earthquakes ________ (destroy) a lot of houses in Japan.", options:["destroyed","were destroying","are destroying","destroy"], answer:0, explanation:"Sự kiện đã hoàn tất trong quá khứ (last year) → quá khứ đơn.", vi:"Năm ngoái, các trận động đất đã phá hủy nhiều ngôi nhà ở Nhật Bản."},
+  {id:"g14", prompt:"He ________ (water) the flowers in his garden when the tornado ________ (come).", options:["was watering / came","watered / was coming","was watering / was coming","watered / came"], answer:0, explanation:"Hành động nền \"watering\" (quá khứ tiếp diễn) bị hành động xen vào \"came\" (quá khứ đơn) làm gián đoạn.", vi:"Anh ấy đang tưới hoa trong vườn thì trận lốc xoáy ập đến."},
+  {id:"g15", prompt:"While they ________ (call) for help, the rescue workers ________ (appear).", options:["were calling / appeared","called / were appearing","were calling / were appearing","called / appeared"], answer:0, explanation:"\"While\" + quá khứ tiếp diễn (hành động nền), \"appeared\" (quá khứ đơn) là hành động xen vào.", vi:"Trong khi họ đang kêu cứu, các nhân viên cứu hộ xuất hiện."},
+  {id:"g16", prompt:"________ you (listen) to music at 9 o'clock yesterday evening?", options:["Were...listening","Did...listen","Are...listening","Do...listen"], answer:0, explanation:"Hỏi về hành động đang diễn ra tại một thời điểm cụ thể trong quá khứ → \"Were you listening\".", vi:"Bạn có đang nghe nhạc lúc 9 giờ tối qua không?"},
+  {id:"g17", prompt:"Hình thức đúng của thì quá khứ tiếp diễn với chủ ngữ I/He/She/It là gì?", options:["was + V-ing","were + V-ing","did + V-ing","has + V-ing"], answer:0, explanation:"I/He/She/It + was + V-ing.", vi:"I/He/She/It dùng \"was\" + V-ing."},
+  {id:"g18", prompt:"Hình thức đúng của thì quá khứ tiếp diễn với chủ ngữ You/We/They là gì?", options:["were + V-ing","was + V-ing","do + V-ing","have + V-ing"], answer:0, explanation:"You/We/They + were + V-ing.", vi:"You/We/They dùng \"were\" + V-ing."},
+  {id:"g19", prompt:"Theo sách, liên từ nào CHỈ được dùng trước mệnh đề ở thì quá khứ ĐƠN (hành động xen vào, gây gián đoạn)?", options:["when","while","before","after"], answer:0, explanation:"Ghi chú trong sách: \"We can only use when before the past simple.\"", vi:"Chỉ dùng \"when\" trước mệnh đề quá khứ đơn."},
+  {id:"g20", prompt:"Theo sách, liên từ nào có thể dùng trước mệnh đề ở thì quá khứ TIẾP DIỄN?", options:["when hoặc while","chỉ while","chỉ before","chỉ after"], answer:0, explanation:"Ghi chú trong sách: \"We can use when or while before the past continuous.\"", vi:"Dùng \"when\" hoặc \"while\" trước mệnh đề quá khứ tiếp diễn."},
+];
+
+const READING_TEST = [
+  // ---- Passage 1: We are all safe! (Getting Started) ----
+  {id:"r1", prompt:"[Bài đọc 1] What has affected Mi's home town?", options:["A flood, for the second time this year.","A tornado.","An earthquake.","A volcanic eruption."], answer:0, explanation:"\"Our home town has been affected by a flood. It's the second time this year.\"", vi:"Quê Mi bị ảnh hưởng bởi một trận lũ, lần thứ hai trong năm nay."},
+  {id:"r2", prompt:"[Bài đọc 1] Where did Mi's uncle's family move everything last night?", options:["To the second floor of their house.","To a neighbour's house.","To a shelter in the city.","To their relatives' hometown."], answer:0, explanation:"\"They moved everything to the second floor of their house last night.\"", vi:"Họ chuyển hết đồ đạc lên tầng hai của ngôi nhà vào tối qua."},
+  {id:"r3", prompt:"[Bài đọc 1] According to Tom, what is a tornado?", options:["A violent storm that moves in a circle with very strong winds.","A large wave caused by an earthquake under the sea.","A long period without rain.","A sudden movement of rocks down a mountain."], answer:0, explanation:"\"It's a violent storm that moves in a circle with very strong winds.\"", vi:"Đó là một cơn bão dữ dội di chuyển theo hình xoáy tròn với gió rất mạnh."},
+  {id:"r4", prompt:"[Bài đọc 1] What did Tom and his family see when they looked out of the window during the tornado?", options:["A giant funnel of wind moving towards them.","A wall of water rushing towards them.","Smoke and ash filling the sky.","Rocks and mud sliding down a hill."], answer:0, explanation:"\"When we looked out of the window, we saw a giant funnel of wind moving towards us.\"", vi:"Họ thấy một cột gió khổng lồ đang di chuyển về phía mình."},
+  {id:"r5", prompt:"[Bài đọc 1] What damage did the tornado cause to Tom's house?", options:["It damaged the roof and pulled up some trees in the yard.","It flooded the whole ground floor.","It burned down the kitchen.","It broke all the windows."], answer:0, explanation:"\"It damaged the roof of our house and pulled up some trees in our yard.\"", vi:"Nó làm hỏng mái nhà và bật gốc vài cây trong sân."},
+  // ---- Passage 2: Two News Reports (Skills 1) ----
+  {id:"r6", prompt:"[Bài đọc 2] What natural disaster hit Tonga, according to the report?", options:["A volcanic eruption that also caused a tsunami.","A tornado.","A landslide.","A drought."], answer:0, explanation:"\"A volcano in the South Pacific erupted violently... The eruption also caused a tsunami...\"", vi:"Núi lửa phun trào và gây ra sóng thần ở Tonga."},
+  {id:"r7", prompt:"[Bài đọc 2] From how far away could people see the ash cloud from the Tonga eruption?", options:["20 kilometres.","2 kilometres.","200 kilometres.","2,000 kilometres."], answer:0, explanation:"\"People could see this cloud from 20 kilometres away.\"", vi:"Người ta có thể nhìn thấy đám mây tro bụi từ khoảng cách 20 km."},
+  {id:"r8", prompt:"[Bài đọc 2] How many people on the small islands are still missing?", options:["More than twenty.","Exactly ten.","About a hundred.","Nobody is missing."], answer:0, explanation:"\"More than twenty people on these islands are still missing.\"", vi:"Hơn hai mươi người trên các đảo này vẫn còn mất tích."},
+  {id:"r9", prompt:"[Bài đọc 2] About how long did the shaking last in Ha Noi?", options:["About 20 seconds.","About 20 minutes.","About 2 hours.","About 2 days."], answer:0, explanation:"\"...they felt a slight shaking for about 20 seconds last night.\"", vi:"Cơn rung lắc kéo dài khoảng 20 giây."},
+  {id:"r10", prompt:"[Bài đọc 2] What caused the shaking felt in Ha Noi?", options:["A strong earthquake in China.","A volcanic eruption nearby.","A tornado passing through.","Construction work in the city."], answer:0, explanation:"\"According to scientists, a strong earthquake in China caused this shaking.\"", vi:"Một trận động đất mạnh ở Trung Quốc đã gây ra rung lắc này."},
+  // ---- Passage 3: Communication ----
+  {id:"r11", prompt:"[Bài đọc 3] What natural disaster destroyed Phong's grandparents' house?", options:["A flood.","A tornado.","An earthquake.","A landslide."], answer:0, explanation:"\"A flood destroyed their house.\"", vi:"Một trận lũ đã phá hủy nhà của ông bà Phong."},
+  {id:"r12", prompt:"[Bài đọc 3] Besides the house, what else did the flood damage?", options:["All of their crops.","Their car.","Their boat.","Their shop."], answer:0, explanation:"\"It also damaged all of their crops.\"", vi:"Nó còn làm hư hại hết mùa màng của ông bà."},
+  {id:"r13", prompt:"[Bài đọc 3] Nam says rocks and mud came down the mountain while he was travelling nearby. Which natural disaster is he describing?", options:["A landslide.","A tornado.","A tsunami.","A drought."], answer:0, explanation:"\"...a lot of rocks and mud came down the mountain\" mô tả một trận sạt lở đất (landslide).", vi:"Đá và bùn đổ xuống núi là dấu hiệu của sạt lở đất."},
+  {id:"r14", prompt:"[Bài đọc 3] Ann saw a big funnel of wind moving towards her while she was working in the garden. Which natural disaster is she describing?", options:["A tornado.","An earthquake.","A flood.","A volcanic eruption."], answer:0, explanation:"\"a big funnel of wind moving towards us very quickly\" mô tả một trận lốc xoáy (tornado).", vi:"Cột gió lớn di chuyển nhanh là dấu hiệu của lốc xoáy."},
+  {id:"r15", prompt:"[Bài đọc 3] Tom and his sister hid under the table when everything in the living room began to shake. Which natural disaster is he describing?", options:["An earthquake.","A landslide.","A storm.","A tsunami."], answer:0, explanation:"\"everything in our living room began to shake\" mô tả một trận động đất (earthquake).", vi:"Mọi thứ bắt đầu rung lắc là dấu hiệu của động đất."},
+];
+
+const TRANSLATION_TEST = [
+  {id:"t1", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"My uncle, his wife, and his children are all safe. They moved everything to the second floor of their house last night.\"", options:["Chú tôi, vợ chú và các con đều an toàn cả. Họ đã chuyển hết đồ đạc lên tầng hai của ngôi nhà vào tối qua.","Chú tôi đã bán ngôi nhà và chuyển đến thành phố khác.","Chú tôi đang sửa lại mái nhà bị hỏng do bão.","Chú tôi đã gọi cứu hộ đến giúp gia đình."], answer:0, explanation:"are all safe / moved everything to the second floor = đều an toàn / chuyển đồ lên tầng hai.", vi:""},
+  {id:"t2", prompt:"Chọn bản dịch tiếng Anh đúng: \"Đó là một cơn bão dữ dội di chuyển theo hình xoáy tròn với sức gió rất mạnh.\"", options:["It's a violent storm that moves in a circle with very strong winds.","It's a heavy rain that falls all day and night.","It's a long period without any rain at all.","It's a slow wind that blows gently over the sea."], answer:0, explanation:"cơn bão dữ dội di chuyển theo hình xoáy tròn với gió rất mạnh = a violent storm that moves in a circle with very strong winds.", vi:""},
+  {id:"t3", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"The eruption also caused a tsunami which flooded properties in Tonga's capital.\"", options:["Vụ phun trào còn gây ra một trận sóng thần làm ngập tài sản ở thủ đô của Tonga.","Vụ phun trào đã phá hủy toàn bộ mùa màng ở Tonga.","Vụ phun trào khiến hàng nghìn người phải sơ tán khỏi Tonga.","Vụ phun trào đã làm ô nhiễm nguồn nước ở Tonga."], answer:0, explanation:"caused a tsunami which flooded properties in the capital = gây ra sóng thần làm ngập tài sản ở thủ đô.", vi:""},
+  {id:"t4", prompt:"Chọn bản dịch tiếng Anh đúng: \"Hơn hai mươi người trên những hòn đảo này vẫn còn mất tích.\"", options:["More than twenty people on these islands are still missing.","About twenty people on these islands have been rescued.","Fewer than twenty people live on these small islands.","Twenty ships arrived at these islands yesterday."], answer:0, explanation:"Hơn hai mươi người... vẫn còn mất tích = More than twenty people... are still missing.", vi:""},
+  {id:"t5", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"Many people living in the building ran out of their homes in fear.\"", options:["Nhiều người sống trong tòa nhà đã chạy ra khỏi nhà vì sợ hãi.","Nhiều người sống trong tòa nhà đã gọi điện cho gia đình.","Nhiều người sống trong tòa nhà đã ở lại trong phòng để xem ti vi.","Nhiều người sống trong tòa nhà đã giúp đỡ hàng xóm sửa nhà."], answer:0, explanation:"ran out of their homes in fear = chạy ra khỏi nhà vì sợ hãi.", vi:""},
+  {id:"t6", prompt:"Chọn bản dịch tiếng Anh đúng: \"Chính quyền địa phương đã đưa ra cảnh báo lũ lụt hôm qua.\"", options:["Local authorities gave a flood warning yesterday.","Local authorities built a new bridge last year.","Local authorities predicted a volcanic eruption next month.","Local authorities donated money to the flood victims."], answer:0, explanation:"đưa ra cảnh báo lũ lụt = gave a flood warning.", vi:""},
+  {id:"t7", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"A flood destroyed their house. It also damaged all of their crops.\"", options:["Một trận lũ đã phá hủy nhà của họ. Nó còn làm hư hại hết mùa màng của họ.","Một trận hạn hán đã làm khô héo hết cây trồng của họ.","Một trận động đất đã làm sập nhà của họ.","Một cơn bão đã cuốn trôi mọi tài sản của họ."], answer:0, explanation:"destroyed their house / damaged all of their crops = phá hủy nhà / làm hư hại mùa màng.", vi:""},
+  {id:"t8", prompt:"Chọn bản dịch tiếng Anh đúng: \"Chúng tôi đang đi trên đường gần một ngọn núi. Đột nhiên rất nhiều đá và bùn đổ xuống từ trên núi.\"", options:["We were travelling on the road near a mountain. Suddenly a lot of rocks and mud came down the mountain.","We were climbing a mountain when it began to rain heavily.","We were driving along the coast when a big wave appeared.","We were walking in the forest when a tree fell down."], answer:0, explanation:"đang đi trên đường gần một ngọn núi... đá và bùn đổ xuống = were travelling on the road near a mountain... rocks and mud came down the mountain.", vi:""},
+  {id:"t9", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"While I was working in the garden, I saw a big funnel of wind moving towards us very quickly.\"", options:["Trong khi tôi đang làm việc trong vườn, tôi nhìn thấy một cột gió lớn đang di chuyển về phía chúng tôi rất nhanh.","Trong khi tôi đang nấu ăn, tôi nghe thấy tiếng sấm sét rất to.","Trong khi tôi đang ngủ, tôi cảm thấy ngôi nhà rung chuyển.","Trong khi tôi đang đi học, trời bắt đầu đổ mưa to."], answer:0, explanation:"working in the garden / a big funnel of wind moving towards us = làm việc trong vườn / cột gió lớn di chuyển về phía chúng tôi.", vi:""},
+  {id:"t10", prompt:"Chọn bản dịch tiếng Anh đúng: \"Đột nhiên mọi thứ trong phòng khách nhà tôi bắt đầu rung lắc. Chị gái tôi và tôi vội trốn xuống dưới gầm bàn.\"", options:["Suddenly everything in our living room began to shake. My sister and I quickly hid under the table.","Suddenly the lights in our house went out completely.","Suddenly water started coming into our kitchen.","Suddenly strong winds blew all the windows open."], answer:0, explanation:"mọi thứ trong phòng khách bắt đầu rung lắc / trốn xuống dưới gầm bàn = everything in the living room began to shake / hid under the table.", vi:""},
+];
+
+VOCAB_TEST.forEach(q=>q.section='vocab');
+GRAMMAR_TEST.forEach(q=>q.section='grammar');
+READING_TEST.forEach(q=>q.section='reading');
+TRANSLATION_TEST.forEach(q=>q.section='translation');
+const TOTAL = VOCAB_TEST.length + GRAMMAR_TEST.length + READING_TEST.length + TRANSLATION_TEST.length;
+const STORAGE_KEY = 'u9_vocabgrammar_test_v1';
+
+/* ---------------- utility ---------------- */
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+function loadHistory(){
+  try{ const raw=localStorage.getItem(STORAGE_KEY); return raw? JSON.parse(raw) : {best:0, attempts:0}; }
+  catch(e){ return {best:0, attempts:0}; }
+}
+function saveHistory(h){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(h)); }catch(e){} }
+
+/* ---------------- state ---------------- */
+let state = { questions:[], answers:{}, submitted:false, timeLeft: 35*60, timerId:null, startedAt:null };
+
+function buildQuestionSet(){
+  const all = shuffle(VOCAB_TEST.concat(GRAMMAR_TEST).concat(READING_TEST).concat(TRANSLATION_TEST).map(q=>{
+    const optOrder = shuffle(q.options.map((o,i)=>i));
+    return Object.assign({}, q, { displayOptions: optOrder.map(i=>q.options[i]), correctDisplayIndex: optOrder.indexOf(q.answer) });
+  }));
+  return all;
+}
+
+function init(){
+  renderReviewSection();
+  state.questions = buildQuestionSet();
+  state.answers = {};
+  state.submitted = false;
+  state.timeLeft = 35*60;
+  state.startedAt = Date.now();
+  document.getElementById('resultBanner').classList.remove('show');
+  renderQuiz();
+  updateProgress();
+  updateHistoryLabels();
+  startTimer();
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = false; btn.classList.remove('opacity-50');
+}
+
+function updateHistoryLabels(){
+  const h = loadHistory();
+  document.getElementById('bestScoreLabel').textContent = h.attempts>0 ? (h.best+'/'+TOTAL) : '--';
+  document.getElementById('attemptCountLabel').textContent = h.attempts||0;
+}
+
+function startTimer(){
+  if(state.timerId) clearInterval(state.timerId);
+  state.timerId = setInterval(()=>{
+    if(state.submitted){ clearInterval(state.timerId); return; }
+    state.timeLeft--;
+    renderTimer();
+    if(state.timeLeft<=0){ clearInterval(state.timerId); submitTest(true); }
+  },1000);
+  renderTimer();
+}
+function renderTimer(){
+  const m = Math.floor(Math.max(0,state.timeLeft)/60), s = Math.max(0,state.timeLeft)%60;
+  const label = document.getElementById('timerLabel');
+  label.textContent = String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  label.classList.toggle('low', state.timeLeft<=60);
+}
+
+function renderQuiz(){
+  const vocabQs = state.questions.filter(q=>q.section==='vocab');
+  const grammarQs = state.questions.filter(q=>q.section==='grammar');
+  const readingQs = state.questions.filter(q=>q.section==='reading');
+  const translationQs = state.questions.filter(q=>q.section==='translation');
+  let html = '';
+  html += sectionDivider('📚 Phần 1 · Vocabulary', vocabQs.length);
+  vocabQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('📐 Phần 2 · Grammar (Thì quá khứ tiếp diễn - Past Continuous)', grammarQs.length);
+  grammarQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('📖 Phần 3 · Đọc hiểu (Reading Comprehension)', readingQs.length);
+  readingQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('🇻🇳 Phần 4 · Luyện dịch nghĩa (Translation Practice)', translationQs.length);
+  translationQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  document.getElementById('quizArea').innerHTML = html;
+}
+
+function sectionDivider(title, count){
+  return `<div class="section-divider text-white rounded-xl px-4 py-2.5 mb-4 mt-2 font-extrabold text-sm md:text-base shadow flex items-center justify-between">
+    <span>${title}</span><span class="text-xs font-bold opacity-80">${count} câu</span>
+  </div>`;
+}
+
+function renderQuestionCard(q, num){
+  const letters=['A','B','C','D'];
+  const optsHtml = q.displayOptions.map((opt,i)=>{
+    return `<div class="opt-row px-3 py-2.5 flex items-start gap-2 text-sm md:text-[15px]" data-qid="${q.id}" data-idx="${i}" onclick="selectAnswer('${q.id}',${i})">
+      <span class="font-black text-red-700">${letters[i]}.</span><span class="flex-1">${opt}</span>
+    </div>`;
+  }).join('');
+  return `<div class="qcard p-4 mb-3" id="qcard_${q.id}">
+    <p class="font-extrabold text-slate-800 text-sm md:text-base mb-2"><span class="text-red-600">Câu ${num}.</span> ${q.prompt}</p>
+    <div class="grid gap-2" id="opts_${q.id}">${optsHtml}</div>
+    <div class="explain-box mt-3" id="explain_${q.id}"></div>
+  </div>`;
+}
+
+function selectAnswer(qid, idx){
+  if(state.submitted) return;
+  state.answers[qid] = idx;
+  const wrap = document.getElementById('opts_'+qid);
+  wrap.querySelectorAll('.opt-row').forEach(el=>{
+    el.classList.toggle('selected', parseInt(el.dataset.idx,10)===idx);
+  });
+  document.getElementById('qcard_'+qid).classList.add('answered');
+  updateProgress();
+}
+
+function updateProgress(){
+  const answered = Object.keys(state.answers).length;
+  document.getElementById('progressText').textContent = answered+' / '+TOTAL+' câu';
+  document.getElementById('progressBar').style.width = Math.round(answered/TOTAL*100)+'%';
+  document.getElementById('answeredCount').textContent = answered;
+}
+
+function submitTest(auto){
+  if(state.submitted) return;
+  const answeredCount = Object.keys(state.answers).length;
+  if(!auto && answeredCount < TOTAL){
+    const proceed = confirm('Bạn còn '+(TOTAL-answeredCount)+' câu chưa trả lời. Vẫn muốn nộp bài?');
+    if(!proceed) return;
+  }
+  state.submitted = true;
+  if(state.timerId) clearInterval(state.timerId);
+  const elapsed = Math.round((Date.now()-state.startedAt)/1000);
+
+  let correct = 0;
+  state.questions.forEach(q=>{
+    const sel = state.answers[q.id];
+    const isCorrect = sel === q.correctDisplayIndex;
+    if(isCorrect) correct++;
+    const card = document.getElementById('qcard_'+q.id);
+    card.classList.add(isCorrect?'correct':'wrong');
+    const wrap = document.getElementById('opts_'+q.id);
+    wrap.querySelectorAll('.opt-row').forEach(el=>{
+      const idx = parseInt(el.dataset.idx,10);
+      el.classList.add('locked');
+      if(idx===q.correctDisplayIndex) el.classList.add('correct-opt');
+      else if(idx===sel && !isCorrect) el.classList.add('wrong-opt');
+    });
+    const exp = document.getElementById('explain_'+q.id);
+    exp.classList.add('show');
+    const viLine = q.vi ? `<p class="text-slate-500 italic mt-1">🇻🇳 ${q.vi}</p>` : '';
+    exp.innerHTML = `<p class="${isCorrect?'text-emerald-700':'text-rose-600'} font-bold">${isCorrect?'✅ Chính xác!':(sel===undefined?'⚪ Bạn chưa chọn đáp án.':'❌ Chưa đúng.')} ${q.explanation}</p>${viLine}`;
+  });
+
+  const pct = Math.round(correct/TOTAL*100);
+  document.getElementById('resultScore').textContent = correct;
+  document.getElementById('resultPct').textContent = pct;
+  const mm = Math.floor(elapsed/60), ss = elapsed%60;
+  document.getElementById('resultTime').textContent = mm+':'+String(ss).padStart(2,'0');
+  let emoji='🙂', title='Đã hoàn thành!';
+  if(pct>=90){ emoji='🏆'; title='Xuất sắc!'; }
+  else if(pct>=70){ emoji='🎉'; title='Làm tốt lắm!'; }
+  else if(pct>=50){ emoji='💪'; title='Khá ổn, cố gắng thêm nhé!'; }
+  else { emoji='📖'; title='Cần ôn tập thêm!'; }
+  document.getElementById('resultEmoji').textContent = emoji;
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultBanner').classList.add('show');
+  document.getElementById('resultBanner').scrollIntoView({behavior:'smooth', block:'start'});
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true; btn.classList.add('opacity-50');
+
+  const h = loadHistory();
+  h.attempts = (h.attempts||0)+1;
+  h.best = Math.max(h.best||0, correct);
+  saveHistory(h);
+  updateHistoryLabels();
+
+  if(pct>=70) launchConfetti();
+}
+
+function retryTest(){ init(); window.scrollTo({top:0, behavior:'smooth'}); }
+
+function scrollToReview(){
+  document.getElementById('quizArea').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function launchConfetti(){
+  const wrap = document.getElementById('confettiWrap');
+  const colors=['#334155','#dc2626','#64748b','#0f172a','#f87171'];
+  for(let i=0;i<50;i++){
+    const el=document.createElement('div');
+    el.className='confetti-piece';
+    el.style.left=(Math.random()*100)+'vw';
+    el.style.background=colors[Math.floor(Math.random()*colors.length)];
+    el.style.animationDuration=(2+Math.random()*1.5)+'s';
+    el.style.top='-20px';
+    wrap.appendChild(el);
+    setTimeout(()=>el.remove(), 3600);
+  }
+}
+
+init();
+</script>
+</body>
+</html>

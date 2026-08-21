@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 7 - Test Trắc nghiệm Từ vựng & Ngữ pháp - Tiếng Anh 8</title>
+<meta name="apple-mobile-web-app-title" content="U7 Vocab-Grammar Test">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+  :root{ --accent:#4338ca; --accent2:#1e1b4b; }
+  * { box-sizing: border-box; }
+  body { font-family:'Nunito',sans-serif; background:#f5f3ff; }
+  h1,h2,.baloo{ font-family:'Baloo 2',sans-serif; }
+  .hero-gradient{ background: linear-gradient(135deg, #1e1b4b 0%, #4338ca 55%, #6366f1 100%); }
+  .qcard{ background:#fff; border-radius:1.1rem; box-shadow:0 1px 4px rgba(0,0,0,.06); border:2px solid #e2e8f0; transition:border .2s, box-shadow .2s; }
+  .qcard.answered{ border-color:#c7d2fe; }
+  .qcard.correct{ border-color:#22c55e; background:#f0fdf4; }
+  .qcard.wrong{ border-color:#ef4444; background:#fef2f2; }
+  .opt-row{ cursor:pointer; transition: all .15s; border:2px solid #e2e8f0; border-radius:.8rem; }
+  .opt-row:hover{ border-color:var(--accent); background:#eef2ff; }
+  .opt-row.selected{ border-color:#4338ca; background:#e0e7ff; font-weight:800; }
+  .opt-row.correct-opt{ border-color:#22c55e !important; background:#dcfce7 !important; font-weight:800; }
+  .opt-row.wrong-opt{ border-color:#ef4444 !important; background:#fee2e2 !important; font-weight:800; }
+  .opt-row.locked{ cursor:default; pointer-events:none; }
+  .explain-box{ display:none; background:#fffbeb; border:1px solid #fde68a; border-radius:.7rem; padding:.6rem .9rem; font-size:.85rem; color:#334155; }
+  .explain-box.show{ display:block; }
+  .sticky-bar{ position:sticky; bottom:0; z-index:40; }
+  .progress-fill{ transition: width .3s ease; }
+  .badge-pill{ background:#fff; border:2px solid #c7d2fe; border-radius:999px; padding:.3rem .8rem; font-size:.75rem; font-weight:800; color:#3730a3; }
+  .score-ring{ animation: popIn .4s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn{ from{transform:scale(.5); opacity:0;} to{transform:scale(1); opacity:1;} }
+  .confetti-wrap{ position:fixed; inset:0; pointer-events:none; z-index:9999; }
+  .confetti-piece{ position:absolute; width:10px; height:10px; border-radius:2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall{ 0%{transform:translateY(-20px) rotate(0deg); opacity:1;} 100%{transform:translateY(100vh) rotate(720deg); opacity:0;} }
+  .section-divider{ background:linear-gradient(135deg,#1e1b4b,#6366f1); }
+  #resultBanner{ display:none; }
+  #resultBanner.show{ display:block; }
+  .timer-pill{ font-variant-numeric: tabular-nums; }
+  .timer-pill.low{ color:#fca5a5 !important; }
+  .accordion-btn{ cursor:pointer; transition: background .15s; }
+  .accordion-body{ display:none; }
+  .accordion-body.open{ display:block; }
+  .accordion-chevron{ transition: transform .2s; }
+  .accordion-btn.open .accordion-chevron{ transform: rotate(180deg); }
+  .vocab-row{ border-bottom:1px solid #f1f5f9; padding:.55rem 0; }
+  .vocab-row:last-child{ border-bottom:none; }
+  .passage-en{ background:#fff; border:1px solid #e2e8f0; border-radius:.9rem; padding:.9rem 1.1rem; line-height:1.85; font-size:.92rem; color:#334155; }
+  .passage-vi{ display:none; background:#fffbeb; border:1px solid #fde68a; border-radius:.9rem; padding:.9rem 1.1rem; margin-top:.6rem; line-height:1.85; font-size:.92rem; color:#334155; }
+  .passage-vi.show{ display:block; }
+  .grammar-tip-box{ background:#eff6ff; border:1px solid #bfdbfe; border-radius:.9rem; padding:1rem 1.2rem; line-height:1.9; font-size:.92rem; color:#334155; }
+</style>
+</head>
+<body class="min-h-screen pb-10">
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<header class="hero-gradient text-white py-8 px-4 text-center shadow-xl relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <div class="absolute top-4 left-8 text-6xl">📖</div>
+    <div class="absolute top-2 right-12 text-5xl">🧙</div>
+    <div class="absolute bottom-2 left-1/3 text-4xl">🏰</div>
+    <div class="absolute bottom-4 right-1/4 text-5xl">✨</div>
+  </div>
+  <p class="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Tiếng Anh 8 · Unit 7 · Folk Tales</p>
+  <h1 class="text-3xl md:text-5xl font-extrabold drop-shadow-lg">📝 Test trắc nghiệm: Từ vựng &amp; Ngữ pháp</h1>
+  <p class="mt-2 text-base md:text-lg opacity-90 font-semibold">75 câu hỏi · Từ vựng, Ngữ pháp, Đọc hiểu &amp; Dịch nghĩa</p>
+  <div class="mt-5 max-w-2xl mx-auto flex flex-wrap items-center justify-center gap-3">
+    <span class="badge-pill"><i class="fa-solid fa-star mr-1"></i>Điểm cao nhất: <span id="bestScoreLabel">--</span></span>
+    <span class="badge-pill"><i class="fa-solid fa-rotate mr-1"></i>Số lần làm: <span id="attemptCountLabel">0</span></span>
+    <span class="badge-pill timer-pill"><i class="fa-solid fa-clock mr-1"></i><span id="timerLabel">35:00</span></span>
+  </div>
+  <div class="mt-4 max-w-2xl mx-auto">
+    <div class="flex justify-between text-xs font-bold opacity-80 mb-1">
+      <span>Tiến độ trả lời</span>
+      <span id="progressText">0 / 75 câu</span>
+    </div>
+    <div class="bg-white/20 rounded-full h-3 overflow-hidden">
+      <div id="progressBar" class="bg-white rounded-full h-3 progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-3xl mx-auto px-4 mt-6">
+
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 mb-6 text-sm text-slate-600">
+    <p class="font-bold text-slate-700 mb-1"><i class="fa-solid fa-circle-info text-indigo-600 mr-1"></i>Hướng dẫn làm bài</p>
+    <p>Trước khi làm bài, hãy mở phần <b>"📚 Ôn tập & Dịch nghĩa Unit 7"</b> bên dưới để xem lại từ vựng, ngữ pháp và bản dịch tiếng Việt của các bài đọc trong Unit 7. Sau đó chọn <b>1 đáp án đúng</b> cho mỗi câu hỏi trắc nghiệm — gồm từ vựng, ngữ pháp, đọc hiểu bài đọc và luyện dịch nghĩa. Bấm <b>"Nộp bài"</b> để xem điểm và giải thích. Bấm <b>"Làm lại"</b> để nhận đề mới và luyện tập không giới hạn số lần.</p>
+  </div>
+
+  <!-- ============ REVIEW & TRANSLATION SECTION ============ -->
+  <div class="bg-white rounded-2xl shadow-sm border-2 border-indigo-200 mb-6 overflow-hidden">
+    <button class="accordion-btn open w-full flex items-center justify-between px-4 py-3 bg-indigo-50 font-extrabold text-indigo-800" onclick="toggleAccordion('reviewMain')">
+      <span><i class="fa-solid fa-book-open-reader mr-2"></i>📚 Ôn tập &amp; Dịch nghĩa Unit 7</span>
+      <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+    </button>
+    <div class="accordion-body open px-4 py-4 space-y-4" id="acc_reviewMain">
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('vocabList')">
+          <span>🧙 Từ vựng Unit 7 (30 từ/cụm từ)</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-2" id="acc_vocabList"></div>
+      </div>
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('grammarTip')">
+          <span>📐 Ngữ pháp: Câu tường thuật (Reported Speech - Statements)</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-3" id="acc_grammarTip">
+          <div class="grammar-tip-box">
+            <b>1. Cấu trúc chung</b>: S + said (that) / told + O + (that) + S + V (lùi thì)...<br>
+            &nbsp;&nbsp;• <b>say</b> (that) — KHÔNG cần tân ngữ: <i>"I am hungry," said the wolf.</i> → <i>The wolf said (that) he was hungry.</i><br>
+            &nbsp;&nbsp;• <b>tell</b> + O + (that) — CẦN tân ngữ: <i>"I will help you," the fairy godmother told Cinderella.</i> → <i>The fairy godmother told Cinderella (that) she would help her.</i><br><br>
+            <b>2. Lùi thì (Backshift)</b>:<br>
+            &nbsp;&nbsp;• Hiện tại đơn → Quá khứ đơn: <i>"I am tired." → He said (that) he was tired.</i><br>
+            &nbsp;&nbsp;• Hiện tại tiếp diễn → Quá khứ tiếp diễn: <i>"The witch is casting a spell." → They said the witch was casting a spell.</i><br>
+            &nbsp;&nbsp;• Hiện tại hoàn thành → Quá khứ hoàn thành: <i>"I have finished." → He said he had finished.</i><br>
+            &nbsp;&nbsp;• Quá khứ đơn → Quá khứ hoàn thành: <i>"The hero killed the dragon." → He said the hero had killed the dragon.</i><br>
+            &nbsp;&nbsp;• will → would, can → could, must → had to.<br><br>
+            <b>3. Đổi đại từ</b>: I→he/she, we→they, my→his/her, our→their (tùy theo người nói/người nghe).<br><br>
+            <b>4. Đổi trạng từ chỉ thời gian/nơi chốn</b>:<br>
+            &nbsp;&nbsp;today→that day · tomorrow→the next day · yesterday→the day before · now→then · here→there · this→that · these→those.<br><br>
+            <i>Ví dụ tổng hợp: "We will punish the villain tomorrow," the king told his soldiers. → The king told his soldiers (that) they would punish the villain the next day.</i>
+          </div>
+        </div>
+      </div>
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('passages')">
+          <span>📖 Bài đọc Unit 7 (có bản dịch)</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-3 space-y-4" id="acc_passages"></div>
+      </div>
+
+    </div>
+  </div>
+  <!-- ============ END REVIEW SECTION ============ -->
+
+  <div id="resultBanner" class="mb-6">
+    <div class="bg-white rounded-2xl shadow-lg border-2 border-indigo-300 p-6 text-center score-ring">
+      <p id="resultEmoji" class="text-5xl mb-2">🎉</p>
+      <h2 class="text-2xl font-extrabold text-indigo-700" id="resultTitle">Hoàn thành!</h2>
+      <p class="text-4xl font-black text-slate-800 mt-2"><span id="resultScore">0</span>/75</p>
+      <p class="text-slate-500 font-bold mt-1"><span id="resultPct">0</span>% chính xác · Thời gian: <span id="resultTime">0:00</span></p>
+      <div class="flex flex-wrap justify-center gap-3 mt-4">
+        <button onclick="retryTest()" class="bg-indigo-800 hover:bg-indigo-900 text-white font-bold px-5 py-2.5 rounded-xl shadow"><i class="fa-solid fa-rotate-right mr-1"></i>Làm lại (đề mới)</button>
+        <button onclick="scrollToReview()" class="bg-white border-2 border-indigo-300 text-indigo-700 font-bold px-5 py-2.5 rounded-xl"><i class="fa-solid fa-magnifying-glass mr-1"></i>Xem lại chi tiết</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="quizArea"></div>
+
+  <div class="sticky-bar bg-white/95 backdrop-blur border-t border-slate-200 mt-6 py-3 px-4 rounded-t-2xl shadow-[0_-4px_14px_rgba(0,0,0,.06)] flex items-center justify-between gap-3">
+    <span class="text-xs md:text-sm font-bold text-slate-500"><span id="answeredCount">0</span>/75 câu đã trả lời</span>
+    <button id="submitBtn" onclick="submitTest()" class="bg-gradient-to-r from-indigo-800 to-indigo-500 text-white font-extrabold px-6 py-2.5 rounded-xl shadow-lg hover:brightness-110"><i class="fa-solid fa-flag-checkered mr-1"></i>Nộp bài</button>
+  </div>
+
+</main>
+
+<script>
+/* ============================================================
+   REVIEW CONTENT: Unit 7 Vocabulary, Grammar rule, Passages (EN+VI)
+   ============================================================ */
+const VOCAB_LIST = [
+  {word:"folk tale", vi:"truyện dân gian", example:"Folk tales are stories that were told by ordinary people long ago.", exVi:"Truyện dân gian là những câu chuyện được người xưa kể lại."},
+  {word:"fairy tale", vi:"truyện cổ tích", example:"Cinderella is one of the most famous fairy tales in the world.", exVi:"Cô bé Lọ Lem là một trong những truyện cổ tích nổi tiếng nhất thế giới."},
+  {word:"legend", vi:"truyền thuyết", example:"The legend of the Trung sisters is well known in Viet Nam.", exVi:"Truyền thuyết về Hai Bà Trưng rất nổi tiếng ở Việt Nam."},
+  {word:"character", vi:"nhân vật", example:"Every folk tale has both good and bad characters.", exVi:"Mỗi truyện dân gian đều có cả nhân vật tốt và nhân vật xấu."},
+  {word:"hero", vi:"anh hùng", example:"The hero saved the village from the dragon.", exVi:"Người anh hùng đã cứu ngôi làng khỏi con rồng."},
+  {word:"villain", vi:"kẻ phản diện, kẻ xấu", example:"The villain in the story tried to steal the king's treasure.", exVi:"Kẻ phản diện trong câu chuyện đã cố đánh cắp kho báu của nhà vua."},
+  {word:"kind-hearted", vi:"tốt bụng, nhân hậu", example:"The kind-hearted girl shared her food with the old beggar.", exVi:"Cô gái tốt bụng đã chia sẻ thức ăn của mình với ông lão ăn xin."},
+  {word:"wicked", vi:"độc ác, xấu xa", example:"The wicked queen ordered the huntsman to kill the princess.", exVi:"Bà hoàng hậu độc ác đã ra lệnh cho người thợ săn giết công chúa."},
+  {word:"cruel", vi:"tàn nhẫn", example:"The stepmother was cruel to the poor orphan girl.", exVi:"Người mẹ kế đã đối xử tàn nhẫn với cô bé mồ côi tội nghiệp."},
+  {word:"generous", vi:"hào phóng, rộng lượng", example:"The old fisherman was generous and always helped his neighbours.", exVi:"Ông lão đánh cá hào phóng và luôn giúp đỡ hàng xóm."},
+  {word:"greedy", vi:"tham lam", example:"The greedy brother wanted all of their father's gold for himself.", exVi:"Người anh tham lam muốn chiếm hết vàng của cha cho riêng mình."},
+  {word:"jealous", vi:"ghen tị, đố kỵ", example:"The stepsisters were jealous of Cinderella's beauty.", exVi:"Hai chị em kế ghen tị với vẻ đẹp của Lọ Lem."},
+  {word:"stepmother", vi:"mẹ kế, dì ghẻ", example:"In many fairy tales, the stepmother treats her stepchildren badly.", exVi:"Trong nhiều truyện cổ tích, mẹ kế đối xử tệ với con riêng của chồng."},
+  {word:"stepsister", vi:"chị/em gái kế", example:"Cinderella's two stepsisters were selfish and unkind.", exVi:"Hai người chị kế của Lọ Lem ích kỷ và không tốt bụng."},
+  {word:"dwarf", vi:"người lùn", example:"Snow White lived in a small cottage with seven dwarfs.", exVi:"Bạch Tuyết sống trong một túp lều nhỏ cùng bảy chú lùn."},
+  {word:"giant", vi:"người khổng lồ", example:"The giant lived at the top of a huge beanstalk.", exVi:"Người khổng lồ sống trên đỉnh của một cây đậu khổng lồ."},
+  {word:"witch", vi:"phù thủy", example:"The witch cast a spell to turn the prince into a frog.", exVi:"Mụ phù thủy đã yểm bùa biến hoàng tử thành con ếch."},
+  {word:"fairy godmother", vi:"bà tiên đỡ đầu", example:"The fairy godmother helped Cinderella get ready for the ball.", exVi:"Bà tiên đỡ đầu đã giúp Lọ Lem chuẩn bị đi dự vũ hội."},
+  {word:"magic", vi:"phép thuật, ma thuật", example:"In the story, magic can turn a pumpkin into a golden carriage.", exVi:"Trong câu chuyện, phép thuật có thể biến quả bí ngô thành cỗ xe vàng."},
+  {word:"spell", vi:"câu thần chú, phép yểm", example:"The witch's spell could only be broken by true love's kiss.", exVi:"Phép yểm của mụ phù thủy chỉ có thể được hóa giải bằng nụ hôn của tình yêu đích thực."},
+  {word:"moral", vi:"bài học (đạo đức)", example:"The moral of the story is that honesty is always rewarded.", exVi:"Bài học của câu chuyện là sự trung thực luôn được đền đáp."},
+  {word:"plot", vi:"cốt truyện", example:"The plot of the folk tale is simple but full of surprises.", exVi:"Cốt truyện của truyện dân gian đơn giản nhưng đầy bất ngờ."},
+  {word:"setting", vi:"bối cảnh", example:"The setting of the story is a small village near a forest.", exVi:"Bối cảnh của câu chuyện là một ngôi làng nhỏ gần khu rừng."},
+  {word:"once upon a time", vi:"ngày xửa ngày xưa", example:"Once upon a time, there lived a poor woodcutter and his wife.", exVi:"Ngày xửa ngày xưa, có một người tiều phu nghèo sống cùng vợ."},
+  {word:"live happily ever after", vi:"sống hạnh phúc mãi mãi về sau", example:"The prince and the princess got married and lived happily ever after.", exVi:"Hoàng tử và công chúa kết hôn và sống hạnh phúc mãi mãi về sau."},
+  {word:"punish", vi:"trừng phạt", example:"In the end, the wicked stepmother was punished for her cruelty.", exVi:"Cuối cùng, người mẹ kế độc ác đã bị trừng phạt vì sự tàn nhẫn của mình."},
+  {word:"reward", vi:"phần thưởng; ban thưởng", example:"The king decided to reward the honest woodcutter with a bag of gold.", exVi:"Nhà vua quyết định thưởng cho người tiều phu trung thực một túi vàng."},
+  {word:"brave", vi:"dũng cảm", example:"The brave young man fought the giant to protect his village.", exVi:"Chàng trai dũng cảm đã chiến đấu với người khổng lồ để bảo vệ ngôi làng."},
+  {word:"honest", vi:"trung thực", example:"The honest woodcutter told the fairy the truth about the axe.", exVi:"Người tiều phu trung thực đã nói sự thật với nàng tiên về chiếc rìu."},
+  {word:"wise", vi:"khôn ngoan, sáng suốt", example:"The wise old man always gave good advice to the villagers.", exVi:"Ông lão khôn ngoan luôn cho dân làng những lời khuyên hữu ích."},
+];
+
+const PASSAGES_REVIEW = [
+  {
+    title:"📄 Bài đọc 1: Our Favourite Folk Tale Characters",
+    en:"<b>Mai:</b> Nam, have you finished reading the folk tale book Mr. Hung gave us?<br><b>Nam:</b> Yes, I have! I really like the fairy godmother in the story. She is so kind-hearted and always helps people in trouble.<br><b>Mai:</b> I like her too, but my favourite character is the honest woodcutter. He told the truth to the fairy even when he could have taken the golden axe for himself.<br><b>Nam:</b> That's true. He is brave and honest, so in the end the fairy gave him both axes as a reward.<br><b>Mai:</b> What about the villains in folk tales? Do you like them?<br><b>Nam:</b> Not really, but they make the stories more interesting. The wicked witch and the jealous stepsisters always try to stop the hero, but they are usually punished in the end.<br><b>Mai:</b> Exactly! I think that's the moral of most folk tales: kind and honest people are rewarded, while cruel and greedy people are punished.<br><b>Nam:</b> I agree. That's why I enjoy reading folk tales so much.",
+    vi:"<b>Mai:</b> Nam, cậu đọc xong cuốn truyện dân gian mà thầy Hùng đưa cho tụi mình chưa?<br><b>Nam:</b> Rồi! Mình rất thích bà tiên đỡ đầu trong câu chuyện. Bà ấy rất tốt bụng và luôn giúp đỡ những người gặp khó khăn.<br><b>Mai:</b> Mình cũng thích bà ấy, nhưng nhân vật mình thích nhất là người tiều phu trung thực. Anh ấy đã nói thật với nàng tiên dù có thể lấy chiếc rìu vàng cho riêng mình.<br><b>Nam:</b> Đúng vậy. Anh ấy dũng cảm và trung thực, nên cuối cùng nàng tiên đã tặng anh cả hai chiếc rìu như một phần thưởng.<br><b>Mai:</b> Thế còn những kẻ phản diện trong truyện dân gian thì sao? Cậu có thích họ không?<br><b>Nam:</b> Không hẳn, nhưng họ khiến câu chuyện thú vị hơn. Mụ phù thủy độc ác và những người chị kế đố kỵ luôn cố ngăn cản người anh hùng, nhưng cuối cùng họ thường bị trừng phạt.<br><b>Mai:</b> Đúng vậy! Mình nghĩ đó chính là bài học của hầu hết các truyện dân gian: người tốt bụng và trung thực sẽ được đền đáp, còn người tàn nhẫn và tham lam sẽ bị trừng phạt.<br><b>Nam:</b> Mình đồng ý. Đó là lý do vì sao mình rất thích đọc truyện dân gian."
+  },
+  {
+    title:"📄 Bài đọc 2: The Poor Young Man and the Golden Axe",
+    en:"Once upon a time, there lived a poor young man named Long. He earned his living by cutting wood in the forest every day. One afternoon, while he was cutting a tree by a river, his old axe fell into the water. Long was very sad because it was the only tool he had. Suddenly, a kind fairy appeared from the river. She said she would help him. The fairy dived into the water and brought back a golden axe. \"Is this your axe?\" she asked. Long shook his head and said it was not his. The fairy dived again and brought back a silver axe, but Long said that was not his axe either. Finally, the fairy brought back his old axe, and Long smiled and said that was indeed his axe. The fairy was moved by his honesty. She told him that she would reward him for telling the truth, and she gave him all three axes: the golden one, the silver one, and his own old one. Long became rich, but he stayed kind-hearted and often helped poorer villagers. He lived happily ever after.",
+    vi:"Ngày xửa ngày xưa, có một chàng trai nghèo tên là Long. Anh kiếm sống bằng nghề đốn củi trong rừng mỗi ngày. Một buổi chiều nọ, khi đang chặt cây bên bờ sông, chiếc rìu cũ của anh rơi xuống nước. Long rất buồn vì đó là công cụ duy nhất anh có. Bỗng nhiên, một nàng tiên tốt bụng hiện lên từ dòng sông. Nàng nói rằng nàng sẽ giúp anh. Nàng tiên lặn xuống nước và mang lên một chiếc rìu bằng vàng. \"Đây có phải là rìu của con không?\" nàng hỏi. Long lắc đầu và nói đó không phải là rìu của mình. Nàng tiên lại lặn xuống và mang lên một chiếc rìu bằng bạc, nhưng Long nói đó cũng không phải rìu của anh. Cuối cùng, nàng tiên mang lên chiếc rìu cũ của anh, và Long mỉm cười nói đúng đó là rìu của mình. Nàng tiên cảm động trước sự trung thực của anh. Nàng nói rằng nàng sẽ thưởng cho anh vì đã nói thật, và nàng tặng anh cả ba chiếc rìu: chiếc bằng vàng, chiếc bằng bạc và chiếc rìu cũ của anh. Long trở nên giàu có, nhưng anh vẫn giữ tấm lòng tốt bụng và thường giúp đỡ những người dân nghèo hơn trong làng. Anh sống hạnh phúc mãi mãi về sau."
+  },
+  {
+    title:"📄 Bài đọc 3: Why Folk Tales Matter",
+    en:"Folk tales are an important part of every culture. They have been passed down from generation to generation, long before people could read or write. Through simple stories about kings, fairies, giants, and animals, folk tales teach children important lessons about life. Many folk tales show that kind-hearted and honest characters are rewarded, while wicked and greedy characters are punished. Other folk tales remind us to be brave, wise, and generous to those around us. Folk tales also help young people understand their own culture and history. In Viet Nam, folk tales such as stories about clever farmers, kind fairies, and brave heroes are still told to children today. Although the settings and characters are different in every country, the morals of folk tales are often similar: goodness will be rewarded, and evil will be punished. That is why folk tales remain popular all over the world, even in modern times.",
+    vi:"Truyện dân gian là một phần quan trọng của mọi nền văn hóa. Chúng đã được truyền từ đời này sang đời khác, từ rất lâu trước khi con người biết đọc biết viết. Thông qua những câu chuyện đơn giản về vua chúa, tiên nữ, người khổng lồ và loài vật, truyện dân gian dạy trẻ em những bài học quan trọng về cuộc sống. Nhiều truyện dân gian cho thấy rằng những nhân vật tốt bụng và trung thực sẽ được đền đáp, còn những nhân vật độc ác và tham lam sẽ bị trừng phạt. Những truyện dân gian khác nhắc nhở chúng ta hãy dũng cảm, khôn ngoan và hào phóng với những người xung quanh. Truyện dân gian còn giúp giới trẻ hiểu thêm về văn hóa và lịch sử của chính mình. Ở Việt Nam, những truyện dân gian như chuyện về người nông dân thông minh, các nàng tiên tốt bụng và những anh hùng dũng cảm vẫn được kể cho trẻ em ngày nay. Mặc dù bối cảnh và nhân vật ở mỗi quốc gia khác nhau, bài học của truyện dân gian thường tương tự nhau: cái thiện sẽ được đền đáp, còn cái ác sẽ bị trừng phạt. Đó là lý do vì sao truyện dân gian vẫn được yêu thích trên khắp thế giới, ngay cả trong thời hiện đại."
+  }
+];
+
+function renderReviewSection(){
+  document.getElementById('acc_vocabList').innerHTML = VOCAB_LIST.map(v=>`
+    <div class="vocab-row flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+      <div><span class="font-extrabold text-indigo-700">${v.word}</span> <span class="text-slate-400">— ${v.vi}</span></div>
+      <div class="text-xs text-slate-400 italic sm:text-right sm:max-w-[55%]">${v.example}<br>${v.exVi}</div>
+    </div>`).join('');
+
+  document.getElementById('acc_passages').innerHTML = PASSAGES_REVIEW.map((p,i)=>`
+    <div>
+      <p class="font-bold text-slate-700 text-sm mb-2">${p.title}</p>
+      <div class="passage-en">${p.en}</div>
+      <button type="button" onclick="togglePassageVi(${i})" class="mt-2 text-xs font-bold bg-white border-2 border-amber-300 text-amber-700 px-3 py-1.5 rounded-full">
+        <i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt
+      </button>
+      <div class="passage-vi" id="passvi_${i}"><b>🇻🇳 Bản dịch</b><br>${p.vi}</div>
+    </div>`).join('');
+}
+function togglePassageVi(i){ document.getElementById('passvi_'+i).classList.toggle('show'); }
+function toggleAccordion(key){
+  const btn = event.currentTarget;
+  btn.classList.toggle('open');
+  document.getElementById('acc_'+key).classList.toggle('open');
+}
+
+/* ============================================================
+   CONTENT: Unit 7 Vocabulary, Grammar, Reading & Translation Test
+   ============================================================ */
+const VOCAB_TEST = [
+  {id:"v1", prompt:"\"Folk tale\" nghĩa là gì?", options:["truyện dân gian","truyện cười","bài thơ","bài hát"], answer:0, explanation:"folk tale = truyện dân gian.", vi:"folk tale = truyện dân gian."},
+  {id:"v2", prompt:"\"Fairy tale\" nghĩa là gì?", options:["truyện cổ tích","truyện dân gian","truyền thuyết","tiểu thuyết"], answer:0, explanation:"fairy tale = truyện cổ tích.", vi:"fairy tale = truyện cổ tích."},
+  {id:"v3", prompt:"\"Legend\" nghĩa là gì?", options:["truyền thuyết","truyện cười","bài báo","nhật ký"], answer:0, explanation:"legend = truyền thuyết.", vi:"legend = truyền thuyết."},
+  {id:"v4", prompt:"\"Character\" nghĩa là gì?", options:["nhân vật","bối cảnh","cốt truyện","bài học"], answer:0, explanation:"character = nhân vật.", vi:"character = nhân vật."},
+  {id:"v5", prompt:"Điền từ: The young man was the ________ of the story; he saved the whole village.", options:["hero","villain","dwarf","witch"], answer:0, explanation:"hero = anh hùng, người cứu giúp người khác trong truyện.", vi:"Chàng trai là người anh hùng của câu chuyện; anh đã cứu cả ngôi làng."},
+  {id:"v6", prompt:"\"Villain\" nghĩa là gì?", options:["kẻ phản diện, kẻ xấu","anh hùng","bà tiên","người khổng lồ"], answer:0, explanation:"villain = kẻ phản diện, kẻ xấu trong truyện.", vi:"villain = kẻ phản diện."},
+  {id:"v7", prompt:"Điền từ: The girl was so ________ that she always helped poor people in the village.", options:["kind-hearted","greedy","cruel","jealous"], answer:0, explanation:"kind-hearted = tốt bụng, nhân hậu.", vi:"Cô gái rất tốt bụng nên luôn giúp đỡ người nghèo trong làng."},
+  {id:"v8", prompt:"\"Wicked\" nghĩa là gì?", options:["độc ác, xấu xa","tốt bụng","hào phóng","khôn ngoan"], answer:0, explanation:"wicked = độc ác, xấu xa.", vi:"wicked = độc ác, xấu xa."},
+  {id:"v9", prompt:"\"Cruel\" nghĩa là gì?", options:["tàn nhẫn","hào phóng","dũng cảm","trung thực"], answer:0, explanation:"cruel = tàn nhẫn.", vi:"cruel = tàn nhẫn."},
+  {id:"v10", prompt:"Điền từ: The old fisherman was very ________; he often gave fish to poor families.", options:["generous","greedy","jealous","wicked"], answer:0, explanation:"generous = hào phóng, rộng lượng.", vi:"Ông lão đánh cá rất hào phóng; ông thường cho cá những gia đình nghèo."},
+  {id:"v11", prompt:"\"Greedy\" nghĩa là gì?", options:["tham lam","hào phóng","khôn ngoan","trung thực"], answer:0, explanation:"greedy = tham lam.", vi:"greedy = tham lam."},
+  {id:"v12", prompt:"\"Jealous\" nghĩa là gì?", options:["ghen tị, đố kỵ","hào phóng","dũng cảm","trung thực"], answer:0, explanation:"jealous = ghen tị, đố kỵ.", vi:"jealous = ghen tị."},
+  {id:"v13", prompt:"Điền từ: In the story, Cinderella's ________ was very unkind to her.", options:["stepmother","fairy godmother","hero","dwarf"], answer:0, explanation:"stepmother = mẹ kế.", vi:"Trong câu chuyện, mẹ kế của Lọ Lem rất không tốt với cô."},
+  {id:"v14", prompt:"\"Stepsister\" nghĩa là gì?", options:["chị/em gái kế","mẹ kế","bà tiên","phù thủy"], answer:0, explanation:"stepsister = chị/em gái kế (con riêng của cha/mẹ kế).", vi:"stepsister = chị/em gái kế."},
+  {id:"v15", prompt:"Điền từ: Snow White lived with seven ________ in a small cottage.", options:["dwarfs","giants","witches","heroes"], answer:0, explanation:"dwarf(s) = người lùn.", vi:"Bạch Tuyết sống cùng bảy chú lùn trong một túp lều nhỏ."},
+  {id:"v16", prompt:"\"Giant\" nghĩa là gì?", options:["người khổng lồ","người lùn","phù thủy","nhà vua"], answer:0, explanation:"giant = người khổng lồ.", vi:"giant = người khổng lồ."},
+  {id:"v17", prompt:"Điền từ: The ________ cast an evil spell on the young prince.", options:["witch","hero","dwarf","villager"], answer:0, explanation:"witch = phù thủy, người thường yểm bùa trong truyện cổ tích.", vi:"Mụ phù thủy đã yểm một câu bùa độc ác lên chàng hoàng tử trẻ."},
+  {id:"v18", prompt:"\"Fairy godmother\" nghĩa là gì?", options:["bà tiên đỡ đầu","mẹ kế","phù thủy độc ác","nữ hoàng"], answer:0, explanation:"fairy godmother = bà tiên đỡ đầu.", vi:"fairy godmother = bà tiên đỡ đầu."},
+  {id:"v19", prompt:"\"Magic\" nghĩa là gì?", options:["phép thuật, ma thuật","bài học","cốt truyện","bối cảnh"], answer:0, explanation:"magic = phép thuật, ma thuật.", vi:"magic = phép thuật."},
+  {id:"v20", prompt:"Điền từ: The witch's ________ could only be broken by true love's kiss.", options:["spell","moral","plot","setting"], answer:0, explanation:"spell = câu thần chú, phép yểm.", vi:"Phép yểm của mụ phù thủy chỉ có thể được hóa giải bằng nụ hôn của tình yêu đích thực."},
+  {id:"v21", prompt:"\"Moral\" (bài học của câu chuyện) nghĩa là gì?", options:["bài học đạo đức","cốt truyện","bối cảnh","nhân vật"], answer:0, explanation:"moral = bài học (đạo đức) rút ra từ câu chuyện.", vi:"moral = bài học đạo đức."},
+  {id:"v22", prompt:"\"Plot\" nghĩa là gì?", options:["cốt truyện","bối cảnh","nhân vật","bài học"], answer:0, explanation:"plot = cốt truyện.", vi:"plot = cốt truyện."},
+  {id:"v23", prompt:"\"Setting\" nghĩa là gì?", options:["bối cảnh","cốt truyện","nhân vật","bài học"], answer:0, explanation:"setting = bối cảnh (thời gian, địa điểm) của câu chuyện.", vi:"setting = bối cảnh."},
+  {id:"v24", prompt:"Điền từ: \"________, there lived a poor woodcutter and his wife near a forest.\"", options:["Once upon a time","Once a upon time","Time upon once","Upon a time once"], answer:0, explanation:"\"Once upon a time\" là cụm mở đầu quen thuộc của truyện cổ tích.", vi:"once upon a time = ngày xửa ngày xưa."},
+  {id:"v25", prompt:"\"Live happily ever after\" nghĩa là gì?", options:["sống hạnh phúc mãi mãi về sau","sống nghèo khổ suốt đời","chia tay nhau mãi mãi","trở thành kẻ thù"], answer:0, explanation:"live happily ever after = sống hạnh phúc mãi mãi về sau, thường là câu kết của truyện cổ tích.", vi:"live happily ever after = sống hạnh phúc mãi mãi về sau."},
+  {id:"v26", prompt:"Điền từ: The wicked stepmother was finally ________ for her cruelty.", options:["punished","rewarded","forgiven","praised"], answer:0, explanation:"punish(ed) = trừng phạt.", vi:"Cuối cùng người mẹ kế độc ác đã bị trừng phạt vì sự tàn nhẫn của mình."},
+  {id:"v27", prompt:"\"Reward\" nghĩa là gì?", options:["phần thưởng","hình phạt","lời hứa","câu thần chú"], answer:0, explanation:"reward = phần thưởng (danh từ) / ban thưởng (động từ).", vi:"reward = phần thưởng."},
+  {id:"v28", prompt:"Điền từ: The ________ young man fought the giant to protect his village.", options:["brave","cruel","greedy","jealous"], answer:0, explanation:"brave = dũng cảm.", vi:"Chàng trai dũng cảm đã chiến đấu với người khổng lồ để bảo vệ ngôi làng."},
+  {id:"v29", prompt:"\"Honest\" nghĩa là gì?", options:["trung thực","tham lam","ghen tị","độc ác"], answer:0, explanation:"honest = trung thực.", vi:"honest = trung thực."},
+  {id:"v30", prompt:"\"Wise\" nghĩa là gì?", options:["khôn ngoan, sáng suốt","ngu ngốc","tàn nhẫn","tham lam"], answer:0, explanation:"wise = khôn ngoan, sáng suốt.", vi:"wise = khôn ngoan."},
+];
+
+const GRAMMAR_TEST = [
+  {id:"g1", prompt:"\"I am hunting in the forest,\" said the giant. → The giant said (that) he ________ hunting in the forest.", options:["is","was","were","has been"], answer:1, explanation:"Hiện tại đơn \"am\" lùi thành quá khứ đơn \"was\" trong câu tường thuật.", vi:"am → was (lùi thì)."},
+  {id:"g2", prompt:"\"We live in a small cottage,\" said the seven dwarfs. → The seven dwarfs said (that) ________ lived in a small cottage.", options:["we","they","he","it"], answer:1, explanation:"Đại từ \"we\" (người nói) đổi thành \"they\" khi tường thuật lại.", vi:"we → they."},
+  {id:"g3", prompt:"\"I will visit the old fisherman today,\" said the fairy. → The fairy said (that) she would visit the old fisherman ________.", options:["today","that day","tomorrow","yesterday"], answer:1, explanation:"\"today\" đổi thành \"that day\" trong câu tường thuật.", vi:"today → that day."},
+  {id:"g4", prompt:"\"The treasure is hidden here,\" said the pirate. → The pirate said (that) the treasure was hidden ________.", options:["here","there","this place","near"], answer:1, explanation:"\"here\" đổi thành \"there\" trong câu tường thuật.", vi:"here → there."},
+  {id:"g5", prompt:"\"I will help the poor woodcutter,\" said the fairy godmother. → The fairy godmother said (that) she ________ help the poor woodcutter.", options:["will","would","can","must"], answer:1, explanation:"will → would khi lùi thì.", vi:"will → would."},
+  {id:"g6", prompt:"\"I can defeat the giant,\" said the brave young man. → The brave young man said (that) he ________ defeat the giant.", options:["can","could","will","must"], answer:1, explanation:"can → could khi lùi thì.", vi:"can → could."},
+  {id:"g7", prompt:"\"We must find the magic sword,\" said the two brothers. → The two brothers said (that) they ________ find the magic sword.", options:["must","had to","can","would"], answer:1, explanation:"must → had to khi lùi thì.", vi:"must → had to."},
+  {id:"g8", prompt:"\"The witch is casting a spell,\" said the villagers. → The villagers said (that) the witch ________ a spell.", options:["is casting","was casting","cast","had cast"], answer:1, explanation:"Hiện tại tiếp diễn lùi thành quá khứ tiếp diễn.", vi:"is casting → was casting."},
+  {id:"g9", prompt:"\"I have already punished the wicked stepmother,\" said the king. → The king said (that) he ________ already punished the wicked stepmother.", options:["has","had","have","was"], answer:1, explanation:"Hiện tại hoàn thành lùi thành quá khứ hoàn thành.", vi:"have/has → had."},
+  {id:"g10", prompt:"\"The hero killed the dragon,\" said the villager. → The villager said (that) the hero ________ the dragon.", options:["kill","killed","had killed","kills"], answer:2, explanation:"Quá khứ đơn thường lùi thành quá khứ hoàn thành trong câu tường thuật.", vi:"killed → had killed."},
+  {id:"g11", prompt:"\"I am tired,\" the woodcutter said to his wife. → The woodcutter ________ his wife (that) he was tired.", options:["said","told","said to","tell"], answer:1, explanation:"\"tell\" cần tân ngữ trực tiếp (told his wife), còn \"say\" không cần tân ngữ.", vi:"tell + O = told his wife."},
+  {id:"g12", prompt:"\"We are happy,\" said the prince and princess. Chọn câu tường thuật đúng:", options:["The prince and princess said that they were happy.","The prince and princess told that they were happy.","The prince and princess said they are happy.","The prince and princess told they were happy."], answer:0, explanation:"\"say (that)\" không cần tân ngữ; động từ phải lùi thì (are → were).", vi:"say (that) + mệnh đề, không cần tân ngữ."},
+  {id:"g13", prompt:"\"I will come back tomorrow,\" said the giant. → The giant said (that) he would come back ________.", options:["tomorrow","the next day","today","yesterday"], answer:1, explanation:"\"tomorrow\" đổi thành \"the next day\".", vi:"tomorrow → the next day."},
+  {id:"g14", prompt:"\"I saw the witch here yesterday,\" said the little girl. → The little girl said (that) she had seen the witch there ________.", options:["yesterday","the day before","today","tomorrow"], answer:1, explanation:"\"yesterday\" đổi thành \"the day before\".", vi:"yesterday → the day before."},
+  {id:"g15", prompt:"\"This magic ring is mine,\" said the dwarf. → The dwarf said (that) ________ magic ring was his.", options:["this","that","these","those"], answer:1, explanation:"\"this\" đổi thành \"that\" trong câu tường thuật.", vi:"this → that."},
+  {id:"g16", prompt:"\"These spells are dangerous,\" said the wise old wizard. → The wizard said (that) ________ spells were dangerous.", options:["this","that","these","those"], answer:3, explanation:"\"these\" đổi thành \"those\" trong câu tường thuật.", vi:"these → those."},
+  {id:"g17", prompt:"\"I am the bravest hero in this kingdom,\" said the young man. Chọn câu tường thuật đúng:", options:["The young man said that he was the bravest hero in that kingdom.","The young man said that he is the bravest hero in this kingdom.","The young man told that he was the bravest hero in that kingdom.","The young man said he was the bravest hero in this kingdom."], answer:0, explanation:"Cần lùi thì (am→was), đổi \"this\"→\"that\", và dùng \"say\" (không tân ngữ) chứ không phải \"tell\".", vi:"am→was; this→that; say (không tân ngữ)."},
+  {id:"g18", prompt:"\"We will punish the villain tomorrow,\" the king told his soldiers. Chọn câu tường thuật đúng:", options:["The king told his soldiers that they would punish the villain the next day.","The king said his soldiers that they will punish the villain tomorrow.","The king told his soldiers that they would punish the villain tomorrow.","The king told his soldiers they will punish the villain the next day."], answer:0, explanation:"will→would, tomorrow→the next day, và \"tell\" cần tân ngữ \"his soldiers\".", vi:"will→would; tomorrow→the next day."},
+  {id:"g19", prompt:"Nhận định nào về câu tường thuật là ĐÚNG?", options:["Động từ \"say\" có thể dùng có hoặc không có tân ngữ (say to somebody).","Động từ \"tell\" không bao giờ đi kèm tân ngữ.","Thì của động từ không bao giờ thay đổi trong câu tường thuật.","Đại từ không bao giờ thay đổi trong câu tường thuật."], answer:0, explanation:"\"say\" có thể đi một mình hoặc với \"to somebody\"; \"tell\" luôn cần tân ngữ trực tiếp.", vi:"say: có/không tân ngữ; tell: luôn cần tân ngữ."},
+  {id:"g20", prompt:"Khi đổi một câu ở thì hiện tại đơn sang câu tường thuật, thì của động từ thường thay đổi như thế nào?", options:["Giữ nguyên không đổi.","Đổi thành quá khứ đơn.","Đổi thành thì tương lai.","Đổi thành hiện tại hoàn thành."], answer:1, explanation:"Hiện tại đơn lùi thành quá khứ đơn (backshift) trong câu tường thuật.", vi:"Hiện tại đơn → Quá khứ đơn."},
+];
+
+const READING_TEST = [
+  // ---- Passage 1: Our Favourite Folk Tale Characters ----
+  {id:"r1", prompt:"[Bài đọc 1] Which character does Nam like the most?", options:["The fairy godmother.","The witch.","The stepsisters.","The giant."], answer:0, explanation:"\"I really like the fairy godmother in the story.\"", vi:"Nam thích nhất bà tiên đỡ đầu."},
+  {id:"r2", prompt:"[Bài đọc 1] Why does Mai like the honest woodcutter?", options:["Because he told the truth to the fairy even though he could have taken the golden axe.","Because he was very rich.","Because he was the king's son.","Because he defeated a dragon."], answer:0, explanation:"\"He told the truth to the fairy even when he could have taken the golden axe for himself.\"", vi:"Vì anh đã nói thật với nàng tiên dù có thể lấy chiếc rìu vàng."},
+  {id:"r3", prompt:"[Bài đọc 1] What did the fairy give the honest woodcutter as a reward?", options:["Both axes.","Only the golden axe.","A magic ring.","Nothing."], answer:0, explanation:"\"In the end the fairy gave him both axes as a reward.\"", vi:"Nàng tiên tặng anh cả hai chiếc rìu."},
+  {id:"r4", prompt:"[Bài đọc 1] According to Nam, why do villains make folk tales more interesting?", options:["Because they try to stop the hero, making the story exciting.","Because they always win.","Because they are funny.","Because they are the main characters."], answer:0, explanation:"\"They make the stories more interesting... they always try to stop the hero.\"", vi:"Vì kẻ phản diện luôn cố ngăn cản người anh hùng, khiến câu chuyện hấp dẫn hơn."},
+  {id:"r5", prompt:"[Bài đọc 1] What is the moral that Mai mentions at the end of the conversation?", options:["Kind and honest people are rewarded, while cruel and greedy people are punished.","Everyone lives happily regardless of their actions.","Only rich people succeed in life.","Villains always win in folk tales."], answer:0, explanation:"\"Kind and honest people are rewarded, while cruel and greedy people are punished.\"", vi:"Người tốt bụng, trung thực được đền đáp; người tàn nhẫn, tham lam bị trừng phạt."},
+  // ---- Passage 2: The Poor Young Man and the Golden Axe ----
+  {id:"r6", prompt:"[Bài đọc 2] What was Long's job?", options:["Cutting wood in the forest.","Fishing in the river.","Farming rice.","Selling fruit at the market."], answer:0, explanation:"\"He earned his living by cutting wood in the forest every day.\"", vi:"Long kiếm sống bằng nghề đốn củi."},
+  {id:"r7", prompt:"[Bài đọc 2] What happened to Long's axe?", options:["It fell into the river.","It broke into pieces.","It was stolen by a witch.","It turned into gold by itself."], answer:0, explanation:"\"His old axe fell into the water.\"", vi:"Chiếc rìu của anh rơi xuống sông."},
+  {id:"r8", prompt:"[Bài đọc 2] Who appeared to help Long?", options:["A kind fairy.","A wicked witch.","A giant.","A dwarf."], answer:0, explanation:"\"A kind fairy appeared from the river.\"", vi:"Một nàng tiên tốt bụng đã hiện lên giúp anh."},
+  {id:"r9", prompt:"[Bài đọc 2] How many axes did the fairy bring up from the water in total?", options:["Three (golden, silver, and his own).","Two.","One.","Four."], answer:0, explanation:"\"She gave him all three axes: the golden one, the silver one, and his own old one.\"", vi:"Nàng tiên mang lên tổng cộng ba chiếc rìu."},
+  {id:"r10", prompt:"[Bài đọc 2] Why did the fairy reward Long with all three axes?", options:["Because he was honest and told the truth about which axe was his.","Because he was the richest man in the village.","Because he asked for all three axes.","Because he saved the fairy's life."], answer:0, explanation:"\"The fairy was moved by his honesty... she would reward him for telling the truth.\"", vi:"Vì anh trung thực, nói thật rìu nào là của mình."},
+  // ---- Passage 3: Why Folk Tales Matter ----
+  {id:"r11", prompt:"[Bài đọc 3] How have folk tales been passed down through history?", options:["From generation to generation, even before people could read or write.","Only through printed books.","Only through television shows.","Through official government records."], answer:0, explanation:"\"They have been passed down from generation to generation, long before people could read or write.\"", vi:"Truyện dân gian được truyền từ đời này sang đời khác, từ trước khi con người biết đọc viết."},
+  {id:"r12", prompt:"[Bài đọc 3] What do many folk tales show about kind-hearted and honest characters?", options:["They are rewarded.","They are always poor.","They are punished.","They disappear from the story."], answer:0, explanation:"\"Many folk tales show that kind-hearted and honest characters are rewarded.\"", vi:"Nhân vật tốt bụng, trung thực sẽ được đền đáp."},
+  {id:"r13", prompt:"[Bài đọc 3] According to the passage, what do folk tales help young people understand?", options:["Their own culture and history.","Only foreign languages.","Modern technology.","International business."], answer:0, explanation:"\"Folk tales also help young people understand their own culture and history.\"", vi:"Truyện dân gian giúp giới trẻ hiểu văn hóa và lịch sử của mình."},
+  {id:"r14", prompt:"[Bài đọc 3] What examples of Vietnamese folk tale characters are mentioned in the passage?", options:["Clever farmers, kind fairies, and brave heroes.","Astronauts and scientists.","Famous singers and actors.","Modern soldiers."], answer:0, explanation:"\"Folk tales such as stories about clever farmers, kind fairies, and brave heroes are still told to children today.\"", vi:"Người nông dân thông minh, nàng tiên tốt bụng và anh hùng dũng cảm."},
+  {id:"r15", prompt:"[Bài đọc 3] What is the common moral shared by most folk tales, according to the passage?", options:["Goodness will be rewarded, and evil will be punished.","Only the rich can be happy.","Magic always causes problems.","Villains never get punished."], answer:0, explanation:"\"The morals of folk tales are often similar: goodness will be rewarded, and evil will be punished.\"", vi:"Cái thiện sẽ được đền đáp, cái ác sẽ bị trừng phạt."},
+];
+
+const TRANSLATION_TEST = [
+  {id:"t1", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"The honest woodcutter told the fairy the truth about the axe.\"", options:["Người tiều phu trung thực đã nói sự thật với nàng tiên về chiếc rìu.","Người tiều phu tham lam đã lấy trộm chiếc rìu vàng.","Người tiều phu đã bán chiếc rìu cho nàng tiên.","Người tiều phu đã đánh mất chiếc rìu của mình mãi mãi."], answer:0, explanation:"told the fairy the truth about the axe = nói sự thật với nàng tiên về chiếc rìu.", vi:""},
+  {id:"t2", prompt:"Chọn bản dịch tiếng Anh đúng: \"Mụ phù thủy độc ác đã yểm bùa biến hoàng tử thành con ếch.\"", options:["The wicked witch cast a spell to turn the prince into a frog.","The kind fairy helped the prince become a king.","The giant caught the prince and took him to the castle.","The dwarf gave the prince a magic ring."], answer:0, explanation:"yểm bùa biến ... thành = cast a spell to turn ... into.", vi:""},
+  {id:"t3", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"In the end, the wicked stepmother was punished for her cruelty.\"", options:["Cuối cùng, người mẹ kế độc ác đã bị trừng phạt vì sự tàn nhẫn của mình.","Cuối cùng, người mẹ kế được thưởng vì lòng tốt của mình.","Cuối cùng, người mẹ kế trở thành nữ hoàng.","Cuối cùng, người mẹ kế rời khỏi vương quốc mãi mãi."], answer:0, explanation:"was punished for her cruelty = bị trừng phạt vì sự tàn nhẫn.", vi:""},
+  {id:"t4", prompt:"Chọn bản dịch tiếng Anh đúng: \"Chàng trai dũng cảm đã chiến đấu với người khổng lồ để bảo vệ ngôi làng.\"", options:["The brave young man fought the giant to protect his village.","The greedy young man ran away from the giant.","The wise old man taught the giant a lesson.","The jealous stepsister fought the witch to save the village."], answer:0, explanation:"dũng cảm chiến đấu để bảo vệ ngôi làng = brave... fought... to protect his village.", vi:""},
+  {id:"t5", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"The fairy godmother told Cinderella that she would help her get ready for the ball.\"", options:["Bà tiên đỡ đầu nói với Lọ Lem rằng bà sẽ giúp cô chuẩn bị đi dự vũ hội.","Bà tiên đỡ đầu nói với Lọ Lem rằng bà sẽ không giúp cô nữa.","Bà tiên đỡ đầu bảo Lọ Lem phải tự chuẩn bị một mình.","Bà tiên đỡ đầu biến mất trước khi vũ hội bắt đầu."], answer:0, explanation:"told... she would help her get ready for the ball = nói sẽ giúp chuẩn bị đi dự vũ hội.", vi:""},
+  {id:"t6", prompt:"Chọn bản dịch tiếng Anh đúng: \"Bài học của câu chuyện là sự trung thực luôn được đền đáp.\"", options:["The moral of the story is that honesty is always rewarded.","The plot of the story is about a wicked witch.","The setting of the story is a small village.","The character of the story is a brave giant."], answer:0, explanation:"bài học = the moral; luôn được đền đáp = is always rewarded.", vi:""},
+  {id:"t7", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"Many folk tales show that kind-hearted and honest characters are rewarded.\"", options:["Nhiều truyện dân gian cho thấy rằng các nhân vật tốt bụng và trung thực sẽ được đền đáp.","Nhiều truyện dân gian cho thấy rằng chỉ có kẻ giàu mới hạnh phúc.","Nhiều truyện dân gian không có bài học nào cả.","Nhiều truyện dân gian chỉ nói về các loài vật."], answer:0, explanation:"kind-hearted and honest characters are rewarded = nhân vật tốt bụng, trung thực được đền đáp.", vi:""},
+  {id:"t8", prompt:"Chọn bản dịch tiếng Anh đúng: \"Long trở nên giàu có, nhưng anh vẫn giữ tấm lòng tốt bụng và thường giúp đỡ dân làng nghèo hơn.\"", options:["Long became rich, but he stayed kind-hearted and often helped poorer villagers.","Long became poor, but he never helped anyone again.","Long became a king and forgot about his village.","Long lost all his gold and moved to another village."], answer:0, explanation:"trở nên giàu có nhưng vẫn tốt bụng, giúp đỡ dân làng nghèo hơn = became rich but stayed kind-hearted and helped poorer villagers.", vi:""},
+  {id:"t9", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"Folk tales remain popular all over the world, even in modern times.\"", options:["Truyện dân gian vẫn được yêu thích trên khắp thế giới, ngay cả trong thời hiện đại.","Truyện dân gian đã biến mất hoàn toàn trong thời hiện đại.","Truyện dân gian chỉ được yêu thích ở một vài quốc gia.","Truyện dân gian chỉ dành cho người lớn tuổi."], answer:0, explanation:"remain popular all over the world, even in modern times = vẫn được yêu thích khắp thế giới, kể cả thời hiện đại.", vi:""},
+  {id:"t10", prompt:"Chọn bản dịch tiếng Anh đúng: \"Hai người chị kế của Lọ Lem ghen tị với vẻ đẹp của cô.\"", options:["Cinderella's two stepsisters were jealous of her beauty.","Cinderella's fairy godmother was jealous of her beauty.","Cinderella's stepmother was proud of her beauty.","Cinderella's two stepsisters admired her kindness."], answer:0, explanation:"hai người chị kế ghen tị với vẻ đẹp = two stepsisters were jealous of her beauty.", vi:""},
+];
+
+VOCAB_TEST.forEach(q=>q.section='vocab');
+GRAMMAR_TEST.forEach(q=>q.section='grammar');
+READING_TEST.forEach(q=>q.section='reading');
+TRANSLATION_TEST.forEach(q=>q.section='translation');
+const TOTAL = VOCAB_TEST.length + GRAMMAR_TEST.length + READING_TEST.length + TRANSLATION_TEST.length;
+const STORAGE_KEY = 'u7_vocabgrammar_test_v1';
+
+/* ---------------- utility ---------------- */
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+function loadHistory(){
+  try{ const raw=localStorage.getItem(STORAGE_KEY); return raw? JSON.parse(raw) : {best:0, attempts:0}; }
+  catch(e){ return {best:0, attempts:0}; }
+}
+function saveHistory(h){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(h)); }catch(e){} }
+
+/* ---------------- state ---------------- */
+let state = { questions:[], answers:{}, submitted:false, timeLeft: 35*60, timerId:null, startedAt:null };
+
+function buildQuestionSet(){
+  const all = shuffle(VOCAB_TEST.concat(GRAMMAR_TEST).concat(READING_TEST).concat(TRANSLATION_TEST).map(q=>{
+    const optOrder = shuffle(q.options.map((o,i)=>i));
+    return Object.assign({}, q, { displayOptions: optOrder.map(i=>q.options[i]), correctDisplayIndex: optOrder.indexOf(q.answer) });
+  }));
+  return all;
+}
+
+function init(){
+  renderReviewSection();
+  state.questions = buildQuestionSet();
+  state.answers = {};
+  state.submitted = false;
+  state.timeLeft = 35*60;
+  state.startedAt = Date.now();
+  document.getElementById('resultBanner').classList.remove('show');
+  renderQuiz();
+  updateProgress();
+  updateHistoryLabels();
+  startTimer();
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = false; btn.classList.remove('opacity-50');
+}
+
+function updateHistoryLabels(){
+  const h = loadHistory();
+  document.getElementById('bestScoreLabel').textContent = h.attempts>0 ? (h.best+'/'+TOTAL) : '--';
+  document.getElementById('attemptCountLabel').textContent = h.attempts||0;
+}
+
+function startTimer(){
+  if(state.timerId) clearInterval(state.timerId);
+  state.timerId = setInterval(()=>{
+    if(state.submitted){ clearInterval(state.timerId); return; }
+    state.timeLeft--;
+    renderTimer();
+    if(state.timeLeft<=0){ clearInterval(state.timerId); submitTest(true); }
+  },1000);
+  renderTimer();
+}
+function renderTimer(){
+  const m = Math.floor(Math.max(0,state.timeLeft)/60), s = Math.max(0,state.timeLeft)%60;
+  const label = document.getElementById('timerLabel');
+  label.textContent = String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  label.classList.toggle('low', state.timeLeft<=60);
+}
+
+function renderQuiz(){
+  const vocabQs = state.questions.filter(q=>q.section==='vocab');
+  const grammarQs = state.questions.filter(q=>q.section==='grammar');
+  const readingQs = state.questions.filter(q=>q.section==='reading');
+  const translationQs = state.questions.filter(q=>q.section==='translation');
+  let html = '';
+  html += sectionDivider('📚 Phần 1 · Vocabulary', vocabQs.length);
+  vocabQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('📐 Phần 2 · Grammar (Câu tường thuật - Reported Speech)', grammarQs.length);
+  grammarQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('📖 Phần 3 · Đọc hiểu (Reading Comprehension)', readingQs.length);
+  readingQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('🇻🇳 Phần 4 · Luyện dịch nghĩa (Translation Practice)', translationQs.length);
+  translationQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  document.getElementById('quizArea').innerHTML = html;
+}
+
+function sectionDivider(title, count){
+  return `<div class="section-divider text-white rounded-xl px-4 py-2.5 mb-4 mt-2 font-extrabold text-sm md:text-base shadow flex items-center justify-between">
+    <span>${title}</span><span class="text-xs font-bold opacity-80">${count} câu</span>
+  </div>`;
+}
+
+function renderQuestionCard(q, num){
+  const letters=['A','B','C','D'];
+  const optsHtml = q.displayOptions.map((opt,i)=>{
+    return `<div class="opt-row px-3 py-2.5 flex items-start gap-2 text-sm md:text-[15px]" data-qid="${q.id}" data-idx="${i}" onclick="selectAnswer('${q.id}',${i})">
+      <span class="font-black text-indigo-700">${letters[i]}.</span><span class="flex-1">${opt}</span>
+    </div>`;
+  }).join('');
+  return `<div class="qcard p-4 mb-3" id="qcard_${q.id}">
+    <p class="font-extrabold text-slate-800 text-sm md:text-base mb-2"><span class="text-indigo-600">Câu ${num}.</span> ${q.prompt}</p>
+    <div class="grid gap-2" id="opts_${q.id}">${optsHtml}</div>
+    <div class="explain-box mt-3" id="explain_${q.id}"></div>
+  </div>`;
+}
+
+function selectAnswer(qid, idx){
+  if(state.submitted) return;
+  state.answers[qid] = idx;
+  const wrap = document.getElementById('opts_'+qid);
+  wrap.querySelectorAll('.opt-row').forEach(el=>{
+    el.classList.toggle('selected', parseInt(el.dataset.idx,10)===idx);
+  });
+  document.getElementById('qcard_'+qid).classList.add('answered');
+  updateProgress();
+}
+
+function updateProgress(){
+  const answered = Object.keys(state.answers).length;
+  document.getElementById('progressText').textContent = answered+' / '+TOTAL+' câu';
+  document.getElementById('progressBar').style.width = Math.round(answered/TOTAL*100)+'%';
+  document.getElementById('answeredCount').textContent = answered;
+}
+
+function submitTest(auto){
+  if(state.submitted) return;
+  const answeredCount = Object.keys(state.answers).length;
+  if(!auto && answeredCount < TOTAL){
+    const proceed = confirm('Bạn còn '+(TOTAL-answeredCount)+' câu chưa trả lời. Vẫn muốn nộp bài?');
+    if(!proceed) return;
+  }
+  state.submitted = true;
+  if(state.timerId) clearInterval(state.timerId);
+  const elapsed = Math.round((Date.now()-state.startedAt)/1000);
+
+  let correct = 0;
+  state.questions.forEach(q=>{
+    const sel = state.answers[q.id];
+    const isCorrect = sel === q.correctDisplayIndex;
+    if(isCorrect) correct++;
+    const card = document.getElementById('qcard_'+q.id);
+    card.classList.add(isCorrect?'correct':'wrong');
+    const wrap = document.getElementById('opts_'+q.id);
+    wrap.querySelectorAll('.opt-row').forEach(el=>{
+      const idx = parseInt(el.dataset.idx,10);
+      el.classList.add('locked');
+      if(idx===q.correctDisplayIndex) el.classList.add('correct-opt');
+      else if(idx===sel && !isCorrect) el.classList.add('wrong-opt');
+    });
+    const exp = document.getElementById('explain_'+q.id);
+    exp.classList.add('show');
+    const viLine = q.vi ? `<p class="text-slate-500 italic mt-1">🇻🇳 ${q.vi}</p>` : '';
+    exp.innerHTML = `<p class="${isCorrect?'text-emerald-700':'text-rose-600'} font-bold">${isCorrect?'✅ Chính xác!':(sel===undefined?'⚪ Bạn chưa chọn đáp án.':'❌ Chưa đúng.')} ${q.explanation}</p>${viLine}`;
+  });
+
+  const pct = Math.round(correct/TOTAL*100);
+  document.getElementById('resultScore').textContent = correct;
+  document.getElementById('resultPct').textContent = pct;
+  const mm = Math.floor(elapsed/60), ss = elapsed%60;
+  document.getElementById('resultTime').textContent = mm+':'+String(ss).padStart(2,'0');
+  let emoji='🙂', title='Đã hoàn thành!';
+  if(pct>=90){ emoji='🏆'; title='Xuất sắc!'; }
+  else if(pct>=70){ emoji='🎉'; title='Làm tốt lắm!'; }
+  else if(pct>=50){ emoji='💪'; title='Khá ổn, cố gắng thêm nhé!'; }
+  else { emoji='📖'; title='Cần ôn tập thêm!'; }
+  document.getElementById('resultEmoji').textContent = emoji;
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultBanner').classList.add('show');
+  document.getElementById('resultBanner').scrollIntoView({behavior:'smooth', block:'start'});
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true; btn.classList.add('opacity-50');
+
+  const h = loadHistory();
+  h.attempts = (h.attempts||0)+1;
+  h.best = Math.max(h.best||0, correct);
+  saveHistory(h);
+  updateHistoryLabels();
+
+  if(pct>=70) launchConfetti();
+}
+
+function retryTest(){ init(); window.scrollTo({top:0, behavior:'smooth'}); }
+
+function scrollToReview(){
+  document.getElementById('quizArea').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function launchConfetti(){
+  const wrap = document.getElementById('confettiWrap');
+  const colors=['#4338ca','#6366f1','#a78bfa','#1e1b4b','#f59e0b'];
+  for(let i=0;i<50;i++){
+    const el=document.createElement('div');
+    el.className='confetti-piece';
+    el.style.left=(Math.random()*100)+'vw';
+    el.style.background=colors[Math.floor(Math.random()*colors.length)];
+    el.style.animationDuration=(2+Math.random()*1.5)+'s';
+    el.style.top='-20px';
+    wrap.appendChild(el);
+    setTimeout(()=>el.remove(), 3600);
+  }
+}
+
+init();
+</script>
+</body>
+</html>

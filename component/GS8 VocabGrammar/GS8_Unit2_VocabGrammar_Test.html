@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 2 - Test Trắc nghiệm Từ vựng & Ngữ pháp - Tiếng Anh 8</title>
+<meta name="apple-mobile-web-app-title" content="U2 Vocab-Grammar Test">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+  :root{ --accent:#0f766e; --accent2:#65a30d; }
+  * { box-sizing: border-box; }
+  body { font-family:'Nunito',sans-serif; background:#f0fdf4; }
+  h1,h2,.baloo{ font-family:'Baloo 2',sans-serif; }
+  .hero-gradient{ background: linear-gradient(135deg, #14532d 0%, #15803d 55%, #65a30d 100%); }
+  .qcard{ background:#fff; border-radius:1.1rem; box-shadow:0 1px 4px rgba(0,0,0,.06); border:2px solid #e2e8f0; transition:border .2s, box-shadow .2s; }
+  .qcard.answered{ border-color:#a7f3d0; }
+  .qcard.correct{ border-color:#22c55e; background:#f0fdf4; }
+  .qcard.wrong{ border-color:#ef4444; background:#fef2f2; }
+  .opt-row{ cursor:pointer; transition: all .15s; border:2px solid #e2e8f0; border-radius:.8rem; }
+  .opt-row:hover{ border-color:var(--accent); background:#f0fdf4; }
+  .opt-row.selected{ border-color:#0f766e; background:#ecfdf5; font-weight:800; }
+  .opt-row.correct-opt{ border-color:#22c55e !important; background:#dcfce7 !important; font-weight:800; }
+  .opt-row.wrong-opt{ border-color:#ef4444 !important; background:#fee2e2 !important; font-weight:800; }
+  .opt-row.locked{ cursor:default; pointer-events:none; }
+  .explain-box{ display:none; background:#fffbeb; border:1px solid #fde68a; border-radius:.7rem; padding:.6rem .9rem; font-size:.85rem; color:#334155; }
+  .explain-box.show{ display:block; }
+  .sticky-bar{ position:sticky; bottom:0; z-index:40; }
+  .progress-fill{ transition: width .3s ease; }
+  .badge-pill{ background:#fff; border:2px solid #d9f99d; border-radius:999px; padding:.3rem .8rem; font-size:.75rem; font-weight:800; color:#3f6212; }
+  .score-ring{ animation: popIn .4s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn{ from{transform:scale(.5); opacity:0;} to{transform:scale(1); opacity:1;} }
+  .confetti-wrap{ position:fixed; inset:0; pointer-events:none; z-index:9999; }
+  .confetti-piece{ position:absolute; width:10px; height:10px; border-radius:2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall{ 0%{transform:translateY(-20px) rotate(0deg); opacity:1;} 100%{transform:translateY(100vh) rotate(720deg); opacity:0;} }
+  .section-divider{ background:linear-gradient(135deg,#14532d,#65a30d); }
+  #resultBanner{ display:none; }
+  #resultBanner.show{ display:block; }
+  .timer-pill{ font-variant-numeric: tabular-nums; }
+  .timer-pill.low{ color:#fca5a5 !important; }
+  .accordion-btn{ cursor:pointer; transition: background .15s; }
+  .accordion-body{ display:none; }
+  .accordion-body.open{ display:block; }
+  .accordion-chevron{ transition: transform .2s; }
+  .accordion-btn.open .accordion-chevron{ transform: rotate(180deg); }
+  .vocab-row{ border-bottom:1px solid #f1f5f9; padding:.55rem 0; }
+  .vocab-row:last-child{ border-bottom:none; }
+  .passage-en{ background:#fff; border:1px solid #e2e8f0; border-radius:.9rem; padding:.9rem 1.1rem; line-height:1.85; font-size:.92rem; color:#334155; }
+  .passage-vi{ display:none; background:#fffbeb; border:1px solid #fde68a; border-radius:.9rem; padding:.9rem 1.1rem; margin-top:.6rem; line-height:1.85; font-size:.92rem; color:#334155; }
+  .passage-vi.show{ display:block; }
+  .grammar-tip-box{ background:#eff6ff; border:1px solid #bfdbfe; border-radius:.9rem; padding:1rem 1.2rem; line-height:1.9; font-size:.92rem; color:#334155; }
+</style>
+</head>
+<body class="min-h-screen pb-10">
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<header class="hero-gradient text-white py-8 px-4 text-center shadow-xl relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <div class="absolute top-4 left-8 text-6xl">🌾</div>
+    <div class="absolute top-2 right-12 text-5xl">🐄</div>
+    <div class="absolute bottom-2 left-1/3 text-4xl">🏡</div>
+    <div class="absolute bottom-4 right-1/4 text-5xl">🚜</div>
+  </div>
+  <p class="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Tiếng Anh 8 · Unit 2 · Life in the Countryside</p>
+  <h1 class="text-3xl md:text-5xl font-extrabold drop-shadow-lg">📝 Test trắc nghiệm: Từ vựng &amp; Ngữ pháp</h1>
+  <p class="mt-2 text-base md:text-lg opacity-90 font-semibold">75 câu hỏi · Từ vựng, Ngữ pháp, Đọc hiểu &amp; Dịch nghĩa</p>
+  <div class="mt-5 max-w-2xl mx-auto flex flex-wrap items-center justify-center gap-3">
+    <span class="badge-pill"><i class="fa-solid fa-star mr-1"></i>Điểm cao nhất: <span id="bestScoreLabel">--</span></span>
+    <span class="badge-pill"><i class="fa-solid fa-rotate mr-1"></i>Số lần làm: <span id="attemptCountLabel">0</span></span>
+    <span class="badge-pill timer-pill"><i class="fa-solid fa-clock mr-1"></i><span id="timerLabel">35:00</span></span>
+  </div>
+  <div class="mt-4 max-w-2xl mx-auto">
+    <div class="flex justify-between text-xs font-bold opacity-80 mb-1">
+      <span>Tiến độ trả lời</span>
+      <span id="progressText">0 / 75 câu</span>
+    </div>
+    <div class="bg-white/20 rounded-full h-3 overflow-hidden">
+      <div id="progressBar" class="bg-white rounded-full h-3 progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-3xl mx-auto px-4 mt-6">
+
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 mb-6 text-sm text-slate-600">
+    <p class="font-bold text-slate-700 mb-1"><i class="fa-solid fa-circle-info text-emerald-600 mr-1"></i>Hướng dẫn làm bài</p>
+    <p>Trước khi làm bài, hãy mở phần <b>"📚 Ôn tập & Dịch nghĩa Unit 2"</b> bên dưới để xem lại từ vựng, ngữ pháp và bản dịch tiếng Việt của các bài đọc/nghe trong Unit 2 (cả SGK và SBT). Sau đó chọn <b>1 đáp án đúng</b> cho mỗi câu hỏi trắc nghiệm — gồm từ vựng, ngữ pháp, đọc hiểu bài đọc và luyện dịch nghĩa. Bấm <b>"Nộp bài"</b> để xem điểm và giải thích. Bấm <b>"Làm lại"</b> để nhận đề mới và luyện tập không giới hạn số lần.</p>
+  </div>
+
+  <!-- ============ REVIEW & TRANSLATION SECTION ============ -->
+  <div class="bg-white rounded-2xl shadow-sm border-2 border-emerald-200 mb-6 overflow-hidden">
+    <button class="accordion-btn open w-full flex items-center justify-between px-4 py-3 bg-emerald-50 font-extrabold text-emerald-800" onclick="toggleAccordion('reviewMain')">
+      <span><i class="fa-solid fa-book-open-reader mr-2"></i>📚 Ôn tập &amp; Dịch nghĩa Unit 2</span>
+      <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+    </button>
+    <div class="accordion-body open px-4 py-4 space-y-4" id="acc_reviewMain">
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('vocabList')">
+          <span>🌱 Từ vựng Unit 2 (30 từ/cụm từ)</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-2" id="acc_vocabList"></div>
+      </div>
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('grammarTip')">
+          <span>📐 Ngữ pháp: So sánh hơn của trạng từ (Comparative Adverbs)</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-3" id="acc_grammarTip">
+          <div class="grammar-tip-box">
+            <b>1. Trạng từ 1 âm tiết</b> (hoặc có dạng giống tính từ: fast, hard, early, late, long, high...): thêm <b>-er</b>.<br>
+            Ví dụ: <i>fast → faster, hard → harder, early → earlier</i> (đổi y → i trước khi thêm -er).<br><br>
+            <b>2. Trạng từ 2 âm tiết trở lên</b> (thường tận cùng -ly): thêm <b>more</b> ở phía trước.<br>
+            Ví dụ: <i>quickly → more quickly, carefully → more carefully, fluently → more fluently.</i><br><br>
+            <b>3. Trạng từ bất quy tắc:</b> well → <b>better</b>, badly → <b>worse</b>, much → <b>more</b>, little → <b>less</b>.<br><br>
+            <b>Cấu trúc:</b> S + V + (trạng từ so sánh hơn) + <b>than</b> + N/Đại từ (+ trợ động từ).<br>
+            Ví dụ: <i>Life in the city seems to move faster than that in the countryside.</i> (Cuộc sống ở thành phố có vẻ diễn ra nhanh hơn so với ở nông thôn.)
+          </div>
+        </div>
+      </div>
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('passages')">
+          <span>📖 Bài đọc &amp; bài nghe Unit 2 (có bản dịch)</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-3 space-y-4" id="acc_passages"></div>
+      </div>
+
+    </div>
+  </div>
+  <!-- ============ END REVIEW SECTION ============ -->
+
+  <div id="resultBanner" class="mb-6">
+    <div class="bg-white rounded-2xl shadow-lg border-2 border-emerald-300 p-6 text-center score-ring">
+      <p id="resultEmoji" class="text-5xl mb-2">🎉</p>
+      <h2 class="text-2xl font-extrabold text-emerald-700" id="resultTitle">Hoàn thành!</h2>
+      <p class="text-4xl font-black text-slate-800 mt-2"><span id="resultScore">0</span>/75</p>
+      <p class="text-slate-500 font-bold mt-1"><span id="resultPct">0</span>% chính xác · Thời gian: <span id="resultTime">0:00</span></p>
+      <div class="flex flex-wrap justify-center gap-3 mt-4">
+        <button onclick="retryTest()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-5 py-2.5 rounded-xl shadow"><i class="fa-solid fa-rotate-right mr-1"></i>Làm lại (đề mới)</button>
+        <button onclick="scrollToReview()" class="bg-white border-2 border-emerald-300 text-emerald-700 font-bold px-5 py-2.5 rounded-xl"><i class="fa-solid fa-magnifying-glass mr-1"></i>Xem lại chi tiết</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="quizArea"></div>
+
+  <div class="sticky-bar bg-white/95 backdrop-blur border-t border-slate-200 mt-6 py-3 px-4 rounded-t-2xl shadow-[0_-4px_14px_rgba(0,0,0,.06)] flex items-center justify-between gap-3">
+    <span class="text-xs md:text-sm font-bold text-slate-500"><span id="answeredCount">0</span>/75 câu đã trả lời</span>
+    <button id="submitBtn" onclick="submitTest()" class="bg-gradient-to-r from-emerald-700 to-lime-600 text-white font-extrabold px-6 py-2.5 rounded-xl shadow-lg hover:brightness-110"><i class="fa-solid fa-flag-checkered mr-1"></i>Nộp bài</button>
+  </div>
+
+</main>
+
+<script>
+/* ============================================================
+   REVIEW CONTENT: Unit 2 Vocabulary, Grammar rule, Passages (EN+VI)
+   ============================================================ */
+const VOCAB_LIST = [
+  {word:"cattle", vi:"gia súc (trâu, bò)", example:"We helped the farmers herd cattle.", exVi:"Chúng tôi giúp nông dân chăn gia súc."},
+  {word:"poultry", vi:"gia cầm (gà, vịt...)", example:"Poultry refers to birds we raise, like chickens and ducks.", exVi:"Gia cầm là các loài chim ta nuôi, như gà và vịt."},
+  {word:"paddy field", vi:"ruộng lúa nước", example:"A place in which people grow rice is called a paddy field.", exVi:"Nơi người ta trồng lúa được gọi là ruộng lúa nước."},
+  {word:"combine harvester", vi:"máy gặt đập liên hợp", example:"The villagers were harvesting rice with a combine harvester.", exVi:"Dân làng đang gặt lúa bằng máy gặt đập liên hợp."},
+  {word:"harvest time", vi:"mùa thu hoạch", example:"A busy time when people cut and gather crops is called harvest time.", exVi:"Thời điểm bận rộn khi người ta gặt hái mùa màng gọi là mùa thu hoạch."},
+  {word:"load", vi:"chất, xếp (hàng lên xe)", example:"It took them an hour to load all the goods onto the truck.", exVi:"Họ mất một tiếng để chất tất cả hàng hóa lên xe tải."},
+  {word:"unload", vi:"dỡ (hàng) xuống", example:"The driver unloaded the rice from the back of the truck.", exVi:"Người lái xe dỡ lúa xuống từ thùng xe tải."},
+  {word:"herd", vi:"chăn, lùa (gia súc)", example:"Today it is my turn to herd the cows.", exVi:"Hôm nay đến lượt tôi chăn bò."},
+  {word:"plough (fields)", vi:"cày (ruộng)", example:"Farmers are ploughing fields early in the morning.", exVi:"Nông dân đang cày ruộng vào sáng sớm."},
+  {word:"milk (cows)", vi:"vắt sữa (bò)", example:"My aunt is milking the cows before breakfast.", exVi:"Dì tôi vắt sữa bò trước bữa sáng."},
+  {word:"catch fish", vi:"bắt cá", example:"People here live by catching fish from nearby lakes.", exVi:"Người dân ở đây sống bằng nghề bắt cá ở các hồ gần đó."},
+  {word:"dry rice", vi:"phơi lúa", example:"After the harvest, we dry rice in the yard.", exVi:"Sau vụ gặt, chúng tôi phơi lúa ở sân."},
+  {word:"vast", vi:"rộng lớn, bao la", example:"The Sahara is a vast desert.", exVi:"Sa mạc Sahara là một sa mạc rộng lớn."},
+  {word:"hospitable", vi:"hiếu khách", example:"The local people are kind and hospitable to visitors.", exVi:"Người dân địa phương thân thiện và hiếu khách với du khách."},
+  {word:"well-trained", vi:"được đào tạo bài bản", example:"Our factory needs a lot of well-trained workers.", exVi:"Nhà máy chúng tôi cần nhiều công nhân được đào tạo bài bản."},
+  {word:"picturesque", vi:"đẹp như tranh vẽ", example:"People stop to take photos of the picturesque scenery.", exVi:"Mọi người dừng lại chụp ảnh phong cảnh đẹp như tranh."},
+  {word:"surrounded (by)", vi:"được bao quanh (bởi)", example:"The houses are surrounded by green trees.", exVi:"Những ngôi nhà được bao quanh bởi cây xanh."},
+  {word:"cottage", vi:"ngôi nhà nhỏ ở nông thôn", example:"They stayed in a small cottage in the countryside.", exVi:"Họ ở trong một ngôi nhà nhỏ ở vùng quê."},
+  {word:"orchard", vi:"vườn cây ăn quả", example:"Many families live by growing fruit trees in the orchards.", exVi:"Nhiều gia đình sống bằng nghề trồng cây ăn quả trong vườn."},
+  {word:"canal", vi:"kênh, mương", example:"There are lakes, ponds, and canals here and there.", exVi:"Có những hồ, ao và kênh rạch ở khắp nơi."},
+  {word:"cultivate", vi:"trồng trọt, canh tác", example:"They grow vegetables and cultivate rice.", exVi:"Họ trồng rau và trồng lúa."},
+  {word:"stretching", vi:"trải dài", example:"The scenery here is picturesque with vast fields stretching long distances.", exVi:"Phong cảnh nơi đây nên thơ với những cánh đồng rộng lớn trải dài."},
+  {word:"community", vi:"cộng đồng", example:"There is a great sense of community in my village.", exVi:"Có một tinh thần cộng đồng lớn ở làng tôi."},
+  {word:"envy", vi:"ghen tị (với ai)", example:"Oh, I envy you! You had such a great summer holiday.", exVi:"Ôi, mình ghen tị với cậu đấy! Cậu đã có một kỳ nghỉ hè tuyệt vời."},
+  {word:"spacious", vi:"rộng rãi, thoáng đãng", example:"I love the countryside because it is spacious.", exVi:"Tôi thích vùng quê vì nó rộng rãi, thoáng đãng."},
+  {word:"pace (of life)", vi:"nhịp sống", example:"I love my village. The pace of life is slow.", exVi:"Tôi yêu làng mình. Nhịp sống ở đây chậm rãi."},
+  {word:"rural", vi:"thuộc về nông thôn", example:"I love the rural peace and quiet of my village.", exVi:"Tôi yêu sự yên bình, tĩnh lặng nơi thôn quê của làng mình."},
+  {word:"market", vi:"chợ", example:"People in my village buy vegetables at the market.", exVi:"Người dân trong làng tôi mua rau ở chợ."},
+  {word:"dragon", vi:"con rồng", example:"In the evening, we played traditional games like bamboo dancing and dragon-snake.", exVi:"Vào buổi tối, chúng tôi chơi các trò chơi truyền thống như nhảy sạp và múa rồng rắn."},
+  {word:"carrot", vi:"củ cà rốt", example:"Rabbits love eating carrots.", exVi:"Thỏ rất thích ăn cà rốt."},
+];
+
+const PASSAGES_REVIEW = [
+  {
+    title:"📄 Bài đọc (Getting Started): Last summer holiday",
+    en:"<b>Nick:</b> You look great with a tan, Mai!<br><b>Mai:</b> Thank you. I've just come back from a very enjoyable summer holiday.<br><b>Nick:</b> Really? Where did you stay?<br><b>Mai:</b> I stayed at my uncle's house in a small village in Bac Giang Province.<br><b>Nick:</b> What did you do there?<br><b>Mai:</b> A lot of things. It was harvest time. The villagers were harvesting rice with a combine harvester. I helped them load the rice onto a truck. Then we unloaded the rice and dried it.<br><b>Nick:</b> Sounds great!<br><b>Mai:</b> And sometimes I went with the village children to herd the buffaloes and cows. I made friends with them on my first day.<br><b>Nick:</b> Were they friendly?<br><b>Mai:</b> Yes, they were. They took me to the paddy fields to fly kites. And in the evening, we played traditional games like bamboo dancing and dragon-snake.<br><b>Nick:</b> Oh, I envy you!<br><b>Mai:</b> Things move more slowly there than in our city, but people seem to have a healthier life.",
+    vi:"<b>Nick:</b> Trông cậu rám nắng và đẹp quá, Mai!<br><b>Mai:</b> Cảm ơn cậu. Mình vừa mới có một kỳ nghỉ hè rất thú vị.<br><b>Nick:</b> Thật à? Cậu ở đâu vậy?<br><b>Mai:</b> Mình ở nhà chú mình, tại một ngôi làng nhỏ ở tỉnh Bắc Giang.<br><b>Nick:</b> Cậu đã làm gì ở đó?<br><b>Mai:</b> Rất nhiều việc. Lúc đó là mùa gặt. Người dân trong làng đang gặt lúa bằng máy gặt đập liên hợp. Mình đã giúp họ chất lúa lên xe tải. Sau đó bọn mình dỡ lúa xuống và đem phơi.<br><b>Nick:</b> Nghe hay đấy!<br><b>Mai:</b> Và đôi khi mình đi cùng bọn trẻ trong làng để chăn trâu, chăn bò. Mình đã kết bạn với chúng ngay ngày đầu tiên.<br><b>Nick:</b> Chúng có thân thiện không?<br><b>Mai:</b> Có chứ. Chúng dẫn mình ra cánh đồng lúa để thả diều. Và vào buổi tối, bọn mình chơi những trò chơi truyền thống như nhảy sạp và múa rồng rắn.<br><b>Nick:</b> Ôi, mình ghen tị với cậu đấy!<br><b>Mai:</b> Mọi thứ ở đó diễn ra chậm rãi hơn so với thành phố mình, nhưng mọi người trông có vẻ sống khỏe mạnh hơn."
+  },
+  {
+    title:"📄 Bài đọc (Skills 1): Life in a village in Viet Nam",
+    en:"I feel fortunate that I am living in a peaceful village in southern Viet Nam. The scenery here is beautiful and picturesque with vast fields stretching long distances. The houses are surrounded by green trees. There are lakes, ponds, and canals here and there. The air is fresh and cool.<br><br>Life here seems to move more slowly than in cities. The people work very hard. They grow vegetables, cultivate rice, and raise cattle. At harvest time, they use combine harvesters to harvest their crops. Many families live by growing fruit trees in the orchards. Others live by fishing in lakes, ponds, and canals.<br><br>Life in the village is very comfortable for children. They play traditional games. Sometimes they help their parents pick fruit and herd cattle.<br><br>People in my village know each other well. They are friendly and hospitable. They often meet each other in the evening, eating fruit, playing chess, singing folk songs, and chatting about everyday activities.",
+    vi:"Tôi cảm thấy may mắn vì được sống ở một ngôi làng yên bình tại miền Nam Việt Nam. Phong cảnh nơi đây đẹp và nên thơ với những cánh đồng rộng lớn trải dài. Những ngôi nhà được bao quanh bởi cây xanh. Có những hồ, ao và kênh rạch ở khắp nơi. Không khí trong lành và mát mẻ.<br><br>Cuộc sống nơi đây dường như trôi chậm hơn so với thành phố. Người dân làm việc rất chăm chỉ. Họ trồng rau, trồng lúa và chăn nuôi gia súc. Vào mùa thu hoạch, họ dùng máy gặt đập liên hợp để thu hoạch mùa màng. Nhiều gia đình sống bằng nghề trồng cây ăn quả trong vườn. Những gia đình khác sống bằng nghề đánh bắt cá ở hồ, ao và kênh rạch.<br><br>Cuộc sống trong làng rất thoải mái đối với trẻ em. Chúng chơi những trò chơi truyền thống. Thỉnh thoảng chúng giúp bố mẹ hái quả và chăn gia súc.<br><br>Người dân trong làng tôi hiểu rõ về nhau. Họ thân thiện và hiếu khách. Họ thường gặp nhau vào buổi tối, cùng ăn hoa quả, chơi cờ, hát dân ca và trò chuyện về những sinh hoạt thường ngày."
+  },
+  {
+    title:"🎧 Bài nghe (Skills 2): Three people talking about life in the countryside",
+    en:"<b>Speaker 1:</b> I chose to live in a village because the relationships between people here are very good. There is a great sense of community here. The people welcome neighbours to their homes. They are always willing to help each other. They share almost everything with one another.<br><br><b>Speaker 2:</b> There are many things I don't like about life in the countryside. There aren't many good schools or colleges. It's boring here because there aren't many places for entertainment like theatres, cinemas, etc. Transportation is another big problem. There are few means of public transport.<br><br><b>Speaker 3:</b> I love to live in the countryside. It is spacious. We can do many, many things that are hard to do in the city. We can go swimming, play football, fly kites, and do other interesting things. Life is also peaceful and simple here.",
+    vi:"<b>Người nói 1:</b> Tôi chọn sống ở một ngôi làng vì mối quan hệ giữa mọi người ở đây rất tốt. Có một tinh thần cộng đồng rất lớn ở đây. Mọi người chào đón hàng xóm đến nhà mình. Họ luôn sẵn lòng giúp đỡ lẫn nhau. Họ chia sẻ hầu như mọi thứ với nhau.<br><br><b>Người nói 2:</b> Có nhiều điều tôi không thích về cuộc sống ở nông thôn. Không có nhiều trường học hay cao đẳng tốt. Ở đây khá buồn tẻ vì không có nhiều nơi giải trí như rạp hát, rạp chiếu phim,... Giao thông là một vấn đề lớn khác. Có rất ít phương tiện giao thông công cộng.<br><br><b>Người nói 3:</b> Tôi rất thích sống ở nông thôn. Nơi đây rộng rãi, thoáng đãng. Chúng ta có thể làm rất nhiều điều mà khó có thể làm được ở thành phố. Chúng ta có thể đi bơi, chơi bóng đá, thả diều, và làm nhiều việc thú vị khác. Cuộc sống ở đây cũng yên bình và giản dị."
+  }
+];
+
+function renderReviewSection(){
+  document.getElementById('acc_vocabList').innerHTML = VOCAB_LIST.map(v=>`
+    <div class="vocab-row flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+      <div><span class="font-extrabold text-emerald-700">${v.word}</span> <span class="text-slate-400">— ${v.vi}</span></div>
+      <div class="text-xs text-slate-400 italic sm:text-right sm:max-w-[55%]">${v.example}<br>${v.exVi}</div>
+    </div>`).join('');
+
+  document.getElementById('acc_passages').innerHTML = PASSAGES_REVIEW.map((p,i)=>`
+    <div>
+      <p class="font-bold text-slate-700 text-sm mb-2">${p.title}</p>
+      <div class="passage-en">${p.en}</div>
+      <button type="button" onclick="togglePassageVi(${i})" class="mt-2 text-xs font-bold bg-white border-2 border-amber-300 text-amber-700 px-3 py-1.5 rounded-full">
+        <i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt
+      </button>
+      <div class="passage-vi" id="passvi_${i}"><b>🇻🇳 Bản dịch</b><br>${p.vi}</div>
+    </div>`).join('');
+}
+function togglePassageVi(i){ document.getElementById('passvi_'+i).classList.toggle('show'); }
+function toggleAccordion(key){
+  const btn = event.currentTarget;
+  btn.classList.toggle('open');
+  document.getElementById('acc_'+key).classList.toggle('open');
+}
+
+/* ============================================================
+   CONTENT: Unit 2 Vocabulary, Grammar, Reading & Translation Test
+   ============================================================ */
+const VOCAB_TEST = [
+  {id:"v1", prompt:"\"Cattle\" nghĩa là gì?", options:["gia súc (trâu, bò)","gia cầm","cây trồng","vườn cây"], answer:0, explanation:"cattle = gia súc (trâu, bò).", vi:"cattle = gia súc."},
+  {id:"v2", prompt:"\"Poultry\" nghĩa là gì?", options:["gia cầm (gà, vịt...)","gia súc","cá","chim hoang dã"], answer:0, explanation:"poultry = gia cầm nuôi.", vi:"poultry = gia cầm."},
+  {id:"v3", prompt:"\"Paddy field\" nghĩa là gì?", options:["ruộng lúa nước","vườn cây ăn quả","chợ quê","kênh mương"], answer:0, explanation:"paddy field = ruộng lúa nước.", vi:"paddy field = ruộng lúa."},
+  {id:"v4", prompt:"\"Combine harvester\" nghĩa là gì?", options:["máy gặt đập liên hợp","xe tải chở lúa","máy cày","xe đạp"], answer:0, explanation:"combine harvester = máy gặt đập liên hợp.", vi:"combine harvester = máy gặt đập liên hợp."},
+  {id:"v5", prompt:"\"Harvest time\" nghĩa là gì?", options:["mùa thu hoạch","mùa mưa","giờ tan học","kỳ nghỉ hè"], answer:0, explanation:"harvest time = mùa thu hoạch.", vi:"harvest time = mùa thu hoạch."},
+  {id:"v6", prompt:"Điền từ: It took them an hour to ________ all the goods onto the truck.", options:["load","unload","catch","herd"], answer:0, explanation:"load = chất, xếp hàng lên xe.", vi:"Họ mất một tiếng để chất hàng lên xe tải."},
+  {id:"v7", prompt:"\"Unload\" nghĩa là gì?", options:["dỡ (hàng) xuống","chất hàng lên","phơi lúa","cày ruộng"], answer:0, explanation:"unload = dỡ hàng xuống.", vi:"unload = dỡ hàng xuống."},
+  {id:"v8", prompt:"Điền từ: Today it is my turn to ________ the cows.", options:["herd","load","dry","weave"], answer:0, explanation:"herd = chăn, lùa (gia súc).", vi:"Hôm nay đến lượt tôi chăn bò."},
+  {id:"v9", prompt:"\"Plough fields\" nghĩa là gì?", options:["cày ruộng","gặt lúa","phơi lúa","hái quả"], answer:0, explanation:"plough fields = cày ruộng.", vi:"plough fields = cày ruộng."},
+  {id:"v10", prompt:"\"Milk cows\" nghĩa là gì?", options:["vắt sữa bò","chăn bò","cưỡi bò","bán bò"], answer:0, explanation:"milk cows = vắt sữa bò.", vi:"milk cows = vắt sữa bò."},
+  {id:"v11", prompt:"\"Catch fish\" nghĩa là gì?", options:["bắt cá","nuôi cá","bán cá","nấu cá"], answer:0, explanation:"catch fish = bắt cá.", vi:"catch fish = bắt cá."},
+  {id:"v12", prompt:"\"Dry rice\" nghĩa là gì?", options:["phơi lúa","xay lúa","trồng lúa","gặt lúa"], answer:0, explanation:"dry rice = phơi lúa.", vi:"dry rice = phơi lúa."},
+  {id:"v13", prompt:"\"Vast\" nghĩa là gì?", options:["rộng lớn, bao la","nhỏ bé","hiếu khách","đẹp như tranh"], answer:0, explanation:"vast = rộng lớn, bao la.", vi:"vast = rộng lớn."},
+  {id:"v14", prompt:"\"Hospitable\" nghĩa là gì?", options:["hiếu khách","lười biếng","keo kiệt","nóng nảy"], answer:0, explanation:"hospitable = hiếu khách.", vi:"hospitable = hiếu khách."},
+  {id:"v15", prompt:"\"Well-trained\" nghĩa là gì?", options:["được đào tạo bài bản","chưa qua đào tạo","nghỉ hưu","mới vào nghề"], answer:0, explanation:"well-trained = được đào tạo bài bản.", vi:"well-trained = được đào tạo bài bản."},
+  {id:"v16", prompt:"\"Picturesque\" nghĩa là gì?", options:["đẹp như tranh vẽ","xấu xí","ồn ào","chật hẹp"], answer:0, explanation:"picturesque = đẹp như tranh vẽ.", vi:"picturesque = đẹp như tranh."},
+  {id:"v17", prompt:"Điền từ: The houses are ________ by green trees.", options:["surrounded","loaded","cultivated","herded"], answer:0, explanation:"surrounded by = được bao quanh bởi.", vi:"Những ngôi nhà được bao quanh bởi cây xanh."},
+  {id:"v18", prompt:"\"Cottage\" nghĩa là gì?", options:["ngôi nhà nhỏ ở nông thôn","chung cư cao tầng","nhà kho","chợ quê"], answer:0, explanation:"cottage = ngôi nhà nhỏ ở nông thôn.", vi:"cottage = ngôi nhà nhỏ ở nông thôn."},
+  {id:"v19", prompt:"\"Orchard\" nghĩa là gì?", options:["vườn cây ăn quả","ruộng lúa","kênh mương","chợ"], answer:0, explanation:"orchard = vườn cây ăn quả.", vi:"orchard = vườn cây ăn quả."},
+  {id:"v20", prompt:"\"Canal\" nghĩa là gì?", options:["kênh, mương","cái ao","con sông lớn","biển"], answer:0, explanation:"canal = kênh, mương.", vi:"canal = kênh, mương."},
+  {id:"v21", prompt:"\"Cultivate\" nghĩa là gì?", options:["trồng trọt, canh tác","thu hoạch","bán hàng","xây dựng"], answer:0, explanation:"cultivate = trồng trọt, canh tác.", vi:"cultivate = trồng trọt."},
+  {id:"v22", prompt:"Điền từ: The scenery is picturesque with vast fields ________ long distances.", options:["stretching","surrounded","loaded","cultivated"], answer:0, explanation:"stretching = trải dài.", vi:"Phong cảnh nên thơ với những cánh đồng rộng lớn trải dài."},
+  {id:"v23", prompt:"Điền từ: There is a great sense of ________ in my village.", options:["community","market","harvest","canal"], answer:0, explanation:"a sense of community = tinh thần cộng đồng.", vi:"Có một tinh thần cộng đồng lớn ở làng tôi."},
+  {id:"v24", prompt:"\"Envy\" (trong \"I envy you!\") nghĩa là gì?", options:["ghen tị (với ai)","chúc mừng (ai)","thương hại (ai)","ngưỡng mộ mù quáng"], answer:0, explanation:"envy = ghen tị.", vi:"envy = ghen tị."},
+  {id:"v25", prompt:"\"Spacious\" nghĩa là gì?", options:["rộng rãi, thoáng đãng","chật chội","ồn ào","tối tăm"], answer:0, explanation:"spacious = rộng rãi, thoáng đãng.", vi:"spacious = rộng rãi."},
+  {id:"v26", prompt:"Điền từ: I love my village. The ________ of life is slow.", options:["pace","load","harvest","canal"], answer:0, explanation:"the pace of life = nhịp sống.", vi:"Tôi yêu làng mình. Nhịp sống ở đây chậm rãi."},
+  {id:"v27", prompt:"\"Rural\" nghĩa là gì?", options:["thuộc về nông thôn","thuộc về thành thị","thuộc về biển","thuộc về núi"], answer:0, explanation:"rural = thuộc về nông thôn.", vi:"rural = thuộc về nông thôn."},
+  {id:"v28", prompt:"\"Market\" nghĩa là gì?", options:["chợ","trường học","bệnh viện","nhà thờ"], answer:0, explanation:"market = chợ.", vi:"market = chợ."},
+  {id:"v29", prompt:"Điền từ: In the evening, we played traditional games like bamboo dancing and ________-snake.", options:["dragon","cattle","poultry","carrot"], answer:0, explanation:"dragon-snake = trò múa rồng rắn.", vi:"Buổi tối, chúng tôi chơi trò nhảy sạp và múa rồng rắn."},
+  {id:"v30", prompt:"\"Carrot\" nghĩa là gì?", options:["củ cà rốt","củ khoai tây","bắp cải","cà chua"], answer:0, explanation:"carrot = củ cà rốt.", vi:"carrot = củ cà rốt."},
+];
+
+const GRAMMAR_TEST = [
+  {id:"g1", prompt:"Comparative form of \"fast\":", options:["faster","more fast","fastest","fastly"], answer:0, explanation:"fast có dạng giống tính từ → thêm -er: faster.", vi:"fast → faster."},
+  {id:"g2", prompt:"Comparative form of \"quickly\":", options:["quicker","more quickly","quicklier","quickest"], answer:1, explanation:"quickly (2+ âm tiết, tận cùng -ly) → more quickly.", vi:"quickly → more quickly."},
+  {id:"g3", prompt:"Comparative form of \"well\":", options:["more well","better","weller","gooder"], answer:1, explanation:"well → better (bất quy tắc).", vi:"well → better."},
+  {id:"g4", prompt:"Comparative form of \"badly\":", options:["worse","more badly","baddier","badlier"], answer:0, explanation:"badly → worse (bất quy tắc).", vi:"badly → worse."},
+  {id:"g5", prompt:"Comparative form of \"early\":", options:["more early","earlyer","earlier","earliest"], answer:2, explanation:"early → earlier (đổi y thành i trước khi thêm -er).", vi:"early → earlier."},
+  {id:"g6", prompt:"Comparative form of \"much\":", options:["much-er","more","mucher","most"], answer:1, explanation:"much → more (bất quy tắc).", vi:"much → more."},
+  {id:"g7", prompt:"Comparative form of \"little\":", options:["littler","more little","less","lesser"], answer:2, explanation:"little → less (bất quy tắc).", vi:"little → less."},
+  {id:"g8", prompt:"Comparative form of \"hard\":", options:["harder","more hard","hardly","hardest"], answer:0, explanation:"hard là trạng từ có dạng giống tính từ → thêm -er: harder.", vi:"hard → harder."},
+  {id:"g9", prompt:"Life in the city seems to move ________ than in the countryside. (fast)", options:["fast","faster","more fast","fastest"], answer:1, explanation:"fast → faster.", vi:"faster than = nhanh hơn."},
+  {id:"g10", prompt:"Please speak ________; I can't understand you. (clearly)", options:["clearer","more clearly","clearlier","most clearly"], answer:1, explanation:"clearly → more clearly.", vi:"more clearly = rõ ràng hơn."},
+  {id:"g11", prompt:"She sings ________ than her sister. (beautifully)", options:["beautifuller","more beautiful","more beautifully","beautifully-er"], answer:2, explanation:"beautifully → more beautifully.", vi:"more beautifully = hay/đẹp hơn (khi hát)."},
+  {id:"g12", prompt:"After the accident, he drives ________ now. (careful)", options:["more careful","more carefully","carefuller","carefully-er"], answer:1, explanation:"cần trạng từ bổ nghĩa cho động từ \"drives\": carefully → more carefully.", vi:"more carefully = cẩn thận hơn."},
+  {id:"g13", prompt:"Which sentence is correct?", options:["A horse can run faster than a buffalo.","A horse can run more fast than a buffalo.","A horse can run fastest than a buffalo.","A horse can run fast than a buffalo."], answer:0, explanation:"fast → faster than.", vi:"Ngựa chạy nhanh hơn trâu."},
+  {id:"g14", prompt:"They worked ________ than we expected. (hard)", options:["harder","more hard","hardly","more hardly"], answer:0, explanation:"hard → harder.", vi:"harder = chăm chỉ/vất vả hơn."},
+  {id:"g15", prompt:"My sister speaks English ________ than I do. (fluently)", options:["fluenter","more fluently","fluentlier","most fluently"], answer:1, explanation:"fluently → more fluently.", vi:"more fluently = trôi chảy hơn."},
+  {id:"g16", prompt:"The farmers got up ________ than usual this morning. (early)", options:["more early","earlier","earlyer","most early"], answer:1, explanation:"early → earlier.", vi:"earlier = sớm hơn."},
+  {id:"g17", prompt:"You should check your paper ________ before handing it in. (carefully)", options:["more carefully","carefuller","careful more","carefully-er"], answer:0, explanation:"carefully → more carefully.", vi:"more carefully = cẩn thận hơn."},
+  {id:"g18", prompt:"Can you speak a bit ________? You're too loud. (quietly)", options:["quieter","more quietly","quietliest","quietlier"], answer:1, explanation:"quietly → more quietly.", vi:"more quietly = nhỏ nhẹ hơn."},
+  {id:"g19", prompt:"After working hard all day, we slept ________ than ever before. (soundly)", options:["more soundly","soundlier","sounder","most soundly"], answer:0, explanation:"soundly → more soundly.", vi:"more soundly = ngủ say hơn."},
+  {id:"g20", prompt:"Find and correct the mistake: \"I run faster AS my brother does.\" — Từ \"as\" nên sửa thành:", options:["than","that","then","so"], answer:0, explanation:"So sánh hơn dùng \"than\", không dùng \"as\".", vi:"I run faster THAN my brother does."},
+];
+
+const READING_TEST = [
+  // ---- Passage 1: Last summer holiday (Getting Started) ----
+  {id:"r1", prompt:"[Bài đọc 1] How does Mai feel about her summer holiday?", options:["She thinks it was very enjoyable.","She doesn't like it at all.","She feels it was boring.","She doesn't remember it."], answer:0, explanation:"Mai nói \"a very enjoyable summer holiday\" → cô ấy thấy kỳ nghỉ rất thú vị.", vi:"Mai cảm thấy kỳ nghỉ hè rất thú vị."},
+  {id:"r2", prompt:"[Bài đọc 1] Where did Mai stay during her summer holiday?", options:["At her uncle's house in Bac Giang.","At a hotel in Ha Noi.","At her grandparents' house in Hue.","At a friend's house in Da Nang."], answer:0, explanation:"\"I stayed at my uncle's house in a small village in Bac Giang Province.\"", vi:"Mai ở nhà chú tại một ngôi làng nhỏ ở tỉnh Bắc Giang."},
+  {id:"r3", prompt:"[Bài đọc 1] How did the villagers harvest rice?", options:["With a combine harvester.","By hand only.","With a plough.","With a truck."], answer:0, explanation:"\"The villagers were harvesting rice with a combine harvester.\"", vi:"Dân làng gặt lúa bằng máy gặt đập liên hợp."},
+  {id:"r4", prompt:"[Bài đọc 1] What did Mai and the village children do in the paddy fields?", options:["Fly kites.","Catch fish.","Plant trees.","Play football."], answer:0, explanation:"\"They took me to the paddy fields to fly kites.\"", vi:"Họ dẫn Mai ra ruộng lúa để thả diều."},
+  {id:"r5", prompt:"[Bài đọc 1] According to Mai, life in the countryside moves ________ than in the city, but people seem ________.", options:["more slowly / healthier","faster / unhealthier","the same / poorer","more slowly / poorer"], answer:0, explanation:"\"Things move more slowly there... but people seem to have a healthier life.\"", vi:"Mọi thứ diễn ra chậm hơn, nhưng người dân có vẻ khỏe mạnh hơn."},
+  // ---- Passage 2: Life in a village in Viet Nam (Skills 1) ----
+  {id:"r6", prompt:"[Bài đọc 2] What is life in the author's village like?", options:["Peaceful and picturesque.","Noisy and crowded.","Modern and busy.","Dangerous and polluted."], answer:0, explanation:"\"I am living in a peaceful village... beautiful and picturesque.\"", vi:"Làng của tác giả yên bình và nên thơ."},
+  {id:"r7", prompt:"[Bài đọc 2] What do the villagers grow and raise, according to the passage?", options:["Vegetables, rice, and cattle.","Only fruit trees.","Only fish.","Coffee and tea."], answer:0, explanation:"\"They grow vegetables, cultivate rice, and raise cattle.\"", vi:"Họ trồng rau, trồng lúa và chăn nuôi gia súc."},
+  {id:"r8", prompt:"[Bài đọc 2] What do many families in the village live by, besides fishing?", options:["Growing fruit trees in orchards.","Working in factories.","Running shops.","Teaching in schools."], answer:0, explanation:"\"Many families live by growing fruit trees in the orchards.\"", vi:"Nhiều gia đình sống bằng nghề trồng cây ăn quả trong vườn."},
+  {id:"r9", prompt:"[Bài đọc 2] What do children sometimes help their parents do?", options:["Pick fruit and herd cattle.","Drive trucks.","Cook big meals.","Repair houses."], answer:0, explanation:"\"Sometimes they help their parents pick fruit and herd cattle.\"", vi:"Thỉnh thoảng trẻ em giúp bố mẹ hái quả và chăn gia súc."},
+  {id:"r10", prompt:"[Bài đọc 2] What do villagers do in the evening, according to the text?", options:["Eating fruit, playing chess, singing folk songs, chatting.","Watching TV all night.","Going to the cinema.","Working in the fields."], answer:0, explanation:"\"They often meet each other in the evening, eating fruit, playing chess, singing folk songs, and chatting.\"", vi:"Buổi tối họ ăn hoa quả, chơi cờ, hát dân ca và trò chuyện."},
+  // ---- Passage 3: Three people talking about life in the countryside (Skills 2) ----
+  {id:"r11", prompt:"[Bài nghe 3] Why does Speaker 1 like living in a village?", options:["Because the relationships between people are very good.","Because there are many entertainment places.","Because transportation is convenient.","Because schools there are excellent."], answer:0, explanation:"\"I chose to live in a village because the relationships between people here are very good.\"", vi:"Người nói 1 thích sống ở làng vì quan hệ giữa mọi người rất tốt."},
+  {id:"r12", prompt:"[Bài nghe 3] What does Speaker 2 dislike about the countryside?", options:["Lack of good schools, entertainment and transportation.","Too much noise and pollution.","Too many tourists.","High cost of living."], answer:0, explanation:"\"There aren't many good schools or colleges... not many places for entertainment... Transportation is another big problem.\"", vi:"Người nói 2 không thích vì thiếu trường tốt, nơi giải trí và giao thông kém."},
+  {id:"r13", prompt:"[Bài nghe 3] According to Speaker 3, life in the countryside is ________.", options:["spacious, peaceful and simple.","crowded and stressful.","expensive and modern.","dangerous and noisy."], answer:0, explanation:"\"It is spacious... Life is also peaceful and simple here.\"", vi:"Theo người nói 3, cuộc sống nông thôn rộng rãi, yên bình và giản dị."},
+  {id:"r14", prompt:"[Bài nghe 3] What can Speaker 3 do in the countryside that is hard to do in the city?", options:["Go swimming, play football, fly kites.","Go shopping in malls.","Visit museums.","Take the subway."], answer:0, explanation:"\"We can go swimming, play football, fly kites, and do other interesting things.\"", vi:"Người nói 3 có thể bơi, chơi bóng đá, thả diều — khó làm được ở thành phố."},
+  {id:"r15", prompt:"[Bài nghe 3] According to Speaker 1, people in the village are always willing to ________ each other.", options:["help","avoid","compete with","ignore"], answer:0, explanation:"\"They are always willing to help each other.\"", vi:"Họ luôn sẵn lòng giúp đỡ lẫn nhau."},
+];
+
+const TRANSLATION_TEST = [
+  {id:"t1", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"The villagers were harvesting rice with a combine harvester.\"", options:["Dân làng đang gặt lúa bằng máy gặt đập liên hợp.","Dân làng đang trồng lúa bằng tay.","Dân làng đang chở lúa ra chợ bán.","Dân làng đang phơi lúa ngoài sân."], answer:0, explanation:"harvest rice with a combine harvester = gặt lúa bằng máy gặt đập liên hợp.", vi:""},
+  {id:"t2", prompt:"Chọn bản dịch tiếng Anh đúng: \"Chúng tôi đã giúp họ chất lúa lên xe tải.\"", options:["We helped them load the rice onto the truck.","We helped them unload the rice from the truck.","We helped them plant the rice in the field.","We helped them sell the rice at the market."], answer:0, explanation:"chất (hàng) lên xe = load ... onto the truck.", vi:""},
+  {id:"t3", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"The houses are surrounded by green trees.\"", options:["Những ngôi nhà được bao quanh bởi cây xanh.","Những ngôi nhà nằm cạnh dòng sông.","Những ngôi nhà được xây bằng gỗ.","Những ngôi nhà đều sơn màu xanh."], answer:0, explanation:"surrounded by green trees = được bao quanh bởi cây xanh.", vi:""},
+  {id:"t4", prompt:"Chọn bản dịch tiếng Anh đúng: \"Người dân địa phương thân thiện và hiếu khách với du khách.\"", options:["The local people are friendly and hospitable to visitors.","The local people are shy and unfriendly to visitors.","The local people rarely meet visitors.","The local people work far away from visitors."], answer:0, explanation:"thân thiện và hiếu khách = friendly and hospitable.", vi:""},
+  {id:"t5", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"There is a great sense of community here.\"", options:["Nơi đây có một tinh thần cộng đồng rất lớn.","Nơi đây có rất ít người sinh sống.","Nơi đây có nhiều khu chợ lớn.","Nơi đây rất yên tĩnh vào ban đêm."], answer:0, explanation:"a great sense of community = tinh thần cộng đồng lớn.", vi:""},
+  {id:"t6", prompt:"Chọn bản dịch tiếng Anh đúng: \"Cuộc sống ở đây trôi chậm hơn so với ở thành phố.\"", options:["Life here moves more slowly than in the city.","Life here moves faster than in the city.","Life here is more expensive than in the city.","Life here is more dangerous than in the city."], answer:0, explanation:"trôi chậm hơn = move more slowly.", vi:""},
+  {id:"t7", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"Many families live by growing fruit trees in the orchards.\"", options:["Nhiều gia đình sống bằng nghề trồng cây ăn quả trong vườn.","Nhiều gia đình sống bằng nghề đánh cá.","Nhiều gia đình sống bằng nghề chăn nuôi gia súc.","Nhiều gia đình sống bằng nghề buôn bán ở chợ."], answer:0, explanation:"live by growing fruit trees in the orchards = sống bằng nghề trồng cây ăn quả trong vườn.", vi:""},
+  {id:"t8", prompt:"Chọn bản dịch tiếng Anh đúng: \"Vào mùa thu hoạch, họ dùng máy gặt đập liên hợp.\"", options:["At harvest time, they use combine harvesters.","At harvest time, they use bicycles.","At harvest time, they take a rest.","At harvest time, they go on holiday."], answer:0, explanation:"vào mùa thu hoạch = at harvest time; dùng máy gặt đập liên hợp = use combine harvesters.", vi:""},
+  {id:"t9", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"I love to live in the countryside because it is spacious.\"", options:["Tôi rất thích sống ở nông thôn vì nơi đây rộng rãi, thoáng đãng.","Tôi rất thích sống ở nông thôn vì nơi đây có nhiều rạp chiếu phim.","Tôi rất thích sống ở nông thôn vì nơi đây gần biển.","Tôi rất thích sống ở nông thôn vì nơi đây có internet nhanh."], answer:0, explanation:"spacious = rộng rãi, thoáng đãng.", vi:""},
+  {id:"t10", prompt:"Chọn bản dịch tiếng Anh đúng: \"Họ luôn sẵn lòng giúp đỡ lẫn nhau.\"", options:["They are always willing to help each other.","They never help each other.","They sometimes argue with each other.","They rarely see each other."], answer:0, explanation:"luôn sẵn lòng giúp đỡ lẫn nhau = always willing to help each other.", vi:""},
+];
+
+VOCAB_TEST.forEach(q=>q.section='vocab');
+GRAMMAR_TEST.forEach(q=>q.section='grammar');
+READING_TEST.forEach(q=>q.section='reading');
+TRANSLATION_TEST.forEach(q=>q.section='translation');
+const TOTAL = VOCAB_TEST.length + GRAMMAR_TEST.length + READING_TEST.length + TRANSLATION_TEST.length;
+const STORAGE_KEY = 'u2_vocabgrammar_test_v2';
+
+/* ---------------- utility ---------------- */
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+function loadHistory(){
+  try{ const raw=localStorage.getItem(STORAGE_KEY); return raw? JSON.parse(raw) : {best:0, attempts:0}; }
+  catch(e){ return {best:0, attempts:0}; }
+}
+function saveHistory(h){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(h)); }catch(e){} }
+
+/* ---------------- state ---------------- */
+let state = { questions:[], answers:{}, submitted:false, timeLeft: 35*60, timerId:null, startedAt:null };
+
+function buildQuestionSet(){
+  const all = shuffle(VOCAB_TEST.concat(GRAMMAR_TEST).concat(READING_TEST).concat(TRANSLATION_TEST).map(q=>{
+    const optOrder = shuffle(q.options.map((o,i)=>i));
+    return Object.assign({}, q, { displayOptions: optOrder.map(i=>q.options[i]), correctDisplayIndex: optOrder.indexOf(q.answer) });
+  }));
+  return all;
+}
+
+function init(){
+  renderReviewSection();
+  state.questions = buildQuestionSet();
+  state.answers = {};
+  state.submitted = false;
+  state.timeLeft = 35*60;
+  state.startedAt = Date.now();
+  document.getElementById('resultBanner').classList.remove('show');
+  renderQuiz();
+  updateProgress();
+  updateHistoryLabels();
+  startTimer();
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = false; btn.classList.remove('opacity-50');
+}
+
+function updateHistoryLabels(){
+  const h = loadHistory();
+  document.getElementById('bestScoreLabel').textContent = h.attempts>0 ? (h.best+'/'+TOTAL) : '--';
+  document.getElementById('attemptCountLabel').textContent = h.attempts||0;
+}
+
+function startTimer(){
+  if(state.timerId) clearInterval(state.timerId);
+  state.timerId = setInterval(()=>{
+    if(state.submitted){ clearInterval(state.timerId); return; }
+    state.timeLeft--;
+    renderTimer();
+    if(state.timeLeft<=0){ clearInterval(state.timerId); submitTest(true); }
+  },1000);
+  renderTimer();
+}
+function renderTimer(){
+  const m = Math.floor(Math.max(0,state.timeLeft)/60), s = Math.max(0,state.timeLeft)%60;
+  const label = document.getElementById('timerLabel');
+  label.textContent = String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  label.classList.toggle('low', state.timeLeft<=60);
+}
+
+function renderQuiz(){
+  const vocabQs = state.questions.filter(q=>q.section==='vocab');
+  const grammarQs = state.questions.filter(q=>q.section==='grammar');
+  const readingQs = state.questions.filter(q=>q.section==='reading');
+  const translationQs = state.questions.filter(q=>q.section==='translation');
+  let html = '';
+  html += sectionDivider('📚 Phần 1 · Vocabulary', vocabQs.length);
+  vocabQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('📐 Phần 2 · Grammar (So sánh hơn của trạng từ)', grammarQs.length);
+  grammarQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('📖 Phần 3 · Đọc hiểu (Reading Comprehension)', readingQs.length);
+  readingQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('🇻🇳 Phần 4 · Luyện dịch nghĩa (Translation Practice)', translationQs.length);
+  translationQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  document.getElementById('quizArea').innerHTML = html;
+}
+
+function sectionDivider(title, count){
+  return `<div class="section-divider text-white rounded-xl px-4 py-2.5 mb-4 mt-2 font-extrabold text-sm md:text-base shadow flex items-center justify-between">
+    <span>${title}</span><span class="text-xs font-bold opacity-80">${count} câu</span>
+  </div>`;
+}
+
+function renderQuestionCard(q, num){
+  const letters=['A','B','C','D'];
+  const optsHtml = q.displayOptions.map((opt,i)=>{
+    return `<div class="opt-row px-3 py-2.5 flex items-start gap-2 text-sm md:text-[15px]" data-qid="${q.id}" data-idx="${i}" onclick="selectAnswer('${q.id}',${i})">
+      <span class="font-black text-emerald-700">${letters[i]}.</span><span class="flex-1">${opt}</span>
+    </div>`;
+  }).join('');
+  return `<div class="qcard p-4 mb-3" id="qcard_${q.id}">
+    <p class="font-extrabold text-slate-800 text-sm md:text-base mb-2"><span class="text-emerald-600">Câu ${num}.</span> ${q.prompt}</p>
+    <div class="grid gap-2" id="opts_${q.id}">${optsHtml}</div>
+    <div class="explain-box mt-3" id="explain_${q.id}"></div>
+  </div>`;
+}
+
+function selectAnswer(qid, idx){
+  if(state.submitted) return;
+  state.answers[qid] = idx;
+  const wrap = document.getElementById('opts_'+qid);
+  wrap.querySelectorAll('.opt-row').forEach(el=>{
+    el.classList.toggle('selected', parseInt(el.dataset.idx,10)===idx);
+  });
+  document.getElementById('qcard_'+qid).classList.add('answered');
+  updateProgress();
+}
+
+function updateProgress(){
+  const answered = Object.keys(state.answers).length;
+  document.getElementById('progressText').textContent = answered+' / '+TOTAL+' câu';
+  document.getElementById('progressBar').style.width = Math.round(answered/TOTAL*100)+'%';
+  document.getElementById('answeredCount').textContent = answered;
+}
+
+function submitTest(auto){
+  if(state.submitted) return;
+  const answeredCount = Object.keys(state.answers).length;
+  if(!auto && answeredCount < TOTAL){
+    const proceed = confirm('Bạn còn '+(TOTAL-answeredCount)+' câu chưa trả lời. Vẫn muốn nộp bài?');
+    if(!proceed) return;
+  }
+  state.submitted = true;
+  if(state.timerId) clearInterval(state.timerId);
+  const elapsed = Math.round((Date.now()-state.startedAt)/1000);
+
+  let correct = 0;
+  state.questions.forEach(q=>{
+    const sel = state.answers[q.id];
+    const isCorrect = sel === q.correctDisplayIndex;
+    if(isCorrect) correct++;
+    const card = document.getElementById('qcard_'+q.id);
+    card.classList.add(isCorrect?'correct':'wrong');
+    const wrap = document.getElementById('opts_'+q.id);
+    wrap.querySelectorAll('.opt-row').forEach(el=>{
+      const idx = parseInt(el.dataset.idx,10);
+      el.classList.add('locked');
+      if(idx===q.correctDisplayIndex) el.classList.add('correct-opt');
+      else if(idx===sel && !isCorrect) el.classList.add('wrong-opt');
+    });
+    const exp = document.getElementById('explain_'+q.id);
+    exp.classList.add('show');
+    const viLine = q.vi ? `<p class="text-slate-500 italic mt-1">🇻🇳 ${q.vi}</p>` : '';
+    exp.innerHTML = `<p class="${isCorrect?'text-emerald-700':'text-rose-600'} font-bold">${isCorrect?'✅ Chính xác!':(sel===undefined?'⚪ Bạn chưa chọn đáp án.':'❌ Chưa đúng.')} ${q.explanation}</p>${viLine}`;
+  });
+
+  const pct = Math.round(correct/TOTAL*100);
+  document.getElementById('resultScore').textContent = correct;
+  document.getElementById('resultPct').textContent = pct;
+  const mm = Math.floor(elapsed/60), ss = elapsed%60;
+  document.getElementById('resultTime').textContent = mm+':'+String(ss).padStart(2,'0');
+  let emoji='🙂', title='Đã hoàn thành!';
+  if(pct>=90){ emoji='🏆'; title='Xuất sắc!'; }
+  else if(pct>=70){ emoji='🎉'; title='Làm tốt lắm!'; }
+  else if(pct>=50){ emoji='💪'; title='Khá ổn, cố gắng thêm nhé!'; }
+  else { emoji='📖'; title='Cần ôn tập thêm!'; }
+  document.getElementById('resultEmoji').textContent = emoji;
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultBanner').classList.add('show');
+  document.getElementById('resultBanner').scrollIntoView({behavior:'smooth', block:'start'});
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true; btn.classList.add('opacity-50');
+
+  const h = loadHistory();
+  h.attempts = (h.attempts||0)+1;
+  h.best = Math.max(h.best||0, correct);
+  saveHistory(h);
+  updateHistoryLabels();
+
+  if(pct>=70) launchConfetti();
+}
+
+function retryTest(){ init(); window.scrollTo({top:0, behavior:'smooth'}); }
+
+function scrollToReview(){
+  document.getElementById('quizArea').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function launchConfetti(){
+  const wrap = document.getElementById('confettiWrap');
+  const colors=['#22c55e','#84cc16','#facc15','#0f766e','#f97316'];
+  for(let i=0;i<50;i++){
+    const el=document.createElement('div');
+    el.className='confetti-piece';
+    el.style.left=(Math.random()*100)+'vw';
+    el.style.background=colors[Math.floor(Math.random()*colors.length)];
+    el.style.animationDuration=(2+Math.random()*1.5)+'s';
+    el.style.top='-20px';
+    wrap.appendChild(el);
+    setTimeout(()=>el.remove(), 3600);
+  }
+}
+
+init();
+</script>
+</body>
+</html>

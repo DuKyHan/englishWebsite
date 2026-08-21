@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 10 - Test Trắc nghiệm Từ vựng & Ngữ pháp - Tiếng Anh 8</title>
+<meta name="apple-mobile-web-app-title" content="U10 Vocab-Grammar Test">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+  :root{ --accent:#0e7490; --accent2:#7c3aed; }
+  * { box-sizing: border-box; }
+  body { font-family:'Nunito',sans-serif; background:#ecfeff; }
+  h1,h2,.baloo{ font-family:'Baloo 2',sans-serif; }
+  .hero-gradient{ background: linear-gradient(135deg, #083344 0%, #0e7490 45%, #7c3aed 100%); }
+  .qcard{ background:#fff; border-radius:1.1rem; box-shadow:0 1px 4px rgba(0,0,0,.06); border:2px solid #e2e8f0; transition:border .2s, box-shadow .2s; }
+  .qcard.answered{ border-color:#a5f3fc; }
+  .qcard.correct{ border-color:#22c55e; background:#f0fdf4; }
+  .qcard.wrong{ border-color:#ef4444; background:#fef2f2; }
+  .opt-row{ cursor:pointer; transition: all .15s; border:2px solid #e2e8f0; border-radius:.8rem; }
+  .opt-row:hover{ border-color:var(--accent); background:#ecfeff; }
+  .opt-row.selected{ border-color:#0e7490; background:#cffafe; font-weight:800; }
+  .opt-row.correct-opt{ border-color:#22c55e !important; background:#dcfce7 !important; font-weight:800; }
+  .opt-row.wrong-opt{ border-color:#ef4444 !important; background:#fee2e2 !important; font-weight:800; }
+  .opt-row.locked{ cursor:default; pointer-events:none; }
+  .explain-box{ display:none; background:#f5f3ff; border:1px solid #ddd6fe; border-radius:.7rem; padding:.6rem .9rem; font-size:.85rem; color:#334155; }
+  .explain-box.show{ display:block; }
+  .sticky-bar{ position:sticky; bottom:0; z-index:40; }
+  .progress-fill{ transition: width .3s ease; }
+  .badge-pill{ background:#fff; border:2px solid #a5f3fc; border-radius:999px; padding:.3rem .8rem; font-size:.75rem; font-weight:800; color:#0e7490; }
+  .score-ring{ animation: popIn .4s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn{ from{transform:scale(.5); opacity:0;} to{transform:scale(1); opacity:1;} }
+  .confetti-wrap{ position:fixed; inset:0; pointer-events:none; z-index:9999; }
+  .confetti-piece{ position:absolute; width:10px; height:10px; border-radius:2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall{ 0%{transform:translateY(-20px) rotate(0deg); opacity:1;} 100%{transform:translateY(100vh) rotate(720deg); opacity:0;} }
+  .section-divider{ background:linear-gradient(135deg,#0e7490,#7c3aed); }
+  #resultBanner{ display:none; }
+  #resultBanner.show{ display:block; }
+  .timer-pill{ font-variant-numeric: tabular-nums; }
+  .timer-pill.low{ color:#fca5a5 !important; }
+  .accordion-btn{ cursor:pointer; transition: background .15s; }
+  .accordion-body{ display:none; }
+  .accordion-body.open{ display:block; }
+  .accordion-chevron{ transition: transform .2s; }
+  .accordion-btn.open .accordion-chevron{ transform: rotate(180deg); }
+  .vocab-row{ border-bottom:1px solid #f1f5f9; padding:.55rem 0; }
+  .vocab-row:last-child{ border-bottom:none; }
+  .passage-en{ background:#fff; border:1px solid #e2e8f0; border-radius:.9rem; padding:.9rem 1.1rem; line-height:1.85; font-size:.92rem; color:#334155; }
+  .passage-vi{ display:none; background:#f5f3ff; border:1px solid #ddd6fe; border-radius:.9rem; padding:.9rem 1.1rem; margin-top:.6rem; line-height:1.85; font-size:.92rem; color:#334155; }
+  .passage-vi.show{ display:block; }
+  .grammar-tip-box{ background:#ecfeff; border:1px solid #a5f3fc; border-radius:.9rem; padding:1rem 1.2rem; line-height:1.9; font-size:.92rem; color:#334155; }
+</style>
+</head>
+<body class="min-h-screen pb-10">
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<header class="hero-gradient text-white py-8 px-4 text-center shadow-xl relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <div class="absolute top-4 left-8 text-6xl">📡</div>
+    <div class="absolute top-2 right-12 text-5xl">💬</div>
+    <div class="absolute bottom-2 left-1/3 text-4xl">🔮</div>
+    <div class="absolute bottom-4 right-1/4 text-5xl">📶</div>
+  </div>
+  <p class="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Tiếng Anh 8 · Unit 10 · Communication in the Future</p>
+  <h1 class="text-3xl md:text-5xl font-extrabold drop-shadow-lg">📡 Test trắc nghiệm: Từ vựng &amp; Ngữ pháp</h1>
+  <p class="mt-2 text-base md:text-lg opacity-90 font-semibold">75 câu hỏi · Từ vựng, Ngữ pháp, Đọc hiểu &amp; Dịch nghĩa</p>
+  <div class="mt-5 max-w-2xl mx-auto flex flex-wrap items-center justify-center gap-3">
+    <span class="badge-pill"><i class="fa-solid fa-star mr-1"></i>Điểm cao nhất: <span id="bestScoreLabel">--</span></span>
+    <span class="badge-pill"><i class="fa-solid fa-rotate mr-1"></i>Số lần làm: <span id="attemptCountLabel">0</span></span>
+    <span class="badge-pill timer-pill"><i class="fa-solid fa-clock mr-1"></i><span id="timerLabel">35:00</span></span>
+  </div>
+  <div class="mt-4 max-w-2xl mx-auto">
+    <div class="flex justify-between text-xs font-bold opacity-80 mb-1">
+      <span>Tiến độ trả lời</span>
+      <span id="progressText">0 / 75 câu</span>
+    </div>
+    <div class="bg-white/20 rounded-full h-3 overflow-hidden">
+      <div id="progressBar" class="bg-white rounded-full h-3 progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-3xl mx-auto px-4 mt-6">
+
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 mb-6 text-sm text-slate-600">
+    <p class="font-bold text-slate-700 mb-1"><i class="fa-solid fa-circle-info text-cyan-600 mr-1"></i>Hướng dẫn làm bài</p>
+    <p>Trước khi làm bài, hãy mở phần <b>"📡 Ôn tập & Dịch nghĩa Unit 10"</b> bên dưới để xem lại từ vựng, ngữ pháp và bản dịch tiếng Việt của các bài đọc/nghe trong Unit 10 (cả SGK). Sau đó chọn <b>1 đáp án đúng</b> cho mỗi câu hỏi trắc nghiệm — gồm từ vựng, ngữ pháp, đọc hiểu bài đọc và luyện dịch nghĩa. Bấm <b>"Nộp bài"</b> để xem điểm và giải thích. Bấm <b>"Làm lại"</b> để nhận đề mới và luyện tập không giới hạn số lần.</p>
+  </div>
+
+  <!-- ============ REVIEW & TRANSLATION SECTION ============ -->
+  <div class="bg-white rounded-2xl shadow-sm border-2 border-cyan-200 mb-6 overflow-hidden">
+    <button class="accordion-btn open w-full flex items-center justify-between px-4 py-3 bg-cyan-50 font-extrabold text-cyan-800" onclick="toggleAccordion('reviewMain')">
+      <span><i class="fa-solid fa-book-open-reader mr-2"></i>📡 Ôn tập &amp; Dịch nghĩa Unit 10</span>
+      <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+    </button>
+    <div class="accordion-body open px-4 py-4 space-y-4" id="acc_reviewMain">
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('vocabList')">
+          <span>📡 Từ vựng Unit 10 (30 từ/cụm từ)</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-2" id="acc_vocabList"></div>
+      </div>
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('grammarTip')">
+          <span>📐 Ngữ pháp: Giới từ chỉ nơi chốn/thời gian &amp; Đại từ sở hữu</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-3" id="acc_grammarTip">
+          <div class="grammar-tip-box">
+            <b>1. Giới từ chỉ nơi chốn (Prepositions of place): at, in, on, in front of, opposite, under...</b><br>
+            &nbsp;&nbsp;• <b>at</b> + một điểm cụ thể: <i>Lily's house is at the end of this street.</i><br>
+            &nbsp;&nbsp;• <b>in front of</b> (phía trước) ↔ <b>opposite</b> (đối diện): <i>Ann stood in front of me in a line. / Players sit opposite each other in a chess game.</i><br>
+            &nbsp;&nbsp;• <b>under</b> (ở dưới): <i>She looked under the table and finally found her smartwatch.</i><br>
+            &nbsp;&nbsp;• <b>in</b> (ở trong, giữa) / <b>on</b> (trên bề mặt): <i>Don't walk in the street. Walk on the pavement.</i><br><br>
+            <b>2. Giới từ chỉ thời gian (Prepositions of time): in, for, by</b><br>
+            &nbsp;&nbsp;• <b>in + khoảng thời gian</b> → mang nghĩa tương lai ("trong vòng..."): <i>Robots will replace human shop assistants in ten years.</i><br>
+            &nbsp;&nbsp;• <b>for + khoảng thời gian</b> → nói độ dài thời gian một việc diễn ra: <i>It rained for three hours yesterday.</i><br>
+            &nbsp;&nbsp;• <b>by + thời điểm cụ thể</b> → nghĩa "không muộn hơn thời điểm đó": <i>We'll be there by 6 p.m.</i><br>
+            &nbsp;&nbsp;• Ngoài ra: <b>on</b> + thứ trong tuần (<i>on Sundays</i>), <b>in</b> + tháng/năm (<i>in May 1999</i>).<br><br>
+            <b>3. Đại từ sở hữu (Possessive pronouns): mine, yours, his, hers, ours, theirs</b><br>
+            &nbsp;&nbsp;• Dùng thay cho "tính từ sở hữu (my/your/his/her/our/their) + danh từ" để tránh lặp từ, đặc biệt sau giới từ <b>of</b>.<br>
+            &nbsp;&nbsp;• Ví dụ: <i>Mi is one of my friends. → Mi is a friend of mine.</i><br>
+            &nbsp;&nbsp;• Ví dụ: <i>Jack is one of her cousins. → Jack is a cousin of hers.</i><br>
+            &nbsp;&nbsp;• Bảng chuyển đổi: my → mine; your → yours; his → his; her → hers; our → ours; their → theirs.
+          </div>
+        </div>
+      </div>
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('passages')">
+          <span>📖 Bài đọc &amp; bài nghe Unit 10 (có bản dịch)</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-3 space-y-4" id="acc_passages"></div>
+      </div>
+
+    </div>
+  </div>
+  <!-- ============ END REVIEW SECTION ============ -->
+
+  <div id="resultBanner" class="mb-6">
+    <div class="bg-white rounded-2xl shadow-lg border-2 border-cyan-300 p-6 text-center score-ring">
+      <p id="resultEmoji" class="text-5xl mb-2">🎉</p>
+      <h2 class="text-2xl font-extrabold text-cyan-700" id="resultTitle">Hoàn thành!</h2>
+      <p class="text-4xl font-black text-slate-800 mt-2"><span id="resultScore">0</span>/75</p>
+      <p class="text-slate-500 font-bold mt-1"><span id="resultPct">0</span>% chính xác · Thời gian: <span id="resultTime">0:00</span></p>
+      <div class="flex flex-wrap justify-center gap-3 mt-4">
+        <button onclick="retryTest()" class="bg-cyan-700 hover:bg-cyan-800 text-white font-bold px-5 py-2.5 rounded-xl shadow"><i class="fa-solid fa-rotate-right mr-1"></i>Làm lại (đề mới)</button>
+        <button onclick="scrollToReview()" class="bg-white border-2 border-violet-300 text-violet-700 font-bold px-5 py-2.5 rounded-xl"><i class="fa-solid fa-magnifying-glass mr-1"></i>Xem lại chi tiết</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="quizArea"></div>
+
+  <div class="sticky-bar bg-white/95 backdrop-blur border-t border-slate-200 mt-6 py-3 px-4 rounded-t-2xl shadow-[0_-4px_14px_rgba(0,0,0,.06)] flex items-center justify-between gap-3">
+    <span class="text-xs md:text-sm font-bold text-slate-500"><span id="answeredCount">0</span>/75 câu đã trả lời</span>
+    <button id="submitBtn" onclick="submitTest()" class="bg-gradient-to-r from-cyan-700 to-violet-600 text-white font-extrabold px-6 py-2.5 rounded-xl shadow-lg hover:brightness-110"><i class="fa-solid fa-flag-checkered mr-1"></i>Nộp bài</button>
+  </div>
+
+</main>
+
+<script>
+/* ============================================================
+   REVIEW CONTENT: Unit 10 Vocabulary, Grammar rule, Passages (EN+VI)
+   ============================================================ */
+const VOCAB_LIST = [
+  {word:"video conference", vi:"hội nghị truyền hình", example:"We're having a video conference with Tech Savvy next Thursday.", exVi:"Chúng tôi sẽ có một buổi hội nghị truyền hình với Tech Savvy vào thứ Năm tới."},
+  {word:"video call", vi:"cuộc gọi video", example:"Who doesn't know how to make a video call?", exVi:"Ai mà chẳng biết cách thực hiện cuộc gọi video?"},
+  {word:"webcam", vi:"webcam (camera máy tính)", example:"How can I adjust this webcam? It's focusing on my forehead.", exVi:"Làm sao mình chỉnh webcam này được? Nó đang lấy nét vào trán mình."},
+  {word:"zoom in / zoom out", vi:"phóng to / thu nhỏ hình ảnh", example:"Use this button to zoom in or out.", exVi:"Dùng nút này để phóng to hoặc thu nhỏ."},
+  {word:"Internet connection", vi:"kết nối Internet", example:"We have a high-speed Internet connection here.", exVi:"Ở đây chúng tôi có kết nối Internet tốc độ cao."},
+  {word:"high-speed", vi:"tốc độ cao", example:"We need a high-speed Internet connection to make video calls.", exVi:"Chúng ta cần kết nối Internet tốc độ cao để gọi video."},
+  {word:"tablet", vi:"máy tính bảng", example:"I'll connect with you via one of my tablets.", exVi:"Mình sẽ kết nối với cậu qua một trong các máy tính bảng của mình."},
+  {word:"adjust", vi:"điều chỉnh", example:"Sorry, but how can I adjust this webcam?", exVi:"Xin lỗi, nhưng làm sao mình điều chỉnh webcam này được?"},
+  {word:"focus", vi:"lấy nét, tập trung", example:"It's focusing on my forehead.", exVi:"Nó đang lấy nét vào trán mình."},
+  {word:"voice message", vi:"tin nhắn thoại", example:"We also send voice messages.", exVi:"Chúng tôi cũng gửi tin nhắn thoại."},
+  {word:"smartphone", vi:"điện thoại thông minh", example:"Everyone uses a smartphone to keep in contact nowadays.", exVi:"Ngày nay ai cũng dùng điện thoại thông minh để giữ liên lạc."},
+  {word:"social network", vi:"mạng xã hội", example:"Many teenagers like to meet on social networks rather than face to face.", exVi:"Nhiều bạn trẻ thích gặp nhau trên mạng xã hội hơn là gặp mặt trực tiếp."},
+  {word:"emoji", vi:"biểu tượng cảm xúc", example:"Many people add emojis to their text messages to express their feelings.", exVi:"Nhiều người thêm biểu tượng cảm xúc vào tin nhắn để thể hiện cảm xúc."},
+  {word:"group call", vi:"cuộc gọi nhóm", example:"In a group call, people in different places can join the conversation.", exVi:"Trong một cuộc gọi nhóm, mọi người ở những nơi khác nhau có thể tham gia trò chuyện."},
+  {word:"holography", vi:"công nghệ ảnh ba chiều (hologram)", example:"By using holography, you can attend a meeting with your 3D image.", exVi:"Bằng cách sử dụng công nghệ ảnh ba chiều, bạn có thể tham dự cuộc họp bằng hình ảnh 3D của mình."},
+  {word:"translation", vi:"sự phiên dịch, biên dịch", example:"Do you think translators will lose their jobs when translation machines become popular?", exVi:"Bạn có nghĩ phiên dịch viên sẽ mất việc khi máy phiên dịch trở nên phổ biến không?"},
+  {word:"real time", vi:"thời gian thực", example:"Telephone helps you communicate in real time.", exVi:"Điện thoại giúp bạn giao tiếp trong thời gian thực."},
+  {word:"language barrier", vi:"rào cản ngôn ngữ", example:"Can learning English help you overcome the language barrier when living abroad?", exVi:"Học tiếng Anh có giúp bạn vượt qua rào cản ngôn ngữ khi sống ở nước ngoài không?"},
+  {word:"instantly", vi:"ngay lập tức", example:"Many people reply to messages instantly, but others take a long time to respond.", exVi:"Nhiều người trả lời tin nhắn ngay lập tức, nhưng người khác thì mất nhiều thời gian."},
+  {word:"private", vi:"riêng tư", example:"Do you often send private messages to your friends?", exVi:"Bạn có thường gửi tin nhắn riêng tư cho bạn bè không?"},
+  {word:"telepathy", vi:"thần giao cách cảm", example:"In the future, everyone will be able to use telepathy.", exVi:"Trong tương lai, mọi người đều có thể sử dụng thần giao cách cảm."},
+  {word:"thought", vi:"suy nghĩ, ý nghĩ", example:"We'll pass our thoughts to another person without talking.", exVi:"Chúng ta sẽ truyền suy nghĩ cho người khác mà không cần nói."},
+  {word:"device", vi:"thiết bị", example:"We'll wear a tiny device to catch our thoughts.", exVi:"Chúng ta sẽ đeo một thiết bị nhỏ để bắt lấy suy nghĩ."},
+  {word:"keep in contact", vi:"giữ liên lạc", example:"How do you and your friends keep in contact?", exVi:"Bạn và bạn bè giữ liên lạc bằng cách nào?"},
+  {word:"in person", vi:"trực tiếp, gặp mặt", example:"I often see my friends in person.", exVi:"Mình thường gặp bạn bè trực tiếp."},
+  {word:"take advantage of", vi:"lợi dụng", example:"Bad people might take advantage of it to control someone else.", exVi:"Kẻ xấu có thể lợi dụng nó để điều khiển người khác."},
+  {word:"text message", vi:"tin nhắn văn bản", example:"Sending text messages is convenient because you don't have to type much.", exVi:"Gửi tin nhắn văn bản rất tiện vì bạn không phải gõ nhiều."},
+  {word:"human translator", vi:"phiên dịch viên (con người)", example:"In the future, you can carry a human translator or a translation machine when you go abroad.", exVi:"Trong tương lai, bạn có thể mang theo phiên dịch viên hoặc máy phiên dịch khi ra nước ngoài."},
+  {word:"translation machine", vi:"máy phiên dịch", example:"Do you think translation machines will replace human translators one day?", exVi:"Bạn có nghĩ máy phiên dịch sẽ thay thế phiên dịch viên con người một ngày nào đó không?"},
+  {word:"carrier pigeon", vi:"bồ câu đưa thư", example:"People used carrier pigeons to send messages hundreds of years ago.", exVi:"Người xưa dùng bồ câu đưa thư để gửi tin nhắn hàng trăm năm trước."},
+];
+
+const PASSAGES_REVIEW = [
+  {
+    title:"📄 Bài đọc (Getting Started): At the technology club",
+    en:"<b>Trang:</b> Mark, we're having a video conference with Tech Savvy next Thursday, but ...<br><b>Mark:</b> Hold on. Is that the technology club at the Japanese school?<br><b>Trang:</b> Exactly. But I'm a bit worried. I've never had a video conference call.<br><b>Mark:</b> You're kidding! Who doesn't know how to make a video call? Alright, let's do a practice call now.<br><b>Trang:</b> Hmm, what do I need to do first?<br><b>Mark:</b> It's a piece of cake, Trang. Now, you sit in front of the computer. I'll connect with you via one of my tablets and ...<br><b>Trang:</b> Sorry, but how can I adjust this webcam? It's focusing on my forehead.<br><b>Mark:</b> Use this button to move it up or down, and this to zoom in or out.<br><b>Trang:</b> Thanks. And can you see me clearly on your tablet?<br><b>Mark:</b> Yes, of course. We have a high-speed Internet connection here.<br><b>Trang:</b> I hope the conference goes smoothly.<br><b>Mark:</b> I'm sure it will. We should hold more video conferences like this in the future.<br><b>Trang:</b> That's exactly how I feel.",
+    vi:"<b>Trang:</b> Mark, tụi mình sẽ có một buổi hội nghị truyền hình với Tech Savvy vào thứ Năm tới, nhưng...<br><b>Mark:</b> Khoan đã. Đó có phải là câu lạc bộ công nghệ ở trường Nhật Bản không?<br><b>Trang:</b> Đúng vậy. Nhưng mình hơi lo. Mình chưa bao giờ thực hiện cuộc gọi video hội nghị cả.<br><b>Mark:</b> Cậu đùa à! Ai mà chẳng biết cách gọi video? Thôi, giờ mình thử gọi thực hành nhé.<br><b>Trang:</b> Hừm, đầu tiên mình cần làm gì?<br><b>Mark:</b> Dễ như ăn bánh thôi, Trang. Giờ cậu ngồi trước máy tính. Mình sẽ kết nối với cậu qua một trong các máy tính bảng của mình và...<br><b>Trang:</b> Xin lỗi, nhưng làm sao mình chỉnh webcam này được? Nó đang lấy nét vào trán mình.<br><b>Mark:</b> Dùng nút này để di chuyển lên xuống, và nút này để phóng to hoặc thu nhỏ.<br><b>Trang:</b> Cảm ơn. Cậu có thấy mình rõ trên máy tính bảng của cậu không?<br><b>Mark:</b> Có chứ. Ở đây tụi mình có kết nối Internet tốc độ cao mà.<br><b>Trang:</b> Mình hy vọng buổi hội nghị sẽ diễn ra suôn sẻ.<br><b>Mark:</b> Mình chắc chắn là sẽ ổn. Tụi mình nên tổ chức thêm nhiều buổi hội nghị truyền hình như thế này trong tương lai.<br><b>Trang:</b> Đó chính xác là cảm nhận của mình."
+  },
+  {
+    title:"📄 Bài đọc (Skills 1): Telepathy",
+    en:"<b>MC:</b> Hi everyone. Today, I'll ask some members of the Technology Club to predict how people will communicate in the future. Let's meet Minh and Tom.<br><b>Minh &amp; Tom:</b> Hi everyone.<br><b>MC:</b> Minh and Tom, how do you and your friends keep in contact?<br><b>Minh:</b> Well, we mostly text each other. We also send voice messages.<br><b>Tom:</b> I often see my friends in person, but sometimes we call via the Internet.<br><b>MC:</b> Do you think these ways of communication will still be popular in 50 years?<br><b>Tom:</b> Not really. We'll use more advanced ways, like telepathy. We'll pass our thoughts to another person without talking and ...<br><b>MC:</b> Hold on. I think only a very few people may have this ability.<br><b>Minh:</b> Yes, but in the future, everyone will be able to use telepathy. We'll wear a tiny device to catch our thoughts and send them to other people.<br><b>MC:</b> Cool! But will there be any problems with telepathy?<br><b>Tom:</b> Hmm, telepathy devices can 'read' one's mind, so bad people might take advantage of it to control someone else.<br><b>MC:</b> Besides that, some people will be too lazy to even talk anymore.",
+    vi:"<b>MC:</b> Chào mọi người. Hôm nay, mình sẽ hỏi vài thành viên của Câu lạc bộ Công nghệ để dự đoán cách con người sẽ giao tiếp trong tương lai. Hãy cùng gặp Minh và Tom.<br><b>Minh &amp; Tom:</b> Chào mọi người.<br><b>MC:</b> Minh và Tom, hai bạn và bạn bè giữ liên lạc với nhau bằng cách nào?<br><b>Minh:</b> À, tụi mình chủ yếu nhắn tin cho nhau. Tụi mình cũng gửi tin nhắn thoại nữa.<br><b>Tom:</b> Mình thường gặp bạn bè trực tiếp, nhưng đôi khi tụi mình gọi qua Internet.<br><b>MC:</b> Các bạn nghĩ những cách giao tiếp này sẽ vẫn phổ biến trong 50 năm nữa chứ?<br><b>Tom:</b> Không hẳn. Tụi mình sẽ dùng những cách tiên tiến hơn, như thần giao cách cảm. Tụi mình sẽ truyền suy nghĩ cho người khác mà không cần nói và...<br><b>MC:</b> Khoan đã. Mình nghĩ chỉ có rất ít người có khả năng này thôi.<br><b>Minh:</b> Đúng vậy, nhưng trong tương lai, ai cũng sẽ có thể dùng thần giao cách cảm. Tụi mình sẽ đeo một thiết bị nhỏ để bắt lấy suy nghĩ và gửi chúng đến người khác.<br><b>MC:</b> Hay đấy! Nhưng liệu thần giao cách cảm có gây ra vấn đề gì không?<br><b>Tom:</b> Ừm, thiết bị thần giao cách cảm có thể 'đọc' được suy nghĩ của người khác, nên kẻ xấu có thể lợi dụng nó để điều khiển người khác.<br><b>MC:</b> Ngoài ra, một số người sẽ trở nên lười đến mức không muốn nói chuyện nữa."
+  },
+  {
+    title:"📄 Bài đọc (Communication): Interrupting politely &amp; The future of language",
+    en:"<b>Interrupting politely</b><br>1) <b>Mark:</b> Now, about the video conference. Everyone must be here at 9:30 a.m., and ...<br><b>Trang:</b> Sorry for interrupting, but I think we should meet at 9:00 a.m. We need to test the devices.<br>2) <b>Nick:</b> This webcam is easy to handle. You click these buttons to move it up and down and these to ...<br><b>Lan:</b> Hold on. Can you repeat that, please?<br><br><b>The future of language</b><br><b>Mark:</b> In 20 years, people of all ages will be using emojis even more than now. Emojis help people communicate their emotions effectively regardless of the language they speak. For example, a smiley face expresses the same meaning everywhere. An emoji can replace words to a certain extent. One day, we might receive an email that contains only emojis!",
+    vi:"<b>Cách ngắt lời lịch sự</b><br>1) <b>Mark:</b> Giờ nói về buổi hội nghị truyền hình. Mọi người phải có mặt lúc 9:30 sáng, và...<br><b>Trang:</b> Xin lỗi vì ngắt lời, nhưng mình nghĩ tụi mình nên gặp lúc 9:00 sáng. Tụi mình cần kiểm tra thiết bị trước.<br>2) <b>Nick:</b> Cái webcam này dễ dùng lắm. Cậu bấm nút này để di chuyển nó lên xuống và mấy nút này để...<br><b>Lan:</b> Khoan đã. Cậu nhắc lại được không?<br><br><b>Tương lai của ngôn ngữ</b><br><b>Mark:</b> Trong 20 năm nữa, mọi người ở mọi lứa tuổi sẽ dùng biểu tượng cảm xúc (emoji) nhiều hơn bây giờ. Emoji giúp mọi người thể hiện cảm xúc một cách hiệu quả bất kể họ nói ngôn ngữ nào. Ví dụ, một biểu tượng mặt cười mang cùng một ý nghĩa ở khắp mọi nơi. Emoji có thể thay thế lời nói ở một mức độ nhất định. Một ngày nào đó, chúng ta có thể nhận được một email chỉ toàn chứa emoji!"
+  }
+];
+
+function renderReviewSection(){
+  document.getElementById('acc_vocabList').innerHTML = VOCAB_LIST.map(v=>`
+    <div class="vocab-row flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+      <div><span class="font-extrabold text-cyan-700">${v.word}</span> <span class="text-slate-400">— ${v.vi}</span></div>
+      <div class="text-xs text-slate-400 italic sm:text-right sm:max-w-[55%]">${v.example}<br>${v.exVi}</div>
+    </div>`).join('');
+
+  document.getElementById('acc_passages').innerHTML = PASSAGES_REVIEW.map((p,i)=>`
+    <div>
+      <p class="font-bold text-slate-700 text-sm mb-2">${p.title}</p>
+      <div class="passage-en">${p.en}</div>
+      <button type="button" onclick="togglePassageVi(${i})" class="mt-2 text-xs font-bold bg-white border-2 border-violet-300 text-violet-700 px-3 py-1.5 rounded-full">
+        <i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt
+      </button>
+      <div class="passage-vi" id="passvi_${i}"><b>🇻🇳 Bản dịch</b><br>${p.vi}</div>
+    </div>`).join('');
+}
+function togglePassageVi(i){ document.getElementById('passvi_'+i).classList.toggle('show'); }
+function toggleAccordion(key){
+  const btn = event.currentTarget;
+  btn.classList.toggle('open');
+  document.getElementById('acc_'+key).classList.toggle('open');
+}
+
+/* ============================================================
+   CONTENT: Unit 10 Vocabulary, Grammar, Reading & Translation Test
+   ============================================================ */
+const VOCAB_TEST = [
+  {id:"v1", prompt:"\"Video conference\" nghĩa là gì?", options:["hội nghị truyền hình","tin nhắn thoại","máy tính bảng","mạng xã hội"], answer:0, explanation:"video conference = hội nghị truyền hình (họp trực tuyến có hình).", vi:"video conference = hội nghị truyền hình."},
+  {id:"v2", prompt:"\"Video call\" nghĩa là gì?", options:["cuộc gọi video","cuộc gọi nhóm","tin nhắn văn bản","email"], answer:0, explanation:"video call = cuộc gọi video.", vi:"video call = cuộc gọi video."},
+  {id:"v3", prompt:"\"Webcam\" nghĩa là gì?", options:["webcam (camera máy tính)","máy tính bảng","điện thoại thông minh","máy chiếu"], answer:0, explanation:"webcam = webcam, camera gắn trên máy tính.", vi:"webcam = camera máy tính."},
+  {id:"v4", prompt:"Điền từ: Use this button to ________ in or out.", options:["zoom","focus","adjust","connect"], answer:0, explanation:"zoom in/out = phóng to/thu nhỏ hình ảnh.", vi:"Dùng nút này để phóng to hoặc thu nhỏ."},
+  {id:"v5", prompt:"\"Internet connection\" nghĩa là gì?", options:["kết nối Internet","mạng xã hội","tin nhắn thoại","thiết bị"], answer:0, explanation:"Internet connection = kết nối Internet.", vi:"Internet connection = kết nối Internet."},
+  {id:"v6", prompt:"Điền từ: We have a high-________ Internet connection here.", options:["speed","speedy","fast","quick"], answer:0, explanation:"high-speed = tốc độ cao.", vi:"Ở đây chúng tôi có kết nối Internet tốc độ cao."},
+  {id:"v7", prompt:"\"Tablet\" nghĩa là gì?", options:["máy tính bảng","điện thoại","webcam","laptop"], answer:0, explanation:"tablet = máy tính bảng.", vi:"tablet = máy tính bảng."},
+  {id:"v8", prompt:"\"Adjust\" nghĩa là gì?", options:["điều chỉnh","kết nối","lấy nét","phóng to"], answer:0, explanation:"adjust = điều chỉnh.", vi:"adjust = điều chỉnh."},
+  {id:"v9", prompt:"Điền từ: It's ________ on my forehead. (nói về webcam)", options:["focusing","zooming","adjusting","connecting"], answer:0, explanation:"focus = lấy nét; webcam đang lấy nét vào trán.", vi:"Nó đang lấy nét vào trán mình."},
+  {id:"v10", prompt:"\"Voice message\" nghĩa là gì?", options:["tin nhắn thoại","tin nhắn văn bản","cuộc gọi video","email"], answer:0, explanation:"voice message = tin nhắn thoại.", vi:"voice message = tin nhắn thoại."},
+  {id:"v11", prompt:"\"Smartphone\" nghĩa là gì?", options:["điện thoại thông minh","máy tính bảng","webcam","mạng xã hội"], answer:0, explanation:"smartphone = điện thoại thông minh.", vi:"smartphone = điện thoại thông minh."},
+  {id:"v12", prompt:"\"Social network\" nghĩa là gì?", options:["mạng xã hội","mạng lưới điện","hệ thống máy tính","kênh truyền hình"], answer:0, explanation:"social network = mạng xã hội.", vi:"social network = mạng xã hội."},
+  {id:"v13", prompt:"\"Emoji\" nghĩa là gì?", options:["biểu tượng cảm xúc","tin nhắn thoại","cuộc gọi nhóm","phiên dịch viên"], answer:0, explanation:"emoji = biểu tượng cảm xúc.", vi:"emoji = biểu tượng cảm xúc."},
+  {id:"v14", prompt:"Điền từ: In a group ________, people in different places can join the conversation.", options:["call","message","network","chat"], answer:0, explanation:"group call = cuộc gọi nhóm.", vi:"Trong một cuộc gọi nhóm, mọi người ở những nơi khác nhau có thể tham gia trò chuyện."},
+  {id:"v15", prompt:"\"Holography\" nghĩa là gì?", options:["công nghệ ảnh ba chiều (hologram)","mạng xã hội","tin nhắn thoại","máy phiên dịch"], answer:0, explanation:"holography = công nghệ ảnh ba chiều.", vi:"holography = công nghệ ảnh ba chiều."},
+  {id:"v16", prompt:"\"Translation\" nghĩa là gì?", options:["sự phiên dịch, biên dịch","sự kết nối","sự điều chỉnh","sự lấy nét"], answer:0, explanation:"translation = sự phiên dịch, biên dịch.", vi:"translation = sự phiên dịch."},
+  {id:"v17", prompt:"Điền từ: Telephone helps you communicate in real ________.", options:["time","life","world","speed"], answer:0, explanation:"real time = thời gian thực.", vi:"Điện thoại giúp bạn giao tiếp trong thời gian thực."},
+  {id:"v18", prompt:"\"Language barrier\" nghĩa là gì?", options:["rào cản ngôn ngữ","thiết bị ngôn ngữ","máy phiên dịch","lớp học ngôn ngữ"], answer:0, explanation:"language barrier = rào cản ngôn ngữ.", vi:"language barrier = rào cản ngôn ngữ."},
+  {id:"v19", prompt:"\"Instantly\" nghĩa là gì?", options:["ngay lập tức","chậm rãi","thỉnh thoảng","hiếm khi"], answer:0, explanation:"instantly = ngay lập tức.", vi:"instantly = ngay lập tức."},
+  {id:"v20", prompt:"\"Private\" (trong \"private messages\") nghĩa là gì?", options:["riêng tư","công khai","miễn phí","an toàn"], answer:0, explanation:"private = riêng tư.", vi:"private = riêng tư."},
+  {id:"v21", prompt:"\"Telepathy\" nghĩa là gì?", options:["thần giao cách cảm","viễn thông","truyền hình trực tiếp","mạng không dây"], answer:0, explanation:"telepathy = thần giao cách cảm.", vi:"telepathy = thần giao cách cảm."},
+  {id:"v22", prompt:"Điền từ: We'll pass our ________ to another person without talking.", options:["thoughts","voices","messages","calls"], answer:0, explanation:"thought = suy nghĩ, ý nghĩ.", vi:"Chúng ta sẽ truyền suy nghĩ cho người khác mà không cần nói."},
+  {id:"v23", prompt:"\"Device\" (trong \"a tiny device\") nghĩa là gì?", options:["thiết bị","phần mềm","tín hiệu","dữ liệu"], answer:0, explanation:"device = thiết bị.", vi:"device = thiết bị."},
+  {id:"v24", prompt:"\"Keep in contact\" nghĩa là gì?", options:["giữ liên lạc","cắt đứt liên lạc","gặp mặt trực tiếp","lợi dụng"], answer:0, explanation:"keep in contact = giữ liên lạc.", vi:"keep in contact = giữ liên lạc."},
+  {id:"v25", prompt:"\"In person\" nghĩa là gì?", options:["trực tiếp, gặp mặt","qua điện thoại","qua email","qua mạng xã hội"], answer:0, explanation:"in person = trực tiếp, gặp mặt.", vi:"in person = trực tiếp."},
+  {id:"v26", prompt:"Điền từ: Bad people might take ________ of it to control someone else.", options:["advantage","control","charge","part"], answer:0, explanation:"take advantage of = lợi dụng.", vi:"Kẻ xấu có thể lợi dụng nó để điều khiển người khác."},
+  {id:"v27", prompt:"\"Text message\" nghĩa là gì?", options:["tin nhắn văn bản","tin nhắn thoại","cuộc gọi video","email"], answer:0, explanation:"text message = tin nhắn văn bản.", vi:"text message = tin nhắn văn bản."},
+  {id:"v28", prompt:"\"Human translator\" nghĩa là gì?", options:["phiên dịch viên (con người)","máy phiên dịch","giáo viên ngoại ngữ","người dẫn chương trình"], answer:0, explanation:"human translator = phiên dịch viên (con người), phân biệt với translation machine.", vi:"human translator = phiên dịch viên con người."},
+  {id:"v29", prompt:"\"Translation machine\" nghĩa là gì?", options:["máy phiên dịch","điện thoại thông minh","máy tính bảng","webcam"], answer:0, explanation:"translation machine = máy phiên dịch.", vi:"translation machine = máy phiên dịch."},
+  {id:"v30", prompt:"\"Carrier pigeon\" nghĩa là gì?", options:["bồ câu đưa thư","điện thoại đầu tiên","tờ báo in","mạng xã hội đầu tiên"], answer:0, explanation:"carrier pigeon = bồ câu đưa thư, một phương tiện liên lạc cổ xưa.", vi:"carrier pigeon = bồ câu đưa thư."},
+];
+
+const GRAMMAR_TEST = [
+  {id:"g1", prompt:"Lily's house is ________ the end of this street.", options:["at","in","on","under"], answer:0, explanation:"\"at\" dùng cho một điểm/vị trí cụ thể.", vi:"Nhà của Lily ở cuối con phố này."},
+  {id:"g2", prompt:"Players always sit ________ each other in a chess game.", options:["opposite","under","in front of","on"], answer:0, explanation:"\"opposite\" = đối diện.", vi:"Người chơi luôn ngồi đối diện nhau trong một ván cờ."},
+  {id:"g3", prompt:"She looked ________ the table and finally found her smartwatch.", options:["under","on","opposite","at"], answer:0, explanation:"\"under\" = ở dưới, bên dưới.", vi:"Cô ấy nhìn dưới bàn và cuối cùng tìm thấy đồng hồ thông minh của mình."},
+  {id:"g4", prompt:"Don't walk ________ the street.", options:["in","on","at","opposite"], answer:0, explanation:"\"in the street\" = đi giữa lòng đường (nguy hiểm).", vi:"Đừng đi giữa lòng đường."},
+  {id:"g5", prompt:"Walk ________ the pavement instead.", options:["on","in","at","under"], answer:0, explanation:"\"on the pavement\" = trên vỉa hè (bề mặt).", vi:"Hãy đi trên vỉa hè thay vào đó."},
+  {id:"g6", prompt:"Ann stood ________ me in a line to get on the bus.", options:["in front of","opposite","under","on"], answer:0, explanation:"\"in front of\" = phía trước.", vi:"Ann đứng phía trước mình trong hàng để lên xe buýt."},
+  {id:"g7", prompt:"Robots will replace human shop assistants ________ ten years.", options:["in","for","by","on"], answer:0, explanation:"\"in + khoảng thời gian\" mang nghĩa tương lai (trong vòng...).", vi:"Robot sẽ thay thế nhân viên bán hàng con người trong vòng mười năm nữa."},
+  {id:"g8", prompt:"It rained ________ three hours yesterday.", options:["for","in","by","on"], answer:0, explanation:"\"for + khoảng thời gian\" nói độ dài thời gian một việc diễn ra.", vi:"Hôm qua trời mưa suốt ba tiếng đồng hồ."},
+  {id:"g9", prompt:"We'll be there ________ 6 p.m.", options:["by","for","in","on"], answer:0, explanation:"\"by + thời điểm cụ thể\" nghĩa là \"không muộn hơn thời điểm đó\".", vi:"Chúng tôi sẽ có mặt ở đó trước 6 giờ chiều."},
+  {id:"g10", prompt:"The first camera phone appeared ________ May 1999 in Japan.", options:["in","on","at","for"], answer:0, explanation:"\"in\" + tháng/năm.", vi:"Chiếc điện thoại có camera đầu tiên xuất hiện vào tháng 5 năm 1999 tại Nhật Bản."},
+  {id:"g11", prompt:"In the UK, supermarkets always close early ________ Sundays.", options:["on","in","at","for"], answer:0, explanation:"\"on\" + ngày/thứ trong tuần.", vi:"Ở Anh, các siêu thị luôn đóng cửa sớm vào Chủ nhật."},
+  {id:"g12", prompt:"I think language barriers will disappear ________ 50 years.", options:["in","for","by","on"], answer:0, explanation:"\"in + khoảng thời gian\" mang nghĩa tương lai.", vi:"Tôi nghĩ rào cản ngôn ngữ sẽ biến mất trong vòng 50 năm nữa."},
+  {id:"g13", prompt:"Mi is one of my friends. → Mi is a friend of ________.", options:["mine","my","me","I"], answer:0, explanation:"Sau giới từ \"of\", ta dùng đại từ sở hữu \"mine\" thay cho \"my friend\".", vi:"Mi là một người bạn của tôi."},
+  {id:"g14", prompt:"Jack is one of her cousins. → Jack is a cousin of ________.", options:["hers","her","she","herself"], answer:0, explanation:"Sau \"of\" dùng đại từ sở hữu \"hers\".", vi:"Jack là một người anh họ của cô ấy."},
+  {id:"g15", prompt:"Is this one of his tablets? → Is this a tablet of ________?", options:["his","him","he","himself"], answer:0, explanation:"Đại từ sở hữu của \"his\" vẫn là \"his\".", vi:"Đây có phải là một chiếc máy tính bảng của anh ấy không?"},
+  {id:"g16", prompt:"\"Can I borrow a pencil of yours?\" có nghĩa tương đương với: \"Can I borrow ________ pencil?\"", options:["your","yours","you","you're"], answer:0, explanation:"\"a pencil of yours\" = \"your pencil\" (tính từ sở hữu + danh từ).", vi:"Mình mượn cây bút chì của cậu được không?"},
+  {id:"g17", prompt:"You look like Nick and Peter. Are you one of their relatives? = Are you a relative of ________?", options:["theirs","their","them","they"], answer:0, explanation:"Sau \"of\" dùng đại từ sở hữu \"theirs\".", vi:"Bạn trông giống Nick và Peter. Bạn có phải là họ hàng của họ không?"},
+  {id:"g18", prompt:"Last year, two of our classmates won scholarships to the US. → Last year, two of ________ won scholarships to the US.", options:["ours","our","us","we"], answer:0, explanation:"Sau \"of\" dùng đại từ sở hữu \"ours\".", vi:"Năm ngoái, hai người bạn cùng lớp của chúng tôi đã giành được học bổng đi Mỹ."},
+  {id:"g19", prompt:"This tablet isn't John's; it's ________.", options:["his","him","he","his own"], answer:0, explanation:"\"his\" (đại từ sở hữu) thay cho \"his tablet\".", vi:"Chiếc máy tính bảng này không phải của John; nó là của anh ấy."},
+  {id:"g20", prompt:"Chọn đại từ sở hữu đúng tương ứng với tính từ sở hữu \"our\":", options:["ours","our","us","we"], answer:0, explanation:"Bảng chuyển đổi: our → ours.", vi:"our (tính từ sở hữu) → ours (đại từ sở hữu)."},
+];
+
+const READING_TEST = [
+  // ---- Passage 1: At the technology club (Getting Started) ----
+  {id:"r1", prompt:"[Bài đọc 1] What are Trang and Mark going to have next Thursday?", options:["A video conference with Tech Savvy.","A birthday party.","A football match.","An English exam."], answer:0, explanation:"\"we're having a video conference with Tech Savvy next Thursday\"", vi:"Họ sẽ có một buổi hội nghị truyền hình với Tech Savvy vào thứ Năm tới."},
+  {id:"r2", prompt:"[Bài đọc 1] Why is Trang a bit worried?", options:["She has never had a video conference call before.","She doesn't have a tablet.","She doesn't like Mark.","She is sick."], answer:0, explanation:"\"I'm a bit worried. I've never had a video conference call.\"", vi:"Trang chưa bao giờ thực hiện cuộc gọi video hội nghị nên hơi lo lắng."},
+  {id:"r3", prompt:"[Bài đọc 1] What does Mark ask Trang to do first?", options:["Sit in front of the computer.","Buy a new tablet.","Turn off the Internet.","Write down notes."], answer:0, explanation:"\"Now, you sit in front of the computer.\"", vi:"Mark bảo Trang ngồi trước máy tính trước tiên."},
+  {id:"r4", prompt:"[Bài đọc 1] What is the problem with the webcam?", options:["It is focusing on Trang's forehead.","It is broken.","It is too expensive.","It is too small."], answer:0, explanation:"\"It's focusing on my forehead.\"", vi:"Webcam đang lấy nét vào trán của Trang."},
+  {id:"r5", prompt:"[Bài đọc 1] What do Mark and Trang agree about video conferences in the future?", options:["They should hold more video conferences like this.","They should stop using video conferences.","They should only call by phone.","They should meet in person instead."], answer:0, explanation:"\"We should hold more video conferences like this in the future.\" — \"That's exactly how I feel.\"", vi:"Cả hai đồng ý nên tổ chức thêm nhiều buổi hội nghị truyền hình như vậy trong tương lai."},
+  // ---- Passage 2: Telepathy (Skills 1) ----
+  {id:"r6", prompt:"[Bài đọc 2] How do Minh and his friends mostly keep in contact?", options:["By texting each other and sending voice messages.","By writing letters.","By meeting in person every day.","By sending emails."], answer:0, explanation:"\"we mostly text each other. We also send voice messages.\"", vi:"Minh và bạn bè chủ yếu nhắn tin và gửi tin nhắn thoại cho nhau."},
+  {id:"r7", prompt:"[Bài đọc 2] According to Tom, what advanced way will people use to communicate in 50 years?", options:["Telepathy.","Holography.","Group calls.","Carrier pigeons."], answer:0, explanation:"\"We'll use more advanced ways, like telepathy.\"", vi:"Theo Tom, người ta sẽ dùng thần giao cách cảm để giao tiếp."},
+  {id:"r8", prompt:"[Bài đọc 2] What will people need to use telepathy in the future, according to Minh?", options:["A tiny device to catch and send thoughts.","A smartphone with a good camera.","A high-speed Internet connection.","A pair of smart glasses."], answer:0, explanation:"\"We'll wear a tiny device to catch our thoughts and send them to other people.\"", vi:"Người ta sẽ đeo một thiết bị nhỏ để bắt và gửi suy nghĩ."},
+  {id:"r9", prompt:"[Bài đọc 2] What problem with telepathy does Tom mention?", options:["Bad people might take advantage of it to control someone else.","It is too expensive to use.","It only works for a few minutes.","It damages people's brains."], answer:0, explanation:"\"bad people might take advantage of it to control someone else.\"", vi:"Kẻ xấu có thể lợi dụng thần giao cách cảm để điều khiển người khác."},
+  {id:"r10", prompt:"[Bài đọc 2] What other problem does the MC mention?", options:["Some people will be too lazy to even talk anymore.","Telepathy devices will run out of battery quickly.","Telepathy will replace all smartphones.","Nobody will want to use telepathy."], answer:0, explanation:"\"Besides that, some people will be too lazy to even talk anymore.\"", vi:"Một số người sẽ trở nên lười đến mức không muốn nói chuyện nữa."},
+  // ---- Passage 3: Interrupting politely & The future of language (Communication) ----
+  {id:"r11", prompt:"[Bài đọc 3] What does Trang say to interrupt Mark politely?", options:["Sorry for interrupting, but I think we should meet at 9:00 a.m.","Excuse me, I disagree completely.","Wait, that's wrong.","Stop talking, please."], answer:0, explanation:"\"Sorry for interrupting, but I think we should meet at 9:00 a.m.\"", vi:"Trang nói \"Xin lỗi vì ngắt lời, nhưng mình nghĩ nên gặp lúc 9 giờ sáng\" để ngắt lời lịch sự."},
+  {id:"r12", prompt:"[Bài đọc 3] What does Lan say to ask Nick to repeat what he said?", options:["Hold on. Can you repeat that, please?","What? I can't hear anything.","Sorry, I don't care.","Please stop talking."], answer:0, explanation:"\"Hold on. Can you repeat that, please?\"", vi:"Lan nói \"Khoan đã. Cậu nhắc lại được không?\""},
+  {id:"r13", prompt:"[Bài đọc 3] According to Mark, what will people be using even more in 20 years?", options:["Emojis.","Carrier pigeons.","Printed letters.","Landline telephones."], answer:0, explanation:"\"people of all ages will be using emojis even more than now.\"", vi:"Theo Mark, mọi người sẽ dùng emoji nhiều hơn trong 20 năm nữa."},
+  {id:"r14", prompt:"[Bài đọc 3] What example does Mark give of an emoji with a universal meaning?", options:["A smiley face.","A thumbs-up sign.","A heart symbol.","A star icon."], answer:0, explanation:"\"a smiley face expresses the same meaning everywhere.\"", vi:"Mark lấy ví dụ về biểu tượng mặt cười mang cùng ý nghĩa ở khắp nơi."},
+  {id:"r15", prompt:"[Bài đọc 3] What does Mark predict we might receive one day?", options:["An email that contains only emojis.","A letter written by hand.","A phone call with no words.","A video with no sound."], answer:0, explanation:"\"we might receive an email that contains only emojis!\"", vi:"Mark dự đoán một ngày nào đó ta có thể nhận được email chỉ toàn emoji."},
+];
+
+const TRANSLATION_TEST = [
+  {id:"t1", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"We're having a video conference with Tech Savvy next Thursday.\"", options:["Chúng tôi sẽ có một buổi hội nghị truyền hình với Tech Savvy vào thứ Năm tới.","Chúng tôi sẽ đi du lịch cùng Tech Savvy vào thứ Năm tới.","Chúng tôi sẽ họp mặt trực tiếp với Tech Savvy vào thứ Năm tới.","Chúng tôi sẽ gửi thư cho Tech Savvy vào thứ Năm tới."], answer:0, explanation:"video conference = hội nghị truyền hình.", vi:""},
+  {id:"t2", prompt:"Chọn bản dịch tiếng Anh đúng: \"Xin lỗi vì đã ngắt lời, nhưng tôi nghĩ chúng ta nên gặp lúc 9 giờ sáng.\"", options:["Sorry for interrupting, but I think we should meet at 9:00 a.m.","Sorry for being late, but I think we should meet at 9:00 a.m.","Excuse me, but I don't want to meet at 9:00 a.m.","Sorry for interrupting, but let's meet tomorrow instead."], answer:0, explanation:"ngắt lời = interrupting; nên gặp lúc 9 giờ sáng = we should meet at 9:00 a.m.", vi:""},
+  {id:"t3", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"In the future, everyone will be able to use telepathy.\"", options:["Trong tương lai, mọi người đều có thể sử dụng thần giao cách cảm.","Trong tương lai, chỉ có vài người biết dùng điện thoại.","Trong quá khứ, mọi người đã từng dùng thần giao cách cảm.","Trong tương lai, không ai cần giao tiếp nữa."], answer:0, explanation:"telepathy = thần giao cách cảm; everyone will be able to = mọi người đều có thể.", vi:""},
+  {id:"t4", prompt:"Chọn bản dịch tiếng Anh đúng: \"Chúng tôi chủ yếu nhắn tin cho nhau. Chúng tôi cũng gửi tin nhắn thoại.\"", options:["We mostly text each other. We also send voice messages.","We mostly call each other. We never send messages.","We rarely contact each other by phone.","We often meet in person instead of texting."], answer:0, explanation:"nhắn tin cho nhau = text each other; tin nhắn thoại = voice messages.", vi:""},
+  {id:"t5", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"Emojis help people communicate their emotions effectively regardless of the language they speak.\"", options:["Emoji giúp mọi người thể hiện cảm xúc hiệu quả bất kể họ nói ngôn ngữ nào.","Emoji chỉ được dùng bởi những người nói tiếng Anh.","Emoji khiến việc giao tiếp trở nên khó khăn hơn.","Emoji chỉ dùng để trang trí tin nhắn, không có ý nghĩa gì."], answer:0, explanation:"communicate emotions effectively regardless of language = thể hiện cảm xúc hiệu quả bất kể ngôn ngữ nào.", vi:""},
+  {id:"t6", prompt:"Chọn bản dịch tiếng Anh đúng: \"Kẻ xấu có thể lợi dụng thần giao cách cảm để điều khiển người khác.\"", options:["Bad people might take advantage of telepathy to control someone else.","Bad people never use telepathy at all.","Good people always use telepathy to help others.","Telepathy devices are too expensive for bad people to buy."], answer:0, explanation:"lợi dụng = take advantage of; điều khiển người khác = control someone else.", vi:""},
+  {id:"t7", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"By using holography, you can attend a meeting with your 3D image instead of being there in person.\"", options:["Bằng cách sử dụng công nghệ ảnh ba chiều, bạn có thể tham dự cuộc họp bằng hình ảnh 3D của mình thay vì có mặt trực tiếp.","Bằng cách sử dụng điện thoại, bạn có thể gọi cho bất kỳ ai trên thế giới.","Bằng cách sử dụng webcam, bạn có thể quay video cuộc họp.","Bằng cách sử dụng mạng xã hội, bạn có thể mời bạn bè đến họp."], answer:0, explanation:"holography = công nghệ ảnh ba chiều; instead of being there in person = thay vì có mặt trực tiếp.", vi:""},
+  {id:"t8", prompt:"Chọn bản dịch tiếng Anh đúng: \"Trong 20 năm nữa, mọi người ở mọi lứa tuổi sẽ dùng biểu tượng cảm xúc nhiều hơn bây giờ.\"", options:["In 20 years, people of all ages will be using emojis more than now.","In 20 years, only children will use emojis.","20 years ago, people used more emojis than now.","In 20 years, nobody will use emojis anymore."], answer:0, explanation:"mọi người ở mọi lứa tuổi = people of all ages; biểu tượng cảm xúc = emojis.", vi:""},
+  {id:"t9", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"Robots will replace human shop assistants in ten years.\"", options:["Robot sẽ thay thế nhân viên bán hàng con người trong vòng mười năm nữa.","Robot đã thay thế nhân viên bán hàng mười năm trước.","Con người sẽ thay thế robot trong các cửa hàng.","Robot sẽ giúp nhân viên bán hàng làm việc nhanh hơn."], answer:0, explanation:"replace human shop assistants in ten years = thay thế nhân viên bán hàng con người trong vòng mười năm nữa.", vi:""},
+  {id:"t10", prompt:"Chọn bản dịch tiếng Anh đúng: \"Chúng ta có thể dùng đại từ sở hữu sau giới từ 'of'.\"", options:["We can use possessive pronouns after 'of'.","We must avoid using 'of' with possessive pronouns.","Possessive pronouns cannot be used in English.","We use possessive adjectives instead of nouns after 'of'."], answer:0, explanation:"đại từ sở hữu = possessive pronouns; sau giới từ 'of' = after 'of'.", vi:""},
+];
+
+VOCAB_TEST.forEach(q=>q.section='vocab');
+GRAMMAR_TEST.forEach(q=>q.section='grammar');
+READING_TEST.forEach(q=>q.section='reading');
+TRANSLATION_TEST.forEach(q=>q.section='translation');
+const TOTAL = VOCAB_TEST.length + GRAMMAR_TEST.length + READING_TEST.length + TRANSLATION_TEST.length;
+const STORAGE_KEY = 'u10_vocabgrammar_test_v1';
+
+/* ---------------- utility ---------------- */
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+function loadHistory(){
+  try{ const raw=localStorage.getItem(STORAGE_KEY); return raw? JSON.parse(raw) : {best:0, attempts:0}; }
+  catch(e){ return {best:0, attempts:0}; }
+}
+function saveHistory(h){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(h)); }catch(e){} }
+
+/* ---------------- state ---------------- */
+let state = { questions:[], answers:{}, submitted:false, timeLeft: 35*60, timerId:null, startedAt:null };
+
+function buildQuestionSet(){
+  const all = shuffle(VOCAB_TEST.concat(GRAMMAR_TEST).concat(READING_TEST).concat(TRANSLATION_TEST).map(q=>{
+    const optOrder = shuffle(q.options.map((o,i)=>i));
+    return Object.assign({}, q, { displayOptions: optOrder.map(i=>q.options[i]), correctDisplayIndex: optOrder.indexOf(q.answer) });
+  }));
+  return all;
+}
+
+function init(){
+  renderReviewSection();
+  state.questions = buildQuestionSet();
+  state.answers = {};
+  state.submitted = false;
+  state.timeLeft = 35*60;
+  state.startedAt = Date.now();
+  document.getElementById('resultBanner').classList.remove('show');
+  renderQuiz();
+  updateProgress();
+  updateHistoryLabels();
+  startTimer();
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = false; btn.classList.remove('opacity-50');
+}
+
+function updateHistoryLabels(){
+  const h = loadHistory();
+  document.getElementById('bestScoreLabel').textContent = h.attempts>0 ? (h.best+'/'+TOTAL) : '--';
+  document.getElementById('attemptCountLabel').textContent = h.attempts||0;
+}
+
+function startTimer(){
+  if(state.timerId) clearInterval(state.timerId);
+  state.timerId = setInterval(()=>{
+    if(state.submitted){ clearInterval(state.timerId); return; }
+    state.timeLeft--;
+    renderTimer();
+    if(state.timeLeft<=0){ clearInterval(state.timerId); submitTest(true); }
+  },1000);
+  renderTimer();
+}
+function renderTimer(){
+  const m = Math.floor(Math.max(0,state.timeLeft)/60), s = Math.max(0,state.timeLeft)%60;
+  const label = document.getElementById('timerLabel');
+  label.textContent = String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  label.classList.toggle('low', state.timeLeft<=60);
+}
+
+function renderQuiz(){
+  const vocabQs = state.questions.filter(q=>q.section==='vocab');
+  const grammarQs = state.questions.filter(q=>q.section==='grammar');
+  const readingQs = state.questions.filter(q=>q.section==='reading');
+  const translationQs = state.questions.filter(q=>q.section==='translation');
+  let html = '';
+  html += sectionDivider('📡 Phần 1 · Vocabulary', vocabQs.length);
+  vocabQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('📐 Phần 2 · Grammar (Giới từ chỉ nơi chốn/thời gian & Đại từ sở hữu)', grammarQs.length);
+  grammarQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('🔮 Phần 3 · Đọc hiểu (Reading Comprehension)', readingQs.length);
+  readingQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('💬 Phần 4 · Luyện dịch nghĩa (Translation Practice)', translationQs.length);
+  translationQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  document.getElementById('quizArea').innerHTML = html;
+}
+
+function sectionDivider(title, count){
+  return `<div class="section-divider text-white rounded-xl px-4 py-2.5 mb-4 mt-2 font-extrabold text-sm md:text-base shadow flex items-center justify-between">
+    <span>${title}</span><span class="text-xs font-bold opacity-80">${count} câu</span>
+  </div>`;
+}
+
+function renderQuestionCard(q, num){
+  const letters=['A','B','C','D'];
+  const optsHtml = q.displayOptions.map((opt,i)=>{
+    return `<div class="opt-row px-3 py-2.5 flex items-start gap-2 text-sm md:text-[15px]" data-qid="${q.id}" data-idx="${i}" onclick="selectAnswer('${q.id}',${i})">
+      <span class="font-black text-cyan-700">${letters[i]}.</span><span class="flex-1">${opt}</span>
+    </div>`;
+  }).join('');
+  return `<div class="qcard p-4 mb-3" id="qcard_${q.id}">
+    <p class="font-extrabold text-slate-800 text-sm md:text-base mb-2"><span class="text-cyan-600">Câu ${num}.</span> ${q.prompt}</p>
+    <div class="grid gap-2" id="opts_${q.id}">${optsHtml}</div>
+    <div class="explain-box mt-3" id="explain_${q.id}"></div>
+  </div>`;
+}
+
+function selectAnswer(qid, idx){
+  if(state.submitted) return;
+  state.answers[qid] = idx;
+  const wrap = document.getElementById('opts_'+qid);
+  wrap.querySelectorAll('.opt-row').forEach(el=>{
+    el.classList.toggle('selected', parseInt(el.dataset.idx,10)===idx);
+  });
+  document.getElementById('qcard_'+qid).classList.add('answered');
+  updateProgress();
+}
+
+function updateProgress(){
+  const answered = Object.keys(state.answers).length;
+  document.getElementById('progressText').textContent = answered+' / '+TOTAL+' câu';
+  document.getElementById('progressBar').style.width = Math.round(answered/TOTAL*100)+'%';
+  document.getElementById('answeredCount').textContent = answered;
+}
+
+function submitTest(auto){
+  if(state.submitted) return;
+  const answeredCount = Object.keys(state.answers).length;
+  if(!auto && answeredCount < TOTAL){
+    const proceed = confirm('Bạn còn '+(TOTAL-answeredCount)+' câu chưa trả lời. Vẫn muốn nộp bài?');
+    if(!proceed) return;
+  }
+  state.submitted = true;
+  if(state.timerId) clearInterval(state.timerId);
+  const elapsed = Math.round((Date.now()-state.startedAt)/1000);
+
+  let correct = 0;
+  state.questions.forEach(q=>{
+    const sel = state.answers[q.id];
+    const isCorrect = sel === q.correctDisplayIndex;
+    if(isCorrect) correct++;
+    const card = document.getElementById('qcard_'+q.id);
+    card.classList.add(isCorrect?'correct':'wrong');
+    const wrap = document.getElementById('opts_'+q.id);
+    wrap.querySelectorAll('.opt-row').forEach(el=>{
+      const idx = parseInt(el.dataset.idx,10);
+      el.classList.add('locked');
+      if(idx===q.correctDisplayIndex) el.classList.add('correct-opt');
+      else if(idx===sel && !isCorrect) el.classList.add('wrong-opt');
+    });
+    const exp = document.getElementById('explain_'+q.id);
+    exp.classList.add('show');
+    const viLine = q.vi ? `<p class="text-slate-500 italic mt-1">🇻🇳 ${q.vi}</p>` : '';
+    exp.innerHTML = `<p class="${isCorrect?'text-emerald-700':'text-rose-600'} font-bold">${isCorrect?'✅ Chính xác!':(sel===undefined?'⚪ Bạn chưa chọn đáp án.':'❌ Chưa đúng.')} ${q.explanation}</p>${viLine}`;
+  });
+
+  const pct = Math.round(correct/TOTAL*100);
+  document.getElementById('resultScore').textContent = correct;
+  document.getElementById('resultPct').textContent = pct;
+  const mm = Math.floor(elapsed/60), ss = elapsed%60;
+  document.getElementById('resultTime').textContent = mm+':'+String(ss).padStart(2,'0');
+  let emoji='🙂', title='Đã hoàn thành!';
+  if(pct>=90){ emoji='🏆'; title='Xuất sắc!'; }
+  else if(pct>=70){ emoji='🎉'; title='Làm tốt lắm!'; }
+  else if(pct>=50){ emoji='💪'; title='Khá ổn, cố gắng thêm nhé!'; }
+  else { emoji='📖'; title='Cần ôn tập thêm!'; }
+  document.getElementById('resultEmoji').textContent = emoji;
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultBanner').classList.add('show');
+  document.getElementById('resultBanner').scrollIntoView({behavior:'smooth', block:'start'});
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true; btn.classList.add('opacity-50');
+
+  const h = loadHistory();
+  h.attempts = (h.attempts||0)+1;
+  h.best = Math.max(h.best||0, correct);
+  saveHistory(h);
+  updateHistoryLabels();
+
+  if(pct>=70) launchConfetti();
+}
+
+function retryTest(){ init(); window.scrollTo({top:0, behavior:'smooth'}); }
+
+function scrollToReview(){
+  document.getElementById('quizArea').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function launchConfetti(){
+  const wrap = document.getElementById('confettiWrap');
+  const colors=['#0e7490','#7c3aed','#22d3ee','#a78bfa','#06b6d4'];
+  for(let i=0;i<50;i++){
+    const el=document.createElement('div');
+    el.className='confetti-piece';
+    el.style.left=(Math.random()*100)+'vw';
+    el.style.background=colors[Math.floor(Math.random()*colors.length)];
+    el.style.animationDuration=(2+Math.random()*1.5)+'s';
+    el.style.top='-20px';
+    wrap.appendChild(el);
+    setTimeout(()=>el.remove(), 3600);
+  }
+}
+
+init();
+</script>
+</body>
+</html>

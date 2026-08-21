@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 5 - Test Trắc nghiệm Từ vựng & Ngữ pháp - Tiếng Anh 8</title>
+<meta name="apple-mobile-web-app-title" content="U5 Vocab-Grammar Test">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+  :root{ --accent:#b91c1c; --accent2:#ca8a04; }
+  * { box-sizing: border-box; }
+  body { font-family:'Nunito',sans-serif; background:#fff1f2; }
+  h1,h2,.baloo{ font-family:'Baloo 2',sans-serif; }
+  .hero-gradient{ background: linear-gradient(135deg, #7f1d1d 0%, #b91c1c 55%, #ca8a04 100%); }
+  .qcard{ background:#fff; border-radius:1.1rem; box-shadow:0 1px 4px rgba(0,0,0,.06); border:2px solid #e2e8f0; transition:border .2s, box-shadow .2s; }
+  .qcard.answered{ border-color:#fecaca; }
+  .qcard.correct{ border-color:#22c55e; background:#f0fdf4; }
+  .qcard.wrong{ border-color:#ef4444; background:#fef2f2; }
+  .opt-row{ cursor:pointer; transition: all .15s; border:2px solid #e2e8f0; border-radius:.8rem; }
+  .opt-row:hover{ border-color:var(--accent); background:#fff1f2; }
+  .opt-row.selected{ border-color:#b91c1c; background:#fee2e2; font-weight:800; }
+  .opt-row.correct-opt{ border-color:#22c55e !important; background:#dcfce7 !important; font-weight:800; }
+  .opt-row.wrong-opt{ border-color:#ef4444 !important; background:#fee2e2 !important; font-weight:800; }
+  .opt-row.locked{ cursor:default; pointer-events:none; }
+  .explain-box{ display:none; background:#fffbeb; border:1px solid #fde68a; border-radius:.7rem; padding:.6rem .9rem; font-size:.85rem; color:#334155; }
+  .explain-box.show{ display:block; }
+  .sticky-bar{ position:sticky; bottom:0; z-index:40; }
+  .progress-fill{ transition: width .3s ease; }
+  .badge-pill{ background:#fff; border:2px solid #fde68a; border-radius:999px; padding:.3rem .8rem; font-size:.75rem; font-weight:800; color:#92400e; }
+  .score-ring{ animation: popIn .4s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn{ from{transform:scale(.5); opacity:0;} to{transform:scale(1); opacity:1;} }
+  .confetti-wrap{ position:fixed; inset:0; pointer-events:none; z-index:9999; }
+  .confetti-piece{ position:absolute; width:10px; height:10px; border-radius:2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall{ 0%{transform:translateY(-20px) rotate(0deg); opacity:1;} 100%{transform:translateY(100vh) rotate(720deg); opacity:0;} }
+  .section-divider{ background:linear-gradient(135deg,#7f1d1d,#ca8a04); }
+  #resultBanner{ display:none; }
+  #resultBanner.show{ display:block; }
+  .timer-pill{ font-variant-numeric: tabular-nums; }
+  .timer-pill.low{ color:#fca5a5 !important; }
+  .accordion-btn{ cursor:pointer; transition: background .15s; }
+  .accordion-body{ display:none; }
+  .accordion-body.open{ display:block; }
+  .accordion-chevron{ transition: transform .2s; }
+  .accordion-btn.open .accordion-chevron{ transform: rotate(180deg); }
+  .vocab-row{ border-bottom:1px solid #f1f5f9; padding:.55rem 0; }
+  .vocab-row:last-child{ border-bottom:none; }
+  .passage-en{ background:#fff; border:1px solid #e2e8f0; border-radius:.9rem; padding:.9rem 1.1rem; line-height:1.85; font-size:.92rem; color:#334155; }
+  .passage-vi{ display:none; background:#fffbeb; border:1px solid #fde68a; border-radius:.9rem; padding:.9rem 1.1rem; margin-top:.6rem; line-height:1.85; font-size:.92rem; color:#334155; }
+  .passage-vi.show{ display:block; }
+  .grammar-tip-box{ background:#eff6ff; border:1px solid #bfdbfe; border-radius:.9rem; padding:1rem 1.2rem; line-height:1.9; font-size:.92rem; color:#334155; }
+</style>
+</head>
+<body class="min-h-screen pb-10">
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<header class="hero-gradient text-white py-8 px-4 text-center shadow-xl relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <div class="absolute top-4 left-8 text-6xl">🏮</div>
+    <div class="absolute top-2 right-12 text-5xl">🧧</div>
+    <div class="absolute bottom-2 left-1/3 text-4xl">🎊</div>
+    <div class="absolute bottom-4 right-1/4 text-5xl">🎎</div>
+  </div>
+  <p class="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Tiếng Anh 8 · Unit 5 · Our Customs and Traditions</p>
+  <h1 class="text-3xl md:text-5xl font-extrabold drop-shadow-lg">📝 Test trắc nghiệm: Từ vựng &amp; Ngữ pháp</h1>
+  <p class="mt-2 text-base md:text-lg opacity-90 font-semibold">75 câu hỏi · Từ vựng, Ngữ pháp, Đọc hiểu &amp; Dịch nghĩa</p>
+  <div class="mt-5 max-w-2xl mx-auto flex flex-wrap items-center justify-center gap-3">
+    <span class="badge-pill"><i class="fa-solid fa-star mr-1"></i>Điểm cao nhất: <span id="bestScoreLabel">--</span></span>
+    <span class="badge-pill"><i class="fa-solid fa-rotate mr-1"></i>Số lần làm: <span id="attemptCountLabel">0</span></span>
+    <span class="badge-pill timer-pill"><i class="fa-solid fa-clock mr-1"></i><span id="timerLabel">35:00</span></span>
+  </div>
+  <div class="mt-4 max-w-2xl mx-auto">
+    <div class="flex justify-between text-xs font-bold opacity-80 mb-1">
+      <span>Tiến độ trả lời</span>
+      <span id="progressText">0 / 75 câu</span>
+    </div>
+    <div class="bg-white/20 rounded-full h-3 overflow-hidden">
+      <div id="progressBar" class="bg-white rounded-full h-3 progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-3xl mx-auto px-4 mt-6">
+
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 mb-6 text-sm text-slate-600">
+    <p class="font-bold text-slate-700 mb-1"><i class="fa-solid fa-circle-info text-red-600 mr-1"></i>Hướng dẫn làm bài</p>
+    <p>Trước khi làm bài, hãy mở phần <b>"📚 Ôn tập & Dịch nghĩa Unit 5"</b> bên dưới để xem lại từ vựng, ngữ pháp và bản dịch tiếng Việt của các bài đọc/nghe trong Unit 5 (cả SGK và SBT). Sau đó chọn <b>1 đáp án đúng</b> cho mỗi câu hỏi trắc nghiệm — gồm từ vựng, ngữ pháp, đọc hiểu bài đọc và luyện dịch nghĩa. Bấm <b>"Nộp bài"</b> để xem điểm và giải thích. Bấm <b>"Làm lại"</b> để nhận đề mới và luyện tập không giới hạn số lần.</p>
+  </div>
+
+  <!-- ============ REVIEW & TRANSLATION SECTION ============ -->
+  <div class="bg-white rounded-2xl shadow-sm border-2 border-red-200 mb-6 overflow-hidden">
+    <button class="accordion-btn open w-full flex items-center justify-between px-4 py-3 bg-red-50 font-extrabold text-red-800" onclick="toggleAccordion('reviewMain')">
+      <span><i class="fa-solid fa-book-open-reader mr-2"></i>📚 Ôn tập &amp; Dịch nghĩa Unit 5</span>
+      <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+    </button>
+    <div class="accordion-body open px-4 py-4 space-y-4" id="acc_reviewMain">
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('vocabList')">
+          <span>🏮 Từ vựng Unit 5 (30 từ/cụm từ)</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-2" id="acc_vocabList"></div>
+      </div>
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('grammarTip')">
+          <span>📐 Ngữ pháp: Mạo từ a / an / the / zero article</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-3" id="acc_grammarTip">
+          <div class="grammar-tip-box">
+            <b>1. a / an</b>: dùng trước danh từ số ít, đếm được, <u>chưa xác định</u>, được nhắc đến <u>lần đầu</u>.<br>
+            &nbsp;&nbsp;• <b>a</b> + danh từ bắt đầu bằng ÂM PHỤ ÂM: <i>a communal house, a Chinese restaurant</i>.<br>
+            &nbsp;&nbsp;• <b>an</b> + danh từ bắt đầu bằng ÂM NGUYÊN ÂM (chú ý ÂM, không phải chữ cái đầu!): <i>an ornamental tree, an hour</i> (h câm), <i>an exception</i>.<br>
+            &nbsp;&nbsp;• Lưu ý: <i>a university</i> vẫn dùng "a" vì âm đầu là /j/ (âm phụ âm), không phải nguyên âm.<br><br>
+            <b>2. the</b>: dùng khi vật/người đã <u>xác định cụ thể</u> — đã nhắc trước đó, duy nhất, hoặc đi với <b>so sánh nhất</b>/<b>số thứ tự</b>.<br>
+            Ví dụ: <i>the most important festival, the third lunar month, the Ok Om Bok Festival</i> (tên lễ hội cụ thể).<br><br>
+            <b>3. Zero article (0 / ∅)</b>: KHÔNG dùng mạo từ trước danh từ số nhiều hoặc không đếm được mang <u>nghĩa khái quát chung chung</u>.<br>
+            Ví dụ: <i>∅ Customs and traditions vary from region to region. ∅ Food offerings are placed on the altar.</i>
+          </div>
+        </div>
+      </div>
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('passages')">
+          <span>📖 Bài đọc &amp; bài nghe Unit 5 (có bản dịch)</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-3 space-y-4" id="acc_passages"></div>
+      </div>
+
+    </div>
+  </div>
+  <!-- ============ END REVIEW SECTION ============ -->
+
+  <div id="resultBanner" class="mb-6">
+    <div class="bg-white rounded-2xl shadow-lg border-2 border-red-300 p-6 text-center score-ring">
+      <p id="resultEmoji" class="text-5xl mb-2">🎉</p>
+      <h2 class="text-2xl font-extrabold text-red-700" id="resultTitle">Hoàn thành!</h2>
+      <p class="text-4xl font-black text-slate-800 mt-2"><span id="resultScore">0</span>/75</p>
+      <p class="text-slate-500 font-bold mt-1"><span id="resultPct">0</span>% chính xác · Thời gian: <span id="resultTime">0:00</span></p>
+      <div class="flex flex-wrap justify-center gap-3 mt-4">
+        <button onclick="retryTest()" class="bg-red-800 hover:bg-red-900 text-white font-bold px-5 py-2.5 rounded-xl shadow"><i class="fa-solid fa-rotate-right mr-1"></i>Làm lại (đề mới)</button>
+        <button onclick="scrollToReview()" class="bg-white border-2 border-red-300 text-red-700 font-bold px-5 py-2.5 rounded-xl"><i class="fa-solid fa-magnifying-glass mr-1"></i>Xem lại chi tiết</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="quizArea"></div>
+
+  <div class="sticky-bar bg-white/95 backdrop-blur border-t border-slate-200 mt-6 py-3 px-4 rounded-t-2xl shadow-[0_-4px_14px_rgba(0,0,0,.06)] flex items-center justify-between gap-3">
+    <span class="text-xs md:text-sm font-bold text-slate-500"><span id="answeredCount">0</span>/75 câu đã trả lời</span>
+    <button id="submitBtn" onclick="submitTest()" class="bg-gradient-to-r from-red-800 to-amber-500 text-white font-extrabold px-6 py-2.5 rounded-xl shadow-lg hover:brightness-110"><i class="fa-solid fa-flag-checkered mr-1"></i>Nộp bài</button>
+  </div>
+
+</main>
+
+<script>
+/* ============================================================
+   REVIEW CONTENT: Unit 5 Vocabulary, Grammar rule, Passages (EN+VI)
+   ============================================================ */
+const VOCAB_LIST = [
+  {word:"family reunion", vi:"sum họp gia đình", example:"Every Tet, my grandparents look forward to the family reunion.", exVi:"Mỗi dịp Tết, ông bà tôi đều mong chờ ngày sum họp gia đình."},
+  {word:"wedding ceremony", vi:"lễ cưới", example:"My cousin's wedding ceremony took place at a beautiful garden.", exVi:"Lễ cưới của anh họ tôi diễn ra tại một khu vườn xinh đẹp."},
+  {word:"whale worship", vi:"tục thờ cá Ông", example:"Fishing villages along the coast still practise whale worship.", exVi:"Các làng chài ven biển vẫn duy trì tục thờ cá Ông."},
+  {word:"martial arts", vi:"võ thuật", example:"Many young people learn martial arts to build confidence.", exVi:"Nhiều bạn trẻ học võ thuật để rèn luyện sự tự tin."},
+  {word:"communal house", vi:"đình làng", example:"People erect a bamboo pole in front of the communal house.", exVi:"Người ta dựng cây nêu trước đình làng."},
+  {word:"bamboo pole", vi:"cây nêu", example:"People erect a bamboo pole to ward off evil spirits.", exVi:"Người ta dựng cây nêu để xua đuổi tà ma."},
+  {word:"food offerings", vi:"đồ cúng", example:"Every Tet, families prepare food offerings for their ancestors.", exVi:"Mỗi dịp Tết, các gia đình chuẩn bị đồ cúng cho tổ tiên."},
+  {word:"festival goers", vi:"người tham dự lễ hội", example:"Thousands of festival goers visit the pagoda every spring.", exVi:"Hàng ngàn người tham dự lễ hội đến thăm chùa mỗi mùa xuân."},
+  {word:"ornamental tree", vi:"cây cảnh", example:"My uncle bought an ornamental kumquat tree for Tet.", exVi:"Chú tôi mua một cây quất cảnh để chơi Tết."},
+  {word:"decorative items", vi:"đồ trang trí", example:"Lanterns and red couplets are common decorative items at Tet.", exVi:"Đèn lồng và câu đối đỏ là những đồ trang trí phổ biến dịp Tết."},
+  {word:"traditional", vi:"mang tính truyền thống", example:"Ao dai is considered a traditional costume of Vietnamese women.", exVi:"Áo dài được coi là trang phục truyền thống của phụ nữ Việt Nam."},
+  {word:"worship (v)", vi:"thờ cúng", example:"People worship their ancestors during Tet.", exVi:"Người ta thờ cúng tổ tiên trong dịp Tết."},
+  {word:"ancestor", vi:"tổ tiên", example:"We remember our ancestors during festivals.", exVi:"Chúng ta tưởng nhớ tổ tiên trong các dịp lễ hội."},
+  {word:"evil spirits", vi:"tà ma", example:"The bamboo pole is used to ward off evil spirits.", exVi:"Cây nêu được dùng để xua đuổi tà ma."},
+  {word:"blooming flower", vi:"hoa đang nở", example:"Peach blossoms are blooming flowers seen everywhere at Tet.", exVi:"Hoa đào là những bông hoa nở rộ thấy khắp nơi dịp Tết."},
+  {word:"chrysanthemum", vi:"hoa cúc", example:"Sa Dec Village is famous for growing chrysanthemums.", exVi:"Làng Sa Đéc nổi tiếng trồng hoa cúc."},
+  {word:"peach blossom", vi:"hoa đào", example:"Nhat Tan Village is well-known for its peach blossoms.", exVi:"Làng Nhật Tân nổi tiếng với hoa đào."},
+  {word:"kumquat tree", vi:"cây quất", example:"Kumquat trees usually come from the Tu Lien area.", exVi:"Cây quất thường đến từ khu vực Tứ Liên."},
+  {word:"harvest season", vi:"mùa thu hoạch", example:"Ok Om Bok takes place at the end of the harvest season.", exVi:"Lễ Ok Om Bok diễn ra vào cuối mùa thu hoạch."},
+  {word:"moonlight", vi:"ánh trăng", example:"Families set a tray of food under the moonlight.", exVi:"Các gia đình đặt mâm lễ dưới ánh trăng."},
+  {word:"prosperity", vi:"sự thịnh vượng", example:"People pray for health and prosperity during the Kate Festival.", exVi:"Người ta cầu sức khỏe và thịnh vượng trong lễ hội Katê."},
+  {word:"congratulate", vi:"chúc mừng", example:"The village leaders congratulate the elders.", exVi:"Các vị lãnh đạo làng chúc mừng người cao tuổi."},
+  {word:"honourable", vi:"trang trọng, danh dự", example:"The elders sit at the most honourable place.", exVi:"Người cao tuổi ngồi ở vị trí trang trọng nhất."},
+  {word:"longevity", vi:"trường thọ, sống lâu", example:"Binh An Village holds a longevity celebration every Tet.", exVi:"Làng Bình An tổ chức lễ mừng thọ mỗi dịp Tết."},
+  {word:"custom", vi:"phong tục", example:"Each region in Viet Nam has its own customs.", exVi:"Mỗi vùng miền ở Việt Nam có phong tục riêng."},
+  {word:"ceremony", vi:"buổi lễ, nghi lễ", example:"The main ceremony takes place at the towers.", exVi:"Buổi lễ chính diễn ra tại các ngôi tháp."},
+  {word:"hero", vi:"anh hùng", example:"The Kate Festival helps people remember Cham heroes.", exVi:"Lễ hội Katê giúp người ta tưởng nhớ các anh hùng người Chăm."},
+  {word:"relax", vi:"nghỉ ngơi, thư giãn", example:"Festivals are a time for people to relax and visit each other.", exVi:"Lễ hội là dịp để mọi người nghỉ ngơi và thăm hỏi nhau."},
+  {word:"good luck", vi:"sự may mắn", example:"People wish each other good luck during Tet.", exVi:"Người ta chúc nhau may mắn trong dịp Tết."},
+  {word:"villager", vi:"dân làng", example:"Villagers stand along the riverbank to cheer for their team.", exVi:"Dân làng đứng dọc bờ sông để cổ vũ cho đội của mình."},
+];
+
+const PASSAGES_REVIEW = [
+  {
+    title:"📄 Bài đọc (Getting Started): Tet is Coming!",
+    en:"<b>Elena:</b> Hi Trang! I heard Tet is coming soon. What are people busy doing these days?<br><b>Trang:</b> Yes, Tet is our biggest festival! Families are busy shopping for flowers and decorations.<br><b>Elena:</b> I saw so many beautiful flowers at the market. Where do all these flowers come from?<br><b>Trang:</b> Many of them come from Sa Dec Flower Village in Dong Thap. It's famous for growing all kinds of ornamental flowers, especially chrysanthemums and marigolds.<br><b>Elena:</b> Wow! What about those peach blossom trees and kumquat trees I keep seeing everywhere?<br><b>Trang:</b> Ah, those mostly come from Nhat Tan Village in Ha Noi. It's well-known for its beautiful peach blossoms, while kumquat trees usually come from the Tu Lien area nearby.<br><b>Elena:</b> I also saw some villagers putting up a tall bamboo pole in front of the communal house. What's that for?<br><b>Trang:</b> That's called 'cay neu', a bamboo pole. People erect it in front of the dinh, or communal house, to ward off evil spirits and welcome good luck for the new year.<br><b>Elena:</b> That's fascinating! I can't wait to see more Tet customs.",
+    vi:"<b>Elena:</b> Chào Trang! Mình nghe nói Tết sắp đến rồi. Mọi người đang bận rộn làm gì vậy?<br><b>Trang:</b> Đúng vậy, Tết là lễ hội lớn nhất của chúng mình! Các gia đình đang bận đi mua hoa và đồ trang trí.<br><b>Elena:</b> Mình thấy rất nhiều hoa đẹp ở chợ. Những bông hoa này đến từ đâu vậy?<br><b>Trang:</b> Nhiều loại đến từ Làng hoa Sa Đéc ở Đồng Tháp. Nơi đó nổi tiếng trồng đủ loại hoa cảnh, đặc biệt là hoa cúc và hoa vạn thọ.<br><b>Elena:</b> Ồ! Thế còn những cây đào và cây quất mình thấy khắp nơi thì sao?<br><b>Trang:</b> À, phần lớn đến từ làng Nhật Tân ở Hà Nội. Nơi đó nổi tiếng với hoa đào đẹp, còn cây quất thường đến từ khu vực Tứ Liên gần đó.<br><b>Elena:</b> Mình cũng thấy vài người dân dựng một cây tre cao trước đình làng. Đó là để làm gì vậy?<br><b>Trang:</b> Đó gọi là 'cây nêu'. Người ta dựng nó trước đình làng để xua đuổi tà ma và đón may mắn cho năm mới.<br><b>Elena:</b> Thú vị quá! Mình không thể chờ để xem thêm các phong tục ngày Tết."
+  },
+  {
+    title:"📄 Bài đọc (Skills 1): A Village Festival Day",
+    en:"Every summer, my village by the Red River holds an exciting festival called 'A Village Festival Day'. The festival begins early in the morning with a boat race. Teams of young men from different hamlets row their long wooden boats as fast as they can, while villagers stand along the riverbank, cheering loudly for their favourite team. After the boat race, everyone gathers for the most popular event of the day: duck-catching. Live ducks are released into a pond, and competitors jump in to try to catch them with their bare hands. It is great fun to watch people slipping and splashing in the muddy water! In the afternoon, there are folk games, singing performances, and food stalls selling local specialities. By the end of the day, everyone goes home tired but happy, already looking forward to next year's festival.",
+    vi:"Mỗi mùa hè, làng tôi bên sông Hồng lại tổ chức một lễ hội thú vị mang tên 'Ngày hội làng'. Lễ hội bắt đầu từ sáng sớm với cuộc đua thuyền. Các đội thanh niên từ những xóm khác nhau chèo những chiếc thuyền gỗ dài thật nhanh, trong khi dân làng đứng dọc bờ sông reo hò cổ vũ cho đội mình yêu thích. Sau cuộc đua thuyền, mọi người tập trung lại để xem hoạt động được yêu thích nhất trong ngày: bắt vịt. Những con vịt sống được thả xuống ao, và người chơi nhảy xuống cố bắt chúng bằng tay không. Thật vui khi xem mọi người trượt ngã và té nước trong bùn lầy! Buổi chiều có các trò chơi dân gian, tiết mục ca hát và các quầy hàng bán đặc sản địa phương. Đến cuối ngày, ai nấy đều về nhà mệt nhưng vui, và đã mong chờ lễ hội năm sau."
+  },
+  {
+    title:"🎧 Bài nghe (Skills 2): Ok Om Bok - the Moon Worshipping Festival",
+    en:"Ok Om Bok, also known as the Moon Worshipping Festival, is one of the most important festivals of the Khmer people in the Mekong Delta. It usually takes place in November, at the end of the harvest season. On the night of the festival, families prepare a tray of rice flakes, fruit, and cakes, and set it under the moonlight to thank the Moon God for a good harvest. Children sit around the tray and are fed rice flakes by the elders while making wishes for good luck. The festival also features exciting boat races, known as Ngo boat races, along the river, as well as lantern releasing and traditional Khmer folk performances.",
+    vi:"Ok Om Bok, hay còn gọi là Lễ hội Cúng Trăng, là một trong những lễ hội quan trọng nhất của người Khmer ở đồng bằng sông Cửu Long. Lễ hội thường diễn ra vào tháng Mười Một, khi mùa thu hoạch kết thúc. Vào đêm lễ hội, các gia đình chuẩn bị một mâm cốm dẹp, trái cây và bánh, đặt dưới ánh trăng để tạ ơn Thần Mặt Trăng đã cho một vụ mùa bội thu. Trẻ em ngồi quanh mâm lễ và được người lớn đút cốm dẹp trong khi cầu mong những điều may mắn. Lễ hội còn có các cuộc đua ghe Ngo sôi động trên sông, cùng với thả đèn và các tiết mục văn nghệ dân gian Khmer truyền thống."
+  }
+];
+
+function renderReviewSection(){
+  document.getElementById('acc_vocabList').innerHTML = VOCAB_LIST.map(v=>`
+    <div class="vocab-row flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+      <div><span class="font-extrabold text-red-700">${v.word}</span> <span class="text-slate-400">— ${v.vi}</span></div>
+      <div class="text-xs text-slate-400 italic sm:text-right sm:max-w-[55%]">${v.example}<br>${v.exVi}</div>
+    </div>`).join('');
+
+  document.getElementById('acc_passages').innerHTML = PASSAGES_REVIEW.map((p,i)=>`
+    <div>
+      <p class="font-bold text-slate-700 text-sm mb-2">${p.title}</p>
+      <div class="passage-en">${p.en}</div>
+      <button type="button" onclick="togglePassageVi(${i})" class="mt-2 text-xs font-bold bg-white border-2 border-amber-300 text-amber-700 px-3 py-1.5 rounded-full">
+        <i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt
+      </button>
+      <div class="passage-vi" id="passvi_${i}"><b>🇻🇳 Bản dịch</b><br>${p.vi}</div>
+    </div>`).join('');
+}
+function togglePassageVi(i){ document.getElementById('passvi_'+i).classList.toggle('show'); }
+function toggleAccordion(key){
+  const btn = event.currentTarget;
+  btn.classList.toggle('open');
+  document.getElementById('acc_'+key).classList.toggle('open');
+}
+
+/* ============================================================
+   CONTENT: Unit 5 Vocabulary, Grammar, Reading & Translation Test
+   ============================================================ */
+const VOCAB_TEST = [
+  {id:"v1", prompt:"\"Family reunion\" nghĩa là gì?", options:["sum họp gia đình","lễ cưới","tục thờ cá Ông","võ thuật"], answer:0, explanation:"family reunion = sum họp gia đình.", vi:"family reunion = sum họp gia đình."},
+  {id:"v2", prompt:"\"Wedding ceremony\" nghĩa là gì?", options:["lễ mừng thọ","lễ cưới","lễ hội làng","lễ Trung thu"], answer:1, explanation:"wedding ceremony = lễ cưới.", vi:"wedding ceremony = lễ cưới."},
+  {id:"v3", prompt:"\"Whale worship\" nghĩa là gì?", options:["tục thờ cá Ông","tục thờ thần núi","tục thờ thần bếp","tục thờ tổ tiên"], answer:0, explanation:"whale worship = tục thờ cá Ông (cá voi), phổ biến ở làng chài ven biển.", vi:"whale worship = tục thờ cá Ông."},
+  {id:"v4", prompt:"\"Martial arts\" nghĩa là gì?", options:["âm nhạc dân gian","múa dân gian","võ thuật","trò chơi dân gian"], answer:2, explanation:"martial arts = võ thuật.", vi:"martial arts = võ thuật."},
+  {id:"v5", prompt:"\"Communal house\" nghĩa là gì?", options:["chợ quê","đình làng","sân vận động","nhà thờ họ"], answer:1, explanation:"communal house = đình làng.", vi:"communal house = đình làng."},
+  {id:"v6", prompt:"Điền từ: People erect a bamboo ________ in front of the communal house to welcome Tet.", options:["pole","tree","flower","house"], answer:0, explanation:"bamboo pole = cây nêu.", vi:"Người ta dựng cây nêu trước đình làng để đón Tết."},
+  {id:"v7", prompt:"\"Food offerings\" nghĩa là gì?", options:["đồ trang trí","đồ cúng","hoa đang nở","tà ma"], answer:1, explanation:"food offerings = đồ cúng.", vi:"food offerings = đồ cúng."},
+  {id:"v8", prompt:"\"Festival goers\" nghĩa là gì?", options:["người tham dự lễ hội","võ sĩ","dân làng","du khách nước ngoài"], answer:0, explanation:"festival goers = người tham dự lễ hội.", vi:"festival goers = người tham dự lễ hội."},
+  {id:"v9", prompt:"Điền từ: My uncle bought an ________ kumquat tree for Tet this year.", options:["ornamental","decorative","blooming","communal"], answer:0, explanation:"ornamental tree = cây cảnh; đây là cụm cố định trong bài.", vi:"Chú tôi mua một cây quất cảnh để chơi Tết năm nay."},
+  {id:"v10", prompt:"\"Decorative items\" nghĩa là gì?", options:["đồ trang trí","đồ cúng","cây cảnh","tà ma"], answer:0, explanation:"decorative items = đồ trang trí (đèn lồng, câu đối, bao lì xì...).", vi:"decorative items = đồ trang trí."},
+  {id:"v11", prompt:"\"Traditional\" nghĩa là gì?", options:["hiện đại","mang tính truyền thống","ngẫu nhiên","theo mùa"], answer:1, explanation:"traditional = mang tính truyền thống.", vi:"traditional = mang tính truyền thống."},
+  {id:"v12", prompt:"Điền từ: If a god or ancestor is honoured with rituals and prayers, they are said to be ________.", options:["celebrated","worshipped","decorated","reunited"], answer:1, explanation:"worshipped = được thờ cúng, tôn thờ.", vi:"worshipped = được thờ cúng."},
+  {id:"v13", prompt:"\"Ancestor\" nghĩa là gì?", options:["tổ tiên","con cháu","hàng xóm","du khách"], answer:0, explanation:"ancestor = tổ tiên.", vi:"ancestor = tổ tiên."},
+  {id:"v14", prompt:"\"Evil spirits\" nghĩa là gì?", options:["tà ma","thần may mắn","linh vật","tổ tiên"], answer:0, explanation:"evil spirits = tà ma.", vi:"evil spirits = tà ma."},
+  {id:"v15", prompt:"\"Blooming flower\" nghĩa là gì?", options:["hoa khô","hoa đang nở","hoa giả","hoa cảnh"], answer:1, explanation:"blooming flower = hoa đang nở.", vi:"blooming flower = hoa đang nở."},
+  {id:"v16", prompt:"Sa Dec Flower Village nổi tiếng trồng loại hoa nào theo bài đọc?", options:["hoa hồng","hoa cúc và hoa vạn thọ (marigold)","hoa sen","hoa lan"], answer:1, explanation:"\"famous for growing... chrysanthemums and marigolds\".", vi:"chrysanthemum = hoa cúc."},
+  {id:"v17", prompt:"\"Peach blossom\" nghĩa là gì?", options:["hoa đào","hoa mai","hoa cúc","hoa quất"], answer:0, explanation:"peach blossom = hoa đào.", vi:"peach blossom = hoa đào."},
+  {id:"v18", prompt:"\"Kumquat tree\" nghĩa là gì?", options:["cây quất","cây đào","cây mai","cây tre"], answer:0, explanation:"kumquat tree = cây quất.", vi:"kumquat tree = cây quất."},
+  {id:"v19", prompt:"Điền từ: Ok Om Bok takes place in November, at the end of the ________ season.", options:["harvest","rainy","dry","planting"], answer:0, explanation:"harvest season = mùa thu hoạch.", vi:"Lễ hội diễn ra vào tháng 11, cuối mùa thu hoạch."},
+  {id:"v20", prompt:"\"Moonlight\" nghĩa là gì?", options:["ánh trăng","ánh nắng","ánh đèn","bóng tối"], answer:0, explanation:"moonlight = ánh trăng.", vi:"moonlight = ánh trăng."},
+  {id:"v21", prompt:"\"Prosperity\" nghĩa là gì?", options:["sự thịnh vượng","sự nghèo khó","sự yên tĩnh","sự vội vàng"], answer:0, explanation:"prosperity = sự thịnh vượng.", vi:"prosperity = sự thịnh vượng."},
+  {id:"v22", prompt:"\"Congratulate\" nghĩa là gì?", options:["chúc mừng","chỉ trích","xin lỗi","cảm ơn"], answer:0, explanation:"congratulate = chúc mừng.", vi:"congratulate = chúc mừng."},
+  {id:"v23", prompt:"\"Honourable\" (trong \"the most honourable place\") nghĩa là gì?", options:["trang trọng, danh dự","xa xôi","chật hẹp","ồn ào"], answer:0, explanation:"honourable = trang trọng, danh dự.", vi:"honourable = trang trọng."},
+  {id:"v24", prompt:"\"Longevity\" (trong \"longevity celebration\") nghĩa là gì?", options:["trường thọ, sống lâu","tuổi thơ","hôn nhân","tình bạn"], answer:0, explanation:"longevity = trường thọ, sống lâu.", vi:"longevity celebration = lễ mừng thọ."},
+  {id:"v25", prompt:"\"Custom\" nghĩa là gì?", options:["phong tục","luật pháp","tôn giáo","ngôn ngữ"], answer:0, explanation:"custom = phong tục.", vi:"custom = phong tục."},
+  {id:"v26", prompt:"\"Ceremony\" nghĩa là gì?", options:["buổi lễ, nghi lễ","cuộc thi","bữa tiệc","chuyến đi"], answer:0, explanation:"ceremony = buổi lễ, nghi lễ.", vi:"ceremony = buổi lễ."},
+  {id:"v27", prompt:"Điền từ: The Kate Festival helps people remember Cham ________ and worship their ancestors.", options:["heroes","tourists","farmers","teachers"], answer:0, explanation:"heroes = các anh hùng.", vi:"Lễ hội Katê giúp người ta tưởng nhớ các anh hùng người Chăm."},
+  {id:"v28", prompt:"\"Relax\" (trong bài về lễ hội) nghĩa là gì?", options:["nghỉ ngơi, thư giãn","làm việc chăm chỉ","tranh cãi","lo lắng"], answer:0, explanation:"relax = nghỉ ngơi, thư giãn.", vi:"relax = nghỉ ngơi."},
+  {id:"v29", prompt:"Điền từ: People erect a bamboo pole to welcome good ________ for the new year.", options:["luck","weather","food","music"], answer:0, explanation:"good luck = sự may mắn.", vi:"good luck = may mắn."},
+  {id:"v30", prompt:"\"Villager\" nghĩa là gì?", options:["dân làng","thị trưởng","khách du lịch","thương nhân"], answer:0, explanation:"villager = dân làng.", vi:"villager = dân làng."},
+];
+
+const GRAMMAR_TEST = [
+  {id:"g1", prompt:"My uncle bought ___ ornamental kumquat tree for Tet this year.", options:["a","an","the","0 (không mạo từ)"], answer:1, explanation:"\"ornamental\" bắt đầu bằng âm nguyên âm → dùng \"an\".", vi:"an ornamental tree = một cây cảnh."},
+  {id:"g2", prompt:"We visited ___ communal house in my hometown yesterday.", options:["a","an","the","0 (không mạo từ)"], answer:0, explanation:"\"communal\" bắt đầu bằng âm phụ âm, lần đầu nhắc tới → dùng \"a\".", vi:"a communal house = một ngôi đình."},
+  {id:"g3", prompt:"___ Food offerings are usually placed on the family altar during Tet.", options:["A","An","The","0 (không mạo từ)"], answer:3, explanation:"Danh từ số nhiều mang nghĩa khái quát → không dùng mạo từ.", vi:"Đồ cúng thường được đặt trên bàn thờ gia tiên."},
+  {id:"g4", prompt:"___ Customs and traditions vary from region to region in Viet Nam.", options:["A","An","The","0 (không mạo từ)"], answer:3, explanation:"Danh từ số nhiều mang nghĩa khái quát → không dùng mạo từ.", vi:"Phong tục và truyền thống thay đổi theo từng vùng miền."},
+  {id:"g5", prompt:"___ most important festival for Vietnamese people is Tet.", options:["A","An","The","0 (không mạo từ)"], answer:2, explanation:"Tính từ so sánh nhất \"most important\" luôn đi với \"the\".", vi:"Lễ hội quan trọng nhất là Tết."},
+  {id:"g6", prompt:"It takes ___ hour to prepare all the food offerings for the altar.", options:["a","an","the","0 (không mạo từ)"], answer:1, explanation:"\"hour\" bắt đầu bằng âm nguyên âm (h câm) → dùng \"an\".", vi:"an hour = một giờ đồng hồ."},
+  {id:"g7", prompt:"Tet is ___ busiest and most exciting time of the year for Vietnamese families.", options:["a","an","the","0 (không mạo từ)"], answer:2, explanation:"So sánh nhất (busiest, most exciting) luôn đi với \"the\".", vi:"the busiest = bận rộn nhất."},
+  {id:"g8", prompt:"___ Ok Om Bok Festival is celebrated by Khmer people in the Mekong Delta.", options:["A","An","The","0 (không mạo từ)"], answer:2, explanation:"Tên lễ hội cụ thể, đã xác định → dùng \"the\".", vi:"the Ok Om Bok Festival = Lễ hội Ok Om Bok."},
+  {id:"g9", prompt:"We went to ___ Chinese restaurant last night.", options:["a","an","the","0 (không mạo từ)"], answer:0, explanation:"Lần đầu nhắc tới, chưa xác định nhà hàng cụ thể → dùng \"a\".", vi:"a Chinese restaurant = một nhà hàng Trung Hoa."},
+  {id:"g10", prompt:"My grandmother told me ___ interesting story about the Kitchen Gods last night.", options:["a","an","the","0 (không mạo từ)"], answer:0, explanation:"Danh từ chính là \"story\" (âm /s/, phụ âm), \"interesting\" chỉ bổ nghĩa → dùng \"a\".", vi:"a story = một câu chuyện."},
+  {id:"g11", prompt:"We often stay at home on New Year's Eve, but this year was ___ exception.", options:["a","an","the","0 (không mạo từ)"], answer:1, explanation:"\"exception\" bắt đầu bằng âm nguyên âm, lần đầu nhắc tới → dùng \"an\".", vi:"an exception = một ngoại lệ."},
+  {id:"g12", prompt:"Fishermen told me ___ old legend about whale spirits protecting sailors at sea.", options:["a","an","the","0 (không mạo từ)"], answer:1, explanation:"\"old\" bắt đầu bằng âm nguyên âm, danh từ chưa xác định → dùng \"an\".", vi:"an old legend = một truyền thuyết xưa."},
+  {id:"g13", prompt:"Which statement about the article 'an' is correct?", options:["'An' is only used before words starting with the letter 'a'.","'An' is used before a word that starts with a vowel SOUND, not necessarily a vowel letter.","'An' is never used before the letter 'h'.","'An' is only used with plural nouns."], answer:1, explanation:"Mấu chốt là ÂM đầu, không phải chữ cái đầu, ví dụ 'an hour' (h câm).", vi:"Quy tắc: dựa vào ÂM, không phải chữ cái."},
+  {id:"g14", prompt:"Which statement is correct about plural nouns with a general meaning (e.g. \"customs and traditions\" nói chung)?", options:["Chúng luôn dùng 'the'.","Chúng thường KHÔNG dùng mạo từ (mạo từ zero).","Chúng luôn dùng 'a'.","Chúng luôn dùng 'an'."], answer:1, explanation:"Danh từ số nhiều mang nghĩa khái quát dùng mạo từ zero, không dùng \"the\".", vi:"Danh từ số nhiều khái quát → không mạo từ."},
+  {id:"g15", prompt:"Which statement about superlative adjectives (e.g. \"the most important\", \"the busiest\") is correct?", options:["Chúng không bao giờ cần mạo từ.","Chúng luôn đi kèm với 'the'.","Chúng luôn đi kèm với 'a/an'.","Chúng chỉ dùng với danh từ số nhiều."], answer:1, explanation:"Tính từ so sánh nhất luôn đi với \"the\".", vi:"So sánh nhất luôn có 'the'."},
+  {id:"g16", prompt:"Which statement about ordinal numbers (e.g. \"the first day\", \"the third lunar month\") is correct?", options:["Chúng luôn đi kèm với 'the'.","Chúng luôn đi kèm với 'a/an'.","Chúng không bao giờ cần mạo từ.","Chúng chỉ dùng trong văn nói."], answer:0, explanation:"Số thứ tự luôn đi với \"the\".", vi:"Số thứ tự luôn có 'the'."},
+  {id:"g17", prompt:"Why does \"a university\" use \"a\" instead of \"an\", even though it starts with the letter 'u'?", options:["Vì 'university' là danh từ riêng.","Vì âm đầu của 'university' là /j/, một âm phụ âm.","Vì 'university' luôn số nhiều.","Vì quy tắc này chỉ áp dụng cho tên trường học."], answer:1, explanation:"'university' đọc là /ˌjuːnɪˈvɜːsəti/, âm đầu là /j/ (phụ âm) nên dùng \"a\".", vi:"university → âm đầu /j/ → dùng 'a'."},
+  {id:"g18", prompt:"Which statement about uncountable nouns with a general meaning (e.g. \"advice\", \"information\") is correct?", options:["Chúng thường dùng 'a' hoặc 'an'.","Chúng thường KHÔNG dùng 'a/an' vì 'a/an' có nghĩa là 'một'.","Chúng luôn dùng 'the'.","Chúng luôn ở dạng số nhiều."], answer:1, explanation:"Danh từ không đếm được mang nghĩa chung không dùng a/an vì a/an nghĩa là \"một\".", vi:"Danh từ không đếm được → không dùng a/an."},
+  {id:"g19", prompt:"When something has already been mentioned before, or is known to both speaker and listener, which article should normally be used?", options:["a","an","the","không cần quy tắc cố định"], answer:2, explanation:"Khi vật đã được xác định/đã biết, ta dùng \"the\".", vi:"Vật đã xác định → dùng 'the'."},
+  {id:"g20", prompt:"Which statement about proper nouns such as country names (e.g. \"Viet Nam\", \"Japan\") is correct?", options:["Chúng luôn cần 'the'.","Hầu hết không dùng mạo từ.","Chúng luôn cần 'a/an'.","Chúng luôn ở dạng số nhiều."], answer:1, explanation:"Hầu hết danh từ riêng (tên quốc gia) không dùng mạo từ.", vi:"Tên quốc gia thường không mạo từ."},
+];
+
+const READING_TEST = [
+  // ---- Passage 1: Tet is Coming (Getting Started) ----
+  {id:"r1", prompt:"[Bài đọc 1] What are Vietnamese families busy doing as Tet approaches?", options:["Shopping for flowers and decorations.","Travelling abroad.","Studying for exams.","Cleaning the communal house only."], answer:0, explanation:"\"Families are busy shopping for flowers and decorations.\"", vi:"Các gia đình bận đi mua hoa và đồ trang trí."},
+  {id:"r2", prompt:"[Bài đọc 1] Sa Dec Flower Village in Dong Thap is famous for growing what?", options:["Ornamental flowers such as chrysanthemums and marigolds.","Only rice.","Fruit trees.","Bamboo poles."], answer:0, explanation:"\"It's famous for growing all kinds of ornamental flowers, especially chrysanthemums and marigolds.\"", vi:"Làng Sa Đéc nổi tiếng trồng hoa cảnh, đặc biệt hoa cúc và hoa vạn thọ."},
+  {id:"r3", prompt:"[Bài đọc 1] Which village is well-known for its peach blossoms?", options:["Nhat Tan Village in Ha Noi.","Sa Dec Village in Dong Thap.","Tu Lien Village.","Bat Trang Village."], answer:0, explanation:"\"...those mostly come from Nhat Tan Village in Ha Noi. It's well-known for its beautiful peach blossoms.\"", vi:"Làng Nhật Tân ở Hà Nội nổi tiếng với hoa đào."},
+  {id:"r4", prompt:"[Bài đọc 1] Where do the kumquat trees mostly come from, according to Trang?", options:["The Tu Lien area near Nhat Tan.","Sa Dec Village.","Da Lat.","Hoi An."], answer:0, explanation:"\"...kumquat trees usually come from the Tu Lien area nearby.\"", vi:"Cây quất thường đến từ khu vực Tứ Liên gần Nhật Tân."},
+  {id:"r5", prompt:"[Bài đọc 1] Why do people erect a bamboo pole (cay neu) in front of the communal house?", options:["To ward off evil spirits and welcome good luck.","To decorate the yard for photos.","To mark the village boundary.","To dry clothes."], answer:0, explanation:"\"People erect it in front of the dinh... to ward off evil spirits and welcome good luck for the new year.\"", vi:"Người ta dựng cây nêu để xua đuổi tà ma và đón may mắn năm mới."},
+  // ---- Passage 2: A Village Festival Day (Skills 1) ----
+  {id:"r6", prompt:"[Bài đọc 2] Where does the village festival described in the passage take place?", options:["By the Red River.","In the mountains.","At the seaside.","In the city centre."], answer:0, explanation:"\"my village by the Red River holds an exciting festival...\"", vi:"Lễ hội diễn ra ở làng bên sông Hồng."},
+  {id:"r7", prompt:"[Bài đọc 2] What is the first event of the festival?", options:["A boat race.","Duck-catching.","Folk games.","A singing contest."], answer:0, explanation:"\"The festival begins early in the morning with a boat race.\"", vi:"Hoạt động đầu tiên là đua thuyền."},
+  {id:"r8", prompt:"[Bài đọc 2] What do competitors use to catch the ducks?", options:["Their bare hands.","Nets.","Small boats.","Long sticks."], answer:0, explanation:"\"competitors jump in to try to catch them with their bare hands.\"", vi:"Người chơi dùng tay không để bắt vịt."},
+  {id:"r9", prompt:"[Bài đọc 2] Which activities take place in the afternoon of the festival?", options:["Folk games, singing performances, and food stalls.","Only the boat race.","Fireworks and a parade.","A cooking competition only."], answer:0, explanation:"\"In the afternoon, there are folk games, singing performances, and food stalls...\"", vi:"Buổi chiều có trò chơi dân gian, ca hát và các quầy hàng ăn."},
+  {id:"r10", prompt:"[Bài đọc 2] How do villagers feel at the end of the festival day?", options:["Tired but happy, looking forward to next year's festival.","Bored and disappointed.","Angry about the weather.","Confused about the schedule."], answer:0, explanation:"\"everyone goes home tired but happy, already looking forward to next year's festival.\"", vi:"Mọi người về nhà mệt nhưng vui, và mong chờ lễ hội năm sau."},
+  // ---- Passage 3: Ok Om Bok (Skills 2 listening) ----
+  {id:"r11", prompt:"[Bài nghe 3] Which ethnic group celebrates Ok Om Bok?", options:["The Khmer people.","The Kinh people.","The Tay people.","The Cham people."], answer:0, explanation:"\"...one of the most important festivals of the Khmer people in the Mekong Delta.\"", vi:"Người Khmer tổ chức lễ hội Ok Om Bok."},
+  {id:"r12", prompt:"[Bài nghe 3] When does Ok Om Bok usually take place?", options:["In November, at the end of the harvest season.","In January, at the start of the new year.","In July, during summer.","In March, at the beginning of spring."], answer:0, explanation:"\"It usually takes place in November, at the end of the harvest season.\"", vi:"Lễ hội diễn ra vào tháng 11, cuối mùa thu hoạch."},
+  {id:"r13", prompt:"[Bài nghe 3] What do families do on the night of the festival?", options:["Prepare a tray of food and set it under the moonlight.","Cook a big feast and eat indoors.","Release fireworks over the river.","Visit the communal house only."], answer:0, explanation:"\"families prepare a tray of rice flakes, fruit, and cakes, and set it under the moonlight...\"", vi:"Các gia đình chuẩn bị mâm lễ và đặt dưới ánh trăng."},
+  {id:"r14", prompt:"[Bài nghe 3] Who feeds the children rice flakes while they make wishes?", options:["The elders.","Their teachers.","Village leaders only.","Their friends."], answer:0, explanation:"\"Children sit around the tray and are fed rice flakes by the elders while making wishes for good luck.\"", vi:"Người lớn tuổi đút cốm dẹp cho trẻ em trong khi các em cầu ước."},
+  {id:"r15", prompt:"[Bài nghe 3] Besides the tray ceremony, what other activity features in the festival?", options:["Ngo boat races along the river.","A football match.","A cooking contest.","A car parade."], answer:0, explanation:"\"The festival also features exciting boat races, known as Ngo boat races, along the river.\"", vi:"Lễ hội còn có các cuộc đua ghe Ngo trên sông."},
+];
+
+const TRANSLATION_TEST = [
+  {id:"t1", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"Many families prepare food offerings to honour their ancestors during Tet.\"", options:["Nhiều gia đình chuẩn bị đồ cúng để tưởng nhớ tổ tiên trong dịp Tết.","Nhiều gia đình đi du lịch nước ngoài trong dịp Tết.","Nhiều gia đình dọn dẹp nhà cửa trong dịp Tết.","Nhiều gia đình tổ chức tiệc sinh nhật trong dịp Tết."], answer:0, explanation:"food offerings to honour their ancestors = đồ cúng để tưởng nhớ tổ tiên.", vi:""},
+  {id:"t2", prompt:"Chọn bản dịch tiếng Anh đúng: \"Người ta dựng cây nêu trước đình làng để xua đuổi tà ma.\"", options:["People erect a bamboo pole in front of the communal house to ward off evil spirits.","People plant a kumquat tree in front of the market to attract visitors.","People build a temple near the river to worship the Moon God.","People hold a boat race in front of the communal house every year."], answer:0, explanation:"dựng cây nêu = erect a bamboo pole; xua đuổi tà ma = ward off evil spirits.", vi:""},
+  {id:"t3", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"The Kate Festival helps people remember Cham heroes and worship their ancestors.\"", options:["Lễ hội Katê giúp người dân tưởng nhớ các anh hùng người Chăm và thờ cúng tổ tiên của họ.","Lễ hội Katê giúp người dân học cách nấu ăn truyền thống.","Lễ hội Katê chỉ dành cho trẻ em tham gia.","Lễ hội Katê diễn ra vào mùa hè hằng năm."], answer:0, explanation:"remember Cham heroes and worship their ancestors = tưởng nhớ anh hùng người Chăm và thờ cúng tổ tiên.", vi:""},
+  {id:"t4", prompt:"Chọn bản dịch tiếng Anh đúng: \"Làng tôi tổ chức một lễ hội thú vị bên bờ sông Hồng mỗi mùa hè.\"", options:["My village holds an exciting festival by the Red River every summer.","My village holds a quiet meeting by the Red River every winter.","My village builds a new bridge over the Red River every year.","My village grows rice by the Red River every summer."], answer:0, explanation:"tổ chức một lễ hội thú vị bên bờ sông Hồng mỗi mùa hè = holds an exciting festival by the Red River every summer.", vi:""},
+  {id:"t5", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"Families set a tray of rice flakes, fruit, and cakes under the moonlight to thank the Moon God.\"", options:["Các gia đình đặt một mâm cốm dẹp, trái cây và bánh dưới ánh trăng để tạ ơn Thần Mặt Trăng.","Các gia đình nấu cơm và canh để mời hàng xóm.","Các gia đình mang hoa quả lên chùa vào buổi sáng.","Các gia đình tổ chức tiệc sinh nhật ngoài trời."], answer:0, explanation:"set a tray... under the moonlight to thank the Moon God = đặt mâm lễ dưới ánh trăng để tạ ơn Thần Mặt Trăng.", vi:""},
+  {id:"t6", prompt:"Chọn bản dịch tiếng Anh đúng: \"Người cao tuổi mặc áo dài truyền thống và ngồi ở vị trí trang trọng nhất.\"", options:["The elderly wear traditional ao dai and sit at the most honourable place.","The elderly cook traditional food for the whole village.","The elderly travel to the countryside every summer.","The elderly teach children how to make kites."], answer:0, explanation:"mặc áo dài truyền thống và ngồi ở vị trí trang trọng nhất = wear traditional ao dai and sit at the most honourable place.", vi:""},
+  {id:"t7", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"Thousands of festival goers come to enjoy the beauty of Cham culture.\"", options:["Hàng nghìn người tham dự lễ hội đến để tận hưởng vẻ đẹp của văn hóa Chăm.","Hàng nghìn học sinh đến trường để học tiếng Chăm.","Hàng nghìn nông dân đến chợ để bán nông sản.","Hàng nghìn du khách đến biển để tắm nắng."], answer:0, explanation:"thousands of festival goers... enjoy the beauty of Cham culture = hàng nghìn người tham dự lễ hội tận hưởng vẻ đẹp văn hóa Chăm.", vi:""},
+  {id:"t8", prompt:"Chọn bản dịch tiếng Anh đúng: \"Vào buổi sáng lễ hội, dân làng đứng dọc bờ sông reo hò cổ vũ đội đua thuyền của mình.\"", options:["In the morning of the festival, villagers stand along the riverbank cheering for their boat racing team.","In the evening of the festival, villagers go home to rest after a long day.","In the morning of the festival, villagers sell food at small stalls.","In the afternoon, villagers watch a singing performance at the temple."], answer:0, explanation:"đứng dọc bờ sông reo hò cổ vũ = stand along the riverbank cheering.", vi:""},
+  {id:"t9", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"My uncle bought an ornamental kumquat tree to decorate the living room for Tet.\"", options:["Chú tôi đã mua một cây quất cảnh để trang trí phòng khách vào dịp Tết.","Chú tôi đã mua một chiếc xe mới để đi làm.","Chú tôi đã trồng rau trong vườn nhà.","Chú tôi đã sửa lại mái nhà trước Tết."], answer:0, explanation:"bought an ornamental kumquat tree to decorate the living room = mua cây quất cảnh để trang trí phòng khách.", vi:""},
+  {id:"t10", prompt:"Chọn bản dịch tiếng Anh đúng: \"Lễ hội Ok Om Bok là một trong những lễ hội quan trọng nhất của người Khmer ở đồng bằng sông Cửu Long.\"", options:["Ok Om Bok is one of the most important festivals of the Khmer people in the Mekong Delta.","Ok Om Bok is a small local market held once a year in Ha Noi.","Ok Om Bok is a traditional dance performed only by children.","Ok Om Bok is a type of food eaten during the Mid-Autumn Festival."], answer:0, explanation:"một trong những lễ hội quan trọng nhất của người Khmer ở đồng bằng sông Cửu Long = one of the most important festivals of the Khmer people in the Mekong Delta.", vi:""},
+];
+
+VOCAB_TEST.forEach(q=>q.section='vocab');
+GRAMMAR_TEST.forEach(q=>q.section='grammar');
+READING_TEST.forEach(q=>q.section='reading');
+TRANSLATION_TEST.forEach(q=>q.section='translation');
+const TOTAL = VOCAB_TEST.length + GRAMMAR_TEST.length + READING_TEST.length + TRANSLATION_TEST.length;
+const STORAGE_KEY = 'u5_vocabgrammar_test_v1';
+
+/* ---------------- utility ---------------- */
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+function loadHistory(){
+  try{ const raw=localStorage.getItem(STORAGE_KEY); return raw? JSON.parse(raw) : {best:0, attempts:0}; }
+  catch(e){ return {best:0, attempts:0}; }
+}
+function saveHistory(h){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(h)); }catch(e){} }
+
+/* ---------------- state ---------------- */
+let state = { questions:[], answers:{}, submitted:false, timeLeft: 35*60, timerId:null, startedAt:null };
+
+function buildQuestionSet(){
+  const all = shuffle(VOCAB_TEST.concat(GRAMMAR_TEST).concat(READING_TEST).concat(TRANSLATION_TEST).map(q=>{
+    const optOrder = shuffle(q.options.map((o,i)=>i));
+    return Object.assign({}, q, { displayOptions: optOrder.map(i=>q.options[i]), correctDisplayIndex: optOrder.indexOf(q.answer) });
+  }));
+  return all;
+}
+
+function init(){
+  renderReviewSection();
+  state.questions = buildQuestionSet();
+  state.answers = {};
+  state.submitted = false;
+  state.timeLeft = 35*60;
+  state.startedAt = Date.now();
+  document.getElementById('resultBanner').classList.remove('show');
+  renderQuiz();
+  updateProgress();
+  updateHistoryLabels();
+  startTimer();
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = false; btn.classList.remove('opacity-50');
+}
+
+function updateHistoryLabels(){
+  const h = loadHistory();
+  document.getElementById('bestScoreLabel').textContent = h.attempts>0 ? (h.best+'/'+TOTAL) : '--';
+  document.getElementById('attemptCountLabel').textContent = h.attempts||0;
+}
+
+function startTimer(){
+  if(state.timerId) clearInterval(state.timerId);
+  state.timerId = setInterval(()=>{
+    if(state.submitted){ clearInterval(state.timerId); return; }
+    state.timeLeft--;
+    renderTimer();
+    if(state.timeLeft<=0){ clearInterval(state.timerId); submitTest(true); }
+  },1000);
+  renderTimer();
+}
+function renderTimer(){
+  const m = Math.floor(Math.max(0,state.timeLeft)/60), s = Math.max(0,state.timeLeft)%60;
+  const label = document.getElementById('timerLabel');
+  label.textContent = String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  label.classList.toggle('low', state.timeLeft<=60);
+}
+
+function renderQuiz(){
+  const vocabQs = state.questions.filter(q=>q.section==='vocab');
+  const grammarQs = state.questions.filter(q=>q.section==='grammar');
+  const readingQs = state.questions.filter(q=>q.section==='reading');
+  const translationQs = state.questions.filter(q=>q.section==='translation');
+  let html = '';
+  html += sectionDivider('📚 Phần 1 · Vocabulary', vocabQs.length);
+  vocabQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('📐 Phần 2 · Grammar (Mạo từ a/an/the/0)', grammarQs.length);
+  grammarQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('📖 Phần 3 · Đọc hiểu (Reading Comprehension)', readingQs.length);
+  readingQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('🇻🇳 Phần 4 · Luyện dịch nghĩa (Translation Practice)', translationQs.length);
+  translationQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  document.getElementById('quizArea').innerHTML = html;
+}
+
+function sectionDivider(title, count){
+  return `<div class="section-divider text-white rounded-xl px-4 py-2.5 mb-4 mt-2 font-extrabold text-sm md:text-base shadow flex items-center justify-between">
+    <span>${title}</span><span class="text-xs font-bold opacity-80">${count} câu</span>
+  </div>`;
+}
+
+function renderQuestionCard(q, num){
+  const letters=['A','B','C','D'];
+  const optsHtml = q.displayOptions.map((opt,i)=>{
+    return `<div class="opt-row px-3 py-2.5 flex items-start gap-2 text-sm md:text-[15px]" data-qid="${q.id}" data-idx="${i}" onclick="selectAnswer('${q.id}',${i})">
+      <span class="font-black text-red-700">${letters[i]}.</span><span class="flex-1">${opt}</span>
+    </div>`;
+  }).join('');
+  return `<div class="qcard p-4 mb-3" id="qcard_${q.id}">
+    <p class="font-extrabold text-slate-800 text-sm md:text-base mb-2"><span class="text-red-600">Câu ${num}.</span> ${q.prompt}</p>
+    <div class="grid gap-2" id="opts_${q.id}">${optsHtml}</div>
+    <div class="explain-box mt-3" id="explain_${q.id}"></div>
+  </div>`;
+}
+
+function selectAnswer(qid, idx){
+  if(state.submitted) return;
+  state.answers[qid] = idx;
+  const wrap = document.getElementById('opts_'+qid);
+  wrap.querySelectorAll('.opt-row').forEach(el=>{
+    el.classList.toggle('selected', parseInt(el.dataset.idx,10)===idx);
+  });
+  document.getElementById('qcard_'+qid).classList.add('answered');
+  updateProgress();
+}
+
+function updateProgress(){
+  const answered = Object.keys(state.answers).length;
+  document.getElementById('progressText').textContent = answered+' / '+TOTAL+' câu';
+  document.getElementById('progressBar').style.width = Math.round(answered/TOTAL*100)+'%';
+  document.getElementById('answeredCount').textContent = answered;
+}
+
+function submitTest(auto){
+  if(state.submitted) return;
+  const answeredCount = Object.keys(state.answers).length;
+  if(!auto && answeredCount < TOTAL){
+    const proceed = confirm('Bạn còn '+(TOTAL-answeredCount)+' câu chưa trả lời. Vẫn muốn nộp bài?');
+    if(!proceed) return;
+  }
+  state.submitted = true;
+  if(state.timerId) clearInterval(state.timerId);
+  const elapsed = Math.round((Date.now()-state.startedAt)/1000);
+
+  let correct = 0;
+  state.questions.forEach(q=>{
+    const sel = state.answers[q.id];
+    const isCorrect = sel === q.correctDisplayIndex;
+    if(isCorrect) correct++;
+    const card = document.getElementById('qcard_'+q.id);
+    card.classList.add(isCorrect?'correct':'wrong');
+    const wrap = document.getElementById('opts_'+q.id);
+    wrap.querySelectorAll('.opt-row').forEach(el=>{
+      const idx = parseInt(el.dataset.idx,10);
+      el.classList.add('locked');
+      if(idx===q.correctDisplayIndex) el.classList.add('correct-opt');
+      else if(idx===sel && !isCorrect) el.classList.add('wrong-opt');
+    });
+    const exp = document.getElementById('explain_'+q.id);
+    exp.classList.add('show');
+    const viLine = q.vi ? `<p class="text-slate-500 italic mt-1">🇻🇳 ${q.vi}</p>` : '';
+    exp.innerHTML = `<p class="${isCorrect?'text-emerald-700':'text-rose-600'} font-bold">${isCorrect?'✅ Chính xác!':(sel===undefined?'⚪ Bạn chưa chọn đáp án.':'❌ Chưa đúng.')} ${q.explanation}</p>${viLine}`;
+  });
+
+  const pct = Math.round(correct/TOTAL*100);
+  document.getElementById('resultScore').textContent = correct;
+  document.getElementById('resultPct').textContent = pct;
+  const mm = Math.floor(elapsed/60), ss = elapsed%60;
+  document.getElementById('resultTime').textContent = mm+':'+String(ss).padStart(2,'0');
+  let emoji='🙂', title='Đã hoàn thành!';
+  if(pct>=90){ emoji='🏆'; title='Xuất sắc!'; }
+  else if(pct>=70){ emoji='🎉'; title='Làm tốt lắm!'; }
+  else if(pct>=50){ emoji='💪'; title='Khá ổn, cố gắng thêm nhé!'; }
+  else { emoji='📖'; title='Cần ôn tập thêm!'; }
+  document.getElementById('resultEmoji').textContent = emoji;
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultBanner').classList.add('show');
+  document.getElementById('resultBanner').scrollIntoView({behavior:'smooth', block:'start'});
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true; btn.classList.add('opacity-50');
+
+  const h = loadHistory();
+  h.attempts = (h.attempts||0)+1;
+  h.best = Math.max(h.best||0, correct);
+  saveHistory(h);
+  updateHistoryLabels();
+
+  if(pct>=70) launchConfetti();
+}
+
+function retryTest(){ init(); window.scrollTo({top:0, behavior:'smooth'}); }
+
+function scrollToReview(){
+  document.getElementById('quizArea').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function launchConfetti(){
+  const wrap = document.getElementById('confettiWrap');
+  const colors=['#b91c1c','#ca8a04','#facc15','#7f1d1d','#f97316'];
+  for(let i=0;i<50;i++){
+    const el=document.createElement('div');
+    el.className='confetti-piece';
+    el.style.left=(Math.random()*100)+'vw';
+    el.style.background=colors[Math.floor(Math.random()*colors.length)];
+    el.style.animationDuration=(2+Math.random()*1.5)+'s';
+    el.style.top='-20px';
+    wrap.appendChild(el);
+    setTimeout(()=>el.remove(), 3600);
+  }
+}
+
+init();
+</script>
+</body>
+</html>

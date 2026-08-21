@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 6 - Test Trắc nghiệm Từ vựng & Ngữ pháp - Tiếng Anh 8</title>
+<meta name="apple-mobile-web-app-title" content="U6 Vocab-Grammar Test">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+  :root{ --accent:#1d4ed8; --accent2:#0891b2; }
+  * { box-sizing: border-box; }
+  body { font-family:'Nunito',sans-serif; background:#eff6ff; }
+  h1,h2,.baloo{ font-family:'Baloo 2',sans-serif; }
+  .hero-gradient{ background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 55%, #0891b2 100%); }
+  .qcard{ background:#fff; border-radius:1.1rem; box-shadow:0 1px 4px rgba(0,0,0,.06); border:2px solid #e2e8f0; transition:border .2s, box-shadow .2s; }
+  .qcard.answered{ border-color:#bfdbfe; }
+  .qcard.correct{ border-color:#22c55e; background:#f0fdf4; }
+  .qcard.wrong{ border-color:#ef4444; background:#fef2f2; }
+  .opt-row{ cursor:pointer; transition: all .15s; border:2px solid #e2e8f0; border-radius:.8rem; }
+  .opt-row:hover{ border-color:var(--accent); background:#eff6ff; }
+  .opt-row.selected{ border-color:#1d4ed8; background:#dbeafe; font-weight:800; }
+  .opt-row.correct-opt{ border-color:#22c55e !important; background:#dcfce7 !important; font-weight:800; }
+  .opt-row.wrong-opt{ border-color:#ef4444 !important; background:#fee2e2 !important; font-weight:800; }
+  .opt-row.locked{ cursor:default; pointer-events:none; }
+  .explain-box{ display:none; background:#f0f9ff; border:1px solid #bae6fd; border-radius:.7rem; padding:.6rem .9rem; font-size:.85rem; color:#334155; }
+  .explain-box.show{ display:block; }
+  .sticky-bar{ position:sticky; bottom:0; z-index:40; }
+  .progress-fill{ transition: width .3s ease; }
+  .badge-pill{ background:#fff; border:2px solid #a5f3fc; border-radius:999px; padding:.3rem .8rem; font-size:.75rem; font-weight:800; color:#0e7490; }
+  .score-ring{ animation: popIn .4s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn{ from{transform:scale(.5); opacity:0;} to{transform:scale(1); opacity:1;} }
+  .confetti-wrap{ position:fixed; inset:0; pointer-events:none; z-index:9999; }
+  .confetti-piece{ position:absolute; width:10px; height:10px; border-radius:2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall{ 0%{transform:translateY(-20px) rotate(0deg); opacity:1;} 100%{transform:translateY(100vh) rotate(720deg); opacity:0;} }
+  .section-divider{ background:linear-gradient(135deg,#1e3a8a,#0891b2); }
+  #resultBanner{ display:none; }
+  #resultBanner.show{ display:block; }
+  .timer-pill{ font-variant-numeric: tabular-nums; }
+  .timer-pill.low{ color:#fca5a5 !important; }
+  .accordion-btn{ cursor:pointer; transition: background .15s; }
+  .accordion-body{ display:none; }
+  .accordion-body.open{ display:block; }
+  .accordion-chevron{ transition: transform .2s; }
+  .accordion-btn.open .accordion-chevron{ transform: rotate(180deg); }
+  .vocab-row{ border-bottom:1px solid #f1f5f9; padding:.55rem 0; }
+  .vocab-row:last-child{ border-bottom:none; }
+  .passage-en{ background:#fff; border:1px solid #e2e8f0; border-radius:.9rem; padding:.9rem 1.1rem; line-height:1.85; font-size:.92rem; color:#334155; }
+  .passage-vi{ display:none; background:#f0f9ff; border:1px solid #bae6fd; border-radius:.9rem; padding:.9rem 1.1rem; margin-top:.6rem; line-height:1.85; font-size:.92rem; color:#334155; }
+  .passage-vi.show{ display:block; }
+  .grammar-tip-box{ background:#eff6ff; border:1px solid #bfdbfe; border-radius:.9rem; padding:1rem 1.2rem; line-height:1.9; font-size:.92rem; color:#334155; }
+</style>
+</head>
+<body class="min-h-screen pb-10">
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<header class="hero-gradient text-white py-8 px-4 text-center shadow-xl relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <div class="absolute top-4 left-8 text-6xl">🏙️</div>
+    <div class="absolute top-2 right-12 text-5xl">🏢</div>
+    <div class="absolute bottom-2 left-1/3 text-4xl">🚦</div>
+    <div class="absolute bottom-4 right-1/4 text-5xl">🚕</div>
+  </div>
+  <p class="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Tiếng Anh 8 · Unit 6 · Urbanisation</p>
+  <h1 class="text-3xl md:text-5xl font-extrabold drop-shadow-lg">📝 Test trắc nghiệm: Từ vựng &amp; Ngữ pháp</h1>
+  <p class="mt-2 text-base md:text-lg opacity-90 font-semibold">75 câu hỏi · Từ vựng, Ngữ pháp, Đọc hiểu &amp; Dịch nghĩa</p>
+  <div class="mt-5 max-w-2xl mx-auto flex flex-wrap items-center justify-center gap-3">
+    <span class="badge-pill"><i class="fa-solid fa-star mr-1"></i>Điểm cao nhất: <span id="bestScoreLabel">--</span></span>
+    <span class="badge-pill"><i class="fa-solid fa-rotate mr-1"></i>Số lần làm: <span id="attemptCountLabel">0</span></span>
+    <span class="badge-pill timer-pill"><i class="fa-solid fa-clock mr-1"></i><span id="timerLabel">35:00</span></span>
+  </div>
+  <div class="mt-4 max-w-2xl mx-auto">
+    <div class="flex justify-between text-xs font-bold opacity-80 mb-1">
+      <span>Tiến độ trả lời</span>
+      <span id="progressText">0 / 75 câu</span>
+    </div>
+    <div class="bg-white/20 rounded-full h-3 overflow-hidden">
+      <div id="progressBar" class="bg-white rounded-full h-3 progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-3xl mx-auto px-4 mt-6">
+
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 mb-6 text-sm text-slate-600">
+    <p class="font-bold text-slate-700 mb-1"><i class="fa-solid fa-circle-info text-blue-600 mr-1"></i>Hướng dẫn làm bài</p>
+    <p>Trước khi làm bài, hãy mở phần <b>"📚 Ôn tập & Dịch nghĩa Unit 6"</b> bên dưới để xem lại từ vựng, ngữ pháp và bản dịch tiếng Việt của các bài đọc trong Unit 6. Sau đó chọn <b>1 đáp án đúng</b> cho mỗi câu hỏi trắc nghiệm — gồm từ vựng, ngữ pháp, đọc hiểu bài đọc và luyện dịch nghĩa. Bấm <b>"Nộp bài"</b> để xem điểm và giải thích. Bấm <b>"Làm lại"</b> để nhận đề mới và luyện tập không giới hạn số lần.</p>
+  </div>
+
+  <!-- ============ REVIEW & TRANSLATION SECTION ============ -->
+  <div class="bg-white rounded-2xl shadow-sm border-2 border-blue-200 mb-6 overflow-hidden">
+    <button class="accordion-btn open w-full flex items-center justify-between px-4 py-3 bg-blue-50 font-extrabold text-blue-800" onclick="toggleAccordion('reviewMain')">
+      <span><i class="fa-solid fa-book-open-reader mr-2"></i>📚 Ôn tập &amp; Dịch nghĩa Unit 6</span>
+      <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+    </button>
+    <div class="accordion-body open px-4 py-4 space-y-4" id="acc_reviewMain">
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('vocabList')">
+          <span>🏙️ Từ vựng Unit 6 (30 từ/cụm từ)</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-2" id="acc_vocabList"></div>
+      </div>
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('grammarTip')">
+          <span>📐 Ngữ pháp: So sánh hơn &amp; so sánh nhất của tính từ</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-3" id="acc_grammarTip">
+          <div class="grammar-tip-box">
+            <b>1. Tính từ ngắn (1 âm tiết)</b>: thêm <b>-er</b> (so sánh hơn) / <b>-est</b> (so sánh nhất).<br>
+            &nbsp;&nbsp;• <i>tall → taller → the tallest</i>.<br>
+            &nbsp;&nbsp;• Tính từ tận cùng bằng "e": chỉ thêm <b>-r/-st</b>: <i>large → larger → the largest</i>.<br>
+            &nbsp;&nbsp;• Tính từ dạng phụ âm-nguyên âm-phụ âm: nhân đôi phụ âm cuối: <i>big → bigger → the biggest</i>.<br><br>
+            <b>2. Tính từ 2 âm tiết tận cùng bằng "-y"</b>: đổi <b>y → i</b> rồi thêm <b>-er/-est</b>.<br>
+            &nbsp;&nbsp;• <i>noisy → noisier → the noisiest</i>; <i>busy → busier → the busiest</i>.<br><br>
+            <b>3. Tính từ 2 âm tiết trở lên (không tận cùng -y)</b>: dùng <b>more/most</b> trước tính từ.<br>
+            &nbsp;&nbsp;• <i>modern → more modern → the most modern</i>; <i>crowded → more crowded → the most crowded</i>; <i>polluted → more polluted → the most polluted</i>.<br><br>
+            <b>4. Tính từ bất quy tắc</b>:<br>
+            &nbsp;&nbsp;• good → better → the best<br>
+            &nbsp;&nbsp;• bad → worse → the worst<br>
+            &nbsp;&nbsp;• far → farther/further → the farthest/furthest<br>
+            &nbsp;&nbsp;• many/much → more → the most<br><br>
+            <b>5. Cấu trúc câu</b>:<br>
+            &nbsp;&nbsp;• So sánh hơn: <i>S + be + adj-er / more + adj + than + O.</i> Ví dụ: <i>The city is more crowded than the countryside.</i><br>
+            &nbsp;&nbsp;• So sánh nhất: <i>S + be + the + adj-est / most + adj (+ in/of...).</i> Ví dụ: <i>This is the tallest building in the city.</i>
+          </div>
+        </div>
+      </div>
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('passages')">
+          <span>📖 Bài đọc Unit 6 (có bản dịch)</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-3 space-y-4" id="acc_passages"></div>
+      </div>
+
+    </div>
+  </div>
+  <!-- ============ END REVIEW SECTION ============ -->
+
+  <div id="resultBanner" class="mb-6">
+    <div class="bg-white rounded-2xl shadow-lg border-2 border-blue-300 p-6 text-center score-ring">
+      <p id="resultEmoji" class="text-5xl mb-2">🎉</p>
+      <h2 class="text-2xl font-extrabold text-blue-700" id="resultTitle">Hoàn thành!</h2>
+      <p class="text-4xl font-black text-slate-800 mt-2"><span id="resultScore">0</span>/75</p>
+      <p class="text-slate-500 font-bold mt-1"><span id="resultPct">0</span>% chính xác · Thời gian: <span id="resultTime">0:00</span></p>
+      <div class="flex flex-wrap justify-center gap-3 mt-4">
+        <button onclick="retryTest()" class="bg-blue-800 hover:bg-blue-900 text-white font-bold px-5 py-2.5 rounded-xl shadow"><i class="fa-solid fa-rotate-right mr-1"></i>Làm lại (đề mới)</button>
+        <button onclick="scrollToReview()" class="bg-white border-2 border-blue-300 text-blue-700 font-bold px-5 py-2.5 rounded-xl"><i class="fa-solid fa-magnifying-glass mr-1"></i>Xem lại chi tiết</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="quizArea"></div>
+
+  <div class="sticky-bar bg-white/95 backdrop-blur border-t border-slate-200 mt-6 py-3 px-4 rounded-t-2xl shadow-[0_-4px_14px_rgba(0,0,0,.06)] flex items-center justify-between gap-3">
+    <span class="text-xs md:text-sm font-bold text-slate-500"><span id="answeredCount">0</span>/75 câu đã trả lời</span>
+    <button id="submitBtn" onclick="submitTest()" class="bg-gradient-to-r from-blue-800 to-cyan-500 text-white font-extrabold px-6 py-2.5 rounded-xl shadow-lg hover:brightness-110"><i class="fa-solid fa-flag-checkered mr-1"></i>Nộp bài</button>
+  </div>
+
+</main>
+
+<script>
+/* ============================================================
+   REVIEW CONTENT: Unit 6 Vocabulary, Grammar rule, Passages (EN+VI)
+   ============================================================ */
+const VOCAB_LIST = [
+  {word:"urbanisation", vi:"đô thị hóa", example:"Urbanisation has changed the face of many Vietnamese cities in the past decade.", exVi:"Đô thị hóa đã làm thay đổi diện mạo của nhiều thành phố Việt Nam trong thập kỷ qua."},
+  {word:"population", vi:"dân số", example:"The population of the city has grown very quickly because of rural-urban migration.", exVi:"Dân số của thành phố đã tăng rất nhanh do di cư từ nông thôn ra thành thị."},
+  {word:"overcrowded", vi:"quá đông đúc, quá tải", example:"Some inner-city neighbourhoods have become overcrowded as more people move in.", exVi:"Một số khu vực trong nội thành đã trở nên quá đông đúc khi ngày càng nhiều người chuyển đến."},
+  {word:"infrastructure", vi:"cơ sở hạ tầng", example:"The government has invested a lot of money in infrastructure such as roads and bridges.", exVi:"Chính phủ đã đầu tư rất nhiều tiền vào cơ sở hạ tầng như đường sá và cầu cống."},
+  {word:"skyscraper", vi:"tòa nhà chọc trời", example:"A new skyscraper has just been built in the city centre.", exVi:"Một tòa nhà chọc trời mới vừa được xây dựng ở trung tâm thành phố."},
+  {word:"apartment block", vi:"khu chung cư", example:"My family moved into a modern apartment block last year.", exVi:"Gia đình tôi đã chuyển vào một khu chung cư hiện đại vào năm ngoái."},
+  {word:"high-rise building", vi:"tòa nhà cao tầng", example:"There are more high-rise buildings in the city than there were ten years ago.", exVi:"Có nhiều tòa nhà cao tầng trong thành phố hơn so với mười năm trước."},
+  {word:"public transport", vi:"phương tiện giao thông công cộng", example:"Public transport in the city has improved thanks to new electric buses.", exVi:"Giao thông công cộng trong thành phố đã được cải thiện nhờ các xe buýt điện mới."},
+  {word:"migrate", vi:"di cư, di chuyển đến nơi khác sinh sống", example:"Many young people migrate from the countryside to the city to find jobs.", exVi:"Nhiều người trẻ di cư từ nông thôn ra thành phố để tìm việc làm."},
+  {word:"rural-urban migration", vi:"di cư từ nông thôn ra thành thị", example:"Rural-urban migration is one of the main causes of rapid urbanisation.", exVi:"Di cư từ nông thôn ra thành thị là một trong những nguyên nhân chính của quá trình đô thị hóa nhanh."},
+  {word:"traffic jam", vi:"tắc đường, kẹt xe", example:"There is often a terrible traffic jam on this street during rush hour.", exVi:"Con đường này thường xuyên bị tắc đường nghiêm trọng vào giờ cao điểm."},
+  {word:"pollution", vi:"sự ô nhiễm", example:"Air pollution is a serious problem in many big cities.", exVi:"Ô nhiễm không khí là một vấn đề nghiêm trọng ở nhiều thành phố lớn."},
+  {word:"cost of living", vi:"chi phí sinh hoạt", example:"The cost of living in the city is higher than in the countryside.", exVi:"Chi phí sinh hoạt ở thành phố cao hơn ở nông thôn."},
+  {word:"job opportunity", vi:"cơ hội việc làm", example:"Cities usually offer more job opportunities than rural areas.", exVi:"Các thành phố thường mang lại nhiều cơ hội việc làm hơn so với vùng nông thôn."},
+  {word:"convenience", vi:"sự tiện lợi", example:"Living near the city centre offers a lot of convenience for shopping and travelling.", exVi:"Sống gần trung tâm thành phố mang lại nhiều sự tiện lợi cho việc mua sắm và đi lại."},
+  {word:"modernise", vi:"hiện đại hóa", example:"The city has modernised its public transport system in recent years.", exVi:"Thành phố đã hiện đại hóa hệ thống giao thông công cộng trong những năm gần đây."},
+  {word:"community", vi:"cộng đồng", example:"People in small towns often feel closer to their community than people in big cities.", exVi:"Người dân ở thị trấn nhỏ thường cảm thấy gắn bó với cộng đồng hơn người ở thành phố lớn."},
+  {word:"suburb", vi:"vùng ngoại ô", example:"Many families choose to live in the suburbs to enjoy a quieter life.", exVi:"Nhiều gia đình chọn sống ở vùng ngoại ô để có cuộc sống yên tĩnh hơn."},
+  {word:"residential area", vi:"khu dân cư", example:"A new residential area has been built near the river.", exVi:"Một khu dân cư mới đã được xây dựng gần sông."},
+  {word:"commercial area", vi:"khu thương mại", example:"The commercial area in the city centre is full of shops and offices.", exVi:"Khu thương mại ở trung tâm thành phố có rất nhiều cửa hàng và văn phòng."},
+  {word:"construction", vi:"việc xây dựng", example:"Construction of the new bridge started last month.", exVi:"Việc xây dựng cây cầu mới đã bắt đầu từ tháng trước."},
+  {word:"congestion", vi:"sự tắc nghẽn (giao thông)", example:"Traffic congestion is worse during rush hour.", exVi:"Sự tắc nghẽn giao thông trở nên tồi tệ hơn vào giờ cao điểm."},
+  {word:"amenities", vi:"tiện nghi, tiện ích", example:"The new apartment block offers modern amenities such as a swimming pool and a gym.", exVi:"Khu chung cư mới cung cấp các tiện nghi hiện đại như hồ bơi và phòng tập gym."},
+  {word:"facilities", vi:"cơ sở vật chất, tiện ích công cộng", example:"The city has better facilities, such as hospitals and schools, than the countryside.", exVi:"Thành phố có cơ sở vật chất tốt hơn, như bệnh viện và trường học, so với nông thôn."},
+  {word:"standard of living", vi:"mức sống", example:"The standard of living has improved a lot thanks to urbanisation.", exVi:"Mức sống đã được cải thiện rất nhiều nhờ quá trình đô thị hóa."},
+  {word:"crowded", vi:"đông đúc", example:"The streets in the city centre are always crowded in the evening.", exVi:"Các con đường ở trung tâm thành phố luôn đông đúc vào buổi tối."},
+  {word:"spacious", vi:"rộng rãi", example:"Houses in the countryside are usually more spacious than flats in the city.", exVi:"Nhà ở nông thôn thường rộng rãi hơn căn hộ ở thành phố."},
+  {word:"noisy", vi:"ồn ào", example:"The city centre is noisier than the suburbs at night.", exVi:"Trung tâm thành phố ồn ào hơn vùng ngoại ô vào ban đêm."},
+  {word:"polluted", vi:"bị ô nhiễm", example:"The air in busy districts is more polluted than in rural areas.", exVi:"Không khí ở các quận đông đúc bị ô nhiễm nhiều hơn ở vùng nông thôn."},
+  {word:"development", vi:"sự phát triển", example:"The development of new infrastructure has made travelling around the city easier.", exVi:"Sự phát triển của cơ sở hạ tầng mới đã giúp việc di chuyển quanh thành phố dễ dàng hơn."},
+];
+
+const PASSAGES_REVIEW = [
+  {
+    title:"💬 Bài đọc 1: Moving to the City (hội thoại)",
+    en:"<b>Nam:</b> Linh, I heard your family is planning to move to Da Nang next month. How do you feel about it?<br><b>Linh:</b> Honestly, I have mixed feelings. My parents say the city offers more job opportunities and better schools, so our life should be more convenient.<br><b>Nam:</b> That's true. Cities usually have more modern infrastructure — wider roads, public transport, and more facilities like hospitals and shopping malls.<br><b>Linh:</b> Yes, but I'm also a little worried. I've heard that big cities can be more crowded and noisier than the countryside, with terrible traffic jams every morning.<br><b>Nam:</b> That's a fair point. As more people migrate from rural areas to cities, urbanisation is happening faster, and some neighbourhoods become overcrowded.<br><b>Linh:</b> I guess the cost of living is higher too. Apartments in the city are usually smaller and more expensive than houses in our village.<br><b>Nam:</b> True, but you'll probably have a better standard of living in other ways — faster internet, better public services, and more chances to develop your career.<br><b>Linh:</b> I hope so. I just hope our new neighbourhood isn't too polluted or noisy. I'll miss the peaceful countryside.<br><b>Nam:</b> I'm sure you'll get used to it. Many people say city life is more exciting, even if it's busier than village life.",
+    vi:"<b>Nam:</b> Linh này, mình nghe nói gia đình bạn định chuyển đến Đà Nẵng vào tháng tới. Bạn cảm thấy thế nào về điều đó?<br><b>Linh:</b> Thật lòng thì mình có cảm xúc lẫn lộn. Bố mẹ mình nói thành phố có nhiều cơ hội việc làm hơn và trường học tốt hơn, nên cuộc sống sẽ tiện lợi hơn.<br><b>Nam:</b> Đúng vậy. Các thành phố thường có cơ sở hạ tầng hiện đại hơn — đường rộng hơn, phương tiện giao thông công cộng, và nhiều tiện ích hơn như bệnh viện và trung tâm mua sắm.<br><b>Linh:</b> Đúng, nhưng mình cũng hơi lo lắng. Mình nghe nói các thành phố lớn có thể đông đúc và ồn ào hơn vùng nông thôn, với tình trạng tắc đường kinh khủng mỗi sáng.<br><b>Nam:</b> Điều đó cũng đúng. Khi ngày càng nhiều người di cư từ nông thôn ra thành thị, quá trình đô thị hóa diễn ra nhanh hơn, và một số khu vực trở nên quá đông đúc.<br><b>Linh:</b> Mình đoán chi phí sinh hoạt cũng cao hơn. Căn hộ ở thành phố thường nhỏ hơn và đắt hơn nhà ở làng mình.<br><b>Nam:</b> Đúng vậy, nhưng có lẽ bạn sẽ có mức sống tốt hơn theo những cách khác — internet nhanh hơn, dịch vụ công tốt hơn, và nhiều cơ hội phát triển sự nghiệp hơn.<br><b>Linh:</b> Mình hy vọng vậy. Mình chỉ mong khu phố mới của mình không quá ô nhiễm hay ồn ào. Mình sẽ nhớ vùng quê yên bình.<br><b>Nam:</b> Mình chắc chắn bạn sẽ quen thôi. Nhiều người nói cuộc sống thành phố thú vị hơn, dù có bận rộn hơn cuộc sống ở làng quê."
+  },
+  {
+    title:"🏙️ Bài đọc 2: Binh Minh City — A Fast-growing City",
+    en:"Over the past twenty years, Binh Minh City, a mid-sized city in central Viet Nam, has changed dramatically because of rapid urbanisation. Ten years ago, it was a quiet town surrounded by rice fields and small residential areas. Today, dozens of high-rise buildings and modern apartment blocks stand where paddy fields used to be. The local government has invested heavily in infrastructure: roads have been widened, a new public transport system with electric buses now connects the suburbs to the city centre, and a large commercial area with shopping malls and offices has been built near the river. As job opportunities have increased, more and more people have migrated from the countryside to the city, and the population has grown much faster than before. New residential areas offer modern flats with better amenities, and the standard of living has generally improved. However, urbanisation has also brought new problems. Traffic congestion is worse than it used to be, especially during rush hour, and some streets in the busiest districts are noisier and more polluted than they were a decade ago. Construction sites can be found in almost every corner of the city. Local authorities are now trying to develop greener public parks and improve waste management so that Binh Minh City can become a more liveable place for everyone.",
+    vi:"Trong hai mươi năm qua, Bình Minh, một thành phố cỡ trung ở miền Trung Việt Nam, đã thay đổi mạnh mẽ do quá trình đô thị hóa nhanh chóng. Mười năm trước, nơi đây từng là một thị trấn yên tĩnh bao quanh bởi những cánh đồng lúa và các khu dân cư nhỏ. Ngày nay, hàng chục tòa nhà cao tầng và khu chung cư hiện đại mọc lên ở nơi từng là ruộng lúa. Chính quyền địa phương đã đầu tư mạnh vào cơ sở hạ tầng: đường sá được mở rộng, một hệ thống giao thông công cộng mới với xe buýt điện hiện nối vùng ngoại ô với trung tâm thành phố, và một khu thương mại lớn với các trung tâm mua sắm và văn phòng đã được xây dựng gần sông. Khi cơ hội việc làm tăng lên, ngày càng nhiều người di cư từ nông thôn ra thành phố, và dân số đã tăng nhanh hơn nhiều so với trước đây. Các khu dân cư mới cung cấp căn hộ hiện đại với tiện nghi tốt hơn, và mức sống nhìn chung đã được cải thiện. Tuy nhiên, đô thị hóa cũng mang đến những vấn đề mới. Tình trạng tắc nghẽn giao thông tệ hơn trước, đặc biệt vào giờ cao điểm, và một số con phố ở các quận đông đúc nhất ồn ào và ô nhiễm hơn so với một thập kỷ trước. Các công trường xây dựng có thể được tìm thấy ở hầu như mọi ngóc ngách của thành phố. Chính quyền địa phương hiện đang cố gắng phát triển thêm công viên xanh và cải thiện việc xử lý rác thải để Bình Minh có thể trở thành một nơi đáng sống hơn cho tất cả mọi người."
+  },
+  {
+    title:"⚖️ Bài đọc 3: City Life vs Countryside Life",
+    en:"City life and countryside life offer very different experiences, and each has its own advantages and disadvantages. In terms of convenience, cities are usually better than the countryside: public transport, hospitals, schools and shopping centres are often closer and more modern. Job opportunities are also more varied in urban areas, so many young people migrate to cities to develop their careers and improve their standard of living. However, city life is not always better than life in rural areas. Cities tend to be more crowded and noisier, and the cost of living is usually higher because of expensive housing and services. Air pollution and traffic jams are also more serious problems in big cities than in small towns. On the other hand, the countryside is often more spacious and peaceful. The air there is cleaner and less polluted, and people usually feel closer to their community and neighbours. The main disadvantages of rural life are fewer job opportunities and less modern infrastructure — some villages still lack good roads, reliable public transport or advanced medical facilities. In short, whether city life is better than countryside life depends on what a person values most: convenience and career opportunities, or peace and fresh air.",
+    vi:"Cuộc sống thành phố và cuộc sống nông thôn mang lại những trải nghiệm rất khác nhau, và mỗi nơi đều có những ưu điểm và nhược điểm riêng. Về mặt tiện lợi, thành phố thường tốt hơn nông thôn: phương tiện giao thông công cộng, bệnh viện, trường học và trung tâm mua sắm thường gần hơn và hiện đại hơn. Cơ hội việc làm ở khu vực thành thị cũng đa dạng hơn, vì vậy nhiều bạn trẻ di cư đến thành phố để phát triển sự nghiệp và cải thiện mức sống. Tuy nhiên, cuộc sống thành phố không phải lúc nào cũng tốt hơn cuộc sống ở nông thôn. Thành phố thường đông đúc và ồn ào hơn, và chi phí sinh hoạt thường cao hơn do nhà ở và dịch vụ đắt đỏ. Ô nhiễm không khí và tắc đường cũng là những vấn đề nghiêm trọng hơn ở các thành phố lớn so với thị trấn nhỏ. Mặt khác, vùng nông thôn thường rộng rãi và yên bình hơn. Không khí ở đó trong lành hơn và ít bị ô nhiễm hơn, và người dân thường cảm thấy gắn bó hơn với cộng đồng và hàng xóm của mình. Nhược điểm chính của cuộc sống nông thôn là ít cơ hội việc làm hơn và cơ sở hạ tầng kém hiện đại hơn — một số ngôi làng vẫn còn thiếu đường sá tốt, phương tiện giao thông công cộng đáng tin cậy hoặc cơ sở y tế hiện đại. Tóm lại, việc cuộc sống thành phố có tốt hơn cuộc sống nông thôn hay không phụ thuộc vào điều mà mỗi người coi trọng nhất: sự tiện lợi và cơ hội nghề nghiệp, hay sự yên bình và không khí trong lành."
+  }
+];
+
+function renderReviewSection(){
+  document.getElementById('acc_vocabList').innerHTML = VOCAB_LIST.map(v=>`
+    <div class="vocab-row flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+      <div><span class="font-extrabold text-blue-700">${v.word}</span> <span class="text-slate-400">— ${v.vi}</span></div>
+      <div class="text-xs text-slate-400 italic sm:text-right sm:max-w-[55%]">${v.example}<br>${v.exVi}</div>
+    </div>`).join('');
+
+  document.getElementById('acc_passages').innerHTML = PASSAGES_REVIEW.map((p,i)=>`
+    <div>
+      <p class="font-bold text-slate-700 text-sm mb-2">${p.title}</p>
+      <div class="passage-en">${p.en}</div>
+      <button type="button" onclick="togglePassageVi(${i})" class="mt-2 text-xs font-bold bg-white border-2 border-cyan-300 text-cyan-700 px-3 py-1.5 rounded-full">
+        <i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt
+      </button>
+      <div class="passage-vi" id="passvi_${i}"><b>🇻🇳 Bản dịch</b><br>${p.vi}</div>
+    </div>`).join('');
+}
+function togglePassageVi(i){ document.getElementById('passvi_'+i).classList.toggle('show'); }
+function toggleAccordion(key){
+  const btn = event.currentTarget;
+  btn.classList.toggle('open');
+  document.getElementById('acc_'+key).classList.toggle('open');
+}
+
+/* ============================================================
+   CONTENT: Unit 6 Vocabulary, Grammar, Reading & Translation Test
+   ============================================================ */
+const VOCAB_TEST = [
+  {id:"v1", prompt:"\"Urbanisation\" nghĩa là gì?", options:["đô thị hóa","nông nghiệp hóa","công nghiệp hóa","hiện đại hóa nông thôn"], answer:0, explanation:"urbanisation = đô thị hóa, quá trình thành phố phát triển và dân số tăng.", vi:"urbanisation = đô thị hóa."},
+  {id:"v2", prompt:"\"Population\" nghĩa là gì?", options:["dân số","diện tích","khí hậu","nền kinh tế"], answer:0, explanation:"population = dân số.", vi:"population = dân số."},
+  {id:"v3", prompt:"Điền từ: As more people move in, some old neighbourhoods have become ________.", options:["overcrowded","spacious","rural","quiet"], answer:0, explanation:"overcrowded = quá đông đúc, quá tải.", vi:"Khi ngày càng nhiều người chuyển đến, một số khu phố cũ trở nên quá đông đúc."},
+  {id:"v4", prompt:"\"Infrastructure\" nghĩa là gì?", options:["cơ sở hạ tầng","dân số","khí hậu","văn hóa"], answer:0, explanation:"infrastructure = cơ sở hạ tầng (đường sá, cầu cống, điện nước...).", vi:"infrastructure = cơ sở hạ tầng."},
+  {id:"v5", prompt:"\"Skyscraper\" nghĩa là gì?", options:["tòa nhà chọc trời","ngôi nhà nhỏ","căn hộ chung cư thấp tầng","nhà kho"], answer:0, explanation:"skyscraper = tòa nhà chọc trời, rất cao tầng.", vi:"skyscraper = tòa nhà chọc trời."},
+  {id:"v6", prompt:"Điền từ: My family moved into a modern apartment ________ last year.", options:["block","farm","garden","field"], answer:0, explanation:"apartment block = khu chung cư.", vi:"Gia đình tôi đã chuyển vào một khu chung cư hiện đại vào năm ngoái."},
+  {id:"v7", prompt:"\"High-rise building\" nghĩa là gì?", options:["tòa nhà cao tầng","nhà một tầng","nhà tranh","trung tâm thương mại"], answer:0, explanation:"high-rise building = tòa nhà cao tầng.", vi:"high-rise building = tòa nhà cao tầng."},
+  {id:"v8", prompt:"\"Public transport\" nghĩa là gì?", options:["phương tiện giao thông công cộng","xe riêng","máy bay tư nhân","xe đạp thể thao"], answer:0, explanation:"public transport = phương tiện giao thông công cộng (xe buýt, tàu điện...).", vi:"public transport = phương tiện giao thông công cộng."},
+  {id:"v9", prompt:"Điền từ: Many young people ________ from the countryside to the city to find jobs.", options:["migrate","modernise","pollute","construct"], answer:0, explanation:"migrate = di cư.", vi:"Nhiều người trẻ di cư từ nông thôn ra thành phố để tìm việc làm."},
+  {id:"v10", prompt:"\"Rural-urban migration\" nghĩa là gì?", options:["di cư từ nông thôn ra thành thị","di cư từ thành thị về nông thôn","di cư ra nước ngoài","di chuyển trong cùng một thành phố"], answer:0, explanation:"rural-urban migration = di cư từ nông thôn ra thành thị.", vi:"rural-urban migration = di cư từ nông thôn ra thành thị."},
+  {id:"v11", prompt:"\"Traffic jam\" nghĩa là gì?", options:["tắc đường, kẹt xe","tai nạn giao thông","luật giao thông","biển báo giao thông"], answer:0, explanation:"traffic jam = tắc đường, kẹt xe.", vi:"traffic jam = tắc đường."},
+  {id:"v12", prompt:"Điền từ: Air ________ is a serious problem in many big cities.", options:["pollution","population","convenience","community"], answer:0, explanation:"pollution = sự ô nhiễm.", vi:"Ô nhiễm không khí là một vấn đề nghiêm trọng ở nhiều thành phố lớn."},
+  {id:"v13", prompt:"\"Cost of living\" nghĩa là gì?", options:["chi phí sinh hoạt","thu nhập trung bình","giá nhà đất","tiền lương tối thiểu"], answer:0, explanation:"cost of living = chi phí sinh hoạt.", vi:"cost of living = chi phí sinh hoạt."},
+  {id:"v14", prompt:"\"Job opportunity\" nghĩa là gì?", options:["cơ hội việc làm","kỳ nghỉ hè","giờ làm việc","hợp đồng lao động"], answer:0, explanation:"job opportunity = cơ hội việc làm.", vi:"job opportunity = cơ hội việc làm."},
+  {id:"v15", prompt:"Điền từ: Living near the city centre offers a lot of ________ for shopping and travelling.", options:["convenience","pollution","congestion","migration"], answer:0, explanation:"convenience = sự tiện lợi.", vi:"Sống gần trung tâm thành phố mang lại nhiều sự tiện lợi cho việc mua sắm và đi lại."},
+  {id:"v16", prompt:"\"Modernise\" nghĩa là gì?", options:["hiện đại hóa","đô thị hóa","di cư","gây ô nhiễm"], answer:0, explanation:"modernise = hiện đại hóa.", vi:"modernise = hiện đại hóa."},
+  {id:"v17", prompt:"\"Community\" nghĩa là gì?", options:["cộng đồng","công ty","chính quyền","thị trường"], answer:0, explanation:"community = cộng đồng.", vi:"community = cộng đồng."},
+  {id:"v18", prompt:"Điền từ: Many families choose to live in the ________ to enjoy a quieter life.", options:["suburbs","skyscrapers","traffic jams","commercial areas"], answer:0, explanation:"suburb(s) = vùng ngoại ô.", vi:"Nhiều gia đình chọn sống ở vùng ngoại ô để có cuộc sống yên tĩnh hơn."},
+  {id:"v19", prompt:"\"Residential area\" nghĩa là gì?", options:["khu dân cư","khu công nghiệp","khu thương mại","khu vui chơi"], answer:0, explanation:"residential area = khu dân cư.", vi:"residential area = khu dân cư."},
+  {id:"v20", prompt:"\"Commercial area\" nghĩa là gì?", options:["khu thương mại","khu dân cư","khu nông nghiệp","khu bảo tồn thiên nhiên"], answer:0, explanation:"commercial area = khu thương mại.", vi:"commercial area = khu thương mại."},
+  {id:"v21", prompt:"Điền từ: ________ of the new bridge started last month.", options:["Construction","Population","Convenience","Community"], answer:0, explanation:"construction = việc xây dựng.", vi:"Việc xây dựng cây cầu mới đã bắt đầu từ tháng trước."},
+  {id:"v22", prompt:"\"Congestion\" (giao thông) nghĩa là gì?", options:["sự tắc nghẽn","sự thông thoáng","sự yên tĩnh","sự sạch sẽ"], answer:0, explanation:"congestion = sự tắc nghẽn (giao thông).", vi:"congestion = sự tắc nghẽn."},
+  {id:"v23", prompt:"\"Amenities\" nghĩa là gì?", options:["tiện nghi, tiện ích","tai nạn","sự ô nhiễm","dân số"], answer:0, explanation:"amenities = tiện nghi, tiện ích (bể bơi, phòng gym...).", vi:"amenities = tiện nghi."},
+  {id:"v24", prompt:"Điền từ: The city has better ________, such as hospitals and schools, than the countryside.", options:["facilities","pollution","congestion","migration"], answer:0, explanation:"facilities = cơ sở vật chất, tiện ích công cộng.", vi:"Thành phố có cơ sở vật chất tốt hơn, như bệnh viện và trường học, so với nông thôn."},
+  {id:"v25", prompt:"\"Standard of living\" nghĩa là gì?", options:["mức sống","mức lương","mức độ ô nhiễm","mức độ an toàn"], answer:0, explanation:"standard of living = mức sống.", vi:"standard of living = mức sống."},
+  {id:"v26", prompt:"\"Crowded\" nghĩa là gì?", options:["đông đúc","rộng rãi","yên tĩnh","sạch sẽ"], answer:0, explanation:"crowded = đông đúc.", vi:"crowded = đông đúc."},
+  {id:"v27", prompt:"\"Spacious\" nghĩa là gì?", options:["rộng rãi","chật chội","ồn ào","bẩn"], answer:0, explanation:"spacious = rộng rãi.", vi:"spacious = rộng rãi."},
+  {id:"v28", prompt:"Điền từ: The city centre is ________ than the suburbs at night.", options:["noisier","quieter","greener","cheaper"], answer:0, explanation:"noisy → noisier: trung tâm thành phố ồn ào hơn vùng ngoại ô.", vi:"Trung tâm thành phố ồn ào hơn vùng ngoại ô vào ban đêm."},
+  {id:"v29", prompt:"\"Polluted\" nghĩa là gì?", options:["bị ô nhiễm","trong lành","yên tĩnh","rộng rãi"], answer:0, explanation:"polluted = bị ô nhiễm.", vi:"polluted = bị ô nhiễm."},
+  {id:"v30", prompt:"\"Development\" nghĩa là gì?", options:["sự phát triển","sự suy thoái","sự ô nhiễm","sự di cư"], answer:0, explanation:"development = sự phát triển.", vi:"development = sự phát triển."},
+];
+
+const GRAMMAR_TEST = [
+  {id:"g1", prompt:"Ha Noi is ________ (big) than my home town.", options:["bigger","biggest","more big","most big"], answer:0, explanation:"\"big\" là tính từ 1 âm tiết, dạng phụ âm-nguyên âm-phụ âm nên nhân đôi phụ âm cuối rồi thêm -er: bigger.", vi:"Hà Nội lớn hơn quê tôi."},
+  {id:"g2", prompt:"This is ________ (tall) building in the city.", options:["the tallest","taller","more tall","most tall"], answer:0, explanation:"\"tall\" là tính từ 1 âm tiết, so sánh nhất thêm -est và có \"the\": the tallest.", vi:"Đây là tòa nhà cao nhất trong thành phố."},
+  {id:"g3", prompt:"City life is usually ________ (noisy) than life in the countryside.", options:["noisier","more noisy","noisiest","most noisy"], answer:0, explanation:"\"noisy\" là tính từ 2 âm tiết tận cùng -y, đổi y thành i rồi thêm -er: noisier.", vi:"Cuộc sống thành phố thường ồn ào hơn cuộc sống ở nông thôn."},
+  {id:"g4", prompt:"Of all the cities in Viet Nam, Ho Chi Minh City is ________ (crowded).", options:["the most crowded","the crowdedest","more crowded","crowded"], answer:0, explanation:"\"crowded\" có 2 âm tiết, so sánh nhất dùng \"the most + adj\".", vi:"Trong tất cả các thành phố ở Việt Nam, TP.HCM là thành phố đông đúc nhất."},
+  {id:"g5", prompt:"The new apartment block is ________ (modern) than the old one.", options:["more modern","moderner","the most modern","most modern"], answer:0, explanation:"\"modern\" có 2 âm tiết trở lên, so sánh hơn dùng \"more\" trước tính từ.", vi:"Khu chung cư mới hiện đại hơn khu cũ."},
+  {id:"g6", prompt:"Traffic in the city centre is ________ (bad) than traffic in the suburbs.", options:["worse","badder","more bad","worst"], answer:0, explanation:"\"bad\" là tính từ bất quy tắc: bad - worse - worst.", vi:"Giao thông ở trung tâm thành phố tệ hơn giao thông ở vùng ngoại ô."},
+  {id:"g7", prompt:"This is ________ (good) public transport system in the country.", options:["the best","the goodest","the most good","better"], answer:0, explanation:"\"good\" là tính từ bất quy tắc: good - better - best.", vi:"Đây là hệ thống giao thông công cộng tốt nhất trong nước."},
+  {id:"g8", prompt:"My hometown is ________ (far) from the capital than yours.", options:["farther","farer","more far","most far"], answer:0, explanation:"\"far\" là tính từ bất quy tắc: far - farther/further - farthest/furthest.", vi:"Quê tôi xa thủ đô hơn quê bạn."},
+  {id:"g9", prompt:"Which sentence is correct?", options:["The city is more expensive than the countryside.","The city is expensiver than the countryside.","The city is most expensive than the countryside.","The city is more expensiver than the countryside."], answer:0, explanation:"\"expensive\" có 3 âm tiết, so sánh hơn phải dùng \"more\", không thêm -er.", vi:"Thành phố đắt đỏ hơn nông thôn."},
+  {id:"g10", prompt:"Which sentence is correct?", options:["This flat is smaller than that one.","This flat is more small than that one.","This flat is the small than that one.","This flat is small more than that one."], answer:0, explanation:"\"small\" là tính từ 1 âm tiết nên dùng -er, không dùng \"more\".", vi:"Căn hộ này nhỏ hơn căn hộ kia."},
+  {id:"g11", prompt:"Choose the correct superlative form of \"spacious\".", options:["the most spacious","the spaciousest","the more spacious","spaciousest"], answer:0, explanation:"\"spacious\" có 2 âm tiết trở lên nên so sánh nhất dùng \"the most\".", vi:"rộng rãi nhất = the most spacious."},
+  {id:"g12", prompt:"Choose the correct comparative form of \"busy\".", options:["busier","more busy","busyer","most busy"], answer:0, explanation:"\"busy\" tận cùng -y, đổi y thành i rồi thêm -er: busier.", vi:"bận rộn hơn = busier."},
+  {id:"g13", prompt:"Which statement about one-syllable adjectives (e.g. \"tall\", \"big\") is correct?", options:["Chúng thêm -er/-est để tạo so sánh hơn/nhất.","Chúng luôn dùng more/most.","Chúng không có dạng so sánh.","Chúng luôn là tính từ bất quy tắc."], answer:0, explanation:"Tính từ 1 âm tiết thêm -er (so sánh hơn) / -est (so sánh nhất).", vi:"Tính từ ngắn thêm -er/-est."},
+  {id:"g14", prompt:"Which statement about two-syllable adjectives ending in \"-y\" (e.g. \"noisy\", \"busy\") is correct?", options:["Đổi y thành i rồi thêm -er/-est.","Thêm -er/-est trực tiếp mà không đổi y.","Luôn dùng more/most.","Không thay đổi hình thức."], answer:0, explanation:"Tính từ 2 âm tiết tận cùng -y: đổi y → i rồi thêm -er/-est.", vi:"noisy → noisier → the noisiest."},
+  {id:"g15", prompt:"Which statement about adjectives with two or more syllables (e.g. \"modern\", \"crowded\", \"expensive\") is correct?", options:["Dùng more/most trước tính từ.","Thêm -er/-est vào cuối.","Luôn là tính từ bất quy tắc.","Không có dạng so sánh."], answer:0, explanation:"Tính từ 2 âm tiết trở lên (không tận cùng -y) dùng more/most.", vi:"Tính từ dài dùng more/most."},
+  {id:"g16", prompt:"Which is the correct superlative form of \"far\"?", options:["the farthest/furthest","the farer","the most far","farer"], answer:0, explanation:"\"far\" là tính từ bất quy tắc: far - farther/further - farthest/furthest.", vi:"xa nhất = the farthest/furthest."},
+  {id:"g17", prompt:"Which sentence uses the comparative structure correctly?", options:["The countryside is quieter than the city.","The countryside is quieter as the city.","The countryside is more quieter than the city.","The countryside is quiet than the city."], answer:0, explanation:"Cấu trúc so sánh hơn: adj-er + than.", vi:"Vùng nông thôn yên tĩnh hơn thành phố."},
+  {id:"g18", prompt:"Which sentence uses the superlative structure correctly?", options:["This is the most polluted street in the city.","This is most polluted street in the city.","This is the polluted most street in the city.","This street is more polluted in the city."], answer:0, explanation:"Cấu trúc so sánh nhất cần có \"the\" trước \"most + adj\".", vi:"Đây là con phố ô nhiễm nhất trong thành phố."},
+  {id:"g19", prompt:"Living in the countryside is often ________ (cheap) than living in the city.", options:["cheaper","more cheap","cheapest","most cheap"], answer:0, explanation:"\"cheap\" là tính từ 1 âm tiết nên thêm -er.", vi:"Sống ở nông thôn thường rẻ hơn sống ở thành phố."},
+  {id:"g20", prompt:"Of the three cities, this one has ________ (good) public facilities.", options:["the best","the goodest","the better","most good"], answer:0, explanation:"\"good\" là tính từ bất quy tắc: good - better - best.", vi:"Trong ba thành phố, thành phố này có cơ sở vật chất công cộng tốt nhất."},
+];
+
+const READING_TEST = [
+  // ---- Passage 1: Moving to the City (dialogue) ----
+  {id:"r1", prompt:"[Bài đọc 1] Where is Linh's family planning to move to?", options:["Da Nang","Ha Noi","Hue","Can Tho"], answer:0, explanation:"\"I heard your family is planning to move to Da Nang next month.\"", vi:"Gia đình Linh dự định chuyển đến Đà Nẵng."},
+  {id:"r2", prompt:"[Bài đọc 1] According to Linh's parents, why is the city a good place to live?", options:["It offers more job opportunities and better schools.","It has cleaner air and less traffic.","It is quieter and more peaceful.","It has more farmland."], answer:0, explanation:"\"My parents say the city offers more job opportunities and better schools...\"", vi:"Bố mẹ Linh nói thành phố có nhiều cơ hội việc làm và trường học tốt hơn."},
+  {id:"r3", prompt:"[Bài đọc 1] What does Linh worry about regarding the city?", options:["It can be more crowded and noisier, with traffic jams every morning.","It doesn't have enough public transport.","It has no schools nearby.","It is too far from job opportunities."], answer:0, explanation:"\"big cities can be more crowded and noisier than the countryside, with terrible traffic jams every morning.\"", vi:"Linh lo lắng thành phố đông đúc, ồn ào và tắc đường mỗi sáng."},
+  {id:"r4", prompt:"[Bài đọc 1] What does Linh say about apartments in the city compared to houses in her village?", options:["They are usually smaller and more expensive.","They are usually bigger and cheaper.","They are the same size but noisier.","They are farther from the city centre."], answer:0, explanation:"\"Apartments in the city are usually smaller and more expensive than houses in our village.\"", vi:"Căn hộ ở thành phố thường nhỏ hơn và đắt hơn nhà ở làng."},
+  {id:"r5", prompt:"[Bài đọc 1] What does Nam say people generally believe about city life?", options:["It is more exciting, even if it is busier than village life.","It is always more peaceful than village life.","It has fewer job opportunities than the countryside.","It is always more polluted than the countryside."], answer:0, explanation:"\"Many people say city life is more exciting, even if it's busier than village life.\"", vi:"Nam nói nhiều người cho rằng cuộc sống thành phố thú vị hơn dù bận rộn hơn."},
+  // ---- Passage 2: Binh Minh City ----
+  {id:"r6", prompt:"[Bài đọc 2] What was Binh Minh City like ten years ago?", options:["A quiet town surrounded by rice fields and small residential areas.","A large, crowded city full of skyscrapers.","A famous tourist beach town.","An industrial area with many factories."], answer:0, explanation:"\"Ten years ago, it was a quiet town surrounded by rice fields and small residential areas.\"", vi:"Mười năm trước, Bình Minh là một thị trấn yên tĩnh bao quanh bởi ruộng lúa và khu dân cư nhỏ."},
+  {id:"r7", prompt:"[Bài đọc 2] What has the local government invested heavily in?", options:["Infrastructure such as roads and public transport.","Agriculture and rice farming.","Tourism and hotels only.","Private schools only."], answer:0, explanation:"\"The local government has invested heavily in infrastructure: roads have been widened, a new public transport system...\"", vi:"Chính quyền địa phương đầu tư mạnh vào cơ sở hạ tầng như đường sá và giao thông công cộng."},
+  {id:"r8", prompt:"[Bài đọc 2] Why has the population of the city grown much faster than before?", options:["Because more people have migrated from the countryside as job opportunities increased.","Because the birth rate suddenly increased.","Because people from other countries moved there.","Because the government forced people to move."], answer:0, explanation:"\"As job opportunities have increased, more and more people have migrated from the countryside to the city, and the population has grown much faster than before.\"", vi:"Dân số tăng nhanh vì nhiều người di cư từ nông thôn khi cơ hội việc làm tăng."},
+  {id:"r9", prompt:"[Bài đọc 2] Which problem does the passage mention as a result of urbanisation?", options:["Traffic congestion is worse, and some streets are noisier and more polluted.","The city has run out of housing completely.","There are no more job opportunities.","Public transport has been shut down."], answer:0, explanation:"\"Traffic congestion is worse than it used to be... some streets... are noisier and more polluted than they were a decade ago.\"", vi:"Vấn đề là tắc nghẽn giao thông tệ hơn và một số phố ồn ào, ô nhiễm hơn."},
+  {id:"r10", prompt:"[Bài đọc 2] What are local authorities now trying to do?", options:["Develop greener public parks and improve waste management.","Close down all the shopping malls.","Stop building new apartment blocks.","Move the population back to the countryside."], answer:0, explanation:"\"Local authorities are now trying to develop greener public parks and improve waste management...\"", vi:"Chính quyền đang cố phát triển công viên xanh và cải thiện xử lý rác thải."},
+  // ---- Passage 3: City Life vs Countryside Life ----
+  {id:"r11", prompt:"[Bài đọc 3] According to the passage, in what way are cities usually better than the countryside?", options:["Convenience — public transport, hospitals, schools and shopping centres are closer and more modern.","Cities always have cleaner air.","Cities always have a lower cost of living.","Cities always have more spacious houses."], answer:0, explanation:"\"In terms of convenience, cities are usually better than the countryside: public transport, hospitals, schools and shopping centres are often closer and more modern.\"", vi:"Thành phố tiện lợi hơn nhờ giao thông công cộng, bệnh viện, trường học, trung tâm mua sắm gần và hiện đại."},
+  {id:"r12", prompt:"[Bài đọc 3] Why do many young people migrate to cities, according to the passage?", options:["To find more job opportunities and improve their standard of living.","To escape from noise and pollution.","To find cheaper housing.","To live closer to their community."], answer:0, explanation:"\"many young people migrate to cities to develop their careers and improve their standard of living.\"", vi:"Người trẻ di cư đến thành phố để tìm cơ hội việc làm và cải thiện mức sống."},
+  {id:"r13", prompt:"[Bài đọc 3] What disadvantage of city life is mentioned in the passage?", options:["Higher cost of living, more crowding and noise.","Not enough shopping centres.","Too few job opportunities.","Too little traffic."], answer:0, explanation:"\"Cities tend to be more crowded and noisier, and the cost of living is usually higher...\"", vi:"Nhược điểm của thành phố là chi phí sinh hoạt cao hơn, đông đúc và ồn ào hơn."},
+  {id:"r14", prompt:"[Bài đọc 3] What advantage of the countryside is mentioned in the passage?", options:["It is more spacious and peaceful, with cleaner air.","It has more job opportunities than the city.","It has more modern infrastructure than the city.","It has a higher cost of living."], answer:0, explanation:"\"the countryside is often more spacious and peaceful. The air there is cleaner and less polluted...\"", vi:"Nông thôn rộng rãi, yên bình hơn và không khí trong lành hơn."},
+  {id:"r15", prompt:"[Bài đọc 3] What is the main disadvantage of rural life mentioned in the passage?", options:["Fewer job opportunities and less modern infrastructure.","Too much traffic congestion.","Too much air pollution.","Too high a cost of living."], answer:0, explanation:"\"The main disadvantages of rural life are fewer job opportunities and less modern infrastructure...\"", vi:"Nhược điểm chính của nông thôn là ít cơ hội việc làm và cơ sở hạ tầng kém hiện đại hơn."},
+];
+
+const TRANSLATION_TEST = [
+  {id:"t1", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"Urbanisation has changed the face of many Vietnamese cities in the past decade.\"", options:["Đô thị hóa đã làm thay đổi diện mạo của nhiều thành phố Việt Nam trong thập kỷ qua.","Nông nghiệp đã giúp nhiều thành phố Việt Nam phát triển trong thập kỷ qua.","Nhiều thành phố Việt Nam đã ngừng phát triển trong thập kỷ qua.","Người dân đã rời khỏi các thành phố Việt Nam trong thập kỷ qua."], answer:0, explanation:"Urbanisation has changed the face of... = Đô thị hóa đã làm thay đổi diện mạo của...", vi:""},
+  {id:"t2", prompt:"Chọn bản dịch tiếng Anh đúng: \"Nhiều người trẻ di cư từ nông thôn ra thành phố để tìm việc làm.\"", options:["Many young people migrate from the countryside to the city to find jobs.","Many old people migrate from the city to the countryside to relax.","Many young people travel from the city to the countryside for holidays.","Many young people stay in the countryside because of job opportunities."], answer:0, explanation:"di cư từ nông thôn ra thành phố để tìm việc làm = migrate from the countryside to the city to find jobs.", vi:""},
+  {id:"t3", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"Traffic congestion is worse than it used to be, especially during rush hour.\"", options:["Tình trạng tắc nghẽn giao thông tệ hơn trước, đặc biệt là vào giờ cao điểm.","Giao thông đã được cải thiện rất nhiều so với trước đây.","Giờ cao điểm không còn xảy ra tắc đường nữa.","Tắc nghẽn giao thông chỉ xảy ra vào buổi tối."], answer:0, explanation:"Traffic congestion is worse than it used to be = Tình trạng tắc nghẽn giao thông tệ hơn trước đây.", vi:""},
+  {id:"t4", prompt:"Chọn bản dịch tiếng Anh đúng: \"Thành phố có cơ sở vật chất tốt hơn, như bệnh viện và trường học, so với nông thôn.\"", options:["The city has better facilities, such as hospitals and schools, than the countryside.","The countryside has better facilities, such as hospitals and schools, than the city.","The city has fewer facilities, such as hospitals and schools, than the countryside.","The city and the countryside have the same facilities."], answer:0, explanation:"cơ sở vật chất tốt hơn... so với nông thôn = better facilities... than the countryside.", vi:""},
+  {id:"t5", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"The cost of living in the city is higher than in the countryside.\"", options:["Chi phí sinh hoạt ở thành phố cao hơn ở nông thôn.","Chi phí sinh hoạt ở nông thôn cao hơn ở thành phố.","Chi phí sinh hoạt ở thành phố và nông thôn bằng nhau.","Chi phí sinh hoạt ở thành phố đang giảm dần."], answer:0, explanation:"The cost of living in the city is higher than in the countryside = Chi phí sinh hoạt ở thành phố cao hơn ở nông thôn.", vi:""},
+  {id:"t6", prompt:"Chọn bản dịch tiếng Anh đúng: \"Nhà ở nông thôn thường rộng rãi hơn căn hộ ở thành phố.\"", options:["Houses in the countryside are usually more spacious than flats in the city.","Flats in the city are usually more spacious than houses in the countryside.","Houses in the countryside are usually noisier than flats in the city.","Houses in the countryside are usually more expensive than flats in the city."], answer:0, explanation:"nhà ở nông thôn rộng rãi hơn căn hộ ở thành phố = houses in the countryside are more spacious than flats in the city.", vi:""},
+  {id:"t7", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"As more people migrate from rural areas to cities, urbanisation is happening faster.\"", options:["Khi ngày càng nhiều người di cư từ nông thôn ra thành thị, quá trình đô thị hóa diễn ra nhanh hơn.","Khi ít người di cư ra thành thị hơn, đô thị hóa diễn ra chậm lại.","Người dân đang rời bỏ các thành phố để về nông thôn sinh sống.","Quá trình đô thị hóa đã hoàn toàn dừng lại ở nông thôn."], answer:0, explanation:"As more people migrate... urbanisation is happening faster = Khi càng nhiều người di cư... đô thị hóa diễn ra nhanh hơn.", vi:""},
+  {id:"t8", prompt:"Chọn bản dịch tiếng Anh đúng: \"Không khí ở nông thôn trong lành hơn và ít bị ô nhiễm hơn.\"", options:["The air in the countryside is cleaner and less polluted.","The air in the city is cleaner and less polluted.","The air in the countryside is dirtier and more polluted.","The air in the countryside is the same as in the city."], answer:0, explanation:"trong lành hơn và ít bị ô nhiễm hơn = cleaner and less polluted.", vi:""},
+  {id:"t9", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"This is the most polluted street in the city.\"", options:["Đây là con phố ô nhiễm nhất trong thành phố.","Đây là con phố sạch sẽ nhất trong thành phố.","Đây là con phố yên tĩnh nhất trong thành phố.","Đây là con phố rộng rãi nhất trong thành phố."], answer:0, explanation:"the most polluted street = con phố ô nhiễm nhất.", vi:""},
+  {id:"t10", prompt:"Chọn bản dịch tiếng Anh đúng: \"Đây là tòa nhà cao nhất trong thành phố.\"", options:["This is the tallest building in the city.","This is the oldest building in the city.","This is the most crowded building in the city.","This is the cheapest building in the city."], answer:0, explanation:"tòa nhà cao nhất = the tallest building.", vi:""},
+];
+
+VOCAB_TEST.forEach(q=>q.section='vocab');
+GRAMMAR_TEST.forEach(q=>q.section='grammar');
+READING_TEST.forEach(q=>q.section='reading');
+TRANSLATION_TEST.forEach(q=>q.section='translation');
+const TOTAL = VOCAB_TEST.length + GRAMMAR_TEST.length + READING_TEST.length + TRANSLATION_TEST.length;
+const STORAGE_KEY = 'u6_vocabgrammar_test_v1';
+
+/* ---------------- utility ---------------- */
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+function loadHistory(){
+  try{ const raw=localStorage.getItem(STORAGE_KEY); return raw? JSON.parse(raw) : {best:0, attempts:0}; }
+  catch(e){ return {best:0, attempts:0}; }
+}
+function saveHistory(h){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(h)); }catch(e){} }
+
+/* ---------------- state ---------------- */
+let state = { questions:[], answers:{}, submitted:false, timeLeft: 35*60, timerId:null, startedAt:null };
+
+function buildQuestionSet(){
+  const all = shuffle(VOCAB_TEST.concat(GRAMMAR_TEST).concat(READING_TEST).concat(TRANSLATION_TEST).map(q=>{
+    const optOrder = shuffle(q.options.map((o,i)=>i));
+    return Object.assign({}, q, { displayOptions: optOrder.map(i=>q.options[i]), correctDisplayIndex: optOrder.indexOf(q.answer) });
+  }));
+  return all;
+}
+
+function init(){
+  renderReviewSection();
+  state.questions = buildQuestionSet();
+  state.answers = {};
+  state.submitted = false;
+  state.timeLeft = 35*60;
+  state.startedAt = Date.now();
+  document.getElementById('resultBanner').classList.remove('show');
+  renderQuiz();
+  updateProgress();
+  updateHistoryLabels();
+  startTimer();
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = false; btn.classList.remove('opacity-50');
+}
+
+function updateHistoryLabels(){
+  const h = loadHistory();
+  document.getElementById('bestScoreLabel').textContent = h.attempts>0 ? (h.best+'/'+TOTAL) : '--';
+  document.getElementById('attemptCountLabel').textContent = h.attempts||0;
+}
+
+function startTimer(){
+  if(state.timerId) clearInterval(state.timerId);
+  state.timerId = setInterval(()=>{
+    if(state.submitted){ clearInterval(state.timerId); return; }
+    state.timeLeft--;
+    renderTimer();
+    if(state.timeLeft<=0){ clearInterval(state.timerId); submitTest(true); }
+  },1000);
+  renderTimer();
+}
+function renderTimer(){
+  const m = Math.floor(Math.max(0,state.timeLeft)/60), s = Math.max(0,state.timeLeft)%60;
+  const label = document.getElementById('timerLabel');
+  label.textContent = String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  label.classList.toggle('low', state.timeLeft<=60);
+}
+
+function renderQuiz(){
+  const vocabQs = state.questions.filter(q=>q.section==='vocab');
+  const grammarQs = state.questions.filter(q=>q.section==='grammar');
+  const readingQs = state.questions.filter(q=>q.section==='reading');
+  const translationQs = state.questions.filter(q=>q.section==='translation');
+  let html = '';
+  html += sectionDivider('📚 Phần 1 · Vocabulary', vocabQs.length);
+  vocabQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('📐 Phần 2 · Grammar (So sánh hơn & so sánh nhất của tính từ)', grammarQs.length);
+  grammarQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('📖 Phần 3 · Đọc hiểu (Reading Comprehension)', readingQs.length);
+  readingQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('🇻🇳 Phần 4 · Luyện dịch nghĩa (Translation Practice)', translationQs.length);
+  translationQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  document.getElementById('quizArea').innerHTML = html;
+}
+
+function sectionDivider(title, count){
+  return `<div class="section-divider text-white rounded-xl px-4 py-2.5 mb-4 mt-2 font-extrabold text-sm md:text-base shadow flex items-center justify-between">
+    <span>${title}</span><span class="text-xs font-bold opacity-80">${count} câu</span>
+  </div>`;
+}
+
+function renderQuestionCard(q, num){
+  const letters=['A','B','C','D'];
+  const optsHtml = q.displayOptions.map((opt,i)=>{
+    return `<div class="opt-row px-3 py-2.5 flex items-start gap-2 text-sm md:text-[15px]" data-qid="${q.id}" data-idx="${i}" onclick="selectAnswer('${q.id}',${i})">
+      <span class="font-black text-blue-700">${letters[i]}.</span><span class="flex-1">${opt}</span>
+    </div>`;
+  }).join('');
+  return `<div class="qcard p-4 mb-3" id="qcard_${q.id}">
+    <p class="font-extrabold text-slate-800 text-sm md:text-base mb-2"><span class="text-blue-600">Câu ${num}.</span> ${q.prompt}</p>
+    <div class="grid gap-2" id="opts_${q.id}">${optsHtml}</div>
+    <div class="explain-box mt-3" id="explain_${q.id}"></div>
+  </div>`;
+}
+
+function selectAnswer(qid, idx){
+  if(state.submitted) return;
+  state.answers[qid] = idx;
+  const wrap = document.getElementById('opts_'+qid);
+  wrap.querySelectorAll('.opt-row').forEach(el=>{
+    el.classList.toggle('selected', parseInt(el.dataset.idx,10)===idx);
+  });
+  document.getElementById('qcard_'+qid).classList.add('answered');
+  updateProgress();
+}
+
+function updateProgress(){
+  const answered = Object.keys(state.answers).length;
+  document.getElementById('progressText').textContent = answered+' / '+TOTAL+' câu';
+  document.getElementById('progressBar').style.width = Math.round(answered/TOTAL*100)+'%';
+  document.getElementById('answeredCount').textContent = answered;
+}
+
+function submitTest(auto){
+  if(state.submitted) return;
+  const answeredCount = Object.keys(state.answers).length;
+  if(!auto && answeredCount < TOTAL){
+    const proceed = confirm('Bạn còn '+(TOTAL-answeredCount)+' câu chưa trả lời. Vẫn muốn nộp bài?');
+    if(!proceed) return;
+  }
+  state.submitted = true;
+  if(state.timerId) clearInterval(state.timerId);
+  const elapsed = Math.round((Date.now()-state.startedAt)/1000);
+
+  let correct = 0;
+  state.questions.forEach(q=>{
+    const sel = state.answers[q.id];
+    const isCorrect = sel === q.correctDisplayIndex;
+    if(isCorrect) correct++;
+    const card = document.getElementById('qcard_'+q.id);
+    card.classList.add(isCorrect?'correct':'wrong');
+    const wrap = document.getElementById('opts_'+q.id);
+    wrap.querySelectorAll('.opt-row').forEach(el=>{
+      const idx = parseInt(el.dataset.idx,10);
+      el.classList.add('locked');
+      if(idx===q.correctDisplayIndex) el.classList.add('correct-opt');
+      else if(idx===sel && !isCorrect) el.classList.add('wrong-opt');
+    });
+    const exp = document.getElementById('explain_'+q.id);
+    exp.classList.add('show');
+    const viLine = q.vi ? `<p class="text-slate-500 italic mt-1">🇻🇳 ${q.vi}</p>` : '';
+    exp.innerHTML = `<p class="${isCorrect?'text-emerald-700':'text-rose-600'} font-bold">${isCorrect?'✅ Chính xác!':(sel===undefined?'⚪ Bạn chưa chọn đáp án.':'❌ Chưa đúng.')} ${q.explanation}</p>${viLine}`;
+  });
+
+  const pct = Math.round(correct/TOTAL*100);
+  document.getElementById('resultScore').textContent = correct;
+  document.getElementById('resultPct').textContent = pct;
+  const mm = Math.floor(elapsed/60), ss = elapsed%60;
+  document.getElementById('resultTime').textContent = mm+':'+String(ss).padStart(2,'0');
+  let emoji='🙂', title='Đã hoàn thành!';
+  if(pct>=90){ emoji='🏆'; title='Xuất sắc!'; }
+  else if(pct>=70){ emoji='🎉'; title='Làm tốt lắm!'; }
+  else if(pct>=50){ emoji='💪'; title='Khá ổn, cố gắng thêm nhé!'; }
+  else { emoji='📖'; title='Cần ôn tập thêm!'; }
+  document.getElementById('resultEmoji').textContent = emoji;
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultBanner').classList.add('show');
+  document.getElementById('resultBanner').scrollIntoView({behavior:'smooth', block:'start'});
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true; btn.classList.add('opacity-50');
+
+  const h = loadHistory();
+  h.attempts = (h.attempts||0)+1;
+  h.best = Math.max(h.best||0, correct);
+  saveHistory(h);
+  updateHistoryLabels();
+
+  if(pct>=70) launchConfetti();
+}
+
+function retryTest(){ init(); window.scrollTo({top:0, behavior:'smooth'}); }
+
+function scrollToReview(){
+  document.getElementById('quizArea').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function launchConfetti(){
+  const wrap = document.getElementById('confettiWrap');
+  const colors=['#1d4ed8','#0891b2','#38bdf8','#1e3a8a','#06b6d4'];
+  for(let i=0;i<50;i++){
+    const el=document.createElement('div');
+    el.className='confetti-piece';
+    el.style.left=(Math.random()*100)+'vw';
+    el.style.background=colors[Math.floor(Math.random()*colors.length)];
+    el.style.animationDuration=(2+Math.random()*1.5)+'s';
+    el.style.top='-20px';
+    wrap.appendChild(el);
+    setTimeout(()=>el.remove(), 3600);
+  }
+}
+
+init();
+</script>
+</body>
+</html>

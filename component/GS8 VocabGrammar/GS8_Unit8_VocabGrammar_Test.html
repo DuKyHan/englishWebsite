@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 8 - Test Trắc nghiệm Từ vựng & Ngữ pháp - Tiếng Anh 8</title>
+<meta name="apple-mobile-web-app-title" content="U8 Vocab-Grammar Test">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+  :root{ --accent:#c2410c; --accent2:#0d9488; }
+  * { box-sizing: border-box; }
+  body { font-family:'Nunito',sans-serif; background:#fff7ed; }
+  h1,h2,.baloo{ font-family:'Baloo 2',sans-serif; }
+  .hero-gradient{ background: linear-gradient(135deg, #7c2d12 0%, #c2410c 55%, #0d9488 100%); }
+  .qcard{ background:#fff; border-radius:1.1rem; box-shadow:0 1px 4px rgba(0,0,0,.06); border:2px solid #e2e8f0; transition:border .2s, box-shadow .2s; }
+  .qcard.answered{ border-color:#fed7aa; }
+  .qcard.correct{ border-color:#22c55e; background:#f0fdf4; }
+  .qcard.wrong{ border-color:#ef4444; background:#fef2f2; }
+  .opt-row{ cursor:pointer; transition: all .15s; border:2px solid #e2e8f0; border-radius:.8rem; }
+  .opt-row:hover{ border-color:var(--accent); background:#fff7ed; }
+  .opt-row.selected{ border-color:#c2410c; background:#ffedd5; font-weight:800; }
+  .opt-row.correct-opt{ border-color:#22c55e !important; background:#dcfce7 !important; font-weight:800; }
+  .opt-row.wrong-opt{ border-color:#ef4444 !important; background:#fee2e2 !important; font-weight:800; }
+  .opt-row.locked{ cursor:default; pointer-events:none; }
+  .explain-box{ display:none; background:#fffbeb; border:1px solid #fde68a; border-radius:.7rem; padding:.6rem .9rem; font-size:.85rem; color:#334155; }
+  .explain-box.show{ display:block; }
+  .sticky-bar{ position:sticky; bottom:0; z-index:40; }
+  .progress-fill{ transition: width .3s ease; }
+  .badge-pill{ background:#fff; border:2px solid #99f6e4; border-radius:999px; padding:.3rem .8rem; font-size:.75rem; font-weight:800; color:#115e59; }
+  .score-ring{ animation: popIn .4s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn{ from{transform:scale(.5); opacity:0;} to{transform:scale(1); opacity:1;} }
+  .confetti-wrap{ position:fixed; inset:0; pointer-events:none; z-index:9999; }
+  .confetti-piece{ position:absolute; width:10px; height:10px; border-radius:2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall{ 0%{transform:translateY(-20px) rotate(0deg); opacity:1;} 100%{transform:translateY(100vh) rotate(720deg); opacity:0;} }
+  .section-divider{ background:linear-gradient(135deg,#7c2d12,#0d9488); }
+  #resultBanner{ display:none; }
+  #resultBanner.show{ display:block; }
+  .timer-pill{ font-variant-numeric: tabular-nums; }
+  .timer-pill.low{ color:#fca5a5 !important; }
+  .accordion-btn{ cursor:pointer; transition: background .15s; }
+  .accordion-body{ display:none; }
+  .accordion-body.open{ display:block; }
+  .accordion-chevron{ transition: transform .2s; }
+  .accordion-btn.open .accordion-chevron{ transform: rotate(180deg); }
+  .vocab-row{ border-bottom:1px solid #f1f5f9; padding:.55rem 0; }
+  .vocab-row:last-child{ border-bottom:none; }
+  .passage-en{ background:#fff; border:1px solid #e2e8f0; border-radius:.9rem; padding:.9rem 1.1rem; line-height:1.85; font-size:.92rem; color:#334155; }
+  .passage-vi{ display:none; background:#fffbeb; border:1px solid #fde68a; border-radius:.9rem; padding:.9rem 1.1rem; margin-top:.6rem; line-height:1.85; font-size:.92rem; color:#334155; }
+  .passage-vi.show{ display:block; }
+  .grammar-tip-box{ background:#eff6ff; border:1px solid #bfdbfe; border-radius:.9rem; padding:1rem 1.2rem; line-height:1.9; font-size:.92rem; color:#334155; }
+</style>
+</head>
+<body class="min-h-screen pb-10">
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<header class="hero-gradient text-white py-8 px-4 text-center shadow-xl relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <div class="absolute top-4 left-8 text-6xl">🛍️</div>
+    <div class="absolute top-2 right-12 text-5xl">💳</div>
+    <div class="absolute bottom-2 left-1/3 text-4xl">🏬</div>
+    <div class="absolute bottom-4 right-1/4 text-5xl">🛒</div>
+  </div>
+  <p class="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Tiếng Anh 8 · Unit 8 · Shopping</p>
+  <h1 class="text-3xl md:text-5xl font-extrabold drop-shadow-lg">📝 Test trắc nghiệm: Từ vựng &amp; Ngữ pháp</h1>
+  <p class="mt-2 text-base md:text-lg opacity-90 font-semibold">75 câu hỏi · Từ vựng, Ngữ pháp, Đọc hiểu &amp; Dịch nghĩa</p>
+  <div class="mt-5 max-w-2xl mx-auto flex flex-wrap items-center justify-center gap-3">
+    <span class="badge-pill"><i class="fa-solid fa-star mr-1"></i>Điểm cao nhất: <span id="bestScoreLabel">--</span></span>
+    <span class="badge-pill"><i class="fa-solid fa-rotate mr-1"></i>Số lần làm: <span id="attemptCountLabel">0</span></span>
+    <span class="badge-pill timer-pill"><i class="fa-solid fa-clock mr-1"></i><span id="timerLabel">35:00</span></span>
+  </div>
+  <div class="mt-4 max-w-2xl mx-auto">
+    <div class="flex justify-between text-xs font-bold opacity-80 mb-1">
+      <span>Tiến độ trả lời</span>
+      <span id="progressText">0 / 75 câu</span>
+    </div>
+    <div class="bg-white/20 rounded-full h-3 overflow-hidden">
+      <div id="progressBar" class="bg-white rounded-full h-3 progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-3xl mx-auto px-4 mt-6">
+
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 mb-6 text-sm text-slate-600">
+    <p class="font-bold text-slate-700 mb-1"><i class="fa-solid fa-circle-info text-orange-600 mr-1"></i>Hướng dẫn làm bài</p>
+    <p>Trước khi làm bài, hãy mở phần <b>"📚 Ôn tập &amp; Dịch nghĩa Unit 8"</b> bên dưới để xem lại từ vựng, ngữ pháp và bản dịch tiếng Việt của các bài đọc trong Unit 8 (chủ đề Shopping). Sau đó chọn <b>1 đáp án đúng</b> cho mỗi câu hỏi trắc nghiệm — gồm từ vựng, ngữ pháp, đọc hiểu bài đọc và luyện dịch nghĩa. Bấm <b>"Nộp bài"</b> để xem điểm và giải thích. Bấm <b>"Làm lại"</b> để nhận đề mới và luyện tập không giới hạn số lần.</p>
+  </div>
+
+  <!-- ============ REVIEW & TRANSLATION SECTION ============ -->
+  <div class="bg-white rounded-2xl shadow-sm border-2 border-orange-200 mb-6 overflow-hidden">
+    <button class="accordion-btn open w-full flex items-center justify-between px-4 py-3 bg-orange-50 font-extrabold text-orange-800" onclick="toggleAccordion('reviewMain')">
+      <span><i class="fa-solid fa-book-open-reader mr-2"></i>📚 Ôn tập &amp; Dịch nghĩa Unit 8</span>
+      <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+    </button>
+    <div class="accordion-body open px-4 py-4 space-y-4" id="acc_reviewMain">
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('vocabList')">
+          <span>🛍️ Từ vựng Unit 8 (30 từ/cụm từ)</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-2" id="acc_vocabList"></div>
+      </div>
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('grammarTip')">
+          <span>📐 Ngữ pháp: Too + adj + to-V / adj + enough + to-V</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-3" id="acc_grammarTip">
+          <div class="grammar-tip-box">
+            <b>1. TOO + adjective + (for + someone) + to-V</b>: diễn tả ý nghĩa <u>"quá... đến mức KHÔNG THỂ"</u> làm gì đó (kết quả tiêu cực).<br>
+            &nbsp;&nbsp;• Cấu trúc: S + be + <b>too</b> + adj + (for + O) + to-V.<br>
+            &nbsp;&nbsp;• Ví dụ: <i>This dress is too expensive for me to buy.</i> (= Chiếc váy này quá đắt, tôi không thể mua được.)<br>
+            &nbsp;&nbsp;• Ví dụ: <i>The queue at the checkout was too long for us to wait.</i> (Hàng chờ ở quầy thu ngân quá dài, chúng tôi không thể chờ được.)<br><br>
+            <b>2. Adjective + ENOUGH + (for + someone) + to-V</b>: diễn tả ý nghĩa <u>"đủ... để CÓ THỂ"</u> làm gì đó (kết quả tích cực, đủ điều kiện).<br>
+            &nbsp;&nbsp;• Cấu trúc: S + be + adj + <b>enough</b> + (for + O) + to-V. Lưu ý: "enough" luôn đứng SAU tính từ, ngược lại với "too" luôn đứng TRƯỚC tính từ.<br>
+            &nbsp;&nbsp;• Ví dụ: <i>This shirt is cheap enough for me to buy two of them.</i> (= Chiếc áo này đủ rẻ để tôi có thể mua hai cái.)<br>
+            &nbsp;&nbsp;• Ví dụ: <i>The shop assistant was friendly enough for us to ask more questions.</i><br><br>
+            <b>3. So sánh "too" và "very"</b>: "very" chỉ nhấn mạnh mức độ, không hàm ý kết quả gì cả; "too" luôn hàm ý một kết quả tiêu cực/không thể xảy ra.<br>
+            &nbsp;&nbsp;• <i>This bag is very expensive.</i> (chỉ là nhận xét, có thể vẫn mua được)<br>
+            &nbsp;&nbsp;• <i>This bag is too expensive for me to buy.</i> (hàm ý: tôi KHÔNG THỂ mua vì nó quá đắt)<br><br>
+            <b>4. Dạng phủ định "not... enough"</b>: dùng khi thiếu điều kiện để làm việc gì đó.<br>
+            &nbsp;&nbsp;• Ví dụ: <i>I don't have enough money to buy this jacket.</i> (= Tôi không có đủ tiền để mua chiếc áo khoác này.)<br>
+            &nbsp;&nbsp;• Ví dụ: <i>These shoes are not cheap enough for me to buy.</i> (= Đôi giày này không đủ rẻ để tôi mua.)
+          </div>
+        </div>
+      </div>
+
+      <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button class="accordion-btn w-full flex items-center justify-between px-3 py-2.5 bg-slate-50 font-bold text-slate-700 text-sm" onclick="toggleAccordion('passages')">
+          <span>📖 Bài đọc Unit 8 (có bản dịch)</span>
+          <i class="fa-solid fa-chevron-down accordion-chevron"></i>
+        </button>
+        <div class="accordion-body px-3 py-3 space-y-4" id="acc_passages"></div>
+      </div>
+
+    </div>
+  </div>
+  <!-- ============ END REVIEW SECTION ============ -->
+
+  <div id="resultBanner" class="mb-6">
+    <div class="bg-white rounded-2xl shadow-lg border-2 border-orange-300 p-6 text-center score-ring">
+      <p id="resultEmoji" class="text-5xl mb-2">🎉</p>
+      <h2 class="text-2xl font-extrabold text-orange-700" id="resultTitle">Hoàn thành!</h2>
+      <p class="text-4xl font-black text-slate-800 mt-2"><span id="resultScore">0</span>/75</p>
+      <p class="text-slate-500 font-bold mt-1"><span id="resultPct">0</span>% chính xác · Thời gian: <span id="resultTime">0:00</span></p>
+      <div class="flex flex-wrap justify-center gap-3 mt-4">
+        <button onclick="retryTest()" class="bg-orange-800 hover:bg-orange-900 text-white font-bold px-5 py-2.5 rounded-xl shadow"><i class="fa-solid fa-rotate-right mr-1"></i>Làm lại (đề mới)</button>
+        <button onclick="scrollToReview()" class="bg-white border-2 border-orange-300 text-orange-700 font-bold px-5 py-2.5 rounded-xl"><i class="fa-solid fa-magnifying-glass mr-1"></i>Xem lại chi tiết</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="quizArea"></div>
+
+  <div class="sticky-bar bg-white/95 backdrop-blur border-t border-slate-200 mt-6 py-3 px-4 rounded-t-2xl shadow-[0_-4px_14px_rgba(0,0,0,.06)] flex items-center justify-between gap-3">
+    <span class="text-xs md:text-sm font-bold text-slate-500"><span id="answeredCount">0</span>/75 câu đã trả lời</span>
+    <button id="submitBtn" onclick="submitTest()" class="bg-gradient-to-r from-orange-800 to-teal-600 text-white font-extrabold px-6 py-2.5 rounded-xl shadow-lg hover:brightness-110"><i class="fa-solid fa-flag-checkered mr-1"></i>Nộp bài</button>
+  </div>
+
+</main>
+
+<script>
+/* ============================================================
+   REVIEW CONTENT: Unit 8 Vocabulary, Grammar rule, Passages (EN+VI)
+   ============================================================ */
+const VOCAB_LIST = [
+  {word:"bargain (v)", vi:"mặc cả, trả giá", example:"My mother always bargains with the seller at the market to get a better price.", exVi:"Mẹ tôi luôn mặc cả với người bán ở chợ để có giá tốt hơn."},
+  {word:"discount", vi:"giảm giá", example:"The shop is offering a 20% discount on all shoes this week.", exVi:"Cửa hàng đang giảm giá 20% cho tất cả giày trong tuần này."},
+  {word:"receipt", vi:"hóa đơn, biên lai", example:"Please keep your receipt in case you want to exchange the item.", exVi:"Vui lòng giữ hóa đơn phòng khi bạn muốn đổi hàng."},
+  {word:"refund", vi:"tiền hoàn lại, hoàn tiền", example:"The shop assistant gave me a full refund because the shirt was damaged.", exVi:"Nhân viên bán hàng đã hoàn lại toàn bộ tiền cho tôi vì chiếc áo bị hỏng."},
+  {word:"exchange (v)", vi:"đổi hàng", example:"You can exchange the shoes for a bigger size within seven days.", exVi:"Bạn có thể đổi giày sang size lớn hơn trong vòng bảy ngày."},
+  {word:"customer", vi:"khách hàng", example:"The shop assistant was very polite to every customer.", exVi:"Nhân viên bán hàng rất lịch sự với mọi khách hàng."},
+  {word:"shop assistant", vi:"nhân viên bán hàng", example:"The shop assistant helped me find the right size.", exVi:"Nhân viên bán hàng đã giúp tôi tìm đúng kích cỡ."},
+  {word:"department store", vi:"cửa hàng bách hóa", example:"We bought new clothes for Tet at the department store.", exVi:"Chúng tôi đã mua quần áo mới cho Tết tại cửa hàng bách hóa."},
+  {word:"supermarket", vi:"siêu thị", example:"My mother buys food for the whole week at the supermarket.", exVi:"Mẹ tôi mua đồ ăn cho cả tuần ở siêu thị."},
+  {word:"shopping mall", vi:"trung tâm thương mại", example:"There is a new shopping mall near my house.", exVi:"Có một trung tâm thương mại mới gần nhà tôi."},
+  {word:"try on", vi:"mặc thử, ướm thử", example:"Can I try on this jacket before I buy it?", exVi:"Tôi có thể mặc thử chiếc áo khoác này trước khi mua không?"},
+  {word:"fitting room", vi:"phòng thử đồ", example:"The fitting room is at the back of the shop.", exVi:"Phòng thử đồ nằm ở phía sau cửa hàng."},
+  {word:"size", vi:"kích cỡ", example:"This dress is the wrong size for me.", exVi:"Chiếc váy này sai kích cỡ so với tôi."},
+  {word:"price tag", vi:"nhãn giá", example:"I always check the price tag before trying anything on.", exVi:"Tôi luôn kiểm tra nhãn giá trước khi mặc thử bất cứ thứ gì."},
+  {word:"on sale", vi:"đang giảm giá, bán hạ giá", example:"These shoes are on sale until the end of the month.", exVi:"Đôi giày này đang được giảm giá đến cuối tháng."},
+  {word:"sold out", vi:"bán hết hàng", example:"The new phone was sold out within a few hours.", exVi:"Chiếc điện thoại mới đã bán hết chỉ trong vài giờ."},
+  {word:"in stock", vi:"còn hàng", example:"Don't worry, we still have your size in stock.", exVi:"Đừng lo, chúng tôi vẫn còn size của bạn."},
+  {word:"out of stock", vi:"hết hàng", example:"I'm sorry, this colour is out of stock at the moment.", exVi:"Xin lỗi, màu này hiện đang hết hàng."},
+  {word:"cash", vi:"tiền mặt", example:"Some small shops only accept cash, not cards.", exVi:"Một số cửa hàng nhỏ chỉ nhận tiền mặt, không nhận thẻ."},
+  {word:"credit card", vi:"thẻ tín dụng", example:"I paid for the jacket with my credit card.", exVi:"Tôi đã thanh toán chiếc áo khoác bằng thẻ tín dụng."},
+  {word:"online shopping", vi:"mua sắm trực tuyến", example:"Online shopping is popular because it saves time.", exVi:"Mua sắm trực tuyến rất phổ biến vì nó tiết kiệm thời gian."},
+  {word:"delivery", vi:"giao hàng, việc giao hàng", example:"Delivery usually takes three to five days.", exVi:"Việc giao hàng thường mất từ ba đến năm ngày."},
+  {word:"order (v)", vi:"đặt hàng", example:"She ordered a new pair of trainers online last night.", exVi:"Tối qua cô ấy đã đặt mua một đôi giày thể thao mới trên mạng."},
+  {word:"customer review", vi:"đánh giá của khách hàng", example:"I always read customer reviews before ordering anything online.", exVi:"Tôi luôn đọc đánh giá của khách hàng trước khi đặt bất cứ thứ gì trên mạng."},
+  {word:"convenience store", vi:"cửa hàng tiện lợi", example:"There is a convenience store open 24 hours near my school.", exVi:"Có một cửa hàng tiện lợi mở cửa 24 giờ gần trường tôi."},
+  {word:"second-hand", vi:"đã qua sử dụng, đồ cũ", example:"My brother bought a second-hand bicycle instead of a new one, to save money.", exVi:"Anh trai tôi đã mua một chiếc xe đạp cũ thay vì mua xe mới, để tiết kiệm tiền."},
+  {word:"brand-new", vi:"hoàn toàn mới", example:"She wore a brand-new dress to the party.", exVi:"Cô ấy mặc một chiếc váy hoàn toàn mới đến bữa tiệc."},
+  {word:"affordable", vi:"vừa túi tiền, có thể mua được", example:"The prices at this shop are affordable for students.", exVi:"Giá cả ở cửa hàng này vừa túi tiền cho học sinh."},
+  {word:"overpriced", vi:"định giá quá cao", example:"I think this bag is overpriced for its quality.", exVi:"Tôi nghĩ chiếc túi này bị định giá quá cao so với chất lượng của nó."},
+  {word:"window shopping", vi:"đi ngắm hàng (không mua)", example:"We went window shopping at the mall without buying anything.", exVi:"Chúng tôi đi ngắm hàng ở trung tâm thương mại mà không mua gì."},
+];
+
+const PASSAGES_REVIEW = [
+  {
+    title:"📄 Bài đọc 1: At the Clothes Shop",
+    en:"<b>Shop assistant:</b> Good afternoon! Can I help you find anything today?<br><b>Customer:</b> Yes, please. I'm looking for a warm jacket for the winter.<br><b>Shop assistant:</b> This blue jacket is very popular this year. Would you like to try it on?<br><b>Customer:</b> Yes, where's the fitting room?<br><b>Shop assistant:</b> It's right over there, next to the shelf with the price tags.<br><b>Customer (a few minutes later):</b> It looks nice, but this size is too small for me to wear comfortably.<br><b>Shop assistant:</b> Don't worry, we still have a bigger size in stock. Here you are.<br><b>Customer:</b> Perfect, this one is big enough for me to move around easily. How much is it?<br><b>Shop assistant:</b> The jacket is on sale this week. The original price is 800,000 dong, but with a 30% discount, it's only 560,000 dong now.<br><b>Customer:</b> That's affordable! I'll take it. Can I pay by credit card?<br><b>Shop assistant:</b> Of course. Would you like a receipt?<br><b>Customer:</b> Yes, please. In case it doesn't fit well at home, I might need to exchange it.<br><b>Shop assistant:</b> No problem. If there's a problem, just bring the receipt back within seven days for an exchange or a refund.<br><b>Customer:</b> Great, thank you very much for your help!",
+    vi:"<b>Nhân viên bán hàng:</b> Chào buổi chiều! Tôi có thể giúp gì cho bạn hôm nay không?<br><b>Khách hàng:</b> Vâng, tôi đang tìm một chiếc áo khoác ấm cho mùa đông.<br><b>Nhân viên bán hàng:</b> Chiếc áo khoác màu xanh này rất được ưa chuộng năm nay. Bạn có muốn mặc thử không?<br><b>Khách hàng:</b> Có, phòng thử đồ ở đâu vậy?<br><b>Nhân viên bán hàng:</b> Ở ngay đằng kia, cạnh kệ có nhãn giá.<br><b>Khách hàng (vài phút sau):</b> Trông đẹp đấy, nhưng size này hơi nhỏ nên tôi mặc không thoải mái.<br><b>Nhân viên bán hàng:</b> Đừng lo, chúng tôi vẫn còn size lớn hơn. Đây bạn.<br><b>Khách hàng:</b> Tuyệt, cái này đủ rộng để tôi vận động thoải mái. Giá bao nhiêu vậy?<br><b>Nhân viên bán hàng:</b> Áo khoác đang được giảm giá tuần này. Giá gốc là 800.000 đồng, nhưng với mức giảm giá 30%, giờ chỉ còn 560.000 đồng.<br><b>Khách hàng:</b> Vừa túi tiền đấy! Tôi sẽ mua nó. Tôi có thể trả bằng thẻ tín dụng không?<br><b>Nhân viên bán hàng:</b> Được chứ. Bạn có muốn lấy hóa đơn không?<br><b>Khách hàng:</b> Có, làm ơn. Phòng khi về nhà không vừa, tôi có thể cần đổi hàng.<br><b>Nhân viên bán hàng:</b> Không sao. Nếu có vấn đề gì, chỉ cần mang hóa đơn quay lại trong vòng bảy ngày để đổi hàng hoặc hoàn tiền.<br><b>Khách hàng:</b> Tuyệt, cảm ơn bạn rất nhiều vì đã giúp đỡ!"
+  },
+  {
+    title:"📄 Bài đọc 2: Traditional Shopping vs Online Shopping",
+    en:"Nowadays, people can choose between shopping at a traditional market or department store and shopping online. At a department store or supermarket, customers can see, touch, and try on the products before buying them. They can ask the shop assistant questions directly and take the item home immediately. However, department stores are often crowded, especially at the weekend, and some products there can be overpriced compared to smaller shops. Online shopping, on the other hand, is convenient because customers can order anything at any time without leaving home. Many websites offer a wide range of products, from brand-new items to second-hand ones, and customer reviews help buyers decide what to choose. Delivery usually takes a few days, so customers cannot receive the product immediately. Sometimes the actual product is not exactly the same as the picture, and it can be difficult to check the size and quality before paying. Both ways of shopping have their own advantages and disadvantages, so people should choose carefully depending on what they need to buy.",
+    vi:"Ngày nay, người ta có thể lựa chọn giữa việc mua sắm ở chợ truyền thống, cửa hàng bách hóa và mua sắm trực tuyến. Ở cửa hàng bách hóa hay siêu thị, khách hàng có thể nhìn, sờ và mặc thử sản phẩm trước khi mua. Họ có thể hỏi trực tiếp nhân viên bán hàng và mang sản phẩm về nhà ngay lập tức. Tuy nhiên, các cửa hàng bách hóa thường đông đúc, đặc biệt vào cuối tuần, và một số sản phẩm ở đó có thể bị định giá quá cao so với các cửa hàng nhỏ hơn. Mặt khác, mua sắm trực tuyến rất tiện lợi vì khách hàng có thể đặt hàng bất cứ lúc nào mà không cần rời khỏi nhà. Nhiều trang web cung cấp đa dạng sản phẩm, từ hàng hoàn toàn mới đến hàng đã qua sử dụng, và các đánh giá của khách hàng giúp người mua quyết định nên chọn gì. Việc giao hàng thường mất vài ngày, vì vậy khách hàng không thể nhận sản phẩm ngay lập tức. Đôi khi sản phẩm thực tế không giống hệt như hình ảnh, và rất khó để kiểm tra kích cỡ cũng như chất lượng trước khi thanh toán. Cả hai cách mua sắm đều có ưu và nhược điểm riêng, vì vậy mọi người nên lựa chọn cẩn thận tùy theo nhu cầu mua sắm của mình."
+  },
+  {
+    title:"📄 Bài đọc 3: Tips for Smart Shopping",
+    en:"Shopping can be fun, but it is easy to spend more money than necessary if you are not careful. Here are some useful tips for smart shopping. First, always compare prices at different shops or websites before you decide to buy something; sometimes the same item is cheap enough at one shop but overpriced at another. Second, check the quality of a product carefully, and read customer reviews if you are shopping online, because a low price is not always a bargain if the product breaks quickly. Third, make a shopping list before you go to a supermarket or shopping mall, and try to avoid impulse buying — that is, buying things you did not plan to buy just because they are on sale. Fourth, keep your receipt after every purchase; it is useful if you need to exchange an item or ask for a refund later. Finally, decide whether you really need an item or if you are simply doing window shopping. If a product is too expensive for your budget, it is wiser to wait for a discount than to spend all your savings at once.",
+    vi:"Mua sắm có thể rất thú vị, nhưng bạn dễ tiêu nhiều tiền hơn mức cần thiết nếu không cẩn thận. Dưới đây là một số mẹo hữu ích để mua sắm thông minh. Thứ nhất, luôn so sánh giá ở các cửa hàng hoặc trang web khác nhau trước khi quyết định mua; đôi khi cùng một món hàng lại rẻ ở cửa hàng này nhưng bị định giá quá cao ở cửa hàng khác. Thứ hai, kiểm tra kỹ chất lượng sản phẩm, và đọc các đánh giá của khách hàng nếu bạn mua sắm trực tuyến, vì giá rẻ không phải lúc nào cũng là món hời nếu sản phẩm nhanh hỏng. Thứ ba, lập danh sách mua sắm trước khi đến siêu thị hoặc trung tâm thương mại, và cố gắng tránh mua sắm bốc đồng — nghĩa là mua những thứ bạn không định mua chỉ vì chúng đang giảm giá. Thứ tư, giữ lại hóa đơn sau mỗi lần mua hàng; nó rất hữu ích nếu sau này bạn cần đổi hàng hoặc yêu cầu hoàn tiền. Cuối cùng, hãy xác định xem bạn có thực sự cần món hàng đó hay chỉ đang đi ngắm hàng mà thôi. Nếu một sản phẩm quá đắt so với ngân sách của bạn, tốt hơn hết là chờ đợt giảm giá thay vì tiêu hết tiền tiết kiệm cùng một lúc."
+  }
+];
+
+function renderReviewSection(){
+  document.getElementById('acc_vocabList').innerHTML = VOCAB_LIST.map(v=>`
+    <div class="vocab-row flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+      <div><span class="font-extrabold text-orange-700">${v.word}</span> <span class="text-slate-400">— ${v.vi}</span></div>
+      <div class="text-xs text-slate-400 italic sm:text-right sm:max-w-[55%]">${v.example}<br>${v.exVi}</div>
+    </div>`).join('');
+
+  document.getElementById('acc_passages').innerHTML = PASSAGES_REVIEW.map((p,i)=>`
+    <div>
+      <p class="font-bold text-slate-700 text-sm mb-2">${p.title}</p>
+      <div class="passage-en">${p.en}</div>
+      <button type="button" onclick="togglePassageVi(${i})" class="mt-2 text-xs font-bold bg-white border-2 border-amber-300 text-amber-700 px-3 py-1.5 rounded-full">
+        <i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt
+      </button>
+      <div class="passage-vi" id="passvi_${i}"><b>🇻🇳 Bản dịch</b><br>${p.vi}</div>
+    </div>`).join('');
+}
+function togglePassageVi(i){ document.getElementById('passvi_'+i).classList.toggle('show'); }
+function toggleAccordion(key){
+  const btn = event.currentTarget;
+  btn.classList.toggle('open');
+  document.getElementById('acc_'+key).classList.toggle('open');
+}
+
+/* ============================================================
+   CONTENT: Unit 8 Vocabulary, Grammar, Reading & Translation Test
+   ============================================================ */
+const VOCAB_TEST = [
+  {id:"v1", prompt:"\"Bargain\" (động từ, trong mua sắm) nghĩa là gì?", options:["mặc cả, trả giá","giao hàng tận nơi","hoàn tiền","xác nhận đơn hàng"], answer:0, explanation:"bargain (v) = mặc cả, trả giá với người bán.", vi:"bargain (v) = mặc cả, trả giá."},
+  {id:"v2", prompt:"\"Discount\" nghĩa là gì?", options:["giảm giá","hóa đơn","kích cỡ","nhãn giá"], answer:0, explanation:"discount = giảm giá.", vi:"discount = giảm giá."},
+  {id:"v3", prompt:"\"Receipt\" nghĩa là gì?", options:["hóa đơn, biên lai","thẻ tín dụng","danh sách mua sắm","phòng thử đồ"], answer:0, explanation:"receipt = hóa đơn, biên lai.", vi:"receipt = hóa đơn."},
+  {id:"v4", prompt:"Điền từ: The shop assistant gave me a full ________ because the shirt was damaged.", options:["refund","discount","order","review"], answer:0, explanation:"refund = hoàn tiền; \"a full refund\" = hoàn lại toàn bộ tiền.", vi:"Nhân viên đã hoàn lại toàn bộ tiền vì áo bị hỏng."},
+  {id:"v5", prompt:"\"Exchange\" (động từ, trong mua sắm) nghĩa là gì?", options:["đổi hàng","mặc cả","giao hàng","đặt hàng"], answer:0, explanation:"exchange (v) = đổi hàng.", vi:"exchange (v) = đổi hàng."},
+  {id:"v6", prompt:"\"Customer\" nghĩa là gì?", options:["khách hàng","nhân viên bán hàng","người giao hàng","chủ cửa hàng"], answer:0, explanation:"customer = khách hàng.", vi:"customer = khách hàng."},
+  {id:"v7", prompt:"\"Shop assistant\" nghĩa là gì?", options:["nhân viên bán hàng","khách hàng","người mua sắm trực tuyến","người giao hàng"], answer:0, explanation:"shop assistant = nhân viên bán hàng.", vi:"shop assistant = nhân viên bán hàng."},
+  {id:"v8", prompt:"\"Department store\" nghĩa là gì?", options:["cửa hàng bách hóa","cửa hàng tiện lợi","chợ truyền thống","trung tâm thương mại"], answer:0, explanation:"department store = cửa hàng bách hóa.", vi:"department store = cửa hàng bách hóa."},
+  {id:"v9", prompt:"\"Supermarket\" nghĩa là gì?", options:["siêu thị","trung tâm thương mại","cửa hàng tiện lợi","cửa hàng bách hóa"], answer:0, explanation:"supermarket = siêu thị.", vi:"supermarket = siêu thị."},
+  {id:"v10", prompt:"\"Shopping mall\" nghĩa là gì?", options:["trung tâm thương mại","siêu thị","cửa hàng tiện lợi","chợ truyền thống"], answer:0, explanation:"shopping mall = trung tâm thương mại.", vi:"shopping mall = trung tâm thương mại."},
+  {id:"v11", prompt:"Điền từ: Can I ________ this jacket before I buy it?", options:["try on","try out","take off","put on"], answer:0, explanation:"try on = mặc thử, ướm thử.", vi:"Tôi có thể mặc thử chiếc áo khoác này trước khi mua không?"},
+  {id:"v12", prompt:"\"Fitting room\" nghĩa là gì?", options:["phòng thử đồ","quầy thu ngân","kho hàng","phòng chờ"], answer:0, explanation:"fitting room = phòng thử đồ.", vi:"fitting room = phòng thử đồ."},
+  {id:"v13", prompt:"Điền từ: This dress is the wrong ________ for me; I need a bigger one.", options:["size","price","brand","style"], answer:0, explanation:"size = kích cỡ.", vi:"Chiếc váy này sai kích cỡ, tôi cần cái to hơn."},
+  {id:"v14", prompt:"\"Price tag\" nghĩa là gì?", options:["nhãn giá","hóa đơn","phiếu giảm giá","thẻ thành viên"], answer:0, explanation:"price tag = nhãn giá.", vi:"price tag = nhãn giá."},
+  {id:"v15", prompt:"Điền từ: These shoes are ________ until the end of the month, so they're cheaper now.", options:["on sale","sold out","out of stock","in stock"], answer:0, explanation:"on sale = đang giảm giá, bán hạ giá.", vi:"on sale = đang giảm giá."},
+  {id:"v16", prompt:"\"Sold out\" nghĩa là gì?", options:["bán hết hàng","còn hàng","đang giảm giá","hết hàng tạm thời"], answer:0, explanation:"sold out = bán hết hàng.", vi:"sold out = bán hết hàng."},
+  {id:"v17", prompt:"Điền từ: Don't worry, we still have your size ________.", options:["in stock","out of stock","sold out","on sale"], answer:0, explanation:"in stock = còn hàng.", vi:"in stock = còn hàng."},
+  {id:"v18", prompt:"\"Out of stock\" nghĩa là gì?", options:["hết hàng","còn hàng","bán chạy","giảm giá"], answer:0, explanation:"out of stock = hết hàng.", vi:"out of stock = hết hàng."},
+  {id:"v19", prompt:"\"Cash\" nghĩa là gì?", options:["tiền mặt","thẻ tín dụng","hóa đơn","tiền hoàn lại"], answer:0, explanation:"cash = tiền mặt.", vi:"cash = tiền mặt."},
+  {id:"v20", prompt:"Điền từ: I paid for the jacket with my ________.", options:["credit card","shopping list","price tag","receipt"], answer:0, explanation:"credit card = thẻ tín dụng.", vi:"Tôi đã thanh toán chiếc áo khoác bằng thẻ tín dụng."},
+  {id:"v21", prompt:"\"Online shopping\" nghĩa là gì?", options:["mua sắm trực tuyến","mua sắm tại chợ","đi ngắm hàng","mua sắm bốc đồng"], answer:0, explanation:"online shopping = mua sắm trực tuyến.", vi:"online shopping = mua sắm trực tuyến."},
+  {id:"v22", prompt:"\"Delivery\" nghĩa là gì?", options:["giao hàng","đặt hàng","đổi hàng","hoàn tiền"], answer:0, explanation:"delivery = giao hàng, việc giao hàng.", vi:"delivery = giao hàng."},
+  {id:"v23", prompt:"Điền từ: She ________ a new pair of trainers online last night.", options:["ordered","delivered","exchanged","refunded"], answer:0, explanation:"order (v) = đặt hàng.", vi:"Tối qua cô ấy đã đặt mua một đôi giày thể thao mới trên mạng."},
+  {id:"v24", prompt:"\"Customer review\" nghĩa là gì?", options:["đánh giá của khách hàng","hóa đơn mua hàng","phiếu giảm giá","danh sách mua sắm"], answer:0, explanation:"customer review = đánh giá của khách hàng.", vi:"customer review = đánh giá của khách hàng."},
+  {id:"v25", prompt:"\"Convenience store\" nghĩa là gì?", options:["cửa hàng tiện lợi","cửa hàng bách hóa","trung tâm thương mại","chợ truyền thống"], answer:0, explanation:"convenience store = cửa hàng tiện lợi.", vi:"convenience store = cửa hàng tiện lợi."},
+  {id:"v26", prompt:"\"Second-hand\" nghĩa là gì?", options:["đã qua sử dụng, đồ cũ","hoàn toàn mới","vừa túi tiền","định giá quá cao"], answer:0, explanation:"second-hand = đã qua sử dụng, đồ cũ.", vi:"second-hand = đồ cũ."},
+  {id:"v27", prompt:"\"Brand-new\" nghĩa là gì?", options:["hoàn toàn mới","đã qua sử dụng","vừa túi tiền","định giá quá cao"], answer:0, explanation:"brand-new = hoàn toàn mới.", vi:"brand-new = hoàn toàn mới."},
+  {id:"v28", prompt:"\"Affordable\" nghĩa là gì?", options:["vừa túi tiền, có thể mua được","định giá quá cao","hoàn toàn mới","đã qua sử dụng"], answer:0, explanation:"affordable = vừa túi tiền, có thể mua được.", vi:"affordable = vừa túi tiền."},
+  {id:"v29", prompt:"Điền từ: I think this bag is ________ for its quality; it's not worth the price.", options:["overpriced","affordable","brand-new","second-hand"], answer:0, explanation:"overpriced = định giá quá cao.", vi:"Tôi nghĩ chiếc túi này bị định giá quá cao so với chất lượng của nó."},
+  {id:"v30", prompt:"\"Window shopping\" nghĩa là gì?", options:["đi ngắm hàng (không mua)","mua sắm bốc đồng","mua sắm trực tuyến","mặc cả giá"], answer:0, explanation:"window shopping = đi ngắm hàng (không mua).", vi:"window shopping = đi ngắm hàng."},
+];
+
+const GRAMMAR_TEST = [
+  {id:"g1", prompt:"This jacket is ___ expensive for me to buy this month.", options:["too","enough","so","very"], answer:0, explanation:"Cấu trúc 'too + adj + for + O + to-V' diễn tả 'quá... đến mức không thể'.", vi:"= Chiếc áo khoác này quá đắt, tôi không thể mua trong tháng này."},
+  {id:"g2", prompt:"This shirt is cheap ___ for me to buy two of them.", options:["too","enough","so","such"], answer:1, explanation:"'Enough' đứng SAU tính từ: adj + enough + to-V = đủ ... để có thể.", vi:"= Chiếc áo này đủ rẻ để tôi mua hai cái."},
+  {id:"g3", prompt:"Choose the correctly ordered sentence.", options:["This bag is too heavy for her to carry alone.","This bag is heavy too for her to carry alone.","This bag is for her too heavy to carry alone.","This bag is heavy for too her to carry alone."], answer:0, explanation:"Trật tự đúng: too + adj + for + O + to-V.", vi:"Cấu trúc đúng: too + tính từ + for + người + to-V."},
+  {id:"g4", prompt:"The size is ___ small for me to wear comfortably.", options:["too","enough","very much","so"], answer:0, explanation:"'too + adj + to-V' = quá nhỏ đến mức không mặc thoải mái được.", vi:"= Kích cỡ này quá nhỏ nên tôi mặc không thoải mái."},
+  {id:"g5", prompt:"This jacket is big ___ for me to move around easily.", options:["too","enough","so","such"], answer:1, explanation:"adj + enough + to-V = đủ lớn để có thể làm gì.", vi:"= Áo đủ rộng để tôi vận động thoải mái."},
+  {id:"g6", prompt:"\"This shop is too crowded for us to shop comfortably.\" This sentence means that...", options:["We cannot shop comfortably because the shop is very crowded.","We can shop comfortably because the shop is not crowded.","The shop is empty, so shopping is easy.","We enjoy shopping in crowded shops."], answer:0, explanation:"'too + adj + to-V' hàm ý kết quả KHÔNG THỂ xảy ra.", vi:"= Chúng tôi không thể mua sắm thoải mái vì cửa hàng quá đông."},
+  {id:"g7", prompt:"\"The discount is big enough for her to save a lot of money.\" This sentence means that...", options:["She can save a lot of money because of the big discount.","She cannot save any money at all.","The discount is too small to be useful.","She has to pay full price for everything."], answer:0, explanation:"adj + enough + to-V hàm ý kết quả CÓ THỂ xảy ra.", vi:"= Cô ấy có thể tiết kiệm được nhiều tiền nhờ mức giảm giá lớn."},
+  {id:"g8", prompt:"Transform: \"The price is so high that I can't afford it.\" → \"The price is ___ high for me to afford.\"", options:["too","enough","very","so"], answer:0, explanation:"'so...that + can't' tương đương 'too + adj + to-V'.", vi:"= Giá quá cao, tôi không thể mua nổi."},
+  {id:"g9", prompt:"Transform: \"The store is so close that I can walk there.\" → \"The store is close ___ for me to walk there.\"", options:["too","enough","so","such"], answer:1, explanation:"'so...that + can' tương đương 'adj + enough + to-V'.", vi:"= Cửa hàng đủ gần để tôi có thể đi bộ tới đó."},
+  {id:"g10", prompt:"Which sentence is grammatically correct?", options:["This dress is too expensive for me to buy.","This dress is expensive too for me to buy.","This dress is too for me expensive to buy.","This dress is for too me expensive to buy."], answer:0, explanation:"Trật tự đúng: S + be + too + adj + for + O + to-V.", vi:"Trật tự chuẩn: too + adj + for + O + to-V."},
+  {id:"g11", prompt:"This bag is too heavy ___ carry alone.", options:["for me to","to me for","for to me","me for to"], answer:0, explanation:"Cấu trúc: too + adj + for + O + to-V; 'for me to carry' đúng thứ tự.", vi:"= Túi này quá nặng, tôi không thể xách một mình."},
+  {id:"g12", prompt:"Which best describes the meaning of \"too\" in the structure \"too + adjective + to-V\"?", options:["It shows a negative result — something is not possible.","It shows a positive result — something is possible.","It only emphasises the adjective without any result.","It is used to describe someone's opinion only."], answer:0, explanation:"'too' luôn hàm ý kết quả tiêu cực, không thể thực hiện được.", vi:"'too' = quá... đến mức không thể."},
+  {id:"g13", prompt:"Which best describes the meaning of \"enough\" in the structure \"adjective + enough + to-V\"?", options:["It shows a positive result — something is possible/sufficient.","It shows a negative result — something is impossible.","It means the same as 'too'.","It is only used with nouns, never adjectives."], answer:0, explanation:"'enough' hàm ý đủ điều kiện để làm được việc gì đó.", vi:"'enough' = đủ... để có thể."},
+  {id:"g14", prompt:"The shoes are not cheap ___ me to buy.", options:["for","enough for","too for","so for"], answer:1, explanation:"Cấu trúc phủ định: not + adj + enough + for + O + to-V.", vi:"= Đôi giày không đủ rẻ để tôi mua."},
+  {id:"g15", prompt:"Which sentence means \"I can't buy this dress because it is very expensive\"?", options:["This dress is too expensive for me to buy.","This dress is cheap enough for me to buy.","This dress is very expensive but I bought it.","This dress is not expensive at all."], answer:0, explanation:"'too + adj + to-V' diễn tả việc không thể thực hiện do tính chất quá mức.", vi:"= Váy này quá đắt, tôi không mua được."},
+  {id:"g16", prompt:"Rewrite: \"This dress is too expensive. I can't buy it.\" using the too...to structure.", options:["This dress is too expensive for me to buy.","This dress is expensive enough for me to buy.","This dress is so expensive that I bought it.","This dress is very expensive for me to buy it."], answer:0, explanation:"Kết hợp 2 câu bằng cấu trúc too + adj + for + O + to-V, bỏ tân ngữ 'it' sau to-V.", vi:"= Chiếc váy này quá đắt để tôi mua."},
+  {id:"g17", prompt:"Rewrite: \"This shirt is cheap. I can buy two of them.\" using the enough...to structure.", options:["This shirt is cheap enough for me to buy two of them.","This shirt is too cheap for me to buy two of them.","This shirt is enough cheap for me to buy two of them.","This shirt is so cheap that I can't buy any."], answer:0, explanation:"Kết hợp bằng adj + enough + for + O + to-V.", vi:"= Chiếc áo này đủ rẻ để tôi mua hai cái."},
+  {id:"g18", prompt:"Which position of \"enough\" is correct?", options:["adjective + enough (e.g. cheap enough)","enough + adjective (e.g. enough cheap)","enough is placed before the verb only","enough cannot be used with adjectives"], answer:0, explanation:"'enough' luôn đứng SAU tính từ, khác với 'too' đứng trước.", vi:"Đúng: adjective + enough."},
+  {id:"g19", prompt:"Compare: \"This bag is very expensive.\" vs \"This bag is too expensive for me to buy.\" What is the difference?", options:["'very' just emphasises the degree; 'too' implies a negative result (cannot buy it).","They have exactly the same meaning.","'too' is used for positive results while 'very' is negative.","'very' can only be used with verbs, not adjectives."], answer:0, explanation:"'very' chỉ nhấn mạnh mức độ; 'too' luôn kèm theo hệ quả không thể xảy ra.", vi:"'very' khác 'too' ở chỗ 'too' có hàm ý kết quả tiêu cực."},
+  {id:"g20", prompt:"Choose the sentence with \"for someone\" in the correct position.", options:["The jacket is too small for him to wear.","The jacket is too small to wear for him.","The jacket is for him too small to wear.","The jacket is too for him small to wear."], answer:0, explanation:"'for + O' đứng ngay sau tính từ, trước 'to-V': too + adj + for + O + to-V.", vi:"Đúng vị trí: too + adj + for + O + to-V."},
+];
+
+const READING_TEST = [
+  // ---- Passage 1: At the Clothes Shop (dialogue) ----
+  {id:"r1", prompt:"[Bài đọc 1] What is the customer looking for at the beginning of the dialogue?", options:["A warm jacket for the winter.","A pair of shoes for a party.","A birthday present for a friend.","A raincoat for the summer."], answer:0, explanation:"\"I'm looking for a warm jacket for the winter.\"", vi:"Khách hàng đang tìm áo khoác ấm cho mùa đông."},
+  {id:"r2", prompt:"[Bài đọc 1] Why doesn't the first size fit the customer well?", options:["It is too small for him/her to wear comfortably.","It is too big and loose.","It is the wrong colour.","It has a stain on it."], answer:0, explanation:"\"this size is too small for me to wear comfortably.\"", vi:"Size đầu tiên quá nhỏ nên khách mặc không thoải mái."},
+  {id:"r3", prompt:"[Bài đọc 1] What was the original price of the jacket?", options:["800,000 dong.","560,000 dong.","500,000 dong.","700,000 dong."], answer:0, explanation:"\"The original price is 800,000 dong.\"", vi:"Giá gốc của áo khoác là 800.000 đồng."},
+  {id:"r4", prompt:"[Bài đọc 1] How much is the discount on the jacket this week?", options:["30%.","20%.","50%.","10%."], answer:0, explanation:"\"with a 30% discount, it's only 560,000 dong now.\"", vi:"Mức giảm giá tuần này là 30%."},
+  {id:"r5", prompt:"[Bài đọc 1] Why does the customer want to keep the receipt?", options:["In case the jacket doesn't fit well and needs to be exchanged.","To get a free gift from the shop.","To show it to his/her parents.","To join a lucky draw."], answer:0, explanation:"\"In case it doesn't fit well at home, I might need to exchange it.\"", vi:"Khách giữ hóa đơn phòng khi cần đổi hàng."},
+  // ---- Passage 2: Traditional Shopping vs Online Shopping ----
+  {id:"r6", prompt:"[Bài đọc 2] What can customers do at a department store before buying something?", options:["See, touch, and try on the products.","Only look at pictures online.","Wait several days for delivery.","Read customer reviews only."], answer:0, explanation:"\"customers can see, touch, and try on the products before buying them.\"", vi:"Khách có thể xem, sờ và mặc thử sản phẩm trước khi mua."},
+  {id:"r7", prompt:"[Bài đọc 2] According to the passage, what is a disadvantage of department stores?", options:["They are often crowded and some products can be overpriced.","They never have sales or discounts.","They only sell second-hand goods.","They are always closed on weekends."], answer:0, explanation:"\"department stores are often crowded... and some products there can be overpriced.\"", vi:"Cửa hàng bách hóa thường đông đúc và một số sản phẩm bị định giá quá cao."},
+  {id:"r8", prompt:"[Bài đọc 2] What is an advantage of online shopping mentioned in the passage?", options:["Customers can order anything at any time without leaving home.","Customers can try on clothes before paying.","Delivery always arrives within one hour.","Products online are always cheaper."], answer:0, explanation:"\"customers can order anything at any time without leaving home.\"", vi:"Mua sắm trực tuyến giúp khách đặt hàng bất cứ lúc nào mà không cần ra khỏi nhà."},
+  {id:"r9", prompt:"[Bài đọc 2] What helps buyers decide what to choose when shopping online?", options:["Customer reviews.","The shop assistant's advice.","The smell of the product.","The size of the shop."], answer:0, explanation:"\"customer reviews help buyers decide what to choose.\"", vi:"Đánh giá của khách hàng giúp người mua quyết định nên chọn gì."},
+  {id:"r10", prompt:"[Bài đọc 2] What disadvantage of online shopping is mentioned in the passage?", options:["The actual product may not look exactly like the picture.","It is always more expensive than shopping at a store.","There are no customer reviews available.","Customers cannot pay by credit card."], answer:0, explanation:"\"the actual product is not exactly the same as the picture.\"", vi:"Sản phẩm thực tế đôi khi không giống hình ảnh."},
+  // ---- Passage 3: Tips for Smart Shopping ----
+  {id:"r11", prompt:"[Bài đọc 3] What should you do before deciding to buy something, according to the passage?", options:["Compare prices at different shops or websites.","Buy the first thing you see.","Ask your friends to buy it for you.","Wait until the shop closes."], answer:0, explanation:"\"always compare prices at different shops or websites before you decide to buy something.\"", vi:"Nên so sánh giá ở nhiều nơi trước khi mua."},
+  {id:"r12", prompt:"[Bài đọc 3] Why should you check the quality of a product or read customer reviews?", options:["Because a low price is not always a bargain if the product breaks quickly.","Because all products with reviews are free.","Because quality doesn't matter when shopping.","Because reviews always give the same opinion."], answer:0, explanation:"\"a low price is not always a bargain if the product breaks quickly.\"", vi:"Giá rẻ không phải lúc nào cũng là món hời nếu sản phẩm dễ hỏng."},
+  {id:"r13", prompt:"[Bài đọc 3] What should you make before going to a supermarket or shopping mall?", options:["A shopping list.","A birthday card.","A new credit card.","A customer review."], answer:0, explanation:"\"make a shopping list before you go to a supermarket or shopping mall.\"", vi:"Nên lập danh sách mua sắm trước khi đi siêu thị/trung tâm thương mại."},
+  {id:"r14", prompt:"[Bài đọc 3] What should you keep after every purchase, according to the passage?", options:["The receipt.","The shopping bag.","The price tag only.","The shop assistant's phone number."], answer:0, explanation:"\"keep your receipt after every purchase.\"", vi:"Nên giữ hóa đơn sau mỗi lần mua hàng."},
+  {id:"r15", prompt:"[Bài đọc 3] What is the wiser choice if a product is too expensive for your budget?", options:["Wait for a discount instead of spending all your savings at once.","Borrow money from a friend immediately.","Buy it anyway using a credit card.","Ask the shop to lower the quality."], answer:0, explanation:"\"it is wiser to wait for a discount than to spend all your savings at once.\"", vi:"Nên chờ đợt giảm giá thay vì tiêu hết tiền tiết kiệm."},
+];
+
+const TRANSLATION_TEST = [
+  {id:"t1", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"This dress is too expensive for me to buy.\"", options:["Chiếc váy này quá đắt đến mức tôi không thể mua được.","Chiếc váy này đủ rẻ để tôi có thể mua.","Chiếc váy này rất đẹp nhưng tôi không thích.","Chiếc váy này đang được giảm giá 50%."], answer:0, explanation:"too expensive for me to buy = quá đắt đến mức tôi không thể mua được.", vi:""},
+  {id:"t2", prompt:"Chọn bản dịch tiếng Anh đúng: \"Nhân viên bán hàng đã hoàn lại toàn bộ tiền cho tôi vì chiếc áo bị hỏng.\"", options:["The shop assistant gave me a full refund because the shirt was damaged.","The shop assistant gave me a discount because I am a regular customer.","The customer asked the shop assistant to exchange the shirt for a bigger size.","The shop assistant ordered a new shirt for me online."], answer:0, explanation:"hoàn lại toàn bộ tiền = gave me a full refund; áo bị hỏng = the shirt was damaged.", vi:""},
+  {id:"t3", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"You can exchange the shoes for a bigger size within seven days.\"", options:["Bạn có thể đổi giày sang size lớn hơn trong vòng bảy ngày.","Bạn có thể trả lại giày để lấy tiền mặt ngay lập tức.","Bạn phải mua thêm một đôi giày mới trong bảy ngày.","Bạn không thể đổi giày sau khi đã mua."], answer:0, explanation:"exchange the shoes for a bigger size within seven days = đổi giày sang size lớn hơn trong vòng bảy ngày.", vi:""},
+  {id:"t4", prompt:"Chọn bản dịch tiếng Anh đúng: \"Mua sắm trực tuyến rất phổ biến vì nó tiết kiệm thời gian.\"", options:["Online shopping is popular because it saves time.","Traditional markets are popular because they are cheap.","Window shopping is popular because it is free.","Department stores are popular because they offer refunds."], answer:0, explanation:"mua sắm trực tuyến = online shopping; tiết kiệm thời gian = saves time.", vi:""},
+  {id:"t5", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"This shirt is cheap enough for me to buy two of them.\"", options:["Chiếc áo này đủ rẻ để tôi có thể mua hai cái.","Chiếc áo này quá đắt nên tôi chỉ mua một cái.","Chiếc áo này đã bán hết hàng.","Chiếc áo này không vừa size của tôi."], answer:0, explanation:"cheap enough for me to buy two of them = đủ rẻ để tôi có thể mua hai cái.", vi:""},
+  {id:"t6", prompt:"Chọn bản dịch tiếng Anh đúng: \"Tôi nghĩ chiếc túi này bị định giá quá cao so với chất lượng của nó.\"", options:["I think this bag is overpriced for its quality.","I think this bag is affordable for its quality.","I think this bag is brand-new and very cheap.","I think this bag is on sale this week."], answer:0, explanation:"định giá quá cao = overpriced.", vi:""},
+  {id:"t7", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"Always compare prices at different shops before you decide to buy something.\"", options:["Luôn so sánh giá ở các cửa hàng khác nhau trước khi bạn quyết định mua thứ gì đó.","Luôn mua thứ đầu tiên bạn nhìn thấy ở cửa hàng.","Luôn trả bằng tiền mặt thay vì thẻ tín dụng.","Luôn đọc hóa đơn trước khi vào cửa hàng."], answer:0, explanation:"compare prices at different shops before you decide to buy something = so sánh giá ở các cửa hàng khác nhau trước khi quyết định mua.", vi:""},
+  {id:"t8", prompt:"Chọn bản dịch tiếng Anh đúng: \"Chúng tôi đi ngắm hàng ở trung tâm thương mại mà không mua gì.\"", options:["We went window shopping at the mall without buying anything.","We went grocery shopping at the supermarket and bought a lot.","We ordered some clothes online without trying them on.","We exchanged our old clothes for new ones at the mall."], answer:0, explanation:"đi ngắm hàng = window shopping; mà không mua gì = without buying anything.", vi:""},
+  {id:"t9", prompt:"Chọn bản dịch tiếng Việt đúng nhất: \"Keep your receipt in case you need to exchange an item or ask for a refund.\"", options:["Giữ hóa đơn của bạn phòng khi bạn cần đổi hàng hoặc yêu cầu hoàn tiền.","Vứt hóa đơn đi ngay sau khi thanh toán.","Chỉ giữ hóa đơn khi mua hàng trực tuyến.","Đưa hóa đơn cho nhân viên bán hàng giữ hộ."], answer:0, explanation:"keep your receipt in case you need to exchange an item or ask for a refund = giữ hóa đơn phòng khi cần đổi hàng hoặc yêu cầu hoàn tiền.", vi:""},
+  {id:"t10", prompt:"Chọn bản dịch tiếng Anh đúng: \"Đôi giày mới đó đã bán hết chỉ trong vài giờ.\"", options:["That new pair of shoes was sold out within a few hours.","That new pair of shoes was on sale for a few hours.","That new pair of shoes was out of stock for a few days.","That new pair of shoes was too expensive to sell."], answer:0, explanation:"đã bán hết = was sold out; chỉ trong vài giờ = within a few hours.", vi:""},
+];
+
+VOCAB_TEST.forEach(q=>q.section='vocab');
+GRAMMAR_TEST.forEach(q=>q.section='grammar');
+READING_TEST.forEach(q=>q.section='reading');
+TRANSLATION_TEST.forEach(q=>q.section='translation');
+const TOTAL = VOCAB_TEST.length + GRAMMAR_TEST.length + READING_TEST.length + TRANSLATION_TEST.length;
+const STORAGE_KEY = 'u8_vocabgrammar_test_v1';
+
+/* ---------------- utility ---------------- */
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+function loadHistory(){
+  try{ const raw=localStorage.getItem(STORAGE_KEY); return raw? JSON.parse(raw) : {best:0, attempts:0}; }
+  catch(e){ return {best:0, attempts:0}; }
+}
+function saveHistory(h){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(h)); }catch(e){} }
+
+/* ---------------- state ---------------- */
+let state = { questions:[], answers:{}, submitted:false, timeLeft: 35*60, timerId:null, startedAt:null };
+
+function buildQuestionSet(){
+  const all = shuffle(VOCAB_TEST.concat(GRAMMAR_TEST).concat(READING_TEST).concat(TRANSLATION_TEST).map(q=>{
+    const optOrder = shuffle(q.options.map((o,i)=>i));
+    return Object.assign({}, q, { displayOptions: optOrder.map(i=>q.options[i]), correctDisplayIndex: optOrder.indexOf(q.answer) });
+  }));
+  return all;
+}
+
+function init(){
+  renderReviewSection();
+  state.questions = buildQuestionSet();
+  state.answers = {};
+  state.submitted = false;
+  state.timeLeft = 35*60;
+  state.startedAt = Date.now();
+  document.getElementById('resultBanner').classList.remove('show');
+  renderQuiz();
+  updateProgress();
+  updateHistoryLabels();
+  startTimer();
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = false; btn.classList.remove('opacity-50');
+}
+
+function updateHistoryLabels(){
+  const h = loadHistory();
+  document.getElementById('bestScoreLabel').textContent = h.attempts>0 ? (h.best+'/'+TOTAL) : '--';
+  document.getElementById('attemptCountLabel').textContent = h.attempts||0;
+}
+
+function startTimer(){
+  if(state.timerId) clearInterval(state.timerId);
+  state.timerId = setInterval(()=>{
+    if(state.submitted){ clearInterval(state.timerId); return; }
+    state.timeLeft--;
+    renderTimer();
+    if(state.timeLeft<=0){ clearInterval(state.timerId); submitTest(true); }
+  },1000);
+  renderTimer();
+}
+function renderTimer(){
+  const m = Math.floor(Math.max(0,state.timeLeft)/60), s = Math.max(0,state.timeLeft)%60;
+  const label = document.getElementById('timerLabel');
+  label.textContent = String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  label.classList.toggle('low', state.timeLeft<=60);
+}
+
+function renderQuiz(){
+  const vocabQs = state.questions.filter(q=>q.section==='vocab');
+  const grammarQs = state.questions.filter(q=>q.section==='grammar');
+  const readingQs = state.questions.filter(q=>q.section==='reading');
+  const translationQs = state.questions.filter(q=>q.section==='translation');
+  let html = '';
+  html += sectionDivider('📚 Phần 1 · Vocabulary', vocabQs.length);
+  vocabQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('📐 Phần 2 · Grammar (Too + adj + to / adj + enough + to)', grammarQs.length);
+  grammarQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('📖 Phần 3 · Đọc hiểu (Reading Comprehension)', readingQs.length);
+  readingQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  html += sectionDivider('🇻🇳 Phần 4 · Luyện dịch nghĩa (Translation Practice)', translationQs.length);
+  translationQs.forEach((q,i)=>{ html += renderQuestionCard(q, i+1); });
+  document.getElementById('quizArea').innerHTML = html;
+}
+
+function sectionDivider(title, count){
+  return `<div class="section-divider text-white rounded-xl px-4 py-2.5 mb-4 mt-2 font-extrabold text-sm md:text-base shadow flex items-center justify-between">
+    <span>${title}</span><span class="text-xs font-bold opacity-80">${count} câu</span>
+  </div>`;
+}
+
+function renderQuestionCard(q, num){
+  const letters=['A','B','C','D'];
+  const optsHtml = q.displayOptions.map((opt,i)=>{
+    return `<div class="opt-row px-3 py-2.5 flex items-start gap-2 text-sm md:text-[15px]" data-qid="${q.id}" data-idx="${i}" onclick="selectAnswer('${q.id}',${i})">
+      <span class="font-black text-orange-700">${letters[i]}.</span><span class="flex-1">${opt}</span>
+    </div>`;
+  }).join('');
+  return `<div class="qcard p-4 mb-3" id="qcard_${q.id}">
+    <p class="font-extrabold text-slate-800 text-sm md:text-base mb-2"><span class="text-orange-600">Câu ${num}.</span> ${q.prompt}</p>
+    <div class="grid gap-2" id="opts_${q.id}">${optsHtml}</div>
+    <div class="explain-box mt-3" id="explain_${q.id}"></div>
+  </div>`;
+}
+
+function selectAnswer(qid, idx){
+  if(state.submitted) return;
+  state.answers[qid] = idx;
+  const wrap = document.getElementById('opts_'+qid);
+  wrap.querySelectorAll('.opt-row').forEach(el=>{
+    el.classList.toggle('selected', parseInt(el.dataset.idx,10)===idx);
+  });
+  document.getElementById('qcard_'+qid).classList.add('answered');
+  updateProgress();
+}
+
+function updateProgress(){
+  const answered = Object.keys(state.answers).length;
+  document.getElementById('progressText').textContent = answered+' / '+TOTAL+' câu';
+  document.getElementById('progressBar').style.width = Math.round(answered/TOTAL*100)+'%';
+  document.getElementById('answeredCount').textContent = answered;
+}
+
+function submitTest(auto){
+  if(state.submitted) return;
+  const answeredCount = Object.keys(state.answers).length;
+  if(!auto && answeredCount < TOTAL){
+    const proceed = confirm('Bạn còn '+(TOTAL-answeredCount)+' câu chưa trả lời. Vẫn muốn nộp bài?');
+    if(!proceed) return;
+  }
+  state.submitted = true;
+  if(state.timerId) clearInterval(state.timerId);
+  const elapsed = Math.round((Date.now()-state.startedAt)/1000);
+
+  let correct = 0;
+  state.questions.forEach(q=>{
+    const sel = state.answers[q.id];
+    const isCorrect = sel === q.correctDisplayIndex;
+    if(isCorrect) correct++;
+    const card = document.getElementById('qcard_'+q.id);
+    card.classList.add(isCorrect?'correct':'wrong');
+    const wrap = document.getElementById('opts_'+q.id);
+    wrap.querySelectorAll('.opt-row').forEach(el=>{
+      const idx = parseInt(el.dataset.idx,10);
+      el.classList.add('locked');
+      if(idx===q.correctDisplayIndex) el.classList.add('correct-opt');
+      else if(idx===sel && !isCorrect) el.classList.add('wrong-opt');
+    });
+    const exp = document.getElementById('explain_'+q.id);
+    exp.classList.add('show');
+    const viLine = q.vi ? `<p class="text-slate-500 italic mt-1">🇻🇳 ${q.vi}</p>` : '';
+    exp.innerHTML = `<p class="${isCorrect?'text-emerald-700':'text-rose-600'} font-bold">${isCorrect?'✅ Chính xác!':(sel===undefined?'⚪ Bạn chưa chọn đáp án.':'❌ Chưa đúng.')} ${q.explanation}</p>${viLine}`;
+  });
+
+  const pct = Math.round(correct/TOTAL*100);
+  document.getElementById('resultScore').textContent = correct;
+  document.getElementById('resultPct').textContent = pct;
+  const mm = Math.floor(elapsed/60), ss = elapsed%60;
+  document.getElementById('resultTime').textContent = mm+':'+String(ss).padStart(2,'0');
+  let emoji='🙂', title='Đã hoàn thành!';
+  if(pct>=90){ emoji='🏆'; title='Xuất sắc!'; }
+  else if(pct>=70){ emoji='🎉'; title='Làm tốt lắm!'; }
+  else if(pct>=50){ emoji='💪'; title='Khá ổn, cố gắng thêm nhé!'; }
+  else { emoji='📖'; title='Cần ôn tập thêm!'; }
+  document.getElementById('resultEmoji').textContent = emoji;
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultBanner').classList.add('show');
+  document.getElementById('resultBanner').scrollIntoView({behavior:'smooth', block:'start'});
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true; btn.classList.add('opacity-50');
+
+  const h = loadHistory();
+  h.attempts = (h.attempts||0)+1;
+  h.best = Math.max(h.best||0, correct);
+  saveHistory(h);
+  updateHistoryLabels();
+
+  if(pct>=70) launchConfetti();
+}
+
+function retryTest(){ init(); window.scrollTo({top:0, behavior:'smooth'}); }
+
+function scrollToReview(){
+  document.getElementById('quizArea').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function launchConfetti(){
+  const wrap = document.getElementById('confettiWrap');
+  const colors=['#c2410c','#0d9488','#fb923c','#5eead4','#7c2d12'];
+  for(let i=0;i<50;i++){
+    const el=document.createElement('div');
+    el.className='confetti-piece';
+    el.style.left=(Math.random()*100)+'vw';
+    el.style.background=colors[Math.floor(Math.random()*colors.length)];
+    el.style.animationDuration=(2+Math.random()*1.5)+'s';
+    el.style.top='-20px';
+    wrap.appendChild(el);
+    setTimeout(()=>el.remove(), 3600);
+  }
+}
+
+init();
+</script>
+</body>
+</html>
