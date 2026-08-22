@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 3 - In-class Practice (theo thu tu SGK) - Tieng Anh 8</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+  :root{ --accent:#6d28d9; --accent2:#db2777; }
+  * { box-sizing: border-box; }
+  body { font-family:'Nunito',sans-serif; background:#faf5ff; }
+  .hero-gradient{ background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 55%, #db2777 100%); }
+  .tab-btn{ transition: all .2s ease; }
+  .tab-btn.active{ background: linear-gradient(135deg, #4c1d95, #db2777); color:#fff; box-shadow:0 4px 14px rgba(76,29,149,.35); transform:translateY(-1px); }
+  .task-card{ transition: box-shadow .2s, transform .2s; }
+  .task-card:hover{ transform: translateY(-2px); box-shadow:0 8px 30px rgba(0,0,0,.10); }
+  .option-label{ cursor:pointer; transition: all .18s; border:2px solid #e2e8f0; }
+  .option-label:hover{ border-color:var(--accent); background:#faf5ff; }
+  .option-label.selected{ border-color:#4c1d95; background:#f3e8ff; }
+  .option-label.correct-opt{ border-color:#22c55e !important; background:#f0fdf4 !important; }
+  .option-label.wrong-opt{ border-color:#ef4444 !important; background:#fef2f2 !important; }
+  .mcq-detail-hidden{ display:none; }
+  .show-mcq-detail .mcq-detail-hidden{ display:block; }
+  .speak-btn{ cursor:pointer; }
+  .speak-btn.speaking{ animation: pulseSpeak .7s ease-in-out infinite; }
+  @keyframes pulseSpeak{ 0%,100%{transform:scale(1);} 50%{transform:scale(1.18);} }
+  .vi-hidden{ display:none; }
+  .explanation-box{ display:none; animation: fadeSlide .3s ease forwards; }
+  .explanation-box.show{ display:block; }
+  @keyframes fadeSlide{ from{opacity:0; transform:translateY(-6px);} to{opacity:1; transform:translateY(0);} }
+  input.answer-input, textarea.answer-input{ border:2px solid #cbd5e1; transition:border .18s; outline:none; background:#fff; }
+  input.answer-input:focus, textarea.answer-input:focus{ border-color:var(--accent); }
+  input.correct-input{ border-color:#22c55e !important; background:#f0fdf4; }
+  input.wrong-input{ border-color:#ef4444 !important; background:#fef2f2; }
+  .score-badge{ animation: popIn .35s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn{ from{transform:scale(.4); opacity:0;} to{transform:scale(1); opacity:1;} }
+  .confetti-wrap{ position:fixed; inset:0; pointer-events:none; z-index:9999; }
+  .confetti-piece{ position:absolute; width:10px; height:10px; border-radius:2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall{ 0%{transform:translateY(-20px) rotate(0deg); opacity:1;} 100%{transform:translateY(100vh) rotate(720deg); opacity:0;} }
+  .progress-bar-fill{ transition: width .6s ease; }
+  .section-page{ display:none; }
+  .section-page.active{ display:block; }
+  #completionBanner{ display:none; }
+  #completionBanner.show{ display:flex; }
+  .passage-box{ background:#fff; border:1px solid #e2e8f0; border-radius:1rem; padding:1rem 1.25rem; line-height:1.9; font-size:.95rem; color:#334155; }
+  .dict-box{ background:#fef9c3; border:1px solid #fde68a; border-radius:1rem; padding:1rem 1.25rem; font-size:.9rem; color:#334155; }
+  .rule-box{ background:#eff6ff; border:1px solid #bfdbfe; border-radius:1rem; padding:1rem 1.25rem; line-height:1.85; font-size:.9rem; color:#334155; }
+  .info-box{ background:#f0fdf4; border:1px solid #bbf7d0; border-radius:1rem; padding:1rem 1.25rem; line-height:1.85; font-size:.88rem; color:#334155; }
+  .blank-tag{ background:#f3e8ff; color:#5b21b6; font-weight:800; border-radius:.4rem; padding:0 .35rem; }
+  .part-label{ display:inline-block; background:linear-gradient(135deg,#4c1d95,#db2777); color:#fff; font-weight:900; font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; padding:.25rem .7rem; border-radius:999px; margin-bottom:.5rem; }
+  .navgroup-sep{ width:1px; background:#e2e8f0; margin:0 .25rem; align-self:stretch; }
+  .club-card{ background:#fff; border:2px solid #e2e8f0; border-radius:1rem; padding:1rem 1.1rem; font-size:.85rem; line-height:1.7; }
+</style>
+</head>
+<body class="min-h-screen">
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<header class="hero-gradient text-white py-8 px-4 text-center shadow-xl relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <div class="absolute top-4 left-8 text-6xl">📱</div>
+    <div class="absolute top-2 right-12 text-5xl">🎮</div>
+    <div class="absolute bottom-2 left-1/3 text-4xl">♟️</div>
+    <div class="absolute bottom-4 right-1/4 text-5xl">🎨</div>
+  </div>
+  <p class="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Tiếng Anh 8 · Unit 3 · In-class Practice</p>
+  <h1 class="font-['Baloo_2'] text-3xl md:text-5xl font-extrabold drop-shadow-lg">📱 Unit 3: Teenagers 🎨</h1>
+  <p class="mt-2 text-base md:text-lg opacity-90 font-semibold">Bám sát đúng thứ tự &amp; đánh số bài tập trong SGK</p>
+  <div class="mt-5 max-w-2xl mx-auto">
+    <div class="flex justify-between text-xs font-bold opacity-80 mb-1">
+      <span>Tiến độ hoàn thành</span>
+      <span id="progressText">0 / 0 phần</span>
+    </div>
+    <div class="bg-white/20 rounded-full h-3 overflow-hidden">
+      <div id="progressBar" class="bg-white rounded-full h-3 progress-bar-fill" style="width:0%"></div>
+    </div>
+  </div>
+</header>
+
+<nav class="sticky top-0 z-50 bg-white/90 backdrop-blur shadow-sm px-3 py-2 overflow-x-auto">
+  <div class="flex gap-2 min-w-max mx-auto w-fit" id="navWrap"></div>
+</nav>
+
+<main class="max-w-4xl mx-auto px-4 py-6 pb-20" id="mainWrap"></main>
+
+<div id="completionBanner" class="fixed inset-0 z-[9998] items-center justify-center bg-black/50 px-4">
+  <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center score-badge shadow-2xl">
+    <div class="text-6xl mb-3">🎉</div>
+    <h3 class="text-2xl font-extrabold text-violet-900 mb-1">Hoàn thành bài luyện tập!</h3>
+    <p class="text-slate-500 mb-4">Bạn đã làm xong tất cả các phần.</p>
+    <p id="finalScoreDisplay" class="text-3xl font-black text-violet-700 mb-5"></p>
+    <button onclick="closeBanner()" class="bg-gradient-to-r from-violet-900 to-pink-500 text-white font-bold px-6 py-2.5 rounded-full">Đóng</button>
+  </div>
+</div>
+
+<script>
+const GETTING_STARTED_PASSAGE = {
+  title: "It's great to see you again!",
+  html: "<b>Teacher:</b> It's great to see you again, class! What's going on?<br><b>Minh:</b> We've decided to use Facebook for our class forum, and we joined some school club activities. We're also preparing for the midterm tests. It's really stressful.<br><b>Teacher:</b> I'm sorry to hear that. I know exams may give you a lot of stress. But stay calm and work hard. What other pressure do you have?<br><b>Minh:</b> Well, we also have pressure from our parents and friends.<br><b>Teacher:</b> Do you? Let's discuss these problems in your new Facebook group. By the way, why did you choose Facebook?<br><b>Ann:</b> Because it's user-friendly.<br><b>Teacher:</b> Good! How about club activities? Do you find them enjoyable?<br><b>Ann:</b> Yes. This year there are some new clubs like arts and crafts, and music. The club leaders will provide us with a variety of activities to suit different interests. And there will also be competitions as usual.<br><b>Teacher:</b> Awesome! I hope you can all join the clubs you like.",
+  vi: "<b>Giáo viên:</b> Thật vui khi gặp lại các em, cả lớp! Có chuyện gì vậy?<br><b>Minh:</b> Chúng em đã quyết định dùng Facebook làm diễn đàn của lớp, và chúng em đã tham gia một số hoạt động câu lạc bộ. Chúng em cũng đang chuẩn bị cho kỳ thi giữa kỳ. Thật sự rất căng thẳng.<br><b>Giáo viên:</b> Cô rất tiếc khi nghe điều đó. Cô biết các kỳ thi có thể gây cho các em nhiều căng thẳng. Nhưng hãy giữ bình tĩnh và học tập chăm chỉ. Các em còn áp lực nào khác không?<br><b>Minh:</b> Dạ, chúng em còn chịu áp lực từ bố mẹ và bạn bè nữa.<br><b>Giáo viên:</b> Vậy à? Hãy thảo luận những vấn đề này trong nhóm Facebook mới của các em. Nhân tiện, tại sao các em lại chọn Facebook?<br><b>Ann:</b> Vì nó dễ sử dụng ạ.<br><b>Giáo viên:</b> Tốt! Còn hoạt động câu lạc bộ thì sao? Các em có thấy thú vị không?<br><b>Ann:</b> Dạ có ạ. Năm nay có một số câu lạc bộ mới như mỹ thuật - thủ công, và âm nhạc. Các trưởng câu lạc bộ sẽ cung cấp cho chúng em nhiều hoạt động đa dạng để phù hợp với các sở thích khác nhau. Và cũng sẽ có các cuộc thi như thường lệ.<br><b>Giáo viên:</b> Tuyệt vời! Cô hy vọng tất cả các em đều có thể tham gia câu lạc bộ mình thích."
+};
+
+const CLUB_CONVO_PASSAGE = {
+  title: "Which club did you join?",
+  html: "<b>Mai:</b> Tom, so which club did you join?<br><b>Tom:</b> I'm interested in two clubs: badminton and chess.<br><b>Mai:</b> I like badminton, too. It's relaxing.<br><b>Tom:</b> Yes, I play it to keep fit. So let's join that club together.<br><b>Mai:</b> OK. It's on Tuesdays and Fridays from 5:00 p.m. to 6:30 p.m. It starts 30 minutes after school, so we have enough time to get some snacks beforehand. I know you like chess. Will you join the chess club?<br><b>Tom:</b> Well, I started playing it five years ago. My mum first sent me to a chess club because she wanted me to be more focused. Now I find that I can concentrate better. Do you like chess?<br><b>Mai:</b> Let's join the chess club too. Actually, this year there is a new arts and crafts club, and I want to join it. I hear that the members will work together in small community service projects. Members can do art projects and also improve their practical skills too.<br><b>Tom:</b> Awesome, Mai. Who will coach that club?<br><b>Mai:</b> Ms Hoa, the art teacher. She will help us connect with the community.",
+  vi: "<b>Mai:</b> Tom, vậy bạn đã tham gia câu lạc bộ nào?<br><b>Tom:</b> Mình quan tâm đến hai câu lạc bộ: cầu lông và cờ vua.<br><b>Mai:</b> Mình cũng thích cầu lông. Nó giúp thư giãn.<br><b>Tom:</b> Ừ, mình chơi để giữ dáng khỏe mạnh. Vậy chúng ta cùng tham gia câu lạc bộ đó nhé.<br><b>Mai:</b> Được. Câu lạc bộ sinh hoạt vào thứ Ba và thứ Sáu, từ 5 giờ đến 6 giờ 30 chiều. Nó bắt đầu 30 phút sau khi tan học, nên chúng ta có đủ thời gian ăn nhẹ trước. Mình biết bạn thích cờ vua. Bạn có tham gia câu lạc bộ cờ vua không?<br><b>Tom:</b> À, mình bắt đầu chơi cờ vua từ năm năm trước. Lúc đầu mẹ mình gửi mình đến câu lạc bộ cờ vua vì bà muốn mình tập trung hơn. Giờ mình thấy mình có thể tập trung tốt hơn. Bạn có thích cờ vua không?<br><b>Mai:</b> Chúng ta cùng tham gia câu lạc bộ cờ vua luôn nhé. Thật ra, năm nay có một câu lạc bộ mỹ thuật - thủ công mới, và mình muốn tham gia. Mình nghe nói các thành viên sẽ cùng làm các dự án phục vụ cộng đồng nhỏ. Thành viên có thể làm các dự án nghệ thuật và cải thiện kỹ năng thực hành.<br><b>Tom:</b> Tuyệt quá, Mai. Ai sẽ huấn luyện câu lạc bộ đó?<br><b>Mai:</b> Cô Hoa, giáo viên mỹ thuật. Cô ấy sẽ giúp chúng ta kết nối với cộng đồng."
+};
+
+const REQUEST_DIALOGUE = {
+  title: "Making requests",
+  html: "<b>Student:</b> Can you tell me more about the music club, please?<br><b>School club leader:</b> Certainly. It meets on Mondays and Thursdays.<br><b>Student:</b> Could you tell me the time it meets?<br><b>School club leader:</b> Yes, it's after school, from 5:00 p.m. to 6:30 p.m.",
+  vi: "<b>Học sinh:</b> Bạn có thể cho mình biết thêm về câu lạc bộ âm nhạc được không?<br><b>Trưởng câu lạc bộ:</b> Chắc chắn rồi. Câu lạc bộ sinh hoạt vào thứ Hai và thứ Năm.<br><b>Học sinh:</b> Bạn có thể cho mình biết giờ sinh hoạt được không?<br><b>Trưởng câu lạc bộ:</b> Được, câu lạc bộ sinh hoạt sau giờ học, từ 5 giờ đến 6 giờ 30 chiều."
+};
+
+const SOCIAL_POSTS = {
+  title: "Social media popular among teens",
+  html: "<b>Ann:</b> I think YouTube is the most popular social media site. I log on to it daily. I upload videos and watch other people's videos.<br><br><b>Tom:</b> I use Facebook to connect with friends, post pictures, and share others' posts. I use it daily. It's user-friendly.<br><br><b>Trang:</b> I love Instagram. It's really fun, and easy to browse. People like my photos, so I feel happy. That's why I often check my notifications.<br><br><b>Nam:</b> I have a Facebook page. I don't often update it, but I often use Messenger to discuss schoolwork with my classmates.",
+  vi: "<b>Ann:</b> Mình nghĩ YouTube là trang mạng xã hội phổ biến nhất. Mình đăng nhập vào đó hằng ngày. Mình tải video lên và xem video của người khác.<br><br><b>Tom:</b> Mình dùng Facebook để kết nối với bạn bè, đăng ảnh, và chia sẻ bài viết của người khác. Mình dùng nó hằng ngày. Nó rất dễ sử dụng.<br><br><b>Trang:</b> Mình rất thích Instagram. Nó thực sự thú vị và dễ lướt xem. Mọi người thích ảnh của mình, nên mình cảm thấy vui. Đó là lý do mình thường kiểm tra thông báo.<br><br><b>Nam:</b> Mình có một trang Facebook. Mình không thường cập nhật nó, nhưng mình thường dùng Messenger để thảo luận bài vở với các bạn cùng lớp."
+};
+
+const DATA = {"unit": 3, "test": "inclass-gs8-sgk-order", "sections": [
+
+/* ============== GETTING STARTED ============== */
+{"part":"GETTING STARTED · It's great to see you again!","roman":"GS.1","navLabel":"GS Ex1-2","title":"Ex 1-2. Listen and read. Tick T (True) or F (False)","icon":"comments","instructions":"Nghe và đọc hội thoại, sau đó chọn Đúng (True) hoặc Sai (False) cho mỗi câu.","type":"mcq","instant":true,
+ "passage": GETTING_STARTED_PASSAGE,
+ "questions":[
+  {"q":"1. The students finished their midterm tests.","options":["True","False"],"answer":1,"explanation":"Các bạn đang \"chuẩn bị\" (preparing) cho kỳ thi giữa kỳ, chưa thi xong.","vi":"Các bạn học sinh đã thi xong kỳ thi giữa kỳ."},
+  {"q":"2. Minh mentions the different types of pressure they are facing.","options":["True","False"],"answer":0,"explanation":"Minh nói về áp lực từ kỳ thi, bố mẹ và bạn bè.","vi":"Minh nhắc đến những loại áp lực khác nhau mà các bạn đang gặp phải."},
+  {"q":"3. The teacher tells them to stay calm and work hard.","options":["True","False"],"answer":0,"explanation":"\"But stay calm and work hard.\"","vi":"Giáo viên bảo các bạn hãy giữ bình tĩnh và học tập chăm chỉ."},
+  {"q":"4. The class will discuss their problems offline.","options":["True","False"],"answer":1,"explanation":"Họ sẽ thảo luận vấn đề TRONG nhóm Facebook (trực tuyến), không phải ngoại tuyến.","vi":"Cả lớp sẽ thảo luận vấn đề của mình một cách trực tiếp (không qua mạng)."},
+  {"q":"5. The school has different clubs for its students.","options":["True","False"],"answer":0,"explanation":"\"There are some new clubs like arts and crafts, and music.\"","vi":"Trường có nhiều câu lạc bộ khác nhau dành cho học sinh."}
+ ]},
+{"part":"GETTING STARTED · It's great to see you again!","roman":"GS.3","navLabel":"GS Ex3","title":"Ex 3. Write a word or phrase from the box under the correct picture","icon":"images","instructions":"⚠️ Lưu ý: SGK dùng 6 tranh minh hoạ để ghép với 6 từ/cụm từ trong khung (chess club, language club, sports club, arts and crafts club, forum, pressure) — bộ 6 từ này đã được đối chiếu đúng với đáp án SGK. Vì không có ảnh gốc và các trang giải bài tham khảo cũng đưa ra thứ tự tranh không thống nhất với nhau, mỗi câu dưới đây mô tả lại một tình huống tương ứng với đúng nghĩa của từ (không nhất thiết đúng thứ tự tranh 1-6 gốc) — hãy chọn đúng từ/cụm từ phù hợp với tình huống.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. 🖼️ Tranh vẽ các bạn học sinh đang ngồi gõ máy tính, đăng câu hỏi và trả lời nhau trên trang lớp.","options":["forum","sports club","chess club","language club"],"answer":0,"explanation":"Đây là nơi học sinh đăng bài và thảo luận trực tuyến → forum (diễn đàn).","vi":"forum = diễn đàn"},
+  {"q":"2. 🖼️ Tranh vẽ hai bạn học sinh đang chăm chú suy nghĩ trước bàn cờ vua.","options":["sports club","chess club","pressure","forum"],"answer":1,"explanation":"Hình ảnh bàn cờ → chess club (câu lạc bộ cờ vua).","vi":"chess club = câu lạc bộ cờ vua"},
+  {"q":"3. 🖼️ Tranh vẽ các bạn học sinh đang chơi bóng đá/cầu lông ngoài sân trường.","options":["language club","arts and crafts club","sports club","pressure"],"answer":2,"explanation":"Hoạt động thể chất ngoài sân → sports club (câu lạc bộ thể thao).","vi":"sports club = câu lạc bộ thể thao"},
+  {"q":"4. 🖼️ Tranh vẽ các bạn học sinh đang vẽ tranh và làm đồ thủ công.","options":["chess club","arts and crafts club","forum","sports club"],"answer":1,"explanation":"Vẽ tranh, làm thủ công → arts and crafts club (câu lạc bộ mỹ thuật - thủ công).","vi":"arts and crafts club = câu lạc bộ mỹ thuật - thủ công"},
+  {"q":"5. 🖼️ Tranh vẽ các bạn học sinh đang luyện tập hội thoại bằng một ngôn ngữ nước ngoài.","options":["pressure","sports club","forum","language club"],"answer":3,"explanation":"Luyện tập ngôn ngữ nước ngoài → language club (câu lạc bộ ngoại ngữ).","vi":"language club = câu lạc bộ ngoại ngữ"},
+  {"q":"6. 🖼️ Tranh vẽ một bạn học sinh đang ôm đầu, trông rất căng thẳng, mệt mỏi vì bài vở.","options":["pressure","chess club","language club","forum"],"answer":0,"explanation":"Biểu cảm căng thẳng, mệt mỏi vì bài vở → pressure (áp lực).","vi":"pressure = áp lực, căng thẳng"}
+ ]},
+{"part":"GETTING STARTED · It's great to see you again!","roman":"GS.4","navLabel":"GS Ex4","title":"Ex 4. Complete each sentence with a word or phrase in Ex 3","icon":"pen","instructions":"Điền từ/cụm từ ở Ex 3 vào chỗ trống. Có 1 từ thừa không dùng đến (chess club).","type":"fill",
+ "questions":[
+  {"q":"1. Minh is a member of our ___________. The greeting cards he makes are really creative.","answer":"arts and crafts club","accepted":["arts and crafts club"],"vi":"Đáp án: arts and crafts club = câu lạc bộ mỹ thuật - thủ công. Cả câu: Minh là thành viên của câu lạc bộ mỹ thuật - thủ công của chúng tôi. Những tấm thiệp cậu ấy làm thực sự rất sáng tạo."},
+  {"q":"2. Students can discuss their problems in their class ___________.","answer":"forum","vi":"Đáp án: forum = diễn đàn. Cả câu: Học sinh có thể thảo luận vấn đề của mình trong diễn đàn của lớp."},
+  {"q":"3. We share the essays and stories that we write in English in our ___________.","answer":"language club","accepted":["language club"],"vi":"Đáp án: language club = câu lạc bộ ngoại ngữ. Cả câu: Chúng tôi chia sẻ các bài luận và câu chuyện viết bằng tiếng Anh trong câu lạc bộ ngoại ngữ của mình."},
+  {"q":"4. She is not feeling very well this week because of all the ___________ from her schoolwork.","answer":"pressure","vi":"Đáp án: pressure = áp lực. Cả câu: Tuần này cô ấy cảm thấy không được khỏe lắm vì tất cả áp lực từ bài vở."},
+  {"q":"5. The coach of our ___________ tells us to drink plenty of water during our practice sessions.","answer":"sports club","accepted":["sports club"],"vi":"Đáp án: sports club = câu lạc bộ thể thao. Cả câu: Huấn luyện viên của câu lạc bộ thể thao chúng tôi bảo chúng tôi uống nhiều nước trong các buổi tập."}
+ ]},
+{"part":"GETTING STARTED · It's great to see you again!","roman":"GS.5","navLabel":"GS Ex5","title":"Ex 5. Work in pairs. Ask and answer the questions below","icon":"comment-dots","instructions":"Hỏi - đáp với bạn cùng cặp, sau đó viết lại câu trả lời của em vào ô bên dưới (bài nói cá nhân, không có đáp án cố định).","type":"essay",
+ "questions":[
+  {"q":"1. What types of social media do you use?\n2. What kinds of pressure do you have?\n3. What clubs do you participate in?\n4. Why do you choose to participate in that club?","vi":"1. Bạn dùng những loại mạng xã hội nào? 2. Bạn có những loại áp lực gì? 3. Bạn tham gia những câu lạc bộ nào? 4. Vì sao bạn chọn tham gia câu lạc bộ đó?","sample":"1. I use Facebook and YouTube. 2. I sometimes have pressure from exams and schoolwork. 3. I take part in the badminton club and the English club. 4. I chose the badminton club because it helps me relax and keep fit after school."}
+ ]},
+
+/* ============== A CLOSER LOOK 1 ============== */
+{"part":"A CLOSER LOOK 1 · Vocabulary & Pronunciation","roman":"AL1.1","navLabel":"AL1 Ex1","title":"Ex 1. Circle the correct options to complete the phrases","icon":"list-check","instructions":"Chọn từ đúng để hoàn thành cụm từ.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. upload ___________","options":["a picture","the website"],"answer":0,"vi":"tải lên (một bức ảnh)"},
+  {"q":"2. browse ___________","options":["a website","a clip"],"answer":0,"vi":"lướt, duyệt (một trang web)"},
+  {"q":"3. check ___________","options":["pictures","notifications"],"answer":1,"vi":"kiểm tra (thông báo)"},
+  {"q":"4. log on ___________","options":["to a club","to an account"],"answer":1,"vi":"đăng nhập (vào tài khoản)"},
+  {"q":"5. connect ___________","options":["to a post","with friends"],"answer":1,"vi":"kết nối (với bạn bè)"}
+ ]},
+{"part":"A CLOSER LOOK 1 · Vocabulary & Pronunciation","roman":"AL1.2","navLabel":"AL1 Ex2","title":"Ex 2. Use the correct forms of the verbs in Ex 1 to complete the sentences","icon":"pen","instructions":"Chia đúng dạng của các động từ: upload, browse, check, log on, connect.","type":"fill",
+ "questions":[
+  {"q":"1. I ___________ the school website and found pictures of school activities.","answer":"browsed","vi":"đã lướt, duyệt"},
+  {"q":"2. Our teacher ___________ a video of our last meeting in our forum for everyone to see.","answer":"uploaded","vi":"đã tải lên"},
+  {"q":"3. She ___________ with some old friends at the English club.","answer":"connected","vi":"đã kết nối"},
+  {"q":"4. Tom ___________ the notifications and saw some new posts.","answer":"checked","vi":"đã kiểm tra"},
+  {"q":"5. Mi often ___________ to her Instagram account to chat with her friends.","answer":"logs on","accepted":["logs on","log on"],"vi":"đăng nhập"}
+ ]},
+{"part":"A CLOSER LOOK 1 · Vocabulary & Pronunciation","roman":"AL1.3","navLabel":"AL1 Ex3","title":"Ex 3. Choose the correct answer A, B, or C","icon":"circle-check","instructions":"Chọn đáp án đúng nhất.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. Our class has a(n) ___________, and we often post questions there to discuss.","options":["office","club","forum"],"answer":2,"vi":"Lớp chúng tôi có một diễn đàn, và chúng tôi thường đăng câu hỏi ở đó để thảo luận."},
+  {"q":"2. We try to meet our parents' ___________, but it is hard.","options":["dreams","interests","expectations"],"answer":2,"vi":"Chúng tôi cố gắng đáp ứng kỳ vọng của bố mẹ, nhưng điều đó thật khó."},
+  {"q":"3. He is a big ___________ and scares his weaker classmates.","options":["bully","forum","pressure"],"answer":0,"vi":"Cậu ta là một kẻ bắt nạt và hay dọa nạt các bạn yếu hơn trong lớp."},
+  {"q":"4. She was chatting with her friends, so she couldn't ___________ on the lesson.","options":["concentrate","coach","advise"],"answer":0,"vi":"Cô ấy đang nhắn tin với bạn bè nên không thể tập trung vào bài học."},
+  {"q":"5. We have ___________ from our exams, peers, and parents. This makes us feel very stressed.","options":["interests","pressure","friends"],"answer":1,"vi":"Chúng tôi chịu áp lực từ các kỳ thi, bạn bè cùng trang lứa và bố mẹ. Điều này khiến chúng tôi cảm thấy rất căng thẳng."}
+ ]},
+{"part":"A CLOSER LOOK 1 · Vocabulary & Pronunciation","roman":"AL1.4","navLabel":"AL1 Ex4","title":"Ex 4. Listen and repeat. Put the words into the correct columns: /ʊə/ or /ɔɪ/","icon":"ear-listen","instructions":"Nghe và phân loại các từ theo âm /ʊə/ hoặc /ɔɪ/.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. boy","options":["/ʊə/","/ɔɪ/"],"answer":1,"vi":"con trai"},
+  {"q":"2. tourist","options":["/ʊə/","/ɔɪ/"],"answer":0,"vi":"khách du lịch"},
+  {"q":"3. toy","options":["/ʊə/","/ɔɪ/"],"answer":1,"vi":"đồ chơi"},
+  {"q":"4. avoid","options":["/ʊə/","/ɔɪ/"],"answer":1,"vi":"tránh"},
+  {"q":"5. choice","options":["/ʊə/","/ɔɪ/"],"answer":1,"vi":"sự lựa chọn"},
+  {"q":"6. sure","options":["/ʊə/","/ɔɪ/"],"answer":0,"vi":"chắc chắn"},
+  {"q":"7. ensure","options":["/ʊə/","/ɔɪ/"],"answer":0,"vi":"đảm bảo"},
+  {"q":"8. tournament","options":["/ʊə/","/ɔɪ/"],"answer":0,"vi":"giải đấu"}
+ ]},
+{"part":"A CLOSER LOOK 1 · Vocabulary & Pronunciation","roman":"AL1.5","navLabel":"AL1 Ex5","title":"Ex 5. Listen and practise the sentences. Identify the word with the sound /ɔɪ/","icon":"ear-listen","instructions":"Chọn từ có chứa âm /ɔɪ/ trong mỗi câu (SGK yêu cầu gạch chân /ʊə/ và khoanh tròn /ɔɪ/ — ở đây em chọn từ chứa âm /ɔɪ/).","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. She is a noisy and curious girl.","options":["noisy","curious"],"answer":0,"vi":"noisy = ồn ào (chứa âm /ɔɪ/); curious = tò mò (chứa âm /ʊə/)."},
+  {"q":"2. They joined a full-day city tour.","options":["joined","tour"],"answer":0,"vi":"joined = đã tham gia (chứa âm /ɔɪ/); tour = chuyến tham quan (chứa âm /ʊə/)."},
+  {"q":"3. I found it enjoyable to watch the tournament.","options":["enjoyable","tournament"],"answer":0,"vi":"enjoyable = thú vị (chứa âm /ɔɪ/); tournament = giải đấu (chứa âm /ʊə/)."},
+  {"q":"4. She'll record her voices during the interview.","options":["voices","interview"],"answer":0,"vi":"voices = giọng nói (chứa âm /ɔɪ/)."},
+  {"q":"5. He is not acting very mature and is starting to annoy me.","options":["mature","annoy"],"answer":1,"vi":"mature = chín chắn (chứa âm /ʊə/); annoy = làm phiền (chứa âm /ɔɪ/)."}
+ ]},
+
+/* ============== A CLOSER LOOK 2 ============== */
+{"part":"A CLOSER LOOK 2 · Grammar: Simple & Compound Sentences","roman":"AL2.1","navLabel":"AL2 Ex1","title":"Ex 1. Tick the simple sentences","icon":"scale-balanced","instructions":"","type":"mcq","instant":true,
+ "ruleBox":"<b>📌 Remember!</b><br>Một <b>câu đơn (simple sentence)</b> chỉ có 1 mệnh đề độc lập.<br>Ví dụ: <i>Minh has some problems with his schoolwork.</i><br><br>Một <b>câu ghép (compound sentence)</b> có 2 mệnh đề độc lập trở lên, nối với nhau bằng:<br>– <b>liên từ kết hợp</b> (coordinating conjunction): <b>for, and, nor, but, or, yet, so</b>.<br>Ví dụ: <i>Mai bought many books, but she likes chess more.</i><br>– <b>trạng từ liên kết</b> (conjunctive adverb): <b>however, therefore, otherwise</b> (thường đứng sau dấu \";\" và trước dấu \",\").<br>Ví dụ: <i>Mark is hard-working; therefore, he usually gets high scores on exams.</i>",
+ "questions":[
+  {"q":"1. We work together on different projects.","options":["Là câu đơn (Simple)","Không phải câu đơn"],"answer":0,"explanation":"Câu chỉ có 1 mệnh đề (1 chủ ngữ, 1 động từ chính) → câu đơn.","vi":"Chúng tôi cùng nhau làm việc trên các dự án khác nhau."},
+  {"q":"2. Teens need good friends and tolerant teachers at schools.","options":["Là câu đơn (Simple)","Không phải câu đơn"],"answer":0,"explanation":"\"and\" ở đây nối 2 danh từ (good friends / tolerant teachers), không nối 2 mệnh đề → vẫn là câu đơn.","vi":"Thanh thiếu niên cần những người bạn tốt và giáo viên khoan dung ở trường."},
+  {"q":"3. She plays chess very well, and she won the first prize last year.","options":["Là câu đơn (Simple)","Không phải câu đơn"],"answer":1,"explanation":"Có 2 mệnh đề độc lập nối bằng \"and\" → đây là câu ghép, không phải câu đơn.","vi":"Cô ấy chơi cờ vua rất giỏi, và cô ấy đã đoạt giải nhất năm ngoái."},
+  {"q":"4. Sports activities at school help me relax.","options":["Là câu đơn (Simple)","Không phải câu đơn"],"answer":0,"explanation":"Chỉ có 1 mệnh đề → câu đơn.","vi":"Các hoạt động thể thao ở trường giúp tôi thư giãn."},
+  {"q":"5. Teens should learn teamwork, and they should also have communication skills.","options":["Là câu đơn (Simple)","Không phải câu đơn"],"answer":1,"explanation":"Có 2 mệnh đề độc lập nối bằng \"and\" → đây là câu ghép, không phải câu đơn.","vi":"Thanh thiếu niên nên học kỹ năng làm việc nhóm, và họ cũng nên có kỹ năng giao tiếp."}
+ ]},
+{"part":"A CLOSER LOOK 2 · Grammar: Simple & Compound Sentences","roman":"AL2.2","navLabel":"AL2 Ex2","title":"Ex 2. Write S for simple sentences and C for compound sentences","icon":"scale-balanced","instructions":"Viết S (câu đơn) hoặc C (câu ghép) cho mỗi câu.","type":"mcq","instant":true,
+ "ruleBox":"<b>📌 Nhắc lại công thức:</b><br><b>Câu đơn (S – Simple sentence)</b> = chỉ có 1 mệnh đề độc lập (1 chủ ngữ + 1 cụm động từ chính), dù có thể có \"and/or\" nối 2 danh từ/tính từ/động từ với nhau.<br><b>Câu ghép (C – Compound sentence)</b> = 2 mệnh đề độc lập trở lên, nối bằng: <b>for, and, nor, but, or, yet, so</b> (có dấu phẩy trước) hoặc <b>however, therefore, otherwise</b> (có dấu \";\" trước và dấu \",\" sau).<br>💡 Mẹo: che phần sau liên từ lại — nếu phần còn lại vẫn có đủ chủ ngữ + động từ và có nghĩa trọn vẹn, đó là 2 mệnh đề độc lập → câu ghép.",
+ "questions":[
+  {"q":"1. Teenagers are often very active and talkative.","options":["S","C"],"answer":0,"explanation":"\"and\" nối 2 tính từ (active / talkative), không nối 2 mệnh đề → câu đơn (S).","vi":"Thanh thiếu niên thường rất năng động và hoạt ngôn."},
+  {"q":"2. He often chats with his friends on Facebook Messenger.","options":["S","C"],"answer":0,"explanation":"Chỉ có 1 mệnh đề (1 chủ ngữ \"He\", 1 động từ chính \"chats\") → câu đơn (S).","vi":"Cậu ấy thường trò chuyện với bạn bè qua Facebook Messenger."},
+  {"q":"3. She is a smart student, and she is an active member of our club.","options":["S","C"],"answer":1,"explanation":"Có 2 mệnh đề độc lập nối bằng \"and\" → câu ghép (C).","vi":"Cô ấy là học sinh giỏi, và cô ấy là thành viên tích cực của câu lạc bộ chúng tôi."},
+  {"q":"4. My friends and I joined a sports competition last year.","options":["S","C"],"answer":0,"explanation":"\"and\" nối 2 chủ ngữ (My friends / I), chỉ có 1 mệnh đề → câu đơn (S).","vi":"Bạn bè tôi và tôi đã tham gia một cuộc thi thể thao năm ngoái."},
+  {"q":"5. He is a club member, but he never participates in any of the activities.","options":["S","C"],"answer":1,"explanation":"Có 2 mệnh đề độc lập nối bằng \"but\" → câu ghép (C).","vi":"Cậu ấy là thành viên câu lạc bộ, nhưng cậu ấy không bao giờ tham gia bất kỳ hoạt động nào."}
+ ]},
+{"part":"A CLOSER LOOK 2 · Grammar: Simple & Compound Sentences","roman":"AL2.3","navLabel":"AL2 Ex3","title":"Ex 3. Choose the correct answer A, B, or C","icon":"circle-check","instructions":"Chọn liên từ hoặc trạng từ liên kết phù hợp.","type":"mcq","instant":true,
+ "ruleBox":"<b>📌 Bảng ý nghĩa các từ nối câu ghép:</b><br><b>and</b> = và (bổ sung ý) · <b>but</b> = nhưng (tương phản) · <b>or</b> = hoặc (lựa chọn) · <b>so</b> = nên (kết quả) · <b>for</b> = bởi vì (lý do, khá trang trọng, đứng đầu vế giải thích) · <b>yet</b> = nhưng mà (tương phản, nhấn mạnh hơn \"but\") · <b>nor</b> = cũng không (dùng sau ý phủ định).<br><b>however</b> = tuy nhiên (tương phản) · <b>therefore</b> = vì vậy (kết quả) · <b>otherwise</b> = nếu không thì (hậu quả nếu KHÔNG làm theo vế trước).<br>Công thức: <i>Mệnh đề 1, + and/but/or/so/for/yet/nor + mệnh đề 2.</i> &nbsp;|&nbsp; <i>Mệnh đề 1; + however/therefore/otherwise, + mệnh đề 2.</i>",
+ "questions":[
+  {"q":"1. Parents should give teens some freedom, ___________ they should also set limits.","options":["for","so","but"],"answer":2,"explanation":"\"but\" thể hiện sự tương phản: cho tự do NHƯNG cũng cần đặt giới hạn.","vi":"Bố mẹ nên cho thanh thiếu niên một chút tự do, nhưng họ cũng nên đặt ra giới hạn."},
+  {"q":"2. We don't cheat on exams, ___________ it is a wrong thing to do.","options":["or","for","and"],"answer":1,"explanation":"\"for\" ở đây mang nghĩa \"bởi vì\" (lý do).","vi":"Chúng tôi không gian lận trong thi cử, bởi vì đó là một việc làm sai trái."},
+  {"q":"3. Lan wanted to join the school music club; ___________ she can't sing or play any instruments.","options":["however","otherwise","therefore"],"answer":0,"explanation":"\"however\" thể hiện sự tương phản: muốn tham gia NHƯNG lại không biết hát/chơi nhạc cụ.","vi":"Lan muốn tham gia câu lạc bộ âm nhạc của trường; tuy nhiên, cô ấy không biết hát hay chơi nhạc cụ nào."},
+  {"q":"4. Schoolwork causes teens a lot of pressure; ___________ they also feel pressure from their parents.","options":["and","but","or"],"answer":0,"explanation":"\"and\" thể hiện sự bổ sung ý (cũng chịu áp lực từ bố mẹ nữa).","vi":"Bài vở gây cho thanh thiếu niên rất nhiều áp lực; và họ cũng cảm thấy áp lực từ bố mẹ."},
+  {"q":"5. She wanted to prepare for the exam; ___________ she turned off her mobile phone.","options":["otherwise","however","therefore"],"answer":2,"explanation":"\"therefore\" thể hiện kết quả: vì muốn ôn thi NÊN đã tắt điện thoại.","vi":"Cô ấy muốn chuẩn bị cho kỳ thi; vì vậy, cô ấy đã tắt điện thoại di động."}
+ ]},
+{"part":"A CLOSER LOOK 2 · Grammar: Simple & Compound Sentences","roman":"AL2.4","navLabel":"AL2 Ex4","title":"Ex 4. Combine the two sentences to make compound sentences","icon":"link","instructions":"Dùng mỗi từ trong khung đúng 1 lần: or, but, so, therefore, otherwise. 💡 Sau khi hoàn thành, thử chơi trò chơi nhóm ở Ex5 SGK: \"Which group has the most sentences?\" — các nhóm thi đặt càng nhiều câu ghép đúng càng tốt.","type":"sentence",
+ "ruleBox":"<b>📌 Dấu câu khi nối 2 câu:</b><br><b>or / but / so</b> → đặt dấu <b>phẩy (,)</b> ngay TRƯỚC từ nối: <i>..., or/but/so + mệnh đề 2.</i><br><b>therefore / otherwise</b> → đặt dấu <b>chấm phẩy (;)</b> TRƯỚC và dấu <b>phẩy (,)</b> NGAY SAU: <i>...; therefore/otherwise, + mệnh đề 2.</i><br>Nghĩa: or = hoặc · but = nhưng · so = nên (kết quả) · therefore = vì vậy (kết quả, trang trọng hơn \"so\") · otherwise = nếu không thì (hậu quả nếu không làm theo vế trước).",
+ "questions":[
+  {"q":"1. Phong has to study harder. He may fail the exam. (otherwise)","starter":"Phong has to study harder,","answer":"otherwise he may fail the exam","accepted":["otherwise he may fail the exam","otherwise, he may fail the exam"],"vi":"Phong phải học chăm chỉ hơn, nếu không cậu ấy có thể trượt kỳ thi."},
+  {"q":"2. She is very sensitive. Don't comment on her new hairstyle. (therefore)","starter":"She is very sensitive;","answer":"therefore, don't comment on her new hairstyle","accepted":["therefore, don't comment on her new hairstyle","therefore don't comment on her new hairstyle"],"vi":"Cô ấy rất nhạy cảm; vì vậy đừng bình luận về kiểu tóc mới của cô ấy."},
+  {"q":"3. Mi wants to have more friends. She doesn't connect well with others. (but)","starter":"Mi wants to have more friends,","answer":"but she doesn't connect well with others","accepted":["but she doesn't connect well with others"],"vi":"Mi muốn có nhiều bạn hơn, nhưng cô ấy không kết nối tốt với người khác."},
+  {"q":"4. Students can work in groups. Students can work in pairs. (or)","starter":"Students can work in groups,","answer":"or they can work in pairs","accepted":["or they can work in pairs","or students can work in pairs"],"vi":"Học sinh có thể làm việc theo nhóm, hoặc có thể làm việc theo cặp."},
+  {"q":"5. My friend likes showing off her new things. She often posts pictures on social media. (so)","starter":"My friend likes showing off her new things,","answer":"so she often posts pictures on social media","accepted":["so she often posts pictures on social media"],"vi":"Bạn tôi thích khoe đồ mới, nên cô ấy thường đăng ảnh lên mạng xã hội."}
+ ]},
+
+/* ============== COMMUNICATION ============== */
+{"part":"COMMUNICATION · Everyday English: Making requests","roman":"COM.1","navLabel":"COM Ex1","title":"Ex 1. Listen and read. Pay attention to the highlighted sentences","icon":"comments","instructions":"Đọc hội thoại, chú ý các mẫu câu yêu cầu lịch sự \"Can/Could you tell me...?\", sau đó trả lời câu hỏi.","type":"mcq","instant":true,
+ "ruleBox":"<b>📌 Công thức lời yêu cầu lịch sự (Making requests):</b><br><b>Can/Could you tell me + (câu hỏi gián tiếp)?</b><br>– Khi câu hỏi gốc có từ để hỏi (what/where/when/who/why/how): giữ nguyên từ hỏi, đổi trật tự thành câu KHẲNG ĐỊNH (không đảo động từ).<br>&nbsp;&nbsp;VD: <i>What time does it meet?</i> → <b>Could you tell me what time it meets?</b><br>– Khi câu hỏi gốc là câu hỏi Yes/No: dùng <b>if/whether</b>.<br>&nbsp;&nbsp;VD: <i>Does it meet on Mondays?</i> → <b>Could you tell me if/whether it meets on Mondays?</b><br>💬 \"Could you...?\" lịch sự hơn một chút so với \"Can you...?\", nhưng cả hai đều dùng được trong giao tiếp hằng ngày.",
+ "passage": REQUEST_DIALOGUE,
+ "questions":[
+  {"q":"1. What club is the student asking about?","options":["The chess club","The music club","The sports club"],"answer":1,"explanation":"\"Can you tell me more about the music club, please?\"","vi":"Bạn học sinh đang hỏi về câu lạc bộ nào? → câu lạc bộ âm nhạc."},
+  {"q":"2. What days does the club meet?","options":["Mondays and Thursdays","Tuesdays and Fridays","Saturdays only"],"answer":0,"explanation":"\"Certainly. It meets on Mondays and Thursdays.\"","vi":"Câu lạc bộ sinh hoạt vào những ngày nào? → Thứ Hai và thứ Năm."},
+  {"q":"3. What time does the club meet?","options":["From 3:00 p.m. to 4:30 p.m.","From 5:00 p.m. to 6:30 p.m.","From 6:00 p.m. to 7:30 p.m."],"answer":1,"explanation":"\"Yes, it's after school, from 5:00 p.m. to 6:30 p.m.\"","vi":"Câu lạc bộ sinh hoạt lúc mấy giờ? → Từ 5 giờ đến 6 giờ 30 chiều, sau giờ học."}
+ ]},
+{"part":"COMMUNICATION · Everyday English: Making requests","roman":"COM.2","navLabel":"COM Ex2","title":"Ex 2. Work in pairs. Make similar conversations, using the cues below","icon":"pen-fancy","instructions":"Dùng mẫu \"Can/Could you tell me...?\" để hỏi thông tin về: (1) a science project, (2) the school library. Viết câu hỏi yêu cầu của em vào ô bên dưới.","type":"essay",
+ "questions":[
+  {"q":"Viết 2 câu hỏi yêu cầu lịch sự (requests) cho 2 tình huống: hỏi thêm thông tin về một dự án khoa học, và hỏi thông tin về thư viện trường.","vi":"Gợi ý: dùng công thức \"Can/Could you tell me + wh-word + S + V?\" đã học ở trên.","sample":"1. Can you tell me more about the science project, please? / Could you tell me when it starts?\n2. Could you tell me the opening hours of the school library? / Can you tell me where the library is, please?"}
+ ]},
+{"part":"COMMUNICATION · Everyday English: Making requests","roman":"COM.3","navLabel":"COM Ex3","title":"Ex 3. Read the posts and match the names of the posters with their activities","icon":"users","instructions":"Đọc các bài đăng trên diễn đàn về mạng xã hội, chọn đúng tên người phù hợp với mỗi hoạt động.","type":"mcq","instant":true,
+ "passage": SOCIAL_POSTS,
+ "questions":[
+  {"q":"1. Who checks notifications regularly?","options":["Ann","Tom","Trang","Nam"],"answer":2,"explanation":"\"That's why I often check my notifications.\" — lời của Trang.","vi":"Ai thường xuyên kiểm tra thông báo? → Trang."},
+  {"q":"2. Who watches videos on YouTube?","options":["Ann","Tom","Trang","Nam"],"answer":0,"explanation":"\"I think YouTube is the most popular social media site... I upload videos and watch other people's videos.\" — lời của Ann.","vi":"Ai xem video trên YouTube? → Ann."},
+  {"q":"3. Who uses Facebook Messenger to discuss schoolwork?","options":["Ann","Tom","Trang","Nam"],"answer":3,"explanation":"\"I often use Messenger to discuss schoolwork with my classmates.\" — lời của Nam.","vi":"Ai dùng Messenger để thảo luận bài vở? → Nam."},
+  {"q":"4. Who thinks Facebook is user-friendly?","options":["Ann","Tom","Trang","Nam"],"answer":1,"explanation":"\"It's user-friendly.\" — lời của Tom.","vi":"Ai nghĩ Facebook dễ sử dụng? → Tom."},
+  {"q":"5. Who connects with friends and shares posts on Facebook?","options":["Ann","Tom","Trang","Nam"],"answer":1,"explanation":"\"I use Facebook to connect with friends, post pictures, and share others' posts.\" — lời của Tom.","vi":"Ai kết nối bạn bè và chia sẻ bài viết trên Facebook? → Tom."}
+ ]},
+{"part":"COMMUNICATION · Everyday English: Making requests","roman":"COM.4","navLabel":"COM Ex4","title":"Ex 4. Ask and answer questions about social media use of the teens in Ex 3","icon":"circle-question","instructions":"Dựa vào nội dung Ex 3, trả lời các câu hỏi sau.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. What social media does Ann use?","options":["YouTube","Facebook","Instagram"],"answer":0,"explanation":"\"I think YouTube is the most popular social media site.\"","vi":"Ann dùng mạng xã hội nào? → YouTube."},
+  {"q":"2. How often does Ann use it?","options":["Daily","Weekly","Monthly"],"answer":0,"explanation":"\"I log on to it daily.\"","vi":"Ann dùng YouTube thường xuyên như thế nào? → hằng ngày."},
+  {"q":"3. What does Tom use Facebook for?","options":["To connect with friends and share posts","To watch videos only","To do his homework"],"answer":0,"explanation":"\"I use Facebook to connect with friends, post pictures, and share others' posts.\"","vi":"Tom dùng Facebook để làm gì? → kết nối bạn bè, đăng ảnh, chia sẻ bài viết."},
+  {"q":"4. Why does Trang often check her notifications?","options":["Because people like her photos, so she feels happy","Because she wants to sell photos","Because her teacher asks her to"],"answer":0,"explanation":"\"People like my photos, so I feel happy. That's why I often check my notifications.\"","vi":"Vì sao Trang hay kiểm tra thông báo? → vì mọi người thích ảnh của cô ấy nên cô ấy cảm thấy vui."},
+  {"q":"5. What does Nam use Messenger for?","options":["To discuss schoolwork with his classmates","To upload videos","To join clubs"],"answer":0,"explanation":"\"I often use Messenger to discuss schoolwork with my classmates.\"","vi":"Nam dùng Messenger để làm gì? → thảo luận bài vở với các bạn cùng lớp."}
+ ]},
+{"part":"COMMUNICATION · Everyday English: Making requests","roman":"COM.5","navLabel":"COM Ex5","title":"Ex 5. Work in groups. Discuss the following questions","icon":"comment-dots","instructions":"Thảo luận nhóm, sau đó viết tóm tắt câu trả lời của em để báo cáo trước lớp.","type":"essay",
+ "questions":[
+  {"q":"1. What social media do you use?\n2. How often do you use it?\n3. What do you use the social media for?","vi":"1. Bạn dùng mạng xã hội nào? 2. Bạn dùng nó thường xuyên như thế nào? 3. Bạn dùng mạng xã hội để làm gì?","sample":"1. I mainly use Facebook and YouTube. 2. I use them almost every day. 3. I use social media to connect with friends, watch videos, and discuss schoolwork with my classmates."}
+ ]},
+
+/* ============== SKILLS 1 (Reading & Speaking) ============== */
+{"part":"SKILLS 1 · Reading about school club activities","roman":"SK1.1","navLabel":"SK1 Ex1","title":"Ex 1. Look at each picture and say what club it is","icon":"images","instructions":"⚠️ Lưu ý: SGK dùng tranh minh hoạ cho hoạt động này. Vì không có ảnh gốc, mỗi câu dưới đây mô tả lại một hoạt động — hãy chọn đúng tên câu lạc bộ phù hợp.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. 🖼️ Các bạn học sinh đang di chuyển quân cờ và suy nghĩ rất tập trung.","options":["Chess club","Badminton club","Music club","Arts and crafts club"],"answer":0,"explanation":"chess = cờ vua → đây là câu lạc bộ cờ vua.","vi":"Chess club = câu lạc bộ cờ vua."},
+  {"q":"2. 🖼️ Các bạn học sinh đang cầm vợt, đánh cầu lông trên sân.","options":["Music club","Badminton club","Chess club","Language club"],"answer":1,"explanation":"badminton = cầu lông → đây là câu lạc bộ cầu lông.","vi":"Badminton club = câu lạc bộ cầu lông."},
+  {"q":"3. 🖼️ Các bạn học sinh đang cắt dán, tô màu và làm đồ thủ công.","options":["Arts and crafts club","Sports club","Chess club","Music club"],"answer":0,"explanation":"arts and crafts = mỹ thuật - thủ công → đây là câu lạc bộ mỹ thuật - thủ công.","vi":"Arts and crafts club = câu lạc bộ mỹ thuật - thủ công."},
+  {"q":"4. 🖼️ Các bạn học sinh đang chơi đàn guitar và hát cùng nhau.","options":["Language club","Music club","Badminton club","Forum"],"answer":1,"explanation":"music = âm nhạc → đây là câu lạc bộ âm nhạc.","vi":"Music club = câu lạc bộ âm nhạc."}
+ ]},
+{"part":"SKILLS 1 · Reading about school club activities","roman":"SK1.2","navLabel":"SK1 Ex2","title":"Ex 2. Read the conversation and tick T (True) or F (False) for each sentence","icon":"file-lines","instructions":"Đọc hội thoại giữa Mai và Tom, sau đó chọn Đúng/Sai.","type":"mcq","instant":true,
+ "passage": CLUB_CONVO_PASSAGE,
+ "questions":[
+  {"q":"1. Tom is interested in two clubs: badminton and chess.","options":["True","False"],"answer":0,"explanation":"\"I'm interested in two clubs: badminton and chess.\"","vi":"Tom quan tâm đến hai câu lạc bộ: cầu lông và cờ vua."},
+  {"q":"2. The badminton club activities are after school.","options":["True","False"],"answer":0,"explanation":"Câu lạc bộ bắt đầu 30 phút sau khi tan học.","vi":"Các hoạt động của câu lạc bộ cầu lông diễn ra sau giờ học."},
+  {"q":"3. Tom started playing chess when he was five years old.","options":["True","False"],"answer":1,"explanation":"Tom nói \"I started playing it five years ago\" (cách đây 5 năm), KHÔNG phải \"khi 5 tuổi\".","vi":"Tom bắt đầu chơi cờ vua khi cậu ấy 5 tuổi. (Sai — thực ra là \"cách đây 5 năm\", không phải \"lúc 5 tuổi\".)"},
+  {"q":"4. Members of the arts and crafts club do community activities.","options":["True","False"],"answer":0,"explanation":"\"...the members will work together in small community service projects.\"","vi":"Các thành viên của câu lạc bộ mỹ thuật - thủ công tham gia các hoạt động cộng đồng."}
+ ]},
+{"part":"SKILLS 1 · Reading about school club activities","roman":"SK1.3","navLabel":"SK1 Ex3","title":"Ex 3. Read the conversation again and choose the correct answer A, B, or C","icon":"circle-check","instructions":"Đọc lại hội thoại ở Ex 2 và chọn đáp án đúng.","type":"mcq","instant":true,
+ "passage": CLUB_CONVO_PASSAGE,
+ "questions":[
+  {"q":"1. Tom and Mai are discussing ___________.","options":["their leisure time activities","their school club activities","their likes and dislikes"],"answer":1,"vi":"Tom và Mai đang bàn về các hoạt động câu lạc bộ ở trường."},
+  {"q":"2. Tom started playing chess because ___________.","options":["he loved it","he wanted to stay focused","his mum wanted him to play"],"answer":2,"explanation":"\"My mum first sent me to a chess club because she wanted me to be more focused.\"","vi":"Tom bắt đầu chơi cờ vua vì → mẹ cậu ấy muốn cậu tập trung hơn."},
+  {"q":"3. Playing chess helps Tom ___________.","options":["connect with other members","concentrate better","do community service"],"answer":1,"explanation":"\"Now I find that I can concentrate better.\"","vi":"Chơi cờ vua giúp Tom → tập trung tốt hơn."},
+  {"q":"4. \"That club\" (in Tom's question \"Who will coach that club?\") refers to ___________.","options":["the chess club","the arts and crafts club","the badminton club"],"answer":1,"explanation":"Ngay trước đó Mai vừa nói về câu lạc bộ mỹ thuật - thủ công mới.","vi":"Từ \"that club\" (câu lạc bộ đó) trong câu hỏi của Tom \"Ai sẽ huấn luyện câu lạc bộ đó?\" ám chỉ đến → câu lạc bộ mỹ thuật - thủ công."},
+  {"q":"5. Mai will participate in the arts and crafts club to ___________.","options":["help the school","coach her friends","do art projects"],"answer":2,"explanation":"\"Members can do art projects and also improve their practical skills too.\"","vi":"Mai sẽ tham gia câu lạc bộ mỹ thuật - thủ công để → làm các dự án nghệ thuật."}
+ ]},
+{"part":"SKILLS 1 · Speaking","roman":"SK1.4","navLabel":"SK1 Ex4","title":"Ex 4. Work in pairs. Make conversations using the given information","icon":"id-card","instructions":"Đọc thông tin 2 câu lạc bộ dưới đây, sau đó trả lời câu hỏi.","type":"mcq","instant":true,
+ "dict":{"word":"GUITAR CLUB","ipa":"","pos":"Mondays, 5:00 p.m. – 6:30 p.m.","senses":[
+   {"def":"📍 Venue: Music room, 2nd floor","examples":[]},
+   {"def":"☎️ Contact number: 0084 623486","examples":[]},
+   {"def":"🎸 Coach: Mr Quang, a professional guitarist","examples":[]},
+   {"def":"✨ Benefits: Enjoy music and make new friends","examples":[]}
+ ]},
+ "questions":[
+  {"q":"1. What day does the Guitar Club meet?","options":["Mondays","Saturdays","Sundays"],"answer":0,"vi":"Câu lạc bộ Guitar sinh hoạt vào ngày nào? → Thứ Hai (Mondays)."},
+  {"q":"2. Where does the Guitar Club meet?","options":["School Hall, 1st floor","Music room, 2nd floor","Library, 3rd floor"],"answer":1,"vi":"Câu lạc bộ Guitar sinh hoạt ở đâu? → Phòng nhạc, tầng 2 (Music room, 2nd floor)."},
+  {"q":"3. Who is the coach of the Guitar Club?","options":["Ms Hoa","Mr Quang","Ms Hanh"],"answer":1,"vi":"Ai là huấn luyện viên của câu lạc bộ Guitar? → Thầy Quang (Mr Quang)."},
+  {"q":"4. What time does the Painting Club start? (Time: Saturdays, 9:00 a.m. – 10:30 a.m.)","options":["9:00 a.m.","10:30 a.m.","5:00 p.m."],"answer":0,"vi":"Câu lạc bộ Vẽ bắt đầu lúc mấy giờ? → 9 giờ sáng (9:00 a.m.), vào thứ Bảy."},
+  {"q":"5. Where does the Painting Club meet? (Venue: School Hall, 1st floor)","options":["Music room, 2nd floor","School Hall, 1st floor","Sports field"],"answer":1,"vi":"Câu lạc bộ Vẽ sinh hoạt ở đâu? → Hội trường, tầng 1 (School Hall, 1st floor)."},
+  {"q":"6. Who is the coach of the Painting Club? (Coach: Ms Hoa, a school art teacher)","options":["Mr Quang","Ms Hoa","Mr Nam"],"answer":1,"vi":"Ai là huấn luyện viên của câu lạc bộ Vẽ? → Cô Hoa (Ms Hoa), giáo viên mỹ thuật của trường."}
+ ]},
+{"part":"SKILLS 1 · Speaking","roman":"SK1.5","navLabel":"SK1 Ex5","title":"Ex 5. Work in groups. Ask and answer questions about a club at your school","icon":"comment-dots","instructions":"Viết đoạn giới thiệu ngắn về một câu lạc bộ ở trường em (thời gian, địa điểm, hoạt động...).","type":"essay",
+ "questions":[
+  {"q":"Report your answers to the class.","starter":"The","vi":"Trình bày trước lớp về một câu lạc bộ ở trường em (thời gian, địa điểm, huấn luyện viên, hoạt động...).","sample":"The music club at my school meets on Tuesdays, from 5:00 p.m. to 6:30 p.m. It meets in the music room, on the third floor. We practise singing and playing instruments together, and it helps us relax after school."}
+ ]},
+
+/* ============== SKILLS 2 (Listening & Writing) ============== */
+{"part":"SKILLS 2 · Listening about teen stress","roman":"SK2.2","navLabel":"SK2 Ex1-2","title":"Ex 1-2. Listen to a conversation and choose the correct answer","icon":"headphones","instructions":"Trước khi nghe, hãy đoán xem: teenagers thường chịu áp lực nào? (parental pressure / pressure from work / pressure from schoolwork / pressure from their clubs). Sau đó nghe hội thoại và chọn đáp án đúng.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. How many students are talking?","options":["One","Two","Three"],"answer":2,"explanation":"Bài nghe đề cập đến 3 bạn học sinh: Minh, Ann và Mi.","vi":"Có bao nhiêu bạn học sinh đang nói chuyện? → Ba bạn."},
+  {"q":"2. What are they discussing?","options":["Their class forum","Their stress","Their community activities"],"answer":1,"explanation":"Chủ đề Unit 3 phần nghe là về áp lực/căng thẳng của tuổi teen (teen stress).","vi":"Các bạn đang thảo luận về điều gì? → Sự căng thẳng của họ."}
+ ]},
+{"part":"SKILLS 2 · Listening about teen stress","roman":"SK2.3","navLabel":"SK2 Ex3","title":"Ex 3. Listen to the conversation again and fill in each blank with ONE word","icon":"table-list","instructions":"⚠️ Lưu ý: nội dung bảng dưới đây được phục dựng dựa trên khung bài tập trong SGK; hãy đối chiếu lại với băng nghe/đáp án chính thức của giáo viên khi luyện tập.","type":"fill",
+ "questions":[
+  {"q":"1. Minh has pressure from his ___________.","answer":"parents","vi":"bố mẹ"},
+  {"q":"2. Minh should tell his parents about his interests and ___________.","answer":"abilities","accepted":["abilities","strengths"],"vi":"khả năng, năng lực"},
+  {"q":"3. Ann is unhappy about her ___________.","answer":"body","accepted":["body","appearance"],"vi":"cơ thể, ngoại hình"},
+  {"q":"4. Ann should feel ___________ about her body.","answer":"confident","vi":"tự tin"},
+  {"q":"5. Mi doesn't get on with her ___________.","answer":"sister","vi":"chị/em gái"},
+  {"q":"6. She should ___________ to her mum.","answer":"talk","accepted":["talk","speak"],"vi":"nói chuyện"}
+ ]},
+{"part":"SKILLS 2 · Writing about the causes of stress","roman":"SK2.4","navLabel":"SK2 Ex4","title":"Ex 4. Match the causes of teen stress with the possible solutions","icon":"heart-pulse","instructions":"📌 Nguyên văn SGK: \"There may be more than one solution to a problem.\" (Có thể có nhiều hơn 1 giải pháp đúng cho mỗi nguyên nhân — em chọn 1 đáp án hợp lý, sau khi Kiểm tra hệ thống sẽ hiện TẤT CẢ các đáp án đúng được chấp nhận.)","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. peer pressure (áp lực từ bạn bè cùng trang lứa)","options":["talking to teachers","staying calm and relaxed","turning off smartphones","avoiding bullies wherever possible"],"answer":[0,1],"explanation":"Khi chịu áp lực từ bạn bè, nói chuyện với giáo viên (talking to teachers) hoặc giữ bình tĩnh, thư giãn (staying calm and relaxed) đều là giải pháp hợp lý.","vi":"peer pressure = áp lực từ bạn bè cùng trang lứa."},
+  {"q":"2. too much schoolwork (quá nhiều bài vở)","options":["turning off smartphones","staying calm and relaxed","avoiding bullies wherever possible","talking to teachers"],"answer":[1,3],"explanation":"Giữ bình tĩnh, thư giãn (staying calm and relaxed) hoặc nói chuyện với giáo viên (talking to teachers) đều giúp giảm áp lực bài vở.","vi":"too much schoolwork = quá nhiều bài vở."},
+  {"q":"3. spending too much time on social media (dùng mạng xã hội quá nhiều)","options":["avoiding bullies wherever possible","talking to teachers","turning off smartphones","staying calm and relaxed"],"answer":2,"explanation":"Tắt điện thoại thông minh (turning off smartphones) giúp giảm thời gian dùng mạng xã hội.","vi":"spending too much time on social media = dùng mạng xã hội quá nhiều."},
+  {"q":"4. bullying (bắt nạt)","options":["staying calm and relaxed","turning off smartphones","talking to teachers","avoiding bullies wherever possible"],"answer":[2,3],"explanation":"Nói chuyện với giáo viên (talking to teachers) hoặc tránh xa kẻ bắt nạt (avoiding bullies wherever possible) đều là giải pháp hợp lý khi bị bắt nạt.","vi":"bullying = bắt nạt."}
+ ]},
+{"part":"SKILLS 2 · Writing about the causes of stress","roman":"SK2.5","navLabel":"SK2 Ex5","title":"Ex 5. Write a paragraph (80-100 words) about the cause(s) of your stress and offer solutions","icon":"pen-fancy","instructions":"Dùng khung gợi ý: \"I often feel stressed because ... and here are the ways I deal with my stress ...\"","type":"essay",
+ "questions":[
+  {"q":"Write your paragraph below.","starter":"I often feel stressed because","vi":"Viết một đoạn văn (80-100 từ) về (các) nguyên nhân gây căng thẳng cho em và cách em giải quyết.","sample":"I often feel stressed because I have too much schoolwork and my parents expect me to get high marks in every exam. Sometimes I also feel pressure from my friends when they talk about their achievements. Here are the ways I deal with my stress. First, I make a study schedule so that I don't have to rush at the last minute. Second, I talk to my parents about my feelings and ask them to give me more freedom. Third, when I feel stressed, I turn off my smartphone and do something relaxing, like listening to music or playing badminton with my friends. These simple habits help me stay calm and confident."}
+ ]},
+
+/* ============== LOOKING BACK ============== */
+{"part":"LOOKING BACK · Vocabulary","roman":"LB.1","navLabel":"LB Ex1","title":"Ex 1. Complete the webs with suitable words and phrases","icon":"diagram-project","instructions":"Điền thêm từ/cụm từ còn thiếu vào mỗi sơ đồ. ✅ Đã đối chiếu với đáp án tham khảo: sơ đồ \"causes of teen stress\" gồm peer pressure, parents' expectations, pressure from schoolwork, bullying, spending too much time on social media; sơ đồ \"activities on social media\" gồm logging on to an account, text messages, connect with friends, check notifications, browse a website, upload a picture/a clip.","type":"fill",
+ "questions":[
+  {"q":"1. Sơ đồ \"causes of teen stress\": peer pressure, ___________ (từ/cụm từ khác trong bài)","answer":"bullying","accepted":["bullying","too much schoolwork","schoolwork","pressure from schoolwork","exam pressure","midterm tests","parents' expectations","expectations","parents pressure","spending too much time on social media","too much time on social media"],"hint":"causes of teen stress","vi":"ví dụ: bullying (bắt nạt), pressure from schoolwork (áp lực bài vở), parents' expectations (kỳ vọng của bố mẹ), spending too much time on social media (dùng mạng xã hội quá nhiều)..."},
+  {"q":"2. Sơ đồ \"causes of teen stress\": peer pressure, ___________ (một nguyên nhân khác)","answer":"pressure from schoolwork","accepted":["pressure from schoolwork","too much schoolwork","schoolwork","bullying","exam pressure","midterm tests","parents' expectations","expectations","parents pressure","spending too much time on social media","too much time on social media"],"hint":"causes of teen stress","vi":"ví dụ: pressure from schoolwork (áp lực bài vở), bullying (bắt nạt), spending too much time on social media (dùng mạng xã hội quá nhiều)..."},
+  {"q":"3. Sơ đồ \"activities on social media\": logging on to an account, ___________ (một hoạt động khác)","answer":"uploading pictures","accepted":["uploading pictures","uploading videos","upload pictures","upload a picture","upload a clip","checking notifications","check notifications","browsing websites","browse a website","connecting with friends","connect with friends","posting pictures","text messages","texting"],"hint":"activities on social media","vi":"ví dụ: upload a picture/a clip (tải ảnh/video lên), check notifications (kiểm tra thông báo), text messages (nhắn tin)..."},
+  {"q":"4. Sơ đồ \"activities on social media\": logging on to an account, ___________ (một hoạt động khác)","answer":"checking notifications","accepted":["checking notifications","check notifications","uploading pictures","uploading videos","upload a picture","upload a clip","browsing websites","browse a website","connecting with friends","connect with friends","text messages","texting"],"hint":"activities on social media","vi":"ví dụ: check notifications (kiểm tra thông báo), browse a website (lướt web), connect with friends (kết nối bạn bè)..."}
+ ]},
+{"part":"LOOKING BACK · Vocabulary","roman":"LB.2","navLabel":"LB Ex2","title":"Ex 2. Fill in each blank with the correct form of the word from the box","icon":"file-lines","instructions":"Điền dạng đúng của từ trong khung: skill, club, participate, upload, connect, stress.","type":"fill",
+ "passage":{"title":"Mike's busy life","html":"Mike has a busy and active life. He does well at school and (1)___(participate)___ in clubs like basketball and chess clubs. He is also a member of the school (2)___(club)___ projects, where he (3)___(connect)___ with other teens and learns new (4)___(skill)___. He has many classes, but he can still manage his schoolwork well. Mike is also an active member of his class forum. He and his friends (5)___(upload)___ pictures and videos of their class activities. They also discuss homework, their problems, and how to deal with pressure from parents, friends, and schoolwork. The most common problem they discuss is how to deal with (6)___(stress)___.","vi":"Mike có một cuộc sống bận rộn và năng động. Cậu ấy học giỏi ở trường và tham gia vào các câu lạc bộ như bóng rổ và cờ vua. Cậu ấy cũng là thành viên của các dự án câu lạc bộ trường học, nơi cậu kết nối với các bạn cùng trang lứa khác và học các kỹ năng mới. Cậu có nhiều tiết học, nhưng vẫn có thể quản lý tốt bài vở của mình. Mike cũng là thành viên tích cực của diễn đàn lớp. Cậu và bạn bè tải lên hình ảnh và video về các hoạt động của lớp. Họ cũng thảo luận về bài tập về nhà, các vấn đề của mình, và cách đối phó với áp lực từ bố mẹ, bạn bè, và bài vở. Vấn đề phổ biến nhất họ thảo luận là cách đối phó với căng thẳng."},
+ "questions":[
+  {"q":"Chỗ trống (1): He does well at school and (1)___________ in clubs like basketball and chess clubs.","answer":"participates","vi":"tham gia"},
+  {"q":"Chỗ trống (2): He is also a member of the school (2)___________ projects.","answer":"club","vi":"câu lạc bộ"},
+  {"q":"Chỗ trống (3): ...where he (3)___________ with other teens...","answer":"connects","vi":"kết nối"},
+  {"q":"Chỗ trống (4): ...and learns new (4)___________.","answer":"skills","vi":"kỹ năng"},
+  {"q":"Chỗ trống (5): He and his friends (5)___________ pictures and videos of their class activities.","answer":"upload","accepted":["upload","uploads"],"vi":"tải lên"},
+  {"q":"Chỗ trống (6): The most common problem they discuss is how to deal with (6)___________.","answer":"stress","vi":"căng thẳng"}
+ ]},
+{"part":"LOOKING BACK · Grammar","roman":"LB.3","navLabel":"LB Ex3","title":"Ex 3. Use the conjunctions provided to connect the sentences","icon":"link","instructions":"Nối 2 câu thành câu ghép bằng liên từ/trạng từ liên kết được cho.","type":"sentence",
+ "ruleBox":"<b>📌 Ôn lại công thức câu ghép:</b><br><b>SO</b> (nên) / <b>BUT</b> (nhưng) → có dấu <b>phẩy (,)</b> ngay trước từ nối: <i>Mệnh đề 1, so/but + mệnh đề 2.</i><br><b>HOWEVER</b> (tuy nhiên) / <b>THEREFORE</b> (vì vậy) / <b>OTHERWISE</b> (nếu không thì) → có dấu <b>chấm phẩy (;)</b> trước và dấu <b>phẩy (,)</b> ngay sau: <i>Mệnh đề 1; however/therefore/otherwise, mệnh đề 2.</i>",
+ "questions":[
+  {"q":"1. Mai is the head of the music club. She knows the members very well. (SO)","starter":"Mai is the head of the music club,","answer":"so she knows the members very well","accepted":["so she knows the members very well"],"vi":"Mai là trưởng câu lạc bộ âm nhạc, nên cô ấy biết rõ các thành viên."},
+  {"q":"2. Lan wanted to go to the party. She couldn't choose a suitable dress. (BUT)","starter":"Lan wanted to go to the party,","answer":"but she couldn't choose a suitable dress","accepted":["but she couldn't choose a suitable dress"],"vi":"Lan muốn đi dự tiệc, nhưng cô ấy không thể chọn được bộ váy phù hợp."},
+  {"q":"3. Tom felt stressed. He tried to finish his homework. (HOWEVER)","starter":"Tom felt stressed;","answer":"however, he tried to finish his homework","accepted":["however, he tried to finish his homework","however he tried to finish his homework"],"vi":"Tom cảm thấy căng thẳng; tuy nhiên, cậu ấy vẫn cố gắng hoàn thành bài tập về nhà."},
+  {"q":"4. He isn't a member of the chess club. He didn't join the chess competition. (THEREFORE)","starter":"He isn't a member of the chess club;","answer":"therefore, he didn't join the chess competition","accepted":["therefore, he didn't join the chess competition","therefore he didn't join the chess competition"],"vi":"Cậu ấy không phải là thành viên câu lạc bộ cờ vua; vì vậy, cậu ấy đã không tham gia cuộc thi cờ vua."},
+  {"q":"5. We will have a short holiday. We will feel very stressed. (OTHERWISE)","starter":"We will have a short holiday;","answer":"otherwise, we will feel very stressed","accepted":["otherwise, we will feel very stressed","otherwise we will feel very stressed"],"vi":"Chúng ta sẽ có một kỳ nghỉ ngắn; nếu không, chúng ta sẽ cảm thấy rất căng thẳng."}
+ ]},
+{"part":"LOOKING BACK · Grammar","roman":"LB.4","navLabel":"LB Ex4","title":"Ex 4. Complete the sentences below. Then compare your sentences with your partner's","icon":"pen-fancy","instructions":"Đây là câu hoàn thành theo ý kiến cá nhân, không có đáp án cố định. Hãy viết câu trả lời của em rồi so sánh với bạn.","type":"essay",
+ "questions":[
+  {"q":"1. Teens need to have good health, so ___________.\n2. His parents have high expectations of him, but ___________.\n3. Teenagers should develop social skills; otherwise, ___________.\n4. We sometimes feel lonely and sad; therefore, ___________.\n5. He does very well at school; however, ___________.","vi":"1. Thanh thiếu niên cần có sức khỏe tốt, nên... 2. Bố mẹ cậu ấy kỳ vọng cao ở cậu, nhưng... 3. Thanh thiếu niên nên phát triển kỹ năng xã hội; nếu không thì... 4. Đôi khi chúng ta cảm thấy cô đơn và buồn bã; vì vậy... 5. Cậu ấy học rất giỏi ở trường; tuy nhiên...","sample":"1. ...so they should eat healthily and exercise regularly.\n2. ...but he doesn't feel too stressed because he manages his time well.\n3. ...otherwise, they may find it difficult to make new friends.\n4. ...therefore, we should talk to our family or friends about our feelings.\n5. ...however, he still spends time on his hobbies like playing the guitar."}
+ ]},
+
+/* ============== PROJECT ============== */
+{"part":"PROJECT · Our School Club","roman":"PRJ","navLabel":"Project","title":"Project: Our School Club","icon":"trophy","instructions":"Làm việc nhóm: (1) Nghĩ về một câu lạc bộ em muốn có ở trường — Đó là câu lạc bộ gì? Sẽ có hoạt động cụ thể nào? Sinh hoạt bao lâu 1 lần? Khi nào? Em sẽ đóng góp gì cho câu lạc bộ? (2) Tạo một áp phích (poster) giới thiệu câu lạc bộ đó. (3) Trình bày áp phích trước lớp.<br><br>✅ <b>Now I can...</b> (tự đánh giá cuối Unit 3): dùng từ vựng về câu lạc bộ trường học, mạng xã hội và căng thẳng tuổi teen · phát âm đúng /ʊə/ và /ɔɪ/ · dùng câu đơn và câu ghép · đưa ra yêu cầu lịch sự (making requests) · đọc hiểu về hoạt động câu lạc bộ · hỏi - đáp về câu lạc bộ trường học · nghe hiểu về căng thẳng tuổi teen · viết đoạn văn về nguyên nhân căng thẳng và cách giải quyết.","type":"essay",
+ "questions":[
+  {"q":"Ghi lại ý tưởng của nhóm em cho dự án \"Our School Club\".","starter":"Our club is called","vi":"Giới thiệu câu lạc bộ em muốn có ở trường: tên câu lạc bộ, hoạt động, tần suất/thời gian sinh hoạt, và em sẽ đóng góp gì.","sample":"Our club is called the \"Photography Club\". Members will learn how to take and edit photos, and share their best pictures every month. We will meet every Friday afternoon, from 4:00 p.m. to 5:00 p.m., in the school yard or computer room. I will contribute by helping design our club's poster and managing our online photo album."}
+ ]}
+]};
+
+const completedTasks = new Set();
+const scores = {};
+const TOTAL_TASKS = DATA.sections.length;
+
+function normalize(str){
+  return (str||'').trim().toLowerCase()
+    .replace(/['']/g,"'")
+    .replace(/["""]/g,'')
+    .replace(/[.,!?;:]/g,'')
+    .replace(/\s+/g,' ');
+}
+function widthFor(ref){ const l=(ref||'').length; return l<7?'w-24':l<16?'w-40':'w-full'; }
+
+if('speechSynthesis' in window){ window.speechSynthesis.onvoiceschanged = ()=>{}; }
+function speak(text, btn){
+  try{
+    if(!('speechSynthesis' in window)){ alert('Trình duyệt của bạn không hỗ trợ phát âm tự động. Hãy thử Chrome, Edge hoặc Safari.'); return; }
+    window.speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='en-US'; u.rate=0.9; u.pitch=1;
+    const voices=window.speechSynthesis.getVoices();
+    const en=voices.find(v=>/en[-_]?(us|gb)/i.test(v.lang)) || voices.find(v=>/^en/i.test(v.lang));
+    if(en) u.voice=en;
+    if(btn){ btn.classList.add('speaking'); u.onend=()=>btn.classList.remove('speaking'); u.onerror=()=>btn.classList.remove('speaking'); }
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+function buildNav(){
+  const nav=document.getElementById('navWrap');
+  let lastPart=null; let html='';
+  DATA.sections.forEach((s,i)=>{
+    if(s.part!==lastPart){
+      if(lastPart!==null) html += `<div class="navgroup-sep"></div>`;
+      lastPart=s.part;
+    }
+    html += `<button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600${i===0?' active':''}" id="navbtn_${i}" onclick="showTab(${i})" title="${s.part||''}">${s.roman}</button>`;
+  });
+  nav.innerHTML = html;
+  document.getElementById('progressText').textContent = `0 / ${TOTAL_TASKS} phần`;
+}
+
+function optionLetter(i){ return ['A','B','C','D','E','F'][i]; }
+
+function isCorrectAnswer(q, chosen){
+  if(chosen===-1 || chosen===undefined || chosen===null) return false;
+  if(Array.isArray(q.answer)) return q.answer.includes(chosen);
+  return chosen === q.answer;
+}
+function correctAnswerLabel(q){
+  if(Array.isArray(q.answer)) return q.answer.map(a=>`${optionLetter(a)}. ${q.options[a]}`).join(' hoặc ');
+  return `${optionLetter(q.answer)}. ${q.options[q.answer]}`;
+}
+function markOptions(idx,i,q,chosen){
+  q.options.forEach((o,j)=>{
+    const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+    if(!el) return;
+    el.classList.remove('correct-opt','wrong-opt');
+    const isCorrectOpt = Array.isArray(q.answer) ? q.answer.includes(j) : j===q.answer;
+    if(isCorrectOpt) el.classList.add('correct-opt');
+    else if(j===chosen) el.classList.add('wrong-opt');
+  });
+}
+
+function stripForSpeech(html){
+  return (html||'')
+    .replace(/<br\s*\/?>/gi, '. ')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&amp;/g,'&').replace(/&nbsp;/g,' ')
+    .replace(/\s+/g,' ')
+    .trim();
+}
+function renderPassage(p, idx){
+  if(!p) return '';
+  const viBlock = p.vi ? `<button onclick="togglePassageVI(${idx})" class="text-xs font-bold bg-white border border-violet-200 text-violet-700 px-3 py-1 rounded-full hover:scale-105 transition mt-2"><i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt</button>
+    <p id="passage_vi_${idx}" class="vi-hidden mt-2 pt-2 border-t border-violet-200 italic text-slate-500">${p.vi}</p>` : '';
+  const speakBlock = `<button type="button" data-w="${stripForSpeech(p.html).replace(/"/g,'&quot;')}" onclick="speak(this.dataset.w,this)" class="speak-btn text-xs font-bold bg-white border border-violet-200 text-violet-700 px-3 py-1 rounded-full hover:scale-105 transition mt-2 mr-2"><i class="fa-solid fa-volume-high mr-1"></i>Nghe cả bài</button>`;
+  return `<div class="passage-box mb-4"><p class="font-extrabold text-violet-900 mb-2"><i class="fa-solid fa-book mr-1"></i>${p.title||''}</p><p id="passage_en_${idx}">${p.html}</p><div class="flex flex-wrap items-center">${speakBlock}${viBlock}</div></div>`;
+}
+function renderDict(d, idx){
+  if(!d) return '';
+  const viBlock = d.vi ? `<button onclick="togglePassageVI(${idx})" class="text-xs font-bold bg-white border border-amber-300 text-amber-700 px-3 py-1 rounded-full hover:scale-105 transition mt-2"><i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt</button>
+    <p id="passage_vi_${idx}" class="vi-hidden mt-2 pt-2 border-t border-amber-300 text-slate-600">${d.vi}</p>` : '';
+  const wordSpeak = `<button type="button" data-w="${(d.word||'').replace(/"/g,'&quot;')}" onclick="speak(this.dataset.w,this)" class="speak-btn w-6 h-6 rounded-full bg-amber-100 text-amber-700 hover:bg-amber-200 hover:scale-110 transition inline-flex items-center justify-center ml-1 align-middle" title="Nghe phát âm"><i class="fa-solid fa-volume-high text-[10px]"></i></button>`;
+  return `<div class="dict-box mb-4"><p class="font-extrabold text-amber-800 mb-1"><i class="fa-solid fa-book-bookmark mr-1"></i>${d.word} ${wordSpeak} <span class="font-normal italic">${d.ipa||''}</span> <span class="font-normal">${d.pos?('('+d.pos+')'):''}</span></p>${d.senses.map(x=>`<p class="mb-1">✱ ${x.def}</p>${(x.examples||[]).map(e=>`<p class="ml-4 italic text-slate-600">• ${e}</p>`).join('')}`).join('')}${viBlock}</div>`;
+}
+function renderRuleBox(rb){
+  if(!rb) return '';
+  return `<div class="rule-box mb-4"><i class="fa-solid fa-lightbulb mr-1 text-blue-500"></i>${rb}</div>`;
+}
+
+function renderSection(s, idx){
+  let inner = `<p class="part-label">${s.part||''}</p>`;
+  inner += `<h2 class="text-xl md:text-2xl font-extrabold text-violet-900 flex items-center gap-2 mb-1"><i class="fa-solid fa-${s.icon||'circle-check'} text-pink-500"></i> ${s.roman}. ${s.title}</h2>`;
+  if(s.instructions) inner += `<p class="text-sm text-slate-500 mb-3 italic">${s.instructions}</p>`;
+  inner += renderRuleBox(s.ruleBox);
+  inner += renderPassage(s.passage, idx);
+  inner += renderDict(s.dict, idx);
+
+  inner += `<div class="space-y-4">`;
+  s.questions.forEach((q,i)=>{
+    inner += `<div class="task-card bg-white rounded-2xl shadow-md p-4" id="qblock_${idx}_${i}">`;
+    if(q.image) inner += `<div class="mb-3">${q.image}</div>`;
+    const qSpeakText = stripForSpeech(q.q).replace(/"/g,'&quot;');
+    const qSpeakBtn = `<button type="button" data-w="${qSpeakText}" onclick="event.stopPropagation();speak(this.dataset.w,this)" class="speak-btn w-6 h-6 rounded-full bg-violet-100 text-violet-700 hover:bg-violet-200 hover:scale-110 transition inline-flex items-center justify-center align-middle ml-1" title="Nghe câu hỏi" aria-label="Nghe câu hỏi"><i class="fa-solid fa-volume-high text-[10px]"></i></button>`;
+    inner += `<p class="font-bold text-slate-800 mb-2 whitespace-pre-line"><span class="bg-slate-100 text-slate-600 text-xs font-black px-2 py-1 rounded-lg mr-2">${i+1}</span>${q.q}${qSpeakBtn}</p>`;
+    if(s.type==='mcq'){
+      inner += `<div class="grid sm:grid-cols-2 gap-2">`;
+      q.options.forEach((opt,j)=>{
+        const ipa = q.ipas ? q.ipas[j] : null;
+        const optVi = q.vis ? q.vis[j] : null;
+        const cleanWord = opt.replace(/<[^>]+>/g,'').replace(/"/g,'&quot;');
+        const wordBlock = `<span class="flex flex-col leading-tight"><span>${opt}</span>${ipa?`<span class="text-[10px] text-slate-400 font-normal mcq-detail-hidden">${ipa}</span>`:''}${optVi?`<span class="text-[10px] text-emerald-500 font-normal italic mcq-detail-hidden">${optVi}</span>`:''}</span>
+             <button type="button" data-w="${cleanWord}" onclick="event.stopPropagation();event.preventDefault();speak(this.dataset.w,this)" class="speak-btn w-6 h-6 rounded-full bg-violet-100 text-violet-700 hover:bg-violet-200 hover:scale-110 transition flex items-center justify-center ml-auto shrink-0" title="Nghe phát âm" aria-label="Nghe phát âm ${cleanWord}"><i class="fa-solid fa-volume-high text-[10px]"></i></button>`;
+        inner += `<label class="option-label rounded-xl px-3 py-2 text-sm font-semibold flex items-center gap-2" id="opt_${idx}_${i}_${j}" onclick="selectMcq(${idx},${i},${j})">
+          <input type="radio" name="mcq_${idx}_${i}" class="accent-violet-700" style="display:none">
+          <span class="font-black text-violet-700">${optionLetter(j)}.</span> ${wordBlock}
+        </label>`;
+      });
+      inner += `</div>`;
+    } else if(s.type==='fill'){
+      const w = widthFor(q.answer);
+      const famBlock = q.family ? `<div class="wordfam-box mt-2">${q.family.map(f=>`<div>• ${f}</div>`).join('')}</div>` : '';
+      inner += `<div class="flex items-center gap-2 flex-wrap">`;
+      if(q.hint) inner += `<span class="blank-tag text-xs">${q.hint}</span>`;
+      inner += `<input type="text" id="inp_${idx}_${i}" class="answer-input ${w} px-3 py-1.5 rounded-lg text-sm font-semibold" placeholder="Nhập đáp án..." autocomplete="off" spellcheck="false"></div>${famBlock}`;
+    } else if(s.type==='sentence'){
+      const instantAttr = s.instant ? ` oninput="gradeOneSentence(${idx},${i})"` : '';
+      if(q.starter){
+        inner += `<div class="flex items-center gap-3 w-full flex-wrap">
+          <span class="text-slate-800 font-extrabold text-base whitespace-nowrap">${q.starter}</span>
+          <input type="text" id="inp_${idx}_${i}" class="answer-input flex-1 min-w-[180px] px-3 py-2 rounded-lg text-sm font-semibold" placeholder="..." autocomplete="off" spellcheck="false"${instantAttr}>
+        </div>`;
+      } else {
+        inner += `<input type="text" id="inp_${idx}_${i}" class="answer-input w-full px-3 py-2 rounded-lg text-sm font-semibold" placeholder="Viết câu trả lời..." autocomplete="off" spellcheck="false"${instantAttr}>`;
+      }
+    } else if(s.type==='essay'){
+      const starterBlock = q.starter ? `<p class="text-slate-800 font-extrabold text-sm mb-2">${q.starter} ...</p>` : '';
+      const viNote = q.vi ? `<p class="text-xs text-slate-400 italic mb-2"><i class="fa-solid fa-language mr-1"></i>${q.vi}</p>` : '';
+      inner += `${starterBlock}${viNote}<textarea id="inp_${idx}_${i}" rows="6" class="answer-input w-full px-3 py-2 rounded-lg text-sm font-semibold" placeholder="Viết câu trả lời của em vào đây..."></textarea>`;
+    }
+    inner += `<div class="explanation-box mt-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-sm text-blue-800" id="fb_${idx}_${i}"></div>`;
+    inner += `</div>`;
+  });
+  inner += `</div>`;
+
+  inner += `<div class="flex flex-wrap gap-2 mt-5">
+    <button onclick="checkSection(${idx})" class="bg-gradient-to-r from-violet-900 to-pink-600 text-white font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-check mr-1"></i>Kiểm tra</button>
+    <button onclick="revealSection(${idx})" class="bg-white border-2 border-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-eye mr-1"></i>Xem đáp án</button>
+    <button onclick="resetSection(${idx})" class="bg-white border-2 border-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-rotate-left mr-1"></i>Làm lại</button>
+    <span id="score_${idx}" class="hidden ml-auto self-center font-extrabold text-emerald-600 text-sm score-badge"></span>
+  </div>`;
+
+  return `<section id="tab-${idx}" class="section-page${idx===0?' active':''} space-y-4">${inner}</section>`;
+}
+
+function buildMain(){
+  const main=document.getElementById('mainWrap');
+  main.innerHTML = DATA.sections.map((s,i)=>renderSection(s,i)).join('');
+}
+
+function togglePassageVI(idx){ const el=document.getElementById(`passage_vi_${idx}`); if(el) el.classList.toggle('vi-hidden'); }
+function selectMcq(idx,i,j){
+  document.querySelectorAll(`[id^="opt_${idx}_${i}_"]`).forEach(el=>el.classList.remove('selected'));
+  document.getElementById(`opt_${idx}_${i}_${j}`).classList.add('selected');
+  document.getElementById(`opt_${idx}_${i}_${j}`).dataset.chosen = j;
+  if(DATA.sections[idx].instant){ gradeOneMcq(idx,i); }
+}
+
+function gradeOneMcq(idx,i){
+  const s=DATA.sections[idx], q=s.questions[i];
+  const qblock=document.getElementById(`qblock_${idx}_${i}`);
+  if(qblock) qblock.classList.add('show-mcq-detail');
+  const chosenEl=document.querySelector(`#tab-${idx} [id^="opt_${idx}_${i}_"].selected`);
+  const chosen = chosenEl ? parseInt(chosenEl.dataset.chosen) : -1;
+  const ok = isCorrectAnswer(q, chosen);
+  markOptions(idx,i,q,chosen);
+  const fb=document.getElementById(`fb_${idx}_${i}`);
+  fb.innerHTML = feedbackHTML(ok, correctAnswerLabel(q), q.explanation, q.vi, q.note);
+  fb.classList.add('show');
+}
+
+function gradeOneSentence(idx,i){
+  const q=DATA.sections[idx].questions[i];
+  const inp=document.getElementById(`inp_${idx}_${i}`);
+  const fb=document.getElementById(`fb_${idx}_${i}`);
+  if(!inp || !fb) return;
+  const raw=inp.value.trim();
+  if(raw===''){
+    inp.classList.remove('correct-input','wrong-input');
+    fb.classList.remove('show'); fb.innerHTML='';
+    return;
+  }
+  const val=normalize(inp.value);
+  const acc=(q.accepted||[q.answer]).map(normalize);
+  const ok = acc.includes(val);
+  inp.classList.remove('correct-input','wrong-input');
+  inp.classList.add(ok?'correct-input':'wrong-input');
+  fb.innerHTML = feedbackHTML(ok, q.answer, q.explanation, q.vi, q.note);
+  fb.classList.add('show');
+}
+
+function feedbackHTML(ok, answerLabel, explanation, vi, note){
+  const okLine = ok? `<span class="text-emerald-700 font-bold">✅ Chính xác!</span>` : `<span class="text-rose-600 font-bold">❌ Chưa đúng.</span> Đáp án đúng: <b>${answerLabel}</b>`;
+  const expLine = explanation? `<br><span class="text-blue-700">💡 ${explanation}</span>` : '';
+  const viLine = vi? `<span class="text-slate-500">📖 Nghĩa: <i>${vi}</i></span>` : '';
+  const noteLine = note? `<br><span class="text-violet-600">📐 Công thức: <b>${note}</b></span>` : '';
+  if(note){
+    return (viLine?viLine+'<br>':'') + okLine + expLine + noteLine;
+  }
+  return okLine + expLine + (viLine?'<br>'+viLine:'') + noteLine;
+}
+
+function checkSection(idx){
+  const s=DATA.sections[idx];
+  let correct=0;
+  s.questions.forEach((q,i)=>{
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    if(s.type==='essay'){
+      const ta=document.getElementById(`inp_${idx}_${i}`);
+      fb.innerHTML = `<span class="text-green-700 font-bold">✍️ Cảm ơn em đã hoàn thành bài viết!</span><br><span class="text-blue-700">💡 Đoạn văn / câu trả lời gợi ý:</span><br><span class="text-slate-600 italic whitespace-pre-line">${q.sample}</span>`;
+      fb.classList.add('show');
+      correct++;
+      return;
+    }
+    let ok=false, answerLabel='';
+    if(s.type==='mcq'){
+      const chosenEl=document.querySelector(`#tab-${idx} [id^="opt_${idx}_${i}_"].selected`);
+      const chosen = chosenEl ? parseInt(chosenEl.dataset.chosen) : -1;
+      ok = isCorrectAnswer(q, chosen);
+      answerLabel = correctAnswerLabel(q);
+      markOptions(idx,i,q,chosen);
+      const qblock=document.getElementById(`qblock_${idx}_${i}`);
+      if(qblock) qblock.classList.add('show-mcq-detail');
+    } else {
+      const inp=document.getElementById(`inp_${idx}_${i}`);
+      const val=normalize(inp.value);
+      const acc=(q.accepted||[q.answer]).map(normalize);
+      ok = val!=='' && acc.includes(val);
+      inp.classList.remove('correct-input','wrong-input');
+      inp.classList.add(ok?'correct-input':'wrong-input');
+      answerLabel = q.answer;
+    }
+    if(ok) correct++;
+    fb.innerHTML = feedbackHTML(ok, answerLabel, q.explanation, q.vi, q.note);
+    fb.classList.add('show');
+  });
+  const total=s.questions.length;
+  scores[idx]={correct,total};
+  const scoreEl=document.getElementById(`score_${idx}`);
+  scoreEl.textContent = `🏆 Điểm: ${correct}/${total}`;
+  scoreEl.classList.remove('hidden');
+  completedTasks.add(idx);
+  updateProgress();
+  if(completedTasks.size===TOTAL_TASKS) setTimeout(showCompletion,500);
+}
+
+function revealSection(idx){
+  const s=DATA.sections[idx];
+  s.questions.forEach((q,i)=>{
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    if(s.type==='essay'){
+      fb.innerHTML = `👁️ Câu trả lời gợi ý:<br><span class="text-slate-600 italic whitespace-pre-line">${q.sample}</span>`;
+      fb.classList.add('show');
+      return;
+    }
+    let answerLabel = s.type==='mcq' ? correctAnswerLabel(q) : q.answer;
+    if(s.type==='mcq'){
+      markOptions(idx,i,q,-1);
+      const qblock=document.getElementById(`qblock_${idx}_${i}`);
+      if(qblock) qblock.classList.add('show-mcq-detail');
+    }
+    fb.innerHTML = `👁️ Đáp án: <b>${answerLabel}</b>` + (q.explanation?`<br><span class="text-blue-700">💡 ${q.explanation}</span>`:'') + (q.vi?`<br><span class="text-slate-500">📖 Nghĩa: <i>${q.vi}</i></span>`:'') + (q.note?`<br><span class="text-violet-600">📐 Công thức: <b>${q.note}</b></span>`:'');
+    fb.classList.add('show');
+  });
+}
+
+function resetSection(idx){
+  const s=DATA.sections[idx];
+  s.questions.forEach((q,i)=>{
+    if(s.type==='mcq'){
+      q.options.forEach((o,j)=>{
+        const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+        el.classList.remove('correct-opt','wrong-opt','selected');
+        delete el.dataset.chosen;
+      });
+    } else if(s.type==='essay'){
+      const ta=document.getElementById(`inp_${idx}_${i}`);
+      if(ta){ ta.value=''; }
+    } else {
+      const inp=document.getElementById(`inp_${idx}_${i}`);
+      if(inp){ inp.value=''; inp.classList.remove('correct-input','wrong-input'); }
+    }
+    const qblock=document.getElementById(`qblock_${idx}_${i}`);
+    if(qblock) qblock.classList.remove('show-mcq-detail');
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    fb.classList.remove('show'); fb.innerHTML='';
+  });
+  const scoreEl=document.getElementById(`score_${idx}`); scoreEl.classList.add('hidden');
+  completedTasks.delete(idx); delete scores[idx]; updateProgress();
+}
+
+function showTab(idx){
+  document.querySelectorAll('.section-page').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active'); b.classList.add('text-slate-600');});
+  document.getElementById(`tab-${idx}`).classList.add('active');
+  const btn=document.getElementById(`navbtn_${idx}`);
+  btn.classList.add('active'); btn.classList.remove('text-slate-600');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updateProgress(){
+  const done=completedTasks.size;
+  document.getElementById('progressText').textContent = `${done} / ${TOTAL_TASKS} phần`;
+  document.getElementById('progressBar').style.width = `${(done/TOTAL_TASKS)*100}%`;
+}
+
+function showCompletion(){
+  fireConfetti();
+  const banner=document.getElementById('completionBanner');
+  banner.classList.remove('hidden'); banner.classList.add('show');
+  let c=0,t=0; Object.values(scores).forEach(s=>{c+=s.correct; t+=s.total;});
+  document.getElementById('finalScoreDisplay').textContent = `🎯 ${c} / ${t} câu đúng`;
+}
+function closeBanner(){ const b=document.getElementById('completionBanner'); b.classList.remove('show'); b.classList.add('hidden'); }
+function fireConfetti(){
+  const wrap=document.getElementById('confettiWrap'); wrap.innerHTML='';
+  const colors=['#4c1d95','#7c3aed','#db2777','#ec4899','#f59e0b','#22c55e'];
+  for(let i=0;i<90;i++){
+    const p=document.createElement('div'); p.className='confetti-piece';
+    p.style.cssText=`left:${Math.random()*100}vw;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>0.5?'50%':'2px'};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*0.8}s;`;
+    wrap.appendChild(p);
+  }
+  setTimeout(()=>{wrap.innerHTML='';},4000);
+}
+
+buildNav();
+buildMain();
+updateProgress();
+</script>
+</body>
+</html>
