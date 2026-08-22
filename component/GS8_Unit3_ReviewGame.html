@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#4c1d95">
+<title>Unit 3 Review Game: Teenagers - Tiếng Anh 8</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+  :root{
+    --violet:#4c1d95; --violet2:#7c3aed; --pink:#db2777;
+    --green:#58cc02; --green-dark:#4aa302; --blue:#1cb0f6; --red:#ff4b4b; --gold:#ffc800;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html{ -webkit-text-size-adjust: 100%; }
+  body { font-family:'Nunito',sans-serif; background:#faf5ff; margin:0; color:#3c3c3c; }
+  button,[onclick]{ touch-action: manipulation; -webkit-user-select:none; user-select:none; }
+  input{ -webkit-user-select:text; user-select:text; }
+  h1,h2,h3,.font-baloo{ font-family:'Baloo 2','Baloo_2',sans-serif; }
+
+  #app{ min-height:100vh; padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
+  .topbar{ position:sticky; top:0; z-index:40; background:#fff; border-bottom:2px solid #eee; padding: calc(.55rem + env(safe-area-inset-top)) 1rem .55rem; display:flex; align-items:center; justify-content:space-between; }
+  .footer-bar{ position:fixed; left:0; right:0; bottom:0; z-index:50; background:#fff; border-top:2px solid #eee; padding:.8rem 1rem calc(.8rem + env(safe-area-inset-bottom)); }
+
+  .hero-gradient{ background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 55%, #db2777 100%); }
+
+  .btn3d{ border-bottom:4px solid; transition: transform .06s, border-bottom-width .06s; cursor:pointer; }
+  .btn3d:active{ transform: translateY(3px); border-bottom-width:1px; }
+  .btn-green{ background:var(--green); border-color:var(--green-dark); color:#fff; }
+  .btn-green:disabled{ background:#e5e5e5; border-color:#d0d0d0; color:#afafaf; cursor:not-allowed; }
+  .btn-white{ background:#fff; border-color:#e5e5e5; color:#4b4b4b; }
+  .btn-red{ background:#fff; border-color:#e5e5e5; color:var(--red); }
+
+  .path-wrap{ max-width:480px; margin:0 auto; padding: 1.5rem 1rem 2rem; }
+  .group-label{ text-align:center; font-weight:900; font-size:.78rem; letter-spacing:.04em; color:#6d28d9; background:#f3e8ff; border:2px solid #ddd6fe; border-radius:999px; padding:.4rem 1rem; display:inline-block; margin: 0 auto 1.4rem; }
+  .group-wrap{ text-align:center; }
+  .stage-node{ width:82px; height:82px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2rem; border-bottom:6px solid; position:relative; transition:transform .15s; flex:none; }
+  .stage-node:active{ transform: scale(.94); }
+  .stage-node.status-mastered{ background:var(--gold); border-color:#c99400; }
+  .stage-node.status-in_progress{ background:var(--violet2); border-color:#4c1d95; }
+  .stage-node.status-needs_practice{ background:var(--red); border-color:#c53030; }
+  .stage-node.status-not_started{ background:#fff; border-color:#e5e5e5; color:#afafaf; }
+  .stage-row{ display:flex; align-items:center; gap:1rem; margin-bottom:1.6rem; }
+  .stage-row.right{ flex-direction:row-reverse; }
+  .status-dot{ position:absolute; bottom:-6px; right:-6px; width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.75rem; background:#fff; border:2px solid #e5e5e5; }
+
+  .opt-card{ border:2px solid #e5e5e5; border-bottom-width:4px; border-radius:1rem; padding:.85rem 1rem; cursor:pointer; transition: all .12s; font-weight:800; display:flex; align-items:center; gap:.5rem; }
+  .opt-card:active{ transform: translateY(2px); }
+  .opt-card.selected{ border-color:var(--blue); background:#ddf4ff; }
+  .opt-card.correct{ border-color:var(--green-dark); background:#d7ffb8; color:#345; }
+  .opt-card.wrong{ border-color:#c53030; background:#ffdfe0; color:#345; }
+  .opt-card.dim{ opacity:.5; }
+  .speak-mini{ margin-left:auto; width:26px; height:26px; border-radius:50%; background:#ede9fe; color:#5b21b6; display:flex; align-items:center; justify-content:center; flex:none; }
+  .speak-mini.speaking{ animation: pulseSpeak .7s ease-in-out infinite; }
+  @keyframes pulseSpeak{ 0%,100%{transform:scale(1);} 50%{transform:scale(1.2);} }
+
+  .xp-pill{ background:#fff7d6; border:2px solid var(--gold); color:#8a6d00; border-radius:999px; padding:.15rem .7rem; font-weight:900; font-size:.8rem; }
+  .streak-pill{ background:#fdf0ff; border:2px solid var(--violet2); color:#5b21b6; border-radius:999px; padding:.15rem .7rem; font-weight:900; font-size:.8rem; }
+  .progress-track{ background:#e5e5e5; border-radius:999px; height:14px; overflow:hidden; }
+  .progress-fill{ background:var(--violet2); height:100%; transition: width .4s ease; }
+
+  .confetti-wrap{ position:fixed; inset:0; pointer-events:none; z-index:9999; }
+  .confetti-piece{ position:absolute; width:10px; height:10px; border-radius:2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall{ 0%{transform:translateY(-20px) rotate(0deg); opacity:1;} 100%{transform:translateY(100vh) rotate(720deg); opacity:0;} }
+  .pop-in{ animation: popIn .3s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn{ from{transform:scale(.6); opacity:0;} to{transform:scale(1); opacity:1;} }
+
+  .screen{ display:none; }
+  .screen.active{ display:block; }
+  .badge-chip{ background:#fff; border:2px solid var(--gold); border-radius:1rem; padding:.6rem; text-align:center; }
+
+  .passage-toggle-box{ background:#f5f3ff; border:2px solid #ddd6fe; border-radius:1rem; padding:.9rem 1.1rem; margin-bottom:.6rem; font-size:.92rem; line-height:1.85; }
+  .passage-vi-box{ background:#fffbeb; border:2px solid #fde68a; border-radius:1rem; padding:.9rem 1.1rem; margin-top:.5rem; font-size:.9rem; line-height:1.8; display:none; }
+  .passage-vi-box.show{ display:block; }
+  .cat-tag{ display:inline-block; }
+</style>
+</head>
+<body>
+<div class="confetti-wrap" id="confettiWrap"></div>
+<div id="app"></div>
+<script>
+// ============================================================
+// UNIT 3 – TEENAGERS · STANDALONE REVIEW GAME (mcq / tf only)
+// Source content: GS8_Unit3_InClass_Practice.html (SGK) &
+// GS8_Unit3_Workbook_Practice.html (SBT). Passage text/answers below
+// are reused verbatim from those two files.
+// ============================================================
+
+/* ---------------- Reading passages (used for intro cards) ---------------- */
+const PASSAGES = {
+  club_convo: {
+    id:"club_convo", title:"SGK · Which club did you join?",
+    html:"<b>Mai:</b> Tom, so which club did you join?<br><b>Tom:</b> I'm interested in two clubs: badminton and chess.<br><b>Mai:</b> I like badminton, too. It's relaxing.<br><b>Tom:</b> Yes, I play it to keep fit. So let's join that club together.<br><b>Mai:</b> OK. It's on Tuesdays and Fridays from 5:00 p.m. to 6:30 p.m. It starts 30 minutes after school, so we have enough time to get some snacks beforehand. I know you like chess. Will you join the chess club?<br><b>Tom:</b> Well, I started playing it five years ago. My mum first sent me to a chess club because she wanted me to be more focused. Now I find that I can concentrate better. Do you like chess?<br><b>Mai:</b> Let's join the chess club too. Actually, this year there is a new arts and crafts club, and I want to join it. I hear that the members will work together in small community service projects. Members can do art projects and also improve their practical skills too.<br><b>Tom:</b> Awesome, Mai. Who will coach that club?<br><b>Mai:</b> Ms Hoa, the art teacher. She will help us connect with the community.",
+    vi:"<b>Mai:</b> Tom, vậy bạn đã tham gia câu lạc bộ nào?<br><b>Tom:</b> Mình quan tâm đến hai câu lạc bộ: cầu lông và cờ vua.<br><b>Mai:</b> Mình cũng thích cầu lông. Nó giúp thư giãn.<br><b>Tom:</b> Ừ, mình chơi để giữ dáng khỏe mạnh. Vậy chúng ta cùng tham gia câu lạc bộ đó nhé.<br><b>Mai:</b> Được. Câu lạc bộ sinh hoạt vào thứ Ba và thứ Sáu, từ 5 giờ đến 6 giờ 30 chiều. Nó bắt đầu 30 phút sau khi tan học, nên chúng ta có đủ thời gian ăn nhẹ trước. Mình biết bạn thích cờ vua. Bạn có tham gia câu lạc bộ cờ vua không?<br><b>Tom:</b> À, mình bắt đầu chơi cờ vua từ năm năm trước. Lúc đầu mẹ mình gửi mình đến câu lạc bộ cờ vua vì bà muốn mình tập trung hơn. Giờ mình thấy mình có thể tập trung tốt hơn. Bạn có thích cờ vua không?<br><b>Mai:</b> Chúng ta cùng tham gia câu lạc bộ cờ vua luôn nhé. Thật ra, năm nay có một câu lạc bộ mỹ thuật - thủ công mới, và mình muốn tham gia. Mình nghe nói các thành viên sẽ cùng làm các dự án phục vụ cộng đồng nhỏ. Thành viên có thể làm các dự án nghệ thuật và cải thiện kỹ năng thực hành.<br><b>Tom:</b> Tuyệt quá, Mai. Ai sẽ huấn luyện câu lạc bộ đó?<br><b>Mai:</b> Cô Hoa, giáo viên mỹ thuật. Cô ấy sẽ giúp chúng ta kết nối với cộng đồng."
+  },
+  social_posts: {
+    id:"social_posts", title:"SGK · Social media popular among teens",
+    html:"<b>Ann:</b> I think YouTube is the most popular social media site. I log on to it daily. I upload videos and watch other people's videos.<br><br><b>Tom:</b> I use Facebook to connect with friends, post pictures, and share others' posts. I use it daily. It's user-friendly.<br><br><b>Trang:</b> I love Instagram. It's really fun, and easy to browse. People like my photos, so I feel happy. That's why I often check my notifications.<br><br><b>Nam:</b> I have a Facebook page. I don't often update it, but I often use Messenger to discuss schoolwork with my classmates.",
+    vi:"<b>Ann:</b> Mình nghĩ YouTube là trang mạng xã hội phổ biến nhất. Mình đăng nhập vào đó hằng ngày. Mình tải video lên và xem video của người khác.<br><br><b>Tom:</b> Mình dùng Facebook để kết nối với bạn bè, đăng ảnh, và chia sẻ bài viết của người khác. Mình dùng nó hằng ngày. Nó rất dễ sử dụng.<br><br><b>Trang:</b> Mình rất thích Instagram. Nó thực sự thú vị và dễ lướt xem. Mọi người thích ảnh của mình, nên mình cảm thấy vui. Đó là lý do mình thường kiểm tra thông báo.<br><br><b>Nam:</b> Mình có một trang Facebook. Mình không thường cập nhật nó, nhưng mình thường dùng Messenger để thảo luận bài vở với các bạn cùng lớp."
+  },
+  kate_vy: {
+    id:"kate_vy", title:"SBT · Ms Kate and Vy",
+    html:"<b>Ms Kate:</b> Vy, why aren't you playing shuttlecock with your classmates?<br><b>Vy:</b> I don't think they want me to join them, Ms Kate.<br><b>Ms Kate:</b> Have you ever asked them if you could join?<br><b>Vy:</b> No... They often laugh at me in maths lessons because I'm not good at maths.<br><b>Ms Kate:</b> I see. What subjects do you like, then?<br><b>Vy:</b> I really like English and history. I love reading about historical events, and I can remember the details very well.<br><b>Ms Kate:</b> That's wonderful! Those subjects need special talent. What do you want to be in the future?<br><b>Vy:</b> I want to become a historian. But when I told my classmates, they laughed at me.<br><b>Ms Kate:</b> Don't worry about what they say. You should stay calm and prove your abilities to them. Why don't you start a class forum topic about respecting each other's strengths?<br><b>Vy:</b> That's a good idea. Thank you, Ms Kate.",
+    vi:"<b>Cô Kate:</b> Vy à, sao em không chơi cầu lông với các bạn?<br><b>Vy:</b> Em không nghĩ các bạn muốn em chơi cùng đâu ạ, cô Kate.<br><b>Cô Kate:</b> Em đã bao giờ hỏi xem em có thể tham gia cùng chưa?<br><b>Vy:</b> Dạ chưa... Các bạn hay cười em trong giờ Toán vì em học Toán không giỏi.<br><b>Cô Kate:</b> Cô hiểu rồi. Vậy em thích môn nào?<br><b>Vy:</b> Em rất thích tiếng Anh và Lịch sử. Em thích đọc về các sự kiện lịch sử, và em nhớ chi tiết rất tốt.<br><b>Cô Kate:</b> Tuyệt quá! Những môn đó cần năng khiếu đặc biệt đấy. Em muốn trở thành gì trong tương lai?<br><b>Vy:</b> Em muốn trở thành nhà sử học. Nhưng khi em nói với các bạn, các bạn đã cười em.<br><b>Cô Kate:</b> Đừng bận tâm những gì các bạn nói. Em nên giữ bình tĩnh và chứng minh khả năng của mình cho các bạn thấy. Sao em không mở một chủ đề trên diễn đàn lớp về việc tôn trọng thế mạnh của nhau nhỉ?<br><b>Vy:</b> Đó là một ý hay ạ. Cảm ơn cô Kate."
+  },
+  nam_social: {
+    id:"nam_social", title:"SBT · Nam and social media",
+    html:"Nam is a Grade 8 student who loves using his smartphone. Every day after school, he spends hours on different (1) ___ apps such as Facebook and Instagram. He has joined several online (2) ___ where teenagers chat about their favourite games and share photos. Nam is always (3) ___ his phone every few minutes to see if he has new messages. Because of this habit, he has almost stopped (4) ___ face-to-face with his family and friends. Last month, a stranger said unkind things about his photos online, and Nam felt very upset because he was (5) ___ by that stranger. His parents are now worried and want him to spend less time online.",
+    vi:"Nam là một học sinh lớp 8 rất thích dùng điện thoại thông minh. Mỗi ngày sau giờ học, cậu dành hàng giờ trên các ứng dụng (1) mạng xã hội khác nhau như Facebook và Instagram. Cậu đã tham gia một số (2) diễn đàn trực tuyến, nơi các bạn tuổi teen trò chuyện về trò chơi yêu thích và chia sẻ ảnh. Nam luôn (3) kiểm tra điện thoại của mình sau vài phút để xem có tin nhắn mới không. Vì thói quen này, cậu gần như đã ngừng (4) giao tiếp trực tiếp với gia đình và bạn bè. Tháng trước, một người lạ đã nói những lời không hay về ảnh của cậu trên mạng, khiến Nam rất buồn vì cậu đã bị (5) bắt nạt bởi người lạ đó. Bố mẹ cậu hiện rất lo lắng và muốn cậu dành ít thời gian hơn cho mạng xã hội."
+  },
+  school_clubs: {
+    id:"school_clubs", title:"SBT · The benefits of school club activities",
+    html:"Studies have proven that school club activities are important to both the physical and mental development of children. In sports clubs, kids play sports regularly, and under the guidance of their (1) ___, they improve their physical health. They also learn how to work well in a new (2) ___ and make new friends. In other clubs, such as the arts and crafts club, members often work in a (3) ___ to (4) ___ various projects together. Through these activities, teenagers can develop new (5) ___ and gain valuable life experience. In addition, older members can act as (6) ___ for younger participants, guiding and inspiring them to become better students.",
+    vi:"Các nghiên cứu đã chứng minh rằng hoạt động câu lạc bộ ở trường rất quan trọng đối với sự phát triển cả về thể chất lẫn tinh thần của trẻ em. Trong các câu lạc bộ thể thao, các em chơi thể thao thường xuyên, và dưới sự hướng dẫn của (1) huấn luyện viên, các em cải thiện sức khỏe thể chất. Các em cũng học cách hòa nhập tốt trong một (2) môi trường mới và kết bạn mới. Ở các câu lạc bộ khác, như câu lạc bộ mỹ thuật - thủ công, các thành viên thường làm việc theo (3) nhóm để (4) hoàn thành nhiều dự án cùng nhau. Thông qua các hoạt động này, thanh thiếu niên có thể phát triển (5) kỹ năng mới và tích lũy kinh nghiệm sống quý giá. Ngoài ra, các thành viên lớn tuổi hơn có thể trở thành (6) hình mẫu cho các thành viên nhỏ tuổi hơn, hướng dẫn và truyền cảm hứng cho các em trở thành học sinh tốt hơn."
+  }
+};
+
+/* ---------------- 1) VOCABULARY items (20, mcq) ---------------- */
+const VOCAB_ITEMS = [
+  {q:"\"upload\" nghĩa là gì?", options:["tải lên","tải xuống","xóa bỏ","chia sẻ"], answer:0, explanation:"upload = tải (ảnh/video) lên mạng.", speakable:false},
+  {q:"\"browse\" nghĩa là gì?", options:["đăng nhập","lướt, duyệt (web)","kiểm tra","kết nối"], answer:1, explanation:"browse = lướt, duyệt (một trang web).", speakable:false},
+  {q:"\"forum\" nghĩa là gì?", options:["diễn đàn","câu lạc bộ","áp lực","kỳ vọng"], answer:0, explanation:"forum = diễn đàn.", speakable:false},
+  {q:"\"pressure\" nghĩa là gì?", options:["sự tự tin","áp lực","kỳ vọng","sự thư giãn"], answer:1, explanation:"pressure = áp lực, căng thẳng.", speakable:false},
+  {q:"\"expectations\" nghĩa là gì?", options:["kỳ vọng","kẻ bắt nạt","huấn luyện viên","yêu cầu"], answer:0, explanation:"expectations = kỳ vọng.", speakable:false},
+  {q:"\"bully\" (danh từ) nghĩa là gì?", options:["huấn luyện viên","kẻ bắt nạt","người nhạy cảm","người hoạt ngôn"], answer:1, explanation:"bully = kẻ bắt nạt.", speakable:false},
+  {q:"\"concentrate\" nghĩa là gì?", options:["tập trung","thư giãn","kết nối","yêu cầu"], answer:0, explanation:"concentrate = tập trung.", speakable:false},
+  {q:"\"coach\" nghĩa là gì?", options:["thành viên","huấn luyện viên / huấn luyện","kẻ bắt nạt","diễn đàn"], answer:1, explanation:"coach = huấn luyện viên / huấn luyện.", speakable:false},
+  {q:"\"Kỳ vọng\" trong tiếng Anh là gì?", options:["pressure","request","expectations","stress"], answer:2, explanation:"expectations = kỳ vọng.", speakable:true},
+  {q:"\"Áp lực\" trong tiếng Anh là gì?", options:["pressure","confident","request","coach"], answer:0, explanation:"pressure = áp lực.", speakable:true},
+  {q:"\"Tập trung\" trong tiếng Anh là gì?", options:["connect","concentrate","request","browse"], answer:1, explanation:"concentrate = tập trung.", speakable:true},
+  {q:"\"Dễ sử dụng\" trong tiếng Anh là gì?", options:["talkative","tolerant","user-friendly","sensitive"], answer:2, explanation:"user-friendly = dễ sử dụng, thân thiện với người dùng.", speakable:true},
+  {q:"\"Căng thẳng\" trong tiếng Anh là gì?", options:["stress","relaxing","confident","active"], answer:0, explanation:"stress = căng thẳng.", speakable:true},
+  {q:"Từ/cụm từ nào có nghĩa là \"áp lực từ bạn bè cùng trang lứa\"?", options:["schoolwork","peer pressure","midterm test","expectations"], answer:1, explanation:"peer pressure = áp lực từ bạn bè cùng trang lứa.", speakable:true},
+  {q:"Từ nào chỉ \"người hay bắt nạt, dọa nạt người yếu hơn\"?", options:["coach","bully","tolerant","sensitive"], answer:1, explanation:"bully = kẻ bắt nạt.", speakable:true},
+  {q:"Chọn từ đúng để hoàn thành cụm từ: check ___", options:["notifications","a website","an account","friends"], answer:0, explanation:"check notifications = kiểm tra thông báo.", speakable:true},
+  {q:"Chọn từ đúng để hoàn thành cụm từ: log on ___", options:["a website","to an account","notifications","with friends"], answer:1, explanation:"log on to an account = đăng nhập vào tài khoản.", speakable:true},
+  {q:"Chọn từ đúng để hoàn thành cụm từ: connect ___", options:["with friends","a post","notifications","an account"], answer:0, explanation:"connect with friends = kết nối với bạn bè.", speakable:true},
+  {q:"It's hard to ___ on your homework when the TV is on.", options:["concentrate","browse","request","coach"], answer:0, explanation:"concentrate on = tập trung vào.", speakable:true},
+  {q:"Be careful, she's very ___ about her weight, so don't comment on it.", options:["talkative","active","sensitive","tolerant"], answer:2, explanation:"sensitive = nhạy cảm.", speakable:true}
+];
+
+/* ---------------- 2) GRAMMAR items (20, mcq/tf) ---------------- */
+// Grammar point: Simple vs Compound sentences (A Closer Look 2 / Looking Back).
+// Coordinating conjunctions: for, and, nor, but, or, yet, so (comma BEFORE them).
+// Conjunctive adverbs: however, therefore, otherwise (semicolon BEFORE, comma AFTER).
+const GRAMMAR_ITEMS = [
+  {type:"tf", q:"A simple sentence contains only ONE independent clause.", answer:true, explanation:"Câu đơn chỉ có 1 mệnh đề độc lập."},
+  {type:"tf", q:"A compound sentence needs at least TWO independent clauses.", answer:true, explanation:"Câu ghép cần ít nhất 2 mệnh đề độc lập."},
+  {type:"tf", q:"\"However\", \"therefore\" and \"otherwise\" are coordinating conjunctions.", answer:false, explanation:"Đây là các trạng từ liên kết (conjunctive adverbs), không phải liên từ kết hợp."},
+  {type:"tf", q:"We usually put a comma directly before a coordinating conjunction (and, but, so...) that joins two independent clauses.", answer:true, explanation:"Ví dụ: Mai bought many books, but she likes chess more."},
+  {type:"tf", q:"A conjunctive adverb such as \"therefore\" is usually preceded by a semicolon (;) and followed by a comma (,).", answer:true, explanation:"Ví dụ: Mark is hard-working; therefore, he usually gets high scores."},
+  {type:"tf", q:"\"Teens need good friends and tolerant teachers at school.\" is a compound sentence.", answer:false, explanation:"\"and\" ở đây nối 2 danh từ (friends/teachers), không nối 2 mệnh đề → vẫn là câu đơn."},
+  {type:"tf", q:"\"She plays chess very well, and she won the first prize last year.\" is a compound sentence.", answer:true, explanation:"Có 2 mệnh đề độc lập nối bằng \"and\" → câu ghép."},
+  {type:"tf", q:"\"Otherwise\" is used to warn about what will happen if something is NOT done.", answer:true, explanation:"otherwise = nếu không (thì)."},
+  {type:"tf", q:"\"For\" can be used as a coordinating conjunction meaning \"because\".", answer:true, explanation:"Ví dụ: We don't cheat on exams, for it is a wrong thing to do."},
+  {type:"tf", q:"\"My friends and I joined a sports competition last year.\" is a compound sentence.", answer:false, explanation:"\"and\" nối 2 chủ ngữ (My friends / I), chỉ có 1 mệnh đề → câu đơn."},
+  {type:"mcq", q:"Which sentence below is a SIMPLE sentence?", options:["She plays chess very well, and she won a prize.","Sports activities at school help me relax.","He is a club member, but he never participates.","Teens should learn teamwork, and they should have communication skills."], answer:1, explanation:"Chỉ có 1 mệnh đề (1 chủ ngữ, 1 động từ chính) → câu đơn."},
+  {type:"mcq", q:"Which sentence below is a COMPOUND sentence?", options:["We work together on different projects.","Teens need good friends and tolerant teachers.","She is a smart student, and she is an active club member.","Sports activities at school help me relax."], answer:2, explanation:"Có 2 mệnh đề độc lập nối bằng \"and\" → câu ghép."},
+  {type:"mcq", q:"Parents should give teens some freedom, ___ they should also set limits.", options:["for","so","but","and"], answer:2, explanation:"\"but\" thể hiện sự tương phản."},
+  {type:"mcq", q:"Lan wanted to join the music club; ___ she can't sing or play any instruments.", options:["however","otherwise","therefore","so"], answer:0, explanation:"\"however\" thể hiện sự tương phản."},
+  {type:"mcq", q:"He isn't a member of the chess club; ___ he didn't join the chess competition.", options:["however","otherwise","therefore","but"], answer:2, explanation:"\"therefore\" thể hiện kết quả."},
+  {type:"mcq", q:"We will have a short holiday; ___ we will feel very stressed.", options:["otherwise","however","therefore","so"], answer:0, explanation:"\"otherwise\" = nếu không thì."},
+  {type:"mcq", q:"Choose the sentence with CORRECT punctuation.", options:["She is very sensitive, therefore don't comment on her hairstyle.","She is very sensitive; therefore, don't comment on her hairstyle.","She is very sensitive therefore, don't comment.","She is very sensitive; but don't comment."], answer:1, explanation:"Trạng từ liên kết \"therefore\" cần dấu chấm phẩy (;) trước và dấu phẩy (,) sau."},
+  {type:"mcq", q:"Which word below is NOT a coordinating conjunction?", options:["and","but","otherwise","so"], answer:2, explanation:"\"otherwise\" là trạng từ liên kết, không phải liên từ kết hợp (for, and, nor, but, or, yet, so)."},
+  {type:"mcq", q:"Which sentence is grammatically INCORRECT (a run-on sentence missing a conjunction)?", options:["She likes badminton, and she plays it every week.","She likes badminton she plays it every week.","She likes badminton, but she doesn't like chess.","She likes badminton; however, she doesn't like chess."], answer:1, explanation:"Thiếu liên từ/dấu câu nối 2 mệnh đề độc lập → lỗi câu chạy (run-on sentence)."},
+  {type:"mcq", q:"We don't cheat on exams, ___ it is a wrong thing to do.", options:["or","for","and","so"], answer:1, explanation:"\"for\" ở đây mang nghĩa \"bởi vì\" (lý do)."}
+];
+
+/* ---------------- 3) SGK READING items (16, mcq/tf) ---------------- */
+const READING_SGK_ITEMS = [
+  {type:"tf", passageId:"club_convo", q:"Tom is interested in two clubs: badminton and chess.", answer:true, explanation:"\"I'm interested in two clubs: badminton and chess.\""},
+  {type:"tf", passageId:"club_convo", q:"The badminton club starts right when school ends, with no break at all.", answer:false, explanation:"Câu lạc bộ bắt đầu 30 phút SAU khi tan học, không phải ngay lập tức."},
+  {type:"tf", passageId:"club_convo", q:"Tom started playing chess when he was five years old.", answer:false, explanation:"Tom nói \"five years ago\" (cách đây 5 năm), KHÔNG phải \"khi 5 tuổi\"."},
+  {type:"tf", passageId:"club_convo", q:"Members of the arts and crafts club take part in small community service projects.", answer:true, explanation:"\"...the members will work together in small community service projects.\""},
+  {type:"mcq", passageId:"club_convo", q:"Tom and Mai are mainly discussing ___.", options:["their leisure time activities","their school club activities","their likes and dislikes","their exam results"], answer:1, explanation:"Cả hội thoại nói về việc chọn câu lạc bộ trường học."},
+  {type:"mcq", passageId:"club_convo", q:"Tom started playing chess because ___.", options:["he loved it from the start","he wanted to stay focused","his mum wanted him to be more focused","his friends invited him"], answer:2, explanation:"\"My mum first sent me to a chess club because she wanted me to be more focused.\""},
+  {type:"mcq", passageId:"club_convo", q:"Playing chess helps Tom ___.", options:["connect with other members","concentrate better","do community service","become a coach"], answer:1, explanation:"\"Now I find that I can concentrate better.\""},
+  {type:"mcq", passageId:"club_convo", q:"In Tom's question \"Who will coach that club?\", \"that club\" refers to ___.", options:["the chess club","the arts and crafts club","the badminton club","the language club"], answer:1, explanation:"Ngay trước đó Mai vừa nói về câu lạc bộ mỹ thuật - thủ công mới."},
+  {type:"mcq", passageId:"club_convo", q:"Mai wants to join the arts and crafts club to ___.", options:["help the school","coach her friends","do art projects","avoid Tom"], answer:2, explanation:"\"Members can do art projects and also improve their practical skills too.\""},
+  {type:"mcq", passageId:"social_posts", q:"Who checks notifications regularly, according to the posts?", options:["Ann","Tom","Trang","Nam"], answer:2, explanation:"\"That's why I often check my notifications.\" — lời của Trang."},
+  {type:"mcq", passageId:"social_posts", q:"Who watches and uploads videos on YouTube?", options:["Ann","Tom","Trang","Nam"], answer:0, explanation:"\"I think YouTube is the most popular social media site... I upload videos...\" — lời của Ann."},
+  {type:"mcq", passageId:"social_posts", q:"Who uses Messenger to discuss schoolwork with classmates?", options:["Ann","Tom","Trang","Nam"], answer:3, explanation:"\"I often use Messenger to discuss schoolwork with my classmates.\" — lời của Nam."},
+  {type:"mcq", passageId:"social_posts", q:"Who thinks Facebook is user-friendly?", options:["Ann","Tom","Trang","Nam"], answer:1, explanation:"\"It's user-friendly.\" — lời của Tom."},
+  {type:"tf", passageId:"social_posts", q:"Trang finds Instagram fun and easy to browse.", answer:true, explanation:"\"I love Instagram. It's really fun, and easy to browse.\""},
+  {type:"tf", passageId:"social_posts", q:"Nam updates his Facebook page very often.", answer:false, explanation:"\"I don't often update it.\" → SAI."},
+  {type:"mcq", passageId:"social_posts", q:"What does Tom mainly use Facebook for?", options:["To watch videos only","To connect with friends and share posts","To do his homework","To sell photos"], answer:1, explanation:"\"I use Facebook to connect with friends, post pictures, and share others' posts.\""}
+];
+
+/* ---------------- 4) SBT READING items (16, mcq/tf) ---------------- */
+const READING_SBT_ITEMS = [
+  {type:"tf", passageId:"kate_vy", q:"Vy doesn't want to join her classmates.", answer:false, explanation:"Vy vẫn muốn tham gia, chỉ nghĩ rằng các bạn không muốn cô ấy tham gia."},
+  {type:"tf", passageId:"kate_vy", q:"Vy has problems with maths.", answer:true, explanation:"Các bạn hay cười Vy trong giờ Toán vì cô ấy học không giỏi môn này."},
+  {type:"tf", passageId:"kate_vy", q:"English and history are Vy's favourite subjects.", answer:true, explanation:"\"I really like English and history.\""},
+  {type:"tf", passageId:"kate_vy", q:"Vy's dream is to become a historian.", answer:true, explanation:"\"I want to become a historian.\""},
+  {type:"tf", passageId:"kate_vy", q:"Vy's classmates don't think highly of her.", answer:true, explanation:"Các bạn cười nhạo Vy cả về môn Toán lẫn ước mơ của cô ấy."},
+  {type:"tf", passageId:"kate_vy", q:"Vy is a confident student.", answer:false, explanation:"Vy khá tự ti, cần cô Kate động viên phải giữ bình tĩnh."},
+  {type:"tf", passageId:"kate_vy", q:"Ms Kate advised Vy to stay calm and prove her abilities.", answer:true, explanation:"\"You should stay calm and prove your abilities to them.\""},
+  {type:"tf", passageId:"kate_vy", q:"Ms Kate said she would deal with Vy's problem herself, directly in the classroom.", answer:false, explanation:"Cô Kate gợi ý Vy tự mở chủ đề trên diễn đàn lớp, không phải tự cô ấy giải quyết trực tiếp."},
+  {type:"mcq", passageId:"nam_social", q:"Blank (1): ...he spends hours on different (1) ___ apps such as Facebook and Instagram.", options:["forum","social media","website","notifications"], answer:1, explanation:"social media = mạng xã hội."},
+  {type:"mcq", passageId:"nam_social", q:"Blank (2): He has joined several online (2) ___ where teenagers chat about their favourite games...", options:["notifications","posts","forums","videos"], answer:2, explanation:"forums = diễn đàn."},
+  {type:"mcq", passageId:"nam_social", q:"Blank (3): Nam is always (3) ___ his phone every few minutes to see if he has new messages.", options:["checking","posting","uploading","browsing"], answer:0, explanation:"checking = kiểm tra."},
+  {type:"mcq", passageId:"nam_social", q:"Blank (4): ...he has almost stopped (4) ___ face-to-face with his family and friends.", options:["browsing","logging on","communicating","coaching"], answer:2, explanation:"communicating = giao tiếp."},
+  {type:"mcq", passageId:"nam_social", q:"Blank (5): ...Nam felt very upset because he was (5) ___ by that stranger.", options:["bullied","connected","helped","joined"], answer:0, explanation:"bullied = bị bắt nạt."},
+  {type:"mcq", passageId:"school_clubs", q:"Blank (1): ...under the guidance of their (1) ___, they improve their physical health.", options:["coaches","teachers","monitors","peers"], answer:0, explanation:"coaches = huấn luyện viên."},
+  {type:"mcq", passageId:"school_clubs", q:"Blank (2): They also learn how to work well in a new (2) ___ and make new friends.", options:["surrounding","atmosphere","neighbourhood","environment"], answer:3, explanation:"environment = môi trường."},
+  {type:"mcq", passageId:"school_clubs", q:"Blank (5): ...teenagers can develop new (5) ___ and gain valuable life experience.", options:["knowledge","skills","tasks","jobs"], answer:1, explanation:"skills = kỹ năng."}
+];
+
+/* ---------------- 5) MIXED CHALLENGE items (12, mcq/tf, sampled/rephrased) ---------------- */
+const MIXED_ITEMS = [
+  {type:"mcq", q:"\"peer pressure\" gần nghĩa nhất với ___.", options:["áp lực từ bạn bè cùng trang lứa","áp lực bài vở","kỳ vọng của giáo viên","sự tự tin"], answer:0, explanation:"peer pressure = áp lực từ bạn bè cùng trang lứa."},
+  {type:"tf", q:"\"So\" is a coordinating conjunction that can join two independent clauses.", answer:true, explanation:"so nằm trong nhóm liên từ kết hợp: for, and, nor, but, or, yet, so."},
+  {type:"mcq", passageId:"club_convo", q:"In the conversation between Mai and Tom, why did Tom originally start playing chess?", options:["To win competitions","Because his mother wanted him to focus more","Because Mai suggested it","To make new friends"], answer:1, explanation:"\"My mum first sent me to a chess club because she wanted me to be more focused.\""},
+  {type:"mcq", q:"Choose the best word: \"Our class has a ___ where we post questions to discuss.\"", options:["forum","coach","bully","request"], answer:0, explanation:"forum = diễn đàn."},
+  {type:"tf", q:"A comma (,) should be placed directly before \"therefore\" when using it to join two clauses.", answer:false, explanation:"Sai. Cần dấu chấm phẩy (;) trước \"therefore\" và dấu phẩy (,) sau nó, không phải dấu phẩy trước."},
+  {type:"mcq", passageId:"kate_vy", q:"According to Ms Kate's advice, what should Vy do about being mocked by classmates?", options:["Ignore school completely","Stay calm and prove her abilities","Fight back at her classmates","Change schools"], answer:1, explanation:"\"You should stay calm and prove your abilities to them.\""},
+  {type:"mcq", q:"In this unit, \"coach\" (verb) most likely means ___.", options:["to train or guide a club/team","to punish someone","to feel nervous","to browse a website"], answer:0, explanation:"coach (verb) = huấn luyện, hướng dẫn."},
+  {type:"tf", passageId:"nam_social", q:"According to the passage about Nam, he has become closer to his family because of social media.", answer:false, explanation:"Ngược lại, Nam \"has almost stopped communicating face-to-face with his family and friends\"."},
+  {type:"mcq", q:"Which connector below expresses CONTRAST between two ideas?", options:["but","so","therefore","because"], answer:0, explanation:"\"but\" thể hiện sự tương phản (however cũng vậy)."},
+  {type:"mcq", passageId:"social_posts", q:"Why does Trang often check her notifications?", options:["Because her teacher asks her to","Because people like her photos and it makes her happy","Because she wants to sell photos","Because she is bored"], answer:1, explanation:"\"People like my photos, so I feel happy. That's why I often check my notifications.\""},
+  {type:"mcq", q:"\"confident\" is closest in meaning to ___.", options:["self-assured","stressed","sensitive","tolerant"], answer:0, explanation:"confident = tự tin ≈ self-assured."},
+  {type:"tf", passageId:"school_clubs", q:"According to the passage about school clubs, older members can act as role models for younger participants.", answer:true, explanation:"\"...older members can act as (role) models for younger participants...\""}
+];
+
+/* ============================================================
+   ENGINE
+   ============================================================ */
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function uid(prefix){ return prefix+'_'+Math.random().toString(36).slice(2,9); }
+
+/* ---------------- Speech (Web Speech API) ---------------- */
+let cachedVoices=[]; let voicesReady=false;
+if('speechSynthesis' in window){
+  const refresh=()=>{ cachedVoices=window.speechSynthesis.getVoices()||[]; if(cachedVoices.length) voicesReady=true; };
+  window.speechSynthesis.onvoiceschanged=refresh; refresh();
+  let tries=0; const t=setInterval(()=>{ refresh(); tries++; if(voicesReady||tries>10) clearInterval(t); },300);
+}
+function pickEnVoice(){
+  const voices = cachedVoices.length?cachedVoices:(window.speechSynthesis.getVoices()||[]);
+  return voices.find(v=>/en[-_]?(us|gb)/i.test(v.lang)) || voices.find(v=>/^en/i.test(v.lang)) || null;
+}
+function speak(text, btn){
+  try{
+    if(!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    setTimeout(()=>{
+      const u=new SpeechSynthesisUtterance(text);
+      u.lang='en-US'; u.rate=0.92; u.pitch=1; u.volume=1;
+      const en=pickEnVoice(); if(en) u.voice=en;
+      if(btn){ btn.classList.add('speaking'); const stop=()=>btn.classList.remove('speaking'); u.onend=stop; u.onerror=stop; }
+      window.speechSynthesis.speak(u);
+    },50);
+  }catch(e){}
+}
+
+/* ---------------- Build ITEM_BANK ---------------- */
+const ITEM_BANK = {};
+const CATEGORY_IDS = { vocab:[], grammar:[], reading_sgk:[], reading_sbt:[], mixed:[] };
+function registerItem(cat, raw, idx){
+  const id = uid(cat+'_'+idx);
+  const item = Object.assign({ id, category:cat, type: raw.type || 'mcq' }, raw);
+  ITEM_BANK[id] = item;
+  CATEGORY_IDS[cat].push(id);
+  return item;
+}
+VOCAB_ITEMS.forEach((it,i)=>registerItem('vocab', Object.assign({type:'mcq'}, it), i));
+GRAMMAR_ITEMS.forEach((it,i)=>registerItem('grammar', it, i));
+READING_SGK_ITEMS.forEach((it,i)=>registerItem('reading_sgk', it, i));
+READING_SBT_ITEMS.forEach((it,i)=>registerItem('reading_sbt', it, i));
+MIXED_ITEMS.forEach((it,i)=>registerItem('mixed', it, i));
+
+const TOTAL_ITEMS = Object.keys(ITEM_BANK).length;
+
+/* ---------------- Stage definitions ---------------- */
+const STAGE_DEFS = [
+  {key:'vocab', title:'Từ vựng Unit 3', icon:'📚', category:'vocab', groupLabel:'📘 Sách giáo khoa (SGK)'},
+  {key:'grammar', title:'Ngữ pháp: Câu đơn & Câu ghép', icon:'🔗', category:'grammar', groupLabel:'📘 Sách giáo khoa (SGK)'},
+  {key:'reading_sgk', title:'Đọc hiểu SGK', icon:'📖', category:'reading_sgk', groupLabel:'📘 Sách giáo khoa (SGK)'},
+  {key:'reading_sbt', title:'Đọc hiểu SBT', icon:'📕', category:'reading_sbt', groupLabel:'📕 Sách bài tập (SBT)'},
+  {key:'mixed', title:'Thử thách Tổng hợp', icon:'🏆', category:'mixed', groupLabel:'🔀 Ôn tập tổng hợp'},
+  {key:'mistakes', title:'Sửa lỗi của tôi', icon:'🔥', category:null, kind:'mistakes', groupLabel:'🔀 Ôn tập tổng hợp'}
+];
+
+/* ---------------- Storage ---------------- */
+const STORAGE_KEY = 'u3_review_game_v1';
+function defaultProgress(){
+  const stages={}; STAGE_DEFS.forEach(s=>stages[s.key]={status:'not_started', bestAccuracy:0, attempts:0, stars:0});
+  return { xp:0, bestStreak:0, badges:[], stages, mistakes:{}, createdAt:Date.now() };
+}
+function loadProgress(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if(!raw) return defaultProgress();
+    const parsed=JSON.parse(raw);
+    const def=defaultProgress();
+    return Object.assign(def, parsed, { stages:Object.assign(def.stages, parsed.stages||{}) });
+  }catch(e){ return defaultProgress(); }
+}
+function saveProgress(){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state.progress)); }catch(e){} }
+function resetProgress(){ state.progress=defaultProgress(); saveProgress(); state.screen='home'; render(); }
+
+/* ---------------- Global state ---------------- */
+const state = { screen:'home', progress: loadProgress(), session:null, selection:null, answered:false };
+
+/* ---------------- Badges ---------------- */
+const BADGE_DEFS = {
+  vocab: {icon:'📚', label:'Bậc thầy từ vựng'},
+  grammar: {icon:'🔗', label:'Cao thủ câu ghép'},
+  reading_sgk: {icon:'📖', label:'Mọt sách SGK'},
+  reading_sbt: {icon:'📕', label:'Mọt sách SBT'},
+  mixed: {icon:'🏆', label:'Nhà vô địch Unit 3'},
+  mistake_fixer: {icon:'🔥', label:'Người sửa lỗi'},
+  unit_master: {icon:'⭐', label:'Bậc thầy Unit 3'}
+};
+function awardBadge(key){
+  if(!state.progress.badges.includes(key)){ state.progress.badges.push(key); return true; }
+  return false;
+}
+
+/* ---------------- Session builders ---------------- */
+function itemsForCategory(cat){ return CATEGORY_IDS[cat].map(id=>ITEM_BANK[id]); }
+function buildMistakeSession(){
+  const ids = Object.keys(state.progress.mistakes).filter(id=> ITEM_BANK[id] && state.progress.mistakes[id].box < 3);
+  return shuffle(ids.map(id=>ITEM_BANK[id]));
+}
+function withIntroCards(items){
+  const seen=new Set(); const intros=[];
+  items.forEach(it=>{
+    if(it.passageId && !seen.has(it.passageId)){
+      seen.add(it.passageId);
+      const p = PASSAGES[it.passageId];
+      if(p) intros.push({ id:'intro_'+it.passageId, type:'intro', passage:p });
+    }
+  });
+  return intros.concat(items);
+}
+
+function startStage(key){
+  const def = STAGE_DEFS.find(s=>s.key===key);
+  let items=[];
+  if(def.kind==='mistakes'){
+    items = buildMistakeSession();
+    if(items.length===0){
+      alert('🎉 Tuyệt vời! Bạn hiện không có câu nào cần sửa lỗi. Hãy tiếp tục luyện tập các chặng khác nhé!');
+      return;
+    }
+  } else {
+    const pool = shuffle(itemsForCategory(def.category));
+    items = (def.category==='reading_sgk' || def.category==='reading_sbt') ? withIntroCards(pool) : pool;
+  }
+  state.session = { stageKey:key, items, idx:0, correct:0, wrong:0, streak:0, xpEarned:0,
+    catStats:{}, isMistakeMode: def.kind==='mistakes', mistakesFixed:0 };
+  state.answered=false; state.selection=null;
+  state.screen='player';
+  render();
+}
+
+/* ============================================================
+   RENDERING
+   ============================================================ */
+function render(){
+  const app=document.getElementById('app');
+  if(state.screen==='home') app.innerHTML = renderHome();
+  else if(state.screen==='player') app.innerHTML = renderPlayer();
+  else if(state.screen==='summary') app.innerHTML = renderSummary();
+  else if(state.screen==='mastery') app.innerHTML = renderMastery();
+  postRender();
+}
+function postRender(){ window.scrollTo({top:0}); }
+
+/* ---------------- HOME ---------------- */
+function stageDot(status){
+  if(status==='mastered') return '⭐';
+  if(status==='in_progress') return '🕓';
+  if(status==='needs_practice') return '❗';
+  return '';
+}
+function renderHome(){
+  const p=state.progress;
+  let lastGroup=null;
+  const rowsHtml = STAGE_DEFS.map((s,i)=>{
+    const st = p.stages[s.key];
+    const dot = stageDot(st.status);
+    const align = i%2===0 ? '' : 'right';
+    let groupHeader='';
+    if(s.groupLabel!==lastGroup){
+      groupHeader = `<div class="group-wrap">${lastGroup?'<div style="height:.6rem"></div>':''}<span class="group-label">${s.groupLabel}</span></div>`;
+      lastGroup = s.groupLabel;
+    }
+    return `${groupHeader}<div class="stage-row ${align}">
+      <button onclick="startStage('${s.key}')" class="stage-node status-${st.status}">
+        <span>${s.icon}</span>
+        ${dot?`<span class="status-dot">${dot}</span>`:''}
+      </button>
+      <div style="flex:1">
+        <p style="margin:0;font-weight:900;font-size:.92rem;color:#334155">${s.title}</p>
+        <p style="margin:0;font-size:.75rem;color:#94a3b8">${st.attempts>0 ? `Độ chính xác tốt nhất: ${st.bestAccuracy}%` : 'Chưa bắt đầu'}</p>
+      </div>
+    </div>`;
+  }).join('');
+
+  const badgeChips = p.badges.map(k=>{
+    const b=BADGE_DEFS[k]; if(!b) return '';
+    return `<div class="badge-chip"><div style="font-size:1.4rem">${b.icon}</div><div style="font-size:9px;font-weight:800;color:#92400e;margin-top:.2rem">${b.label}</div></div>`;
+  }).join('');
+
+  const coreStages = ['vocab','grammar','reading_sgk','reading_sbt','mixed'];
+  const masteredCount = coreStages.filter(k=>p.stages[k].status==='mastered').length;
+  const overallPct = Math.round((masteredCount/coreStages.length)*100);
+
+  return `
+  <div class="topbar">
+    <div>
+      <h1 class="font-baloo" style="margin:0;font-size:1.15rem;font-weight:800;color:#4c1d95">🎮 Unit 3 Review Game</h1>
+      <p style="margin:0;font-size:11px;color:#94a3b8">Teenagers · Ôn tập Từ vựng - Ngữ pháp - Đọc hiểu</p>
+    </div>
+    <div style="display:flex;align-items:center;gap:.5rem">
+      <span class="xp-pill"><i class="fa-solid fa-bolt" style="margin-right:.25rem"></i>${p.xp} XP</span>
+      <span class="streak-pill"><i class="fa-solid fa-fire" style="margin-right:.25rem"></i>${p.bestStreak}</span>
+    </div>
+  </div>
+  <div class="hero-gradient" style="color:#fff;text-align:center;padding:1.4rem 1rem;position:relative;overflow:hidden">
+    <div style="position:absolute;inset:0;opacity:.12;pointer-events:none;font-size:2.4rem">
+      <span style="position:absolute;top:6px;left:14px">📱</span>
+      <span style="position:absolute;top:4px;right:18px">🎮</span>
+      <span style="position:absolute;bottom:6px;left:30%">♟️</span>
+      <span style="position:absolute;bottom:4px;right:22%">🎨</span>
+    </div>
+    <p class="font-baloo" style="margin:0;font-size:1.5rem;font-weight:800">📱 Unit 3: Teenagers 🎨</p>
+    <p style="margin:.3rem 0 0;font-size:.85rem;opacity:.9">Chinh phục các chặng để ôn tập toàn diện Unit 3!</p>
+  </div>
+  <div style="max-width:480px;margin:0 auto;padding:.9rem 1rem 0">
+    <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:800;color:#7c3aed;margin-bottom:.25rem">
+      <span>Tiến độ chinh phục</span><span>${masteredCount}/${coreStages.length} chặng</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" style="width:${overallPct}%"></div></div>
+  </div>
+  <div class="path-wrap">
+    ${rowsHtml}
+  </div>
+  ${p.badges.length?`<div style="max-width:420px;margin:0 auto;padding:0 1rem 1rem"><p style="font-size:11px;font-weight:900;color:#94a3b8;text-transform:uppercase;margin-bottom:.5rem">Huy hiệu đã đạt</p><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem">${badgeChips}</div></div>`:''}
+  <div style="max-width:420px;margin:0 auto;padding:0 1rem 2rem;text-align:center">
+    <button onclick="confirmReset()" style="font-size:11px;color:#94a3b8;text-decoration:underline;background:none;border:none">🔄 Đặt lại tiến trình học tập</button>
+  </div>`;
+}
+
+function confirmReset(){
+  if(confirm('Bạn có chắc muốn xoá toàn bộ tiến trình (XP, sao, lỗi sai đã lưu)? Hành động này không thể hoàn tác.')){
+    resetProgress();
+  }
+}
+
+/* ---------------- PLAYER ---------------- */
+function currentItem(){ return state.session ? state.session.items[state.session.idx] : null; }
+
+function renderPlayer(){
+  const s=state.session; const item=currentItem();
+  const total=s.items.length;
+  const pct = Math.round((s.idx/total)*100);
+  return `
+  <div class="topbar">
+    <button onclick="exitPlayer()" style="background:none;border:none;color:#94a3b8;font-size:1.3rem"><i class="fa-solid fa-xmark"></i></button>
+    <div class="progress-track" style="flex:1;margin:0 .8rem"><div class="progress-fill" style="width:${pct}%"></div></div>
+    <span class="streak-pill" style="font-size:11px"><i class="fa-solid fa-fire" style="margin-right:.2rem"></i>${s.streak}</span>
+  </div>
+  <div style="max-width:560px;margin:0 auto;padding:1.4rem 1rem" id="cardArea">
+    ${renderQuestionCard(item)}
+  </div>
+  <div class="footer-bar" id="footerArea">
+    ${renderFooter(item)}
+  </div>`;
+}
+
+function passageIntroBlock(p){
+  const viBtn = p.vi ? `<button type="button" onclick="document.getElementById('introvi_${p.id}').classList.toggle('show')" style="font-size:11px;font-weight:800;background:#fff;border:2px solid #fde68a;color:#92400e;padding:.35rem .8rem;border-radius:999px;margin-top:.4rem">
+      <i class="fa-solid fa-language" style="margin-right:.25rem"></i>Dịch tiếng Việt
+    </button>` : '';
+  const viBox = p.vi ? `<div id="introvi_${p.id}" class="passage-vi-box"><b>🇻🇳 Bản dịch</b><br>${p.vi}</div>` : '';
+  return `<p style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.03em;color:#1cb0f6;margin-bottom:.5rem"><i class="fa-solid fa-book-open" style="margin-right:.3rem"></i>Đọc trước khi luyện tập</p>
+  <div class="passage-toggle-box"><b>${p.title}</b><br>${p.html}</div>
+  <div>${viBtn}${viBox}</div>`;
+}
+
+function renderIntroCard(item){ return passageIntroBlock(item.passage); }
+
+const CAT_LABELS = { vocab:'📚 Từ vựng', grammar:'🔗 Ngữ pháp', reading_sgk:'📖 Đọc hiểu SGK', reading_sbt:'📕 Đọc hiểu SBT', mixed:'🏆 Tổng hợp' };
+
+function renderQuestionCard(item){
+  if(item.type==='intro') return renderIntroCard(item);
+  const opts = item.type==='tf' ? ['True (Đúng)','False (Sai)'] : item.options;
+  const answerIdx = item.type==='tf' ? (item.answer===true?0:1) : item.answer;
+  const body = `<div style="display:grid;gap:.55rem;margin-top:1rem">${opts.map((o,i)=>{
+    let cls='opt-card';
+    if(state.answered){
+      if(i===answerIdx) cls+=' correct';
+      else if(i===state.selection) cls+=' wrong';
+      else cls+=' dim';
+    } else if(state.selection===i){ cls+=' selected'; }
+    const speakBtn = (item.category==='vocab' && item.speakable && item.type==='mcq') ?
+      `<span class="speak-mini" onclick="event.stopPropagation();speak('${String(o).replace(/'/g,"\\'")}', this)"><i class="fa-solid fa-volume-high" style="font-size:10px"></i></span>` : '';
+    const label = item.type==='tf' ? (i===0?'✅ True (Đúng)':'❌ False (Sai)') : `<span style="color:#6366f1;font-weight:900">${['A','B','C','D'][i]}.</span> ${o}`;
+    return `<div class="${cls}" onclick="${state.answered?'':'selectOption('+i+')'}">${label}${speakBtn}</div>`;
+  }).join('')}</div>`;
+  const passageBlock = item.passageId ? passageMiniBlock(item.passageId) : '';
+  const catTag = CAT_LABELS[item.category] || '';
+  return `
+    <p class="cat-tag" style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.03em;color:#94a3b8;margin-bottom:.4rem">${catTag}</p>
+    ${passageBlock}
+    <p style="font-size:1.12rem;font-weight:800;color:#1e293b;line-height:1.5">${item.q}</p>
+    ${body}
+  `;
+}
+
+function passageMiniBlock(passageId){
+  const p = PASSAGES[passageId]; if(!p) return '';
+  const uniq = passageId+'_mini';
+  return `<div style="margin-bottom:.7rem">
+    <button type="button" onclick="document.getElementById('pg_${uniq}').classList.toggle('hidden')" style="font-size:11px;font-weight:800;background:#fff;border:2px solid #ddd6fe;color:#5b21b6;padding:.35rem .8rem;border-radius:999px">
+      <i class="fa-solid fa-book-open" style="margin-right:.25rem"></i>Xem lại đoạn văn
+    </button>
+    <div id="pg_${uniq}" class="passage-toggle-box hidden" style="margin-top:.5rem;display:none"><b>${p.title}</b><br>${p.html}</div>
+  </div>`;
+}
+
+/* ---------------- FOOTER / ANSWER CHECKING ---------------- */
+function renderFooter(item){
+  if(item.type==='intro'){
+    return `<button onclick="continueNext()" class="btn3d btn-green" style="width:100%;max-width:560px;margin:0 auto;display:block;padding:.85rem;border-radius:1.1rem;font-weight:900;font-size:1.05rem"><i class="fa-solid fa-arrow-right" style="margin-right:.3rem"></i>Bắt đầu luyện tập</button>`;
+  }
+  if(!state.answered){
+    const canCheck = state.selection!==null && state.selection!==undefined;
+    return `<button onclick="checkAnswer()" class="btn3d btn-green" style="width:100%;max-width:560px;margin:0 auto;display:block;padding:.85rem;border-radius:1.1rem;font-weight:900;font-size:1.05rem" ${canCheck?'':'disabled'}><i class="fa-solid fa-check" style="margin-right:.3rem"></i>Kiểm tra</button>`;
+  } else {
+    const ok = computeOk(item);
+    const cont = `<button onclick="continueNext()" class="btn3d ${ok?'btn-green':'btn-red'}" style="width:100%;padding:.85rem;border-radius:1.1rem;font-weight:900;font-size:1.05rem">Tiếp tục <i class="fa-solid fa-arrow-right" style="margin-left:.3rem"></i></button>`;
+    const exp = item.explanation ? `<p style="font-size:.85rem;font-weight:800;margin:0 0 .2rem;color:${ok?'#15803d':'#be123c'}">${ok?'✅ Chính xác!':'❌ Chưa đúng.'} ${item.explanation}</p>` : `<p style="font-size:.85rem;font-weight:800;margin:0 0 .2rem;color:${ok?'#15803d':'#be123c'}">${ok?'✅ Chính xác!':'❌ Chưa đúng.'}</p>`;
+    return `<div style="max-width:560px;margin:0 auto">${exp}<div style="margin-top:.5rem">${cont}</div></div>`;
+  }
+}
+
+function computeOk(item){
+  if(item.type==='tf') return (state.selection===0)===(item.answer===true);
+  return state.selection===item.answer;
+}
+
+function selectOption(i){ if(state.answered) return; state.selection=i; render(); }
+
+function checkAnswer(){
+  const item=currentItem();
+  const ok = computeOk(item);
+  state.answered=true;
+  finalizeAnswer(item, ok);
+  render();
+}
+
+function finalizeAnswer(item, ok){
+  const s=state.session;
+  if(ok){ s.correct++; s.streak++; if(s.streak>state.progress.bestStreak) state.progress.bestStreak=s.streak; }
+  else { s.wrong++; s.streak=0; }
+  s.catStats[item.category] = s.catStats[item.category] || {correct:0,total:0};
+  s.catStats[item.category].total++;
+  if(ok) s.catStats[item.category].correct++;
+
+  let xp = ok ? 10 : 2;
+  state.progress.xp += xp; s.xpEarned += xp;
+
+  if(s.isMistakeMode){
+    const mb = state.progress.mistakes[item.id];
+    if(ok){
+      if(mb){ mb.box = (mb.box||0)+1; if(mb.box>=3){ delete state.progress.mistakes[item.id]; s.mistakesFixed++; state.progress.xp+=15; s.xpEarned+=15; } }
+    } else if(mb){ mb.box = 0; }
+  } else {
+    if(!ok){
+      const existing = state.progress.mistakes[item.id];
+      state.progress.mistakes[item.id] = { box:0, timesWrong: (existing?existing.timesWrong:0)+1, category:item.category };
+    } else if(state.progress.mistakes[item.id]){
+      state.progress.mistakes[item.id].box = (state.progress.mistakes[item.id].box||0)+1;
+      if(state.progress.mistakes[item.id].box>=3){ delete state.progress.mistakes[item.id]; s.mistakesFixed++; }
+    }
+  }
+  checkMistakeFixerBadge();
+  saveProgress();
+}
+
+function checkMistakeFixerBadge(){
+  if(Object.keys(state.progress.mistakes).length===0){ awardBadge('mistake_fixer'); }
+}
+
+function continueNext(){
+  const s=state.session;
+  s.idx++;
+  state.answered=false; state.selection=null;
+  if(s.idx>=s.items.length){ finishSession(); return; }
+  render();
+}
+
+function exitPlayer(){ state.screen='home'; state.session=null; render(); }
+
+/* ---------------- SESSION FINISH / SUMMARY ---------------- */
+function finishSession(){
+  const s=state.session;
+  const scored = s.correct+s.wrong;
+  const accuracy = scored>0 ? Math.round((s.correct/scored)*100) : 100;
+  let stars = 1;
+  if(accuracy>=90) stars=3; else if(accuracy>=70) stars=2; else stars=1;
+  if(scored===0) stars=3;
+
+  if(!s.isMistakeMode){
+    const stProg = state.progress.stages[s.stageKey];
+    stProg.attempts++;
+    stProg.bestAccuracy = Math.max(stProg.bestAccuracy, accuracy);
+    stProg.stars = Math.max(stProg.stars, stars);
+    const wasMastered = stProg.status==='mastered';
+    if(accuracy>=80) stProg.status='mastered';
+    else if(accuracy>=40) stProg.status='in_progress';
+    else stProg.status='needs_practice';
+    if(stProg.status==='mastered' && !wasMastered){
+      if(awardBadge(s.stageKey)){ state.progress.xp += 50; s.xpEarned+=50; }
+    }
+    state.progress.xp += 20; s.xpEarned += 20;
+  }
+  checkUnitMastery();
+  saveProgress();
+  state.screen='summary';
+  render();
+}
+
+function checkUnitMastery(){
+  const coreStages = ['vocab','grammar','reading_sgk','reading_sbt','mixed'];
+  const allMastered = coreStages.every(k=>state.progress.stages[k].status==='mastered');
+  const noMistakes = Object.keys(state.progress.mistakes).length===0;
+  if(allMastered && noMistakes){
+    if(awardBadge('unit_master')){ state.progress.xp += 100; }
+  }
+}
+
+function renderSummary(){
+  const s=state.session;
+  const scored=s.correct+s.wrong;
+  const accuracy = scored>0 ? Math.round((s.correct/scored)*100) : 100;
+  let stars=1; if(accuracy>=90) stars=3; else if(accuracy>=70) stars=2; if(scored===0) stars=3;
+  const starHtml = [0,1,2].map(i=>`<i class="fa-solid fa-star" style="font-size:2.2rem;color:${i<stars?'#fbbf24':'#e2e8f0'};margin:0 .15rem"></i>`).join('');
+
+  const catBlock = Object.keys(s.catStats).length>1 ? `<div style="margin-top:1rem;display:grid;gap:.5rem">${Object.keys(s.catStats).map(c=>{
+    const cs=s.catStats[c]; const pct=Math.round((cs.correct/cs.total)*100);
+    return `<div><div style="display:flex;justify-content:space-between;font-size:11px;font-weight:800;color:#64748b;margin-bottom:.2rem"><span>${CAT_LABELS[c]||c}</span><span>${cs.correct}/${cs.total}</span></div>
+    <div class="progress-track" style="height:8px"><div class="progress-fill" style="width:${pct}%"></div></div></div>`;
+  }).join('')}</div>` : '';
+
+  const mistakeFixedLine = s.isMistakeMode && s.mistakesFixed>0 ? `<p style="color:#059669;font-weight:800;font-size:.85rem;margin-top:.5rem">🔥 Đã sửa xong ${s.mistakesFixed} lỗi!</p>` : '';
+
+  let title = '🎉 Hoàn thành!';
+  if(accuracy>=90) title='🌟 Xuất sắc!';
+  else if(accuracy>=70) title='💪 Làm tốt lắm!';
+  else title="🔁 Cố lên, luyện thêm nhé!";
+
+  return `<div style="max-width:420px;margin:0 auto;padding:2.5rem 1rem;text-align:center" class="pop-in">
+    <p style="font-size:3rem;margin:0 0 .3rem">${accuracy>=90?'🏆':accuracy>=70?'🎉':'💪'}</p>
+    <h2 class="font-baloo" style="font-size:1.5rem;font-weight:800;color:#1e293b;margin:0 0 .3rem">${title}</h2>
+    <div style="margin:.6rem 0">${starHtml}</div>
+    <p style="color:#64748b;font-weight:800">Độ chính xác: <span style="color:#1e293b">${accuracy}%</span> (${s.correct}/${scored||0} câu đúng)</p>
+    <p class="xp-pill" style="display:inline-block;margin-top:.6rem"><i class="fa-solid fa-bolt" style="margin-right:.25rem"></i>+${s.xpEarned} XP</p>
+    ${mistakeFixedLine}
+    ${catBlock}
+    <div style="margin-top:2rem;display:grid;gap:.7rem">
+      <button onclick="goHomeFromSummary()" class="btn3d btn-green" style="width:100%;padding:.85rem;border-radius:1.1rem;font-weight:900;font-size:1.05rem">Về trang chủ</button>
+      <button onclick="retryStage()" class="btn3d btn-white" style="width:100%;padding:.85rem;border-radius:1.1rem;font-weight:900;font-size:1.05rem">Làm lại</button>
+    </div>
+  </div>`;
+}
+
+function goHomeFromSummary(){
+  const showMastery = state.progress.badges.includes('unit_master') && !state.__masteryShown;
+  if(showMastery){ state.__masteryShown=true; state.screen='mastery'; state.session=null; render(); fireConfetti(); return; }
+  state.screen='home'; state.session=null; render();
+}
+function retryStage(){ const key=state.session.stageKey; state.screen='home'; startStage(key); }
+
+/* ---------------- MASTERY SCREEN ---------------- */
+function renderMastery(){
+  fireConfetti();
+  return `<div style="max-width:420px;margin:0 auto;padding:4rem 1rem;text-align:center" class="pop-in">
+    <p style="font-size:4.5rem;margin:0 0 .5rem">🏆</p>
+    <h2 class="font-baloo" style="font-size:1.7rem;font-weight:800;color:#f59e0b;margin:0 0 .5rem">BẠN ĐÃ CHINH PHỤC<br>UNIT 3: TEENAGERS!</h2>
+    <p style="color:#64748b;margin-bottom:1.5rem">Bạn đã hoàn thành xuất sắc tất cả các chặng và không còn lỗi sai nào. Thật tuyệt vời!</p>
+    <p class="xp-pill" style="display:inline-block;margin-bottom:1.5rem"><i class="fa-solid fa-bolt" style="margin-right:.25rem"></i>Tổng ${state.progress.xp} XP</p>
+    <button onclick="state.screen='home'; render();" class="btn3d btn-green" style="width:100%;padding:.85rem;border-radius:1.1rem;font-weight:900;font-size:1.05rem">Về trang chủ</button>
+  </div>`;
+}
+
+/* ---------------- Confetti ---------------- */
+function fireConfetti(){
+  const wrap=document.getElementById('confettiWrap'); wrap.innerHTML='';
+  const colors=['#4c1d95','#7c3aed','#db2777','#ec4899','#f59e0b','#22c55e'];
+  for(let i=0;i<100;i++){
+    const p=document.createElement('div'); p.className='confetti-piece';
+    p.style.cssText=`left:${Math.random()*100}vw;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>0.5?'50%':'2px'};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*0.8}s;`;
+    wrap.appendChild(p);
+  }
+  setTimeout(()=>{wrap.innerHTML='';},4000);
+}
+
+/* ---------------- INIT ---------------- */
+render();
+</script>
+</body>
+</html>
