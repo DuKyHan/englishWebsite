@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 3 - SBT Workbook Practice - Tieng Anh 8</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+  :root{ --accent:#0f766e; --accent2:#0891b2; }
+  * { box-sizing: border-box; }
+  body { font-family:'Nunito',sans-serif; background:#f0fdfa; }
+  .hero-gradient{ background: linear-gradient(135deg, #134e4a 0%, #0f766e 55%, #0891b2 100%); }
+  .tab-btn{ transition: all .2s ease; }
+  .tab-btn.active{ background: linear-gradient(135deg, #134e4a, #0891b2); color:#fff; box-shadow:0 4px 14px rgba(19,78,74,.35); transform:translateY(-1px); }
+  .task-card{ transition: box-shadow .2s, transform .2s; }
+  .task-card:hover{ transform: translateY(-2px); box-shadow:0 8px 30px rgba(0,0,0,.10); }
+  .option-label{ cursor:pointer; transition: all .18s; border:2px solid #e2e8f0; }
+  .option-label:hover{ border-color:var(--accent); background:#f0fdfa; }
+  .option-label.selected{ border-color:#134e4a; background:#ccfbf1; }
+  .option-label.correct-opt{ border-color:#22c55e !important; background:#f0fdf4 !important; }
+  .option-label.wrong-opt{ border-color:#ef4444 !important; background:#fef2f2 !important; }
+  .mcq-detail-hidden{ display:none; }
+  .show-mcq-detail .mcq-detail-hidden{ display:block; }
+  .speak-btn{ cursor:pointer; }
+  .speak-btn.speaking{ animation: pulseSpeak .7s ease-in-out infinite; }
+  @keyframes pulseSpeak{ 0%,100%{transform:scale(1);} 50%{transform:scale(1.18);} }
+  .vi-hidden{ display:none; }
+  .explanation-box{ display:none; animation: fadeSlide .3s ease forwards; }
+  .explanation-box.show{ display:block; }
+  @keyframes fadeSlide{ from{opacity:0; transform:translateY(-6px);} to{opacity:1; transform:translateY(0);} }
+  input.answer-input, textarea.answer-input{ border:2px solid #cbd5e1; transition:border .18s; outline:none; background:#fff; }
+  input.answer-input:focus, textarea.answer-input:focus{ border-color:var(--accent); }
+  input.correct-input{ border-color:#22c55e !important; background:#f0fdf4; }
+  input.wrong-input{ border-color:#ef4444 !important; background:#fef2f2; }
+  .score-badge{ animation: popIn .35s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn{ from{transform:scale(.4); opacity:0;} to{transform:scale(1); opacity:1;} }
+  .confetti-wrap{ position:fixed; inset:0; pointer-events:none; z-index:9999; }
+  .confetti-piece{ position:absolute; width:10px; height:10px; border-radius:2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall{ 0%{transform:translateY(-20px) rotate(0deg); opacity:1;} 100%{transform:translateY(100vh) rotate(720deg); opacity:0;} }
+  .progress-bar-fill{ transition: width .6s ease; }
+  .section-page{ display:none; }
+  .section-page.active{ display:block; }
+  #completionBanner{ display:none; }
+  #completionBanner.show{ display:flex; }
+  .passage-box{ background:#fff; border:1px solid #e2e8f0; border-radius:1rem; padding:1rem 1.25rem; line-height:1.9; font-size:.95rem; color:#334155; }
+  .dict-box{ background:#fef9c3; border:1px solid #fde68a; border-radius:1rem; padding:1rem 1.25rem; font-size:.9rem; color:#334155; }
+  .rule-box{ background:#ecfeff; border:1px solid #a5f3fc; border-radius:1rem; padding:1rem 1.25rem; line-height:1.85; font-size:.9rem; color:#334155; }
+  .blank-tag{ background:#ccfbf1; color:#134e4a; font-weight:800; border-radius:.4rem; padding:0 .35rem; }
+  .part-label{ display:inline-block; background:linear-gradient(135deg,#134e4a,#0891b2); color:#fff; font-weight:900; font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; padding:.25rem .7rem; border-radius:999px; margin-bottom:.5rem; }
+  .navgroup-sep{ width:1px; background:#e2e8f0; margin:0 .25rem; align-self:stretch; }
+  .source-box{ background:#fffbeb; border:1px solid #fde68a; border-radius:1rem; padding:.9rem 1.1rem; font-size:.82rem; color:#78350f; line-height:1.7; }
+</style>
+</head>
+<body class="min-h-screen">
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<header class="hero-gradient text-white py-8 px-4 text-center shadow-xl relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <div class="absolute top-4 left-8 text-6xl">📓</div>
+    <div class="absolute top-2 right-12 text-5xl">✏️</div>
+    <div class="absolute bottom-2 left-1/3 text-4xl">🎧</div>
+    <div class="absolute bottom-4 right-1/4 text-5xl">💬</div>
+  </div>
+  <p class="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Tiếng Anh 8 · Unit 3 · SBT (Workbook) Practice</p>
+  <h1 class="font-['Baloo_2'] text-3xl md:text-5xl font-extrabold drop-shadow-lg">📓 Unit 3: Teenagers — SBT</h1>
+  <p class="mt-2 text-base md:text-lg opacity-90 font-semibold">Pronunciation · Vocabulary &amp; Grammar · Speaking · Reading · Writing (trang 18-25)</p>
+  <div class="mt-5 max-w-2xl mx-auto">
+    <div class="flex justify-between text-xs font-bold opacity-80 mb-1">
+      <span>Tiến độ hoàn thành</span>
+      <span id="progressText">0 / 0 phần</span>
+    </div>
+    <div class="bg-white/20 rounded-full h-3 overflow-hidden">
+      <div id="progressBar" class="bg-white rounded-full h-3 progress-bar-fill" style="width:0%"></div>
+    </div>
+  </div>
+</header>
+
+<nav class="sticky top-0 z-50 bg-white/90 backdrop-blur shadow-sm px-3 py-2 overflow-x-auto">
+  <div class="flex gap-2 min-w-max mx-auto w-fit" id="navWrap"></div>
+</nav>
+
+<main class="max-w-4xl mx-auto px-4 py-6 pb-20" id="mainWrap">
+  <div class="source-box mb-4">
+    <b><i class="fa-solid fa-circle-check mr-1"></i>Về nguồn nội dung (đã cập nhật):</b> File này đã được xây dựng lại <b>toàn bộ dựa trên bản chụp gốc (nguyên văn)</b> của Sách bài tập Tiếng Anh 8 – Global Success, Unit 3 (trang 18-25), do em cung cấp trực tiếp. Toàn bộ đề bài, đoạn văn, hội thoại, danh sách từ đều là <b>văn bản nguyên văn của sách</b>. Riêng một số đáp án mà SBT không in kèm chìa khoá (đáp án) ngay tại chỗ — như Ex 2 phần Pronunciation, cột True/False, hoặc phần MCQ ở Reading — được xác định dựa trên phân tích ngữ pháp/ngữ nghĩa cẩn thận của chính đoạn văn/câu hỏi đó (SBT giấy vốn không in đáp án kèm theo, đáp án do giáo viên/HS tự đối chiếu). Thầy cô có thể đối chiếu lại với sách giải chính thức nếu cần.
+  </div>
+</main>
+
+<div id="completionBanner" class="fixed inset-0 z-[9998] items-center justify-center bg-black/50 px-4">
+  <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center score-badge shadow-2xl">
+    <div class="text-6xl mb-3">🎉</div>
+    <h3 class="text-2xl font-extrabold text-teal-900 mb-1">Hoàn thành bài luyện tập!</h3>
+    <p class="text-slate-500 mb-4">Bạn đã làm xong tất cả các phần.</p>
+    <p id="finalScoreDisplay" class="text-3xl font-black text-teal-700 mb-5"></p>
+    <button onclick="closeBanner()" class="bg-gradient-to-r from-teal-900 to-cyan-500 text-white font-bold px-6 py-2.5 rounded-full">Đóng</button>
+  </div>
+</div>
+
+<script>
+const NAM_PASSAGE = {
+  title: "Nam (SBT trang 19, Vocabulary & Grammar - Ex 3) — nguyên văn SBT",
+  html: "Nam was a good student. But he started using a smartphone and spending too much time on (1) ___ like Facebook and TikTok. He also liked joining in chit-chat and game (2) ___ for teens. He spent a lot of time (3) ___ notifications. He even neglected his schoolwork, and stopped (4) ___ with his classmates, friends, and family members. One day Nam saw a video clip about a boy who was addicted to games, and had no friends, so when the boy was feeling down, he (5) ___ others. Nam realised that he also had no more friends, except his younger brother.",
+  vi: "Nam từng là một học sinh giỏi. Nhưng cậu bắt đầu dùng điện thoại thông minh và dành quá nhiều thời gian cho (1) mạng xã hội như Facebook và TikTok. Cậu cũng thích tham gia trò chuyện phiếm và (2) các diễn đàn trò chơi dành cho thanh thiếu niên. Cậu dành rất nhiều thời gian để (3) kiểm tra thông báo. Cậu thậm chí còn xao nhãng việc học, và ngừng (4) giao tiếp với bạn cùng lớp, bạn bè và người thân. Một ngày nọ, Nam xem một đoạn video clip về một cậu bé nghiện trò chơi điện tử và không có bạn bè, nên khi cậu bé đó cảm thấy buồn, cậu ấy đã (5) bắt nạt người khác. Nam nhận ra rằng cậu cũng không còn bạn bè nữa, ngoại trừ em trai của mình."
+};
+
+const CLUB_INFO_PASSAGE = {
+  title: "School club activities (SBT trang 22, Reading - Ex 1) — nguyên văn SBT",
+  html: "Studies have proven that school club activities are important to both the physical and mental development of children. In sports clubs kids play sports regularly, and under the guidance of their (1) ___, they improve their physical health. Moreover, children mix with friends from different classes in a new (2) ___ where they can learn, share, and appreciate each other. Also, when they work with new friends in a club, they will become more confident and independent. Furthermore, when children work together in a (3) ___ to deal with a problem or to do tasks, they have to work together to think about what they should do to (4) ___ the task. They, therefore, can learn research and leadership (5) ___. Many kids also find good role (6) ___ in clubs, such as coaches or group leaders.",
+  vi: "Các nghiên cứu đã chứng minh rằng hoạt động câu lạc bộ ở trường rất quan trọng đối với sự phát triển cả về thể chất lẫn tinh thần của trẻ em. Trong các câu lạc bộ thể thao, trẻ chơi thể thao thường xuyên, và dưới sự hướng dẫn của (1) huấn luyện viên, các em cải thiện sức khoẻ thể chất. Hơn nữa, trẻ em kết bạn với bạn bè từ các lớp khác nhau trong một (2) môi trường mới, nơi các em có thể học hỏi, chia sẻ và trân trọng lẫn nhau. Ngoài ra, khi làm việc với bạn mới trong một câu lạc bộ, các em sẽ trở nên tự tin và độc lập hơn. Hơn thế nữa, khi trẻ em cùng nhau làm việc trong một (3) nhóm để giải quyết một vấn đề hoặc thực hiện nhiệm vụ, các em phải cùng nhau suy nghĩ xem nên làm gì để (4) hoàn thành nhiệm vụ đó. Do đó, các em có thể học được (5) kỹ năng nghiên cứu và lãnh đạo. Nhiều trẻ em cũng tìm thấy những (6) tấm gương tốt trong câu lạc bộ, chẳng hạn như huấn luyện viên hoặc trưởng nhóm."
+};
+
+const KATE_VY_PASSAGE = {
+  title: "Ms Kate and Vy (SBT trang 22-23, Reading - Ex 2) — nguyên văn SBT",
+  html: "<b>Ms Kate:</b> Hi Vy. Why don't you join with your classmates in playing shuttlecock over there?<br><b>Vy:</b> I'd like to. But they may not want me to join.<br><b>Ms Kate:</b> Have you asked them yet?<br><b>Vy:</b> I'm pretty sure that they will not let me join. They laugh at me in our maths class. I don't like maths, and I'm not good at it.<br><b>Ms Kate:</b> Alright, Vy. So what subjects are you interested in?<br><b>Vy:</b> English and history. I love reading about things that happened in the past. I can read in English, and I easily remember events.<br><b>Ms Kate:</b> Wow. Not everyone does well in those subjects. You should be proud of that. So, you want to become a historian?<br><b>Vy:</b> Definitely, Miss. But my classmates all laughed at me when I told them.<br><b>Ms Kate:</b> Don't be nervous, Vy. You should be more confident in your abilities and don't be afraid to show others what you can do. I'll start a discussion in the school forum about respect soon ...",
+  vi: "<b>Cô Kate:</b> Chào Vy. Sao em không tham gia chơi cầu lông với các bạn cùng lớp ở đằng kia?<br><b>Vy:</b> Em cũng muốn ạ. Nhưng có thể các bạn không muốn em tham gia.<br><b>Cô Kate:</b> Em đã hỏi các bạn chưa?<br><b>Vy:</b> Em khá chắc là các bạn sẽ không cho em chơi cùng đâu ạ. Các bạn hay cười em trong giờ Toán. Em không thích môn Toán, và em cũng không giỏi môn đó.<br><b>Cô Kate:</b> Được rồi, Vy. Vậy em thích những môn học nào?<br><b>Vy:</b> Tiếng Anh và Lịch sử ạ. Em thích đọc về những sự việc đã xảy ra trong quá khứ. Em đọc được tiếng Anh, và em dễ dàng nhớ các sự kiện.<br><b>Cô Kate:</b> Ồ. Không phải ai cũng học tốt những môn đó đâu. Em nên tự hào về điều đó. Vậy em muốn trở thành một nhà sử học à?<br><b>Vy:</b> Chắc chắn rồi ạ. Nhưng các bạn cùng lớp đều cười em khi em nói ra điều đó.<br><b>Cô Kate:</b> Đừng lo lắng, Vy. Em nên tự tin hơn vào khả năng của mình và đừng ngại thể hiện cho người khác thấy em có thể làm được gì. Cô sẽ sớm mở một buổi thảo luận trong diễn đàn trường về sự tôn trọng..."
+};
+
+const MINH_KATE_PASSAGE = {
+  title: "Minh and Kate — club activities (SBT trang 21, Speaking - Ex 2) — nguyên văn SBT",
+  html: "<b>Minh:</b> Kate, so what club are you a member of?<br><b>Kate:</b> (1) ___<br><b>Minh:</b> Great! I'd love to join it too. So, what time does it meet?<br><b>Kate:</b> (2) ___<br><b>Minh:</b> Where does it meet?<br><b>Kate:</b> (3) ___<br><b>Minh:</b> Who is the coach?<br><b>Kate:</b> (4) ___<br><b>Minh:</b> Is that the reason why you like to join this club?<br><b>Kate:</b> (5) ___",
+  vi: "<b>Minh:</b> Kate này, bạn là thành viên của câu lạc bộ nào vậy?<br><b>Kate:</b> (1)___<br><b>Minh:</b> Tuyệt quá! Mình cũng muốn tham gia. Vậy câu lạc bộ sinh hoạt lúc mấy giờ?<br><b>Kate:</b> (2)___<br><b>Minh:</b> Sinh hoạt ở đâu vậy?<br><b>Kate:</b> (3)___<br><b>Minh:</b> Ai là huấn luyện viên?<br><b>Kate:</b> (4)___<br><b>Minh:</b> Đó có phải là lý do bạn thích tham gia câu lạc bộ này không?<br><b>Kate:</b> (5)___"
+};
+
+const ENGLISH_CLUB_PASSAGE = {
+  title: "ENGLISH CLUB (SBT trang 21, Speaking - Ex 3) — nguyên văn SBT",
+  html: "<b>ENGLISH CLUB</b><br><b>Time:</b> Saturdays, 9:00 a.m. – 11:00 a.m.<br><b>Venue:</b> School Lab 1<br><b>Coach:</b> Ms Thu, English teacher, IELTS band 8.0<br><b>Contact number:</b> 084711223<br><b>Benefits:</b> Communicate in English, work on projects using English, and participate in debates",
+  vi: "<b>CÂU LẠC BỘ TIẾNG ANH</b><br><b>Thời gian:</b> Thứ Bảy, 9:00 – 11:00 sáng<br><b>Địa điểm:</b> Phòng Lab 1 của trường<br><b>Huấn luyện viên:</b> Cô Thu, giáo viên tiếng Anh, IELTS band 8.0<br><b>Số điện thoại liên hệ:</b> 084711223<br><b>Lợi ích:</b> Giao tiếp bằng tiếng Anh, thực hiện các dự án bằng tiếng Anh, và tham gia tranh biện"
+};
+
+const BRIGHT_STARS_PASSAGE = {
+  title: "BRIGHT STARS MIDDLE SCHOOL - Daily Bulletin (SBT trang 23-24, Reading - Ex 3) — nguyên văn SBT",
+  html: "<b>BRIGHT STARS MIDDLE SCHOOL — DAILY BULLETIN</b><br><i>Monday, 10th October, 2025</i><br><br><b>Preliminary English Test</b><br>PET registration begins on Tuesday, 11th October and the test will be on 20th October. Please sign up before the 15th. Make sure you all have a good night's sleep before the test day. Your results will be available on the 25th.<br>Link Team is currently receiving applications for the next school year. If you want to help our new juniors, then Link Team is for you! Come to Room 201 after school to pick up an application.<br><br><b>Sports</b><br><b>Swimming:</b> Attention 8th and 9th grade students. If you plan to join the Swimming Club, come to Room 303 to sign up. Or contact Mr Linh at thaylinhswimming@quickmail.com.<br><b>Jogging:</b> Attention all students. Please check the email we sent you yesterday. It's an application to join the school's charity jogging event. If you are interested in joining, please fill in the application before Thursday. Thank you!<br><br><b>Clubs</b><br><b>Photo Club:</b> Only two weeks left to grab your camera or smartphone, guys. Get ready for this year's photo contest. Ask your art teacher for an entry form.<br><b>Chess Club:</b> Open next month. The club will meet on Saturday mornings, from 9:00 a.m. to 11:00 a.m. Contact Mr Tung for applications at 084377552.",
+  vi: "<b>TRƯỜNG THCS BRIGHT STARS — BẢN TIN HẰNG NGÀY</b><br><i>Thứ Hai, ngày 10 tháng 10 năm 2025</i><br><br><b>Kỳ thi Tiếng Anh Sơ cấp (PET)</b><br>Đăng ký PET bắt đầu từ thứ Ba, 11/10 và kỳ thi sẽ diễn ra vào ngày 20/10. Vui lòng đăng ký trước ngày 15. Hãy chắc chắn các em ngủ ngon trước ngày thi. Kết quả sẽ có vào ngày 25.<br>Link Team hiện đang nhận đơn đăng ký cho năm học tới. Nếu em muốn giúp đỡ các em khoá dưới mới vào trường, Link Team chính là dành cho em! Hãy đến Phòng 201 sau giờ học để lấy đơn đăng ký.<br><br><b>Thể thao</b><br><b>Bơi lội:</b> Chú ý học sinh khối 8 và 9. Nếu em định tham gia Câu lạc bộ Bơi lội, hãy đến Phòng 303 để đăng ký. Hoặc liên hệ thầy Linh qua email thaylinhswimming@quickmail.com.<br><b>Chạy bộ:</b> Chú ý toàn thể học sinh. Vui lòng kiểm tra email nhà trường đã gửi hôm qua. Đó là đơn đăng ký tham gia sự kiện chạy bộ từ thiện của trường. Nếu em quan tâm, hãy điền đơn trước thứ Năm. Cảm ơn các em!<br><br><b>Câu lạc bộ</b><br><b>Câu lạc bộ Nhiếp ảnh:</b> Chỉ còn hai tuần nữa thôi, các em hãy chuẩn bị máy ảnh hoặc điện thoại thông minh nhé. Hãy sẵn sàng cho cuộc thi ảnh năm nay. Hỏi giáo viên Mỹ thuật để lấy mẫu đơn dự thi.<br><b>Câu lạc bộ Cờ vua:</b> Mở vào tháng sau. Câu lạc bộ sẽ sinh hoạt vào sáng thứ Bảy, từ 9:00 đến 11:00 sáng. Liên hệ thầy Tùng để đăng ký theo số 084377552."
+};
+
+const DATA = {"unit": 3, "test": "sbt-workbook-gs8", "sections": [
+
+/* ============== A. PRONUNCIATION (SBT trang 18) — nguyên văn SBT ============== */
+{"part":"A. PRONUNCIATION (SBT trang 18)","roman":"PRO.1","navLabel":"PRO Ex1","title":"Ex 1. Put the words in the correct column. Then practise saying them","icon":"ear-listen","instructions":"✅ Nguyên văn SBT. Khung từ: destroy, assure, lifebuoy, usually, visual, cowboy, tourism, soil, appoint, intellectual, coward. Em hãy phân loại từng từ vào cột /ʊə/ hoặc /ɔɪ/.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. assure","options":["/ʊə/","/ɔɪ/"],"answer":0,"explanation":"assure /əˈʃʊə(r)/ chứa âm /ʊə/.","vi":"assure = đảm bảo, cam đoan"},
+  {"q":"2. usually","options":["/ʊə/","/ɔɪ/"],"answer":0,"explanation":"usually /ˈjuːʒuəli/ chứa âm /ʊə/ ở phần \"-ua-\".","vi":"usually = thường thường"},
+  {"q":"3. visual","options":["/ʊə/","/ɔɪ/"],"answer":0,"explanation":"visual /ˈvɪʒuəl/ chứa âm /ʊə/.","vi":"visual = thuộc về thị giác, hình ảnh"},
+  {"q":"4. tourism","options":["/ʊə/","/ɔɪ/"],"answer":0,"explanation":"tourism /ˈtʊərɪzəm/ chứa âm /ʊə/ ở âm tiết đầu (giống \"tour\").","vi":"tourism = ngành du lịch"},
+  {"q":"5. intellectual","options":["/ʊə/","/ɔɪ/"],"answer":0,"explanation":"intellectual /ˌɪntəˈlektʃuəl/ chứa âm /ʊə/ ở âm tiết cuối.","vi":"intellectual = thuộc về trí tuệ, người trí thức"},
+  {"q":"6. coward","options":["/ʊə/","/ɔɪ/"],"answer":0,"explanation":"coward không chứa âm /ɔɪ/ nên xếp cùng nhóm /ʊə/ (nhóm không phải /ɔɪ/) trong bài phân loại này.","vi":"coward = kẻ hèn nhát"},
+  {"q":"7. destroy","options":["/ʊə/","/ɔɪ/"],"answer":1,"explanation":"destroy /dɪˈstrɔɪ/ kết thúc bằng âm /ɔɪ/.","vi":"destroy = phá hủy"},
+  {"q":"8. lifebuoy","options":["/ʊə/","/ɔɪ/"],"answer":1,"explanation":"lifebuoy /ˈlaɪfbɔɪ/ kết thúc bằng âm /ɔɪ/.","vi":"lifebuoy = phao cứu sinh"},
+  {"q":"9. cowboy","options":["/ʊə/","/ɔɪ/"],"answer":1,"explanation":"cowboy /ˈkaʊbɔɪ/ kết thúc bằng âm /ɔɪ/.","vi":"cowboy = chàng cao bồi"},
+  {"q":"10. soil","options":["/ʊə/","/ɔɪ/"],"answer":1,"explanation":"soil /sɔɪl/ chứa âm /ɔɪ/.","vi":"soil = đất, đất trồng"},
+  {"q":"11. appoint","options":["/ʊə/","/ɔɪ/"],"answer":1,"explanation":"appoint /əˈpɔɪnt/ chứa âm /ɔɪ/.","vi":"appoint = bổ nhiệm, chỉ định"}
+ ]},
+{"part":"A. PRONUNCIATION (SBT trang 18)","roman":"PRO.2","navLabel":"PRO Ex2","title":"Ex 2. Choose the word in which the underlined part is pronounced differently","icon":"ear-listen","instructions":"⚠️ Đề bài nguyên văn SBT. Sách bài tập không in kèm đáp án — 5 đáp án dưới đây do phân tích phát âm (IPA) trực tiếp từng từ.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. venture — future — mature — culture","options":["venture","future","mature","culture"],"answer":2,"explanation":"venture, future, culture đều có \"-ture\" phát âm /tʃə(r)/; mature thường phát âm /məˈtʃʊə(r)/ hoặc /məˈtjʊə(r)/ với trọng âm rơi vào âm tiết thứ hai — khác cách nhấn và có thể khác cả phụ âm.","vi":"venture = mạo hiểm; future = tương lai; mature = chín chắn, trưởng thành; culture = văn hoá."},
+  {"q":"2. tour — scour — hour — sour","options":["tour","scour","hour","sour"],"answer":0,"explanation":"scour /skaʊə(r)/, hour /aʊə(r)/, sour /saʊə(r)/ đều chứa âm /aʊə/; riêng tour phát âm /tʊə(r)/ hoặc /tɔː(r)/, khác 3 từ còn lại.","vi":"tour = chuyến tham quan; scour = cọ rửa, lùng sục; hour = giờ; sour = chua."},
+  {"q":"3. curious — plural — during — pure","options":["curious","plural","during","pure"],"answer":1,"explanation":"curious /ˈkjʊəriəs/, during /ˈdjʊərɪŋ/, pure /pjʊə(r)/ đều có âm /jʊə/; riêng plural /ˈplʊərəl/ chỉ có /ʊə/, không có âm lướt /j/ phía trước.","vi":"curious = tò mò; plural = số nhiều; during = trong suốt (khoảng thời gian); pure = tinh khiết."},
+  {"q":"4. soil — hoist — choir — voice","options":["soil","hoist","choir","voice"],"answer":2,"explanation":"soil, hoist, voice đều chứa âm /ɔɪ/; riêng choir phát âm /ˈkwaɪə(r)/ (như \"kwai-ơ\"), hoàn toàn không có âm /ɔɪ/.","vi":"soil = đất; hoist = kéo lên, nâng lên; choir = dàn hợp xướng; voice = giọng nói."},
+  {"q":"5. endure — fury — cure — bury","options":["endure","fury","cure","bury"],"answer":3,"explanation":"endure, fury, cure đều liên quan tới âm /jʊə/ hoặc /ʊə/; riêng bury phát âm /ˈberi/ (như \"berry\"), hoàn toàn khác 3 từ còn lại.","vi":"endure = chịu đựng; fury = cơn thịnh nộ; cure = chữa khỏi; bury = chôn cất."}
+ ]},
+
+/* ============== B. VOCABULARY & GRAMMAR (SBT trang 18-20) — nguyên văn SBT ============== */
+{"part":"B. VOCABULARY & GRAMMAR (SBT trang 18-20)","roman":"VG.1","navLabel":"VG Ex1","title":"Ex 1. Circle the correct options to complete the phrases","icon":"list-check","instructions":"Nguyên văn SBT — chọn cụm từ đi kèm đúng với động từ cho sẵn.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. upload ___________","options":["a website","a post","an account","a forum"],"answer":1,"explanation":"upload a post = đăng một bài viết lên (mạng xã hội).","vi":"upload a post = đăng bài lên"},
+  {"q":"2. browse ___________","options":["a post","a picture","a clip","a website"],"answer":3,"explanation":"browse a website = lướt, duyệt một trang web.","vi":"browse a website = duyệt/lướt trang web"},
+  {"q":"3. check ___________","options":["a clip","a notification","a picture","a forum"],"answer":1,"explanation":"check a notification = kiểm tra thông báo.","vi":"check a notification = kiểm tra thông báo"},
+  {"q":"4. log on ___________","options":["to a school","to a club","to an account","to a password"],"answer":2,"explanation":"log on to an account = đăng nhập vào tài khoản.","vi":"log on to an account = đăng nhập vào tài khoản"}
+ ]},
+{"part":"B. VOCABULARY & GRAMMAR (SBT trang 18-20)","roman":"VG.2","navLabel":"VG Ex2","title":"Ex 2. Use the words in the box to complete the sentences","icon":"pen","instructions":"Nguyên văn SBT. Khung từ: expectation, bully, forum, coach, concentrate, pressure, improve (có thể phải đổi dạng từ; có từ không dùng đến).","type":"fill",
+ "questions":[
+  {"q":"1. To meet her parents' ___________, she spends five hours practising the piano every day.","answer":"expectations","vi":"kỳ vọng — Để đáp ứng kỳ vọng của bố mẹ, cô ấy dành 5 tiếng luyện piano mỗi ngày.","explanation":"expectation (kỳ vọng) → đổi sang số nhiều \"expectations\" vì có nhiều kỳ vọng của cả bố và mẹ."},
+  {"q":"2. It's not a problem for the contestants to work under ___________.","answer":"pressure","vi":"áp lực — Việc làm việc dưới áp lực không phải là vấn đề đối với các thí sinh.","explanation":"work under pressure = làm việc dưới áp lực (cụm từ cố định, danh từ không đếm được, giữ nguyên dạng)."},
+  {"q":"3. Their PE teacher ___________ them after school every day.","answer":"coaches","vi":"huấn luyện — Giáo viên Thể dục huấn luyện họ sau giờ học mỗi ngày.","explanation":"coach (huấn luyện) → chia động từ ở thì hiện tại đơn với chủ ngữ số ít \"teacher\": coaches."},
+  {"q":"4. Stay away from him. He is a big ___________ at our school.","answer":"bully","vi":"kẻ bắt nạt — Tránh xa cậu ta ra. Cậu ta là một kẻ bắt nạt khét tiếng ở trường.","explanation":"bully ở đây là danh từ (kẻ bắt nạt), đứng sau mạo từ \"a big\"."},
+  {"q":"5. I started playing chess two months ago, and I can ___________ better now than before.","answer":"concentrate","vi":"tập trung — Tôi bắt đầu chơi cờ vua 2 tháng trước, và giờ tôi có thể tập trung tốt hơn trước.","explanation":"concentrate (tập trung) là động từ nguyên mẫu sau \"can\"; \"forum\" và \"improve\" là 2 từ không dùng đến trong bài này."}
+ ]},
+{"part":"B. VOCABULARY & GRAMMAR (SBT trang 18-20)","roman":"VG.3","navLabel":"VG Ex3","title":"Ex 3. Choose the correct answer A, B, C, or D to complete the passage","icon":"file-lines","instructions":"Nguyên văn SBT — đoạn văn về Nam và mạng xã hội.","type":"mcq","instant":true,
+ "passage": NAM_PASSAGE,
+ "questions":[
+  {"q":"1. ___________","options":["forum","social media","website","notifications"],"answer":1,"explanation":"\"spending too much time on social media like Facebook and TikTok\" — social media = mạng xã hội.","vi":"social media = mạng xã hội"},
+  {"q":"2. ___________","options":["notifications","posts","forums","videos"],"answer":2,"explanation":"\"joining in chit-chat and game forums for teens\" — forums = các diễn đàn.","vi":"forums = các diễn đàn (số nhiều của forum)"},
+  {"q":"3. ___________","options":["checking","posting","uploading","browsing"],"answer":0,"explanation":"\"He spent a lot of time checking notifications.\" — checking = việc kiểm tra.","vi":"checking = việc kiểm tra"},
+  {"q":"4. ___________","options":["browsing","logging on","communicating","coaching"],"answer":2,"explanation":"\"stopped communicating with his classmates, friends, and family members\" — communicating = trò chuyện, giao tiếp.","vi":"communicating = trò chuyện, giao tiếp"},
+  {"q":"5. ___________","options":["bullied","connected","helped","joined"],"answer":0,"explanation":"\"when the boy was feeling down, he bullied others\" — mạch truyện nói về hậu quả tiêu cực của nghiện game/mạng xã hội, nên \"bullied\" (bắt nạt) phù hợp nhất trong 4 lựa chọn.","vi":"bullied = đã bắt nạt"}
+ ]},
+{"part":"B. VOCABULARY & GRAMMAR (SBT trang 18-20)","roman":"VG.4","navLabel":"VG Ex4","title":"Ex 4. Underline the correct words to complete the sentences","icon":"pen-fancy","instructions":"Nguyên văn SBT — chọn từ nối phù hợp trong ngoặc.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. Some teenagers never join in any forums for help, (so / because) they prefer talking to their parents about their problems.","options":["so","because"],"answer":1,"explanation":"\"because\" nêu lý do: không tham gia diễn đàn VÌ thích nói chuyện với bố mẹ hơn.","vi":"Một số thanh thiếu niên không bao giờ tham gia diễn đàn để tìm giúp đỡ, vì các em thích nói chuyện với bố mẹ về vấn đề của mình hơn."},
+  {"q":"2. In some forums teens can get advice from peers; (therefore / however), my friends often use those forums to share their problems.","options":["therefore","however"],"answer":0,"explanation":"\"therefore\" nêu kết quả: vì có thể nhận lời khuyên từ bạn bè cùng trang lứa, VÌ VẬY bạn của tôi hay dùng các diễn đàn đó.","vi":"Trong một số diễn đàn, thanh thiếu niên có thể nhận lời khuyên từ bạn bè cùng trang lứa; vì vậy, bạn bè tôi thường dùng các diễn đàn đó để chia sẻ vấn đề của họ."},
+  {"q":"3. Many teenagers want to support needy people, (but / so) they join community service projects.","options":["but","so"],"answer":1,"explanation":"\"so\" nêu kết quả: muốn giúp đỡ người khó khăn, NÊN tham gia dự án cộng đồng.","vi":"Nhiều thanh thiếu niên muốn hỗ trợ những người khó khăn, nên các em tham gia các dự án phục vụ cộng đồng."},
+  {"q":"4. Our students can participate in any club they like, (but / or) they shouldn't try to join all the school clubs at the same time.","options":["but","or"],"answer":0,"explanation":"\"but\" thể hiện sự tương phản: có thể tham gia bất kỳ câu lạc bộ nào, NHƯNG không nên tham gia tất cả cùng lúc.","vi":"Học sinh của chúng ta có thể tham gia bất kỳ câu lạc bộ nào các em thích, nhưng không nên cố tham gia tất cả các câu lạc bộ trong trường cùng một lúc."},
+  {"q":"5. Minh told his teachers about the school bullies; (therefore / otherwise), the bullies wouldn't leave him alone.","options":["therefore","otherwise"],"answer":1,"explanation":"\"otherwise\" ở đây nêu lý do cần hành động: NẾU KHÔNG báo với giáo viên thì những kẻ bắt nạt sẽ không để cậu yên — vì vậy Minh đã báo với giáo viên.","vi":"Minh đã kể với giáo viên về những kẻ bắt nạt ở trường; nếu không, những kẻ đó sẽ không để cậu yên."}
+ ]},
+{"part":"B. VOCABULARY & GRAMMAR (SBT trang 18-20)","roman":"VG.5","navLabel":"VG Ex5","title":"Ex 5. Choose the correct answer A, B, C, or D to complete each sentence","icon":"circle-check","instructions":"Nguyên văn SBT.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. Teenagers need encouragement from their parents, ___________ not all parents are willing to encourage their children.","options":["for","and","but","so"],"answer":2,"explanation":"\"but\" thể hiện sự tương phản: cần được động viên NHƯNG không phải bố mẹ nào cũng sẵn lòng động viên con.","vi":"Thanh thiếu niên cần sự động viên từ bố mẹ, nhưng không phải bố mẹ nào cũng sẵn lòng động viên con cái."},
+  {"q":"2. Many girls worry about their appearance, ___________ they often look at themselves in a mirror.","options":["but","so","or","for"],"answer":1,"explanation":"\"so\" nêu kết quả: lo lắng về ngoại hình, NÊN hay soi gương.","vi":"Nhiều bạn nữ lo lắng về ngoại hình của mình, nên các bạn hay soi gương."},
+  {"q":"3. Teenagers should learn to mix with their classmates, ___________ they can try to get on with their siblings.","options":["so","for","or","yet"],"answer":2,"explanation":"\"or\" nêu thêm một lựa chọn/hành động tương tự: hoà đồng với bạn cùng lớp, HOẶC có thể hoà thuận với anh chị em.","vi":"Thanh thiếu niên nên học cách hoà đồng với bạn cùng lớp, hoặc các em có thể cố gắng hoà thuận với anh chị em của mình."},
+  {"q":"4. Social media help teens connect with others; ___________, they also cause teens to feel lonely.","options":["however","therefore","otherwise","although"],"answer":0,"explanation":"\"however\" (tuy nhiên) đứng sau dấu \";\" thể hiện sự tương phản với vế trước.","vi":"Mạng xã hội giúp thanh thiếu niên kết nối với người khác; tuy nhiên, chúng cũng khiến các em cảm thấy cô đơn."},
+  {"q":"5. They spend a lot of time surfing the net; ___________, they have little time to read books.","options":["however","therefore","although","otherwise"],"answer":1,"explanation":"\"therefore\" nêu kết quả: dành nhiều thời gian lướt mạng, VÌ VẬY ít thời gian đọc sách.","vi":"Họ dành nhiều thời gian lướt mạng; vì vậy, họ có rất ít thời gian để đọc sách."}
+ ]},
+
+/* ============== C. SPEAKING (SBT trang 20-21) — nguyên văn SBT ============== */
+{"part":"C. SPEAKING (SBT trang 20-21)","roman":"SPK.1","navLabel":"SPK Ex1","title":"Ex 1. Choose the suitable response A, B, C, or D to complete each of the following exchanges. Sometimes you can choose two answers","icon":"comments","instructions":"⚠️ Nguyên văn SBT. SBT không in kèm đáp án và có ghi chú \"đôi khi có thể chọn 2 đáp án\" — các đáp án dưới đây do phân tích ngữ nghĩa/ngữ pháp; những câu có 2 đáp án hợp lý được đánh dấu chấp nhận cả hai.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. Tom: \"How about playing a game of chess?\"\nMai: ___________","options":["No, that's a waste of time.","I'd love to. But I have to finish my homework first.","Chess is interesting to play.","I'm sorry. Don't ask me to do that."],"answer":1,"explanation":"\"I'd love to. But I have to finish my homework first\" vừa nhận lời vừa nêu lý do trì hoãn — câu trả lời tự nhiên nhất cho lời rủ \"How about + V-ing?\". (Đáp án A cũng có thể coi là một cách từ chối thẳng, nhưng B tự nhiên và phù hợp với văn phong lịch sự của SBT hơn.)","vi":"Tom: Chơi một ván cờ vua nhé? Mai: Mình rất muốn. Nhưng mình phải làm xong bài tập về nhà đã."},
+  {"q":"2. Mai: ___________?\nAnn: \"Yes, certainly.\"","options":["Can I join you in this game","Will I join you in this game","Shall you join us in this game","Should you join us in this game"],"answer":0,"explanation":"\"Can I...?\" là cách xin phép đúng ngữ pháp, phù hợp với câu trả lời \"Yes, certainly.\" Ba lựa chọn còn lại đều sai cấu trúc xin phép (không ai hỏi \"Will/Shall/Should you...\" để xin tham gia).","vi":"Mai: Mình chơi cùng các bạn được không? Ann: Được chứ, chắc chắn rồi."},
+  {"q":"3. Nick: \"Could you tell me how I can deal with a bully?\"\nMi: ___________","options":["That's very kind of you. Thanks.","Who's he? I don't know him.","You should talk to your parents about him.","You shouldn't talk to your parents about him."],"answer":2,"explanation":"\"You should talk to your parents about him\" là lời khuyên trực tiếp, phù hợp với câu hỏi xin lời khuyên về cách đối phó với kẻ bắt nạt.","vi":"Nick: Bạn có thể chỉ mình cách đối phó với một kẻ bắt nạt không? Mi: Bạn nên nói chuyện với bố mẹ về chuyện đó."},
+  {"q":"4. Teacher: \"Would you like to discuss the causes of your stress in our forum?\"\nStudent: ___________","options":["No, I wouldn't.","That's a good idea.","Yes, I would join the forum.","That's very kind of you."],"answer":[1,2],"explanation":"Cả B \"That's a good idea\" và C \"Yes, I would join the forum\" đều là cách nhận lời tự nhiên, phù hợp với lời mời \"Would you like to...?\". (Bài có ghi chú \"đôi khi có thể chọn 2 đáp án\".)","vi":"Giáo viên: Em có muốn thảo luận về nguyên nhân gây căng thẳng của em trong diễn đàn của chúng ta không? Học sinh: Đó là một ý hay. / Vâng, em sẽ tham gia diễn đàn."},
+  {"q":"5. Minh: ___________?\nTom: \"Certainly. Go past this building, then turn left. It's right in front of you there.\"","options":["Would you show me the way to the library, please","Could you show me the way to the library, please","Should you show me the way to the library, please","May you show me the way to the library, please"],"answer":[0,1],"explanation":"Cả A \"Would you...?\" và B \"Could you...?\" đều là cách nhờ vả/hỏi đường lịch sự và đúng ngữ pháp; C \"Should you...?\" và D \"May you...?\" đều sai cấu trúc lời nhờ.","vi":"Minh: Bạn có thể chỉ mình đường đến thư viện được không? Tom: Chắc chắn rồi. Đi qua toà nhà này, rồi rẽ trái. Nó ngay trước mặt bạn đó."}
+ ]},
+{"part":"C. SPEAKING (SBT trang 20-21)","roman":"SPK.2","navLabel":"SPK Ex2","title":"Ex 2. Minh and Kate are talking about their club activities. Choose A-E to complete their conversation","icon":"comment-dots","instructions":"Nguyên văn SBT — hội thoại giữa Minh và Kate về câu lạc bộ cờ vua.","type":"mcq","instant":true,
+ "passage": MINH_KATE_PASSAGE,
+ "questions":[
+  {"q":"1. Kate: ___________ (đáp lại \"So what club are you a member of?\")","options":["A. It meets on Thursdays, from 5:30 p.m. to 7:00 p.m.","B. I'm a member of the chess club.","C. Yes, that's one reason. Playing chess also teaches me to stay calm and solve problems.","D. It meets in the school hall, on the second floor.","E. Mr Tan. He was a chess champion at the national chess competition last year."],"answer":1,"explanation":"B trả lời trực tiếp câu hỏi \"bạn là thành viên câu lạc bộ nào?\".","vi":"Kate là thành viên câu lạc bộ cờ vua."},
+  {"q":"2. Kate: ___________ (đáp lại \"What time does it meet?\")","options":["A. It meets on Thursdays, from 5:30 p.m. to 7:00 p.m.","B. I'm a member of the chess club.","C. Yes, that's one reason. Playing chess also teaches me to stay calm and solve problems.","D. It meets in the school hall, on the second floor.","E. Mr Tan. He was a chess champion at the national chess competition last year."],"answer":0,"explanation":"A trả lời câu hỏi về thời gian sinh hoạt.","vi":"Câu lạc bộ sinh hoạt vào thứ Năm, từ 5:30 đến 7:00 tối."},
+  {"q":"3. Kate: ___________ (đáp lại \"Where does it meet?\")","options":["A. It meets on Thursdays, from 5:30 p.m. to 7:00 p.m.","B. I'm a member of the chess club.","C. Yes, that's one reason. Playing chess also teaches me to stay calm and solve problems.","D. It meets in the school hall, on the second floor.","E. Mr Tan. He was a chess champion at the national chess competition last year."],"answer":3,"explanation":"D trả lời câu hỏi về địa điểm sinh hoạt.","vi":"Câu lạc bộ sinh hoạt ở hội trường trường, tầng hai."},
+  {"q":"4. Kate: ___________ (đáp lại \"Who is the coach?\")","options":["A. It meets on Thursdays, from 5:30 p.m. to 7:00 p.m.","B. I'm a member of the chess club.","C. Yes, that's one reason. Playing chess also teaches me to stay calm and solve problems.","D. It meets in the school hall, on the second floor.","E. Mr Tan. He was a chess champion at the national chess competition last year."],"answer":4,"explanation":"E trả lời câu hỏi về huấn luyện viên.","vi":"Huấn luyện viên là thầy Tan. Thầy từng là nhà vô địch cờ vua quốc gia năm ngoái."},
+  {"q":"5. Kate: ___________ (đáp lại \"Is that the reason why you like to join this club?\")","options":["A. It meets on Thursdays, from 5:30 p.m. to 7:00 p.m.","B. I'm a member of the chess club.","C. Yes, that's one reason. Playing chess also teaches me to stay calm and solve problems.","D. It meets in the school hall, on the second floor.","E. Mr Tan. He was a chess champion at the national chess competition last year."],"answer":2,"explanation":"C trả lời câu hỏi \"đó có phải là lý do...\" bằng cách xác nhận và nêu thêm lý do.","vi":"Đúng vậy, đó là một lý do. Chơi cờ vua cũng dạy mình cách bình tĩnh và giải quyết vấn đề."}
+ ]},
+{"part":"C. SPEAKING (SBT trang 20-21)","roman":"SPK.3","navLabel":"SPK Ex3","title":"Ex 3. Work in pairs. Make a similar conversation. Use the information given below","icon":"comment-dots","instructions":"Nguyên văn SBT — dùng thông tin về ENGLISH CLUB bên dưới, làm hội thoại tương tự Ex 2.","type":"essay",
+ "passage": ENGLISH_CLUB_PASSAGE,
+ "questions":[
+  {"q":"Dựa vào thông tin về ENGLISH CLUB ở trên, viết đoạn hội thoại tương tự Ex 2 (hỏi & đáp về việc tham gia câu lạc bộ, thời gian, địa điểm, huấn luyện viên, lý do thích).","sample":"A: So what club are you a member of?\nB: I'm a member of the English Club.\nA: Great! What time does it meet?\nB: It meets on Saturdays, from 9:00 a.m. to 11:00 a.m.\nA: Where does it meet?\nB: It meets in School Lab 1.\nA: Who is the coach?\nB: Ms Thu. She's an English teacher with an IELTS band of 8.0.\nA: Is that the reason why you like to join this club?\nB: Yes, that's one reason. It also helps me communicate in English, work on projects, and take part in debates."}
+ ]},
+
+/* ============== D. READING (SBT trang 22-24) — nguyên văn SBT ============== */
+{"part":"D. READING (SBT trang 22-24)","roman":"RD.1","navLabel":"RD Ex1","title":"Ex 1. Read the passage and choose the correct answer A, B, C, or D to fill in each blank","icon":"file-lines","instructions":"Nguyên văn SBT — đoạn văn về lợi ích của hoạt động câu lạc bộ ở trường.","type":"mcq","instant":true,
+ "passage": CLUB_INFO_PASSAGE,
+ "questions":[
+  {"q":"1. ___________","options":["coaches","teachers","monitors","peers"],"answer":0,"explanation":"\"under the guidance of their coaches\" — trong câu lạc bộ thể thao, người hướng dẫn là huấn luyện viên (coaches).","vi":"coaches = các huấn luyện viên"},
+  {"q":"2. ___________","options":["surrounding","atmosphere","neighbourhood","environment"],"answer":3,"explanation":"\"a new environment where they can learn, share, and appreciate each other\" — environment = môi trường.","vi":"environment = môi trường"},
+  {"q":"3. ___________","options":["group","team","band","gang"],"answer":0,"explanation":"\"work together in a group to deal with a problem\" — group = nhóm.","vi":"group = nhóm"},
+  {"q":"4. ___________","options":["complete","make","do","create"],"answer":0,"explanation":"\"what they should do to complete the task\" — complete the task = hoàn thành nhiệm vụ.","vi":"complete = hoàn thành"},
+  {"q":"5. ___________","options":["knowledge","skills","tasks","jobs"],"answer":1,"explanation":"\"learn research and leadership skills\" — skills = kỹ năng (nghiên cứu và lãnh đạo).","vi":"skills = kỹ năng"},
+  {"q":"6. ___________","options":["idols","figures","models","names"],"answer":2,"explanation":"\"find good role models\" là cụm từ cố định — role models = tấm gương, hình mẫu.","vi":"models (trong \"role models\") = tấm gương, hình mẫu"}
+ ]},
+{"part":"D. READING (SBT trang 22-24)","roman":"RD.2","navLabel":"RD Ex2","title":"Ex 2. Read the following conversation and tick (✓) T (True) or F (False)","icon":"file-lines","instructions":"Nguyên văn SBT — hội thoại giữa cô Kate và Vy.","type":"mcq","instant":true,
+ "passage": KATE_VY_PASSAGE,
+ "questions":[
+  {"q":"1. Vy doesn't want to join her classmates.","options":["True","False"],"answer":1,"explanation":"Vy nói \"I'd like to\" (em cũng muốn) — Vy MUỐN tham gia, chỉ lo các bạn không muốn cho tham gia.","vi":"Vy vẫn muốn tham gia cùng các bạn, chỉ là lo các bạn không muốn cho em chơi cùng."},
+  {"q":"2. Vy has problems with maths.","options":["True","False"],"answer":0,"explanation":"\"I don't like maths, and I'm not good at it.\"","vi":"Vy không thích môn Toán và không giỏi môn đó."},
+  {"q":"3. English and history are her favourite subjects.","options":["True","False"],"answer":0,"explanation":"\"English and history. I love reading about things that happened in the past.\"","vi":"Tiếng Anh và Lịch sử là 2 môn Vy yêu thích nhất."},
+  {"q":"4. Her dream is to become a historian.","options":["True","False"],"answer":0,"explanation":"\"So, you want to become a historian? — Definitely, Miss.\"","vi":"Vy muốn trở thành một nhà sử học."},
+  {"q":"5. Vy's classmates don't think highly of her.","options":["True","False"],"answer":0,"explanation":"\"my classmates all laughed at me when I told them\" — các bạn cười nhạo Vy, tức là không đánh giá cao/coi trọng em.","vi":"Các bạn cùng lớp cười nhạo Vy khi em kể về ước mơ của mình, tức là không coi trọng em."},
+  {"q":"6. Vy is a confident student.","options":["True","False"],"answer":1,"explanation":"Cô Kate phải khuyên \"Don't be nervous... You should be more confident\" — nghĩa là Vy hiện CHƯA tự tin.","vi":"Vy hiện chưa tự tin — cô Kate phải động viên em tự tin hơn."},
+  {"q":"7. Ms Kate advised Vy to be calm and to prove her abilities.","options":["True","False"],"answer":0,"explanation":"\"Don't be nervous... show others what you can do\" ≈ giữ bình tĩnh và thể hiện khả năng của mình.","vi":"Cô Kate khuyên Vy đừng lo lắng (giữ bình tĩnh) và thể hiện cho người khác thấy khả năng của mình."},
+  {"q":"8. Ms Kate will try to deal with Vy's problem in the class.","options":["True","False"],"answer":1,"explanation":"Cô Kate nói sẽ mở thảo luận \"in the school forum\" (trong diễn đàn trường), KHÔNG PHẢI \"in the class\" (trong lớp học).","vi":"Cô Kate sẽ mở một buổi thảo luận trong diễn đàn của trường, không phải trong lớp học."}
+ ]},
+{"part":"D. READING (SBT trang 22-24)","roman":"RD.3","navLabel":"RD Ex3","title":"Ex 3. Read the school bulletin and circle the correct answer A, B, C, or D","icon":"file-lines","instructions":"Nguyên văn SBT — bản tin của trường Bright Stars Middle School.","type":"mcq","instant":true,
+ "passage": BRIGHT_STARS_PASSAGE,
+ "questions":[
+  {"q":"1. Bright Stars Middle School sends a bulletin ___________.","options":["every day","very week","each month","yearly"],"answer":0,"explanation":"Tiêu đề bản tin ghi rõ \"DAILY BULLETIN\" (bản tin hằng ngày).","vi":"Trường Bright Stars gửi bản tin mỗi ngày."},
+  {"q":"2. Students have to sign up for PET between ___________.","options":["11th and 14th","12th and 15th","11th and 15th","20th and 25th"],"answer":2,"explanation":"\"registration begins on Tuesday, 11th October... Please sign up before the 15th\" → đăng ký từ ngày 11 đến trước ngày 15, tức là trong khoảng 11-15.","vi":"Học sinh phải đăng ký thi PET trong khoảng từ ngày 11 đến ngày 15."},
+  {"q":"3. Link Team helps students who ___________.","options":["are going to leave the school","are going to enter the school","are school students and have problems","left school but have problems"],"answer":1,"explanation":"\"If you want to help our new juniors\" — Link Team hỗ trợ các em học sinh khoá mới sắp vào trường.","vi":"Link Team giúp đỡ những học sinh sắp vào trường (tân sinh)."},
+  {"q":"4. The Swimming Club is for ___________.","options":["all students except 8th and 9th grade students","8th grade students only","all 8th and 9th grade students","9th grade students only"],"answer":2,"explanation":"\"Attention 8th and 9th grade students. If you plan to join the Swimming Club...\"","vi":"Câu lạc bộ Bơi lội dành cho tất cả học sinh khối 8 và khối 9."},
+  {"q":"5. Students can join the charity jogging event by ___________.","options":["replying to the email","completing the application","calling the office","attending an interview"],"answer":1,"explanation":"\"It's an application to join the school's charity jogging event... please fill in the application\" — cần điền đơn đăng ký.","vi":"Học sinh tham gia sự kiện chạy bộ từ thiện bằng cách điền đơn đăng ký."},
+  {"q":"6. The photo contest will ___________.","options":["finish in two weeks","not require registration","be only for students with cameras","take place in two weeks"],"answer":3,"explanation":"\"Only two weeks left to grab your camera... Get ready for this year's photo contest\" — cuộc thi ảnh sẽ diễn ra trong hai tuần tới.","vi":"Cuộc thi ảnh sẽ diễn ra trong vòng hai tuần tới."},
+  {"q":"7. When will the Chess Club be open?","options":["This Saturday.","In November.","From 9:00 a.m.","In October."],"answer":1,"explanation":"\"Chess Club: Open next month.\" Bản tin ghi ngày 10 tháng 10, nên \"tháng sau\" = tháng 11.","vi":"Câu lạc bộ Cờ vua sẽ mở vào tháng 11 (tháng sau, tính từ ngày ra bản tin là 10/10)."}
+ ]},
+
+/* ============== E. WRITING (SBT trang 24-25) — nguyên văn SBT ============== */
+{"part":"E. WRITING (SBT trang 24-25)","roman":"WR.1","navLabel":"WR Ex1","title":"Ex 1. Make sentences using the words and phrases below. You can add necessary words","icon":"pen-fancy","instructions":"Nguyên văn SBT — viết câu hoàn chỉnh từ các từ/cụm từ gợi ý, có thể thêm từ cần thiết.","type":"essay",
+ "questions":[
+  {"q":"1. Teenagers / should / play / sport / keep fit.","sample":"Teenagers should play sport to keep fit."},
+  {"q":"2. Teens / may feel / stressed / when / classmates / do better / than them / school.","sample":"Teens may feel stressed when their classmates do better than them at school."},
+  {"q":"3. Some teens / participate / school clubs / make / new friends.","sample":"Some teens participate in school clubs to make new friends."},
+  {"q":"4. Some teens / feel / pressure / because / they / want / fit / a group.","sample":"Some teens feel pressure because they want to fit in a group."},
+  {"q":"5. main causes / teen stress / include / peer pressure / schoolwork pressure / pressure from parents.","sample":"The main causes of teen stress include peer pressure, schoolwork pressure, and pressure from parents."}
+ ]},
+{"part":"E. WRITING (SBT trang 24-25)","roman":"WR.2","navLabel":"WR Ex2","title":"Ex 2. Circle A, B, C, or D to indicate the sentence that is closest in meaning to the sentence given","icon":"circle-check","instructions":"Nguyên văn SBT.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. I'm interested in participating in some club activities.","options":["Joining in some club activities is not my interest.","My interest is to joining in some club activities.","I'm interested in joining in some club activities.","Club activities are what I am interested in."],"answer":2,"explanation":"\"participating in\" và \"joining in\" đồng nghĩa (tham gia); C giữ nguyên cấu trúc \"be interested in + V-ing\" đúng ngữ pháp, chỉ đổi từ đồng nghĩa.","vi":"Tôi thích tham gia vào một số hoạt động câu lạc bộ."},
+  {"q":"2. I play chess to relax, but I'm now confident enough to enter competitions.","options":["Although I play chess to relax, but I'm now confident enough to enter competitions.","Although I play chess to relax, I'm now confident enough to enter competitions.","I'm now confident enough to enter competitions in spite of being relaxed.","I play chess to relax, and I'm now confident enough to enter competitions."],"answer":1,"explanation":"B dùng \"Although\" thay cho \"but\" một cách đúng ngữ pháp (không lặp lại \"but\" — lỗi ở đáp án A); giữ nguyên nghĩa nhượng bộ.","vi":"Tôi chơi cờ vua để thư giãn, nhưng giờ tôi đã đủ tự tin để tham gia các cuộc thi."},
+  {"q":"3. Teenagers join the Teen Line forum as they enjoy chatting with other teens.","options":["Teenagers join the Teen Line forum, so they enjoy chatting with other teens.","Teenagers join the Teen Line forum although they enjoy chatting with other teens.","Teenagers join the Teen Line forum, but they enjoy chatting with other teens.","Teenagers join the Teen Line forum because they enjoy chatting with other teens."],"answer":3,"explanation":"\"as\" ở đây mang nghĩa \"vì, bởi vì\" (lý do) — tương đương với \"because\" ở đáp án D.","vi":"Thanh thiếu niên tham gia diễn đàn Teen Line vì các em thích trò chuyện với những bạn cùng lứa tuổi khác."},
+  {"q":"4. Although teens don't know how to avoid bullies, they don't want to tell their teachers.","options":["If teens knew how to avoid bullies, they would not tell their teachers.","Teens don't know how to avoid bullies, but they don't want to tell their teachers.","Teens will tell their teachers although they know how to avoid bullies.","Teens know how to avoid bullies; however, they will tell their teachers."],"answer":1,"explanation":"B dùng \"but\" thay cho \"Although\", giữ nguyên đúng 2 vế nghĩa: không biết cách tránh bắt nạt VÀ không muốn kể với giáo viên.","vi":"Mặc dù không biết cách tránh những kẻ bắt nạt, thanh thiếu niên không muốn kể với giáo viên của mình."},
+  {"q":"5. If you don't stop spending so much time playing video games, you will get addicted.","options":["You should stop spending so much time playing video games; otherwise, you will get addicted.","You should stop spending so much time playing video games; however, you will get addicted.","Stop spending so much time playing video games, so you will get addicted.","Although you stop spending so much time playing video games, you will get addicted."],"answer":0,"explanation":"A dùng \"otherwise\" (nếu không) diễn đạt đúng ý câu điều kiện gốc: NÊN dừng chơi game, NẾU KHÔNG sẽ bị nghiện.","vi":"Bạn nên dừng dành quá nhiều thời gian chơi trò chơi điện tử; nếu không, bạn sẽ bị nghiện."}
+ ]},
+{"part":"E. WRITING (SBT trang 24-25)","roman":"WR.3","navLabel":"WR Ex3","title":"Ex 3. Use the mind map to write a paragraph of about 80-100 words about how your classmates should deal with stress","icon":"pen-fancy","instructions":"Nguyên văn SBT — sơ đồ tư duy gồm 5 ý: Talk with friends and teachers; Turn off computers and smartphones; Go to bed early and get enough sleep; Avoid classmates that annoy them; Do more exercise.","type":"essay",
+ "questions":[
+  {"q":"Write your paragraph below (80-100 words), using the ideas from the mind map: Talk with friends and teachers / Turn off computers and smartphones / Go to bed early and get enough sleep / Avoid classmates that annoy them / Do more exercise.","starter":"There are several ways my classmates deal with stress.","sample":"There are several ways my classmates deal with stress. First, many of them talk with their friends and teachers about their problems instead of keeping everything to themselves. Second, some classmates turn off their computers and smartphones for a while to avoid unnecessary pressure from social media. Going to bed early and getting enough sleep is another common way, as tired students often feel more stressed. Some classmates also try to avoid friends who annoy them, so they can stay calm. Finally, doing more exercise, such as playing sports, helps my classmates relax and feel more energetic. These simple habits help us manage stress better."}
+ ]}
+]};
+
+const completedTasks = new Set();
+const scores = {};
+const TOTAL_TASKS = DATA.sections.length;
+
+function normalize(str){
+  return (str||'').trim().toLowerCase()
+    .replace(/['']/g,"'")
+    .replace(/["""]/g,'')
+    .replace(/[.,!?;:]/g,'')
+    .replace(/\s+/g,' ');
+}
+function widthFor(ref){ const l=(ref||'').length; return l<7?'w-24':l<16?'w-40':'w-full'; }
+
+if('speechSynthesis' in window){ window.speechSynthesis.onvoiceschanged = ()=>{}; }
+function speak(text, btn){
+  try{
+    if(!('speechSynthesis' in window)){ alert('Trình duyệt của bạn không hỗ trợ phát âm tự động. Hãy thử Chrome, Edge hoặc Safari.'); return; }
+    window.speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='en-US'; u.rate=0.9; u.pitch=1;
+    const voices=window.speechSynthesis.getVoices();
+    const en=voices.find(v=>/en[-_]?(us|gb)/i.test(v.lang)) || voices.find(v=>/^en/i.test(v.lang));
+    if(en) u.voice=en;
+    if(btn){ btn.classList.add('speaking'); u.onend=()=>btn.classList.remove('speaking'); u.onerror=()=>btn.classList.remove('speaking'); }
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+function buildNav(){
+  const nav=document.getElementById('navWrap');
+  let lastPart=null; let html='';
+  DATA.sections.forEach((s,i)=>{
+    if(s.part!==lastPart){
+      if(lastPart!==null) html += `<div class="navgroup-sep"></div>`;
+      lastPart=s.part;
+    }
+    html += `<button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600${i===0?' active':''}" id="navbtn_${i}" onclick="showTab(${i})" title="${s.part||''}">${s.roman}</button>`;
+  });
+  nav.innerHTML = html;
+  document.getElementById('progressText').textContent = `0 / ${TOTAL_TASKS} phần`;
+}
+
+function optionLetter(i){ return ['A','B','C','D','E','F'][i]; }
+
+function isCorrectAnswer(q, chosen){
+  if(chosen===-1 || chosen===undefined || chosen===null) return false;
+  if(Array.isArray(q.answer)) return q.answer.includes(chosen);
+  return chosen === q.answer;
+}
+function correctAnswerLabel(q){
+  if(Array.isArray(q.answer)) return q.answer.map(a=>`${optionLetter(a)}. ${q.options[a]}`).join(' hoặc ');
+  return `${optionLetter(q.answer)}. ${q.options[q.answer]}`;
+}
+function markOptions(idx,i,q,chosen){
+  q.options.forEach((o,j)=>{
+    const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+    if(!el) return;
+    el.classList.remove('correct-opt','wrong-opt');
+    const isCorrectOpt = Array.isArray(q.answer) ? q.answer.includes(j) : j===q.answer;
+    if(isCorrectOpt) el.classList.add('correct-opt');
+    else if(j===chosen) el.classList.add('wrong-opt');
+  });
+}
+
+function renderPassage(p, idx){
+  if(!p) return '';
+  const viBlock = p.vi ? `<button onclick="togglePassageVI(${idx})" class="text-xs font-bold bg-white border border-teal-200 text-teal-700 px-3 py-1 rounded-full hover:scale-105 transition mt-2"><i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt</button>
+    <p id="passage_vi_${idx}" class="vi-hidden mt-2 pt-2 border-t border-teal-200 italic text-slate-500">${p.vi}</p>` : '';
+  return `<div class="passage-box mb-4"><p class="font-extrabold text-teal-900 mb-2"><i class="fa-solid fa-book mr-1"></i>${p.title||''}</p><p id="passage_en_${idx}">${p.html}</p>${viBlock}</div>`;
+}
+function renderDict(d, idx){
+  if(!d) return '';
+  const viBlock = d.vi ? `<button onclick="togglePassageVI(${idx})" class="text-xs font-bold bg-white border border-amber-300 text-amber-700 px-3 py-1 rounded-full hover:scale-105 transition mt-2"><i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt</button>
+    <p id="passage_vi_${idx}" class="vi-hidden mt-2 pt-2 border-t border-amber-300 text-slate-600">${d.vi}</p>` : '';
+  return `<div class="dict-box mb-4"><p class="font-extrabold text-amber-800 mb-1"><i class="fa-solid fa-book-bookmark mr-1"></i>${d.word} <span class="font-normal italic">${d.ipa||''}</span> <span class="font-normal">${d.pos?('('+d.pos+')'):''}</span></p>${d.senses.map(x=>`<p class="mb-1">✱ ${x.def}</p>${(x.examples||[]).map(e=>`<p class="ml-4 italic text-slate-600">• ${e}</p>`).join('')}`).join('')}${viBlock}</div>`;
+}
+function renderRuleBox(rb){
+  if(!rb) return '';
+  return `<div class="rule-box mb-4"><i class="fa-solid fa-lightbulb mr-1 text-cyan-600"></i>${rb}</div>`;
+}
+
+function renderSection(s, idx){
+  let inner = `<p class="part-label">${s.part||''}</p>`;
+  inner += `<h2 class="text-xl md:text-2xl font-extrabold text-teal-900 flex items-center gap-2 mb-1"><i class="fa-solid fa-${s.icon||'circle-check'} text-cyan-600"></i> ${s.roman}. ${s.title}</h2>`;
+  if(s.instructions) inner += `<p class="text-sm text-slate-500 mb-3 italic">${s.instructions}</p>`;
+  inner += renderRuleBox(s.ruleBox);
+  inner += renderPassage(s.passage, idx);
+  inner += renderDict(s.dict, idx);
+
+  inner += `<div class="space-y-4">`;
+  s.questions.forEach((q,i)=>{
+    inner += `<div class="task-card bg-white rounded-2xl shadow-md p-4" id="qblock_${idx}_${i}">`;
+    if(q.image) inner += `<div class="mb-3">${q.image}</div>`;
+    inner += `<p class="font-bold text-slate-800 mb-2 whitespace-pre-line"><span class="bg-slate-100 text-slate-600 text-xs font-black px-2 py-1 rounded-lg mr-2">${i+1}</span>${q.q}</p>`;
+    if(s.type==='mcq'){
+      inner += `<div class="grid sm:grid-cols-2 gap-2">`;
+      q.options.forEach((opt,j)=>{
+        const ipa = q.ipas ? q.ipas[j] : null;
+        const optVi = q.vis ? q.vis[j] : null;
+        const cleanWord = opt.replace(/<[^>]+>/g,'');
+        const wordBlock = (ipa || optVi)
+          ? `<span class="flex flex-col leading-tight"><span>${opt}</span>${ipa?`<span class="text-[10px] text-slate-400 font-normal mcq-detail-hidden">${ipa}</span>`:''}${optVi?`<span class="text-[10px] text-emerald-500 font-normal italic mcq-detail-hidden">${optVi}</span>`:''}</span>
+             <button type="button" data-w="${cleanWord}" onclick="event.stopPropagation();event.preventDefault();speak(this.dataset.w,this)" class="speak-btn w-6 h-6 rounded-full bg-teal-100 text-teal-700 hover:bg-teal-200 hover:scale-110 transition flex items-center justify-center ml-auto shrink-0 mcq-detail-hidden" title="Nghe phát âm" aria-label="Nghe phát âm ${cleanWord}"><i class="fa-solid fa-volume-high text-[10px]"></i></button>`
+          : `<span>${opt}</span>`;
+        inner += `<label class="option-label rounded-xl px-3 py-2 text-sm font-semibold flex items-center gap-2" id="opt_${idx}_${i}_${j}" onclick="selectMcq(${idx},${i},${j})">
+          <input type="radio" name="mcq_${idx}_${i}" class="accent-teal-700" style="display:none">
+          <span class="font-black text-teal-700">${optionLetter(j)}.</span> ${wordBlock}
+        </label>`;
+      });
+      inner += `</div>`;
+    } else if(s.type==='fill'){
+      const w = widthFor(q.answer);
+      const famBlock = q.family ? `<div class="wordfam-box mt-2">${q.family.map(f=>`<div>• ${f}</div>`).join('')}</div>` : '';
+      inner += `<div class="flex items-center gap-2 flex-wrap">`;
+      if(q.hint) inner += `<span class="blank-tag text-xs">${q.hint}</span>`;
+      inner += `<input type="text" id="inp_${idx}_${i}" class="answer-input ${w} px-3 py-1.5 rounded-lg text-sm font-semibold" placeholder="Nhập đáp án..." autocomplete="off" spellcheck="false"></div>${famBlock}`;
+    } else if(s.type==='sentence'){
+      const instantAttr = s.instant ? ` oninput="gradeOneSentence(${idx},${i})"` : '';
+      if(q.starter){
+        inner += `<div class="flex items-center gap-3 w-full flex-wrap">
+          <span class="text-slate-800 font-extrabold text-base whitespace-nowrap">${q.starter}</span>
+          <input type="text" id="inp_${idx}_${i}" class="answer-input flex-1 min-w-[180px] px-3 py-2 rounded-lg text-sm font-semibold" placeholder="..." autocomplete="off" spellcheck="false"${instantAttr}>
+        </div>`;
+      } else {
+        inner += `<input type="text" id="inp_${idx}_${i}" class="answer-input w-full px-3 py-2 rounded-lg text-sm font-semibold" placeholder="Viết câu trả lời..." autocomplete="off" spellcheck="false"${instantAttr}>`;
+      }
+    } else if(s.type==='essay'){
+      const starterBlock = q.starter ? `<p class="text-slate-800 font-extrabold text-sm mb-2">${q.starter} ...</p>` : '';
+      inner += `${starterBlock}<textarea id="inp_${idx}_${i}" rows="5" class="answer-input w-full px-3 py-2 rounded-lg text-sm font-semibold" placeholder="Viết câu trả lời của em vào đây..."></textarea>`;
+    }
+    inner += `<div class="explanation-box mt-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-sm text-blue-800" id="fb_${idx}_${i}"></div>`;
+    inner += `</div>`;
+  });
+  inner += `</div>`;
+
+  inner += `<div class="flex flex-wrap gap-2 mt-5">
+    <button onclick="checkSection(${idx})" class="bg-gradient-to-r from-teal-900 to-cyan-600 text-white font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-check mr-1"></i>Kiểm tra</button>
+    <button onclick="revealSection(${idx})" class="bg-white border-2 border-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-eye mr-1"></i>Xem đáp án</button>
+    <button onclick="resetSection(${idx})" class="bg-white border-2 border-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-rotate-left mr-1"></i>Làm lại</button>
+    <span id="score_${idx}" class="hidden ml-auto self-center font-extrabold text-emerald-600 text-sm score-badge"></span>
+  </div>`;
+
+  return `<section id="tab-${idx}" class="section-page${idx===0?' active':''} space-y-4">${inner}</section>`;
+}
+
+function buildMain(){
+  const main=document.getElementById('mainWrap');
+  main.innerHTML += DATA.sections.map((s,i)=>renderSection(s,i)).join('');
+}
+
+function togglePassageVI(idx){ const el=document.getElementById(`passage_vi_${idx}`); if(el) el.classList.toggle('vi-hidden'); }
+function selectMcq(idx,i,j){
+  document.querySelectorAll(`[id^="opt_${idx}_${i}_"]`).forEach(el=>el.classList.remove('selected'));
+  document.getElementById(`opt_${idx}_${i}_${j}`).classList.add('selected');
+  document.getElementById(`opt_${idx}_${i}_${j}`).dataset.chosen = j;
+  if(DATA.sections[idx].instant){ gradeOneMcq(idx,i); }
+}
+
+function gradeOneMcq(idx,i){
+  const s=DATA.sections[idx], q=s.questions[i];
+  const qblock=document.getElementById(`qblock_${idx}_${i}`);
+  if(qblock) qblock.classList.add('show-mcq-detail');
+  const chosenEl=document.querySelector(`#tab-${idx} [id^="opt_${idx}_${i}_"].selected`);
+  const chosen = chosenEl ? parseInt(chosenEl.dataset.chosen) : -1;
+  const ok = isCorrectAnswer(q, chosen);
+  markOptions(idx,i,q,chosen);
+  const fb=document.getElementById(`fb_${idx}_${i}`);
+  fb.innerHTML = feedbackHTML(ok, correctAnswerLabel(q), q.explanation, q.vi, q.note);
+  fb.classList.add('show');
+}
+
+function gradeOneSentence(idx,i){
+  const q=DATA.sections[idx].questions[i];
+  const inp=document.getElementById(`inp_${idx}_${i}`);
+  const fb=document.getElementById(`fb_${idx}_${i}`);
+  if(!inp || !fb) return;
+  const raw=inp.value.trim();
+  if(raw===''){
+    inp.classList.remove('correct-input','wrong-input');
+    fb.classList.remove('show'); fb.innerHTML='';
+    return;
+  }
+  const val=normalize(inp.value);
+  const acc=(q.accepted||[q.answer]).map(normalize);
+  const ok = acc.includes(val);
+  inp.classList.remove('correct-input','wrong-input');
+  inp.classList.add(ok?'correct-input':'wrong-input');
+  fb.innerHTML = feedbackHTML(ok, q.answer, q.explanation, q.vi, q.note);
+  fb.classList.add('show');
+}
+
+function feedbackHTML(ok, answerLabel, explanation, vi, note){
+  const okLine = ok? `<span class="text-emerald-700 font-bold">✅ Chính xác!</span>` : `<span class="text-rose-600 font-bold">❌ Chưa đúng.</span> Đáp án đúng: <b>${answerLabel}</b>`;
+  const expLine = explanation? `<br><span class="text-blue-700">💡 ${explanation}</span>` : '';
+  const viLine = vi? `<span class="text-slate-500">📖 Nghĩa: <i>${vi}</i></span>` : '';
+  const noteLine = note? `<br><span class="text-teal-600">📐 Công thức: <b>${note}</b></span>` : '';
+  if(note){
+    return (viLine?viLine+'<br>':'') + okLine + expLine + noteLine;
+  }
+  return okLine + expLine + (viLine?'<br>'+viLine:'') + noteLine;
+}
+
+function checkSection(idx){
+  const s=DATA.sections[idx];
+  let correct=0;
+  s.questions.forEach((q,i)=>{
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    if(s.type==='essay'){
+      const ta=document.getElementById(`inp_${idx}_${i}`);
+      fb.innerHTML = `<span class="text-green-700 font-bold">✍️ Cảm ơn em đã hoàn thành bài viết!</span><br><span class="text-blue-700">💡 Câu/đoạn văn gợi ý:</span><br><span class="text-slate-600 italic whitespace-pre-line">${q.sample}</span>`;
+      fb.classList.add('show');
+      correct++;
+      return;
+    }
+    let ok=false, answerLabel='';
+    if(s.type==='mcq'){
+      const chosenEl=document.querySelector(`#tab-${idx} [id^="opt_${idx}_${i}_"].selected`);
+      const chosen = chosenEl ? parseInt(chosenEl.dataset.chosen) : -1;
+      ok = isCorrectAnswer(q, chosen);
+      answerLabel = correctAnswerLabel(q);
+      markOptions(idx,i,q,chosen);
+      const qblock=document.getElementById(`qblock_${idx}_${i}`);
+      if(qblock) qblock.classList.add('show-mcq-detail');
+    } else {
+      const inp=document.getElementById(`inp_${idx}_${i}`);
+      const val=normalize(inp.value);
+      const acc=(q.accepted||[q.answer]).map(normalize);
+      ok = val!=='' && acc.includes(val);
+      inp.classList.remove('correct-input','wrong-input');
+      inp.classList.add(ok?'correct-input':'wrong-input');
+      answerLabel = q.answer;
+    }
+    if(ok) correct++;
+    fb.innerHTML = feedbackHTML(ok, answerLabel, q.explanation, q.vi, q.note);
+    fb.classList.add('show');
+  });
+  const total=s.questions.length;
+  scores[idx]={correct,total};
+  const scoreEl=document.getElementById(`score_${idx}`);
+  scoreEl.textContent = `🏆 Điểm: ${correct}/${total}`;
+  scoreEl.classList.remove('hidden');
+  completedTasks.add(idx);
+  updateProgress();
+  if(completedTasks.size===TOTAL_TASKS) setTimeout(showCompletion,500);
+}
+
+function revealSection(idx){
+  const s=DATA.sections[idx];
+  s.questions.forEach((q,i)=>{
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    if(s.type==='essay'){
+      fb.innerHTML = `👁️ Câu/đoạn văn gợi ý:<br><span class="text-slate-600 italic whitespace-pre-line">${q.sample}</span>`;
+      fb.classList.add('show');
+      return;
+    }
+    let answerLabel = s.type==='mcq' ? correctAnswerLabel(q) : q.answer;
+    if(s.type==='mcq'){
+      markOptions(idx,i,q,-1);
+      const qblock=document.getElementById(`qblock_${idx}_${i}`);
+      if(qblock) qblock.classList.add('show-mcq-detail');
+    }
+    fb.innerHTML = `👁️ Đáp án: <b>${answerLabel}</b>` + (q.explanation?`<br><span class="text-blue-700">💡 ${q.explanation}</span>`:'') + (q.vi?`<br><span class="text-slate-500">📖 Nghĩa: <i>${q.vi}</i></span>`:'') + (q.note?`<br><span class="text-teal-600">📐 Công thức: <b>${q.note}</b></span>`:'');
+    fb.classList.add('show');
+  });
+}
+
+function resetSection(idx){
+  const s=DATA.sections[idx];
+  s.questions.forEach((q,i)=>{
+    if(s.type==='mcq'){
+      q.options.forEach((o,j)=>{
+        const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+        el.classList.remove('correct-opt','wrong-opt','selected');
+        delete el.dataset.chosen;
+      });
+    } else if(s.type==='essay'){
+      const ta=document.getElementById(`inp_${idx}_${i}`);
+      if(ta){ ta.value=''; }
+    } else {
+      const inp=document.getElementById(`inp_${idx}_${i}`);
+      if(inp){ inp.value=''; inp.classList.remove('correct-input','wrong-input'); }
+    }
+    const qblock=document.getElementById(`qblock_${idx}_${i}`);
+    if(qblock) qblock.classList.remove('show-mcq-detail');
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    fb.classList.remove('show'); fb.innerHTML='';
+  });
+  const scoreEl=document.getElementById(`score_${idx}`); scoreEl.classList.add('hidden');
+  completedTasks.delete(idx); delete scores[idx]; updateProgress();
+}
+
+function showTab(idx){
+  document.querySelectorAll('.section-page').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active'); b.classList.add('text-slate-600');});
+  document.getElementById(`tab-${idx}`).classList.add('active');
+  const btn=document.getElementById(`navbtn_${idx}`);
+  btn.classList.add('active'); btn.classList.remove('text-slate-600');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updateProgress(){
+  const done=completedTasks.size;
+  document.getElementById('progressText').textContent = `${done} / ${TOTAL_TASKS} phần`;
+  document.getElementById('progressBar').style.width = `${(done/TOTAL_TASKS)*100}%`;
+}
+
+function showCompletion(){
+  fireConfetti();
+  const banner=document.getElementById('completionBanner');
+  banner.classList.remove('hidden'); banner.classList.add('show');
+  let c=0,t=0; Object.values(scores).forEach(s=>{c+=s.correct; t+=s.total;});
+  document.getElementById('finalScoreDisplay').textContent = `🎯 ${c} / ${t} câu đúng`;
+}
+function closeBanner(){ const b=document.getElementById('completionBanner'); b.classList.remove('show'); b.classList.add('hidden'); }
+function fireConfetti(){
+  const wrap=document.getElementById('confettiWrap'); wrap.innerHTML='';
+  const colors=['#134e4a','#0f766e','#0891b2','#06b6d4','#f59e0b','#22c55e'];
+  for(let i=0;i<90;i++){
+    const p=document.createElement('div'); p.className='confetti-piece';
+    p.style.cssText=`left:${Math.random()*100}vw;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>0.5?'50%':'2px'};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*0.8}s;`;
+    wrap.appendChild(p);
+  }
+  setTimeout(()=>{wrap.innerHTML='';},4000);
+}
+
+buildNav();
+buildMain();
+updateProgress();
+</script>
+</body>
+</html>
