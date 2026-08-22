@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#4c1d95">
+<title>Unit 3 Grammar Game: Câu ghép &amp; Từ nối - Tiếng Anh 8</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+  :root{
+    --violet:#4c1d95; --violet2:#7c3aed; --pink:#db2777;
+    --green:#58cc02; --green-dark:#4aa302; --blue:#1cb0f6; --red:#ff4b4b; --gold:#ffc800;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html{ -webkit-text-size-adjust: 100%; }
+  body { font-family:'Nunito',sans-serif; background:#faf5ff; margin:0; color:#3c3c3c; }
+  button,[onclick]{ touch-action: manipulation; -webkit-user-select:none; user-select:none; }
+  input{ -webkit-user-select:text; user-select:text; }
+  h1,h2,h3,.font-baloo{ font-family:'Baloo 2','Baloo_2',sans-serif; }
+
+  #app{ min-height:100vh; padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
+  .topbar{ position:sticky; top:0; z-index:40; background:#fff; border-bottom:2px solid #eee; padding: calc(.55rem + env(safe-area-inset-top)) 1rem .55rem; display:flex; align-items:center; justify-content:space-between; }
+  .footer-bar{ position:fixed; left:0; right:0; bottom:0; z-index:50; background:#fff; border-top:2px solid #eee; padding:.8rem 1rem calc(.8rem + env(safe-area-inset-bottom)); }
+
+  .hero-gradient{ background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 55%, #db2777 100%); }
+
+  .btn3d{ border-bottom:4px solid; transition: transform .06s, border-bottom-width .06s; cursor:pointer; }
+  .btn3d:active{ transform: translateY(3px); border-bottom-width:1px; }
+  .btn-green{ background:var(--green); border-color:var(--green-dark); color:#fff; }
+  .btn-green:disabled{ background:#e5e5e5; border-color:#d0d0d0; color:#afafaf; cursor:not-allowed; }
+  .btn-white{ background:#fff; border-color:#e5e5e5; color:#4b4b4b; }
+  .btn-red{ background:#fff; border-color:#e5e5e5; color:var(--red); }
+
+  .path-wrap{ max-width:480px; margin:0 auto; padding: 1.5rem 1rem 2rem; }
+  .group-label{ text-align:center; font-weight:900; font-size:.78rem; letter-spacing:.04em; color:#6d28d9; background:#f3e8ff; border:2px solid #ddd6fe; border-radius:999px; padding:.4rem 1rem; display:inline-block; margin: 0 auto 1.4rem; }
+  .group-wrap{ text-align:center; }
+  .stage-node{ width:82px; height:82px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2rem; border-bottom:6px solid; position:relative; transition:transform .15s; flex:none; }
+  .stage-node:active{ transform: scale(.94); }
+  .stage-node.status-mastered{ background:var(--gold); border-color:#c99400; }
+  .stage-node.status-in_progress{ background:var(--violet2); border-color:#4c1d95; }
+  .stage-node.status-needs_practice{ background:var(--red); border-color:#c53030; }
+  .stage-node.status-not_started{ background:#fff; border-color:#e5e5e5; color:#afafaf; }
+  .stage-row{ display:flex; align-items:center; gap:1rem; margin-bottom:1.6rem; }
+  .stage-row.right{ flex-direction:row-reverse; }
+  .status-dot{ position:absolute; bottom:-6px; right:-6px; width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.75rem; background:#fff; border:2px solid #e5e5e5; }
+
+  .opt-card{ border:2px solid #e5e5e5; border-bottom-width:4px; border-radius:1rem; padding:.85rem 1rem; cursor:pointer; transition: all .12s; font-weight:800; display:flex; align-items:center; gap:.5rem; }
+  .opt-card:active{ transform: translateY(2px); }
+  .opt-card.selected{ border-color:var(--blue); background:#ddf4ff; }
+  .opt-card.correct{ border-color:var(--green-dark); background:#d7ffb8; color:#345; }
+  .opt-card.wrong{ border-color:#c53030; background:#ffdfe0; color:#345; }
+  .opt-card.dim{ opacity:.5; }
+  .speak-mini{ margin-left:auto; width:26px; height:26px; border-radius:50%; background:#ede9fe; color:#5b21b6; display:flex; align-items:center; justify-content:center; flex:none; }
+  .speak-mini.speaking{ animation: pulseSpeak .7s ease-in-out infinite; }
+  @keyframes pulseSpeak{ 0%,100%{transform:scale(1);} 50%{transform:scale(1.2);} }
+
+  .xp-pill{ background:#fff7d6; border:2px solid var(--gold); color:#8a6d00; border-radius:999px; padding:.15rem .7rem; font-weight:900; font-size:.8rem; }
+  .streak-pill{ background:#fdf0ff; border:2px solid var(--violet2); color:#5b21b6; border-radius:999px; padding:.15rem .7rem; font-weight:900; font-size:.8rem; }
+  .progress-track{ background:#e5e5e5; border-radius:999px; height:14px; overflow:hidden; }
+  .progress-fill{ background:var(--violet2); height:100%; transition: width .4s ease; }
+
+  .confetti-wrap{ position:fixed; inset:0; pointer-events:none; z-index:9999; }
+  .confetti-piece{ position:absolute; width:10px; height:10px; border-radius:2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall{ 0%{transform:translateY(-20px) rotate(0deg); opacity:1;} 100%{transform:translateY(100vh) rotate(720deg); opacity:0;} }
+  .pop-in{ animation: popIn .3s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn{ from{transform:scale(.6); opacity:0;} to{transform:scale(1); opacity:1;} }
+
+  .screen{ display:none; }
+  .screen.active{ display:block; }
+  .badge-chip{ background:#fff; border:2px solid var(--gold); border-radius:1rem; padding:.6rem; text-align:center; }
+
+  .theory-box{ background:#f5f3ff; border:2px solid #ddd6fe; border-radius:1rem; padding:1rem 1.1rem; margin-bottom:.7rem; font-size:.9rem; line-height:1.85; }
+  .theory-box b{ color:#5b21b6; }
+  .steps-box{ background:#ecfeff; border:2px solid #a5f3fc; border-radius:1rem; padding:1rem 1.1rem; margin-bottom:.7rem; font-size:.88rem; line-height:1.85; color:#155e75; }
+  .table-box{ background:#fff; border:2px solid #e5e5e5; border-radius:1rem; padding:.8rem .9rem; margin-bottom:.7rem; font-size:.82rem; }
+  .table-box table{ width:100%; border-collapse:collapse; }
+  .table-box td,.table-box th{ padding:.35rem .4rem; border-bottom:1px solid #eee; text-align:left; vertical-align:top; }
+  .table-box th{ color:#7c3aed; font-weight:900; font-size:.75rem; text-transform:uppercase; }
+  .vi-box{ background:#fffbeb; border:2px solid #fde68a; border-radius:1rem; padding:.8rem 1rem; margin-top:.5rem; font-size:.86rem; line-height:1.75; color:#78350f; display:none; }
+  .vi-box.show{ display:block; }
+  .cat-tag{ display:inline-block; }
+  .src-tag{ display:inline-block; font-size:9px; font-weight:900; padding:.1rem .5rem; border-radius:999px; margin-left:.4rem; vertical-align:middle; }
+  .src-tag.sgk{ background:#dbeafe; color:#1e40af; }
+  .src-tag.sbt{ background:#dcfce7; color:#166534; }
+</style>
+</head>
+<body>
+<div class="confetti-wrap" id="confettiWrap"></div>
+<div id="app"></div>
+<script>
+// ============================================================
+// UNIT 3 – TEENAGERS · GRAMMAR REVIEW GAME
+// Chủ điểm: Simple & Compound Sentences — các từ nối câu
+// (for, and, nor, but, or, yet, so / however, therefore, otherwise)
+// Toàn bộ câu ví dụ được lấy nguyên văn / đối chiếu từ:
+//   - SGK: GS8_Unit3_InClass_Practice.html (A Closer Look 2, Looking Back Ex3)
+//   - SBT: GS8_Unit3_Workbook_Practice.html (Vocab & Grammar Ex4-5, Writing Ex2)
+// ============================================================
+
+/* ---------------- THEORY / GUIDE CARDS (shown once before a stage starts) ---------------- */
+const THEORY_CARDS = {
+  theory: {
+    id:"theory", title:"📖 Lý thuyết: Câu đơn & Câu ghép",
+    html:`<b>Câu đơn (Simple sentence)</b> = chỉ có 1 mệnh đề độc lập (1 chủ ngữ + 1 cụm động từ chính).<br>
+    VD: <i>Minh has some problems with his schoolwork.</i><br><br>
+    <b>Câu ghép (Compound sentence)</b> = 2 mệnh đề độc lập trở lên, nối bằng:<br>
+    • <b>Liên từ kết hợp</b> (coordinating conjunctions): <b>for, and, nor, but, or, yet, so</b> — có dấu <b>phẩy (,)</b> ngay TRƯỚC từ nối.<br>
+    &nbsp;&nbsp;VD: <i>Mai bought many books, but she likes chess more.</i><br>
+    • <b>Trạng từ liên kết</b> (conjunctive adverbs): <b>however, therefore, otherwise</b> — có dấu <b>chấm phẩy (;)</b> TRƯỚC và dấu <b>phẩy (,)</b> NGAY SAU.<br>
+    &nbsp;&nbsp;VD: <i>Mark is hard-working; therefore, he usually gets high scores on exams.</i>`,
+    table: [
+      ["and","và (bổ sung ý)"], ["but","nhưng (tương phản)"], ["or","hoặc (lựa chọn)"],
+      ["so","nên (kết quả)"], ["for","bởi vì (lý do, trang trọng)"], ["yet","nhưng mà (tương phản, nhấn mạnh)"],
+      ["nor","cũng không (sau ý phủ định)"], ["however","tuy nhiên (tương phản)"],
+      ["therefore","vì vậy (kết quả)"], ["otherwise","nếu không thì (cảnh báo hậu quả)"]
+    ]
+  },
+  classify: {
+    id:"classify", title:"🔍 Mẹo nhận biết câu đơn / câu ghép",
+    html:`<b>📋 Các bước làm bài:</b><br>
+    1️⃣ Đếm số chủ ngữ + động từ CHÍNH độc lập trong câu.<br>
+    2️⃣ Nếu "and/or" chỉ nối 2 danh từ, 2 tính từ, hoặc 2 động từ của CÙNG một chủ ngữ → vẫn là <b>câu đơn</b>.<br>
+    &nbsp;&nbsp;VD: <i>Teens need good friends <u>and</u> tolerant teachers.</i> (nối 2 danh từ → câu đơn)<br>
+    3️⃣ Nếu sau từ nối có đủ CHỦ NGỮ RIÊNG + ĐỘNG TỪ RIÊNG, tạo thành một câu có nghĩa hoàn chỉnh độc lập → đó là <b>câu ghép</b>.<br>
+    &nbsp;&nbsp;VD: <i>She plays chess very well, <u>and she</u> won the first prize.</i> (có chủ ngữ + động từ riêng → câu ghép)<br>
+    💡 Mẹo nhanh: che phần sau từ nối lại — nếu phần đó vẫn đứng được một mình như 1 câu hoàn chỉnh, đó là mệnh đề độc lập.`
+  },
+  connectors: {
+    id:"connectors", title:"📋 Các bước chọn từ nối đúng",
+    html:`1️⃣ Đọc kỹ cả 2 vế câu, xác định <b>mối quan hệ về nghĩa</b> giữa chúng: bổ sung (và) – tương phản (nhưng) – kết quả (nên/vì vậy) – lựa chọn (hoặc) – lý do (vì) – cảnh báo hậu quả (nếu không thì).<br>
+    2️⃣ Xác định <b>loại từ nối</b> cần dùng: liên từ kết hợp (for/and/nor/but/or/yet/so) hay trạng từ liên kết (however/therefore/otherwise).<br>
+    3️⃣ Loại các đáp án sai về <b>NGHĨA</b> trước, sau đó kiểm tra lại <b>DẤU CÂU</b> đã cho trong đề có khớp với loại từ nối đó không (dấu phẩy → liên từ kết hợp; dấu chấm phẩy → trạng từ liên kết).<br>
+    4️⃣ Đọc lại cả câu sau khi chọn để chắc chắn câu có nghĩa hợp lý.`
+  },
+  combine: {
+    id:"combine", title:"✍️ Hướng dẫn viết câu ghép (kết hợp 2 câu)",
+    html:`<b>Bước 1:</b> Xác định mối quan hệ giữa 2 câu đơn (nhân-quả, tương phản, bổ sung, lựa chọn, cảnh báo hậu quả...).<br>
+    <b>Bước 2:</b> Chọn từ nối phù hợp với mối quan hệ đó (xem lại bảng từ nối ở phần Lý thuyết).<br>
+    <b>Bước 3:</b> Áp dụng đúng công thức dấu câu:<br>
+    &nbsp;&nbsp;• Với <b>and/but/or/so/for/yet/nor</b>: <i>Câu 1, + từ nối + câu 2.</i><br>
+    &nbsp;&nbsp;• Với <b>however/therefore/otherwise</b>: <i>Câu 1; + từ nối + , + câu 2.</i><br>
+    <b>Bước 4:</b> Đọc lại câu ghép hoàn chỉnh — kiểm tra nghĩa có hợp lý và dấu câu có đúng vị trí không.<br>
+    💡 Ở phần này, thay vì tự viết, em sẽ luyện lại kỹ năng này dưới dạng <b>trắc nghiệm</b>: chọn ra câu ghép đúng nhất trong 4 lựa chọn (các lựa chọn sai thường sai về từ nối, sai dấu câu, hoặc đảo ngược logic 2 vế).`
+  },
+  transform: {
+    id:"transform", title:"🏆 Thử thách: Viết lại câu cùng nghĩa",
+    html:`Đây là dạng bài khó nhất: chọn câu có nghĩa <b>gần nhất</b> với câu cho sẵn, thường phải đổi cấu trúc ngữ pháp (câu ghép ⇄ mệnh đề nhượng bộ/mục đích, "both...and" ⇄ "not only...but also", câu điều kiện ⇄ câu ghép với "otherwise"...).<br><br>
+    📋 <b>Các bước làm bài:</b><br>
+    1️⃣ Xác định ý chính và mối quan hệ logic của câu gốc (nguyên nhân-kết quả, tương phản, mục đích, điều kiện...).<br>
+    2️⃣ Kiểm tra từng đáp án xem có giữ ĐÚNG mối quan hệ đó không — loại ngay các đáp án đổi ngược nghĩa.<br>
+    3️⃣ Kiểm tra ngữ pháp của cấu trúc thay thế (to-V chỉ mục đích, despite + V-ing, not only...but also, otherwise...) có được dùng đúng không.`
+  }
+};
+
+/* ---------------- 1) THEORY REVIEW items (15) — dễ nhất ---------------- */
+const THEORY_ITEMS = [
+  {type:"tf", q:"A simple sentence has only ONE independent clause.", vi:"Một câu đơn chỉ có MỘT mệnh đề độc lập.", answer:true, explanation:"Đúng. Câu đơn = 1 chủ ngữ + 1 cụm động từ chính, không có mệnh đề thứ hai."},
+  {type:"tf", q:"A compound sentence needs at least TWO independent clauses joined by a connector.", vi:"Một câu ghép cần ít nhất HAI mệnh đề độc lập được nối với nhau bằng một từ nối.", answer:true, explanation:"Đúng. Mỗi mệnh đề trong câu ghép đều có thể đứng riêng thành 1 câu hoàn chỉnh."},
+  {type:"mcq", q:"'and, but, or, so, for, yet, nor' are called ___.", vi:"'and, but, or, so, for, yet, nor' được gọi là ___.", options:["coordinating conjunctions (liên từ kết hợp)","conjunctive adverbs (trạng từ liên kết)","prepositions (giới từ)","adjectives (tính từ)"], answer:0, explanation:"Đây là 7 liên từ kết hợp kinh điển, thường được nhớ bằng từ khoá FANBOYS (For-And-Nor-But-Or-Yet-So)."},
+  {type:"mcq", q:"'however, therefore, otherwise' are called ___.", vi:"'however, therefore, otherwise' được gọi là ___.", options:["coordinating conjunctions (liên từ kết hợp)","conjunctive adverbs (trạng từ liên kết)","question words (từ để hỏi)","articles (mạo từ)"], answer:1, explanation:"Đây là các trạng từ liên kết — luôn đi kèm dấu chấm phẩy (;) trước và dấu phẩy (,) sau."},
+  {type:"mcq", q:"What punctuation goes directly before a coordinating conjunction (and/but/or/so...) joining two independent clauses?", vi:"Dấu câu nào đặt ngay TRƯỚC một liên từ kết hợp (and/but/or/so...) khi nối 2 mệnh đề độc lập?", options:["comma (,)","semicolon (;)","colon (:)","no punctuation at all"], answer:0, explanation:"VD: Mai bought many books, but she likes chess more."},
+  {type:"mcq", q:"What is the correct punctuation pattern for a conjunctive adverb (however/therefore/otherwise)?", vi:"Công thức dấu câu đúng khi dùng trạng từ liên kết (however/therefore/otherwise) là gì?", options:["Clause 1; however, Clause 2.","Clause 1, however Clause 2.","Clause 1. However, Clause 2 (new sentence).","Clause 1 however Clause 2 (no punctuation)."], answer:0, explanation:"Công thức chuẩn: mệnh đề 1; trạng từ liên kết, mệnh đề 2. (Lưu ý: cách viết thành 2 câu riêng với dấu chấm cũng được chấp nhận trong văn phong ít trang trọng hơn, nhưng đáp án chuẩn nhất trong bài SGK/SBT là dùng dấu chấm phẩy.)"},
+  {type:"mcq", q:"'but' nghĩa là gì?", vi:"", options:["nhưng (tương phản)","và (bổ sung)","hoặc (lựa chọn)","nên (kết quả)"], answer:0, explanation:"but = nhưng, thể hiện sự tương phản giữa 2 vế câu."},
+  {type:"mcq", q:"'so' nghĩa là gì?", vi:"", options:["nhưng","nên (kết quả)","hoặc","tuy nhiên"], answer:1, explanation:"so = nên, thể hiện KẾT QUẢ của vế trước."},
+  {type:"mcq", q:"'or' nghĩa là gì?", vi:"", options:["hoặc (lựa chọn)","và","nên","nếu không thì"], answer:0, explanation:"or = hoặc, đưa ra một lựa chọn/khả năng khác."},
+  {type:"mcq", q:"'for' (khi dùng làm liên từ nối câu) nghĩa là gì?", vi:"", options:["và","bởi vì (lý do)","nhưng","hoặc"], answer:1, explanation:"for (liên từ) = bởi vì, nêu lý do — mang tính trang trọng hơn 'because'."},
+  {type:"mcq", q:"'however' nghĩa là gì?", vi:"", options:["tuy nhiên (tương phản)","vì vậy (kết quả)","nếu không thì","và"], answer:0, explanation:"however = tuy nhiên, thể hiện sự tương phản (giống 'but' nhưng trang trọng hơn)."},
+  {type:"mcq", q:"'therefore' nghĩa là gì?", vi:"", options:["tuy nhiên","vì vậy (kết quả)","nếu không thì","nhưng"], answer:1, explanation:"therefore = vì vậy, thể hiện KẾT QUẢ (giống 'so' nhưng trang trọng hơn)."},
+  {type:"mcq", q:"'otherwise' nghĩa là gì?", vi:"", options:["tuy nhiên","vì vậy","nếu không thì (cảnh báo hậu quả)","và"], answer:2, explanation:"otherwise = nếu không (thì), cảnh báo điều xấu sẽ xảy ra nếu KHÔNG làm theo vế trước."},
+  {type:"mcq", q:"'yet' (khi dùng để nối 2 mệnh đề) gần nghĩa nhất với từ nào?", vi:"", options:["but (nhưng)","so (nên)","or (hoặc)","for (bởi vì)"], answer:0, explanation:"yet ở đây cũng mang nghĩa tương phản như 'but', nhưng nhấn mạnh hơn."},
+  {type:"tf", q:"'nor' is used after a negative idea to add another negative idea (e.g. 'He doesn't like tea, nor does he like coffee.').", vi:"'nor' được dùng sau một ý phủ định để thêm một ý phủ định khác.", answer:true, explanation:"Đúng — và lưu ý mệnh đề sau 'nor' phải đảo ngữ (trợ động từ đứng trước chủ ngữ)."}
+];
+
+/* ---------------- 2) CLASSIFY items (10) — SGK A Closer Look 2, Ex1 & Ex2 ---------------- */
+const CLASSIFY_ITEMS = [
+  {q:"We work together on different projects.", vi:"Chúng tôi cùng nhau làm việc trên các dự án khác nhau.", options:["Simple sentence (Câu đơn)","Compound sentence (Câu ghép)"], answer:0, explanation:"Chỉ có 1 chủ ngữ (We) + 1 động từ chính (work) → câu đơn.", src:"sgk"},
+  {q:"Teens need good friends and tolerant teachers at schools.", vi:"Thanh thiếu niên cần những người bạn tốt và giáo viên khoan dung ở trường.", options:["Simple sentence (Câu đơn)","Compound sentence (Câu ghép)"], answer:0, explanation:"'and' ở đây nối 2 danh từ (friends / teachers), không nối 2 mệnh đề → vẫn là câu đơn.", src:"sgk"},
+  {q:"She plays chess very well, and she won the first prize last year.", vi:"Cô ấy chơi cờ vua rất giỏi, và cô ấy đã đoạt giải nhất năm ngoái.", options:["Simple sentence (Câu đơn)","Compound sentence (Câu ghép)"], answer:1, explanation:"Có 2 mệnh đề độc lập (She plays... / she won...) nối bằng 'and' → câu ghép.", src:"sgk"},
+  {q:"Sports activities at school help me relax.", vi:"Các hoạt động thể thao ở trường giúp tôi thư giãn.", options:["Simple sentence (Câu đơn)","Compound sentence (Câu ghép)"], answer:0, explanation:"Chỉ có 1 mệnh đề → câu đơn.", src:"sgk"},
+  {q:"Teens should learn teamwork, and they should also have communication skills.", vi:"Thanh thiếu niên nên học kỹ năng làm việc nhóm, và họ cũng nên có kỹ năng giao tiếp.", options:["Simple sentence (Câu đơn)","Compound sentence (Câu ghép)"], answer:1, explanation:"Có 2 mệnh đề độc lập nối bằng 'and' (mỗi vế có chủ ngữ 'they'/'Teens' + động từ riêng) → câu ghép.", src:"sgk"},
+  {q:"Teenagers are often very active and talkative.", vi:"Thanh thiếu niên thường rất năng động và hoạt ngôn.", options:["Simple sentence (Câu đơn)","Compound sentence (Câu ghép)"], answer:0, explanation:"'and' nối 2 tính từ (active / talkative), không nối 2 mệnh đề → câu đơn.", src:"sgk"},
+  {q:"He often chats with his friends on Facebook Messenger.", vi:"Cậu ấy thường trò chuyện với bạn bè qua Facebook Messenger.", options:["Simple sentence (Câu đơn)","Compound sentence (Câu ghép)"], answer:0, explanation:"Chỉ có 1 mệnh đề (1 chủ ngữ 'He', 1 động từ chính 'chats') → câu đơn.", src:"sgk"},
+  {q:"She is a smart student, and she is an active member of our club.", vi:"Cô ấy là học sinh giỏi, và cô ấy là thành viên tích cực của câu lạc bộ chúng tôi.", options:["Simple sentence (Câu đơn)","Compound sentence (Câu ghép)"], answer:1, explanation:"Có 2 mệnh đề độc lập nối bằng 'and' → câu ghép.", src:"sgk"},
+  {q:"My friends and I joined a sports competition last year.", vi:"Bạn bè tôi và tôi đã tham gia một cuộc thi thể thao năm ngoái.", options:["Simple sentence (Câu đơn)","Compound sentence (Câu ghép)"], answer:0, explanation:"'and' nối 2 chủ ngữ (My friends / I), chỉ có 1 động từ chính (joined) → câu đơn.", src:"sgk"},
+  {q:"He is a club member, but he never participates in any of the activities.", vi:"Cậu ấy là thành viên câu lạc bộ, nhưng cậu ấy không bao giờ tham gia bất kỳ hoạt động nào.", options:["Simple sentence (Câu đơn)","Compound sentence (Câu ghép)"], answer:1, explanation:"Có 2 mệnh đề độc lập nối bằng 'but' → câu ghép.", src:"sgk"}
+];
+
+/* ---------------- 3) CONNECTORS items (15) — SBT Ex4 (2-opt) → SGK Ex3 (3-opt) → SBT Ex5 (4-opt) ---------------- */
+const CONNECTOR_ITEMS = [
+  {q:"Some teenagers never join in any forums for help, ___ they prefer talking to their parents about their problems.", vi:"Một số thanh thiếu niên không bao giờ tham gia diễn đàn để tìm giúp đỡ, vì các em thích nói chuyện với bố mẹ về vấn đề của mình hơn.", options:["so","because"], answer:1, explanation:"'because' nêu lý do: không tham gia diễn đàn VÌ thích nói chuyện với bố mẹ hơn.", src:"sbt"},
+  {q:"In some forums teens can get advice from peers; ___, my friends often use those forums to share their problems.", vi:"Trong một số diễn đàn, thanh thiếu niên có thể nhận lời khuyên từ bạn bè cùng trang lứa; vì vậy, bạn bè tôi thường dùng các diễn đàn đó để chia sẻ vấn đề của họ.", options:["therefore","however"], answer:0, explanation:"'therefore' nêu kết quả: vì có thể nhận lời khuyên từ bạn bè, VÌ VẬY bạn tôi hay dùng các diễn đàn đó.", src:"sbt"},
+  {q:"Many teenagers want to support needy people, ___ they join community service projects.", vi:"Nhiều thanh thiếu niên muốn hỗ trợ những người khó khăn, nên các em tham gia các dự án phục vụ cộng đồng.", options:["but","so"], answer:1, explanation:"'so' nêu kết quả: muốn giúp đỡ người khó khăn, NÊN tham gia dự án cộng đồng.", src:"sbt"},
+  {q:"Our students can participate in any club they like, ___ they shouldn't try to join all the school clubs at the same time.", vi:"Học sinh của chúng ta có thể tham gia bất kỳ câu lạc bộ nào các em thích, nhưng không nên cố tham gia tất cả các câu lạc bộ trong trường cùng một lúc.", options:["but","or"], answer:0, explanation:"'but' thể hiện sự tương phản: có thể tham gia bất kỳ câu lạc bộ nào, NHƯNG không nên tham gia tất cả cùng lúc.", src:"sbt"},
+  {q:"Minh told his teachers about the school bullies; ___, the bullies wouldn't leave him alone.", vi:"Minh đã kể với giáo viên về những kẻ bắt nạt ở trường; nếu không, những kẻ đó sẽ không để cậu yên.", options:["therefore","otherwise"], answer:1, explanation:"'otherwise' nêu lý do cần hành động: NẾU KHÔNG báo với giáo viên thì kẻ bắt nạt sẽ không để cậu yên.", src:"sbt"},
+  {q:"Parents should give teens some freedom, ___ they should also set limits.", vi:"Bố mẹ nên cho thanh thiếu niên một chút tự do, nhưng họ cũng nên đặt ra giới hạn.", options:["for","so","but"], answer:2, explanation:"'but' thể hiện sự tương phản: cho tự do NHƯNG cũng cần đặt giới hạn.", src:"sgk"},
+  {q:"We don't cheat on exams, ___ it is a wrong thing to do.", vi:"Chúng tôi không gian lận trong thi cử, bởi vì đó là một việc làm sai trái.", options:["or","for","and"], answer:1, explanation:"'for' ở đây mang nghĩa 'bởi vì' (lý do).", src:"sgk"},
+  {q:"Lan wanted to join the school music club; ___ she can't sing or play any instruments.", vi:"Lan muốn tham gia câu lạc bộ âm nhạc của trường; tuy nhiên, cô ấy không biết hát hay chơi nhạc cụ nào.", options:["however","otherwise","therefore"], answer:0, explanation:"'however' thể hiện sự tương phản: muốn tham gia NHƯNG lại không biết hát/chơi nhạc cụ.", src:"sgk"},
+  {q:"Schoolwork causes teens a lot of pressure; ___ they also feel pressure from their parents.", vi:"Bài vở gây cho thanh thiếu niên rất nhiều áp lực; và họ cũng cảm thấy áp lực từ bố mẹ.", options:["and","but","or"], answer:0, explanation:"'and' thể hiện sự bổ sung ý (cũng chịu áp lực từ bố mẹ nữa).", src:"sgk"},
+  {q:"She wanted to prepare for the exam; ___ she turned off her mobile phone.", vi:"Cô ấy muốn chuẩn bị cho kỳ thi; vì vậy, cô ấy đã tắt điện thoại di động.", options:["otherwise","however","therefore"], answer:2, explanation:"'therefore' thể hiện kết quả: vì muốn ôn thi NÊN đã tắt điện thoại.", src:"sgk"},
+  {q:"Teenagers need encouragement from their parents, ___ not all parents are willing to encourage their children.", vi:"Thanh thiếu niên cần sự động viên từ bố mẹ, nhưng không phải bố mẹ nào cũng sẵn lòng động viên con cái.", options:["for","and","but","so"], answer:2, explanation:"'but' thể hiện sự tương phản: cần được động viên NHƯNG không phải bố mẹ nào cũng sẵn lòng.", src:"sbt"},
+  {q:"Many girls worry about their appearance, ___ they often look at themselves in a mirror.", vi:"Nhiều bạn nữ lo lắng về ngoại hình của mình, nên các bạn hay soi gương.", options:["but","so","or","for"], answer:1, explanation:"'so' nêu kết quả: lo lắng về ngoại hình, NÊN hay soi gương.", src:"sbt"},
+  {q:"Teenagers should learn to mix with their classmates, ___ they can try to get on with their siblings.", vi:"Thanh thiếu niên nên học cách hoà đồng với bạn cùng lớp, hoặc các em có thể cố gắng hoà thuận với anh chị em của mình.", options:["so","for","or","yet"], answer:2, explanation:"'or' nêu thêm một lựa chọn tương tự: hoà đồng với bạn cùng lớp, HOẶC hoà thuận với anh chị em.", src:"sbt"},
+  {q:"Social media help teens connect with others; ___, they also cause teens to feel lonely.", vi:"Mạng xã hội giúp thanh thiếu niên kết nối với người khác; tuy nhiên, chúng cũng khiến các em cảm thấy cô đơn.", options:["however","therefore","otherwise","although"], answer:0, explanation:"'however' (tuy nhiên) đứng sau dấu ';' thể hiện sự tương phản với vế trước.", src:"sbt"},
+  {q:"They spend a lot of time surfing the net; ___, they have little time to read books.", vi:"Họ dành nhiều thời gian lướt mạng; vì vậy, họ có rất ít thời gian để đọc sách.", options:["however","therefore","although","otherwise"], answer:1, explanation:"'therefore' nêu kết quả: dành nhiều thời gian lướt mạng, VÌ VẬY ít thời gian đọc sách.", src:"sbt"}
+];
+
+/* ---------------- 4) COMBINE items (10, MCQ version of the SGK sentence-writing exercise) ---------------- */
+const COMBINE_ITEMS = [
+  {q:"Phong has to study harder. He may fail the exam. (otherwise)", vi:"Phong phải học chăm chỉ hơn. Nếu không cậu ấy có thể trượt kỳ thi. (otherwise)",
+   options:["Phong has to study harder, otherwise he may fail the exam.","Phong has to study harder, therefore he may fail the exam.","Phong has to study harder otherwise he may fail the exam.","Phong may fail the exam, otherwise he has to study harder."],
+   answer:0, explanation:"Đúng cả nghĩa (otherwise = nếu không thì) lẫn dấu câu (dấu phẩy trước otherwise theo cách viết của SGK). Phương án B sai từ nối (therefore không cảnh báo hậu quả); C thiếu dấu phẩy; D đảo ngược logic 2 vế.", src:"sgk"},
+  {q:"She is very sensitive. Don't comment on her new hairstyle. (therefore)", vi:"Cô ấy rất nhạy cảm. Đừng bình luận về kiểu tóc mới của cô ấy. (therefore)",
+   options:["She is very sensitive, therefore don't comment on her new hairstyle.","She is very sensitive; however, don't comment on her new hairstyle.","She is very sensitive; therefore, don't comment on her new hairstyle.","She is very sensitive; therefore don't comment, on her new hairstyle."],
+   answer:2, explanation:"Đúng công thức: mệnh đề 1; therefore, mệnh đề 2. Phương án A sai dấu câu (dùng phẩy thay vì chấm phẩy); B sai từ nối (however không hợp nghĩa kết quả); D đặt dấu phẩy sai vị trí.", src:"sgk"},
+  {q:"Mi wants to have more friends. She doesn't connect well with others. (but)", vi:"Mi muốn có nhiều bạn hơn. Cô ấy không kết nối tốt với người khác. (but)",
+   options:["Mi wants to have more friends but she doesn't connect well with others.","Mi wants to have more friends, so she doesn't connect well with others.","Mi wants to have more friends, but she doesn't connect well with others.","Mi wants to have more friends, or she doesn't connect well with others."],
+   answer:2, explanation:"Đúng cả nghĩa (but = nhưng, tương phản) lẫn dấu câu (dấu phẩy trước but). Phương án A thiếu dấu phẩy; B, D sai từ nối (so/or không hợp nghĩa tương phản).", src:"sgk"},
+  {q:"Students can work in groups. Students can work in pairs. (or)", vi:"Học sinh có thể làm việc theo nhóm. Học sinh có thể làm việc theo cặp. (or)",
+   options:["Students can work in groups or they can work in pairs.","Students can work in groups, for they can work in pairs.","Students can work in pairs, or they can work in groups.","Students can work in groups, or they can work in pairs."],
+   answer:3, explanation:"Đúng cả nghĩa (or = hoặc, lựa chọn) lẫn dấu câu. Phương án A thiếu dấu phẩy; B sai từ nối (for = bởi vì, không hợp); C tuy đúng ngữ pháp nhưng đổi thứ tự không theo đúng câu gốc yêu cầu.", src:"sgk"},
+  {q:"My friend likes showing off her new things. She often posts pictures on social media. (so)", vi:"Bạn tôi thích khoe đồ mới. Cô ấy thường đăng ảnh lên mạng xã hội. (so)",
+   options:["My friend likes showing off her new things so she often posts pictures on social media.","My friend likes showing off her new things, but she often posts pictures on social media.","My friend often posts pictures on social media, so she likes showing off her new things.","My friend likes showing off her new things, so she often posts pictures on social media."],
+   answer:3, explanation:"Đúng cả nghĩa (so = nên, kết quả) lẫn dấu câu. A thiếu dấu phẩy; B sai từ nối; C đảo ngược quan hệ nhân-quả (nguyên nhân phải đứng trước).", src:"sgk"},
+  {q:"Mai is the head of the music club. She knows the members very well. (SO)", vi:"Mai là trưởng câu lạc bộ âm nhạc. Cô ấy biết rõ các thành viên. (SO)",
+   options:["Mai is the head of the music club so she knows the members very well.","Mai is the head of the music club, but she knows the members very well.","Mai is the head of the music club, so she knows the members very well.","Mai knows the members very well, so she is the head of the music club."],
+   answer:2, explanation:"Đúng cả nghĩa lẫn dấu câu. A thiếu dấu phẩy; B sai từ nối; D đảo ngược quan hệ nhân-quả.", src:"sgk"},
+  {q:"Lan wanted to go to the party. She couldn't choose a suitable dress. (BUT)", vi:"Lan muốn đi dự tiệc. Cô ấy không thể chọn được bộ váy phù hợp. (BUT)",
+   options:["Lan wanted to go to the party but she couldn't choose a suitable dress.","Lan wanted to go to the party, so she couldn't choose a suitable dress.","Lan wanted to go to the party, or she couldn't choose a suitable dress.","Lan wanted to go to the party, but she couldn't choose a suitable dress."],
+   answer:3, explanation:"Đúng cả nghĩa (but = nhưng, tương phản) lẫn dấu câu. A thiếu dấu phẩy; B, C sai từ nối.", src:"sgk"},
+  {q:"Tom felt stressed. He tried to finish his homework. (HOWEVER)", vi:"Tom cảm thấy căng thẳng. Cậu ấy vẫn cố gắng hoàn thành bài tập về nhà. (HOWEVER)",
+   options:["Tom felt stressed, however, he tried to finish his homework.","Tom felt stressed; therefore, he tried to finish his homework.","Tom felt stressed; however he tried to finish, his homework.","Tom felt stressed; however, he tried to finish his homework."],
+   answer:3, explanation:"Đúng công thức: mệnh đề 1; however, mệnh đề 2. A sai dấu câu (phẩy thay vì chấm phẩy); B sai từ nối (therefore không hợp nghĩa tương phản); C đặt dấu phẩy sai vị trí.", src:"sgk"},
+  {q:"He isn't a member of the chess club. He didn't join the chess competition. (THEREFORE)", vi:"Cậu ấy không phải là thành viên câu lạc bộ cờ vua. Cậu ấy đã không tham gia cuộc thi cờ vua. (THEREFORE)",
+   options:["He isn't a member of the chess club, therefore he didn't join the chess competition.","He isn't a member of the chess club; otherwise, he didn't join the chess competition.","He didn't join the chess competition; therefore, he isn't a member of the chess club.","He isn't a member of the chess club; therefore, he didn't join the chess competition."],
+   answer:3, explanation:"Đúng công thức và đúng chiều nhân-quả. A sai dấu câu; B sai từ nối (otherwise vô nghĩa ở đây); C đảo ngược nhân-quả (không hợp lý).", src:"sgk"},
+  {q:"We will have a short holiday. We will feel very stressed. (OTHERWISE)", vi:"Chúng ta sẽ có một kỳ nghỉ ngắn. Nếu không chúng ta sẽ cảm thấy rất căng thẳng. (OTHERWISE)",
+   options:["We will have a short holiday, otherwise we will feel very stressed.","We will have a short holiday; however, we will feel very stressed.","We will feel very stressed; otherwise, we will have a short holiday.","We will have a short holiday; otherwise, we will feel very stressed."],
+   answer:3, explanation:"Đúng công thức và đúng nghĩa cảnh báo hậu quả. A sai dấu câu; B sai từ nối; C đảo ngược logic (vế cảnh báo phải đứng sau).", src:"sgk"}
+];
+
+/* ---------------- 5) TRANSFORM items (5, hardest) — SBT Writing Ex2 ---------------- */
+const TRANSFORM_ITEMS = [
+  {q:"Mai joined the chess club because she wanted to improve her concentration.", vi:"Mai tham gia câu lạc bộ cờ vua vì cô ấy muốn cải thiện khả năng tập trung.",
+   options:["Mai joined the chess club, but she didn't want to improve her concentration.","Mai improved her concentration, so she joined the chess club.","Mai joined the chess club to improve her concentration.","Mai's concentration improved after she left the chess club."],
+   answer:2, explanation:"'to improve her concentration' (động từ nguyên mẫu chỉ mục đích) mang nghĩa tương đương với 'because she wanted to improve'.", src:"sbt"},
+  {q:"Although Nam felt nervous, he still took part in the speech contest.", vi:"Mặc dù cảm thấy hồi hộp, Nam vẫn tham gia cuộc thi hùng biện.",
+   options:["Nam didn't take part in the speech contest because he felt nervous.","Despite feeling nervous, Nam took part in the speech contest.","Nam felt nervous, so he didn't take part in the contest.","Nam wasn't nervous when he took part in the contest."],
+   answer:1, explanation:"'Despite + V-ing' diễn đạt cùng ý nghĩa nhượng bộ như 'Although + mệnh đề'.", src:"sbt"},
+  {q:"If you don't manage your time well, you may feel stressed before exams.", vi:"Nếu bạn không quản lý thời gian tốt, bạn có thể cảm thấy căng thẳng trước kỳ thi.",
+   options:["You will feel stressed only if you manage your time well.","Managing your time well always causes stress.","You never feel stressed, even if you manage your time badly.","Not managing your time well may cause you to feel stressed before exams."],
+   answer:3, explanation:"Diễn đạt lại câu điều kiện gốc theo cách khác nhưng giữ nguyên quan hệ nhân-quả.", src:"sbt"},
+  {q:"Lan is both hard-working and creative.", vi:"Lan vừa chăm chỉ vừa sáng tạo.",
+   options:["Lan is hard-working, but she is not creative.","Lan is not only hard-working but also creative.","Lan is neither hard-working nor creative.","Lan is creative, although she is lazy."],
+   answer:1, explanation:"'not only... but also...' mang nghĩa tương đương với 'both... and...'.", src:"sbt"},
+  {q:"It is important for teenagers to talk to their parents about their problems.", vi:"Điều quan trọng là thanh thiếu niên nên nói chuyện với bố mẹ về những vấn đề của mình.",
+   options:["Teenagers should talk to their parents about their problems.","Teenagers should never talk to their parents about their problems.","It doesn't matter whether teenagers talk to their parents or not.","Parents should not talk to teenagers about their problems."],
+   answer:0, explanation:"'It is important to do sth' mang nghĩa tương đương với lời khuyên 'should'.", src:"sbt"}
+];
+
+/* ============================================================
+   ENGINE
+   ============================================================ */
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function uid(prefix){ return prefix+'_'+Math.random().toString(36).slice(2,9); }
+
+/* ---------------- Speech (Web Speech API) ---------------- */
+let cachedVoices=[]; let voicesReady=false;
+if('speechSynthesis' in window){
+  const refresh=()=>{ cachedVoices=window.speechSynthesis.getVoices()||[]; if(cachedVoices.length) voicesReady=true; };
+  window.speechSynthesis.onvoiceschanged=refresh; refresh();
+  let tries=0; const t=setInterval(()=>{ refresh(); tries++; if(voicesReady||tries>10) clearInterval(t); },300);
+}
+function pickEnVoice(){
+  const voices = cachedVoices.length?cachedVoices:(window.speechSynthesis.getVoices()||[]);
+  return voices.find(v=>/en[-_]?(us|gb)/i.test(v.lang)) || voices.find(v=>/^en/i.test(v.lang)) || null;
+}
+function speak(text, btn){
+  try{
+    if(!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    setTimeout(()=>{
+      const u=new SpeechSynthesisUtterance(text);
+      u.lang='en-US'; u.rate=0.92; u.pitch=1; u.volume=1;
+      const en=pickEnVoice(); if(en) u.voice=en;
+      if(btn){ btn.classList.add('speaking'); const stop=()=>btn.classList.remove('speaking'); u.onend=stop; u.onerror=stop; }
+      window.speechSynthesis.speak(u);
+    },50);
+  }catch(e){}
+}
+
+/* ---------------- Build ITEM_BANK ---------------- */
+const ITEM_BANK = {};
+const CATEGORY_IDS = { theory:[], classify:[], connectors:[], combine:[], transform:[] };
+function registerItem(cat, raw, idx){
+  const id = uid(cat+'_'+idx);
+  const item = Object.assign({ id, category:cat, type: raw.type || 'mcq' }, raw);
+  ITEM_BANK[id] = item;
+  CATEGORY_IDS[cat].push(id);
+  return item;
+}
+THEORY_ITEMS.forEach((it,i)=>registerItem('theory', it, i));
+CLASSIFY_ITEMS.forEach((it,i)=>registerItem('classify', Object.assign({type:'mcq'}, it), i));
+CONNECTOR_ITEMS.forEach((it,i)=>registerItem('connectors', Object.assign({type:'mcq'}, it), i));
+COMBINE_ITEMS.forEach((it,i)=>registerItem('combine', Object.assign({type:'mcq'}, it), i));
+TRANSFORM_ITEMS.forEach((it,i)=>registerItem('transform', Object.assign({type:'mcq'}, it), i));
+
+const TOTAL_ITEMS = Object.keys(ITEM_BANK).length;
+
+/* ---------------- Stage definitions ---------------- */
+const STAGE_DEFS = [
+  {key:'theory', title:'Lý thuyết: Câu ghép & Từ nối', icon:'📖', category:'theory', groupLabel:'🟣 Khởi động (Dễ)'},
+  {key:'classify', title:'Nhận biết câu đơn - câu ghép', icon:'🔍', category:'classify', groupLabel:'🟣 Khởi động (Dễ)'},
+  {key:'connectors', title:'Chọn từ nối đúng', icon:'🔗', category:'connectors', groupLabel:'🔵 Luyện tập (Trung bình)'},
+  {key:'combine', title:'Ghép câu (trắc nghiệm)', icon:'✍️', category:'combine', groupLabel:'🟠 Nâng cao (Khó)'},
+  {key:'transform', title:'Viết lại câu (thử thách)', icon:'🏆', category:'transform', groupLabel:'🔴 Thử thách (Khó nhất)'},
+  {key:'mistakes', title:'Sửa lỗi của tôi', icon:'🔥', category:null, kind:'mistakes', groupLabel:'🔴 Thử thách (Khó nhất)'}
+];
+
+/* ---------------- Storage ---------------- */
+const STORAGE_KEY = 'u3_grammar_game_v1';
+function defaultProgress(){
+  const stages={}; STAGE_DEFS.forEach(s=>stages[s.key]={status:'not_started', bestAccuracy:0, attempts:0, stars:0});
+  return { xp:0, bestStreak:0, badges:[], stages, mistakes:{}, seenTheory:{}, createdAt:Date.now() };
+}
+function loadProgress(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if(!raw) return defaultProgress();
+    const parsed=JSON.parse(raw);
+    const def=defaultProgress();
+    return Object.assign(def, parsed, { stages:Object.assign(def.stages, parsed.stages||{}), seenTheory: Object.assign({}, parsed.seenTheory||{}) });
+  }catch(e){ return defaultProgress(); }
+}
+function saveProgress(){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state.progress)); }catch(e){} }
+function resetProgress(){ state.progress=defaultProgress(); saveProgress(); state.screen='home'; render(); }
+
+/* ---------------- Global state ---------------- */
+const state = { screen:'home', progress: loadProgress(), session:null, selection:null, answered:false };
+
+/* ---------------- Badges ---------------- */
+const BADGE_DEFS = {
+  theory: {icon:'📖', label:'Nắm chắc lý thuyết'},
+  classify: {icon:'🔍', label:'Chuyên gia nhận diện câu'},
+  connectors: {icon:'🔗', label:'Bậc thầy từ nối'},
+  combine: {icon:'✍️', label:'Cao thủ ghép câu'},
+  transform: {icon:'🏆', label:'Vô địch viết lại câu'},
+  mistake_fixer: {icon:'🔥', label:'Người sửa lỗi'},
+  unit_master: {icon:'⭐', label:'Bậc thầy ngữ pháp Unit 3'}
+};
+function awardBadge(key){
+  if(!state.progress.badges.includes(key)){ state.progress.badges.push(key); return true; }
+  return false;
+}
+
+/* ---------------- Session builders ---------------- */
+function itemsForCategory(cat){ return CATEGORY_IDS[cat].map(id=>ITEM_BANK[id]); }
+function buildMistakeSession(){
+  const ids = Object.keys(state.progress.mistakes).filter(id=> ITEM_BANK[id] && state.progress.mistakes[id].box < 3);
+  return shuffle(ids.map(id=>ITEM_BANK[id]));
+}
+
+function startStage(key){
+  const def = STAGE_DEFS.find(s=>s.key===key);
+  let items=[];
+  if(def.kind==='mistakes'){
+    items = buildMistakeSession();
+    if(items.length===0){
+      alert('🎉 Tuyệt vời! Bạn hiện không có câu nào cần sửa lỗi. Hãy tiếp tục luyện tập các chặng khác nhé!');
+      return;
+    }
+  } else {
+    const pool = itemsForCategory(def.category);
+    items = pool.slice();
+    const theoryCard = THEORY_CARDS[key];
+    if(theoryCard && !state.progress.seenTheory[key]){
+      items = [{ id:'intro_'+key, type:'intro', theory: theoryCard }].concat(items);
+    }
+  }
+  state.session = { stageKey:key, items, idx:0, correct:0, wrong:0, streak:0, xpEarned:0,
+    catStats:{}, isMistakeMode: def.kind==='mistakes', mistakesFixed:0 };
+  state.answered=false; state.selection=null;
+  state.screen='player';
+  render();
+}
+
+/* ============================================================
+   RENDERING
+   ============================================================ */
+function render(){
+  const app=document.getElementById('app');
+  if(state.screen==='home') app.innerHTML = renderHome();
+  else if(state.screen==='player') app.innerHTML = renderPlayer();
+  else if(state.screen==='summary') app.innerHTML = renderSummary();
+  else if(state.screen==='mastery') app.innerHTML = renderMastery();
+  postRender();
+}
+function postRender(){ window.scrollTo({top:0}); }
+
+/* ---------------- HOME ---------------- */
+function stageDot(status){
+  if(status==='mastered') return '⭐';
+  if(status==='in_progress') return '🕓';
+  if(status==='needs_practice') return '❗';
+  return '';
+}
+function renderHome(){
+  const p=state.progress;
+  let lastGroup=null;
+  const rowsHtml = STAGE_DEFS.map((s,i)=>{
+    const st = p.stages[s.key];
+    const dot = stageDot(st.status);
+    const align = i%2===0 ? '' : 'right';
+    let groupHeader='';
+    if(s.groupLabel!==lastGroup){
+      groupHeader = `<div class="group-wrap">${lastGroup?'<div style="height:.6rem"></div>':''}<span class="group-label">${s.groupLabel}</span></div>`;
+      lastGroup = s.groupLabel;
+    }
+    return `${groupHeader}<div class="stage-row ${align}">
+      <button onclick="startStage('${s.key}')" class="stage-node status-${st.status}">
+        <span>${s.icon}</span>
+        ${dot?`<span class="status-dot">${dot}</span>`:''}
+      </button>
+      <div style="flex:1">
+        <p style="margin:0;font-weight:900;font-size:.92rem;color:#334155">${s.title}</p>
+        <p style="margin:0;font-size:.75rem;color:#94a3b8">${st.attempts>0 ? `Độ chính xác tốt nhất: ${st.bestAccuracy}%` : 'Chưa bắt đầu'}</p>
+      </div>
+    </div>`;
+  }).join('');
+
+  const badgeChips = p.badges.map(k=>{
+    const b=BADGE_DEFS[k]; if(!b) return '';
+    return `<div class="badge-chip"><div style="font-size:1.4rem">${b.icon}</div><div style="font-size:9px;font-weight:800;color:#92400e;margin-top:.2rem">${b.label}</div></div>`;
+  }).join('');
+
+  const coreStages = ['theory','classify','connectors','combine','transform'];
+  const masteredCount = coreStages.filter(k=>p.stages[k].status==='mastered').length;
+  const overallPct = Math.round((masteredCount/coreStages.length)*100);
+
+  return `
+  <div class="topbar">
+    <div>
+      <h1 class="font-baloo" style="margin:0;font-size:1.1rem;font-weight:800;color:#4c1d95">🎮 Unit 3 Grammar Game</h1>
+      <p style="margin:0;font-size:11px;color:#94a3b8">Câu ghép &amp; Từ nối · SGK + SBT</p>
+    </div>
+    <div style="display:flex;align-items:center;gap:.5rem">
+      <span class="xp-pill"><i class="fa-solid fa-bolt" style="margin-right:.25rem"></i>${p.xp} XP</span>
+      <span class="streak-pill"><i class="fa-solid fa-fire" style="margin-right:.25rem"></i>${p.bestStreak}</span>
+    </div>
+  </div>
+  <div class="hero-gradient" style="color:#fff;text-align:center;padding:1.4rem 1rem;position:relative;overflow:hidden">
+    <div style="position:absolute;inset:0;opacity:.12;pointer-events:none;font-size:2.4rem">
+      <span style="position:absolute;top:6px;left:14px">🔗</span>
+      <span style="position:absolute;top:4px;right:18px">✍️</span>
+      <span style="position:absolute;bottom:6px;left:30%">📖</span>
+      <span style="position:absolute;bottom:4px;right:22%">🏆</span>
+    </div>
+    <p class="font-baloo" style="margin:0;font-size:1.4rem;font-weight:800">🔗 Ngữ pháp Unit 3: Câu ghép ✍️</p>
+    <p style="margin:.3rem 0 0;font-size:.85rem;opacity:.9">Từ lý thuyết → nhận biết → chọn từ nối → ghép câu → thử thách!</p>
+  </div>
+  <div style="max-width:480px;margin:0 auto;padding:.9rem 1rem 0">
+    <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:800;color:#7c3aed;margin-bottom:.25rem">
+      <span>Tiến độ chinh phục</span><span>${masteredCount}/${coreStages.length} chặng</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" style="width:${overallPct}%"></div></div>
+  </div>
+  <div class="path-wrap">
+    ${rowsHtml}
+  </div>
+  ${p.badges.length?`<div style="max-width:420px;margin:0 auto;padding:0 1rem 1rem"><p style="font-size:11px;font-weight:900;color:#94a3b8;text-transform:uppercase;margin-bottom:.5rem">Huy hiệu đã đạt</p><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem">${badgeChips}</div></div>`:''}
+  <div style="max-width:420px;margin:0 auto;padding:0 1rem 2rem;text-align:center">
+    <button onclick="confirmReset()" style="font-size:11px;color:#94a3b8;text-decoration:underline;background:none;border:none">🔄 Đặt lại tiến trình học tập</button>
+  </div>`;
+}
+
+function confirmReset(){
+  if(confirm('Bạn có chắc muốn xoá toàn bộ tiến trình (XP, sao, lỗi sai đã lưu)? Hành động này không thể hoàn tác.')){
+    resetProgress();
+  }
+}
+
+/* ---------------- PLAYER ---------------- */
+function currentItem(){ return state.session ? state.session.items[state.session.idx] : null; }
+
+function renderPlayer(){
+  const s=state.session; const item=currentItem();
+  const total=s.items.length;
+  const pct = Math.round((s.idx/total)*100);
+  return `
+  <div class="topbar">
+    <button onclick="exitPlayer()" style="background:none;border:none;color:#94a3b8;font-size:1.3rem"><i class="fa-solid fa-xmark"></i></button>
+    <div class="progress-track" style="flex:1;margin:0 .8rem"><div class="progress-fill" style="width:${pct}%"></div></div>
+    <span class="streak-pill" style="font-size:11px"><i class="fa-solid fa-fire" style="margin-right:.2rem"></i>${s.streak}</span>
+  </div>
+  <div style="max-width:560px;margin:0 auto;padding:1.4rem 1rem" id="cardArea">
+    ${renderQuestionCard(item)}
+  </div>
+  <div class="footer-bar" id="footerArea">
+    ${renderFooter(item)}
+  </div>`;
+}
+
+function renderIntroCard(item){
+  const t = item.theory;
+  const tableBlock = t.table ? `<div class="table-box"><table><tr><th>Từ nối</th><th>Nghĩa</th></tr>${t.table.map(r=>`<tr><td><b>${r[0]}</b></td><td>${r[1]}</td></tr>`).join('')}</table></div>` : '';
+  return `<p style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.03em;color:#1cb0f6;margin-bottom:.5rem"><i class="fa-solid fa-graduation-cap" style="margin-right:.3rem"></i>Ôn lý thuyết trước khi luyện tập</p>
+  <div class="theory-box"><b>${t.title}</b><br><br>${t.html}</div>
+  ${tableBlock}`;
+}
+
+const CAT_LABELS = { theory:'📖 Lý thuyết', classify:'🔍 Nhận biết câu', connectors:'🔗 Chọn từ nối', combine:'✍️ Ghép câu', transform:'🏆 Viết lại câu' };
+
+function renderQuestionCard(item){
+  if(item.type==='intro') return renderIntroCard(item);
+  const opts = item.type==='tf' ? ['True (Đúng)','False (Sai)'] : item.options;
+  const answerIdx = item.type==='tf' ? (item.answer===true?0:1) : item.answer;
+  const body = `<div style="display:grid;gap:.55rem;margin-top:1rem">${opts.map((o,i)=>{
+    let cls='opt-card';
+    if(state.answered){
+      if(i===answerIdx) cls+=' correct';
+      else if(i===state.selection) cls+=' wrong';
+      else cls+=' dim';
+    } else if(state.selection===i){ cls+=' selected'; }
+    const label = item.type==='tf' ? (i===0?'✅ True (Đúng)':'❌ False (Sai)') : `<span style="color:#6366f1;font-weight:900">${['A','B','C','D'][i]}.</span> ${o}`;
+    return `<div class="${cls}" onclick="${state.answered?'':'selectOption('+i+')'}">${label}</div>`;
+  }).join('')}</div>`;
+  const catTag = CAT_LABELS[item.category] || '';
+  const srcTag = item.src ? `<span class="src-tag ${item.src}">${item.src==='sgk'?'SGK':'SBT'}</span>` : '';
+  const qSpeak = item.type!=='tf' ? `<span class="speak-mini" style="display:inline-flex;margin-left:.4rem;vertical-align:middle" onclick="speak(${JSON.stringify(item.q.replace(/^\\d+\\.\\s*/,''))}, this)"><i class="fa-solid fa-volume-high" style="font-size:10px"></i></span>` : '';
+  const viBlock = item.vi ? `<div><button type="button" onclick="document.getElementById('qvi').classList.toggle('show')" style="font-size:11px;font-weight:800;background:#fff;border:2px solid #fde68a;color:#92400e;padding:.35rem .8rem;border-radius:999px;margin-top:.6rem"><i class="fa-solid fa-language" style="margin-right:.25rem"></i>Dịch tiếng Việt</button><div id="qvi" class="vi-box">${item.vi}</div></div>` : '';
+  return `
+    <p class="cat-tag" style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.03em;color:#94a3b8;margin-bottom:.4rem">${catTag}${srcTag}</p>
+    <p style="font-size:1.08rem;font-weight:800;color:#1e293b;line-height:1.5">${item.q}${qSpeak}</p>
+    ${viBlock}
+    ${body}
+  `;
+}
+
+/* ---------------- FOOTER / ANSWER CHECKING ---------------- */
+function renderFooter(item){
+  if(item.type==='intro'){
+    return `<button onclick="continueNext()" class="btn3d btn-green" style="width:100%;max-width:560px;margin:0 auto;display:block;padding:.85rem;border-radius:1.1rem;font-weight:900;font-size:1.05rem"><i class="fa-solid fa-arrow-right" style="margin-right:.3rem"></i>Bắt đầu luyện tập</button>`;
+  }
+  if(!state.answered){
+    const canCheck = state.selection!==null && state.selection!==undefined;
+    return `<button onclick="checkAnswer()" class="btn3d btn-green" style="width:100%;max-width:560px;margin:0 auto;display:block;padding:.85rem;border-radius:1.1rem;font-weight:900;font-size:1.05rem" ${canCheck?'':'disabled'}><i class="fa-solid fa-check" style="margin-right:.3rem"></i>Kiểm tra</button>`;
+  } else {
+    const ok = computeOk(item);
+    const cont = `<button onclick="continueNext()" class="btn3d ${ok?'btn-green':'btn-red'}" style="width:100%;padding:.85rem;border-radius:1.1rem;font-weight:900;font-size:1.05rem">Tiếp tục <i class="fa-solid fa-arrow-right" style="margin-left:.3rem"></i></button>`;
+    const exp = item.explanation ? `<p style="font-size:.85rem;font-weight:800;margin:0 0 .2rem;color:${ok?'#15803d':'#be123c'}">${ok?'✅ Chính xác!':'❌ Chưa đúng.'} <span style="font-weight:600">${item.explanation}</span></p>` : `<p style="font-size:.85rem;font-weight:800;margin:0 0 .2rem;color:${ok?'#15803d':'#be123c'}">${ok?'✅ Chính xác!':'❌ Chưa đúng.'}</p>`;
+    return `<div style="max-width:560px;margin:0 auto">${exp}<div style="margin-top:.5rem">${cont}</div></div>`;
+  }
+}
+
+function computeOk(item){
+  if(item.type==='tf') return (state.selection===0)===(item.answer===true);
+  return state.selection===item.answer;
+}
+
+function selectOption(i){ if(state.answered) return; state.selection=i; render(); }
+
+function checkAnswer(){
+  const item=currentItem();
+  const ok = computeOk(item);
+  state.answered=true;
+  finalizeAnswer(item, ok);
+  render();
+}
+
+function finalizeAnswer(item, ok){
+  const s=state.session;
+  if(ok){ s.correct++; s.streak++; if(s.streak>state.progress.bestStreak) state.progress.bestStreak=s.streak; }
+  else { s.wrong++; s.streak=0; }
+  s.catStats[item.category] = s.catStats[item.category] || {correct:0,total:0};
+  s.catStats[item.category].total++;
+  if(ok) s.catStats[item.category].correct++;
+
+  let xp = ok ? 10 : 2;
+  state.progress.xp += xp; s.xpEarned += xp;
+
+  if(s.isMistakeMode){
+    const mb = state.progress.mistakes[item.id];
+    if(ok){
+      if(mb){ mb.box = (mb.box||0)+1; if(mb.box>=3){ delete state.progress.mistakes[item.id]; s.mistakesFixed++; state.progress.xp+=15; s.xpEarned+=15; } }
+    } else if(mb){ mb.box = 0; }
+  } else {
+    if(!ok){
+      const existing = state.progress.mistakes[item.id];
+      state.progress.mistakes[item.id] = { box:0, timesWrong: (existing?existing.timesWrong:0)+1, category:item.category };
+    } else if(state.progress.mistakes[item.id]){
+      state.progress.mistakes[item.id].box = (state.progress.mistakes[item.id].box||0)+1;
+      if(state.progress.mistakes[item.id].box>=3){ delete state.progress.mistakes[item.id]; s.mistakesFixed++; }
+    }
+  }
+  checkMistakeFixerBadge();
+  saveProgress();
+}
+
+function checkMistakeFixerBadge(){
+  if(Object.keys(state.progress.mistakes).length===0){ awardBadge('mistake_fixer'); }
+}
+
+function continueNext(){
+  const s=state.session;
+  const item = s.items[s.idx];
+  if(item && item.type==='intro'){ state.progress.seenTheory[s.stageKey]=true; saveProgress(); }
+  s.idx++;
+  state.answered=false; state.selection=null;
+  if(s.idx>=s.items.length){ finishSession(); return; }
+  render();
+}
+
+function exitPlayer(){ state.screen='home'; state.session=null; render(); }
+
+/* ---------------- SESSION FINISH / SUMMARY ---------------- */
+function finishSession(){
+  const s=state.session;
+  const scored = s.correct+s.wrong;
+  const accuracy = scored>0 ? Math.round((s.correct/scored)*100) : 100;
+  let stars = 1;
+  if(accuracy>=90) stars=3; else if(accuracy>=70) stars=2; else stars=1;
+  if(scored===0) stars=3;
+
+  if(!s.isMistakeMode){
+    const stProg = state.progress.stages[s.stageKey];
+    stProg.attempts++;
+    stProg.bestAccuracy = Math.max(stProg.bestAccuracy, accuracy);
+    stProg.stars = Math.max(stProg.stars, stars);
+    const wasMastered = stProg.status==='mastered';
+    if(accuracy>=80) stProg.status='mastered';
+    else if(accuracy>=40) stProg.status='in_progress';
+    else stProg.status='needs_practice';
+    if(stProg.status==='mastered' && !wasMastered){
+      if(awardBadge(s.stageKey)){ state.progress.xp += 50; s.xpEarned+=50; }
+    }
+    state.progress.xp += 20; s.xpEarned += 20;
+  }
+  checkUnitMastery();
+  saveProgress();
+  state.screen='summary';
+  render();
+}
+
+function checkUnitMastery(){
+  const coreStages = ['theory','classify','connectors','combine','transform'];
+  const allMastered = coreStages.every(k=>state.progress.stages[k].status==='mastered');
+  const noMistakes = Object.keys(state.progress.mistakes).length===0;
+  if(allMastered && noMistakes){
+    if(awardBadge('unit_master')){ state.progress.xp += 100; }
+  }
+}
+
+function renderSummary(){
+  const s=state.session;
+  const scored=s.correct+s.wrong;
+  const accuracy = scored>0 ? Math.round((s.correct/scored)*100) : 100;
+  let stars=1; if(accuracy>=90) stars=3; else if(accuracy>=70) stars=2; if(scored===0) stars=3;
+  const starHtml = [0,1,2].map(i=>`<i class="fa-solid fa-star" style="font-size:2.2rem;color:${i<stars?'#fbbf24':'#e2e8f0'};margin:0 .15rem"></i>`).join('');
+
+  const catBlock = Object.keys(s.catStats).length>=1 ? `<div style="margin-top:1rem;display:grid;gap:.5rem">${Object.keys(s.catStats).map(c=>{
+    const cs=s.catStats[c]; const pct=Math.round((cs.correct/cs.total)*100);
+    return `<div><div style="display:flex;justify-content:space-between;font-size:11px;font-weight:800;color:#64748b;margin-bottom:.2rem"><span>${CAT_LABELS[c]||c}</span><span>${cs.correct}/${cs.total}</span></div>
+    <div class="progress-track" style="height:8px"><div class="progress-fill" style="width:${pct}%"></div></div></div>`;
+  }).join('')}</div>` : '';
+
+  const mistakeFixedLine = s.isMistakeMode && s.mistakesFixed>0 ? `<p style="color:#059669;font-weight:800;font-size:.85rem;margin-top:.5rem">🔥 Đã sửa xong ${s.mistakesFixed} lỗi!</p>` : '';
+
+  let title = '🎉 Hoàn thành!';
+  if(accuracy>=90) title='🌟 Xuất sắc!';
+  else if(accuracy>=70) title='💪 Làm tốt lắm!';
+  else title="🔁 Cố lên, luyện thêm nhé!";
+
+  return `<div style="max-width:420px;margin:0 auto;padding:2.5rem 1rem;text-align:center" class="pop-in">
+    <p style="font-size:3rem;margin:0 0 .3rem">${accuracy>=90?'🏆':accuracy>=70?'🎉':'💪'}</p>
+    <h2 class="font-baloo" style="font-size:1.5rem;font-weight:800;color:#1e293b;margin:0 0 .3rem">${title}</h2>
+    <div style="margin:.6rem 0">${starHtml}</div>
+    <p style="color:#64748b;font-weight:800">Độ chính xác: <span style="color:#1e293b">${accuracy}%</span> (${s.correct}/${scored||0} câu đúng)</p>
+    <p class="xp-pill" style="display:inline-block;margin-top:.6rem"><i class="fa-solid fa-bolt" style="margin-right:.25rem"></i>+${s.xpEarned} XP</p>
+    ${mistakeFixedLine}
+    ${catBlock}
+    <div style="margin-top:2rem;display:grid;gap:.7rem">
+      <button onclick="goHomeFromSummary()" class="btn3d btn-green" style="width:100%;padding:.85rem;border-radius:1.1rem;font-weight:900;font-size:1.05rem">Về trang chủ</button>
+      <button onclick="retryStage()" class="btn3d btn-white" style="width:100%;padding:.85rem;border-radius:1.1rem;font-weight:900;font-size:1.05rem">Làm lại</button>
+    </div>
+  </div>`;
+}
+
+function goHomeFromSummary(){
+  const showMastery = state.progress.badges.includes('unit_master') && !state.__masteryShown;
+  if(showMastery){ state.__masteryShown=true; state.screen='mastery'; state.session=null; render(); fireConfetti(); return; }
+  state.screen='home'; state.session=null; render();
+}
+function retryStage(){ const key=state.session.stageKey; state.screen='home'; startStage(key); }
+
+/* ---------------- MASTERY SCREEN ---------------- */
+function renderMastery(){
+  fireConfetti();
+  return `<div style="max-width:420px;margin:0 auto;padding:4rem 1rem;text-align:center" class="pop-in">
+    <p style="font-size:4.5rem;margin:0 0 .5rem">🏆</p>
+    <h2 class="font-baloo" style="font-size:1.6rem;font-weight:800;color:#f59e0b;margin:0 0 .5rem">BẠN ĐÃ CHINH PHỤC<br>NGỮ PHÁP UNIT 3!</h2>
+    <p style="color:#64748b;margin-bottom:1.5rem">Bạn đã thành thạo câu đơn, câu ghép và toàn bộ các từ nối của Unit 3. Thật xuất sắc!</p>
+    <p class="xp-pill" style="display:inline-block;margin-bottom:1.5rem"><i class="fa-solid fa-bolt" style="margin-right:.25rem"></i>Tổng ${state.progress.xp} XP</p>
+    <button onclick="state.screen='home'; render();" class="btn3d btn-green" style="width:100%;padding:.85rem;border-radius:1.1rem;font-weight:900;font-size:1.05rem">Về trang chủ</button>
+  </div>`;
+}
+
+/* ---------------- Confetti ---------------- */
+function fireConfetti(){
+  const wrap=document.getElementById('confettiWrap'); wrap.innerHTML='';
+  const colors=['#4c1d95','#7c3aed','#db2777','#ec4899','#f59e0b','#22c55e'];
+  for(let i=0;i<100;i++){
+    const p=document.createElement('div'); p.className='confetti-piece';
+    p.style.cssText=`left:${Math.random()*100}vw;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>0.5?'50%':'2px'};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*0.8}s;`;
+    wrap.appendChild(p);
+  }
+  setTimeout(()=>{wrap.innerHTML='';},4000);
+}
+
+/* ---------------- INIT ---------------- */
+render();
+</script>
+</body>
+</html>
