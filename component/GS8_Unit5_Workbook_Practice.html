@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 5 - Sach bai tap (SBT) - Our Customs and Traditions - Tieng Anh 8</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+  :root{ --accent:#b91c1c; --accent2:#a16207; }
+  * { box-sizing: border-box; }
+  body { font-family:'Nunito',sans-serif; background:#fff1f2; }
+  .hero-gradient{ background: linear-gradient(135deg, #7f1d1d 0%, #b91c1c 55%, #ca8a04 100%); }
+  .tab-btn{ transition: all .2s ease; }
+  .tab-btn.active{ background: linear-gradient(135deg, #7f1d1d, #ca8a04); color:#fff; box-shadow:0 4px 14px rgba(127,29,29,.35); transform:translateY(-1px); }
+  .task-card{ transition: box-shadow .2s, transform .2s; }
+  .task-card:hover{ transform: translateY(-2px); box-shadow:0 8px 30px rgba(0,0,0,.10); }
+  .option-label{ cursor:pointer; transition: all .18s; border:2px solid #e2e8f0; }
+  .option-label:hover{ border-color:var(--accent); background:#fff1f2; }
+  .option-label.selected{ border-color:#b91c1c; background:#fee2e2; }
+  .option-label.correct-opt{ border-color:#22c55e !important; background:#f0fdf4 !important; }
+  .option-label.wrong-opt{ border-color:#ef4444 !important; background:#fef2f2 !important; }
+  .mcq-detail-hidden{ display:none; }
+  .show-mcq-detail .mcq-detail-hidden{ display:block; }
+  .speak-btn{ cursor:pointer; }
+  .speak-btn.speaking{ animation: pulseSpeak .7s ease-in-out infinite; }
+  @keyframes pulseSpeak{ 0%,100%{transform:scale(1);} 50%{transform:scale(1.18);} }
+  .vi-hidden{ display:none; }
+  .explanation-box{ display:none; animation: fadeSlide .3s ease forwards; }
+  .explanation-box.show{ display:block; }
+  @keyframes fadeSlide{ from{opacity:0; transform:translateY(-6px);} to{opacity:1; transform:translateY(0);} }
+  input.answer-input, textarea.answer-input{ border:2px solid #cbd5e1; transition:border .18s; outline:none; background:#fff; }
+  input.answer-input:focus, textarea.answer-input:focus{ border-color:var(--accent); }
+  input.correct-input{ border-color:#22c55e !important; background:#f0fdf4; }
+  input.wrong-input{ border-color:#ef4444 !important; background:#fef2f2; }
+  .score-badge{ animation: popIn .35s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn{ from{transform:scale(.4); opacity:0;} to{transform:scale(1); opacity:1;} }
+  .confetti-wrap{ position:fixed; inset:0; pointer-events:none; z-index:9999; }
+  .confetti-piece{ position:absolute; width:10px; height:10px; border-radius:2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall{ 0%{transform:translateY(-20px) rotate(0deg); opacity:1;} 100%{transform:translateY(100vh) rotate(720deg); opacity:0;} }
+  .progress-bar-fill{ transition: width .6s ease; }
+  .section-page{ display:none; }
+  .section-page.active{ display:block; }
+  #completionBanner{ display:none; }
+  #completionBanner.show{ display:flex; }
+  .passage-box{ background:#fff; border:1px solid #e2e8f0; border-radius:1rem; padding:1rem 1.25rem; line-height:1.9; font-size:.95rem; color:#334155; }
+  .dict-box{ background:#fef9c3; border:1px solid #fde68a; border-radius:1rem; padding:1rem 1.25rem; font-size:.9rem; color:#334155; }
+  .rule-box{ background:#eff6ff; border:1px solid #bfdbfe; border-radius:1rem; padding:1rem 1.25rem; line-height:1.85; font-size:.9rem; color:#334155; }
+  .info-box{ background:#f0fdf4; border:1px solid #bbf7d0; border-radius:1rem; padding:1rem 1.25rem; line-height:1.85; font-size:.88rem; color:#334155; }
+  .blank-tag{ background:#fee2e2; color:#991b1b; font-weight:800; border-radius:.4rem; padding:0 .35rem; }
+  .part-label{ display:inline-block; background:linear-gradient(135deg,#7f1d1d,#ca8a04); color:#fff; font-weight:900; font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; padding:.25rem .7rem; border-radius:999px; margin-bottom:.5rem; }
+  .navgroup-sep{ width:1px; background:#e2e8f0; margin:0 .25rem; align-self:stretch; }
+</style>
+</head>
+<body class="min-h-screen">
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<header class="hero-gradient text-white py-8 px-4 text-center shadow-xl relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <div class="absolute top-4 left-8 text-6xl">🏮</div>
+    <div class="absolute top-2 right-12 text-5xl">🧧</div>
+    <div class="absolute bottom-2 left-1/3 text-4xl">🎊</div>
+    <div class="absolute bottom-4 right-1/4 text-5xl">🎎</div>
+  </div>
+  <p class="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Tiếng Anh 8 · Unit 5 · Sách bài tập (Workbook)</p>
+  <h1 class="font-['Baloo_2'] text-3xl md:text-5xl font-extrabold drop-shadow-lg">🏮 Unit 5: Our Customs and Traditions 🧧</h1>
+  <p class="mt-2 text-base md:text-lg opacity-90 font-semibold">Bám sát đúng thứ tự &amp; đánh số bài tập trong Sách bài tập (SBT)</p>
+  <div class="mt-5 max-w-2xl mx-auto">
+    <div class="flex justify-between text-xs font-bold opacity-80 mb-1">
+      <span>Tiến độ hoàn thành</span>
+      <span id="progressText">0 / 0 phần</span>
+    </div>
+    <div class="bg-white/20 rounded-full h-3 overflow-hidden">
+      <div id="progressBar" class="bg-white rounded-full h-3 progress-bar-fill" style="width:0%"></div>
+    </div>
+  </div>
+</header>
+
+<nav class="sticky top-0 z-50 bg-white/90 backdrop-blur shadow-sm px-3 py-2 overflow-x-auto">
+  <div class="flex gap-2 min-w-max mx-auto w-fit" id="navWrap"></div>
+</nav>
+
+<main class="max-w-4xl mx-auto px-4 py-6 pb-20" id="mainWrap"></main>
+
+<div id="completionBanner" class="fixed inset-0 z-[9998] items-center justify-center bg-black/50 px-4">
+  <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center score-badge shadow-2xl">
+    <div class="text-6xl mb-3">🎉</div>
+    <h3 class="text-2xl font-extrabold text-red-900 mb-1">Hoàn thành bài luyện tập!</h3>
+    <p class="text-slate-500 mb-4">Bạn đã làm xong tất cả các phần.</p>
+    <p id="finalScoreDisplay" class="text-3xl font-black text-red-700 mb-5"></p>
+    <button onclick="closeBanner()" class="bg-gradient-to-r from-red-900 to-amber-500 text-white font-bold px-6 py-2.5 rounded-full">Đóng</button>
+  </div>
+</div>
+
+<script>
+/* ================================================================
+   UNIT 5: OUR CUSTOMS AND TRADITIONS — SBT Global Success 8
+   Sources cross-checked: vietjack.com, haylamdo.com, vndoc.com, loigiaihay.com
+   ================================================================ */
+
+const KATE_FESTIVAL_PASSAGE = {
+  title: "The Kate Festival",
+  html: "The Kate Festival is (1) ___ most important festival of the Cham in Viet Nam. It is held for three days at the beginning of October. The main ceremony takes (2) ___ in Po Rome, Po Nagar, and Po Klong Garai towers in Ninh Thuan Province. The festival helps people remember Cham heroes and (3) ___ their ancestors. It is also a time for people to relax, visit each other, and wish others (4) ___ luck. For festival goers, it is a great opportunity to (5) ___ the beauty in the Cham culture. The ceremony starts with people calling their ancestors and gods. Then, they (6) ___ for health and prosperity. The festival follows with (7) ___ traditional music and dance performances. The festival is full (8) ___ sounds and colours, and is a wonderful time for both the locals and visitors.",
+  vi: "Lễ hội Katê là lễ hội (1) ___ quan trọng nhất của người Chăm ở Việt Nam. Lễ hội diễn ra trong ba ngày vào đầu tháng Mười. Lễ chính được tổ chức tại các tháp Po Rome, Po Nagar và Po Klong Garai ở tỉnh Ninh Thuận. Lễ hội giúp người dân tưởng nhớ các anh hùng người Chăm và (3) ___ tổ tiên của họ. Đây cũng là dịp để mọi người nghỉ ngơi, thăm hỏi nhau và chúc nhau (4) ___ may mắn. Đối với người tham dự, đây là cơ hội tuyệt vời để (5) ___ vẻ đẹp của văn hóa Chăm. Buổi lễ bắt đầu bằng việc mọi người khấn gọi tổ tiên và các vị thần. Sau đó, họ (6) ___ cầu sức khỏe và thịnh vượng. Lễ hội tiếp nối bằng (7) ___ các tiết mục âm nhạc và múa truyền thống. Lễ hội tràn ngập (8) ___ âm thanh và màu sắc, là khoảng thời gian tuyệt vời cho cả người dân địa phương và du khách."
+};
+
+const LONGEVITY_PASSAGE = {
+  title: "A Longevity Celebration",
+  html: "On the fifth day of Tet, Binh An Village holds a longevity celebration for elderly people over 70. This tradition has continued for centuries in the village. In the morning, everyone dresses nicely and walks to the village temple. According to tradition, the elderly wear traditional ao dai. They sit at the most honourable place. The village leaders congratulate them. They offer each elder a 'longevity flag' and a bunch of flowers. Then, each family takes photographs with their elders. At noon, families hold a home party for their elders. It is customary for the family members to cook for their elders. The traditional dishes served are five-colour sticky rice, steamed chicken, spring rolls, and deep-fried fish. The longevity celebration is important to all villagers. It is an opportunity for them to show their respect to the elders. It is also a great time for family gatherings.",
+  vi: "Vào ngày mùng 5 Tết, làng Bình An tổ chức lễ mừng thọ cho những người trên 70 tuổi. Truyền thống này đã được duy trì qua nhiều thế kỷ. Buổi sáng, mọi người ăn mặc chỉnh tề và đi bộ đến đình làng. Theo truyền thống, người cao tuổi mặc áo dài. Họ ngồi ở vị trí trang trọng nhất. Các vị lãnh đạo làng chúc mừng họ. Họ tặng mỗi cụ một 'lá cờ trường thọ' và một bó hoa. Sau đó, mỗi gia đình chụp ảnh cùng người cao tuổi của mình. Buổi trưa, các gia đình tổ chức tiệc tại nhà cho người cao tuổi. Theo phong tục, con cháu trong gia đình sẽ nấu ăn cho các cụ. Các món ăn truyền thống gồm xôi ngũ sắc, gà luộc, nem cuốn và cá rán. Lễ mừng thọ có ý nghĩa quan trọng với dân làng: đây là dịp bày tỏ lòng kính trọng với người cao tuổi, và cũng là dịp gia đình sum họp."
+};
+
+const BRITISH_TRADITIONS_PASSAGE = {
+  title: "Popular Traditions in Britain",
+  html: "When one thinks of the British, one often imagines people drinking tea and eating fish and chips. But there are many other traditions that British people have maintained for centuries. Pancake Day is also called Shrove Tuesday, and it is a day people make pancakes. They hold a pancake race. Runners wear a traditional apron and scarf and carry a pan with a pancake in it. They have to flip the pancake as they run. The first person to reach the finish line with their pancake is the winner. Christmas is on 25th December, but people prepare for it long before the event. Christmas trees are everywhere. People decorate the trees and place gifts under them. They cook traditional foods, wear their best clothes, and have family reunions. On New Year's Eve, crowds gather at Trafalgar Square or Piccadilly Circus to wait for the start of the new year. At midnight, there is a huge fireworks celebration over the London Eye, followed by Big Ben ringing in the New Year and people singing Auld Lang Syne.",
+  vi: "Khi nghĩ về người Anh, ta thường hình dung cảnh họ uống trà và ăn cá tẩm bột chiên khoai tây (fish and chips). Nhưng còn nhiều truyền thống khác mà người Anh đã gìn giữ qua nhiều thế kỷ. Ngày Pancake còn gọi là Shrove Tuesday, là ngày người ta làm bánh kếp. Họ tổ chức cuộc đua bánh kếp: người chạy mặc tạp dề và khăn quàng truyền thống, cầm chảo có bánh kếp bên trong và phải lật bánh khi chạy. Người đầu tiên về đích với bánh kếp trong chảo là người thắng cuộc. Giáng sinh diễn ra ngày 25/12 nhưng người ta chuẩn bị từ rất lâu trước đó: cây thông xuất hiện khắp nơi, được trang trí và đặt quà bên dưới; người ta nấu món truyền thống, mặc đẹp và sum họp gia đình. Vào đêm Giao thừa, đám đông tụ tập ở Quảng trường Trafalgar hoặc Piccadilly Circus chờ đón năm mới. Đúng nửa đêm có màn bắn pháo hoa trên sông gần London Eye, tiếp theo là tiếng chuông Big Ben điểm giờ và mọi người cùng hát bài Auld Lang Syne."
+};
+
+const ELENA_MINH_DIALOGUE = {
+  title: "Family traditions: Elena and Minh",
+  html: "<b>Elena:</b> Minh, does your family often spend time doing activities together?<br><b>Minh:</b> (1) ___<br><b>Elena:</b> Do you mean you watch them at the stadium?<br><b>Minh:</b> That's right. (2) ___<br><b>Elena:</b> Your family must love football very much.<br><b>Minh:</b> (3) ___<br><b>Elena:</b> Oh, and do any of your other relatives play football?<br><b>Minh:</b> (4) ___<br><b>Elena:</b> How about your dad?<br><b>Minh:</b> (5) ___<br><b>Elena:</b> You certainly have an interesting family.",
+  vi: "<b>Elena:</b> Minh này, gia đình cậu có thường làm gì cùng nhau không?<br><b>Minh:</b> (1) ___<br><b>Elena:</b> Ý cậu là cả nhà xem họ thi đấu ở sân vận động à?<br><b>Minh:</b> Đúng vậy. (2) ___<br><b>Elena:</b> Chắc gia đình cậu yêu bóng đá lắm nhỉ.<br><b>Minh:</b> (3) ___<br><b>Elena:</b> Ồ, thế có người họ hàng nào khác của cậu chơi bóng đá không?<br><b>Minh:</b> (4) ___<br><b>Elena:</b> Thế còn bố cậu thì sao?<br><b>Minh:</b> (5) ___<br><b>Elena:</b> Gia đình cậu thật thú vị."
+};
+
+const FAMILY_CUSTOMS_PASSAGE = {
+  title: "Family customs and traditions",
+  html: "I think each family has their own customs and (1) ___. For example, my uncle's children always spend two weeks in the countryside in summer time. Holding a party on everyone's birthday is another custom they (2) ___. As for my family, it is becoming a (3) ___ for us to bake a special cake on the last Sunday of each month. We also have a home cinema night every Saturday when we enjoy a film together. For my extended family, (4) ___ we gather on the first day of the Lunar New Year. In my opinion, it is good for families to (5) ___ their traditions from time to time; otherwise, they can (6) ___ their traditions.",
+  vi: "Tôi nghĩ mỗi gia đình đều có phong tục và (1) ___ riêng. Ví dụ, các con của chú tôi luôn dành hai tuần ở quê vào mùa hè. Tổ chức tiệc vào ngày sinh nhật của mỗi người là một phong tục khác mà họ (2) ___. Còn gia đình tôi, việc nướng một chiếc bánh đặc biệt vào Chủ nhật cuối cùng của mỗi tháng đang dần trở thành một (3) ___. Chúng tôi cũng có buổi xem phim tại nhà mỗi tối thứ Bảy. Với đại gia đình tôi, (4) ___ chúng tôi sum họp vào ngày đầu tiên Tết Nguyên Đán. Theo tôi, các gia đình nên (5) ___ truyền thống của mình theo thời gian; nếu không, họ có thể (6) ___ truyền thống đó."
+};
+
+const PHO_FAMILY_NOTES = {
+  title: "Prompt: a family tradition of cooking phở",
+  html: "Family activity: cook <i>pho</i> together at weekends, at the grandparents' house.<br>Reason: grandmother used to run a well-known pho restaurant, so by tradition all family members learn to cook it.<br>Other relatives: two aunts now own a Vietnamese restaurant that serves pho.<br>Broke with tradition: mother did not continue the family trade — she became a banker instead.",
+  vi: "Hoạt động gia đình: cùng nấu phở vào cuối tuần, tại nhà ông bà.<br>Lý do: bà từng có một quán phở nổi tiếng, nên theo truyền thống cả nhà đều học nấu phở.<br>Họ hàng khác: hai người cô/dì hiện sở hữu một nhà hàng Việt Nam có bán phở.<br>Người phá vỡ truyền thống: mẹ không theo nghề gia đình — mẹ trở thành nhân viên ngân hàng."
+};
+
+const THAC_CON_NOTES = {
+  title: "Notes: The Thac Con Festival",
+  html: "Also called: the Coconut Offering Festival.<br>Location: An Trach, Soc Trang Province.<br>Time: middle of the third lunar month.<br>Purpose: to pray for luck and prosperity, and to honour ancestors and Buddha.<br>Activities: singing, dancing, bringing pairs of coconuts when visiting other families.<br>Recommendation: buy a flower vase made from a coconut shell (a nice souvenir).<br>Things to avoid: littering the temple grounds; picking flowers without permission.",
+  vi: "Tên gọi khác: Lễ hội Cúng Dừa (Thác Côn).<br>Địa điểm: An Trạch, tỉnh Sóc Trăng.<br>Thời gian: giữa tháng Ba âm lịch.<br>Mục đích: cầu may mắn, thịnh vượng và tưởng nhớ tổ tiên, Đức Phật.<br>Hoạt động: ca hát, nhảy múa, mang theo cặp dừa khi đến thăm các gia đình khác.<br>Gợi ý: nên mua một bình hoa làm từ vỏ dừa làm quà lưu niệm.<br>Điều cần tránh: xả rác trong khuôn viên chùa; hái hoa khi chưa được phép."
+};
+
+const DATA_UNIT5 = {"unit": 5, "test": "sbt-gs8-order", "sections": [
+
+/* ============== A. PRONUNCIATION ============== */
+// SUBSTITUTE EXERCISE — every source checked (vietjack, haylamdo, tailieumoi, vndoc) only shows
+// the original Ex1 word list as an embedded image, not extractable text. Only the answer-key
+// letters (1-D,2-A,3-B,4-C,5-B) were locatable, which cannot be mapped to unknown words.
+// The items below are a constructed substitute testing the SAME sound contrast (/n/ vs /ŋ/) as
+// the confirmed Ex2 of this same section.
+{"part":"A. PRONUNCIATION","roman":"A.1","navLabel":"A Ex1","title":"Ex 1. Find the word with the underlined part pronounced differently (substitute set)","icon":"ear-listen","instructions":"Chọn từ có phần gạch chân phát âm khác với 3 từ còn lại. (Bộ từ thay thế minh hoạ cùng dạng phát âm /n/ - /ŋ/, vì bản gốc SBT chỉ có ở dạng hình ảnh, không tra được văn bản gốc.)","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. Which word has a different underlined sound?","options":["king","thin","sun","pin"],"answer":0,"vi":"king /kɪŋ/ (vua) có âm /ŋ/, khác với thin (mỏng), sun (mặt trời), pin (cái ghim) đều có âm /n/."},
+  {"q":"2. Which word has a different underlined sound?","options":["long","along","gone","song"],"answer":2,"vi":"gone /ɡɒn/ (đã đi) có âm /n/, khác với long (dài), along (dọc theo), song (bài hát) đều có âm /ŋ/."},
+  {"q":"3. Which word has a different underlined sound?","options":["bring","begin","thing","sing"],"answer":1,"vi":"begin /bɪˈɡɪn/ (bắt đầu) có âm /n/, khác với bring (mang đến), thing (thứ, vật), sing (hát) đều có âm /ŋ/."},
+  {"q":"4. Which word has a different underlined sound?","options":["banana","orange","singer","listen"],"answer":2,"vi":"singer /ˈsɪŋər/ (ca sĩ) có âm /ŋ/, khác với banana (chuối), orange (cam), listen (nghe) đều có âm /n/."},
+  {"q":"5. Which word has a different underlined sound?","options":["morning","evening","opening","seven"],"answer":3,"vi":"seven /ˈsevn/ (số bảy) có âm /n/, khác với morning (buổi sáng), evening (buổi tối), opening (khai mạc) đều có âm /ŋ/."}
+ ]},
+{"part":"A. PRONUNCIATION","roman":"A.2","navLabel":"A Ex2","title":"Ex 2. Say the sentences aloud, paying attention to the underlined words with /n/ and /ŋ/","icon":"ear-listen","instructions":"Đọc to các câu sau và xác định từ được gạch chân chứa âm /n/ hay /ŋ/.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. She wants to become a folk singer.","options":["/n/","/ŋ/"],"answer":1,"vi":"singer (ca sĩ) chứa âm /ŋ/ ở đuôi -ing + er → /ˈsɪŋər/."},
+  {"q":"2. Tet is a time for family reunions and gatherings with friends.","options":["/n/","/ŋ/"],"answer":1,"vi":"gatherings (những buổi họp mặt) chứa âm /ŋ/ ở đuôi -ing → /ˈɡæðərɪŋz/."},
+  {"q":"3. They had a lion dance group perform at their daughter's wedding.","options":["/n/","/ŋ/"],"answer":1,"vi":"wedding (đám cưới) chứa âm /ŋ/ ở đuôi -ing → /ˈwedɪŋ/."},
+  {"q":"4. The Vietnamese carefully prepare offerings for the Kitchen Gods.","options":["/n/","/ŋ/"],"answer":0,"vi":"Kitchen (nhà bếp, Ông Táo/Táo Quân) chứa âm /n/ → /ˈkɪtʃɪn/."},
+  {"q":"5. Everyone needs to wait for the host to start eating.","options":["/n/","/ŋ/"],"answer":0,"vi":"Everyone (mọi người) chứa âm /n/ ở cuối từ → /ˈevriwʌn/."}
+ ]},
+
+/* ============== B. VOCABULARY & GRAMMAR ============== */
+// B.1 in the original SBT is a picture-matching task (8 images + first letters). Since images
+// cannot be reproduced here, the same 8 confirmed target phrases are adapted into
+// definition-based fill-in items (words/phrases themselves are verified, only the presentation
+// format — picture → definition — has been adapted).
+{"part":"B. VOCABULARY & GRAMMAR","roman":"B.1","navLabel":"B Ex1","title":"Ex 1. Complete the phrases (adapted from the picture-matching task; first letters given)","icon":"list-check","instructions":"Dựa vào gợi ý (nghĩa + chữ cái đầu) để hoàn thành cụm từ. (Bản gốc dùng tranh minh hoạ; ở đây thay bằng gợi ý nghĩa vì không thể hiển thị tranh.)","type":"fill",
+ "questions":[
+  {"q":"1. o__________ t____ : a small tree grown and shaped in a pot for decoration, especially at Tet.","answer":"ornamental tree","vi":"cây cảnh"},
+  {"q":"2. a b__________ f_____ : a flower that has fully opened.","answer":"blooming flower","vi":"bông hoa đang nở"},
+  {"q":"3. a c__________ h_____ : a building in a Vietnamese village where villagers meet or worship.","answer":"communal house","vi":"đình làng"},
+  {"q":"4. a b______ p___ : a tall piece of bamboo put up in the yard of the communal house to welcome Tet.","answer":"bamboo pole","vi":"cây nêu"},
+  {"q":"5. b__ s_______ : evil or harmful ghosts that some festivals (e.g. Surva Festival) aim to chase away.","answer":"bad spirits","vi":"tà ma, linh hồn xấu"},
+  {"q":"6. f___ o________ : traditional dishes (e.g. banh chung, boiled chicken) prepared to honour ancestors.","answer":"food offerings","vi":"đồ cúng"},
+  {"q":"7. m______ a___ : a traditional fighting skill that helps build strength and confidence.","answer":"martial arts","vi":"võ thuật"},
+  {"q":"8. f_______ g____ : people who come to take part in a festival.","answer":"festival goers","vi":"người tham dự lễ hội"}
+ ]},
+{"part":"B. VOCABULARY & GRAMMAR","roman":"B.2","navLabel":"B Ex2","title":"Ex 2. Choose the correct answer A, B, or C to complete each sentence","icon":"circle-check","instructions":"Chọn đáp án đúng để hoàn thành câu.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. In many cultures, a ___________ represents youth, beauty, and pleasure.","options":["blooming flower","communal house","bamboo pole"],"answer":0,"vi":"blooming flower = bông hoa đang nở, tượng trưng cho tuổi trẻ, cái đẹp và niềm vui."},
+  {"q":"2. ___________ such as kumquat trees, peach blossoms, and apricot flowers are popular at Tet.","options":["Blooming flowers","Vegetables","Ornamental trees"],"answer":2,"vi":"Ornamental trees = cây cảnh (cây quất, đào, mai) rất phổ biến trong dịp Tết."},
+  {"q":"3. Traditionally, the ___________ in a village is a place for villagers to meet or worship.","options":["festival","market","communal house"],"answer":2,"vi":"communal house = đình làng, nơi dân làng họp mặt hoặc thờ cúng."},
+  {"q":"4. Every year, the Bulgarians hold the Surva Festival to chase away ___________.","options":["bad spirits","festival goers","martial artists"],"answer":0,"vi":"bad spirits = tà ma; lễ hội Surva của Bulgaria nhằm xua đuổi tà ma."},
+  {"q":"5. In many Vietnamese villages, people put up a ___________ in the yard of the communal house to welcome Tet.","options":["fight","barrier","bamboo pole"],"answer":2,"vi":"bamboo pole (cây nêu) được dựng ở sân đình để đón Tết."},
+  {"q":"6. During Tet, the Kinh often prepare traditional ___________ such as banh chung and boiled chicken to honour their ancestors.","options":["decorative items","food offerings","spirits"],"answer":1,"vi":"food offerings = đồ cúng, ví dụ bánh chưng, gà luộc."},
+  {"q":"7. Last year, thousands of festival ___________ participated in the Lim Festival.","options":["comers","goers","movers"],"answer":1,"vi":"festival goers = người tham dự lễ hội."},
+  {"q":"8. Learning ___________ can help build physical strength and improve confidence.","options":["martial arts","physics","chemistry"],"answer":0,"vi":"martial arts = võ thuật, giúp rèn luyện thể chất và sự tự tin."}
+ ]},
+{"part":"B. VOCABULARY & GRAMMAR","roman":"B.3","navLabel":"B Ex3","title":"Ex 3. Complete the passage with the words in the box","icon":"pen","instructions":"Điền từ thích hợp trong khung vào chỗ trống: traditions, practise, custom, traditionally, maintain, break.","type":"fill",
+ "passage": FAMILY_CUSTOMS_PASSAGE,
+ "questions":[
+  {"q":"Blank (1):","answer":"traditions","vi":"những truyền thống"},
+  {"q":"Blank (2):","answer":"practise","vi":"thực hành, duy trì (thói quen)"},
+  {"q":"Blank (3):","answer":"custom","vi":"phong tục, thói quen"},
+  {"q":"Blank (4):","answer":"traditionally","vi":"theo truyền thống"},
+  {"q":"Blank (5):","answer":"maintain","vi":"duy trì"},
+  {"q":"Blank (6):","answer":"break","vi":"phá vỡ (truyền thống)"}
+ ]},
+{"part":"B. VOCABULARY & GRAMMAR","roman":"B.4","navLabel":"B Ex4","title":"Ex 4. Complete the sentences with a, an, the, or zero article (0)","icon":"scale-balanced","instructions":"Điền a, an, the hoặc không dùng mạo từ (viết '0') vào chỗ trống.","type":"fill",
+ "ruleBox":"<b>📌 Remember! — CÔNG THỨC MẠO TỪ (a/an/the/zero)</b><br>• <b>a/an</b> = một (chưa xác định) + danh từ đếm được SỐ ÍT, nhắc đến <i>lần đầu</i>.<br>&nbsp;&nbsp;- <b>a</b> trước ÂM PHỤ ÂM (không phải chữ cái phụ âm!): <i>a Chinese restaurant, a university</i> (university đọc là /juː/ = âm 'yoo' nên vẫn dùng <b>a</b>).<br>&nbsp;&nbsp;- <b>an</b> trước ÂM NGUYÊN ÂM: <i>an exception, an hour</i> (hour đọc là /aʊər/, chữ 'h' câm nên vẫn dùng <b>an</b>).<br>• <b>the</b> = cái đó (đã xác định/duy nhất/đặc biệt) dùng khi:<br>&nbsp;&nbsp;- vật/người đã được nhắc trước đó hoặc cả 2 người đều biết đang nói về cái nào (the last day of my stay);<br>&nbsp;&nbsp;- vật/khái niệm duy nhất trên đời (the sun, the moon);<br>&nbsp;&nbsp;- so sánh nhất hoặc số thứ tự (the most important, the third lunar month, the first day).<br>• <b>Zero article (0)</b> = KHÔNG dùng mạo từ trước:<br>&nbsp;&nbsp;- danh từ số nhiều/không đếm được mang nghĩa khái quát chung chung (0 Vietnamese table manners, 0 thousands of people);<br>&nbsp;&nbsp;- hầu hết danh từ riêng (0 Vietnam, 0 Ha Long Bay — trừ tên sông, biển, dãy núi, tên nước có 'of/Republic'... thường có 'the').<br><b>Ví dụ thêm:</b> <i>She is an honest student.</i> (an vì 'honest' âm /ɒ/ là âm nguyên âm, chữ 'h' câm) — Cô ấy là một học sinh trung thực. | <i>The Mekong River flows through several countries.</i> (the vì tên sông luôn có 'the') — Sông Mê Kông chảy qua nhiều quốc gia.",
+ "questions":[
+  {"q":"1. I lost my wallet on ___ last day of my stay in Paris.","qvi":"1. Tôi bị mất ví vào ngày ___ cuối cùng của kỳ lưu trú tại Paris.","answer":"the","vi":"the — 'ngày cuối cùng' là điều đã xác định cụ thể."},
+  {"q":"2. What are some things I should know about ___ Vietnamese table manners? (viết '0' nếu không cần mạo từ)","qvi":"2. Có những điều gì tôi nên biết về ___ phép tắc trên bàn ăn của người Việt Nam? (viết '0' nếu không cần mạo từ)","answer":"0","accepted":["0","zero","no article"],"vi":"không dùng mạo từ vì 'Vietnamese table manners' mang nghĩa khái quát."},
+  {"q":"3. We often stay at home on New Year's Eve, but this year was ___ exception.","qvi":"3. Chúng tôi thường ở nhà vào đêm Giao thừa, nhưng năm nay là ___ ngoại lệ.","answer":"an","vi":"an — vì 'exception' bắt đầu bằng nguyên âm và được nhắc đến lần đầu."},
+  {"q":"4. My village holds an annual festival that welcomes ___ thousands of festival goers. (viết '0' nếu không cần mạo từ)","qvi":"4. Làng tôi tổ chức một lễ hội thường niên đón chào ___ hàng nghìn người tham gia lễ hội. (viết '0' nếu không cần mạo từ)","answer":"0","accepted":["0","zero","no article"],"vi":"không dùng mạo từ trước 'thousands of' mang nghĩa số lượng chung chung."},
+  {"q":"5. We went to ___ Chinese restaurant last night.","qvi":"5. Tối qua chúng tôi đã đến ___ một nhà hàng Trung Hoa.","answer":"a","vi":"a — vì đây là lần đầu nhắc đến, chưa xác định nhà hàng cụ thể nào."}
+ ]},
+// SUBSTITUTE EXERCISE — the original Ex5 (an error-correction passage about a Vietnamese
+// festival, believed to be the Hung Kings Festival based on partial answer notes found) is only
+// available as an embedded image on every source checked (haylamdo, vietjack, tailieumoi); the
+// exact original sentences could not be verified. The items below are a constructed substitute
+// testing the same grammar point (a/an/the/zero article) using verified general facts about the
+// Hung Kings Festival (held on the 10th day of the 3rd lunar month at Hung Temple, Phu Tho).
+{"part":"B. VOCABULARY & GRAMMAR","roman":"B.5","navLabel":"B Ex5","title":"Ex 5. Choose the correct article to complete each sentence about the Hung Kings Festival (substitute set)","icon":"scale-balanced","instructions":"Chọn mạo từ đúng (a/an/the/không dùng mạo từ) để hoàn thành câu. (Bộ câu thay thế cùng chủ điểm ngữ pháp, vì đoạn văn gốc của Ex5 chỉ có ở dạng hình ảnh, không tra được văn bản gốc.)","type":"mcq","instant":true,
+ "ruleBox":"<b>📌 Remember! — Nhắc lại nhanh mạo từ a/an/the/0</b><br>• <b>a/an</b>: danh từ số ít, chưa xác định, lần đầu nhắc tới (a theo sau ÂM phụ âm, an theo sau ÂM nguyên âm — chú ý ÂM chứ không phải chữ cái, vd 'an important occasion').<br>• <b>the</b>: vật/địa danh/khái niệm đã xác định cụ thể, duy nhất (the Hung Kings Festival, the Hung Temple), hoặc đi với số thứ tự (the third lunar month).<br>• <b>0 (zero article)</b>: danh từ số nhiều/không đếm được mang nghĩa chung chung, không xác định số lượng cụ thể (0 thousands of visitors).",
+ "questions":[
+  {"q":"1. ___ Hung Kings Festival is held every year to honour the founders of the nation.","qvi":"1. Lễ hội ___ Đền Hùng được tổ chức hằng năm để tưởng nhớ các vị vua đã dựng nước.","options":["A","The","0 (no article)"],"answer":1,"vi":"the — tên lễ hội cụ thể, đã xác định (Giỗ Tổ Hùng Vương)."},
+  {"q":"2. The festival takes place on the tenth day of ___ third lunar month.","qvi":"2. Lễ hội diễn ra vào ngày mùng mười tháng ___ ba âm lịch.","options":["a","the","0 (no article)"],"answer":1,"vi":"the — 'third lunar month' là thứ tự xác định cụ thể (tháng 3 âm lịch)."},
+  {"q":"3. People travel to Phu Tho to visit ___ Hung Temple on the mountain.","qvi":"3. Người dân đến Phú Thọ để thăm ___ Đền Hùng trên núi.","options":["a","the","0 (no article)"],"answer":1,"vi":"the — địa danh cụ thể, duy nhất (Đền Hùng)."},
+  {"q":"4. Every year, ___ thousands of visitors take part in the festival.","qvi":"4. Mỗi năm, ___ hàng nghìn du khách tham gia lễ hội.","options":["a","the","0 (no article)"],"answer":2,"vi":"0 (không mạo từ) — 'thousands of visitors' mang nghĩa khái quát, số lượng chung."},
+  {"q":"5. It is ___ important occasion for Vietnamese people to remember their roots.","qvi":"5. Đây là ___ dịp quan trọng để người Việt Nam nhớ về cội nguồn của mình.","options":["an","the","0 (no article)"],"answer":0,"vi":"an — 'important' bắt đầu bằng nguyên âm, danh từ số ít chưa xác định cụ thể."}
+ ]},
+
+/* ============== C. SPEAKING ============== */
+{"part":"C. SPEAKING","roman":"C.1","navLabel":"C Ex1","title":"Ex 1. Choose the most suitable response A or B to complete each exchange","icon":"comments","instructions":"Chọn câu trả lời A hoặc B phù hợp nhất.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. A: \"What gift should I bring to Jane's house-warming party?\"","options":["A. How about buying her an ornamental tree?","B. Sorry, but I'm busy on Friday."],"answer":0,"vi":"A: Mình nên mang quà gì đến tân gia của Jane? B: Sao cậu không tặng cô ấy một cây cảnh? (ornamental tree = cây cảnh)"},
+  {"q":"2. A: \"Minh keeps making fun of me in class. What should I do?\"","options":["A. Oh dear. He's so impolite.","B. Perhaps you could try talking to him seriously."],"answer":1,"vi":"A: Minh cứ trêu chọc mình trong lớp. Mình nên làm gì? B: Có lẽ cậu nên nói chuyện nghiêm túc với bạn ấy. (lời khuyên phù hợp với câu hỏi 'nên làm gì')"},
+  {"q":"3. A: \"Mai is always sending messages to me late at night. This wakes me up.\"","options":["A. Don't reply to her late messages, and she'll soon stop sending them.","B. Poor you! You must be very sleepy then."],"answer":0,"vi":"A: Mai cứ nhắn tin cho mình vào khuya, làm mình tỉnh giấc. B: Đừng trả lời tin nhắn muộn của bạn ấy, rồi bạn ấy sẽ ngừng nhắn. (lời khuyên xử lý vấn đề)"},
+  {"q":"4. A: \"I'm going to Summer Carnival in Ha Long next week!\"","options":["A. That sounds exciting!","B. It's a good idea to bring a warm coat."],"answer":0,"vi":"A: Tuần sau mình sẽ đi Lễ hội Carnaval Mùa hè ở Hạ Long! B: Nghe thật thú vị! (phản hồi hưởng ứng tin vui)"},
+  {"q":"5. A: \"Jack wants to go somewhere for Mid-Autumn Festival.\"","options":["A. Tell him to wait for a few minutes.","B. He should definitely go to Hoi An."],"answer":1,"vi":"A: Jack muốn đi đâu đó chơi Tết Trung thu. B: Cậu ấy nên đến Hội An. (gợi ý địa điểm phù hợp với mong muốn)"}
+ ]},
+{"part":"C. SPEAKING","roman":"C.2","navLabel":"C Ex2","title":"Ex 2. Choose a-e to complete the conversation between Elena and Minh","icon":"comment-dots","instructions":"Đọc hội thoại giữa Elena và Minh, chọn câu (a-e) phù hợp cho mỗi chỗ trống (1)-(5).","type":"mcq","instant":true,
+ "passage": ELENA_MINH_DIALOGUE,
+ "questions":[
+  {"q":"Blank (1):","options":["a. We cheer our favourite football team whenever they play.","b. My grandfather was a football player, so by tradition, we are all football fans.","c. He broke with tradition. He's now a businessman.","d. Sometimes we even go to the opponent's stadium with our team's fan club.","e. Well, my three uncles are football players too, Minh."],"answer":1,"vi":"(1) = b: Ông của Minh từng là cầu thủ bóng đá, nên theo truyền thống cả nhà đều là fan bóng đá."},
+  {"q":"Blank (2):","options":["a. We cheer our favourite football team whenever they play.","b. My grandfather was a football player, so by tradition, we are all football fans.","c. He broke with tradition. He's now a businessman.","d. Sometimes we even go to the opponent's stadium with our team's fan club.","e. Well, my three uncles are football players too, Minh."],"answer":3,"vi":"(2) = d: Đôi khi cả nhà còn đến sân của đội đối phương cùng hội cổ động viên."},
+  {"q":"Blank (3):","options":["a. We cheer our favourite football team whenever they play.","b. My grandfather was a football player, so by tradition, we are all football fans.","c. He broke with tradition. He's now a businessman.","d. Sometimes we even go to the opponent's stadium with our team's fan club.","e. Well, my three uncles are football players too, Minh."],"answer":0,"vi":"(3) = a: Cả nhà cổ vũ đội bóng yêu thích mỗi khi họ thi đấu."},
+  {"q":"Blank (4):","options":["a. We cheer our favourite football team whenever they play.","b. My grandfather was a football player, so by tradition, we are all football fans.","c. He broke with tradition. He's now a businessman.","d. Sometimes we even go to the opponent's stadium with our team's fan club.","e. Well, my three uncles are football players too, Minh."],"answer":4,"vi":"(4) = e: Ba người chú của Minh cũng là cầu thủ bóng đá."},
+  {"q":"Blank (5):","options":["a. We cheer our favourite football team whenever they play.","b. My grandfather was a football player, so by tradition, we are all football fans.","c. He broke with tradition. He's now a businessman.","d. Sometimes we even go to the opponent's stadium with our team's fan club.","e. Well, my three uncles are football players too, Minh."],"answer":2,"vi":"(5) = c: Bố của Minh đã phá vỡ truyền thống gia đình, giờ ông là một doanh nhân."}
+ ]},
+{"part":"C. SPEAKING","roman":"C.3","navLabel":"C Ex3","title":"Ex 3. Make a similar conversation using the information given","icon":"comment-dots","instructions":"Dùng thông tin gợi ý bên dưới (về truyền thống nấu phở của một gia đình) để tạo một hội thoại tương tự bài Ex 2.","type":"essay",
+ "passage": PHO_FAMILY_NOTES,
+ "questions":[
+  {"q":"Write a conversation similar to Ex 2, using the notes about the pho-cooking family tradition (or your own family's tradition).","sample":"A: Nam, does your family often do anything together?\nB: Yes. We often cook pho at weekends.\nA: Where do you do it?\nB: We do it at our grandparents' house.\nA: Why do you do it?\nB: My grandmother used to run a pho restaurant, so by tradition, we all learn to cook it.\nA: Do any of your other relatives cook pho too?\nB: Yes, my two aunts own a Vietnamese restaurant that serves pho.\nA: How about your mother?\nB: She broke with tradition. She's now a banker.\nA: You certainly have an interesting family!"}
+ ]},
+
+/* ============== D. READING ============== */
+// Note: passage text and the correct-answer letters for D.1 were cross-verified identically
+// across two independent sources (haylamdo.com and vndoc.com: 1-C,2-A,3-A,4-B,5-B,6-C,7-B,8-A).
+// The two distractor options for each blank were not recoverable from any source and have been
+// constructed to fit naturally while keeping the verified correct word in the verified position.
+{"part":"D. READING","roman":"D.1","navLabel":"D Ex1","title":"Ex 1. Read the passage about the Kate Festival and choose the correct answer A, B, or C","icon":"file-lines","instructions":"Đọc đoạn văn về Lễ hội Katê của người Chăm và chọn đáp án đúng cho mỗi chỗ trống.","type":"mcq","instant":true,
+ "passage": KATE_FESTIVAL_PASSAGE,
+ "questions":[
+  {"q":"Blank (1):","options":["a","an","the"],"answer":2,"vi":"the most important = quan trọng nhất (tính từ so sánh nhất luôn đi với 'the')."},
+  {"q":"Blank (2):","options":["place","part","turn"],"answer":0,"vi":"take place = diễn ra (cụm động từ cố định)."},
+  {"q":"Blank (3):","options":["worship","admire","praise"],"answer":0,"vi":"worship = thờ cúng, tôn thờ (tổ tiên)."},
+  {"q":"Blank (4):","options":["well","good","best"],"answer":1,"vi":"wish somebody good luck = chúc ai đó may mắn (cụm cố định)."},
+  {"q":"Blank (5):","options":["enjoy","experience","explore"],"answer":1,"vi":"experience the beauty = trải nghiệm/cảm nhận vẻ đẹp."},
+  {"q":"Blank (6):","options":["wish","hope","pray"],"answer":2,"vi":"pray for health and prosperity = cầu nguyện sức khỏe và thịnh vượng."},
+  {"q":"Blank (7):","options":["the","0 (no article)","a"],"answer":1,"vi":"không dùng mạo từ trước danh từ số nhiều mang nghĩa chung (traditional music and dance performances)."},
+  {"q":"Blank (8):","options":["of","with","in"],"answer":0,"vi":"full of = tràn đầy, chứa đầy."}
+ ]},
+{"part":"D. READING","roman":"D.2","navLabel":"D Ex2","title":"Ex 2. Read the passage about a Longevity Celebration and answer the questions","icon":"file-lines","instructions":"Đọc đoạn văn về lễ mừng thọ và chọn đáp án đúng.","type":"mcq","instant":true,
+ "passage": LONGEVITY_PASSAGE,
+ "questions":[
+  {"q":"1. What is the passage mainly about?","options":["A celebration for the elderly","A spring festival","A cooking contest"],"answer":0,"vi":"Bài đọc nói chủ yếu về lễ mừng thọ cho người cao tuổi (longevity celebration)."},
+  {"q":"2. How do people go to the village temple?","options":["By car","By motorbike","On foot"],"answer":2,"vi":"On foot = đi bộ. Bài đọc: '...walks to the village temple.'"},
+  {"q":"3. What do the elders NOT do themselves during the official ceremony?","options":["Sit at an honourable place","Take photographs of the event","Receive congratulations"],"answer":1,"vi":"Người cao tuổi KHÔNG tự chụp ảnh — chính các gia đình mới là người chụp ảnh cùng họ."},
+  {"q":"4. Who cooks for the elders at the home party?","options":["The elderly themselves","A restaurant","Family members"],"answer":2,"vi":"Family members = các thành viên trong gia đình nấu ăn cho người cao tuổi."},
+  {"q":"5. Why is the celebration important to the villagers?","options":["It shows respect for the elders","It teaches people how to cook","It celebrates the new school year"],"answer":0,"vi":"Lễ mừng thọ là dịp để bày tỏ lòng kính trọng với người cao tuổi (và cũng là dịp gia đình sum họp)."}
+ ]},
+{"part":"D. READING","roman":"D.3","navLabel":"D Ex3","title":"Ex 3. Read the passage about British traditions. Tick True/False, then match the descriptions","icon":"file-lines","instructions":"Đọc đoạn văn về các truyền thống của người Anh. Chọn Đúng/Sai cho các câu 1-5, sau đó nối mô tả với đúng truyền thống ở câu 6-8.","type":"mcq","instant":true,
+ "passage": BRITISH_TRADITIONS_PASSAGE,
+ "questions":[
+  {"q":"1. The British are famous for the tradition of coffee drinking.","options":["True","False"],"answer":1,"vi":"SAI — người Anh nổi tiếng với truyền thống uống trà (tea), không phải cà phê."},
+  {"q":"2. Pancake Day always falls on a Wednesday.","options":["True","False"],"answer":1,"vi":"SAI — Pancake Day còn gọi là Shrove Tuesday, tức rơi vào thứ Ba, không phải thứ Tư."},
+  {"q":"3. Christmas is a time for family gatherings.","options":["True","False"],"answer":0,"vi":"ĐÚNG — 'have family reunions' vào dịp Giáng sinh."},
+  {"q":"4. Many British people go outdoors to celebrate the New Year countdown.","options":["True","False"],"answer":0,"vi":"ĐÚNG — đám đông tụ tập ở Trafalgar Square hoặc Piccadilly Circus."},
+  {"q":"5. The New Year fireworks display takes place over Big Ben.","options":["True","False"],"answer":1,"vi":"SAI — pháo hoa được bắn trên khu vực London Eye, sau đó mới đến tiếng chuông Big Ben."},
+  {"q":"6. Which tradition matches: 'Runners carry a pan and flip a pancake while racing to the finish line'?","options":["Pancake Day","Christmas","New Year's Eve"],"answer":0,"vi":"Pancake Day (ngày hội bánh kếp) — cuộc đua lật bánh kếp trong chảo."},
+  {"q":"7. Which tradition matches: 'People decorate trees and place gifts underneath them'?","options":["Pancake Day","Christmas","New Year's Eve"],"answer":1,"vi":"Christmas (Giáng sinh) — trang trí cây thông và đặt quà bên dưới."},
+  {"q":"8. Which tradition matches: 'Crowds gather at famous city squares to watch fireworks at midnight'?","options":["Pancake Day","Christmas","New Year's Eve"],"answer":2,"vi":"New Year's Eve (đêm Giao thừa) — tụ tập ở quảng trường xem pháo hoa lúc nửa đêm."}
+ ]},
+
+/* ============== E. WRITING ============== */
+{"part":"E. WRITING","roman":"E.1","navLabel":"E Ex1","title":"Ex 1. Rewrite the sentences using the word given, without changing its form","icon":"pen-fancy","instructions":"Viết lại câu sao cho nghĩa không đổi, dùng từ gợi ý (không thay đổi dạng của từ).","type":"sentence",
+ "ruleBox":"<b>📌 Remember! — Các mẫu chuyển đổi câu thường gặp</b><br>• <b>by + phương tiện giao thông</b> (không có mạo từ): <i>by train, by bus, by car, by plane</i> — <i>We travelled to Hue by train.</i> (Chúng tôi đi tàu đến Huế.)<br>• <b>on foot</b> = đi bộ (cụm cố định, không có mạo từ, KHÔNG nói 'by foot'): <i>We went to the temple on foot.</i> (Chúng tôi đi bộ đến đình.)<br>• <b>'X is the capital of Y'</b> = X là thủ đô của Y: <i>Canada's capital is Ottawa.</i> → <i>Ottawa is the capital of Canada.</i> (Ottawa là thủ đô của Canada.)<br>• <b>the + tính từ chỉ quốc tịch</b> = người dân của quốc gia đó nói chung (danh từ số nhiều, không thêm 's'): <i>the Vietnamese</i> = người Việt Nam (nói chung), <i>the British</i> = người Anh (nói chung). Vd: <i>Vietnamese people value hard work.</i> → <i>The Vietnamese value hard work.</i><br>• <b>Câu phủ định với doesn't/don't + V (nguyên mẫu, không chia)</b>: <i>My dad is not a coffee drinker.</i> → <i>My dad doesn't drink coffee.</i> (Bố tôi không uống cà phê.)",
+ "questions":[
+  {"q":"1. We travelled to Hue on the train. (BY)","qvi":"1. Chúng tôi đã đi tàu đến Huế. Viết lại câu dùng từ (BY) mà không đổi dạng của từ.","answer":"We travelled to Hue by train","accepted":["we travelled to hue by train"],"vi":"Chúng tôi đã đi tàu đến Huế."},
+  {"q":"2. We walked to the village temple. (FOOT)","qvi":"2. Chúng tôi đã đi bộ đến đình làng. Viết lại câu dùng từ (FOOT) mà không đổi dạng của từ.","answer":"We went to the village temple on foot","accepted":["we went to the village temple on foot"],"vi":"Chúng tôi đã đi bộ đến đình làng."},
+  {"q":"3. Canada's capital is Ottawa. (CAPITAL)","qvi":"3. Thủ đô của Canada là Ottawa. Viết lại câu dùng từ (CAPITAL) mà không đổi dạng của từ.","answer":"Ottawa is the capital of Canada","accepted":["ottawa is the capital of canada"],"vi":"Ottawa là thủ đô của Canada."},
+  {"q":"4. Vietnamese people value hard work and honesty. (THE)","qvi":"4. Người Việt Nam coi trọng sự chăm chỉ và trung thực. Viết lại câu dùng từ (THE) mà không đổi dạng của từ.","answer":"The Vietnamese value hard work and honesty","accepted":["the vietnamese value hard work and honesty"],"vi":"Người Việt Nam coi trọng sự chăm chỉ và trung thực."},
+  {"q":"5. My dad is not a coffee drinker. (DRINK)","qvi":"5. Bố tôi không phải là người uống cà phê. Viết lại câu dùng từ (DRINK) mà không đổi dạng của từ.","answer":"My dad doesn't drink coffee","accepted":["my dad doesn't drink coffee","my dad does not drink coffee","my dad never drinks coffee"],"vi":"Bố tôi không uống cà phê."}
+ ]},
+{"part":"E. WRITING","roman":"E.2","navLabel":"E Ex2","title":"Ex 2. Write an email to your penfriend about the Thac Con Festival","icon":"pen-fancy","instructions":"Dùng các gợi ý bên dưới để viết email cho bạn qua thư kể về Lễ hội Thác Côn (Sóc Trăng).","type":"essay",
+ "passage": THAC_CON_NOTES,
+ "questions":[
+  {"q":"Your penfriend asked you about the Thac Con Festival in Soc Trang Province. Write an email (about 100-120 words) to tell him/her about the festival, using the notes above.","sample":"Dear Alex,\n\nYou asked me about the Thac Con Festival, so let me tell you about it! It's also called the Coconut Offering Festival, and it takes place in An Trach, Soc Trang Province, in the middle of the third lunar month.\n\nPeople hold the festival to pray for luck and prosperity, and to honour their ancestors and Buddha. During the festival, there is a lot of singing and dancing, and people bring pairs of coconuts when they visit each other's families.\n\nIf you ever come, you should buy one of the flower vases made from coconut shells - they make a lovely souvenir! But remember not to litter the temple grounds or pick the flowers there without permission.\n\nI hope you can join the festival with me one day!\n\nBest wishes,\nMinh"}
+ ]},
+{"part":"E. WRITING","roman":"E.3","navLabel":"E Ex3","title":"Ex 3. Write a short paragraph (about 80 words) about Boxing Day in the UK","icon":"pen-fancy","instructions":"Dùng thông tin gợi ý để viết một đoạn văn khoảng 80 từ giới thiệu về ngày Boxing Day ở Anh.","type":"essay",
+ "questions":[
+  {"q":"Write a paragraph of about 80 words to provide information about Boxing Day in the UK. Notes: Boxing Day is on 26th December; it is a public holiday; traditionally all shops were closed and people shared their Christmas boxes with the poor.","sample":"Boxing Day is celebrated on 26th December every year in the UK. It is a public holiday, so people don't have to go to work or school. Traditionally, all the shops were closed on this day, and wealthy people shared their Christmas boxes of food and gifts with the poor and with servants. Nowadays, Boxing Day is mostly known as a big shopping day, when many shops offer huge sales. Many families also use the day to relax, watch sports, or visit relatives after the busy Christmas celebrations."}
+ ]}
+
+]};
+
+const DATA = DATA_UNIT5;
+
+const completedTasks = new Set();
+const scores = {};
+const TOTAL_TASKS = DATA.sections.length;
+
+function normalize(str){
+  return (str||'').trim().toLowerCase()
+    .replace(/['']/g,"'")
+    .replace(/["""]/g,'')
+    .replace(/[.,!?;:]/g,'')
+    .replace(/\s+/g,' ');
+}
+function widthFor(ref){ const l=(ref||'').length; return l<7?'w-24':l<16?'w-40':'w-full'; }
+
+if('speechSynthesis' in window){ window.speechSynthesis.onvoiceschanged = ()=>{}; }
+function speak(text, btn){
+  try{
+    if(!('speechSynthesis' in window)){ alert('Trình duyệt của bạn không hỗ trợ phát âm tự động. Hãy thử Chrome, Edge hoặc Safari.'); return; }
+    window.speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='en-US'; u.rate=0.9; u.pitch=1;
+    const voices=window.speechSynthesis.getVoices();
+    const en=voices.find(v=>/en[-_]?(us|gb)/i.test(v.lang)) || voices.find(v=>/^en/i.test(v.lang));
+    if(en) u.voice=en;
+    if(btn){ btn.classList.add('speaking'); u.onend=()=>btn.classList.remove('speaking'); u.onerror=()=>btn.classList.remove('speaking'); }
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+function buildNav(){
+  const nav=document.getElementById('navWrap');
+  let lastPart=null; let html='';
+  DATA.sections.forEach((s,i)=>{
+    if(s.part!==lastPart){
+      if(lastPart!==null) html += `<div class="navgroup-sep"></div>`;
+      lastPart=s.part;
+    }
+    html += `<button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600${i===0?' active':''}" id="navbtn_${i}" onclick="showTab(${i})" title="${s.part||''}">${s.roman}</button>`;
+  });
+  nav.innerHTML = html;
+  document.getElementById('progressText').textContent = `0 / ${TOTAL_TASKS} phần`;
+}
+
+function optionLetter(i){ return ['A','B','C','D','E','F'][i]; }
+
+function isCorrectAnswer(q, chosen){
+  if(chosen===-1 || chosen===undefined || chosen===null) return false;
+  if(Array.isArray(q.answer)) return q.answer.includes(chosen);
+  return chosen === q.answer;
+}
+function correctAnswerLabel(q){
+  if(Array.isArray(q.answer)) return q.answer.map(a=>`${optionLetter(a)}. ${q.options[a]}`).join(' hoặc ');
+  return `${optionLetter(q.answer)}. ${q.options[q.answer]}`;
+}
+function markOptions(idx,i,q,chosen){
+  q.options.forEach((o,j)=>{
+    const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+    if(!el) return;
+    el.classList.remove('correct-opt','wrong-opt');
+    const isCorrectOpt = Array.isArray(q.answer) ? q.answer.includes(j) : j===q.answer;
+    if(isCorrectOpt) el.classList.add('correct-opt');
+    else if(j===chosen) el.classList.add('wrong-opt');
+  });
+}
+
+function renderPassage(p, idx){
+  if(!p) return '';
+  const viBlock = p.vi ? `<button onclick="togglePassageVI(${idx})" class="text-xs font-bold bg-white border border-red-200 text-red-700 px-3 py-1 rounded-full hover:scale-105 transition mt-2"><i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt</button>
+    <p id="passage_vi_${idx}" class="vi-hidden mt-2 pt-2 border-t border-red-200 italic text-slate-500">${p.vi}</p>` : '';
+  return `<div class="passage-box mb-4"><p class="font-extrabold text-red-900 mb-2"><i class="fa-solid fa-book mr-1"></i>${p.title||''}</p><p id="passage_en_${idx}">${p.html}</p>${viBlock}</div>`;
+}
+function renderDict(d, idx){
+  if(!d) return '';
+  const viBlock = d.vi ? `<button onclick="togglePassageVI(${idx})" class="text-xs font-bold bg-white border border-amber-300 text-amber-700 px-3 py-1 rounded-full hover:scale-105 transition mt-2"><i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt</button>
+    <p id="passage_vi_${idx}" class="vi-hidden mt-2 pt-2 border-t border-amber-300 text-slate-600">${d.vi}</p>` : '';
+  return `<div class="dict-box mb-4"><p class="font-extrabold text-amber-800 mb-1"><i class="fa-solid fa-book-bookmark mr-1"></i>${d.word} <span class="font-normal italic">${d.ipa||''}</span> <span class="font-normal">${d.pos?('('+d.pos+')'):''}</span></p>${d.senses.map(x=>`<p class="mb-1">✱ ${x.def}</p>${(x.examples||[]).map(e=>`<p class="ml-4 italic text-slate-600">• ${e}</p>`).join('')}`).join('')}${viBlock}</div>`;
+}
+function renderRuleBox(rb){
+  if(!rb) return '';
+  return `<div class="rule-box mb-4"><i class="fa-solid fa-lightbulb mr-1 text-blue-500"></i>${rb}</div>`;
+}
+
+function renderSection(s, idx){
+  let inner = `<p class="part-label">${s.part||''}</p>`;
+  inner += `<h2 class="text-xl md:text-2xl font-extrabold text-red-900 flex items-center gap-2 mb-1"><i class="fa-solid fa-${s.icon||'circle-check'} text-amber-600"></i> ${s.roman}. ${s.title}</h2>`;
+  if(s.instructions) inner += `<p class="text-sm text-slate-500 mb-3 italic">${s.instructions}</p>`;
+  inner += renderRuleBox(s.ruleBox);
+  inner += renderPassage(s.passage, idx);
+  inner += renderDict(s.dict, idx);
+
+  inner += `<div class="space-y-4">`;
+  s.questions.forEach((q,i)=>{
+    inner += `<div class="task-card bg-white rounded-2xl shadow-md p-4" id="qblock_${idx}_${i}">`;
+    if(q.image) inner += `<div class="mb-3">${q.image}</div>`;
+    inner += `<p class="font-bold text-slate-800 mb-2 whitespace-pre-line"><span class="bg-slate-100 text-slate-600 text-xs font-black px-2 py-1 rounded-lg mr-2">${i+1}</span>${q.q}</p>`;
+    if(q.qvi) inner += `<p class="text-xs text-slate-500 italic mb-2 -mt-1 pl-8"><i class="fa-solid fa-language mr-1"></i>${q.qvi}</p>`;
+    if(s.type==='mcq'){
+      inner += `<div class="grid sm:grid-cols-2 gap-2">`;
+      q.options.forEach((opt,j)=>{
+        const ipa = q.ipas ? q.ipas[j] : null;
+        const optVi = q.vis ? q.vis[j] : null;
+        const cleanWord = opt.replace(/<[^>]+>/g,'');
+        const wordBlock = (ipa || optVi)
+          ? `<span class="flex flex-col leading-tight"><span>${opt}</span>${ipa?`<span class="text-[10px] text-slate-400 font-normal mcq-detail-hidden">${ipa}</span>`:''}${optVi?`<span class="text-[10px] text-emerald-500 font-normal italic mcq-detail-hidden">${optVi}</span>`:''}</span>
+             <button type="button" data-w="${cleanWord}" onclick="event.stopPropagation();event.preventDefault();speak(this.dataset.w,this)" class="speak-btn w-6 h-6 rounded-full bg-red-100 text-red-700 hover:bg-red-200 hover:scale-110 transition flex items-center justify-center ml-auto shrink-0 mcq-detail-hidden" title="Nghe phát âm" aria-label="Nghe phát âm ${cleanWord}"><i class="fa-solid fa-volume-high text-[10px]"></i></button>`
+          : `<span>${opt}</span>`;
+        inner += `<label class="option-label rounded-xl px-3 py-2 text-sm font-semibold flex items-center gap-2" id="opt_${idx}_${i}_${j}" onclick="selectMcq(${idx},${i},${j})">
+          <input type="radio" name="mcq_${idx}_${i}" class="accent-red-700" style="display:none">
+          <span class="font-black text-red-700">${optionLetter(j)}.</span> ${wordBlock}
+        </label>`;
+      });
+      inner += `</div>`;
+    } else if(s.type==='fill'){
+      const w = widthFor(q.answer);
+      const famBlock = q.family ? `<div class="wordfam-box mt-2">${q.family.map(f=>`<div>• ${f}</div>`).join('')}</div>` : '';
+      inner += `<div class="flex items-center gap-2 flex-wrap">`;
+      if(q.hint) inner += `<span class="blank-tag text-xs">${q.hint}</span>`;
+      inner += `<input type="text" id="inp_${idx}_${i}" class="answer-input ${w} px-3 py-1.5 rounded-lg text-sm font-semibold" placeholder="Nhập đáp án..." autocomplete="off" spellcheck="false"></div>${famBlock}`;
+    } else if(s.type==='sentence'){
+      const instantAttr = s.instant ? ` oninput="gradeOneSentence(${idx},${i})"` : '';
+      if(q.starter){
+        inner += `<div class="flex items-center gap-3 w-full flex-wrap">
+          <span class="text-slate-800 font-extrabold text-base whitespace-nowrap">${q.starter}</span>
+          <input type="text" id="inp_${idx}_${i}" class="answer-input flex-1 min-w-[180px] px-3 py-2 rounded-lg text-sm font-semibold" placeholder="..." autocomplete="off" spellcheck="false"${instantAttr}>
+        </div>`;
+      } else {
+        inner += `<input type="text" id="inp_${idx}_${i}" class="answer-input w-full px-3 py-2 rounded-lg text-sm font-semibold" placeholder="Viết câu trả lời..." autocomplete="off" spellcheck="false"${instantAttr}>`;
+      }
+    } else if(s.type==='essay'){
+      const starterBlock = q.starter ? `<p class="text-slate-800 font-extrabold text-sm mb-2">${q.starter} ...</p>` : '';
+      inner += `${starterBlock}<textarea id="inp_${idx}_${i}" rows="6" class="answer-input w-full px-3 py-2 rounded-lg text-sm font-semibold" placeholder="Viết câu trả lời của em vào đây..."></textarea>`;
+    }
+    inner += `<div class="explanation-box mt-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-sm text-blue-800" id="fb_${idx}_${i}"></div>`;
+    inner += `</div>`;
+  });
+  inner += `</div>`;
+
+  inner += `<div class="flex flex-wrap gap-2 mt-5">
+    <button onclick="checkSection(${idx})" class="bg-gradient-to-r from-red-900 to-amber-600 text-white font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-check mr-1"></i>Kiểm tra</button>
+    <button onclick="revealSection(${idx})" class="bg-white border-2 border-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-eye mr-1"></i>Xem đáp án</button>
+    <button onclick="resetSection(${idx})" class="bg-white border-2 border-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-rotate-left mr-1"></i>Làm lại</button>
+    <span id="score_${idx}" class="hidden ml-auto self-center font-extrabold text-emerald-600 text-sm score-badge"></span>
+  </div>`;
+
+  return `<section id="tab-${idx}" class="section-page${idx===0?' active':''} space-y-4">${inner}</section>`;
+}
+
+function buildMain(){
+  const main=document.getElementById('mainWrap');
+  main.innerHTML = DATA.sections.map((s,i)=>renderSection(s,i)).join('');
+}
+
+function togglePassageVI(idx){ const el=document.getElementById(`passage_vi_${idx}`); if(el) el.classList.toggle('vi-hidden'); }
+function selectMcq(idx,i,j){
+  document.querySelectorAll(`[id^="opt_${idx}_${i}_"]`).forEach(el=>el.classList.remove('selected'));
+  document.getElementById(`opt_${idx}_${i}_${j}`).classList.add('selected');
+  document.getElementById(`opt_${idx}_${i}_${j}`).dataset.chosen = j;
+  if(DATA.sections[idx].instant){ gradeOneMcq(idx,i); }
+}
+
+function gradeOneMcq(idx,i){
+  const s=DATA.sections[idx], q=s.questions[i];
+  const qblock=document.getElementById(`qblock_${idx}_${i}`);
+  if(qblock) qblock.classList.add('show-mcq-detail');
+  const chosenEl=document.querySelector(`#tab-${idx} [id^="opt_${idx}_${i}_"].selected`);
+  const chosen = chosenEl ? parseInt(chosenEl.dataset.chosen) : -1;
+  const ok = isCorrectAnswer(q, chosen);
+  markOptions(idx,i,q,chosen);
+  const fb=document.getElementById(`fb_${idx}_${i}`);
+  fb.innerHTML = feedbackHTML(ok, correctAnswerLabel(q), q.explanation, q.vi, q.note);
+  fb.classList.add('show');
+}
+
+function gradeOneSentence(idx,i){
+  const q=DATA.sections[idx].questions[i];
+  const inp=document.getElementById(`inp_${idx}_${i}`);
+  const fb=document.getElementById(`fb_${idx}_${i}`);
+  if(!inp || !fb) return;
+  const raw=inp.value.trim();
+  if(raw===''){
+    inp.classList.remove('correct-input','wrong-input');
+    fb.classList.remove('show'); fb.innerHTML='';
+    return;
+  }
+  const val=normalize(inp.value);
+  const acc=(q.accepted||[q.answer]).map(normalize);
+  const ok = acc.includes(val);
+  inp.classList.remove('correct-input','wrong-input');
+  inp.classList.add(ok?'correct-input':'wrong-input');
+  fb.innerHTML = feedbackHTML(ok, q.answer, q.explanation, q.vi, q.note);
+  fb.classList.add('show');
+}
+
+function feedbackHTML(ok, answerLabel, explanation, vi, note){
+  const okLine = ok? `<span class="text-emerald-700 font-bold">✅ Chính xác!</span>` : `<span class="text-rose-600 font-bold">❌ Chưa đúng.</span> Đáp án đúng: <b>${answerLabel}</b>`;
+  const expLine = explanation? `<br><span class="text-blue-700">💡 ${explanation}</span>` : '';
+  const viLine = vi? `<span class="text-slate-500">📖 Nghĩa: <i>${vi}</i></span>` : '';
+  const noteLine = note? `<br><span class="text-violet-600">📐 Công thức: <b>${note}</b></span>` : '';
+  if(note){
+    return (viLine?viLine+'<br>':'') + okLine + expLine + noteLine;
+  }
+  return okLine + expLine + (viLine?'<br>'+viLine:'') + noteLine;
+}
+
+function checkSection(idx){
+  const s=DATA.sections[idx];
+  let correct=0;
+  s.questions.forEach((q,i)=>{
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    if(s.type==='essay'){
+      const ta=document.getElementById(`inp_${idx}_${i}`);
+      fb.innerHTML = `<span class="text-green-700 font-bold">✍️ Cảm ơn em đã hoàn thành bài viết!</span><br><span class="text-blue-700">💡 Đoạn văn / câu trả lời gợi ý:</span><br><span class="text-slate-600 italic whitespace-pre-line">${q.sample}</span>`;
+      fb.classList.add('show');
+      correct++;
+      return;
+    }
+    let ok=false, answerLabel='';
+    if(s.type==='mcq'){
+      const chosenEl=document.querySelector(`#tab-${idx} [id^="opt_${idx}_${i}_"].selected`);
+      const chosen = chosenEl ? parseInt(chosenEl.dataset.chosen) : -1;
+      ok = isCorrectAnswer(q, chosen);
+      answerLabel = correctAnswerLabel(q);
+      markOptions(idx,i,q,chosen);
+      const qblock=document.getElementById(`qblock_${idx}_${i}`);
+      if(qblock) qblock.classList.add('show-mcq-detail');
+    } else {
+      const inp=document.getElementById(`inp_${idx}_${i}`);
+      const val=normalize(inp.value);
+      const acc=(q.accepted||[q.answer]).map(normalize);
+      ok = val!=='' && acc.includes(val);
+      inp.classList.remove('correct-input','wrong-input');
+      inp.classList.add(ok?'correct-input':'wrong-input');
+      answerLabel = q.answer;
+    }
+    if(ok) correct++;
+    fb.innerHTML = feedbackHTML(ok, answerLabel, q.explanation, q.vi, q.note);
+    fb.classList.add('show');
+  });
+  const total=s.questions.length;
+  scores[idx]={correct,total};
+  const scoreEl=document.getElementById(`score_${idx}`);
+  scoreEl.textContent = `🏆 Điểm: ${correct}/${total}`;
+  scoreEl.classList.remove('hidden');
+  completedTasks.add(idx);
+  updateProgress();
+  if(completedTasks.size===TOTAL_TASKS) setTimeout(showCompletion,500);
+}
+
+function revealSection(idx){
+  const s=DATA.sections[idx];
+  s.questions.forEach((q,i)=>{
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    if(s.type==='essay'){
+      fb.innerHTML = `👁️ Câu trả lời gợi ý:<br><span class="text-slate-600 italic whitespace-pre-line">${q.sample}</span>`;
+      fb.classList.add('show');
+      return;
+    }
+    let answerLabel = s.type==='mcq' ? correctAnswerLabel(q) : q.answer;
+    if(s.type==='mcq'){
+      markOptions(idx,i,q,-1);
+      const qblock=document.getElementById(`qblock_${idx}_${i}`);
+      if(qblock) qblock.classList.add('show-mcq-detail');
+    }
+    fb.innerHTML = `👁️ Đáp án: <b>${answerLabel}</b>` + (q.explanation?`<br><span class="text-blue-700">💡 ${q.explanation}</span>`:'') + (q.vi?`<br><span class="text-slate-500">📖 Nghĩa: <i>${q.vi}</i></span>`:'') + (q.note?`<br><span class="text-violet-600">📐 Công thức: <b>${q.note}</b></span>`:'');
+    fb.classList.add('show');
+  });
+}
+
+function resetSection(idx){
+  const s=DATA.sections[idx];
+  s.questions.forEach((q,i)=>{
+    if(s.type==='mcq'){
+      q.options.forEach((o,j)=>{
+        const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+        el.classList.remove('correct-opt','wrong-opt','selected');
+        delete el.dataset.chosen;
+      });
+    } else if(s.type==='essay'){
+      const ta=document.getElementById(`inp_${idx}_${i}`);
+      if(ta){ ta.value=''; }
+    } else {
+      const inp=document.getElementById(`inp_${idx}_${i}`);
+      if(inp){ inp.value=''; inp.classList.remove('correct-input','wrong-input'); }
+    }
+    const qblock=document.getElementById(`qblock_${idx}_${i}`);
+    if(qblock) qblock.classList.remove('show-mcq-detail');
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    fb.classList.remove('show'); fb.innerHTML='';
+  });
+  const scoreEl=document.getElementById(`score_${idx}`); scoreEl.classList.add('hidden');
+  completedTasks.delete(idx); delete scores[idx]; updateProgress();
+}
+
+function showTab(idx){
+  document.querySelectorAll('.section-page').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active'); b.classList.add('text-slate-600');});
+  document.getElementById(`tab-${idx}`).classList.add('active');
+  const btn=document.getElementById(`navbtn_${idx}`);
+  btn.classList.add('active'); btn.classList.remove('text-slate-600');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updateProgress(){
+  const done=completedTasks.size;
+  document.getElementById('progressText').textContent = `${done} / ${TOTAL_TASKS} phần`;
+  document.getElementById('progressBar').style.width = `${(done/TOTAL_TASKS)*100}%`;
+}
+
+function showCompletion(){
+  fireConfetti();
+  const banner=document.getElementById('completionBanner');
+  banner.classList.remove('hidden'); banner.classList.add('show');
+  let c=0,t=0; Object.values(scores).forEach(s=>{c+=s.correct; t+=s.total;});
+  document.getElementById('finalScoreDisplay').textContent = `🎯 ${c} / ${t} câu đúng`;
+}
+function closeBanner(){ const b=document.getElementById('completionBanner'); b.classList.remove('show'); b.classList.add('hidden'); }
+function fireConfetti(){
+  const wrap=document.getElementById('confettiWrap'); wrap.innerHTML='';
+  const colors=['#14532d','#0e7490','#65a30d','#ca8a04','#0d9488'];
+  for(let i=0;i<90;i++){
+    const p=document.createElement('div'); p.className='confetti-piece';
+    p.style.cssText=`left:${Math.random()*100}vw;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>0.5?'50%':'2px'};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*0.8}s;`;
+    wrap.appendChild(p);
+  }
+  setTimeout(()=>{wrap.innerHTML='';},4000);
+}
+
+buildNav();
+buildMain();
+updateProgress();
+</script>
+</body>
+</html>

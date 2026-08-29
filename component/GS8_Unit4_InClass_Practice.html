@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 4 - In-class Practice (theo thu tu SGK) - Tieng Anh 8</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+  :root{ --accent:#6d28d9; --accent2:#db2777; }
+  * { box-sizing: border-box; }
+  body { font-family:'Nunito',sans-serif; background:#faf5ff; }
+  .hero-gradient{ background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 55%, #db2777 100%); }
+  .tab-btn{ transition: all .2s ease; }
+  .tab-btn.active{ background: linear-gradient(135deg, #4c1d95, #db2777); color:#fff; box-shadow:0 4px 14px rgba(76,29,149,.35); transform:translateY(-1px); }
+  .task-card{ transition: box-shadow .2s, transform .2s; }
+  .task-card:hover{ transform: translateY(-2px); box-shadow:0 8px 30px rgba(0,0,0,.10); }
+  .option-label{ cursor:pointer; transition: all .18s; border:2px solid #e2e8f0; }
+  .option-label:hover{ border-color:var(--accent); background:#faf5ff; }
+  .option-label.selected{ border-color:#4c1d95; background:#f3e8ff; }
+  .option-label.correct-opt{ border-color:#22c55e !important; background:#f0fdf4 !important; }
+  .option-label.wrong-opt{ border-color:#ef4444 !important; background:#fef2f2 !important; }
+  .mcq-detail-hidden{ display:none; }
+  .show-mcq-detail .mcq-detail-hidden{ display:block; }
+  .speak-btn{ cursor:pointer; }
+  .speak-btn.speaking{ animation: pulseSpeak .7s ease-in-out infinite; }
+  @keyframes pulseSpeak{ 0%,100%{transform:scale(1);} 50%{transform:scale(1.18);} }
+  .vi-hidden{ display:none; }
+  .explanation-box{ display:none; animation: fadeSlide .3s ease forwards; }
+  .explanation-box.show{ display:block; }
+  @keyframes fadeSlide{ from{opacity:0; transform:translateY(-6px);} to{opacity:1; transform:translateY(0);} }
+  input.answer-input, textarea.answer-input{ border:2px solid #cbd5e1; transition:border .18s; outline:none; background:#fff; }
+  input.answer-input:focus, textarea.answer-input:focus{ border-color:var(--accent); }
+  input.correct-input{ border-color:#22c55e !important; background:#f0fdf4; }
+  input.wrong-input{ border-color:#ef4444 !important; background:#fef2f2; }
+  .score-badge{ animation: popIn .35s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn{ from{transform:scale(.4); opacity:0;} to{transform:scale(1); opacity:1;} }
+  .confetti-wrap{ position:fixed; inset:0; pointer-events:none; z-index:9999; }
+  .confetti-piece{ position:absolute; width:10px; height:10px; border-radius:2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall{ 0%{transform:translateY(-20px) rotate(0deg); opacity:1;} 100%{transform:translateY(100vh) rotate(720deg); opacity:0;} }
+  .progress-bar-fill{ transition: width .6s ease; }
+  .section-page{ display:none; }
+  .section-page.active{ display:block; }
+  #completionBanner{ display:none; }
+  #completionBanner.show{ display:flex; }
+  .passage-box{ background:#fff; border:1px solid #e2e8f0; border-radius:1rem; padding:1rem 1.25rem; line-height:1.9; font-size:.95rem; color:#334155; }
+  .dict-box{ background:#fef9c3; border:1px solid #fde68a; border-radius:1rem; padding:1rem 1.25rem; font-size:.9rem; color:#334155; }
+  .rule-box{ background:#eff6ff; border:1px solid #bfdbfe; border-radius:1rem; padding:1rem 1.25rem; line-height:1.85; font-size:.9rem; color:#334155; }
+  .info-box{ background:#f0fdf4; border:1px solid #bbf7d0; border-radius:1rem; padding:1rem 1.25rem; line-height:1.85; font-size:.88rem; color:#334155; }
+  .blank-tag{ background:#f3e8ff; color:#5b21b6; font-weight:800; border-radius:.4rem; padding:0 .35rem; }
+  .part-label{ display:inline-block; background:linear-gradient(135deg,#4c1d95,#db2777); color:#fff; font-weight:900; font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; padding:.25rem .7rem; border-radius:999px; margin-bottom:.5rem; }
+  .navgroup-sep{ width:1px; background:#e2e8f0; margin:0 .25rem; align-self:stretch; }
+  .club-card{ background:#fff; border:2px solid #e2e8f0; border-radius:1rem; padding:1rem 1.1rem; font-size:.85rem; line-height:1.7; }
+</style>
+</head>
+<body class="min-h-screen">
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<header class="hero-gradient text-white py-8 px-4 text-center shadow-xl relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10 pointer-events-none">
+    <div class="absolute top-4 left-8 text-6xl">🏔️</div>
+    <div class="absolute top-2 right-12 text-5xl">🥁</div>
+    <div class="absolute bottom-2 left-1/3 text-4xl">🏡</div>
+    <div class="absolute bottom-4 right-1/4 text-5xl">🧵</div>
+  </div>
+  <p class="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Tiếng Anh 8 · Unit 4 · In-class Practice</p>
+  <h1 class="font-['Baloo_2'] text-3xl md:text-5xl font-extrabold drop-shadow-lg">🏔️ Unit 4: Ethnic groups of Viet Nam 🧵</h1>
+  <p class="mt-2 text-base md:text-lg opacity-90 font-semibold">Bám sát đúng thứ tự &amp; đánh số bài tập trong SGK</p>
+  <div class="mt-5 max-w-2xl mx-auto">
+    <div class="flex justify-between text-xs font-bold opacity-80 mb-1">
+      <span>Tiến độ hoàn thành</span>
+      <span id="progressText">0 / 0 phần</span>
+    </div>
+    <div class="bg-white/20 rounded-full h-3 overflow-hidden">
+      <div id="progressBar" class="bg-white rounded-full h-3 progress-bar-fill" style="width:0%"></div>
+    </div>
+  </div>
+</header>
+
+<nav class="sticky top-0 z-50 bg-white/90 backdrop-blur shadow-sm px-3 py-2 overflow-x-auto">
+  <div class="flex gap-2 min-w-max mx-auto w-fit" id="navWrap"></div>
+</nav>
+
+<main class="max-w-4xl mx-auto px-4 py-6 pb-20" id="mainWrap"></main>
+
+<div id="completionBanner" class="fixed inset-0 z-[9998] items-center justify-center bg-black/50 px-4">
+  <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center score-badge shadow-2xl">
+    <div class="text-6xl mb-3">🎉</div>
+    <h3 class="text-2xl font-extrabold text-violet-900 mb-1">Hoàn thành bài luyện tập!</h3>
+    <p class="text-slate-500 mb-4">Bạn đã làm xong tất cả các phần.</p>
+    <p id="finalScoreDisplay" class="text-3xl font-black text-violet-700 mb-5"></p>
+    <button onclick="closeBanner()" class="bg-gradient-to-r from-violet-900 to-pink-500 text-white font-bold px-6 py-2.5 rounded-full">Đóng</button>
+  </div>
+</div>
+
+<script>
+const GETTING_STARTED_PASSAGE = {
+  title: "You look new here!",
+  html: "<b>Tom:</b> Hi, I'm Tom. You look new here.<br><b>Lai:</b> I am. I'm Lai from Ha Giang.<br><b>Tom:</b> Oh, I've heard about beautiful Ha Giang. Do you live in the mountains?<br><b>Lai:</b> Yes, I do. I'm from the Tay ethnic group. We are the second largest ethnic group in Viet Nam, only after the Kinh.<br><b>Tom:</b> Oh ... I once saw a bamboo house on high posts in a travel brochure. Do you live in a home like that?<br><b>Lai:</b> Yes, we call it a \"stilt house\". Our house overlooks terraced fields.<br><b>Tom:</b> Awesome. What is life in your village like?<br><b>Lai:</b> It's peaceful. There are 16 houses in my village. We live very close to nature.<br><b>Tom:</b> I love it. Can you tell me something about your culture?<br><b>Lai:</b> Certainly. We have our own culture. You can see it in our folk dances, musical instruments like the dan tinh, and our special five-colour sticky rice.<br><b>Tom:</b> It sounds interesting. I hope to visit Ha Giang one day.",
+  vi: "<b>Tom:</b> Chào bạn, mình là Tom. Bạn trông có vẻ mới ở đây.<br><b>Lai:</b> Đúng vậy. Mình là Lai, đến từ Hà Giang.<br><b>Tom:</b> Ồ, mình đã nghe nói về Hà Giang xinh đẹp. Bạn sống ở vùng núi à?<br><b>Lai:</b> Ừ, đúng vậy. Mình là người dân tộc Tày. Chúng mình là dân tộc đông thứ hai ở Việt Nam, chỉ sau người Kinh.<br><b>Tom:</b> À... mình từng thấy một ngôi nhà tre trên những cây cột cao trong một tờ rơi du lịch. Bạn có sống trong một ngôi nhà như vậy không?<br><b>Lai:</b> Có, chúng mình gọi đó là \"nhà sàn\". Nhà mình nhìn ra những thửa ruộng bậc thang.<br><b>Tom:</b> Tuyệt quá. Cuộc sống ở làng bạn như thế nào?<br><b>Lai:</b> Rất yên bình. Làng mình có 16 ngôi nhà. Chúng mình sống rất gần gũi với thiên nhiên.<br><b>Tom:</b> Mình thích điều đó. Bạn có thể kể cho mình nghe về văn hóa của bạn không?<br><b>Lai:</b> Được chứ. Chúng mình có nền văn hóa riêng. Bạn có thể thấy điều đó qua các điệu múa dân gian, các nhạc cụ như đàn tính, và món xôi ngũ sắc đặc biệt của chúng mình.<br><b>Tom:</b> Nghe thú vị quá. Mình hy vọng sẽ được đến thăm Hà Giang một ngày nào đó."
+};
+
+const STILT_HOUSES_PASSAGE = {
+  title: "Stilt houses of Vietnam's ethnic minorities",
+  html: "Stilt houses are popular among different ethnic minority groups, from the Thai in the Northern Highlands to the Khmer in the Mekong Delta. The houses come in different sizes and styles, and show the traditional culture of their owners.<br><br>Stilt houses are made from natural materials like wood, bamboo, and leaves. They stand on strong posts, about two or three metres above the ground. This allows them to keep people safe from wild animals. People climb a seven- or nine-step staircase to enter the house. The most important place in the house is the kitchen. It has an open fire in the middle of the house. It is the place for family gatherings and receiving guests.<br><br>The stilt houses of the Tay and Nung usually overlook a field. The stilt houses of the Thai, however, face mountains or a forest. The Bahnar and Ede have a communal house (called a Rong house) as the heart of their village. These communal houses are the largest and tallest ones in the village.",
+  vi: "Nhà sàn phổ biến ở nhiều dân tộc thiểu số khác nhau, từ người Thái ở vùng núi phía Bắc đến người Khmer ở đồng bằng sông Cửu Long. Những ngôi nhà này có nhiều kích cỡ và kiểu dáng khác nhau, thể hiện văn hóa truyền thống của chủ nhân.<br><br>Nhà sàn được làm từ các vật liệu tự nhiên như gỗ, tre và lá. Chúng đứng trên những cây cột chắc chắn, cao khoảng hai đến ba mét so với mặt đất. Điều này giúp con người an toàn trước thú dữ. Người ta leo lên cầu thang bảy hoặc chín bậc để vào nhà. Nơi quan trọng nhất trong nhà là bếp. Bếp có một bếp lửa ở giữa nhà. Đó là nơi để gia đình sum họp và tiếp khách.<br><br>Nhà sàn của người Tày và người Nùng thường nhìn ra cánh đồng. Trong khi đó, nhà sàn của người Thái lại hướng ra núi hoặc rừng. Người Ba Na và Ê Đê có nhà rông (nhà cộng đồng) là trung tâm của làng. Những ngôi nhà rông này là ngôi nhà lớn nhất và cao nhất trong làng."
+};
+
+const OPINION_DIALOGUE = {
+  title: "Asking for and giving opinions",
+  html: "<b>Tom:</b> What do you think about life in the mountains?<br><b>Trang:</b> I think it's very interesting. People in the mountains live close to nature.<br><b>Tom:</b> What about you, Mai? What do you think?<br><b>Mai:</b> To my way of thinking, there are better services in the city.",
+  vi: "<b>Tom:</b> Bạn nghĩ gì về cuộc sống ở vùng núi?<br><b>Trang:</b> Mình nghĩ nó rất thú vị. Người dân ở vùng núi sống gần gũi với thiên nhiên.<br><b>Tom:</b> Còn bạn thì sao, Mai? Bạn nghĩ gì?<br><b>Mai:</b> Theo cách nghĩ của mình, thành phố có nhiều dịch vụ tốt hơn."
+};
+
+const DATA = {"unit": 4, "test": "inclass-gs8-sgk-order", "sections": [
+
+/* ============== GETTING STARTED ============== */
+{"part":"GETTING STARTED · You look new here!","roman":"GS.1","navLabel":"GS Ex1-2","title":"Ex 1-2. Listen and read. Then choose the correct answer A, B, or C","icon":"comments","instructions":"Nghe và đọc hội thoại giữa Tom và Lai, sau đó chọn đáp án đúng.","type":"mcq","instant":true,
+ "passage": GETTING_STARTED_PASSAGE,
+ "questions":[
+  {"q":"1. What are Tom and Lai talking about?","options":["Minority groups in Viet Nam","Ha Giang","Life of the Tay people"],"answer":2,"explanation":"Toàn bộ hội thoại xoay quanh cuộc sống của Lai, một người dân tộc Tày.","vi":"Câu hỏi: Tom và Lai đang nói về điều gì? — Đáp án: Cuộc sống của người Tày."},
+  {"q":"2. A \"stilt house\" ___________.","options":["is on high posts","is a multi-storey home","always faces a field"],"answer":0,"explanation":"\"I once saw a bamboo house on high posts... Yes, we call it a stilt house.\"","vi":"Câu hỏi: Một \"nhà sàn\" thì ___________. — Đáp án: đứng trên những cây cột cao."},
+  {"q":"3. Lai mentions ___________ of the Tay people.","options":["folk dances","popular festivals","costumes"],"answer":0,"explanation":"\"You can see it in our folk dances, musical instruments like the dan tinh, and our special five-colour sticky rice.\"","vi":"Câu hỏi: Lai nhắc đến ___________ của người Tày. — Đáp án: những điệu múa dân gian."}
+ ]},
+{"part":"GETTING STARTED · You look new here!","roman":"GS.3","navLabel":"GS Ex3","title":"Ex 3. Match the words/phrases with the pictures","icon":"images","instructions":"⚠️ Lưu ý: SGK dùng tranh minh hoạ để ghép với các từ/cụm từ (stilt house, terraced fields, bamboo, five-colour sticky rice). Vì không có ảnh gốc, mỗi câu dưới đây mô tả lại nội dung một bức tranh — hãy chọn đúng từ/cụm từ phù hợp.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. 🖼️ Tranh vẽ một ngôi nhà bằng gỗ đứng trên những cây cột cao, có cầu thang để leo lên.","options":["stilt house","terraced fields","bamboo","five-colour sticky rice"],"answer":0,"explanation":"Nhà trên cột cao → stilt house (nhà sàn).","vi":"stilt house = nhà sàn"},
+  {"q":"2. 🖼️ Tranh vẽ những thửa ruộng xếp thành từng bậc trên sườn đồi.","options":["bamboo","five-colour sticky rice","terraced fields","stilt house"],"answer":2,"explanation":"Ruộng xếp bậc trên đồi → terraced fields (ruộng bậc thang).","vi":"terraced fields = ruộng bậc thang"},
+  {"q":"3. 🖼️ Tranh vẽ những cây có thân rỗng, mọc thành bụi, thường dùng làm nhà hoặc đồ thủ công.","options":["terraced fields","bamboo","stilt house","five-colour sticky rice"],"answer":1,"explanation":"Cây thân rỗng mọc thành bụi → bamboo (tre).","vi":"bamboo = tre"},
+  {"q":"4. 🖼️ Tranh vẽ một đĩa xôi có năm màu sắc khác nhau.","options":["stilt house","terraced fields","bamboo","five-colour sticky rice"],"answer":3,"explanation":"Xôi có 5 màu → five-colour sticky rice (xôi ngũ sắc).","vi":"five-colour sticky rice = xôi ngũ sắc"}
+ ]},
+{"part":"GETTING STARTED · You look new here!","roman":"GS.4","navLabel":"GS Ex4","title":"Ex 4. Complete the sentences, using the words/phrases from the conversation","icon":"pen","instructions":"Điền từ/cụm từ phù hợp dựa trên hội thoại ở Ex 1.","type":"fill",
+ "questions":[
+  {"q":"1. I love mua sap, a popular ___________ dance of the Thai people.","answer":"folk","vi":"dân gian"},
+  {"q":"2. Their beautiful stilt house ___________ a large rice field.","answer":"overlooks","accepted":["overlooks","overlook"],"vi":"nhìn ra"},
+  {"q":"3. A: What is the name of a popular Tay's ___________? B: It's dan tinh.","answer":"musical instrument","accepted":["musical instrument"],"vi":"nhạc cụ"},
+  {"q":"4. Every ethnic group has their own ___________ culture.","answer":"traditional","vi":"truyền thống"},
+  {"q":"5. Of the 54 ___________ in Viet Nam, the Kinh is the largest.","answer":"ethnic groups","accepted":["ethnic groups"],"vi":"nhóm dân tộc"}
+ ]},
+{"part":"GETTING STARTED · You look new here!","roman":"GS.5","navLabel":"GS Ex5","title":"Ex 5. Work in pairs. Ask and answer the questions below","icon":"comment-dots","instructions":"Hỏi - đáp với bạn cùng cặp, sau đó viết lại câu trả lời của em vào ô bên dưới (bài nói cá nhân, không có đáp án cố định).","type":"essay",
+ "questions":[
+  {"q":"1. What ethnic group do you know the most about?\n2. Where do they live?\n3. What is special about their house or culture?\n4. Would you like to visit their village? Why/Why not?","sample":"1. I know quite a lot about the Tay people. 2. They mainly live in the mountainous provinces of Northern Viet Nam, like Ha Giang and Cao Bang. 3. They live in stilt houses that overlook terraced fields, and they have beautiful folk dances and traditional musical instruments like the dan tinh. 4. Yes, I would love to visit their village because I want to experience their peaceful life close to nature."}
+ ]},
+
+/* ============== A CLOSER LOOK 1 ============== */
+{"part":"A CLOSER LOOK 1 · Vocabulary & Pronunciation","roman":"AL1.1","navLabel":"AL1 Ex1","title":"Ex 1. Look at the pictures and choose the correct word/phrase","icon":"list-check","instructions":"⚠️ Lưu ý: SGK dùng tranh minh hoạ. Vì không có ảnh gốc, mỗi câu mô tả lại nội dung một bức tranh — hãy chọn đúng từ/cụm từ phù hợp.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. 🖼️ Tranh vẽ một bức tượng chim được chạm khắc từ gỗ.","options":["wooden statue","communal house","gong","flute"],"answer":0,"vi":"wooden statue = tượng gỗ"},
+  {"q":"2. 🖼️ Tranh vẽ ngôi nhà lớn nhất, cao nhất ở giữa làng, nơi cả làng tụ họp.","options":["stilt house","communal house","staircase","terraced field"],"answer":1,"vi":"communal house = nhà rông"},
+  {"q":"3. 🖼️ Tranh vẽ một phụ nữ đang ngồi dệt vải trên khung cửi.","options":["weaving","harvesting","raising livestock","overlooking"],"answer":0,"vi":"weaving = dệt vải"},
+  {"q":"4. 🖼️ Tranh vẽ một nhạc cụ hình ống dài, thổi bằng miệng.","options":["gong","flute","statue","costume"],"answer":1,"vi":"flute = cái sáo"},
+  {"q":"5. 🖼️ Tranh vẽ một nhạc cụ bằng đồng, hình tròn, được gõ để phát ra âm thanh.","options":["gong","flute","staircase","crop"],"answer":0,"vi":"gong = cái cồng, chiêng"},
+  {"q":"6. 🖼️ Tranh vẽ những thửa ruộng xếp thành bậc thang trên sườn núi.","options":["terraced fields","highlands","soil","livestock"],"answer":0,"vi":"terraced fields = ruộng bậc thang"}
+ ]},
+{"part":"A CLOSER LOOK 1 · Vocabulary & Pronunciation","roman":"AL1.2","navLabel":"AL1 Ex2","title":"Ex 2. Match the words with their definitions","icon":"circle-check","instructions":"Chọn định nghĩa đúng cho mỗi từ.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. ethnic minority","options":["a small group of people of a different race or culture from the main population","the largest group of people in a country","a type of traditional house","a kind of musical instrument"],"answer":0,"vi":"dân tộc thiểu số"},
+  {"q":"2. livestock","options":["wild animals living in the forest","animals such as cows, pigs, and buffaloes kept on a farm","plants grown for food","tools used for farming"],"answer":1,"vi":"gia súc"},
+  {"q":"3. weaving","options":["the process of making cloth by crossing threads together","the process of cooking rice","the process of building a house","the process of singing folk songs"],"answer":0,"vi":"dệt vải"},
+  {"q":"4. gong","options":["a flat metal object that makes a sound when hit","a musical instrument played by blowing air through it","a type of traditional costume","a wooden statue"],"answer":0,"vi":"cái cồng, chiêng"},
+  {"q":"5. communal house","options":["a small house for one family","the largest and tallest house at the centre of a village, used for community activities","a house on high posts","a house made of stone"],"answer":1,"vi":"nhà rông"}
+ ]},
+{"part":"A CLOSER LOOK 1 · Vocabulary & Pronunciation","roman":"AL1.3","navLabel":"AL1 Ex3","title":"Ex 3. Choose the correct answer A, B, or C","icon":"circle-check","instructions":"Chọn đáp án đúng nhất.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. It's interesting to learn about the unique ___________ of an ethnic group's traditional culture.","options":["features","posts","crops"],"answer":0,"vi":"Thật thú vị khi tìm hiểu về những nét độc đáo trong văn hóa truyền thống của một dân tộc."},
+  {"q":"2. The Cham in Ninh Thuan ___________ sheep and cows.","options":["weave","raise","overlook"],"answer":1,"vi":"Người Chăm ở Ninh Thuận chăn nuôi cừu và bò."},
+  {"q":"3. Ao dai is a traditional ___________ of Viet Nam.","options":["costume","statue","harvest"],"answer":0,"vi":"Áo dài là trang phục truyền thống của Việt Nam."},
+  {"q":"4. Farmers celebrate a good ___________ every year.","options":["soil","harvest","post"],"answer":1,"vi":"Nông dân ăn mừng một vụ mùa bội thu mỗi năm."},
+  {"q":"5. Most ___________ women weave clothes and do housework.","options":["minority","highland","wooden"],"answer":0,"vi":"Hầu hết phụ nữ dân tộc thiểu số dệt vải và làm việc nhà."}
+ ]},
+{"part":"A CLOSER LOOK 1 · Vocabulary & Pronunciation","roman":"AL1.4","navLabel":"AL1 Ex4","title":"Ex 4. Listen and repeat. Put the words into the correct columns: /k/ or /g/","icon":"ear-listen","instructions":"Nghe và phân loại các từ theo âm đầu /k/ hoặc /g/.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. kitchen","options":["/k/","/g/"],"answer":0,"vi":"nhà bếp"},
+  {"q":"2. gathering","options":["/k/","/g/"],"answer":1,"vi":"buổi tụ họp"},
+  {"q":"3. cook","options":["/k/","/g/"],"answer":0,"vi":"nấu ăn"},
+  {"q":"4. girl","options":["/k/","/g/"],"answer":1,"vi":"cô gái"},
+  {"q":"5. communal","options":["/k/","/g/"],"answer":0,"vi":"(thuộc) cộng đồng"},
+  {"q":"6. gong","options":["/k/","/g/"],"answer":1,"vi":"cái cồng, chiêng"},
+  {"q":"7. costume","options":["/k/","/g/"],"answer":0,"vi":"trang phục"},
+  {"q":"8. group","options":["/k/","/g/"],"answer":1,"vi":"nhóm"}
+ ]},
+{"part":"A CLOSER LOOK 1 · Vocabulary & Pronunciation","roman":"AL1.5","navLabel":"AL1 Ex5","title":"Ex 5. Listen and practise the sentences. Identify the word with the sound /g/","icon":"ear-listen","instructions":"Chọn từ có chứa âm /g/ trong mỗi câu.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. The kitchen is for family gatherings.","options":["kitchen","gatherings"],"answer":1,"vi":"kitchen = nhà bếp (âm /k/); gatherings = những buổi tụ họp (âm /g/)."},
+  {"q":"2. Most girls know how to cook.","options":["girls","cook"],"answer":0,"vi":"girls = các cô gái (âm /g/); cook = nấu ăn (âm /k/)."},
+  {"q":"3. The gong is kept in the communal house.","options":["gong","kept"],"answer":0,"vi":"gong = cái cồng (âm /g/); kept = được giữ (âm /k/)."},
+  {"q":"4. Our guests admire the wooden costume rack.","options":["guests","costume"],"answer":0,"vi":"guests = khách mời (âm /g/); costume = trang phục (âm /k/)."},
+  {"q":"5. The girl carried the gong up the staircase.","options":["girl","staircase"],"answer":0,"vi":"girl = cô gái (âm /g/); staircase = cầu thang (âm /k/ ở \"case\")."}
+ ]},
+
+/* ============== A CLOSER LOOK 2 ============== */
+{"part":"A CLOSER LOOK 2 · Grammar: Yes/No & Wh-questions; Countable/Uncountable nouns","roman":"AL2.1","navLabel":"AL2 Ex1","title":"Ex 1. Change the sentences into Yes/No questions","icon":"scale-balanced","instructions":"","type":"mcq","instant":true,
+ "ruleBox":"<b>📌 Remember!</b><br><b>Yes/No questions</b> (câu hỏi Có/Không): đảo trợ động từ (do/does/did/will...) hoặc động từ \"to be\" lên trước chủ ngữ. Trả lời bằng Yes hoặc No.<br>Ví dụ: <i>Mua sap is a popular folk dance of the Thai people.</i> → <i>Is mua sap a popular folk dance of the Thai people?</i><br><br><b>Wh-questions</b>: Wh-word (What/Who/Where/When/Why/Which/How) + trợ động từ + S + V?<br>Ví dụ: <i>Where can we find the most beautiful terraced fields?</i> — In Mu Cang Chai.",
+ "questions":[
+  {"q":"1. Women play an important role in a Jrai family.","qvi":"Phụ nữ đóng vai trò quan trọng trong một gia đình người Jrai.","options":["Do women play an important role in a Jrai family?","Does women play an important role in a Jrai family?","Are women play an important role in a Jrai family?"],"answer":0,"explanation":"Chủ ngữ số nhiều \"women\", thì hiện tại đơn → dùng \"Do\".","vi":"Câu gốc: Phụ nữ đóng vai trò quan trọng trong gia đình người Jrai. — Câu hỏi đúng: Phụ nữ có đóng vai trò quan trọng trong gia đình người Jrai không?"},
+  {"q":"2. Mua sap is a popular folk dance of the Thai people.","qvi":"Múa sạp là một điệu múa dân gian phổ biến của người Thái.","options":["Does mua sap is a popular folk dance of the Thai people?","Is mua sap a popular folk dance of the Thai people?","Is mua sap popular folk dance of the Thai people?"],"answer":1,"explanation":"Câu gốc dùng động từ \"to be\" (is) → đảo \"is\" lên trước chủ ngữ.","vi":"Câu gốc: Múa sạp là một điệu múa dân gian phổ biến của người Thái. — Câu hỏi đúng: Múa sạp có phải là một điệu múa dân gian phổ biến của người Thái không?"},
+  {"q":"3. We didn't have boarding schools for minority students in 1950.","qvi":"Chúng tôi đã không có trường nội trú cho học sinh dân tộc thiểu số vào năm 1950.","options":["Did we have boarding schools for minority students in 1950?","Do we have boarding schools for minority students in 1950?","Have we boarding schools for minority students in 1950?"],"answer":0,"explanation":"Thì quá khứ đơn → dùng \"Did\" + động từ nguyên thể.","vi":"Câu gốc: Chúng ta đã không có trường nội trú cho học sinh dân tộc thiểu số vào năm 1950. — Câu hỏi đúng: Chúng ta đã có trường nội trú cho học sinh dân tộc thiểu số vào năm 1950 không?"},
+  {"q":"4. I attended the Ban Flower Festival in Dien Bien last year.","qvi":"Tôi đã tham dự Lễ hội Hoa Ban ở Điện Biên năm ngoái.","options":["Do you attend the Ban Flower Festival in Dien Bien last year?","Did you attend the Ban Flower Festival in Dien Bien last year?","Were you attend the Ban Flower Festival in Dien Bien last year?"],"answer":1,"explanation":"Thì quá khứ đơn → dùng \"Did\".","vi":"Câu gốc: Tôi đã tham dự Lễ hội Hoa Ban ở Điện Biên năm ngoái. — Câu hỏi đúng: Bạn đã tham dự Lễ hội Hoa Ban ở Điện Biên năm ngoái phải không?"},
+  {"q":"5. We will watch a documentary about the Khmer.","qvi":"Chúng tôi sẽ xem một bộ phim tài liệu về người Khmer.","options":["Will we watch a documentary about the Khmer?","Do we will watch a documentary about the Khmer?","Are we watch a documentary about the Khmer?"],"answer":0,"explanation":"Thì tương lai đơn dùng \"will\" → đảo \"will\" lên trước chủ ngữ.","vi":"Câu gốc: Chúng ta sẽ xem một bộ phim tài liệu về người Khmer. — Câu hỏi đúng: Chúng ta sẽ xem một bộ phim tài liệu về người Khmer phải không?"}
+ ]},
+{"part":"A CLOSER LOOK 2 · Grammar: Yes/No & Wh-questions; Countable/Uncountable nouns","roman":"AL2.2","navLabel":"AL2 Ex2","title":"Ex 2. Choose the correct question word and its answer","icon":"circle-question","instructions":"Chọn từ để hỏi (Wh-word) phù hợp và câu trả lời tương ứng.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. ___________ do you like best about Sa Pa? – I like its local markets best.","qvi":"Bạn thích điều gì nhất về Sa Pa? – Tôi thích chợ phiên (chợ địa phương) nhất.","options":["What","Who","How"],"answer":0,"explanation":"Hỏi về sự vật (điều gì) → dùng \"What\".","vi":"Bạn thích điều gì nhất về Sa Pa? – Tôi thích chợ phiên nhất."},
+  {"q":"2. ___________ can we find the most beautiful terraced fields? – In Mu Cang Chai.","qvi":"Chúng ta có thể tìm thấy ruộng bậc thang đẹp nhất ở đâu? – Ở Mù Cang Chải.","options":["When","Where","Why"],"answer":1,"explanation":"Hỏi về địa điểm → dùng \"Where\".","vi":"Chúng ta có thể tìm ruộng bậc thang đẹp nhất ở đâu? – Ở Mù Cang Chải."},
+  {"q":"3. ___________ is the Ban Flower Festival? – It's in spring.","qvi":"Lễ hội Hoa Ban diễn ra khi nào? – Vào mùa xuân.","options":["When","Where","What"],"answer":0,"explanation":"Hỏi về thời gian → dùng \"When\".","vi":"Lễ hội Hoa Ban diễn ra khi nào? – Vào mùa xuân."},
+  {"q":"4. ___________ tall is an average stilt house? – About 5-6 metres tall.","qvi":"Một ngôi nhà sàn trung bình cao bao nhiêu? – Khoảng 5-6 mét.","options":["What","How","Why"],"answer":1,"explanation":"Hỏi về chiều cao/mức độ → dùng \"How tall\".","vi":"Một ngôi nhà sàn trung bình cao bao nhiêu? – Khoảng 5-6 mét."},
+  {"q":"5. ___________ festival is more important for the Kinh: the Mid-Autumn or the Lunar New Year? – The Lunar New Year.","qvi":"Lễ hội nào quan trọng hơn đối với người Kinh: Trung Thu hay Tết Nguyên Đán? – Tết Nguyên Đán.","options":["Which","What","Where"],"answer":0,"explanation":"Hỏi để lựa chọn giữa hai điều đã nêu → dùng \"Which\".","vi":"Lễ hội nào quan trọng hơn đối với người Kinh: Trung Thu hay Tết Nguyên Đán? – Tết Nguyên Đán."}
+ ]},
+{"part":"A CLOSER LOOK 2 · Grammar: Yes/No & Wh-questions; Countable/Uncountable nouns","roman":"AL2.3","navLabel":"AL2 Ex3","title":"Ex 3. Read the passage and classify the underlined nouns as C (Countable) or U (Uncountable)","icon":"scale-balanced","instructions":"Đọc đoạn văn: \"Some minority groups are farmers. They do not have much land and they use simple farming techniques to grow crops...\" rồi phân loại các danh từ dưới đây.","type":"mcq","instant":true,
+ "ruleBox":"<b>📌 Remember!</b><br><b>Danh từ đếm được (Countable nouns)</b>: có dạng số ít và số nhiều (thêm -s/-es), dùng với a/an (số ít) hoặc many/a few/số đếm (số nhiều).<br>Ví dụ: <i>many ethnic groups</i>, <i>a few villages</i>.<br><br><b>Danh từ không đếm được (Uncountable nouns)</b>: không có dạng số nhiều (không thêm -s), dùng với much/a little.<br>Ví dụ: <i>much rice</i>, <i>a little land</i>.<br><br>Ví dụ trong câu: <i>There are many ethnic groups living in the mountains.</i> (nhiều dân tộc); <i>Farmers there don't have much land for growing rice.</i> (không nhiều đất); <i>We need a little more rice for the harvest festival.</i> (một chút gạo).",
+ "questions":[
+  {"q":"1. groups","qvi":"groups (trong đoạn văn: các nhóm dân tộc thiểu số) — nhóm.","options":["C","U"],"answer":0,"explanation":"groups (các nhóm) — đếm được, có số nhiều.","vi":"groups = các nhóm (danh từ đếm được)."},
+  {"q":"2. land","qvi":"land (trong đoạn văn: đất đai để trồng trọt) — đất.","options":["C","U"],"answer":1,"explanation":"land (đất đai) — không đếm được, không có số nhiều.","vi":"land = đất đai (danh từ không đếm được)."},
+  {"q":"3. techniques","qvi":"techniques (trong đoạn văn: các kỹ thuật canh tác đơn giản) — kỹ thuật.","options":["C","U"],"answer":0,"explanation":"techniques (các kỹ thuật) — đếm được.","vi":"techniques = các kỹ thuật (danh từ đếm được)."},
+  {"q":"4. trees","qvi":"trees (trong đoạn văn: các cây trồng) — cây.","options":["C","U"],"answer":0,"explanation":"trees (các cây) — đếm được.","vi":"trees = các cây (danh từ đếm được)."},
+  {"q":"5. ash","qvi":"ash (trong đoạn văn: tro dùng để bón đất) — tro.","options":["C","U"],"answer":1,"explanation":"ash (tro) — không đếm được.","vi":"ash = tro (danh từ không đếm được)."},
+  {"q":"6. crops","qvi":"crops (trong đoạn văn: các vụ mùa/cây trồng) — vụ mùa.","options":["C","U"],"answer":0,"explanation":"crops (các vụ mùa) — đếm được.","vi":"crops = các vụ mùa, cây trồng (danh từ đếm được)."}
+ ]},
+{"part":"A CLOSER LOOK 2 · Grammar: Yes/No & Wh-questions; Countable/Uncountable nouns","roman":"AL2.4","navLabel":"AL2 Ex4","title":"Ex 4. Fill in each blank with a/an, much, many, a little, or a few","icon":"pen","instructions":"Điền lượng từ phù hợp: a/an, much, many, a little, a few.","type":"fill",
+ "questions":[
+  {"q":"1. My uncle has ___________ coffee plantation in Kon Tum.","qvi":"Chú của tôi có một đồn điền cà phê ở Kon Tum.","answer":"a","vi":"a (đứng trước danh từ số ít bắt đầu bằng phụ âm)"},
+  {"q":"2. How ___________ ethnic groups live on the Hoang Lien Son mountain range?","qvi":"Có bao nhiêu dân tộc sinh sống trên dãy núi Hoàng Liên Sơn?","answer":"many","vi":"many (đi với danh từ đếm được số nhiều)"},
+  {"q":"3. There are only ___________ waterwheels left in my village.","qvi":"Chỉ còn một vài chiếc guồng nước ở làng tôi.","answer":"a few","accepted":["a few"],"vi":"a few (một vài, đi với danh từ đếm được số nhiều)"},
+  {"q":"4. You should add ___________ more water to your noodles. It's a bit dry.","qvi":"Bạn nên cho thêm một chút nước vào món mì của bạn. Nó hơi khô.","answer":"a little","accepted":["a little"],"vi":"a little (một chút, đi với danh từ không đếm được)"},
+  {"q":"5. How ___________ information about the Van Kieu have you collected?","qvi":"Bạn đã thu thập được bao nhiêu thông tin về người Vân Kiều?","answer":"much","vi":"much (đi với danh từ không đếm được)"}
+ ]},
+
+/* ============== COMMUNICATION ============== */
+{"part":"COMMUNICATION · Everyday English: Asking for and giving opinions","roman":"COM.1","navLabel":"COM Ex1","title":"Ex 1. Listen and read. Pay attention to the highlighted sentences","icon":"comments","instructions":"Đọc hội thoại, chú ý các mẫu câu hỏi/nêu ý kiến: \"What do you think about...?\", \"I think...\", \"To my way of thinking...\", sau đó trả lời câu hỏi.","type":"mcq","instant":true,
+ "passage": OPINION_DIALOGUE,
+ "questions":[
+  {"q":"1. What does Tom ask Trang and Mai about?","options":["Their opinion about life in the mountains","Their favourite ethnic group","Their travel plans"],"answer":0,"explanation":"\"What do you think about life in the mountains?\"","vi":"Câu hỏi: Tom hỏi Trang và Mai về điều gì? — Đáp án: Ý kiến của họ về cuộc sống ở vùng núi."},
+  {"q":"2. What does Trang think about life in the mountains?","options":["It's boring","It's very interesting; people live close to nature","It's too cold"],"answer":1,"explanation":"\"I think it's very interesting. People in the mountains live close to nature.\"","vi":"Câu hỏi: Trang nghĩ gì về cuộc sống ở vùng núi? — Đáp án: Rất thú vị; người dân sống gần gũi với thiên nhiên."},
+  {"q":"3. What does Mai think?","options":["The mountains have better services","The city has better services","She has no opinion"],"answer":1,"explanation":"\"To my way of thinking, there are better services in the city.\"","vi":"Câu hỏi: Mai nghĩ gì? — Đáp án: Thành phố có dịch vụ tốt hơn."}
+ ]},
+{"part":"COMMUNICATION · Everyday English: Asking for and giving opinions","roman":"COM.2","navLabel":"COM Ex2","title":"Ex 2. Work in pairs. Make similar conversations, asking for and giving opinions","icon":"pen-fancy","instructions":"Dùng các mẫu câu \"What do you think about...?\", \"I think...\", \"In my opinion...\", \"To my way of thinking...\" để hỏi và nêu ý kiến về: (1) traditional games, (2) living close to nature. Viết đoạn hội thoại của em vào ô bên dưới.","type":"essay",
+ "questions":[
+  {"q":"Viết đoạn hội thoại ngắn hỏi - đáp ý kiến về 2 chủ đề: trò chơi dân gian (traditional games) và cuộc sống gần gũi thiên nhiên (living close to nature).","sample":"A: What do you think about traditional games? B: I think they are great fun and help us stay active. A: What about living close to nature? B: In my opinion, it helps people feel more relaxed and healthy."}
+ ]},
+{"part":"COMMUNICATION · Everyday English: Quiz about Vietnamese ethnic groups","roman":"COM.3","navLabel":"COM Ex3","title":"Ex 3. Do the quiz about Vietnamese ethnic groups. Choose the correct answer","icon":"circle-question","instructions":"Chọn đáp án đúng cho mỗi câu hỏi trong bài trắc nghiệm nhanh về các dân tộc Việt Nam.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. How many ethnic groups are there in Viet Nam?","options":["54","44","64"],"answer":0,"vi":"Việt Nam có 54 dân tộc."},
+  {"q":"2. About what percentage of Viet Nam's population are ethnic minorities?","options":["13%","30%","50%"],"answer":0,"vi":"Khoảng 13% dân số Việt Nam là người dân tộc thiểu số."},
+  {"q":"3. Where do most ethnic minority groups mainly live?","options":["In the mountains","Along the coast","In big cities"],"answer":0,"vi":"Hầu hết các dân tộc thiểu số sống ở vùng núi."},
+  {"q":"4. What do the Jrai often use to decorate their funerals?","options":["Wood statues","Paper flowers","Silk paintings"],"answer":0,"vi":"Người Jrai thường dùng tượng gỗ để trang trí tang lễ."},
+  {"q":"5. What is the main livelihood of the Khmer people?","options":["Farming","Fishing at sea","Mining"],"answer":0,"vi":"Sinh kế chính của người Khmer là làm nông nghiệp."}
+ ]},
+{"part":"COMMUNICATION · Information exchange about the Jrai people","roman":"COM.4","navLabel":"COM Ex4","title":"Ex 4. Read the information about the Jrai people and answer the questions","icon":"file-lines","instructions":"Đọc thông tin về người Jrai rồi trả lời câu hỏi.","type":"mcq","instant":true,
+ "dict":{"word":"THE JRAI PEOPLE","ipa":"","pos":"Population: about 513,930","senses":[
+   {"def":"📍 Location: mainly in Gia Lai province","examples":[]},
+   {"def":"🏡 Housing: stilt houses","examples":[]},
+   {"def":"🌾 Economy: crops, weaving, and industrial trees","examples":[]},
+   {"def":"👪 Family structure: matrilineal (women play a central role in the family)","examples":[]}
+ ]},
+ "questions":[
+  {"q":"1. Where do the Jrai mainly live?","options":["Gia Lai province","Ha Giang province","Ninh Thuan province"],"answer":0,"vi":"Người Jrai chủ yếu sinh sống ở tỉnh Gia Lai."},
+  {"q":"2. What type of house do the Jrai live in?","options":["Stilt houses","Ground-level brick houses","Cave dwellings"],"answer":0,"vi":"Người Jrai sống trong nhà sàn."},
+  {"q":"3. What is a special feature of the Jrai family structure?","options":["Women play an important, central role","Men live separately from their family","Grandparents make all the decisions"],"answer":0,"vi":"Phụ nữ đóng vai trò trung tâm, quan trọng trong gia đình người Jrai (chế độ mẫu hệ)."}
+ ]},
+{"part":"COMMUNICATION · Information exchange about the Jrai people","roman":"COM.5","navLabel":"COM Ex5","title":"Ex 5. Work in groups. Share what you found interesting about the Jrai people","icon":"comment-dots","instructions":"Thảo luận nhóm và viết một đoạn ngắn chia sẻ điều em thấy thú vị nhất về người Jrai.","type":"essay",
+ "questions":[
+  {"q":"What did you find most interesting about the Jrai people? Why?","sample":"I find it most interesting that Jrai families are matrilineal, which means women play a central role in the family. This is quite different from many other cultures I know, and I think it shows how diverse Vietnamese culture is."}
+ ]},
+
+/* ============== SKILLS 1 (Reading & Speaking) ============== */
+{"part":"SKILLS 1 · Reading about stilt houses","roman":"SK1.1","navLabel":"SK1 Ex1","title":"Ex 1. Look at the pictures and name the house feature","icon":"images","instructions":"⚠️ Lưu ý: SGK dùng tranh minh hoạ cho hoạt động này. Vì không có ảnh gốc, mỗi câu dưới đây mô tả lại một chi tiết — hãy chọn đúng từ phù hợp.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. 🖼️ Những cây cột chắc chắn nâng đỡ toàn bộ ngôi nhà lên khỏi mặt đất.","options":["posts","staircase","kitchen","roof"],"answer":0,"vi":"posts = cột nhà."},
+  {"q":"2. 🖼️ Bậc thang để leo lên nhà, thường có 7 hoặc 9 bậc.","options":["posts","staircase","field","forest"],"answer":1,"vi":"staircase = cầu thang."},
+  {"q":"3. 🖼️ Nơi có bếp lửa ở giữa nhà, dùng để nấu ăn và tiếp khách.","options":["staircase","kitchen","communal house","terraced field"],"answer":1,"vi":"kitchen = nhà bếp."},
+  {"q":"4. 🖼️ Ngôi nhà lớn nhất, cao nhất ở trung tâm làng của người Ba Na, Ê Đê.","options":["stilt house","staircase","communal house (Rong house)","kitchen"],"answer":2,"vi":"communal house (Rong house) = nhà rông."}
+ ]},
+{"part":"SKILLS 1 · Reading about stilt houses","roman":"SK1.2","navLabel":"SK1 Ex2","title":"Ex 2. Read the passage and tick T (True) or F (False) for each sentence","icon":"file-lines","instructions":"Đọc bài về nhà sàn của các dân tộc thiểu số, sau đó chọn Đúng/Sai.","type":"mcq","instant":true,
+ "passage": STILT_HOUSES_PASSAGE,
+ "questions":[
+  {"q":"1. Only a few minority groups live in stilt houses.","options":["True","False"],"answer":1,"explanation":"\"Stilt houses are popular among different ethnic minority groups...\" → nhiều nhóm dân tộc sống trong nhà sàn.","vi":"Câu hỏi: Chỉ một vài nhóm dân tộc thiểu số sống trong nhà sàn. — Sai, vì rất nhiều nhóm dân tộc sống trong nhà sàn."},
+  {"q":"2. All stilt houses look alike.","options":["True","False"],"answer":1,"explanation":"\"The houses come in different sizes and styles...\"","vi":"Câu hỏi: Tất cả nhà sàn đều trông giống nhau. — Sai, vì nhà sàn có nhiều kích cỡ và kiểu dáng khác nhau."},
+  {"q":"3. Family gatherings take place by the open fire.","options":["True","False"],"answer":0,"explanation":"\"It has an open fire... It is the place for family gatherings and receiving guests.\"","vi":"Câu hỏi: Gia đình sum họp bên bếp lửa. — Đúng."},
+  {"q":"4. The Rong house is the centre of a Bahnar or Ede village.","options":["True","False"],"answer":0,"explanation":"\"The Bahnar and Ede have a communal house (called a Rong house) as the heart of their village.\"","vi":"Câu hỏi: Nhà rông là trung tâm của làng người Ba Na hoặc Ê Đê. — Đúng."}
+ ]},
+{"part":"SKILLS 1 · Reading about stilt houses","roman":"SK1.3","navLabel":"SK1 Ex3","title":"Ex 3. Read the passage again and fill in each blank with ONE word","icon":"pen","instructions":"Đọc lại bài ở Ex 2 và điền từ thích hợp.","type":"fill",
+ "questions":[
+  {"q":"1. A stilt house shows the ___________ culture of the owner.","answer":"traditional","vi":"truyền thống"},
+  {"q":"2. The Tay's and Nung's stilt houses overlook a ___________.","answer":"field","vi":"cánh đồng"},
+  {"q":"3. The Thai's stilt houses face mountains or a ___________.","answer":"forest","vi":"khu rừng"},
+  {"q":"4. The largest house in a Bahnar or Ede village is the ___________ house.","answer":"Rong","accepted":["Rong","communal"],"vi":"nhà rông"}
+ ]},
+{"part":"SKILLS 1 · Speaking","roman":"SK1.4","navLabel":"SK1 Ex4","title":"Ex 4. Work in pairs. Discuss and tick the features of a stilt house","icon":"id-card","instructions":"Dựa vào bài đọc, xác định đặc điểm nào đúng với nhà sàn.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. A stilt house stands on ___________.","options":["strong posts","the ground directly","water"],"answer":0,"vi":"Nhà sàn đứng trên những cây cột chắc chắn."},
+  {"q":"2. A stilt house is made from ___________.","options":["wood, bamboo, and leaves","concrete and steel","glass and plastic"],"answer":0,"vi":"Nhà sàn được làm từ gỗ, tre và lá."},
+  {"q":"3. The kitchen in a stilt house usually has ___________.","options":["an open fire","a modern gas stove only","no cooking area"],"answer":0,"vi":"Bếp trong nhà sàn thường có bếp lửa mở."},
+  {"q":"4. Stilt houses keep people safe from ___________.","options":["wild animals","cold weather only","noise"],"answer":0,"vi":"Nhà sàn giúp con người an toàn trước thú dữ."}
+ ]},
+{"part":"SKILLS 1 · Speaking","roman":"SK1.5","navLabel":"SK1 Ex5","title":"Ex 5. Work in pairs. Ask and answer about the type of home each of you lives in","icon":"comment-dots","instructions":"Hỏi - đáp với bạn về loại nhà mỗi người đang sống, sau đó viết câu trả lời của em (báo cáo trước lớp).","type":"essay",
+ "questions":[
+  {"q":"Report your answers to the class: What type of home do you live in? What is it made of? What do you like about it?","sample":"I live in a two-storey brick house in the city. It's made of concrete and bricks, with a tiled roof. I like it because it has a small garden where my family grows vegetables and flowers."}
+ ]},
+
+/* ============== SKILLS 2 (Listening & Writing) ============== */
+{"part":"SKILLS 2 · Listening about ethnic minority children","roman":"SK2.1","navLabel":"SK2 Ex1-2","title":"Ex 1-2. Listen to a passage about ethnic minority children and choose the correct answer","icon":"headphones","instructions":"⚠️ Lưu ý: nội dung bài nghe dưới đây được phục dựng dựa trên khung bài tập \"How ethnic minority children help their family\" (Skills 2 – Listening) của SGK, vì file gốc không có băng ghi âm đầy đủ. Giáo viên nên đối chiếu lại với đáp án/băng nghe chính thức khi sử dụng.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. What is the passage mainly about?","options":["Ethnic festivals","How ethnic minority children help their family","City life"],"answer":1,"explanation":"Bài nghe nói về cách trẻ em dân tộc thiểu số giúp đỡ gia đình.","vi":"Câu hỏi: Bài nghe chủ yếu nói về điều gì? — Đáp án: Cách trẻ em dân tộc thiểu số giúp đỡ gia đình."},
+  {"q":"2. From what age do ethnic minority children start helping their family?","options":["Six","Ten","Fifteen"],"answer":0,"explanation":"\"From the age of six, they begin helping their parents with housework and farm work.\"","vi":"Câu hỏi: Trẻ em dân tộc thiểu số bắt đầu giúp gia đình từ độ tuổi nào? — Đáp án: Từ 6 tuổi."}
+ ]},
+{"part":"SKILLS 2 · Listening about ethnic minority children","roman":"SK2.3","navLabel":"SK2 Ex3","title":"Ex 3. Listen again and fill in each blank with ONE word","icon":"table-list","instructions":"⚠️ Lưu ý: nội dung dưới đây được phục dựng dựa trên khung bài tập trong SGK; hãy đối chiếu lại với băng nghe/đáp án chính thức của giáo viên khi luyện tập.","type":"fill",
+ "questions":[
+  {"q":"1. Girls learn to ___________ clothing from their mothers and grandmothers.","answer":"weave","vi":"dệt"},
+  {"q":"2. Boys often help ___________ livestock such as buffaloes and cows.","answer":"raise","vi":"chăn nuôi"},
+  {"q":"3. Children also help ___________ food.","answer":"prepare","vi":"chuẩn bị"},
+  {"q":"4. Children look after their younger brothers and ___________.","answer":"sisters","vi":"chị/em gái"},
+  {"q":"5. In the evenings, ___________ often tell the children traditional stories.","answer":"grandparents","vi":"ông bà"},
+  {"q":"6. These daily activities help children learn important ___________.","answer":"skills","vi":"kỹ năng"}
+ ]},
+{"part":"SKILLS 2 · Listening about ethnic minority children","roman":"SK2.4","navLabel":"SK2 Ex4","title":"Ex 4. Tick the activities that ethnic minority children do to help their family","icon":"heart-pulse","instructions":"Dựa vào bài nghe, chọn đúng hoạt động mà trẻ em dân tộc thiểu số thường làm để giúp gia đình.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. Which activity do minority children often do?","options":["Weave clothing","Build houses","Drive cars","Manage a shop"],"answer":0,"explanation":"\"Girls learn to weave clothing from their mothers and grandmothers.\"","vi":"Câu hỏi: Trẻ em dân tộc thiểu số thường làm hoạt động nào? — Đáp án: Dệt vải."},
+  {"q":"2. Which activity do minority children often do?","options":["Raise livestock","Fly planes","Write books","Run a factory"],"answer":0,"explanation":"\"...boys often help raise livestock such as buffaloes and cows.\"","vi":"Câu hỏi: Trẻ em dân tộc thiểu số thường làm hoạt động nào? — Đáp án: Chăn nuôi gia súc."},
+  {"q":"3. Which activity do minority children often do?","options":["Prepare food","Design bridges","Repair cars","Manage a bank"],"answer":0,"explanation":"\"Children also help prepare food...\"","vi":"Câu hỏi: Trẻ em dân tộc thiểu số thường làm hoạt động nào? — Đáp án: Chuẩn bị thức ăn."},
+  {"q":"4. Which activity do minority children often do?","options":["Look after younger siblings","Build houses","Trade stocks","Fix computers"],"answer":0,"explanation":"\"...and look after their younger brothers and sisters.\" (\"Build houses\" is NOT mentioned as a children's activity.)","vi":"Câu hỏi: Trẻ em dân tộc thiểu số thường làm hoạt động nào? — Đáp án: Trông em nhỏ (không phải xây nhà)."}
+ ]},
+{"part":"SKILLS 2 · Writing about helping the family","roman":"SK2.5","navLabel":"SK2 Ex5","title":"Ex 5. Write a paragraph (80-100 words) about what you do to help your family","icon":"pen-fancy","instructions":"Dùng khung gợi ý: liệt kê 5 việc nhà em thường làm, sau đó viết thành đoạn văn hoàn chỉnh.","type":"essay",
+ "questions":[
+  {"q":"Write your paragraph below.","starter":"I help my family by","sample":"I help my family by doing several household chores every day. In the morning, I make my bed and help prepare breakfast. After school, I wash the dishes and sweep the floor. On weekends, I help my parents in the garden, watering the plants and picking vegetables. I also look after my younger brother and help him with his homework. These small chores may seem simple, but they help my family a lot and teach me to be responsible."}
+ ]},
+
+/* ============== LOOKING BACK ============== */
+{"part":"LOOKING BACK · Vocabulary","roman":"LB.1","navLabel":"LB Ex1","title":"Ex 1. Choose the word/phrase that matches each description","icon":"diagram-project","instructions":"⚠️ SGK dùng tranh minh hoạ để ghép từ. Vì không có ảnh gốc, hãy chọn từ/cụm từ phù hợp với mỗi mô tả.","type":"mcq","instant":true,
+ "questions":[
+  {"q":"1. Making cloth by crossing threads together.","options":["weaving","folk dance","open fire","fishing"],"answer":0,"vi":"weaving = dệt vải"},
+  {"q":"2. A traditional dance passed down among the people of a region.","options":["weaving","folk dance","open fire","minority group"],"answer":1,"vi":"folk dance = điệu múa dân gian"},
+  {"q":"3. A fire in the middle of a stilt house, used for cooking and gathering.","options":["weaving","folk dance","open fire","fishing"],"answer":2,"vi":"open fire = bếp lửa (giữa nhà)"},
+  {"q":"4. Catching fish, often a livelihood for people near rivers or the sea.","options":["fishing","folk dance","open fire","minority group"],"answer":0,"vi":"fishing = đánh bắt cá"},
+  {"q":"5. A small group of people of a different ethnicity from the majority.","options":["weaving","folk dance","open fire","minority group"],"answer":3,"vi":"minority group = nhóm dân tộc thiểu số"}
+ ]},
+{"part":"LOOKING BACK · Vocabulary","roman":"LB.2","navLabel":"LB Ex2","title":"Ex 2. Complete each sentence with a word/phrase from the box","icon":"file-lines","instructions":"Điền từ trong khung: musical instruments, sticky rice, communal house, folk songs, staircase.","type":"fill",
+ "questions":[
+  {"q":"1. Minority groups have their own ___________ like the dan tinh, gong, and t'rung.","answer":"musical instruments","accepted":["musical instruments"],"vi":"nhạc cụ"},
+  {"q":"2. The Kinh use ___________ to make banh chung and banh tet.","answer":"sticky rice","accepted":["sticky rice"],"vi":"gạo nếp"},
+  {"q":"3. For most minority groups like the Bahnar and Ede, the ___________, usually known as the Rong house, is the heart of the village.","answer":"communal house","accepted":["communal house"],"vi":"nhà rông"},
+  {"q":"4. My grandmother taught me to sing many ___________.","answer":"folk songs","accepted":["folk songs"],"vi":"bài hát dân gian"},
+  {"q":"5. The ___________ of a Muong's stilt house has an odd number of steps: 5, 7, or 9.","answer":"staircase","accepted":["staircase"],"vi":"cầu thang"}
+ ]},
+{"part":"LOOKING BACK · Grammar","roman":"LB.3","navLabel":"LB Ex3","title":"Ex 3. Write questions for the underlined clues, using the words given","icon":"circle-question","instructions":"Viết câu hỏi Yes/No hoặc Wh-question phù hợp với gợi ý.","type":"sentence",
+ "questions":[
+  {"q":"1. You want to know if your friend went to the Khmer's Moon Worship Festival last year. (Yes/No question)","qvi":"Bạn muốn biết liệu bạn của mình có tham dự Lễ hội Cúng Trăng của người Khmer vào năm ngoái hay không. (Câu hỏi Yes/No)","answer":"Did you attend the Khmer's Moon Worship Festival last year","accepted":["did you attend the khmer's moon worship festival last year"],"vi":"Bạn đã tham dự Lễ hội Cúng Trăng của người Khmer vào năm ngoái phải không?"},
+  {"q":"2. You want to know the number of ethnic minority groups in Viet Nam. (How many...)","qvi":"Bạn muốn biết số lượng dân tộc thiểu số ở Việt Nam. (How many...)","answer":"How many ethnic minority groups are there in Viet Nam","accepted":["how many ethnic minority groups are there in viet nam"],"vi":"Có bao nhiêu dân tộc thiểu số ở Việt Nam?"},
+  {"q":"3. You want to know where the Hmong live. (Where...)","qvi":"Bạn muốn biết người Hmong sống ở đâu. (Where...)","answer":"Where do the Hmong live","accepted":["where do the hmong live"],"vi":"Người Hmong sống ở đâu?"},
+  {"q":"4. You want to know what your friend did at the Ede's Harvest Festival last October. (What...)","qvi":"Bạn muốn biết bạn của mình đã làm gì tại Lễ hội Thu hoạch của người Ê Đê vào tháng Mười năm ngoái. (What...)","answer":"What did you do at the Ede's Harvest Festival last October","accepted":["what did you do at the ede's harvest festival last october","what did you do at the ede harvest festival last october"],"vi":"Bạn đã làm gì tại Lễ hội Thu hoạch của người Ê Đê vào tháng Mười năm ngoái?"},
+  {"q":"5. You want to know the age minority children start helping the family. (How old...)","qvi":"Bạn muốn biết độ tuổi mà trẻ em dân tộc thiểu số bắt đầu giúp đỡ gia đình. (How old...)","answer":"How old are minority children when they start helping the family","accepted":["how old are minority children when they start helping the family"],"vi":"Trẻ em dân tộc thiểu số bao nhiêu tuổi khi bắt đầu giúp gia đình?"}
+ ]},
+{"part":"LOOKING BACK · Grammar","roman":"LB.4","navLabel":"LB Ex4","title":"Ex 4. Find and correct the wrong word in each sentence","icon":"link","instructions":"Mỗi câu có một từ sai (liên quan đến danh từ đếm được/không đếm được). Tìm và sửa lại từ đó.","type":"fill",
+ "questions":[
+  {"q":"1. A big stilt houses stands on high posts. (từ sai: houses)","qvi":"Một ngôi nhà sàn lớn đứng trên những cây cột cao. (từ sai: houses)","answer":"house","vi":"A big stilt house stands on high posts. — \"houses\" → \"house\" vì mạo từ \"A\" chỉ số ít."},
+  {"q":"2. The Lahu build their houses from wood and wild banana leave. (từ sai: leave)","qvi":"Người Lahu xây nhà từ gỗ và lá chuối rừng. (từ sai: leave)","answer":"leaves","vi":"...wild banana leaves. — \"leave\" → \"leaves\" (danh từ đếm được số nhiều)."},
+  {"q":"3. Much people in remote areas travel on foot. (từ sai: Much)","qvi":"Nhiều người ở vùng sâu vùng xa đi bộ. (từ sai: Much)","answer":"Many","vi":"Many people in remote areas travel on foot. — \"Much\" → \"Many\" vì \"people\" đếm được."},
+  {"q":"4. Most minority women weave clothes and do houseworks. (từ sai: houseworks)","qvi":"Hầu hết phụ nữ dân tộc thiểu số dệt vải và làm việc nhà. (từ sai: houseworks)","answer":"housework","vi":"...do housework. — \"houseworks\" → \"housework\" (không đếm được, không có số nhiều)."},
+  {"q":"5. In the mountains, there is not many land for growing crops. (từ sai: many)","qvi":"Ở vùng núi, không có nhiều đất để trồng trọt. (từ sai: many)","answer":"much","vi":"...there is not much land... — \"many\" → \"much\" vì \"land\" không đếm được."}
+ ]},
+
+/* ============== PROJECT ============== */
+{"part":"PROJECT · Our Ethnic Groups","roman":"PRJ","navLabel":"Project","title":"Project: Our Ethnic Groups","icon":"trophy","instructions":"Làm việc nhóm: (1) Chọn một dân tộc ở Việt Nam mà em quan tâm nhất. (2) Tìm hiểu 3 khía cạnh: nơi sinh sống (living place), kinh tế (economy), văn hóa truyền thống (traditional culture). (3) Làm một áp phích (poster) có hình ảnh và thông tin để giới thiệu dân tộc đó. (4) Trình bày áp phích trước lớp.<br><br>✅ <b>Now I can...</b> (tự đánh giá cuối Unit 4): dùng từ vựng về các dân tộc Việt Nam, nhà ở và văn hóa truyền thống · phát âm đúng âm /k/ và /g/ · đặt câu hỏi Yes/No và Wh-questions ở nhiều thì · dùng đúng danh từ đếm được/không đếm được và lượng từ (a/an, much, many, a little, a few) · hỏi và nêu ý kiến (asking for and giving opinions) · đọc hiểu về nhà sàn của các dân tộc thiểu số · nghe hiểu về cách trẻ em dân tộc thiểu số giúp đỡ gia đình · viết đoạn văn về việc giúp đỡ gia đình.","type":"essay",
+ "questions":[
+  {"q":"Ghi lại ý tưởng của nhóm em cho dự án \"Our Ethnic Groups\".","starter":"We chose to research the","sample":"We chose to research the Tay ethnic group. They mainly live in the mountainous provinces of Northern Viet Nam, such as Ha Giang and Cao Bang, in stilt houses that overlook terraced fields. Their economy is based on farming rice and other crops, as well as traditional weaving. Their culture is rich, with folk dances, the dan tinh (a traditional musical instrument), and special dishes like five-colour sticky rice. We will present our poster with pictures of their stilt houses, costumes, and festivals."}
+ ]}
+]};
+
+const completedTasks = new Set();
+const scores = {};
+const TOTAL_TASKS = DATA.sections.length;
+
+function normalize(str){
+  return (str||'').trim().toLowerCase()
+    .replace(/['']/g,"'")
+    .replace(/["""]/g,'')
+    .replace(/[.,!?;:]/g,'')
+    .replace(/\s+/g,' ');
+}
+function widthFor(ref){ const l=(ref||'').length; return l<7?'w-24':l<16?'w-40':'w-full'; }
+
+if('speechSynthesis' in window){ window.speechSynthesis.onvoiceschanged = ()=>{}; }
+function speak(text, btn){
+  try{
+    if(!('speechSynthesis' in window)){ alert('Trình duyệt của bạn không hỗ trợ phát âm tự động. Hãy thử Chrome, Edge hoặc Safari.'); return; }
+    window.speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='en-US'; u.rate=0.9; u.pitch=1;
+    const voices=window.speechSynthesis.getVoices();
+    const en=voices.find(v=>/en[-_]?(us|gb)/i.test(v.lang)) || voices.find(v=>/^en/i.test(v.lang));
+    if(en) u.voice=en;
+    if(btn){ btn.classList.add('speaking'); u.onend=()=>btn.classList.remove('speaking'); u.onerror=()=>btn.classList.remove('speaking'); }
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+function buildNav(){
+  const nav=document.getElementById('navWrap');
+  let lastPart=null; let html='';
+  DATA.sections.forEach((s,i)=>{
+    if(s.part!==lastPart){
+      if(lastPart!==null) html += `<div class="navgroup-sep"></div>`;
+      lastPart=s.part;
+    }
+    html += `<button class="tab-btn text-sm font-bold px-3 py-2 rounded-full text-slate-600${i===0?' active':''}" id="navbtn_${i}" onclick="showTab(${i})" title="${s.part||''}">${s.roman}</button>`;
+  });
+  nav.innerHTML = html;
+  document.getElementById('progressText').textContent = `0 / ${TOTAL_TASKS} phần`;
+}
+
+function optionLetter(i){ return ['A','B','C','D','E','F'][i]; }
+
+function isCorrectAnswer(q, chosen){
+  if(chosen===-1 || chosen===undefined || chosen===null) return false;
+  if(Array.isArray(q.answer)) return q.answer.includes(chosen);
+  return chosen === q.answer;
+}
+function correctAnswerLabel(q){
+  if(Array.isArray(q.answer)) return q.answer.map(a=>`${optionLetter(a)}. ${q.options[a]}`).join(' hoặc ');
+  return `${optionLetter(q.answer)}. ${q.options[q.answer]}`;
+}
+function markOptions(idx,i,q,chosen){
+  q.options.forEach((o,j)=>{
+    const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+    if(!el) return;
+    el.classList.remove('correct-opt','wrong-opt');
+    const isCorrectOpt = Array.isArray(q.answer) ? q.answer.includes(j) : j===q.answer;
+    if(isCorrectOpt) el.classList.add('correct-opt');
+    else if(j===chosen) el.classList.add('wrong-opt');
+  });
+}
+
+function renderPassage(p, idx){
+  if(!p) return '';
+  const viBlock = p.vi ? `<button onclick="togglePassageVI(${idx})" class="text-xs font-bold bg-white border border-violet-200 text-violet-700 px-3 py-1 rounded-full hover:scale-105 transition mt-2"><i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt</button>
+    <p id="passage_vi_${idx}" class="vi-hidden mt-2 pt-2 border-t border-violet-200 italic text-slate-500">${p.vi}</p>` : '';
+  return `<div class="passage-box mb-4"><p class="font-extrabold text-violet-900 mb-2"><i class="fa-solid fa-book mr-1"></i>${p.title||''}</p><p id="passage_en_${idx}">${p.html}</p>${viBlock}</div>`;
+}
+function renderDict(d, idx){
+  if(!d) return '';
+  const viBlock = d.vi ? `<button onclick="togglePassageVI(${idx})" class="text-xs font-bold bg-white border border-amber-300 text-amber-700 px-3 py-1 rounded-full hover:scale-105 transition mt-2"><i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt</button>
+    <p id="passage_vi_${idx}" class="vi-hidden mt-2 pt-2 border-t border-amber-300 text-slate-600">${d.vi}</p>` : '';
+  return `<div class="dict-box mb-4"><p class="font-extrabold text-amber-800 mb-1"><i class="fa-solid fa-book-bookmark mr-1"></i>${d.word} <span class="font-normal italic">${d.ipa||''}</span> <span class="font-normal">${d.pos?('('+d.pos+')'):''}</span></p>${d.senses.map(x=>`<p class="mb-1">✱ ${x.def}</p>${(x.examples||[]).map(e=>`<p class="ml-4 italic text-slate-600">• ${e}</p>`).join('')}`).join('')}${viBlock}</div>`;
+}
+function renderRuleBox(rb){
+  if(!rb) return '';
+  return `<div class="rule-box mb-4"><i class="fa-solid fa-lightbulb mr-1 text-blue-500"></i>${rb}</div>`;
+}
+
+function renderSection(s, idx){
+  let inner = `<p class="part-label">${s.part||''}</p>`;
+  inner += `<h2 class="text-xl md:text-2xl font-extrabold text-violet-900 flex items-center gap-2 mb-1"><i class="fa-solid fa-${s.icon||'circle-check'} text-pink-500"></i> ${s.roman}. ${s.title}</h2>`;
+  if(s.instructions) inner += `<p class="text-sm text-slate-500 mb-3 italic">${s.instructions}</p>`;
+  inner += renderRuleBox(s.ruleBox);
+  inner += renderPassage(s.passage, idx);
+  inner += renderDict(s.dict, idx);
+
+  inner += `<div class="space-y-4">`;
+  s.questions.forEach((q,i)=>{
+    inner += `<div class="task-card bg-white rounded-2xl shadow-md p-4" id="qblock_${idx}_${i}">`;
+    if(q.image) inner += `<div class="mb-3">${q.image}</div>`;
+    inner += `<p class="font-bold text-slate-800 mb-2 whitespace-pre-line"><span class="bg-slate-100 text-slate-600 text-xs font-black px-2 py-1 rounded-lg mr-2">${i+1}</span>${q.q}</p>`;
+    if(q.qvi) inner += `<p class="text-xs text-slate-400 italic mb-2">${q.qvi}</p>`;
+    if(s.type==='mcq'){
+      inner += `<div class="grid sm:grid-cols-2 gap-2">`;
+      q.options.forEach((opt,j)=>{
+        const ipa = q.ipas ? q.ipas[j] : null;
+        const optVi = q.vis ? q.vis[j] : null;
+        const cleanWord = opt.replace(/<[^>]+>/g,'');
+        const wordBlock = (ipa || optVi)
+          ? `<span class="flex flex-col leading-tight"><span>${opt}</span>${ipa?`<span class="text-[10px] text-slate-400 font-normal mcq-detail-hidden">${ipa}</span>`:''}${optVi?`<span class="text-[10px] text-emerald-500 font-normal italic mcq-detail-hidden">${optVi}</span>`:''}</span>
+             <button type="button" data-w="${cleanWord}" onclick="event.stopPropagation();event.preventDefault();speak(this.dataset.w,this)" class="speak-btn w-6 h-6 rounded-full bg-violet-100 text-violet-700 hover:bg-violet-200 hover:scale-110 transition flex items-center justify-center ml-auto shrink-0 mcq-detail-hidden" title="Nghe phát âm" aria-label="Nghe phát âm ${cleanWord}"><i class="fa-solid fa-volume-high text-[10px]"></i></button>`
+          : `<span>${opt}</span>`;
+        inner += `<label class="option-label rounded-xl px-3 py-2 text-sm font-semibold flex items-center gap-2" id="opt_${idx}_${i}_${j}" onclick="selectMcq(${idx},${i},${j})">
+          <input type="radio" name="mcq_${idx}_${i}" class="accent-violet-700" style="display:none">
+          <span class="font-black text-violet-700">${optionLetter(j)}.</span> ${wordBlock}
+        </label>`;
+      });
+      inner += `</div>`;
+    } else if(s.type==='fill'){
+      const w = widthFor(q.answer);
+      const famBlock = q.family ? `<div class="wordfam-box mt-2">${q.family.map(f=>`<div>• ${f}</div>`).join('')}</div>` : '';
+      inner += `<div class="flex items-center gap-2 flex-wrap">`;
+      if(q.hint) inner += `<span class="blank-tag text-xs">${q.hint}</span>`;
+      inner += `<input type="text" id="inp_${idx}_${i}" class="answer-input ${w} px-3 py-1.5 rounded-lg text-sm font-semibold" placeholder="Nhập đáp án..." autocomplete="off" spellcheck="false"></div>${famBlock}`;
+    } else if(s.type==='sentence'){
+      const instantAttr = s.instant ? ` oninput="gradeOneSentence(${idx},${i})"` : '';
+      if(q.starter){
+        inner += `<div class="flex items-center gap-3 w-full flex-wrap">
+          <span class="text-slate-800 font-extrabold text-base whitespace-nowrap">${q.starter}</span>
+          <input type="text" id="inp_${idx}_${i}" class="answer-input flex-1 min-w-[180px] px-3 py-2 rounded-lg text-sm font-semibold" placeholder="..." autocomplete="off" spellcheck="false"${instantAttr}>
+        </div>`;
+      } else {
+        inner += `<input type="text" id="inp_${idx}_${i}" class="answer-input w-full px-3 py-2 rounded-lg text-sm font-semibold" placeholder="Viết câu trả lời..." autocomplete="off" spellcheck="false"${instantAttr}>`;
+      }
+    } else if(s.type==='essay'){
+      const starterBlock = q.starter ? `<p class="text-slate-800 font-extrabold text-sm mb-2">${q.starter} ...</p>` : '';
+      inner += `${starterBlock}<textarea id="inp_${idx}_${i}" rows="6" class="answer-input w-full px-3 py-2 rounded-lg text-sm font-semibold" placeholder="Viết câu trả lời của em vào đây..."></textarea>`;
+    }
+    inner += `<div class="explanation-box mt-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-sm text-blue-800" id="fb_${idx}_${i}"></div>`;
+    inner += `</div>`;
+  });
+  inner += `</div>`;
+
+  inner += `<div class="flex flex-wrap gap-2 mt-5">
+    <button onclick="checkSection(${idx})" class="bg-gradient-to-r from-violet-900 to-pink-600 text-white font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-check mr-1"></i>Kiểm tra</button>
+    <button onclick="revealSection(${idx})" class="bg-white border-2 border-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-eye mr-1"></i>Xem đáp án</button>
+    <button onclick="resetSection(${idx})" class="bg-white border-2 border-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full text-sm"><i class="fa-solid fa-rotate-left mr-1"></i>Làm lại</button>
+    <span id="score_${idx}" class="hidden ml-auto self-center font-extrabold text-emerald-600 text-sm score-badge"></span>
+  </div>`;
+
+  return `<section id="tab-${idx}" class="section-page${idx===0?' active':''} space-y-4">${inner}</section>`;
+}
+
+function buildMain(){
+  const main=document.getElementById('mainWrap');
+  main.innerHTML = DATA.sections.map((s,i)=>renderSection(s,i)).join('');
+}
+
+function togglePassageVI(idx){ const el=document.getElementById(`passage_vi_${idx}`); if(el) el.classList.toggle('vi-hidden'); }
+function selectMcq(idx,i,j){
+  document.querySelectorAll(`[id^="opt_${idx}_${i}_"]`).forEach(el=>el.classList.remove('selected'));
+  document.getElementById(`opt_${idx}_${i}_${j}`).classList.add('selected');
+  document.getElementById(`opt_${idx}_${i}_${j}`).dataset.chosen = j;
+  if(DATA.sections[idx].instant){ gradeOneMcq(idx,i); }
+}
+
+function gradeOneMcq(idx,i){
+  const s=DATA.sections[idx], q=s.questions[i];
+  const qblock=document.getElementById(`qblock_${idx}_${i}`);
+  if(qblock) qblock.classList.add('show-mcq-detail');
+  const chosenEl=document.querySelector(`#tab-${idx} [id^="opt_${idx}_${i}_"].selected`);
+  const chosen = chosenEl ? parseInt(chosenEl.dataset.chosen) : -1;
+  const ok = isCorrectAnswer(q, chosen);
+  markOptions(idx,i,q,chosen);
+  const fb=document.getElementById(`fb_${idx}_${i}`);
+  fb.innerHTML = feedbackHTML(ok, correctAnswerLabel(q), q.explanation, q.vi, q.note);
+  fb.classList.add('show');
+}
+
+function gradeOneSentence(idx,i){
+  const q=DATA.sections[idx].questions[i];
+  const inp=document.getElementById(`inp_${idx}_${i}`);
+  const fb=document.getElementById(`fb_${idx}_${i}`);
+  if(!inp || !fb) return;
+  const raw=inp.value.trim();
+  if(raw===''){
+    inp.classList.remove('correct-input','wrong-input');
+    fb.classList.remove('show'); fb.innerHTML='';
+    return;
+  }
+  const val=normalize(inp.value);
+  const acc=(q.accepted||[q.answer]).map(normalize);
+  const ok = acc.includes(val);
+  inp.classList.remove('correct-input','wrong-input');
+  inp.classList.add(ok?'correct-input':'wrong-input');
+  fb.innerHTML = feedbackHTML(ok, q.answer, q.explanation, q.vi, q.note);
+  fb.classList.add('show');
+}
+
+function feedbackHTML(ok, answerLabel, explanation, vi, note){
+  const okLine = ok? `<span class="text-emerald-700 font-bold">✅ Chính xác!</span>` : `<span class="text-rose-600 font-bold">❌ Chưa đúng.</span> Đáp án đúng: <b>${answerLabel}</b>`;
+  const expLine = explanation? `<br><span class="text-blue-700">💡 ${explanation}</span>` : '';
+  const viLine = vi? `<span class="text-slate-500">📖 Nghĩa: <i>${vi}</i></span>` : '';
+  const noteLine = note? `<br><span class="text-violet-600">📐 Công thức: <b>${note}</b></span>` : '';
+  if(note){
+    return (viLine?viLine+'<br>':'') + okLine + expLine + noteLine;
+  }
+  return okLine + expLine + (viLine?'<br>'+viLine:'') + noteLine;
+}
+
+function checkSection(idx){
+  const s=DATA.sections[idx];
+  let correct=0;
+  s.questions.forEach((q,i)=>{
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    if(s.type==='essay'){
+      const ta=document.getElementById(`inp_${idx}_${i}`);
+      fb.innerHTML = `<span class="text-green-700 font-bold">✍️ Cảm ơn em đã hoàn thành bài viết!</span><br><span class="text-blue-700">💡 Đoạn văn / câu trả lời gợi ý:</span><br><span class="text-slate-600 italic whitespace-pre-line">${q.sample}</span>`;
+      fb.classList.add('show');
+      correct++;
+      return;
+    }
+    let ok=false, answerLabel='';
+    if(s.type==='mcq'){
+      const chosenEl=document.querySelector(`#tab-${idx} [id^="opt_${idx}_${i}_"].selected`);
+      const chosen = chosenEl ? parseInt(chosenEl.dataset.chosen) : -1;
+      ok = isCorrectAnswer(q, chosen);
+      answerLabel = correctAnswerLabel(q);
+      markOptions(idx,i,q,chosen);
+      const qblock=document.getElementById(`qblock_${idx}_${i}`);
+      if(qblock) qblock.classList.add('show-mcq-detail');
+    } else {
+      const inp=document.getElementById(`inp_${idx}_${i}`);
+      const val=normalize(inp.value);
+      const acc=(q.accepted||[q.answer]).map(normalize);
+      ok = val!=='' && acc.includes(val);
+      inp.classList.remove('correct-input','wrong-input');
+      inp.classList.add(ok?'correct-input':'wrong-input');
+      answerLabel = q.answer;
+    }
+    if(ok) correct++;
+    fb.innerHTML = feedbackHTML(ok, answerLabel, q.explanation, q.vi, q.note);
+    fb.classList.add('show');
+  });
+  const total=s.questions.length;
+  scores[idx]={correct,total};
+  const scoreEl=document.getElementById(`score_${idx}`);
+  scoreEl.textContent = `🏆 Điểm: ${correct}/${total}`;
+  scoreEl.classList.remove('hidden');
+  completedTasks.add(idx);
+  updateProgress();
+  if(completedTasks.size===TOTAL_TASKS) setTimeout(showCompletion,500);
+}
+
+function revealSection(idx){
+  const s=DATA.sections[idx];
+  s.questions.forEach((q,i)=>{
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    if(s.type==='essay'){
+      fb.innerHTML = `👁️ Câu trả lời gợi ý:<br><span class="text-slate-600 italic whitespace-pre-line">${q.sample}</span>`;
+      fb.classList.add('show');
+      return;
+    }
+    let answerLabel = s.type==='mcq' ? correctAnswerLabel(q) : q.answer;
+    if(s.type==='mcq'){
+      markOptions(idx,i,q,-1);
+      const qblock=document.getElementById(`qblock_${idx}_${i}`);
+      if(qblock) qblock.classList.add('show-mcq-detail');
+    }
+    fb.innerHTML = `👁️ Đáp án: <b>${answerLabel}</b>` + (q.explanation?`<br><span class="text-blue-700">💡 ${q.explanation}</span>`:'') + (q.vi?`<br><span class="text-slate-500">📖 Nghĩa: <i>${q.vi}</i></span>`:'') + (q.note?`<br><span class="text-violet-600">📐 Công thức: <b>${q.note}</b></span>`:'');
+    fb.classList.add('show');
+  });
+}
+
+function resetSection(idx){
+  const s=DATA.sections[idx];
+  s.questions.forEach((q,i)=>{
+    if(s.type==='mcq'){
+      q.options.forEach((o,j)=>{
+        const el=document.getElementById(`opt_${idx}_${i}_${j}`);
+        el.classList.remove('correct-opt','wrong-opt','selected');
+        delete el.dataset.chosen;
+      });
+    } else if(s.type==='essay'){
+      const ta=document.getElementById(`inp_${idx}_${i}`);
+      if(ta){ ta.value=''; }
+    } else {
+      const inp=document.getElementById(`inp_${idx}_${i}`);
+      if(inp){ inp.value=''; inp.classList.remove('correct-input','wrong-input'); }
+    }
+    const qblock=document.getElementById(`qblock_${idx}_${i}`);
+    if(qblock) qblock.classList.remove('show-mcq-detail');
+    const fb=document.getElementById(`fb_${idx}_${i}`);
+    fb.classList.remove('show'); fb.innerHTML='';
+  });
+  const scoreEl=document.getElementById(`score_${idx}`); scoreEl.classList.add('hidden');
+  completedTasks.delete(idx); delete scores[idx]; updateProgress();
+}
+
+function showTab(idx){
+  document.querySelectorAll('.section-page').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.remove('active'); b.classList.add('text-slate-600');});
+  document.getElementById(`tab-${idx}`).classList.add('active');
+  const btn=document.getElementById(`navbtn_${idx}`);
+  btn.classList.add('active'); btn.classList.remove('text-slate-600');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updateProgress(){
+  const done=completedTasks.size;
+  document.getElementById('progressText').textContent = `${done} / ${TOTAL_TASKS} phần`;
+  document.getElementById('progressBar').style.width = `${(done/TOTAL_TASKS)*100}%`;
+}
+
+function showCompletion(){
+  fireConfetti();
+  const banner=document.getElementById('completionBanner');
+  banner.classList.remove('hidden'); banner.classList.add('show');
+  let c=0,t=0; Object.values(scores).forEach(s=>{c+=s.correct; t+=s.total;});
+  document.getElementById('finalScoreDisplay').textContent = `🎯 ${c} / ${t} câu đúng`;
+}
+function closeBanner(){ const b=document.getElementById('completionBanner'); b.classList.remove('show'); b.classList.add('hidden'); }
+function fireConfetti(){
+  const wrap=document.getElementById('confettiWrap'); wrap.innerHTML='';
+  const colors=['#4c1d95','#7c3aed','#db2777','#ec4899','#f59e0b','#22c55e'];
+  for(let i=0;i<90;i++){
+    const p=document.createElement('div'); p.className='confetti-piece';
+    p.style.cssText=`left:${Math.random()*100}vw;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>0.5?'50%':'2px'};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*0.8}s;`;
+    wrap.appendChild(p);
+  }
+  setTimeout(()=>{wrap.innerHTML='';},4000);
+}
+
+buildNav();
+buildMain();
+updateProgress();
+</script>
+</body>
+</html>
