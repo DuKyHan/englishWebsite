@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#2f6d33">
+<title>Unit 2 Review Game: Life in the Countryside - Tiếng Anh 8</title>
+<style>
+  :root{
+    --green:#3fa34d; --green-dark:#2f6d33; --leaf:#8bc34a;
+    --blue:#1cb0f6; --gold:#ffc800; --red:#ff4b4b; --amber:#c9781a;
+    --paper:#fbf8ef; --ink:#31402c;
+  }
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html{ -webkit-text-size-adjust:100%; }
+  body{ margin:0; font-family:'Nunito',sans-serif; background:var(--paper); color:var(--ink); overscroll-behavior-y:none; }
+  h1,h2,h3,.font-baloo{ font-family:'Baloo 2','Baloo_2',sans-serif; }
+  button{ font-family:inherit; }
+  input,textarea{ font-size:16px !important; }
+
+  #app{ min-height:100vh; padding-bottom:110px; }
+
+  .hero{ background:linear-gradient(135deg,#1b4b1f 0%, var(--green-dark) 45%, var(--green) 100%); color:#fff; text-align:center; padding:1.8rem 1rem 2.2rem; position:relative; overflow:hidden; }
+  .hero .deco{ position:absolute; inset:0; opacity:.14; pointer-events:none; font-size:3rem; }
+  .hero h1{ font-size:1.5rem; margin:0 0 .3rem; }
+  @media(min-width:640px){ .hero h1{ font-size:2.1rem; } }
+  .hero p{ margin:0; opacity:.92; font-weight:700; font-size:.85rem; }
+
+  .topbar{ position:sticky; top:0; z-index:40; background:#fff; border-bottom:2px solid #e7e2d3; padding:.6rem 1rem; display:flex; align-items:center; justify-content:space-between; gap:.6rem; }
+  .topbar .brand{ font-weight:900; color:var(--green-dark); font-size:1rem; display:flex; align-items:center; gap:.4rem; }
+  .footer-bar{ position:fixed; left:0; right:0; bottom:0; z-index:50; background:#fff; border-top:2px solid #e7e2d3; padding:.75rem 1rem 1rem; }
+
+  .xp-pill{ background:#fff6d6; border:2px solid var(--gold); color:#8a6d00; border-radius:999px; padding:.2rem .7rem; font-weight:900; font-size:.78rem; white-space:nowrap; }
+  .streak-pill{ background:#fff0e0; border:2px solid #ff9600; color:#a35400; border-radius:999px; padding:.2rem .7rem; font-weight:900; font-size:.78rem; white-space:nowrap; }
+
+  .btn3d{ border:0; border-bottom:4px solid; border-radius:1rem; cursor:pointer; transition:transform .06s,border-bottom-width .06s; font-weight:900; }
+  .btn3d:active{ transform:translateY(3px); border-bottom-width:1px; }
+  .btn3d:disabled{ background:#e7e2d3 !important; border-color:#d5cfba !important; color:#a8a08a !important; cursor:not-allowed; }
+  .btn-green{ background:var(--green); border-color:var(--green-dark); color:#fff; }
+  .btn-red{ background:#fff; border-color:#e7e2d3; color:var(--red); }
+  .btn-white{ background:#fff; border-color:#e7e2d3; color:#4b4b4b; }
+  .btn-outline{ background:#fff; border:2px solid var(--green); border-bottom:4px solid var(--green-dark); color:var(--green-dark); }
+
+  .path-wrap{ max-width:520px; margin:0 auto; padding:1.6rem 1rem 2.5rem; }
+  .group-label{ text-align:center; font-size:.72rem; font-weight:900; letter-spacing:.05em; text-transform:uppercase; color:var(--amber); background:#fff3de; border:1px solid #f2d9a8; border-radius:999px; padding:.35rem .9rem; display:inline-block; margin:1.3rem auto .8rem; }
+  .group-wrap{ text-align:center; }
+  .stage-row{ display:flex; align-items:center; gap:1rem; margin-bottom:1.6rem; }
+  .stage-row.right{ flex-direction:row-reverse; }
+  .stage-node{ width:78px; height:78px; min-width:78px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.9rem; border-bottom:6px solid; position:relative; transition:transform .12s; cursor:pointer; }
+  .stage-node:active{ transform:scale(.94); }
+  .stage-node.status-mastered{ background:var(--gold); border-color:#c99400; }
+  .stage-node.status-in_progress{ background:var(--blue); border-color:#0f8fd1; }
+  .stage-node.status-needs_practice{ background:var(--red); border-color:#c53030; }
+  .stage-node.status-not_started{ background:#fff; border-color:#dedbcb; color:#a8a08a; }
+  .status-dot{ position:absolute; bottom:-6px; right:-6px; width:24px; height:24px; border-radius:50%; background:#fff; border:2px solid #dedbcb; display:flex; align-items:center; justify-content:center; font-size:.7rem; }
+  .stage-info{ flex:1; }
+  .stage-info p.t{ font-weight:900; font-size:.92rem; color:#33472e; margin:0; }
+  .stage-info p.s{ font-size:.74rem; color:#8b8672; margin:.1rem 0 0; }
+
+  .card{ background:#fff; border:2px solid #ecebe0; border-radius:1.2rem; padding:1.1rem 1.1rem; }
+  .opt-card{ border:2px solid #e7e2d3; border-bottom-width:4px; border-radius:1rem; padding:.85rem 1rem; cursor:pointer; font-weight:800; transition:all .12s; }
+  .opt-card:active{ transform:translateY(2px); }
+  .opt-card.selected{ border-color:var(--blue); background:#e4f6ff; }
+  .opt-card.correct{ border-color:#2f9e44; background:#e3f8e0; }
+  .opt-card.wrong{ border-color:#e0392b; background:#ffe3e1; }
+  .opt-card.dim{ opacity:.5; }
+
+  .passage-box{ background:#f4f0df; border:2px solid #e6dfc2; border-radius:1rem; padding:1rem 1.1rem; line-height:1.85; font-size:.92rem; margin-bottom:1rem; }
+  .passage-box .ptitle{ font-weight:900; color:var(--green-dark); margin-bottom:.4rem; }
+  .vi-box{ display:none; margin-top:.6rem; padding-top:.6rem; border-top:1px dashed #d8cfa8; color:#6b644a; font-style:italic; }
+  .vi-box.show{ display:block; }
+  .toggle-vi-btn{ background:#fff; border:2px solid #cbb87a; color:#8a6d00; font-weight:800; font-size:.72rem; padding:.35rem .8rem; border-radius:999px; cursor:pointer; margin-top:.3rem; }
+
+  .progress-track{ background:#e7e2d3; border-radius:999px; height:12px; overflow:hidden; flex:1; }
+  .progress-fill{ background:var(--green); height:100%; transition:width .4s ease; }
+
+  .confetti-wrap{ position:fixed; inset:0; pointer-events:none; z-index:9999; }
+  .confetti-piece{ position:absolute; width:10px; height:10px; border-radius:2px; animation:confettiFall linear forwards; }
+  @keyframes confettiFall{ 0%{transform:translateY(-20px) rotate(0deg); opacity:1;} 100%{transform:translateY(100vh) rotate(720deg); opacity:0;} }
+
+  .pop-in{ animation:popIn .3s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn{ from{transform:scale(.6); opacity:0;} to{transform:scale(1); opacity:1;} }
+
+  .screen{ display:none; }
+  .screen.active{ display:block; }
+  .badge-chip{ background:#fff; border:2px solid var(--gold); border-radius:1rem; padding:.55rem; text-align:center; }
+  .speak-btn{ width:34px; height:34px; border-radius:50%; background:#eaf6e6; color:var(--green-dark); border:none; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; }
+  .speak-btn.speaking{ animation:pulseSpeak .7s ease-in-out infinite; }
+  @keyframes pulseSpeak{ 0%,100%{transform:scale(1);} 50%{transform:scale(1.18);} }
+  .tag-chip{ display:inline-block; font-size:.68rem; font-weight:900; padding:.2rem .6rem; border-radius:999px; margin-bottom:.5rem; }
+  .tag-vocab{ background:#e3f8e0; color:#1e6b1e; }
+  .tag-grammar{ background:#e4f0ff; color:#1a56a0; }
+  .tag-reading-sgk{ background:#e9e4ff; color:#4b32a3; }
+  .tag-reading-sbt{ background:#ffe9d6; color:#a35400; }
+  .tag-mixed{ background:#fff3de; color:#8a6d00; }
+</style>
+</head>
+<body>
+<div class="confetti-wrap" id="confettiWrap"></div>
+<div id="app"></div>
+
+<script>
+/* ============================================================
+   UNIT 2 REVIEW GAME — CONTENT BANK
+   Life in the Countryside — Vocabulary + Grammar + Reading (SGK+SBT)
+   mcq / tf items only
+   ============================================================ */
+
+const PASSAGES = {
+  gs_dialogue: {
+    id:"gs_dialogue", title:"Last summer holiday (Getting Started - SGK)",
+    html:"<b>Nick:</b> You look great with a tan, Mai!<br><b>Mai:</b> Thank you. I've just come back from a very enjoyable summer holiday.<br><b>Nick:</b> Really? Where did you stay?<br><b>Mai:</b> I stayed at my uncle's house in a small village in Bac Giang Province.<br><b>Nick:</b> What did you do there?<br><b>Mai:</b> A lot of things. It was harvest time. The villagers were harvesting rice with a combine harvester. I helped them load the rice onto a truck. Then we unloaded the rice and dried it.<br><b>Nick:</b> Sounds great!<br><b>Mai:</b> And sometimes I went with the village children to herd the buffaloes and cows. I made friends with them on my first day.<br><b>Nick:</b> Were they friendly?<br><b>Mai:</b> Yes, they were. They took me to the paddy fields to fly kites. And in the evening, we played traditional games like bamboo dancing and dragon-snake.<br><b>Nick:</b> Oh, I envy you!<br><b>Mai:</b> Things move more slowly there than in our city, but people seem to have a healthier life.",
+    vi:"<b>Nick:</b> Trông cậu rám nắng và đẹp quá, Mai!<br><b>Mai:</b> Cảm ơn cậu. Mình vừa mới có một kỳ nghỉ hè rất thú vị.<br><b>Nick:</b> Thật à? Cậu ở đâu vậy?<br><b>Mai:</b> Mình ở nhà chú mình, tại một ngôi làng nhỏ ở tỉnh Bắc Giang.<br><b>Nick:</b> Cậu đã làm gì ở đó?<br><b>Mai:</b> Rất nhiều việc. Lúc đó là mùa gặt. Người dân trong làng đang gặt lúa bằng máy gặt đập liên hợp. Mình đã giúp họ chất lúa lên xe tải. Sau đó bọn mình dỡ lúa xuống và đem phơi.<br><b>Nick:</b> Nghe hay đấy!<br><b>Mai:</b> Và đôi khi mình đi cùng bọn trẻ trong làng để chăn trâu, chăn bò. Mình đã kết bạn với chúng ngay ngày đầu tiên.<br><b>Nick:</b> Chúng có thân thiện không?<br><b>Mai:</b> Có chứ. Chúng dẫn mình ra cánh đồng lúa để thả diều. Và vào buổi tối, bọn mình chơi những trò chơi truyền thống như nhảy sạp và múa rồng rắn.<br><b>Nick:</b> Ôi, mình ghen tị với cậu đấy!<br><b>Mai:</b> Mọi thứ ở đó diễn ra chậm rãi hơn so với thành phố mình, nhưng mọi người trông có vẻ sống khỏe mạnh hơn."
+  },
+  sk1_reading: {
+    id:"sk1_reading", title:"Life in a village in Viet Nam (Skills 1 - SGK)",
+    html:"I feel fortunate that I am living in a peaceful village in southern Viet Nam. The scenery here is beautiful and picturesque with vast fields stretching long distances. The houses are surrounded by green trees. There are lakes, ponds, and canals here and there. The air is fresh and cool.<br><br>Life here seems to move more slowly than in cities. The people work very hard. They grow vegetables, cultivate rice, and raise cattle. At harvest time, they use combine harvesters to harvest their crops. Many families live by growing fruit trees in the orchards. Others live by fishing in lakes, ponds, and canals.<br><br>Life in the village is very comfortable for children. They play traditional games. Sometimes they help their parents pick fruit and herd cattle.<br><br>People in my village know each other well. They are friendly and hospitable. They often meet each other in the evening, eating fruit, playing chess, singing folk songs, and chatting about everyday activities.",
+    vi:"Tôi cảm thấy may mắn vì được sống ở một ngôi làng yên bình tại miền Nam Việt Nam. Phong cảnh nơi đây đẹp và nên thơ với những cánh đồng rộng lớn trải dài. Những ngôi nhà được bao quanh bởi cây xanh. Có những hồ, ao và kênh rạch ở khắp nơi. Không khí trong lành và mát mẻ.<br><br>Cuộc sống nơi đây dường như trôi chậm hơn so với thành phố. Người dân làm việc rất chăm chỉ. Họ trồng rau, trồng lúa và chăn nuôi gia súc. Vào mùa thu hoạch, họ dùng máy gặt đập liên hợp để thu hoạch mùa màng. Nhiều gia đình sống bằng nghề trồng cây ăn quả trong vườn. Những gia đình khác sống bằng nghề đánh bắt cá ở hồ, ao và kênh rạch.<br><br>Cuộc sống trong làng rất thoải mái đối với trẻ em. Chúng chơi những trò chơi truyền thống. Thỉnh thoảng chúng giúp bố mẹ hái quả và chăn gia súc.<br><br>Người dân trong làng tôi hiểu rõ về nhau. Họ thân thiện và hiếu khách. Họ thường gặp nhau vào buổi tối, cùng ăn hoa quả, chơi cờ, hát dân ca và trò chuyện về những sinh hoạt thường ngày."
+  },
+  ninh_binh: {
+    id:"ninh_binh", title:"My village in Ninh Binh (SBT)",
+    html:"I live in a small village in Ninh Binh. I love the rural peace and quiet of my village. The air is unpolluted, and the pace of life is slow. The people in my village are friendly and hospitable. They are always willing to help each other. We cultivate mainly rice and beans. We raise cows and buffaloes too. We can also enjoy nature in the nearby area. It is actually a national park, so the wildlife there can live and move about safely. All these things make me love my village more, and I intend to live here my whole life.",
+    vi:"Tôi sống ở một ngôi làng nhỏ ở Ninh Bình. Tôi yêu sự yên bình, tĩnh lặng nơi thôn quê của làng mình. Không khí trong lành, và nhịp sống ở đây chậm rãi. Người dân trong làng thân thiện và hiếu khách. Họ luôn sẵn lòng giúp đỡ lẫn nhau. Chúng tôi chủ yếu trồng lúa và các loại đậu. Chúng tôi cũng nuôi bò và trâu. Chúng tôi còn có thể tận hưởng thiên nhiên ở khu vực gần đó. Đó thực chất là một vườn quốc gia, nên các loài hoang dã ở đó có thể sống và di chuyển an toàn. Tất cả những điều này khiến tôi càng yêu ngôi làng của mình hơn, và tôi dự định sẽ sống ở đây suốt đời."
+  },
+  britain: {
+    id:"britain", title:"The countryside of Britain (SBT)",
+    html:"Besides its beauty, the countryside of Britain is well known for its many contrasts: its bare mountains and moorland, its lakes, rivers and woods, and its long, often wild coastline. National parks which are protected from development by the government have the most beautiful and picturesque scenery. British people often associate the countryside with farmland, open spaces like fields of wheat and barley, green fields enclosed by hedges or stone walls in which cows or sheep are raised. Most farmland is now owned by individual people or independent companies. However, the government has built a network of public footpaths across the farmland.<br><br>Many British people enjoy the peace and relaxation of life in the countryside where they can spend their free time walking, cycling, or going for a picnic or a pub lunch. In summer they can pick strawberries and other fruit in fruit farms. Nowadays, few rural people work on farms. Many of them <u>commute</u> to work in towns. Many others wish to live in the countryside so that they could have a better and healthier lifestyle.",
+    vi:"Ngoài vẻ đẹp của mình, vùng nông thôn nước Anh còn nổi tiếng với nhiều sự tương phản: những dãy núi trơ trọi và vùng đất hoang, những hồ, sông và rừng, cùng đường bờ biển dài, thường hoang sơ. Các công viên quốc gia được chính phủ bảo vệ khỏi sự phát triển đô thị có cảnh quan đẹp và nên thơ nhất. Người Anh thường gắn vùng nông thôn với đất nông nghiệp, những không gian mở như cánh đồng lúa mì và lúa mạch, những cánh đồng xanh được rào bằng hàng rào cây hoặc tường đá, nơi nuôi bò hoặc cừu. Hầu hết đất nông nghiệp hiện nay thuộc sở hữu của cá nhân hoặc các công ty tư nhân. Tuy nhiên, chính phủ đã xây dựng một mạng lưới đường mòn công cộng băng qua các cánh đồng.<br><br>Nhiều người Anh thích sự yên bình và thư giãn của cuộc sống ở nông thôn, nơi họ có thể dành thời gian rảnh để đi bộ, đạp xe, đi dã ngoại hoặc ăn trưa ở quán rượu địa phương. Vào mùa hè, họ có thể hái dâu tây và các loại trái cây khác ở các trang trại trái cây. Ngày nay, ít người ở nông thôn làm việc trên nông trại. Nhiều người trong số họ đi làm xa (commute) đến thị trấn. Nhiều người khác mong muốn sống ở nông thôn để có một cuộc sống tốt đẹp và lành mạnh hơn."
+  },
+  america: {
+    id:"america", title:"The countryside of America (SBT)",
+    html:"Few Americans live in the areas of wild and beautiful scenery, like the Western states of Montana and Colorado. We often see small farms surrounded by hills and green areas in the New England states, such as Vermont and New Hampshire. In Ohio, Indiana, Illinois, and other Midwestern states, there are very large fields of corn or wheat with great distances between towns.<br><br>About a quarter of Americans live outside cities and towns because life there is harder. Shops, post offices, hospitals, schools, etc. may be further away and it takes rural people a very long time to get there. However, many people choose to live in the countryside because of its safe, clean, and attractive environment. But their children often move to a town or city when they grow up.",
+    vi:"Rất ít người Mỹ sống ở những vùng có cảnh quan hoang sơ và tươi đẹp, như các bang miền Tây Montana và Colorado. Chúng ta thường thấy những trang trại nhỏ được bao quanh bởi đồi núi và những vùng xanh ở các bang New England, như Vermont và New Hampshire. Ở Ohio, Indiana, Illinois và các bang Trung Tây khác, có những cánh đồng ngô hoặc lúa mì rất lớn với khoảng cách xa giữa các thị trấn.<br><br>Khoảng một phần tư người Mỹ sống ngoài thành phố và thị trấn vì cuộc sống ở đó khó khăn hơn. Cửa hàng, bưu điện, bệnh viện, trường học,... có thể ở xa hơn và người dân nông thôn phải mất rất nhiều thời gian để đến đó. Tuy nhiên, nhiều người vẫn chọn sống ở nông thôn vì môi trường an toàn, sạch sẽ và hấp dẫn ở đó. Nhưng con cái của họ thường chuyển đến thị trấn hoặc thành phố khi trưởng thành."
+  }
+};
+
+/* ---------------- VOCABULARY (22 mcq) ---------------- */
+const VOCAB = [
+  {id:"v1", type:"mcq", section:"vocab", q:"'Village' nghĩa là gì?", options:["Làng","Thành phố","Núi","Biển"], answer:0, explanation:"village = làng."},
+  {id:"v2", type:"mcq", section:"vocab", q:"'Harvest' (danh từ) có nghĩa là gì?", options:["Vụ thu hoạch","Cái cày","Con trâu","Cánh đồng hoa"], answer:0, explanation:"harvest = vụ/mùa thu hoạch."},
+  {id:"v3", type:"mcq", section:"vocab", q:"'Combine harvester' là gì?", options:["Máy gặt đập liên hợp","Xe tải chở lúa","Cái liềm cắt lúa","Máy cày"], answer:0, explanation:"combine harvester = máy gặt đập liên hợp."},
+  {id:"v4", type:"mcq", section:"vocab", q:"Từ nào có nghĩa là 'chăn, lùa (gia súc)'?", options:["herd","catch","pick","collect"], answer:0, explanation:"to herd = chăn, lùa gia súc."},
+  {id:"v5", type:"mcq", section:"vocab", q:"Từ nào có nghĩa là 'chất, xếp hàng lên xe'?", options:["load","unload","carry","hold"], answer:0, explanation:"to load = chất hàng lên xe."},
+  {id:"v6", type:"mcq", section:"vocab", q:"'To load' được định nghĩa đúng nhất là...?", options:["to put a large quantity of something onto a vehicle","to take something off a vehicle","to grow plants for food","to catch an animal"], answer:0, explanation:"to load = chất một lượng lớn đồ vật lên phương tiện."},
+  {id:"v7", type:"mcq", section:"vocab", q:"'Paddy field' nghĩa là gì?", options:["Ruộng lúa nước","Vườn cây ăn quả","Bãi cỏ","Ao cá"], answer:0, explanation:"paddy field = ruộng lúa nước."},
+  {id:"v8", type:"mcq", section:"vocab", q:"Điền động từ đúng: 'to ___ cattle' (chăn gia súc)", options:["herd","catch","pick","load"], answer:0, explanation:"herd cattle = chăn gia súc."},
+  {id:"v9", type:"mcq", section:"vocab", q:"Điền động từ đúng: 'to ___ fruit in the orchard' (hái quả)", options:["pick","herd","unload","dig"], answer:0, explanation:"pick fruit = hái quả."},
+  {id:"v10", type:"mcq", section:"vocab", q:"'Hospitable' nghĩa là gì?", options:["Hiếu khách","Rộng lớn","Được đào tạo bài bản","Đẹp như tranh"], answer:0, explanation:"hospitable = hiếu khách, mến khách."},
+  {id:"v11", type:"mcq", section:"vocab", q:"'Well-trained' nghĩa là gì?", options:["Được đào tạo bài bản","Hiếu khách","Bị bao quanh","Rộng lớn"], answer:0, explanation:"well-trained = được đào tạo bài bản."},
+  {id:"v12", type:"mcq", section:"vocab", q:"'Picturesque' nghĩa là gì?", options:["Đẹp như tranh vẽ","Ồn ào","Nhàm chán","Nguy hiểm"], answer:0, explanation:"picturesque = đẹp như tranh vẽ."},
+  {id:"v13", type:"mcq", section:"vocab", q:"'Vast' nghĩa là gì?", options:["Rộng lớn, bao la","Nhỏ bé","Yên tĩnh","Cổ kính"], answer:0, explanation:"vast = rộng lớn, bao la."},
+  {id:"v14", type:"mcq", section:"vocab", q:"Từ nào có nghĩa 'được bao quanh bởi'?", options:["surrounded","stretching","cultivated","loaded"], answer:0, explanation:"surrounded (by) = được bao quanh bởi."},
+  {id:"v15", type:"mcq", section:"vocab", q:"'Canals' nghĩa là gì?", options:["Kênh, mương dẫn nước","Vườn cây ăn quả","Mùa màng","Gia súc"], answer:0, explanation:"canals = kênh, mương dẫn nước."},
+  {id:"v16", type:"mcq", section:"vocab", q:"'Cultivate' gần nghĩa nhất với...?", options:["to grow plants or crops","to sell products at a market","to destroy fields","to buy farm animals"], answer:0, explanation:"cultivate = trồng trọt, canh tác."},
+  {id:"v17", type:"mcq", section:"vocab", q:"'Orchard' nghĩa là gì?", options:["Vườn cây ăn quả","Ruộng lúa","Chợ quê","Kênh mương"], answer:0, explanation:"orchard = vườn cây ăn quả."},
+  {id:"v18", type:"mcq", section:"vocab", q:"Từ nào chỉ 'một ngôi nhà nhỏ ở nông thôn'?", options:["cottage","cabin","cave","cellar"], answer:0, explanation:"cottage = ngôi nhà nhỏ ở nông thôn."},
+  {id:"v19", type:"mcq", section:"vocab", q:"'Cattle' refers to...?", options:["cows and buffaloes","chickens and ducks","fish and shrimp","dogs and cats"], answer:0, explanation:"cattle = gia súc (bò, trâu)."},
+  {id:"v20", type:"mcq", section:"vocab", q:"'Poultry' refers to...?", options:["birds we raise, like chickens and ducks","cows and buffaloes","wild animals in the forest","fish in the pond"], answer:0, explanation:"poultry = gia cầm (gà, vịt,...)."},
+  {id:"v21", type:"mcq", section:"vocab", q:"Cụm từ nào có nghĩa 'tinh thần cộng đồng gắn bó'?", options:["a great sense of community","a great sense of humour","a great deal of money","a great work of art"], answer:0, explanation:"a great sense of community = tinh thần cộng đồng gắn bó."},
+  {id:"v22", type:"mcq", section:"vocab", q:"'Market' nghĩa là gì?", options:["Chợ","Đền thờ","Hải đăng","Nhà thờ"], answer:0, explanation:"market = chợ."}
+];
+
+/* ---------------- GRAMMAR: Comparative Adverbs (22 mcq/tf) ---------------- */
+const GRAMMAR = [
+  {id:"g1", type:"mcq", section:"grammar", q:"Chọn dạng đúng: It usually rains ___ in my country than in yours.", options:["heavier","more heavily","more heavy","heavily"], answer:1, explanation:"heavily có 2+ âm tiết → so sánh hơn: more heavily."},
+  {id:"g2", type:"mcq", section:"grammar", q:"Chọn dạng đúng: People in the countryside work ___ than those in the city.", options:["harder","more hard","more harder","hardly"], answer:0, explanation:"hard là trạng từ 1 âm tiết → thêm -er: harder."},
+  {id:"g3", type:"mcq", section:"grammar", q:"Chọn dạng đúng: Nowadays children adapt ___ to technology than their parents.", options:["quicklier","more quickly","quicker","quickly more"], answer:1, explanation:"quickly có 2+ âm tiết → more quickly."},
+  {id:"g4", type:"mcq", section:"grammar", q:"Chọn dạng đúng: I think countryside dwellers live ___ than city dwellers.", options:["happier","more happily","happilier","more happy"], answer:1, explanation:"happily là trạng từ → more happily (không thêm -er)."},
+  {id:"g5", type:"mcq", section:"grammar", q:"Chọn dạng đúng: This morning, the farmers got up ___ than usual.", options:["more early","earlier","earlyer","more earlier"], answer:1, explanation:"early tận cùng y sau phụ âm → đổi y thành i rồi thêm -er: earlier."},
+  {id:"g6", type:"tf", section:"grammar", q:"Trạng từ 'fast' có dạng so sánh hơn là 'faster'.", answer:true, explanation:"Đúng — fast có dạng giống tính từ, thêm -er: faster."},
+  {id:"g7", type:"tf", section:"grammar", q:"Trạng từ 'badly' có dạng so sánh hơn là 'more badly'.", answer:false, explanation:"Sai — badly là trạng từ bất quy tắc, dạng đúng là 'worse'."},
+  {id:"g8", type:"tf", section:"grammar", q:"Trạng từ 'well' có dạng so sánh hơn là 'more well'.", answer:false, explanation:"Sai — well là trạng từ bất quy tắc, dạng đúng là 'better'."},
+  {id:"g9", type:"mcq", section:"grammar", q:"Chọn dạng so sánh hơn đúng của 'carefully':", options:["more carefully","carefuller","more careful","carefully-er"], answer:0, explanation:"carefully có 2+ âm tiết → more carefully."},
+  {id:"g10", type:"mcq", section:"grammar", q:"Chọn dạng so sánh hơn đúng của 'hard':", options:["harder","more hard","more harder","hardly"], answer:0, explanation:"hard có dạng giống tính từ → thêm -er: harder."},
+  {id:"g11", type:"mcq", section:"grammar", q:"Chọn dạng so sánh hơn đúng của 'early':", options:["earlier","more early","earlyer","the earlier"], answer:0, explanation:"early → earlier (đổi y thành i rồi thêm -er)."},
+  {id:"g12", type:"tf", section:"grammar", q:"Trạng từ có 2 âm tiết trở lên (thường tận cùng -ly) thường thêm '-er' để so sánh hơn.", answer:false, explanation:"Sai — trạng từ dài dùng 'more' phía trước, không thêm -er."},
+  {id:"g13", type:"mcq", section:"grammar", q:"Horses can run ___ than buffaloes. (fast)", options:["faster","more fast","fastest","more faster"], answer:0, explanation:"fast → faster."},
+  {id:"g14", type:"mcq", section:"grammar", q:"My sister speaks English much ___ than I do. (fluently)", options:["fluenter","more fluently","fluently more","fluentlier"], answer:1, explanation:"fluently → more fluently."},
+  {id:"g15", type:"mcq", section:"grammar", q:"All these students are good, but some work ___ than others. (hard)", options:["harder","more hard","hardly","more harder"], answer:0, explanation:"hard → harder."},
+  {id:"g16", type:"mcq", section:"grammar", q:"Girls normally become mature ___ than boys. (early)", options:["earlier","more early","earlyer","early more"], answer:0, explanation:"early → earlier."},
+  {id:"g17", type:"tf", section:"grammar", q:"Câu 'I run faster as my brother does.' đúng ngữ pháp.", answer:false, explanation:"Sai — so sánh hơn phải dùng 'than', không dùng 'as'."},
+  {id:"g18", type:"mcq", section:"grammar", q:"Câu nào đúng ngữ pháp?", options:["She sings more beautifully than her sister.","She sings beautifuller than her sister.","She sings more beautiful than her sister.","She sings beautifully more than her sister."], answer:0, explanation:"beautifully (2+ âm tiết) → more beautifully."},
+  {id:"g19", type:"mcq", section:"grammar", q:"Chọn dạng so sánh hơn đúng của 'quickly':", options:["quicker","more quickly","quicklier","quickly-er"], answer:1, explanation:"quickly → more quickly."},
+  {id:"g20", type:"tf", section:"grammar", q:"Câu 'Life in the city seems to move faster than that in the countryside.' dùng đúng dạng so sánh hơn của 'fast'.", answer:true, explanation:"Đúng — fast → faster."},
+  {id:"g21", type:"mcq", section:"grammar", q:"If you want to get better marks, you must work much ___. (hard)", options:["harder","more hard","hardest","more harder"], answer:0, explanation:"hard → harder."},
+  {id:"g22", type:"mcq", section:"grammar", q:"The buses run every 15 minutes, the trains every 30 minutes. The buses run ___ than the trains. (frequently)", options:["frequenter","more frequently","frequently more","more frequenter"], answer:1, explanation:"frequently → more frequently."}
+];
+
+/* ---------------- READING - SGK (16 mcq/tf) ---------------- */
+const READING_SGK = [
+  {id:"rsgk1", type:"mcq", section:"reading_sgk", passageId:"gs_dialogue", q:"Mai stayed at...?", options:["her uncle's house in Bac Giang Province","a hotel in Ha Noi","her grandparents' house in Hue","a campsite by the beach"], answer:0, explanation:"\"I stayed at my uncle's house in a small village in Bac Giang Province.\""},
+  {id:"rsgk2", type:"mcq", section:"reading_sgk", passageId:"gs_dialogue", q:"What were the villagers doing when Mai visited (it was harvest time)?", options:["Harvesting rice with a combine harvester","Planting new rice seedlings","Building a new road","Fishing in the river"], answer:0, explanation:"\"The villagers were harvesting rice with a combine harvester.\""},
+  {id:"rsgk3", type:"tf", section:"reading_sgk", passageId:"gs_dialogue", q:"Mai made friends with the village children on her first day.", answer:true, explanation:"\"I made friends with them on my first day.\""},
+  {id:"rsgk4", type:"tf", section:"reading_sgk", passageId:"gs_dialogue", q:"In the evening, Mai and the children watched TV together.", answer:false, explanation:"Sai — họ chơi trò chơi truyền thống (nhảy sạp, múa rồng rắn), không xem TV."},
+  {id:"rsgk5", type:"mcq", section:"reading_sgk", passageId:"gs_dialogue", q:"How does Mai feel about her summer holiday?", options:["She really enjoyed it","She didn't like it at all","She felt bored","She felt unsafe"], answer:0, explanation:"\"a very enjoyable summer holiday\" → cô ấy rất thích."},
+  {id:"rsgk6", type:"mcq", section:"reading_sgk", passageId:"gs_dialogue", q:"Besides herding buffaloes and cows, what did Mai do with the village children?", options:["They flew kites in the paddy fields","They went swimming in the sea","They went shopping in the city","They watched a football match"], answer:0, explanation:"\"They took me to the paddy fields to fly kites.\""},
+  {id:"rsgk7", type:"tf", section:"reading_sgk", passageId:"gs_dialogue", q:"Nick says he envies Mai's experience in the countryside.", answer:true, explanation:"\"Oh, I envy you!\""},
+  {id:"rsgk8", type:"mcq", section:"reading_sgk", passageId:"gs_dialogue", q:"According to Mai, things in the countryside move ___ than in the city.", options:["more slowly","faster","more loudly","more expensively"], answer:0, explanation:"\"Things move more slowly there than in our city...\""},
+  {id:"rsgk9", type:"tf", section:"reading_sgk", passageId:"sk1_reading", q:"Life in the author's village is very peaceful.", answer:true, explanation:"\"I am living in a peaceful village...\""},
+  {id:"rsgk10", type:"tf", section:"reading_sgk", passageId:"sk1_reading", q:"The people in the village work very hard.", answer:true, explanation:"\"The people work very hard.\""},
+  {id:"rsgk11", type:"tf", section:"reading_sgk", passageId:"sk1_reading", q:"Villagers live only by catching fish in lakes, ponds, and canals.", answer:false, explanation:"Sai — họ còn trồng rau, trồng lúa, chăn nuôi, trồng cây ăn quả."},
+  {id:"rsgk12", type:"tf", section:"reading_sgk", passageId:"sk1_reading", q:"The children in the village are always busy helping their parents.", answer:false, explanation:"Sai — bài đọc dùng từ 'sometimes' (thỉnh thoảng), không phải luôn luôn."},
+  {id:"rsgk13", type:"mcq", section:"reading_sgk", passageId:"sk1_reading", q:"What do villagers often do in the evening?", options:["Eating fruit, playing chess, singing folk songs, and chatting","Watching TV all night","Going to the cinema","Working overtime in the fields"], answer:0, explanation:"\"eating fruit, playing chess, singing folk songs, and chatting about everyday activities.\""},
+  {id:"rsgk14", type:"mcq", section:"reading_sgk", passageId:"sk1_reading", q:"Besides fishing, what do many families in the village live by?", options:["Growing fruit trees in orchards","Working in factories","Running shops in the city","Teaching in schools"], answer:0, explanation:"\"Many families live by growing fruit trees in the orchards.\""},
+  {id:"rsgk15", type:"mcq", section:"reading_sgk", passageId:"sk1_reading", q:"The word 'stretching' in the passage is closest in meaning to...?", options:["covering a large area of land","moving very quickly","becoming smaller","disappearing slowly"], answer:0, explanation:"stretching = trải dài, kéo dài."},
+  {id:"rsgk16", type:"mcq", section:"reading_sgk", passageId:"sk1_reading", q:"The word 'canals' in the passage refers to...?", options:["small passages used for carrying water to fields","large mountains","busy marketplaces","ancient temples"], answer:0, explanation:"canals = kênh, mương dẫn nước."}
+];
+
+/* ---------------- READING - SBT (16 mcq/tf) ---------------- */
+const READING_SBT = [
+  {id:"rsbt1", type:"mcq", section:"reading_sbt", passageId:"ninh_binh", q:"Chỗ trống: I love the ___ peace and quiet of my village.", options:["rural","urban","suburban","industrial"], answer:0, explanation:"rural = thuộc về nông thôn."},
+  {id:"rsbt2", type:"mcq", section:"reading_sbt", passageId:"ninh_binh", q:"Chỗ trống: ...the ___ of life is slow.", options:["pace","speed","step","rate"], answer:0, explanation:"pace of life = nhịp sống."},
+  {id:"rsbt3", type:"mcq", section:"reading_sbt", passageId:"ninh_binh", q:"Chỗ trống: They are always willing ___ each other.", options:["to help","helping","help","helped"], answer:0, explanation:"be willing to + V."},
+  {id:"rsbt4", type:"mcq", section:"reading_sbt", passageId:"ninh_binh", q:"Chỗ trống: We can also enjoy ___ in the nearby area.", options:["nature","environment","countryside","wildlife"], answer:0, explanation:"enjoy nature = tận hưởng thiên nhiên."},
+  {id:"rsbt5", type:"mcq", section:"reading_sbt", passageId:"ninh_binh", q:"Chỗ trống: ...the wildlife there can live and move about ___.", options:["safely","safe","safety","unsafely"], answer:0, explanation:"move about safely = di chuyển an toàn (trạng từ bổ nghĩa cho động từ)."},
+  {id:"rsbt6", type:"tf", section:"reading_sbt", passageId:"ninh_binh", q:"The nearby area mentioned in the passage is actually a national park.", answer:true, explanation:"\"It is actually a national park...\""},
+  {id:"rsbt7", type:"mcq", section:"reading_sbt", passageId:"britain", q:"National parks in Britain have...?", options:["the most beautiful and picturesque scenery","the most modern facilities","the largest population","the cheapest farmland"], answer:0, explanation:"\"National parks... have the most beautiful and picturesque scenery.\""},
+  {id:"rsbt8", type:"mcq", section:"reading_sbt", passageId:"britain", q:"What has the government built across the farmland?", options:["A network of public footpaths","New shopping malls","Large factories","High-speed railways"], answer:0, explanation:"\"the government has built a network of public footpaths across the farmland.\""},
+  {id:"rsbt9", type:"mcq", section:"reading_sbt", passageId:"britain", q:"Many British people think the countryside goes with...?", options:["peace and relaxation","work in towns","crowded traffic","tall buildings"], answer:0, explanation:"\"Many British people enjoy the peace and relaxation of life in the countryside...\""},
+  {id:"rsbt10", type:"mcq", section:"reading_sbt", passageId:"britain", q:"The word 'commute' in the passage is closest in meaning to...?", options:["travel a long distance to get to work regularly","go on foot for pleasure","stay at home all day","go fishing at the weekend"], answer:0, explanation:"commute = đi lại (thường xa) để đi làm mỗi ngày."},
+  {id:"rsbt11", type:"tf", section:"reading_sbt", passageId:"britain", q:"Most farmland in Britain is now owned by the government.", answer:false, explanation:"Sai — hầu hết đất nông nghiệp thuộc sở hữu của cá nhân hoặc công ty độc lập, không phải chính phủ."},
+  {id:"rsbt12", type:"tf", section:"reading_sbt", passageId:"america", q:"A large number of Americans live in wild, beautiful areas like Montana and Colorado.", answer:false, explanation:"Sai — \"Few Americans live in the areas... like Montana and Colorado.\""},
+  {id:"rsbt13", type:"tf", section:"reading_sbt", passageId:"america", q:"There are very large fields of corn or wheat in Ohio, Indiana, and Illinois.", answer:true, explanation:"Đúng — đúng như trong bài đọc."},
+  {id:"rsbt14", type:"tf", section:"reading_sbt", passageId:"america", q:"The majority of Americans live outside cities or towns.", answer:false, explanation:"Sai — chỉ khoảng một phần tư (a quarter), không phải đa số."},
+  {id:"rsbt15", type:"tf", section:"reading_sbt", passageId:"america", q:"Many Americans choose to live in the countryside because everything is more convenient there.", answer:false, explanation:"Sai — họ chọn vì môi trường an toàn, sạch sẽ, hấp dẫn, không phải vì tiện lợi."},
+  {id:"rsbt16", type:"mcq", section:"reading_sbt", passageId:"america", q:"Why do many Americans choose to live in the countryside?", options:["Because of its safe, clean, and attractive environment","Because it has more shops and hospitals","Because transportation is faster there","Because schools are better there"], answer:0, explanation:"\"many people choose to live in the countryside because of its safe, clean, and attractive environment.\""}
+];
+
+const POOLS = { vocab:VOCAB, grammar:GRAMMAR, reading_sgk:READING_SGK, reading_sbt:READING_SBT };
+const ITEM_BANK = {};
+[VOCAB, GRAMMAR, READING_SGK, READING_SBT].forEach(arr=>arr.forEach(it=>{ ITEM_BANK[it.id]=it; }));
+const ALL_ITEMS = Object.values(ITEM_BANK);
+
+const STAGE_DEFS = [
+  {key:'vocab', title:'Từ vựng Nông thôn', icon:'🌾', poolKey:'vocab', passages:[], tag:'vocab', groupLabel:'📘 Từ vựng & Ngữ pháp (SGK + SBT)'},
+  {key:'grammar', title:'Ngữ pháp: So sánh hơn của trạng từ', icon:'📐', poolKey:'grammar', passages:[], tag:'grammar'},
+  {key:'reading_sgk', title:'Đọc hiểu - SGK', icon:'📗', poolKey:'reading_sgk', passages:['gs_dialogue','sk1_reading'], tag:'reading-sgk', groupLabel:'📘 Sách giáo khoa (SGK)'},
+  {key:'reading_sbt', title:'Đọc hiểu - SBT', icon:'📕', poolKey:'reading_sbt', passages:['ninh_binh','britain','america'], tag:'reading-sbt', groupLabel:'📕 Sách bài tập (SBT)'},
+  {key:'mixed', title:'Thử thách tổng hợp', icon:'🏆', poolKey:'mixed', passages:[], tag:'mixed', groupLabel:'🏆 Thử thách & Ôn luyện'},
+  {key:'mistakes', title:'Ôn lại lỗi sai', icon:'🔥', poolKey:'mistakes', passages:[], tag:'mixed'}
+];
+
+const BADGE_DEFS = {
+  vocab:{icon:'🌾', label:'Từ vựng Nông thôn'},
+  grammar:{icon:'📐', label:'So sánh hơn'},
+  reading_sgk:{icon:'📗', label:'Đọc hiểu SGK'},
+  reading_sbt:{icon:'📕', label:'Đọc hiểu SBT'},
+  mixed:{icon:'🏆', label:'Nhà vô địch Unit 2'},
+  mistake_fixer:{icon:'🔥', label:'Người sửa lỗi'},
+  unit_master:{icon:'⭐', label:'Bậc thầy Unit 2'}
+};
+
+/* ============================================================
+   ENGINE — utils, storage, speech
+   ============================================================ */
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function sample(arr,n){ return shuffle(arr).slice(0, Math.min(n, arr.length)); }
+
+let cachedVoices=[];
+if('speechSynthesis' in window){
+  const refresh=()=>{ cachedVoices=window.speechSynthesis.getVoices()||[]; };
+  window.speechSynthesis.onvoiceschanged=refresh; refresh();
+}
+function pickEnVoice(){
+  const voices = cachedVoices.length?cachedVoices:(window.speechSynthesis.getVoices()||[]);
+  return voices.find(v=>/en[-_]?(us|gb)/i.test(v.lang)) || voices.find(v=>/^en/i.test(v.lang)) || null;
+}
+function speak(text, btn){
+  try{
+    if(!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    setTimeout(()=>{
+      const u=new SpeechSynthesisUtterance(text);
+      u.lang='en-US'; u.rate=0.92; u.pitch=1;
+      const en=pickEnVoice(); if(en) u.voice=en;
+      if(btn){ btn.classList.add('speaking'); const stop=()=>btn.classList.remove('speaking'); u.onend=stop; u.onerror=stop; }
+      window.speechSynthesis.speak(u);
+    },50);
+  }catch(e){}
+}
+
+const STORAGE_KEY = 'u2_review_game_v1';
+function defaultProgress(){
+  const stages={};
+  STAGE_DEFS.forEach(s=>{ stages[s.key]={status:'not_started', bestAccuracy:0, attempts:0, stars:0}; });
+  return { xp:0, bestStreak:0, badges:[], stages, mistakes:{}, createdAt:Date.now() };
+}
+function loadProgress(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if(!raw) return defaultProgress();
+    const parsed=JSON.parse(raw);
+    const def=defaultProgress();
+    return Object.assign(def, parsed, { stages:Object.assign(def.stages, parsed.stages||{}) });
+  }catch(e){ return defaultProgress(); }
+}
+function saveProgress(){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state.progress)); }catch(e){} }
+function resetProgress(){
+  if(!confirm('Bạn có chắc muốn xoá toàn bộ tiến trình (XP, sao, lỗi sai đã lưu)? Hành động này không thể hoàn tác.')) return;
+  state.progress=defaultProgress(); saveProgress(); state.screen='home'; state.session=null; render();
+}
+
+const state = { screen:'home', progress: loadProgress(), session:null };
+
+function awardBadge(key){
+  if(!state.progress.badges.includes(key)){ state.progress.badges.push(key); return true; }
+  return false;
+}
+
+/* ---------------- Session building ---------------- */
+function buildSession(stageDef){
+  let items;
+  if(stageDef.key==='mixed'){
+    items = sample(ALL_ITEMS, 15);
+  } else if(stageDef.key==='mistakes'){
+    const ids = Object.keys(state.progress.mistakes).filter(id=>ITEM_BANK[id]);
+    items = shuffle(ids.map(id=>ITEM_BANK[id]));
+  } else {
+    items = shuffle(POOLS[stageDef.poolKey]);
+  }
+  const intros = (stageDef.passages||[]).map(pid=>({ type:'intro', id:'intro_'+pid, passage:PASSAGES[pid] }));
+  return intros.concat(items);
+}
+
+function startStage(key){
+  const def = STAGE_DEFS.find(s=>s.key===key);
+  const cards = buildSession(def);
+  if(def.key==='mistakes' && cards.length===0){
+    alert('🎉 Tuyệt vời! Bạn hiện không có câu nào cần ôn lại lỗi sai. Hãy tiếp tục luyện tập các phần khác nhé!');
+    return;
+  }
+  state.session = { stageKey:key, cards, idx:0, correct:0, wrong:0, streak:0, xpEarned:0, answered:false, selection:null, mistakesFixed:0, catStats:{} };
+  state.screen='player';
+  render();
+}
+
+/* ============================================================
+   RENDERING
+   ============================================================ */
+function render(){
+  const app=document.getElementById('app');
+  if(state.screen==='home') app.innerHTML = renderHome();
+  else if(state.screen==='player') app.innerHTML = renderPlayer();
+  else if(state.screen==='summary') app.innerHTML = renderSummary();
+  window.scrollTo({top:0});
+}
+
+function stageStatusDot(status){
+  if(status==='mastered') return '⭐';
+  if(status==='in_progress') return '🕓';
+  if(status==='needs_practice') return '❗';
+  return '';
+}
+
+function renderHome(){
+  const p = state.progress;
+  const rows = STAGE_DEFS.map((s,i)=>{
+    const st = p.stages[s.key];
+    const dot = stageStatusDot(st.status);
+    const align = i%2===0 ? '' : 'right';
+    const groupBlock = s.groupLabel ? `<div class="group-wrap"><span class="group-label">${s.groupLabel}</span></div>` : '';
+    const subtitle = st.attempts>0 ? `Độ chính xác tốt nhất: ${st.bestAccuracy}%` : 'Chưa bắt đầu';
+    return `${groupBlock}<div class="stage-row ${align}">
+      <button onclick="startStage('${s.key}')" class="stage-node status-${st.status}" aria-label="${s.title}">
+        <span>${s.icon}</span>
+        ${dot?`<span class="status-dot">${dot}</span>`:''}
+      </button>
+      <div class="stage-info">
+        <p class="t">${s.title}</p>
+        <p class="s">${subtitle}</p>
+      </div>
+    </div>`;
+  }).join('');
+
+  const badgeChips = p.badges.map(k=>{
+    const b=BADGE_DEFS[k]; if(!b) return '';
+    return `<div class="badge-chip"><div style="font-size:1.5rem">${b.icon}</div><div style="font-size:.62rem;font-weight:800;color:#8a6d00;margin-top:.2rem">${b.label}</div></div>`;
+  }).join('');
+
+  return `
+  <div class="hero">
+    <div class="deco">🌾 &nbsp; 🐃 &nbsp; 🏡 &nbsp; 🚜</div>
+    <h1 class="font-baloo">🌾 Unit 2: Life in the Countryside — Ôn tập Từ vựng &amp; Ngữ pháp (Trắc nghiệm)</h1>
+    <p>Trò chơi ôn tập trắc nghiệm bám sát SGK &amp; SBT Global Success 8</p>
+  </div>
+  <div class="topbar">
+    <span class="brand">🌱 Unit 2 Review Game</span>
+    <div style="display:flex;gap:.5rem;align-items:center">
+      <span class="xp-pill">⚡ ${p.xp} XP</span>
+      <span class="streak-pill">🔥 ${p.bestStreak}</span>
+    </div>
+  </div>
+  <div class="path-wrap">${rows}</div>
+  ${p.badges.length?`<div class="path-wrap" style="padding-top:0"><p style="font-size:.72rem;font-weight:900;color:#8b8672;text-transform:uppercase;margin-bottom:.5rem">Huy hiệu đã đạt</p><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem">${badgeChips}</div></div>`:''}
+  <div style="text-align:center;padding:0 1rem 2rem">
+    <button onclick="resetProgress()" style="background:none;border:none;color:#a8a08a;font-size:.75rem;text-decoration:underline;cursor:pointer">🔄 Đặt lại tiến trình học tập</button>
+  </div>`;
+}
+
+function currentCard(){ return state.session ? state.session.cards[state.session.idx] : null; }
+
+function passageBlock(passage, uniq){
+  if(!passage) return '';
+  const viBtn = passage.vi ? `<button type="button" class="toggle-vi-btn" onclick="document.getElementById('vi_${uniq}').classList.toggle('show')">🌐 Dịch tiếng Việt</button>` : '';
+  const viBox = passage.vi ? `<div id="vi_${uniq}" class="vi-box">${passage.vi}</div>` : '';
+  return `<div class="passage-box">
+    <p class="ptitle">📖 ${passage.title}
+      <button type="button" class="speak-btn" style="margin-left:.4rem;vertical-align:middle" onclick="speak(this.dataset.t,this)" data-t="${passage.html.replace(/<[^>]+>/g,' ').replace(/"/g,'&quot;')}">🔊</button>
+    </p>
+    <div>${passage.html}</div>
+    ${viBtn}${viBox}
+  </div>`;
+}
+
+function renderPlayer(){
+  const s=state.session; const card=currentCard();
+  const total = s.cards.length;
+  const pct = Math.round((s.idx/total)*100);
+  return `
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:.7rem;flex:1;max-width:640px;margin:0 auto">
+      <button onclick="exitPlayer()" style="background:none;border:none;color:#a8a08a;font-size:1.2rem;cursor:pointer">✕</button>
+      <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+      <span class="streak-pill" style="font-size:.7rem">🔥 ${s.streak}</span>
+    </div>
+  </div>
+  <div style="max-width:640px;margin:0 auto;padding:1.2rem 1rem" id="cardArea">
+    ${renderCardBody(card)}
+  </div>
+  <div class="footer-bar">
+    ${renderFooter(card)}
+  </div>`;
+}
+
+const SECTION_NAMES = { vocab:'Từ vựng', grammar:'Ngữ pháp', reading_sgk:'Đọc hiểu SGK', reading_sbt:'Đọc hiểu SBT', mixed:'Thử thách' };
+const SECTION_TAG_CLASS = { vocab:'tag-vocab', grammar:'tag-grammar', reading_sgk:'tag-reading-sgk', reading_sbt:'tag-reading-sbt' };
+
+function renderCardBody(card){
+  if(card.type==='intro'){
+    return `<p style="font-size:.72rem;font-weight:900;color:#3fa34d;text-transform:uppercase;margin-bottom:.5rem">📖 Đọc trước khi luyện tập</p>
+      ${passageBlock(card.passage, card.id)}`;
+  }
+  const item = card;
+  const uniq = item.id;
+  const tagCls = SECTION_TAG_CLASS[item.section] || 'tag-mixed';
+  const tagLabel = SECTION_NAMES[item.section] || 'Ôn tập';
+  const passageMini = item.passageId ? `<button type="button" class="toggle-vi-btn" style="margin-bottom:.7rem" onclick="document.getElementById('mini_${uniq}').classList.toggle('show')">📖 Xem lại đoạn văn</button><div id="mini_${uniq}" class="vi-box" style="border:2px solid #e6dfc2;border-radius:1rem;padding:.8rem 1rem">${PASSAGES[item.passageId].html}</div>` : '';
+
+  let body='';
+  if(item.type==='mcq'){
+    body = `<div style="display:grid;gap:.6rem;margin-top:1rem">${item.options.map((o,i)=>{
+      let cls='opt-card';
+      if(state.session.answered){
+        if(i===item.answer) cls+=' correct';
+        else if(i===state.session.selection) cls+=' wrong';
+        else cls+=' dim';
+      } else if(state.session.selection===i){ cls+=' selected'; }
+      return `<div class="${cls}" onclick="${state.session.answered?'':'selectOption('+i+')'}"><span style="color:#3fa34d;font-weight:900">${['A','B','C','D'][i]}.</span> ${o}</div>`;
+    }).join('')}</div>`;
+  } else if(item.type==='tf'){
+    const opts=[{label:'✅ Đúng (True)', val:true},{label:'❌ Sai (False)', val:false}];
+    body = `<div style="display:grid;gap:.6rem;margin-top:1rem">${opts.map((o,i)=>{
+      let cls='opt-card';
+      if(state.session.answered){
+        if(o.val===item.answer) cls+=' correct';
+        else if(state.session.selection===o.val) cls+=' wrong';
+        else cls+=' dim';
+      } else if(state.session.selection===o.val){ cls+=' selected'; }
+      return `<div class="${cls}" onclick="${state.session.answered?'':'selectOption('+o.val+')'}">${o.label}</div>`;
+    }).join('')}</div>`;
+  }
+
+  return `<p class="tag-chip ${tagCls}">${tagLabel}</p>
+    ${passageMini}
+    <p style="font-size:1.12rem;font-weight:900;color:#2d3a29;line-height:1.5">${item.q}</p>
+    ${body}`;
+}
+
+function renderFooter(card){
+  if(card.type==='intro'){
+    return `<button onclick="continueNext()" class="btn3d btn-green" style="width:100%;max-width:640px;margin:0 auto;display:block;padding:.9rem;border-radius:1rem;font-size:1.05rem">➜ Bắt đầu luyện tập</button>`;
+  }
+  const s = state.session;
+  if(!s.answered){
+    const canCheck = s.selection!==null && s.selection!==undefined;
+    return `<button onclick="checkAnswer()" class="btn3d btn-green" style="width:100%;max-width:640px;margin:0 auto;display:block;padding:.9rem;border-radius:1rem;font-size:1.05rem" ${canCheck?'':'disabled'}>✓ Kiểm tra</button>`;
+  }
+  const ok = computeOk(card);
+  const contBtn = `<button onclick="continueNext()" class="btn3d ${ok?'btn-green':'btn-red'}" style="width:100%;padding:.9rem;border-radius:1rem;font-size:1.05rem">Tiếp tục ➜</button>`;
+  const headline = ok ? '✅ Chính xác!' : '❌ Chưa đúng.';
+  const color = ok ? '#1e6b1e' : '#c0392b';
+  const expLine = card.explanation ? `<p style="font-size:.85rem;color:${color};font-weight:700;margin:0 0 .6rem">${headline} ${card.explanation}</p>` : `<p style="font-size:.85rem;color:${color};font-weight:700;margin:0 0 .6rem">${headline}</p>`;
+  return `<div style="max-width:640px;margin:0 auto">${expLine}${contBtn}</div>`;
+}
+
+function computeOk(item){
+  if(item.type==='mcq') return state.session.selection===item.answer;
+  if(item.type==='tf') return state.session.selection===item.answer;
+  return false;
+}
+
+function selectOption(v){
+  if(state.session.answered) return;
+  if(v==='true') v=true; if(v==='false') v=false;
+  state.session.selection = v;
+  render();
+}
+
+function checkAnswer(){
+  const item = currentCard();
+  const ok = computeOk(item);
+  state.session.answered = true;
+  finalizeAnswer(item, ok);
+  render();
+}
+
+function finalizeAnswer(item, ok){
+  const s = state.session;
+  if(ok){ s.correct++; s.streak++; if(s.streak>state.progress.bestStreak) state.progress.bestStreak=s.streak; }
+  else { s.wrong++; s.streak=0; }
+  s.catStats[item.section] = s.catStats[item.section] || {correct:0,total:0};
+  s.catStats[item.section].total++;
+  if(ok) s.catStats[item.section].correct++;
+
+  let xp = ok ? 10 : 2;
+  state.progress.xp += xp; s.xpEarned += xp;
+
+  if(s.stageKey==='mistakes'){
+    const mb = state.progress.mistakes[item.id];
+    if(ok){
+      if(mb){ mb.box=(mb.box||0)+1; if(mb.box>=3){ delete state.progress.mistakes[item.id]; s.mistakesFixed++; state.progress.xp+=15; s.xpEarned+=15; } }
+    } else if(mb){ mb.box=0; }
+  } else {
+    if(!ok){
+      const existing = state.progress.mistakes[item.id];
+      state.progress.mistakes[item.id] = { box:0, timesWrong:(existing?existing.timesWrong:0)+1, section:item.section };
+    } else if(state.progress.mistakes[item.id]){
+      state.progress.mistakes[item.id].box = (state.progress.mistakes[item.id].box||0)+1;
+      if(state.progress.mistakes[item.id].box>=3){ delete state.progress.mistakes[item.id]; s.mistakesFixed++; }
+    }
+  }
+  if(Object.keys(state.progress.mistakes).length===0) awardBadge('mistake_fixer');
+  saveProgress();
+}
+
+function continueNext(){
+  const s = state.session;
+  s.idx++;
+  state.session.answered=false; state.session.selection=null;
+  if(s.idx>=s.cards.length){ finishSession(); return; }
+  render();
+}
+
+function exitPlayer(){ state.screen='home'; state.session=null; render(); }
+
+function finishSession(){
+  const s = state.session;
+  const scored = s.correct + s.wrong;
+  const accuracy = scored>0 ? Math.round((s.correct/scored)*100) : 100;
+  let stars = 1;
+  if(accuracy>=90) stars=3; else if(accuracy>=70) stars=2; else stars=1;
+  if(scored===0) stars=3;
+
+  if(s.stageKey!=='mistakes' && s.stageKey!=='mixed'){
+    const stProg = state.progress.stages[s.stageKey];
+    stProg.attempts++;
+    stProg.bestAccuracy = Math.max(stProg.bestAccuracy, accuracy);
+    stProg.stars = Math.max(stProg.stars, stars);
+    const wasMastered = stProg.status==='mastered';
+    if(accuracy>=80) stProg.status='mastered';
+    else if(accuracy>=40) stProg.status='in_progress';
+    else stProg.status='needs_practice';
+    if(stProg.status==='mastered' && !wasMastered){ if(awardBadge(s.stageKey)){ state.progress.xp+=50; s.xpEarned+=50; } }
+    state.progress.xp += 20; s.xpEarned += 20;
+  } else if(s.stageKey==='mixed'){
+    const stProg = state.progress.stages.mixed;
+    stProg.attempts++;
+    stProg.bestAccuracy = Math.max(stProg.bestAccuracy, accuracy);
+    stProg.stars = Math.max(stProg.stars, stars);
+    const wasMastered = stProg.status==='mastered';
+    if(accuracy>=80) stProg.status='mastered';
+    else if(accuracy>=40) stProg.status='in_progress';
+    else stProg.status='needs_practice';
+    if(stProg.status==='mastered' && !wasMastered){ if(awardBadge('mixed')){ state.progress.xp+=50; s.xpEarned+=50; } }
+    state.progress.xp += 20; s.xpEarned += 20;
+  }
+  checkUnitMastery();
+  saveProgress();
+  state.screen='summary';
+  render();
+}
+
+function checkUnitMastery(){
+  const coreStages = ['vocab','grammar','reading_sgk','reading_sbt','mixed'];
+  const allMastered = coreStages.every(k=>state.progress.stages[k].status==='mastered');
+  const noMistakes = Object.keys(state.progress.mistakes).length===0;
+  if(allMastered && noMistakes){ if(awardBadge('unit_master')) fireConfetti(); }
+}
+
+function renderSummary(){
+  const s = state.session;
+  const scored = s.correct + s.wrong;
+  const accuracy = scored>0 ? Math.round((s.correct/scored)*100) : 100;
+  let stars=1; if(accuracy>=90) stars=3; else if(accuracy>=70) stars=2; if(scored===0) stars=3;
+  if(accuracy>=70) fireConfetti();
+  const starHtml = [0,1,2].map(i=>`<span style="font-size:2.2rem;color:${i<stars?'#ffc800':'#e7e2d3'}">★</span>`).join(' ');
+
+  const catBlock = Object.keys(s.catStats).length>1 ? `<div style="margin-top:1rem;display:grid;gap:.5rem">${Object.keys(s.catStats).map(c=>{
+    const cs=s.catStats[c]; const pct=Math.round((cs.correct/cs.total)*100);
+    return `<div><div style="display:flex;justify-content:space-between;font-size:.72rem;font-weight:800;color:#8b8672;margin-bottom:.2rem"><span>${SECTION_NAMES[c]||c}</span><span>${cs.correct}/${cs.total}</span></div>
+    <div class="progress-track" style="height:8px"><div class="progress-fill" style="width:${pct}%"></div></div></div>`;
+  }).join('')}</div>` : '';
+
+  const mistakeFixedLine = s.stageKey==='mistakes' && s.mistakesFixed>0 ? `<p style="color:#1e6b1e;font-weight:800;font-size:.85rem;margin-top:.5rem">🔥 Đã sửa xong ${s.mistakesFixed} lỗi!</p>` : '';
+
+  let title = '🎉 Hoàn thành!';
+  if(accuracy>=90) title='🌟 Xuất sắc!'; else if(accuracy>=70) title='💪 Làm tốt lắm!'; else title='🔁 Cố lên, luyện thêm nhé!';
+
+  return `<div style="max-width:460px;margin:0 auto;padding:3rem 1.2rem;text-align:center" class="pop-in">
+    <p style="font-size:3.2rem;margin:0 0 .3rem">${accuracy>=90?'🏆':accuracy>=70?'🎉':'💪'}</p>
+    <h2 class="font-baloo" style="font-size:1.5rem;margin:0 0 .3rem;color:#2d3a29">${title}</h2>
+    <div style="margin:.7rem 0">${starHtml}</div>
+    <p style="font-weight:800;color:#8b8672">Độ chính xác: <span style="color:#2d3a29">${accuracy}%</span> (${s.correct}/${scored||0} câu đúng)</p>
+    <p class="xp-pill" style="display:inline-block;margin-top:.6rem">⚡ +${s.xpEarned} XP</p>
+    ${mistakeFixedLine}
+    ${catBlock}
+    <div style="margin-top:2rem;display:grid;gap:.7rem">
+      <button onclick="goHome()" class="btn3d btn-green" style="width:100%;padding:.9rem;border-radius:1rem;font-size:1.05rem">Về trang chủ</button>
+      <button onclick="retryStage()" class="btn3d btn-white" style="width:100%;padding:.9rem;border-radius:1rem;font-size:1.05rem">Làm lại</button>
+    </div>
+  </div>`;
+}
+
+function goHome(){ state.screen='home'; state.session=null; render(); }
+function retryStage(){ const key=state.session.stageKey; startStage(key); }
+
+function fireConfetti(){
+  const wrap=document.getElementById('confettiWrap'); if(!wrap) return;
+  wrap.innerHTML='';
+  const colors=['#3fa34d','#2f6d33','#ffc800','#1cb0f6','#ff9600'];
+  for(let i=0;i<90;i++){
+    const p=document.createElement('div'); p.className='confetti-piece';
+    p.style.cssText=`left:${Math.random()*100}vw;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>0.5?'50%':'2px'};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*0.8}s;`;
+    wrap.appendChild(p);
+  }
+  setTimeout(()=>{ if(wrap) wrap.innerHTML=''; },4000);
+}
+
+/* ---------------- INIT ---------------- */
+render();
+</script>
+</body>
+</html>

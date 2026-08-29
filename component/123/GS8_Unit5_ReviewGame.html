@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Unit 5 Quest">
+<meta name="theme-color" content="#b91c1c">
+<meta name="format-detection" content="telephone=no">
+<title>Unit 5 Quest: Customs and Traditions - Tiếng Anh 8</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+  :root{
+    --green:#58cc02; --green-dark:#4aa302; --blue:#1cb0f6; --accent:#b91c1c; --accent-dark:#7f1d1d;
+    --gold:#ca8a04; --gold-dark:#a16207; --red:#ff4b4b; --gray:#e5e5e5;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html{ -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  body { font-family:'Nunito',sans-serif; background:#fff8f2; margin:0; overscroll-behavior-y: none; color:#3c3c3c; }
+  button, .tappable, [onclick]{ touch-action: manipulation; -webkit-user-select:none; user-select:none; }
+  input, textarea{ -webkit-user-select:text; user-select:text; font-size:16px !important; }
+  h1,h2,h3,.font-baloo{ font-family:'Baloo 2','Baloo_2',sans-serif; }
+
+  #app{ min-height:100vh; padding-bottom: calc(90px + env(safe-area-inset-bottom)); }
+  .topbar{ position:sticky; top:0; z-index:40; background:linear-gradient(135deg,#7f1d1d,#b91c1c 55%,#ca8a04); color:#fff; padding: calc(.7rem + env(safe-area-inset-top)) 1rem .7rem; box-shadow:0 2px 12px rgba(127,29,29,.25); }
+  .footer-bar{ position:fixed; left:0; right:0; bottom:0; z-index:50; background:#fff; border-top:2px solid #e5e5e5; padding: .8rem 1rem calc(.8rem + env(safe-area-inset-bottom)); }
+
+  .btn3d{ border-bottom:4px solid; transition: transform .06s, border-bottom-width .06s; cursor:pointer; }
+  .btn3d:active{ transform: translateY(3px); border-bottom-width:1px; }
+  .btn-green{ background:var(--green); border-color:var(--green-dark); color:#fff; }
+  .btn-green:disabled{ background:#e5e5e5; border-color:#d0d0d0; color:#afafaf; cursor:not-allowed; }
+  .btn-accent{ background:var(--accent); border-color:var(--accent-dark); color:#fff; }
+  .btn-white{ background:#fff; border-color:#e5e5e5; color:#4b4b4b; }
+  .btn-red{ background:#fff; border-color:#e5e5e5; color:var(--red); }
+
+  .group-label{ max-width:480px; margin:1.6rem auto .4rem; padding:0 1rem; font-weight:900; font-size:.78rem; letter-spacing:.04em; color:var(--accent-dark); text-transform:uppercase; display:flex; align-items:center; gap:.5rem; }
+  .group-label::after{ content:''; flex:1; height:2px; background:#fde3d0; }
+
+  .path-wrap{ max-width:480px; margin:0 auto; padding: 1rem 1rem 2rem; position:relative; }
+  .stage-node{ width:84px; height:84px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2rem; border-bottom:6px solid; position:relative; transition:transform .15s; flex-shrink:0; }
+  .stage-node:active{ transform: scale(.94); }
+  .stage-node.status-mastered{ background:var(--gold); border-color:var(--gold-dark); }
+  .stage-node.status-in_progress{ background:var(--accent); border-color:var(--accent-dark); }
+  .stage-node.status-needs_practice{ background:var(--red); border-color:#c53030; }
+  .stage-node.status-not_started{ background:#fff; border-color:#e5e5e5; color:#afafaf; }
+  .stage-row{ display:flex; align-items:center; gap:1rem; margin-bottom:2.2rem; }
+  .stage-row.right{ flex-direction:row-reverse; }
+  .status-dot{ position:absolute; bottom:-6px; right:-6px; width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.75rem; background:#fff; border:2px solid #e5e5e5; }
+
+  .opt-card{ border:2px solid #e5e5e5; border-bottom-width:4px; border-radius:1rem; padding:.9rem 1rem; cursor:pointer; transition: all .12s; font-weight:800; }
+  .opt-card:active{ transform: translateY(2px); }
+  .opt-card.selected{ border-color:var(--blue); background:#ddf4ff; }
+  .opt-card.correct{ border-color:var(--green-dark); background:#d7ffb8; color:#4b4b4b; }
+  .opt-card.wrong{ border-color:#c53030; background:#ffdfe0; color:#4b4b4b; }
+  .opt-card.dim{ opacity:.5; }
+
+  .xp-pill{ background:rgba(255,255,255,.18); border:2px solid #ffe08a; color:#fff; border-radius:999px; padding:.15rem .7rem; font-weight:900; font-size:.8rem; }
+  .streak-pill{ background:rgba(255,255,255,.18); border:2px solid #fff; color:#fff; border-radius:999px; padding:.15rem .7rem; font-weight:900; font-size:.8rem; }
+  .progress-track{ background:#e5e5e5; border-radius:999px; height:14px; overflow:hidden; }
+  .progress-track.on-dark{ background:rgba(255,255,255,.25); }
+  .progress-fill{ background:var(--accent); height:100%; transition: width .4s ease; }
+  .progress-fill.on-dark{ background:#ffe08a; }
+  .confetti-wrap{ position:fixed; inset:0; pointer-events:none; z-index:9999; }
+  .confetti-piece{ position:absolute; width:10px; height:10px; border-radius:2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall{ 0%{transform:translateY(-20px) rotate(0deg); opacity:1;} 100%{transform:translateY(100vh) rotate(720deg); opacity:0;} }
+  .pop-in{ animation: popIn .3s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn{ from{transform:scale(.6); opacity:0;} to{transform:scale(1); opacity:1;} }
+  .screen{ display:none; }
+  .screen.active{ display:block; }
+  .badge-chip{ background:#fff; border:2px solid var(--gold); border-radius:1rem; padding:.6rem; text-align:center; }
+  .passage-toggle-box{ background:#fff7ed; border:2px solid #fed7aa; border-radius:1rem; padding:.8rem 1rem; margin-bottom:1rem; font-size:.92rem; line-height:1.8; }
+  .passage-vi-box{ background:#fefce8; border:2px solid #fde68a; border-radius:1rem; padding:.8rem 1rem; margin-top:.5rem; font-size:.92rem; line-height:1.8; display:none; }
+  .passage-vi-box.show{ display:block; }
+  .speak-btn{ cursor:pointer; }
+  .speak-btn.speaking{ animation: pulseSpeak .7s ease-in-out infinite; }
+  @keyframes pulseSpeak{ 0%,100%{transform:scale(1);} 50%{transform:scale(1.18);} }
+  .rule-note{ background:#eff6ff; border:2px solid #bfdbfe; border-radius:1rem; padding:.8rem 1rem; font-size:.85rem; line-height:1.7; color:#334155; margin-bottom:1rem; }
+</style>
+</head>
+<body>
+<div class="confetti-wrap" id="confettiWrap"></div>
+<div id="app"></div>
+<script>
+// ============================================================
+// UNIT 5 QUEST — Customs and Traditions (Global Success 8)
+// Purely MCQ / TF review game. Sources: GS8_Unit5_InClass_Practice.html (SGK),
+// GS8_Unit5_Workbook_Practice.html (SBT).
+// ============================================================
+
+/* ---------------- Reading / listening passages ---------------- */
+const PASSAGES = {
+  tet_coming: {
+    id:"tet_coming", title:"Tet is Coming! (Getting Started)",
+    html:"<b>Elena:</b> Hi Trang! I heard Tet is coming soon. What are people busy doing these days?<br><b>Trang:</b> Yes, Tet is our biggest festival! Families are busy shopping for flowers and decorations.<br><b>Elena:</b> I saw so many beautiful flowers at the market. Where do all these flowers come from?<br><b>Trang:</b> Many of them come from Sa Dec Flower Village in Dong Thap. It's famous for growing all kinds of ornamental flowers, especially chrysanthemums and marigolds.<br><b>Elena:</b> Wow! What about those peach blossom trees and kumquat trees I keep seeing everywhere?<br><b>Trang:</b> Ah, those mostly come from Nhat Tan Village in Ha Noi. It's well-known for its beautiful peach blossoms, while kumquat trees usually come from the Tu Lien area nearby.<br><b>Elena:</b> I also saw some villagers putting up a tall bamboo pole in front of the communal house. What's that for?<br><b>Trang:</b> That's called 'cay neu', a bamboo pole. People erect it in front of the dinh, or communal house, to ward off evil spirits and welcome good luck for the new year.<br><b>Elena:</b> That's fascinating! I can't wait to see more Tet customs.",
+    vi:"<b>Elena:</b> Chào Trang! Mình nghe nói Tết sắp đến rồi. Mọi người đang bận rộn làm gì vậy?<br><b>Trang:</b> Đúng vậy, Tết là lễ hội lớn nhất của chúng mình! Các gia đình đang bận đi mua hoa và đồ trang trí.<br><b>Elena:</b> Mình thấy rất nhiều hoa đẹp ở chợ. Những bông hoa này đến từ đâu vậy?<br><b>Trang:</b> Nhiều loại đến từ Làng hoa Sa Đéc ở Đồng Tháp. Nơi đó nổi tiếng trồng đủ loại hoa cảnh, đặc biệt là hoa cúc và hoa vạn thọ.<br><b>Elena:</b> Ồ! Thế còn những cây đào và cây quất mình thấy khắp nơi thì sao?<br><b>Trang:</b> À, phần lớn đến từ làng Nhật Tân ở Hà Nội. Nơi đó nổi tiếng với hoa đào đẹp, còn cây quất thường đến từ khu vực Tứ Liên gần đó.<br><b>Elena:</b> Mình cũng thấy vài người dân dựng một cây tre cao trước đình làng. Đó là để làm gì vậy?<br><b>Trang:</b> Đó gọi là 'cây nêu'. Người ta dựng nó trước đình làng để xua đuổi tà ma và đón may mắn cho năm mới.<br><b>Elena:</b> Thú vị quá! Mình không thể chờ để xem thêm các phong tục ngày Tết."
+  },
+  village_festival: {
+    id:"village_festival", title:"A Village Festival Day (Skills 1 - Reading)",
+    html:"Every summer, my village by the Red River holds an exciting festival called 'A Village Festival Day'. The festival begins early in the morning with a boat race. Teams of young men from different hamlets row their long wooden boats as fast as they can, while villagers stand along the riverbank, cheering loudly for their favourite team. After the boat race, everyone gathers for the most popular event of the day: duck-catching. Live ducks are released into a pond, and competitors jump in to try to catch them with their bare hands. It is great fun to watch people slipping and splashing in the muddy water! In the afternoon, there are folk games, singing performances, and food stalls selling local specialities. By the end of the day, everyone goes home tired but happy, already looking forward to next year's festival.",
+    vi:"Mỗi mùa hè, làng tôi bên sông Hồng lại tổ chức một lễ hội thú vị mang tên 'Ngày hội làng'. Lễ hội bắt đầu từ sáng sớm với cuộc đua thuyền. Các đội thanh niên từ những xóm khác nhau chèo những chiếc thuyền gỗ dài thật nhanh, trong khi dân làng đứng dọc bờ sông reo hò cổ vũ cho đội mình yêu thích. Sau cuộc đua thuyền, mọi người tập trung lại để xem hoạt động được yêu thích nhất trong ngày: bắt vịt. Những con vịt sống được thả xuống ao, và người chơi nhảy xuống cố bắt chúng bằng tay không. Thật vui khi xem mọi người trượt ngã và té nước trong bùn lầy! Buổi chiều có các trò chơi dân gian, tiết mục ca hát và các quầy hàng bán đặc sản địa phương. Đến cuối ngày, ai nấy đều về nhà mệt nhưng vui, và đã mong chờ lễ hội năm sau."
+  },
+  ok_om_bok: {
+    id:"ok_om_bok", title:"Ok Om Bok - the Moon Worshipping Festival (Skills 2 - Listening)",
+    html:"Ok Om Bok, also known as the Moon Worshipping Festival, is one of the most important festivals of the Khmer people in the Mekong Delta. It usually takes place in November, at the end of the harvest season. On the night of the festival, families prepare a tray of rice flakes, fruit, and cakes, and set it under the moonlight to thank the Moon God for a good harvest. Children sit around the tray and are fed rice flakes by the elders while making wishes for good luck. The festival also features exciting boat races, known as Ngo boat races, along the river, as well as lantern releasing and traditional Khmer folk performances.",
+    vi:"Ok Om Bok, hay còn gọi là Lễ hội Cúng Trăng, là một trong những lễ hội quan trọng nhất của người Khmer ở đồng bằng sông Cửu Long. Lễ hội thường diễn ra vào tháng Mười Một, khi mùa thu hoạch kết thúc. Vào đêm lễ hội, các gia đình chuẩn bị một mâm cốm dẹp, trái cây và bánh, đặt dưới ánh trăng để tạ ơn Thần Mặt Trăng đã cho một vụ mùa bội thu. Trẻ em ngồi quanh mâm lễ và được người lớn đút cốm dẹp trong khi cầu mong những điều may mắn. Lễ hội còn có các cuộc đua ghe Ngo sôi động trên sông, cùng với thả đèn và các tiết mục văn nghệ dân gian Khmer truyền thống."
+  },
+  longevity: {
+    id:"longevity", title:"A Longevity Celebration (SBT Reading D2)",
+    html:"On the fifth day of Tet, Binh An Village holds a longevity celebration for elderly people over 70. This tradition has continued for centuries in the village. In the morning, everyone dresses nicely and walks to the village temple. According to tradition, the elderly wear traditional ao dai. They sit at the most honourable place. The village leaders congratulate them. They offer each elder a 'longevity flag' and a bunch of flowers. Then, each family takes photographs with their elders. At noon, families hold a home party for their elders. It is customary for the family members to cook for their elders. The traditional dishes served are five-colour sticky rice, steamed chicken, spring rolls, and deep-fried fish.",
+    vi:"Vào ngày mùng 5 Tết, làng Bình An tổ chức lễ mừng thọ cho những người trên 70 tuổi. Truyền thống này đã được duy trì qua nhiều thế kỷ. Buổi sáng, mọi người ăn mặc chỉnh tề và đi bộ đến đình làng. Theo truyền thống, người cao tuổi mặc áo dài. Họ ngồi ở vị trí trang trọng nhất. Các vị lãnh đạo làng chúc mừng họ. Họ tặng mỗi cụ một 'lá cờ trường thọ' và một bó hoa. Sau đó, mỗi gia đình chụp ảnh cùng người cao tuổi của mình. Buổi trưa, các gia đình tổ chức tiệc tại nhà cho người cao tuổi. Theo phong tục, con cháu trong gia đình sẽ nấu ăn cho các cụ. Các món ăn truyền thống gồm xôi ngũ sắc, gà luộc, nem cuốn và cá rán."
+  },
+  british: {
+    id:"british", title:"Popular Traditions in Britain (SBT Reading D3)",
+    html:"When one thinks of the British, one often imagines people drinking tea and eating fish and chips. But there are many other traditions that British people have maintained for centuries. Pancake Day is also called Shrove Tuesday, and it is a day people make pancakes. They hold a pancake race. Runners wear a traditional apron and scarf and carry a pan with a pancake in it. They have to flip the pancake as they run. Christmas is on 25th December, but people prepare for it long before the event. Christmas trees are everywhere. People decorate the trees and place gifts under them. They cook traditional foods, wear their best clothes, and have family reunions. On New Year's Eve, crowds gather at Trafalgar Square or Piccadilly Circus to wait for the start of the new year. At midnight, there is a huge fireworks celebration over the London Eye, followed by Big Ben ringing in the New Year.",
+    vi:"Khi nghĩ về người Anh, ta thường hình dung cảnh họ uống trà và ăn cá tẩm bột chiên khoai tây (fish and chips). Nhưng còn nhiều truyền thống khác mà người Anh đã gìn giữ qua nhiều thế kỷ. Ngày Pancake còn gọi là Shrove Tuesday, là ngày người ta làm bánh kếp. Họ tổ chức cuộc đua bánh kếp: người chạy mặc tạp dề và khăn quàng truyền thống, cầm chảo có bánh kếp bên trong và phải lật bánh khi chạy. Giáng sinh diễn ra ngày 25/12 nhưng người ta chuẩn bị từ rất lâu trước đó: cây thông xuất hiện khắp nơi, được trang trí và đặt quà bên dưới; người ta nấu món truyền thống, mặc đẹp và sum họp gia đình. Vào đêm Giao thừa, đám đông tụ tập ở Quảng trường Trafalgar hoặc Piccadilly Circus chờ đón năm mới. Đúng nửa đêm có màn bắn pháo hoa trên khu vực London Eye, tiếp theo là tiếng chuông Big Ben điểm giờ."
+  },
+  kate: {
+    id:"kate", title:"The Kate Festival (SBT Reading D1)",
+    html:"The Kate Festival is the most important festival of the Cham in Viet Nam. It is held for three days at the beginning of October. The main ceremony takes place in Po Rome, Po Nagar, and Po Klong Garai towers in Ninh Thuan Province. The festival helps people remember Cham heroes and worship their ancestors. It is also a time for people to relax, visit each other, and wish others good luck. For festival goers, it is a great opportunity to experience the beauty in the Cham culture. The ceremony starts with people calling their ancestors and gods. Then, they pray for health and prosperity. The festival follows with traditional music and dance performances. The festival is full of sounds and colours, and is a wonderful time for both the locals and visitors.",
+    vi:"Lễ hội Katê là lễ hội quan trọng nhất của người Chăm ở Việt Nam. Lễ hội diễn ra trong ba ngày vào đầu tháng Mười. Lễ chính được tổ chức tại các tháp Po Rome, Po Nagar và Po Klong Garai ở tỉnh Ninh Thuận. Lễ hội giúp người dân tưởng nhớ các anh hùng người Chăm và thờ cúng tổ tiên của họ. Đây cũng là dịp để mọi người nghỉ ngơi, thăm hỏi nhau và chúc nhau may mắn. Đối với người tham dự, đây là cơ hội tuyệt vời để trải nghiệm vẻ đẹp của văn hóa Chăm. Buổi lễ bắt đầu bằng việc mọi người khấn gọi tổ tiên và các vị thần. Sau đó, họ cầu sức khỏe và thịnh vượng. Lễ hội tiếp nối bằng các tiết mục âm nhạc và múa truyền thống. Lễ hội tràn ngập âm thanh và màu sắc, là khoảng thời gian tuyệt vời cho cả người dân địa phương và du khách."
+  }
+};
+
+/* ---------------- 1) VOCABULARY ITEMS (24) ---------------- */
+const VOCAB_ITEMS = [
+  {id:"v1", type:"mcq", category:"vocab", q:"What does 'family reunion' mean?", options:["Sum họp gia đình","Lễ cưới","Đồ cúng","Đình làng"], answer:0, explanation:"'family reunion' = sum họp gia đình, dịp cả nhà tụ họp lại với nhau."},
+  {id:"v2", type:"mcq", category:"vocab", q:"What does 'wedding ceremony' mean?", options:["Lễ mừng thọ","Lễ cưới","Lễ hội làng","Lễ Trung thu"], answer:1, explanation:"'wedding ceremony' = lễ cưới."},
+  {id:"v3", type:"mcq", category:"vocab", q:"What does 'whale worship' mean?", options:["Tục thờ cá Ông","Tục thờ thần núi","Tục thờ thần bếp","Tục thờ tổ tiên"], answer:0, explanation:"whale worship = tục thờ cá Ông (cá voi), phổ biến ở các làng chài ven biển miền Trung."},
+  {id:"v4", type:"mcq", category:"vocab", q:"What does 'martial arts' mean?", options:["Âm nhạc dân gian","Múa dân gian","Võ thuật","Trò chơi dân gian"], answer:2, explanation:"martial arts = võ thuật."},
+  {id:"v5", type:"mcq", category:"vocab", q:"What does 'communal house' mean?", options:["Chợ quê","Đình làng","Sân vận động","Nhà thờ họ"], answer:1, explanation:"communal house = đình làng, nơi dân làng họp mặt hoặc thờ cúng."},
+  {id:"v6", type:"mcq", category:"vocab", q:"What does 'bamboo pole' mean, as used during Tet?", options:["Cây nêu","Cây đào","Cây quất","Cây tre trang trí phòng khách"], answer:0, explanation:"bamboo pole = cây nêu, dựng trước sân đình để xua đuổi tà ma."},
+  {id:"v7", type:"mcq", category:"vocab", q:"'Sum họp gia đình' in English is ________.", options:["wedding ceremony","family reunion","festival goers","food offerings"], answer:1, explanation:"family reunion = sum họp gia đình."},
+  {id:"v8", type:"mcq", category:"vocab", q:"'Đình làng' in English is ________.", options:["communal house","bamboo pole","ornamental tree","decorative items"], answer:0, explanation:"communal house = đình làng."},
+  {id:"v9", type:"mcq", category:"vocab", q:"'Đồ cúng' in English is ________.", options:["decorative items","food offerings","blooming flowers","bad spirits"], answer:1, explanation:"food offerings = đồ cúng."},
+  {id:"v10", type:"mcq", category:"vocab", q:"'Người tham dự lễ hội' in English is ________.", options:["festival goers","martial artists","villagers","tourists"], answer:0, explanation:"festival goers = người tham dự lễ hội."},
+  {id:"v11", type:"mcq", category:"vocab", q:"'Cây cảnh' in English is ________.", options:["blooming flower","decorative item","ornamental tree","communal house"], answer:2, explanation:"ornamental tree = cây cảnh."},
+  {id:"v12", type:"mcq", category:"vocab", q:"Which word/phrase fits this definition: 'a building in a Vietnamese village where villagers meet or worship'?", options:["ornamental tree","communal house","bamboo pole","wedding ceremony"], answer:1, explanation:"communal house = đình làng."},
+  {id:"v13", type:"mcq", category:"vocab", q:"Which word/phrase fits this definition: 'a tall piece of bamboo put up to welcome Tet and ward off evil spirits'?", options:["bamboo pole","ornamental tree","decorative items","blooming flower"], answer:0, explanation:"bamboo pole = cây nêu."},
+  {id:"v14", type:"mcq", category:"vocab", q:"Which word/phrase fits this definition: 'food such as boiled chicken and sticky rice placed on an altar to honour ancestors'?", options:["decorative items","food offerings","festival goers","bad spirits"], answer:1, explanation:"food offerings = đồ cúng."},
+  {id:"v15", type:"mcq", category:"vocab", q:"Which word/phrase fits this definition: 'people who come to take part in a festival'?", options:["festival goers","family reunion","martial arts","whale worship"], answer:0, explanation:"festival goers = người tham dự lễ hội."},
+  {id:"v16", type:"mcq", category:"vocab", q:"Which word/phrase fits this definition: 'a fighting skill practised to build strength and confidence'?", options:["martial arts","whale worship","wedding ceremony","bad spirits"], answer:0, explanation:"martial arts = võ thuật."},
+  {id:"v17", type:"mcq", category:"vocab", q:"Every Tet, my grandparents look forward to the family ________, when the whole family gathers together.", options:["reunion","ceremony","offering","worship"], answer:0, explanation:"family reunion = sum họp gia đình."},
+  {id:"v18", type:"mcq", category:"vocab", q:"Coastal villagers still practise whale ________, praying to the whale spirit for safety at sea.", options:["worship","reunion","offerings","goers"], answer:0, explanation:"whale worship = tục thờ cá Ông."},
+  {id:"v19", type:"mcq", category:"vocab", q:"People put up a bamboo ________ in front of the communal house to welcome Tet.", options:["pole","tree","flower","house"], answer:0, explanation:"bamboo pole = cây nêu."},
+  {id:"v20", type:"mcq", category:"vocab", q:"My uncle bought an ________ kumquat tree for Tet this year.", options:["ornamental","decorative","blooming","communal"], answer:0, explanation:"ornamental tree = cây quất cảnh; đây là cụm cố định được dùng trong bài, khác với 'decorative items' (đồ trang trí nói chung)."},
+  {id:"v21", type:"mcq", category:"vocab", q:"Something that has been passed down through generations is described as ________.", options:["modern","traditional","accidental","seasonal"], answer:1, explanation:"traditional = mang tính truyền thống."},
+  {id:"v22", type:"mcq", category:"vocab", q:"If a god or ancestor is honoured with rituals and prayers, they are said to be ________.", options:["celebrated","worshipped","decorated","reunited"], answer:1, explanation:"worshipped = được thờ cúng, tôn thờ."},
+  {id:"v23", type:"mcq", category:"vocab", q:"What does 'decorative items' mean?", options:["Đồ trang trí","Đồ cúng","Cây cảnh","Tà ma"], answer:0, explanation:"decorative items = đồ trang trí, ví dụ đèn lồng, câu đối đỏ, bao lì xì."},
+  {id:"v24", type:"mcq", category:"vocab", q:"Lanterns, red couplets, and lucky money envelopes are common ________ displayed at home during Tet.", options:["decorative items","food offerings","bad spirits","festival goers"], answer:0, explanation:"decorative items = đồ trang trí."}
+];
+
+/* ---------------- 2) GRAMMAR ITEMS: Articles a/an/the/0 (24) ---------------- */
+const GRAMMAR_ITEMS = [
+  {id:"g1", type:"mcq", category:"grammar", q:"My uncle bought ___ ornamental kumquat tree for Tet this year.", options:["a","an","the","0 (no article)"], answer:1, explanation:"'ornamental' bắt đầu bằng âm nguyên âm /ɒ/ → dùng 'an'."},
+  {id:"g2", type:"mcq", category:"grammar", q:"We visited ___ communal house in my hometown yesterday.", options:["a","an","the","0 (no article)"], answer:0, explanation:"'communal' bắt đầu bằng âm phụ âm, lần đầu nhắc tới → dùng 'a'."},
+  {id:"g3", type:"mcq", category:"grammar", q:"___ Food offerings are usually placed on the family altar during Tet.", options:["A","An","The","0 (no article)"], answer:3, explanation:"Danh từ số nhiều mang nghĩa khái quát chung → không dùng mạo từ."},
+  {id:"g4", type:"mcq", category:"grammar", q:"Vietnamese people cherish ___ traditional customs passed down for generations.", options:["a","an","the","0 (no article)"], answer:3, explanation:"Danh từ số nhiều mang nghĩa khái quát → không dùng mạo từ."},
+  {id:"g5", type:"mcq", category:"grammar", q:"___ most important festival for Vietnamese people is Tet.", options:["A","An","The","0 (no article)"], answer:2, explanation:"Tính từ so sánh nhất 'most important' luôn đi với 'the'."},
+  {id:"g6", type:"mcq", category:"grammar", q:"It takes ___ hour to prepare all the food offerings for the altar.", options:["a","an","the","0 (no article)"], answer:1, explanation:"'hour' bắt đầu bằng âm nguyên âm (h câm, /aʊər/) → dùng 'an'."},
+  {id:"g7", type:"mcq", category:"grammar", q:"___ Customs and traditions vary from region to region in Viet Nam.", options:["A","An","The","0 (no article)"], answer:3, explanation:"Danh từ số nhiều mang nghĩa khái quát → không dùng mạo từ."},
+  {id:"g8", type:"mcq", category:"grammar", q:"My grandmother told me ___ interesting story about the Kitchen Gods last night.", options:["a","an","the","0 (no article)"], answer:0, explanation:"Danh từ chính là 'story' (âm /s/, phụ âm), 'interesting' chỉ là tính từ bổ nghĩa → dùng 'a'."},
+  {id:"g9", type:"mcq", category:"grammar", q:"Tet is ___ busiest and most exciting time of the year for Vietnamese families.", options:["a","an","the","0 (no article)"], answer:2, explanation:"So sánh nhất (busiest, most exciting) luôn đi với 'the'."},
+  {id:"g10", type:"mcq", category:"grammar", q:"___ Ok Om Bok Festival is celebrated by Khmer people in the Mekong Delta.", options:["A","An","The","0 (no article)"], answer:2, explanation:"Tên lễ hội cụ thể, đã xác định → dùng 'the'."},
+  {id:"g11", type:"mcq", category:"grammar", q:"My friend gave me ___ useful tip about Vietnamese table manners.", options:["a","an","the","0 (no article)"], answer:0, explanation:"'useful' bắt đầu bằng âm /juː/ (âm phụ âm /j/) → dùng 'a', không phải 'an'."},
+  {id:"g12", type:"mcq", category:"grammar", q:"Many families still practise ___ ancient customs during Tet.", options:["a","an","the","0 (no article)"], answer:3, explanation:"Danh từ số nhiều mang nghĩa khái quát → không dùng mạo từ."},
+  {id:"g13", type:"mcq", category:"grammar", q:"We went to ___ Chinese restaurant last night.", options:["a","an","the","0 (no article)"], answer:0, explanation:"Lần đầu nhắc tới, chưa xác định nhà hàng cụ thể → dùng 'a'."},
+  {id:"g14", type:"mcq", category:"grammar", q:"We often stay at home on New Year's Eve, but this year was ___ exception.", options:["a","an","the","0 (no article)"], answer:1, explanation:"'exception' bắt đầu bằng âm nguyên âm, lần đầu nhắc tới → dùng 'an'."},
+  {id:"g15", type:"tf", category:"grammar", q:"'An' is used before a word that starts with a vowel SOUND, not necessarily a vowel letter (for example 'an hour').", answer:0, explanation:"Đúng — mấu chốt là ÂM đầu, không phải chữ cái đầu. 'hour' viết bằng chữ h nhưng h câm nên âm đầu là nguyên âm."},
+  {id:"g16", type:"tf", category:"grammar", q:"Plural nouns used with a general, generic meaning, such as 'customs and traditions' in general, normally take 'the'.", answer:1, explanation:"Sai — danh từ số nhiều mang nghĩa khái quát dùng mạo từ zero (không mạo từ), không dùng 'the'."},
+  {id:"g17", type:"tf", category:"grammar", q:"Superlative adjectives such as 'the most important' or 'the busiest' are always preceded by 'the'.", answer:0, explanation:"Đúng — tính từ so sánh nhất luôn đi với 'the'."},
+  {id:"g18", type:"tf", category:"grammar", q:"Ordinal numbers such as 'the first day' or 'the 23rd day' are always preceded by 'the'.", answer:0, explanation:"Đúng — số thứ tự luôn đi với 'the'."},
+  {id:"g19", type:"tf", category:"grammar", q:"'A' can be used before a word that starts with the letter 'u', such as 'a university', because the sound at the start is actually a consonant sound /j/.", answer:0, explanation:"Đúng — 'university' đọc là /juːnɪˈvɜːsəti/, âm đầu là /j/ (âm phụ âm) nên dùng 'a'."},
+  {id:"g20", type:"tf", category:"grammar", q:"Uncountable nouns like 'information' or 'advice', when used with a general meaning, usually take 'a' or 'an'.", answer:1, explanation:"Sai — danh từ không đếm được mang nghĩa chung không dùng mạo từ a/an (vì a/an có nghĩa là 'một')."},
+  {id:"g21", type:"tf", category:"grammar", q:"When something has already been mentioned before, or is known to both the speaker and listener, we should use 'a' or 'an'.", answer:1, explanation:"Sai — khi vật đã được xác định/đã biết, ta dùng 'the', không dùng 'a/an'."},
+  {id:"g22", type:"tf", category:"grammar", q:"Most proper nouns, such as country names like 'Viet Nam' or 'Japan', normally do not take an article.", answer:0, explanation:"Đúng — hầu hết danh từ riêng (tên quốc gia) không dùng mạo từ."},
+  {id:"g23", type:"mcq", category:"grammar", q:"Fishermen told me ___ old legend about whale spirits protecting sailors at sea.", options:["a","an","the","0 (no article)"], answer:1, explanation:"'old' bắt đầu bằng âm nguyên âm, danh từ chưa xác định, lần đầu nhắc tới → dùng 'an'."},
+  {id:"g24", type:"tf", category:"grammar", q:"Zero article (no article) is typically used before plural or uncountable nouns that refer to something in a general, non-specific sense.", answer:0, explanation:"Đúng — đây chính là quy tắc dùng mạo từ zero."}
+];
+
+/* ---------------- 3) SGK READING ITEMS (16) ---------------- */
+const SGK_READING_ITEMS = [
+  {id:"r1", type:"tf", category:"reading_sgk", passageId:"tet_coming", q:"Elena and Trang are talking about preparations for Christmas.", answer:1, explanation:"Sai — họ đang nói về việc chuẩn bị đón Tết, không phải Giáng sinh."},
+  {id:"r2", type:"tf", category:"reading_sgk", passageId:"tet_coming", q:"Sa Dec Flower Village in Dong Thap is known for growing ornamental flowers.", answer:0, explanation:"Đúng — bài đọc nói Sa Dec nổi tiếng trồng hoa cảnh."},
+  {id:"r3", type:"tf", category:"reading_sgk", passageId:"tet_coming", q:"Nhat Tan Village in Ha Noi is famous for its peach blossoms.", answer:0, explanation:"Đúng — Nhật Tân nổi tiếng với hoa đào."},
+  {id:"r4", type:"tf", category:"reading_sgk", passageId:"tet_coming", q:"According to the dialogue, the kumquat trees mostly come from Sa Dec Village.", answer:1, explanation:"Sai — cây quất chủ yếu đến từ khu vực Tứ Liên gần Nhật Tân, không phải Sa Đéc."},
+  {id:"r5", type:"tf", category:"reading_sgk", passageId:"tet_coming", q:"People erect a bamboo pole in front of the communal house to ward off evil spirits.", answer:0, explanation:"Đúng — cây nêu được dựng trước đình làng để xua đuổi tà ma."},
+  {id:"r6", type:"mcq", category:"reading_sgk", passageId:"village_festival", q:"Where does the village festival described in the passage take place?", options:["By the Red River","In the mountains","At the seaside","In the city centre"], answer:0, explanation:"'my village by the Red River holds an exciting festival'."},
+  {id:"r7", type:"mcq", category:"reading_sgk", passageId:"village_festival", q:"What is the first event of the festival?", options:["Folk games","A boat race","Duck-catching","A singing contest"], answer:1, explanation:"'The festival begins early in the morning with a boat race.'"},
+  {id:"r8", type:"mcq", category:"reading_sgk", passageId:"village_festival", q:"What do competitors use to catch the ducks?", options:["Nets","Small boats","Their bare hands","Long sticks"], answer:2, explanation:"'competitors jump in to try to catch them with their bare hands.'"},
+  {id:"r9", type:"mcq", category:"reading_sgk", passageId:"village_festival", q:"Which activities take place in the afternoon of the festival?", options:["Folk games, singing performances, and food stalls","Only the boat race","Fireworks and a parade","A cooking competition only"], answer:0, explanation:"'In the afternoon, there are folk games, singing performances, and food stalls...'"},
+  {id:"r10", type:"tf", category:"reading_sgk", passageId:"village_festival", q:"According to the passage, the festival is held every summer.", answer:0, explanation:"Đúng — 'Every summer, my village... holds an exciting festival'."},
+  {id:"r11", type:"tf", category:"reading_sgk", passageId:"village_festival", q:"According to the passage, duck-catching is the least popular event of the day.", answer:1, explanation:"Sai — bài đọc nói đây là hoạt động được yêu thích nhất ('the most popular event of the day')."},
+  {id:"r12", type:"mcq", category:"reading_sgk", passageId:"ok_om_bok", q:"Which group of people celebrate Ok Om Bok?", options:["The Kinh people","The Khmer people","The Tay people","The Cham people"], answer:1, explanation:"'...one of the most important festivals of the Khmer people in the Mekong Delta.'"},
+  {id:"r13", type:"mcq", category:"reading_sgk", passageId:"ok_om_bok", q:"When does Ok Om Bok usually take place?", options:["In November, at the end of the harvest season","In January, at the start of the new year","In July, during summer","In March, at the beginning of spring"], answer:0, explanation:"'It usually takes place in November, at the end of the harvest season.'"},
+  {id:"r14", type:"mcq", category:"reading_sgk", passageId:"ok_om_bok", q:"What do families do on the night of the festival?", options:["Cook a big feast and eat indoors","Prepare a tray of food and set it under the moonlight","Release fireworks over the river","Visit the communal house"], answer:1, explanation:"'families prepare a tray of rice flakes, fruit, and cakes, and set it under the moonlight...'"},
+  {id:"r15", type:"tf", category:"reading_sgk", passageId:"ok_om_bok", q:"The festival includes Ngo boat races.", answer:0, explanation:"Đúng — 'boat races, known as Ngo boat races, along the river.'"},
+  {id:"r16", type:"tf", category:"reading_sgk", passageId:"ok_om_bok", q:"Families place their offering tray under the sunlight rather than the moonlight.", answer:1, explanation:"Sai — mâm lễ được đặt dưới ánh trăng (moonlight), không phải ánh nắng."}
+];
+
+/* ---------------- 4) SBT READING ITEMS (16) ---------------- */
+const SBT_READING_ITEMS = [
+  {id:"r17", type:"mcq", category:"reading_sbt", passageId:"longevity", q:"What is the passage mainly about?", options:["A celebration for the elderly","A spring festival","A cooking contest","A wedding tradition"], answer:0, explanation:"Bài đọc nói chủ yếu về lễ mừng thọ cho người cao tuổi."},
+  {id:"r18", type:"mcq", category:"reading_sbt", passageId:"longevity", q:"How do people go to the village temple?", options:["By car","By motorbike","On foot","By boat"], answer:2, explanation:"'...everyone dresses nicely and walks to the village temple.'"},
+  {id:"r19", type:"mcq", category:"reading_sbt", passageId:"longevity", q:"What do the elders NOT do themselves during the official ceremony?", options:["Sit at an honourable place","Take photographs of the event","Receive congratulations","Wear traditional ao dai"], answer:1, explanation:"Chính các gia đình mới là người chụp ảnh cùng người cao tuổi, không phải người cao tuổi tự chụp."},
+  {id:"r20", type:"mcq", category:"reading_sbt", passageId:"longevity", q:"Who cooks for the elders at the home party?", options:["The elderly themselves","A restaurant","Family members","The village leaders"], answer:2, explanation:"'It is customary for the family members to cook for their elders.'"},
+  {id:"r21", type:"mcq", category:"reading_sbt", passageId:"longevity", q:"Why is the celebration important to the villagers?", options:["It shows respect for the elders","It teaches people how to cook","It celebrates the new school year","It marks the end of the harvest"], answer:0, explanation:"Lễ mừng thọ là dịp bày tỏ lòng kính trọng với người cao tuổi."},
+  {id:"r22", type:"tf", category:"reading_sbt", passageId:"british", q:"The British are famous for the tradition of coffee drinking.", answer:1, explanation:"Sai — người Anh nổi tiếng với truyền thống uống trà, không phải cà phê."},
+  {id:"r23", type:"tf", category:"reading_sbt", passageId:"british", q:"Pancake Day always falls on a Wednesday.", answer:1, explanation:"Sai — Pancake Day còn gọi là Shrove Tuesday, tức rơi vào thứ Ba."},
+  {id:"r24", type:"tf", category:"reading_sbt", passageId:"british", q:"Christmas is a time for family gatherings, according to the passage.", answer:0, explanation:"Đúng — 'have family reunions' vào dịp Giáng sinh."},
+  {id:"r25", type:"tf", category:"reading_sbt", passageId:"british", q:"Many British people go outdoors to celebrate the New Year countdown.", answer:0, explanation:"Đúng — đám đông tụ tập ở Trafalgar Square hoặc Piccadilly Circus."},
+  {id:"r26", type:"tf", category:"reading_sbt", passageId:"british", q:"The New Year fireworks display takes place directly over Big Ben.", answer:1, explanation:"Sai — pháo hoa được bắn ở khu vực London Eye, sau đó mới đến tiếng chuông Big Ben."},
+  {id:"r27", type:"mcq", category:"reading_sbt", passageId:"british", q:"Which tradition matches this description: 'Runners carry a pan and flip a pancake while racing to the finish line'?", options:["Pancake Day","Christmas","New Year's Eve","Boxing Day"], answer:0, explanation:"Pancake Day (ngày hội bánh kếp)."},
+  {id:"r28", type:"mcq", category:"reading_sbt", passageId:"british", q:"Which tradition matches this description: 'People decorate trees and place gifts underneath them'?", options:["Pancake Day","Christmas","New Year's Eve","Boxing Day"], answer:1, explanation:"Christmas (Giáng sinh)."},
+  {id:"r29", type:"mcq", category:"reading_sbt", passageId:"british", q:"Which tradition matches this description: 'Crowds gather at famous city squares to watch fireworks at midnight'?", options:["Pancake Day","Christmas","New Year's Eve","Boxing Day"], answer:2, explanation:"New Year's Eve (đêm Giao thừa)."},
+  {id:"r30", type:"mcq", category:"reading_sbt", passageId:"kate", q:"Which ethnic group celebrates the Kate Festival?", options:["The Cham","The Khmer","The Kinh","The Tay"], answer:0, explanation:"'The Kate Festival is the most important festival of the Cham in Viet Nam.'"},
+  {id:"r31", type:"mcq", category:"reading_sbt", passageId:"kate", q:"Where does the main ceremony of the Kate Festival take place?", options:["At the village communal house","At Po Rome, Po Nagar, and Po Klong Garai towers","At the Hung Temple","By the Red River"], answer:1, explanation:"'The main ceremony takes place in Po Rome, Po Nagar, and Po Klong Garai towers in Ninh Thuan Province.'"},
+  {id:"r32", type:"tf", category:"reading_sbt", passageId:"kate", q:"The Kate Festival helps people remember Cham heroes and honour their ancestors.", answer:0, explanation:"Đúng — 'The festival helps people remember Cham heroes and worship their ancestors.'"}
+];
+
+/* ============================================================
+   GAME ENGINE
+   ============================================================ */
+
+/* ---------------- Utility ---------------- */
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function sample(arr,n){ return shuffle(arr).slice(0, Math.min(n, arr.length)); }
+
+/* ---------------- Speech (iOS-safe) ---------------- */
+let cachedVoices=[]; let voicesReady=false;
+if('speechSynthesis' in window){
+  const refresh=()=>{ cachedVoices=window.speechSynthesis.getVoices()||[]; if(cachedVoices.length) voicesReady=true; };
+  window.speechSynthesis.onvoiceschanged=refresh; refresh();
+  let tries=0; const t=setInterval(()=>{ refresh(); tries++; if(voicesReady||tries>10) clearInterval(t); },300);
+}
+function pickEnVoice(){
+  const voices = cachedVoices.length?cachedVoices:(window.speechSynthesis.getVoices()||[]);
+  return voices.find(v=>/en[-_]?(us|gb)/i.test(v.lang)) || voices.find(v=>/^en/i.test(v.lang)) || null;
+}
+function speak(text, btn){
+  try{
+    if(!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    setTimeout(()=>{
+      const u=new SpeechSynthesisUtterance(text);
+      u.lang='en-US'; u.rate=0.92; u.pitch=1; u.volume=1;
+      const en=pickEnVoice(); if(en) u.voice=en;
+      if(btn){ btn.classList.add('speaking'); const stop=()=>btn.classList.remove('speaking'); u.onend=stop; u.onerror=stop; }
+      window.speechSynthesis.speak(u);
+    },60);
+  }catch(e){}
+}
+
+/* ---------------- Item bank ---------------- */
+const ITEM_BANK = {};
+const CATEGORY_IDS = { vocab:[], grammar:[], reading_sgk:[], reading_sbt:[] };
+function registerItem(item){ ITEM_BANK[item.id]=item; if(CATEGORY_IDS[item.category]) CATEGORY_IDS[item.category].push(item.id); }
+VOCAB_ITEMS.forEach(registerItem);
+GRAMMAR_ITEMS.forEach(registerItem);
+SGK_READING_ITEMS.forEach(registerItem);
+SBT_READING_ITEMS.forEach(registerItem);
+function itemsForCategory(cat){ return CATEGORY_IDS[cat].map(id=>ITEM_BANK[id]); }
+
+/* ---------------- Stage definitions ---------------- */
+const STAGE_DEFS = [
+  {key:'s1', title:'Từ vựng Unit 5', subtitle:'Customs & Traditions', icon:'📚', kind:'pool', categories:['vocab'], count:24, groupLabel:'📘 Sách giáo khoa (SGK)'},
+  {key:'s2', title:'Ngữ pháp: Mạo từ', subtitle:'a / an / the / 0', icon:'🧩', kind:'pool', categories:['grammar'], count:24, groupLabel:null},
+  {key:'s3', title:'Đọc hiểu SGK', subtitle:'Getting Started · Skills 1 & 2', icon:'📖', kind:'reading', categories:['reading_sgk'], count:16, groupLabel:null},
+  {key:'s4', title:'Đọc hiểu SBT', subtitle:'Workbook Reading', icon:'📕', kind:'reading', categories:['reading_sbt'], count:16, groupLabel:'📕 Sách bài tập (SBT)'},
+  {key:'s5', title:'Thử thách Tổng hợp', subtitle:'Mixed Challenge', icon:'🏆', kind:'mixed', categories:['vocab','grammar','reading_sgk','reading_sbt'], count:15, groupLabel:'🏵️ Tổng ôn tập'},
+  {key:'s6', title:'Sửa lỗi của tôi', subtitle:'Mistake Review', icon:'🔥', kind:'mistakes', groupLabel:null}
+];
+
+/* ---------------- Storage ---------------- */
+const STORAGE_KEY = 'u5_review_game_v1';
+function defaultProgress(){
+  const stages={}; STAGE_DEFS.forEach(s=>stages[s.key]={status:'not_started', bestAccuracy:0, attempts:0, stars:0});
+  return { xp:0, bestStreak:0, badges:[], stages, mistakes:{}, createdAt:Date.now() };
+}
+function loadProgress(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if(!raw) return defaultProgress();
+    const parsed=JSON.parse(raw);
+    const def=defaultProgress();
+    return Object.assign(def, parsed, { stages:Object.assign(def.stages, parsed.stages||{}) });
+  }catch(e){ return defaultProgress(); }
+}
+function saveProgress(){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state.progress)); }catch(e){} }
+function resetProgress(){ state.progress=defaultProgress(); saveProgress(); state.screen='home'; render(); }
+
+/* ---------------- Global state ---------------- */
+const state = { screen:'home', progress: loadProgress(), session:null, selection:null, answered:false };
+
+/* ---------------- Badges ---------------- */
+const BADGE_DEFS = {
+  s1: {icon:'📚', label:'Bậc thầy từ vựng'},
+  s2: {icon:'🧩', label:'Cao thủ mạo từ'},
+  s3: {icon:'📖', label:'Mọt sách SGK'},
+  s4: {icon:'📕', label:'Mọt sách SBT'},
+  s5: {icon:'🏆', label:'Nhà vô địch Unit 5'},
+  mistake_fixer: {icon:'🔥', label:'Người sửa lỗi'},
+  unit_master: {icon:'⭐', label:'Bậc thầy Unit 5'},
+};
+function awardBadge(key){
+  if(!state.progress.badges.includes(key)){ state.progress.badges.push(key); return true; }
+  return false;
+}
+
+/* ---------------- Session builders ---------------- */
+function buildPoolSession(stageDef){
+  let pool=[];
+  stageDef.categories.forEach(c=>pool=pool.concat(itemsForCategory(c)));
+  return sample(pool, stageDef.count);
+}
+function buildMixedSession(stageDef){
+  const perCat = Math.ceil(stageDef.count / stageDef.categories.length);
+  let pool=[];
+  stageDef.categories.forEach(c=> pool=pool.concat(sample(itemsForCategory(c), perCat)) );
+  return shuffle(pool).slice(0, stageDef.count);
+}
+function buildMistakeSession(){
+  const ids = Object.keys(state.progress.mistakes).filter(id=> ITEM_BANK[id] && state.progress.mistakes[id].box < 3);
+  return shuffle(ids.map(id=>ITEM_BANK[id]));
+}
+function withIntroCards(items){
+  const seen=new Set(); const intros=[];
+  items.forEach(it=>{
+    if(it.passageId && !seen.has(it.passageId)){
+      seen.add(it.passageId);
+      const p = PASSAGES[it.passageId];
+      if(p) intros.push({ id:'intro_'+it.passageId, type:'intro', passage:p });
+    }
+  });
+  return intros.concat(items);
+}
+
+/* ---------------- STAGE SESSION START ---------------- */
+function startStage(key){
+  const def = STAGE_DEFS.find(s=>s.key===key);
+  let items=[];
+  if(def.kind==='reading'){
+    items = withIntroCards(buildPoolSession(def));
+  } else if(def.kind==='mixed'){
+    items = buildMixedSession(def);
+  } else if(def.kind==='mistakes'){
+    items = buildMistakeSession();
+  } else {
+    items = buildPoolSession(def);
+  }
+  if(def.kind==='mistakes' && items.length===0){
+    alert('🎉 Tuyệt vời! Bạn hiện không có câu nào cần sửa lỗi. Hãy tiếp tục luyện tập các phần khác nhé!');
+    return;
+  }
+  state.session = { stageKey:key, items, idx:0, correct:0, wrong:0, streak:0, xpEarned:0,
+    catStats:{}, isMistakeMode: def.kind==='mistakes', mistakesFixed:0 };
+  state.answered=false; state.selection=null;
+  state.screen='player';
+  render();
+}
+
+/* ---------------- PLAYER ---------------- */
+function currentItem(){ return state.session ? state.session.items[state.session.idx] : null; }
+
+function render(){
+  const app=document.getElementById('app');
+  if(state.screen==='home') app.innerHTML = renderHome();
+  else if(state.screen==='player') app.innerHTML = renderPlayer();
+  else if(state.screen==='summary') app.innerHTML = renderSummary();
+  else if(state.screen==='mastery') app.innerHTML = renderMastery();
+  window.scrollTo({top:0});
+}
+
+/* ---------------- HOME ---------------- */
+function stageIcon(status){
+  if(status==='mastered') return '⭐';
+  if(status==='in_progress') return '🕓';
+  if(status==='needs_practice') return '❗';
+  return '';
+}
+function renderHome(){
+  const p=state.progress;
+  let lastGroup=null;
+  const rows = STAGE_DEFS.map((s,i)=>{
+    const st = p.stages[s.key];
+    const dot = stageIcon(st.status);
+    const align = i%2===0 ? '' : 'right';
+    let groupHtml='';
+    if(s.groupLabel && s.groupLabel!==lastGroup){ groupHtml = `<div class="group-label">${s.groupLabel}</div>`; lastGroup=s.groupLabel; }
+    return `${groupHtml}<div class="stage-row ${align}">
+      <button onclick="startStage('${s.key}')" class="stage-node status-${st.status} tappable">
+        <span>${s.icon}</span>
+        ${dot?`<span class="status-dot">${dot}</span>`:''}
+      </button>
+      <div class="flex-1">
+        <p class="font-extrabold text-sm text-slate-700">${s.title}</p>
+        <p class="text-[11px] text-slate-400">${s.subtitle||''}</p>
+        <p class="text-xs text-slate-400">${st.attempts>0 ? `Độ chính xác tốt nhất: ${st.bestAccuracy}%` : 'Chưa bắt đầu'}</p>
+      </div>
+    </div>`;
+  }).join('');
+
+  const badgeChips = p.badges.map(k=>{
+    const b=BADGE_DEFS[k]; if(!b) return '';
+    return `<div class="badge-chip"><div class="text-2xl">${b.icon}</div><div class="text-[10px] font-bold text-amber-700 mt-1">${b.label}</div></div>`;
+  }).join('');
+
+  return `
+  <div class="topbar flex items-center justify-between">
+    <div>
+      <h1 class="font-baloo text-lg font-extrabold">🏮 Unit 5 Quest</h1>
+      <p class="text-[11px] opacity-80 -mt-1">Customs and Traditions · Ôn tập tương tác</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="xp-pill"><i class="fa-solid fa-bolt mr-1"></i>${p.xp} XP</span>
+      <span class="streak-pill"><i class="fa-solid fa-fire mr-1"></i>${p.bestStreak}</span>
+    </div>
+  </div>
+  <div class="path-wrap">
+    ${rows}
+  </div>
+  ${p.badges.length?`<div class="max-w-md mx-auto px-4 pb-4"><p class="text-xs font-black text-slate-400 uppercase mb-2">Huy hiệu đã đạt</p><div class="grid grid-cols-4 gap-2">${badgeChips}</div></div>`:''}
+  <div class="max-w-md mx-auto px-4 pb-10 text-center">
+    <button onclick="confirmReset()" class="text-xs text-slate-400 underline">🔄 Đặt lại tiến trình học tập</button>
+  </div>`;
+}
+
+function confirmReset(){
+  if(confirm('Bạn có chắc muốn xoá toàn bộ tiến trình (XP, sao, lỗi sai đã lưu)? Hành động này không thể hoàn tác.')){
+    resetProgress();
+  }
+}
+
+function renderPlayer(){
+  const s=state.session; const item=currentItem();
+  const total=s.items.length;
+  const pct = Math.round((s.idx/total)*100);
+  return `
+  <div class="topbar">
+    <div class="flex items-center gap-3 max-w-xl mx-auto">
+      <button onclick="exitPlayer()" class="text-xl"><i class="fa-solid fa-xmark"></i></button>
+      <div class="flex-1 progress-track on-dark"><div class="progress-fill on-dark" style="width:${pct}%"></div></div>
+      <span class="streak-pill text-xs"><i class="fa-solid fa-fire mr-1"></i>${s.streak}</span>
+    </div>
+  </div>
+  <div class="max-w-xl mx-auto px-4 py-6" id="cardArea">
+    ${renderQuestionCard(item)}
+  </div>
+  <div class="footer-bar" id="footerArea">
+    ${renderFooter(item)}
+  </div>`;
+}
+
+function passageToggleBlock(passageId, uniq){
+  const p = PASSAGES[passageId];
+  if(!p) return '';
+  const viBtn = p.vi ? `<button type="button" onclick="document.getElementById('pgvi_${uniq}').classList.toggle('show')" class="text-xs font-bold bg-white border-2 border-amber-200 text-amber-700 px-3 py-1.5 rounded-full ml-2">
+      <i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt
+    </button>` : '';
+  const viBox = p.vi ? `<div id="pgvi_${uniq}" class="passage-vi-box"><b>🇻🇳 Bản dịch</b><br>${p.vi}</div>` : '';
+  return `<div class="mb-3">
+    <button type="button" onclick="document.getElementById('pg_${uniq}').classList.toggle('hidden')" class="text-xs font-bold bg-white border-2 border-red-200 text-red-700 px-3 py-1.5 rounded-full">
+      <i class="fa-solid fa-book-open mr-1"></i>Xem lại đoạn văn
+    </button>${viBtn}
+    <div id="pg_${uniq}" class="passage-toggle-box hidden mt-2"><b>${p.title}</b><br>${p.html}</div>
+    ${viBox}
+  </div>`;
+}
+
+function renderQuestionCard(item){
+  if(item.type==='intro') return renderIntroCard(item);
+  const uniq = item.id;
+  let body='';
+  const opts = item.type==='tf' ? ['True','False'] : item.options;
+  body = `<div class="grid gap-2 mt-4">${opts.map((o,i)=>{
+    let cls='opt-card';
+    if(state.answered){
+      if(i===item.answer) cls+=' correct';
+      else if(i===state.selection) cls+=' wrong';
+      else cls+=' dim';
+    } else if(state.selection===i){ cls+=' selected'; }
+    const label = item.type==='tf' ? (i===0?'✅ True':'❌ False') : `<span class="text-red-500">${['A','B','C','D'][i]}.</span> ${o}`;
+    return `<div class="${cls}" onclick="${state.answered?'':'selectOption('+i+')'}">${label}</div>`;
+  }).join('')}</div>`;
+  const passageBlock = item.passageId ? passageToggleBlock(item.passageId, uniq) : '';
+  const catTag = {vocab:'📚 Từ vựng', grammar:'🧩 Ngữ pháp (Mạo từ)', reading_sgk:'📖 Đọc hiểu SGK', reading_sbt:'📕 Đọc hiểu SBT'}[item.category] || '';
+  return `
+    <p class="text-xs font-black uppercase tracking-wide text-slate-400 mb-1">${catTag}</p>
+    ${passageBlock}
+    <p class="text-lg font-extrabold text-slate-800 leading-snug">${item.q}
+      <button type="button" onclick="event.stopPropagation();speak('${item.q.replace(/<[^>]+>/g,'').replace(/'/g,"\\'")}', this)" class="speak-btn inline-flex w-7 h-7 rounded-full bg-red-100 text-red-700 items-center justify-center align-middle ml-1"><i class="fa-solid fa-volume-high text-xs"></i></button>
+    </p>
+    ${body}
+  `;
+}
+
+function renderIntroCard(item){
+  const p = item.passage;
+  const viBtn = p.vi ? `<button type="button" onclick="document.getElementById('introvi_${p.id}').classList.toggle('show')" class="text-xs font-bold bg-white border-2 border-amber-200 text-amber-700 px-3 py-1.5 rounded-full mb-2">
+      <i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt
+    </button>` : '';
+  const viBox = p.vi ? `<div id="introvi_${p.id}" class="passage-vi-box"><b>🇻🇳 Bản dịch</b><br>${p.vi}</div>` : '';
+  return `<p class="text-xs font-black uppercase tracking-wide text-red-400 mb-2"><i class="fa-solid fa-book-open mr-1"></i>Đọc trước khi luyện tập</p>
+  <div class="passage-toggle-box"><b>${p.title}</b>
+    <button type="button" onclick="event.stopPropagation();speak('${p.html.replace(/<[^>]+>/g,' ').replace(/'/g,"\\'")}', this)" class="speak-btn inline-flex w-7 h-7 rounded-full bg-red-100 text-red-700 items-center justify-center align-middle ml-1"><i class="fa-solid fa-volume-high text-xs"></i></button>
+    <br>${p.html}</div>
+  <div class="mt-2">${viBtn}${viBox}</div>`;
+}
+
+/* ---------------- FOOTER / ANSWER CHECKING ---------------- */
+function renderFooter(item){
+  if(item.type==='intro'){
+    return `<button onclick="continueNext()" class="btn3d btn-green w-full max-w-xl mx-auto block py-3 rounded-2xl font-black text-lg"><i class="fa-solid fa-arrow-right mr-1"></i>Bắt đầu luyện tập</button>`;
+  }
+  if(!state.answered){
+    const canCheck = state.selection!==null && state.selection!==undefined;
+    return `<button onclick="checkAnswer()" class="btn3d btn-green w-full max-w-xl mx-auto block py-3 rounded-2xl font-black text-lg" ${canCheck?'':'disabled'}><i class="fa-solid fa-check mr-1"></i>Kiểm tra</button>`;
+  } else {
+    const ok = state.selection===item.answer;
+    const cont = `<button onclick="continueNext()" class="btn3d ${ok?'btn-green':'btn-accent'} w-full max-w-xl mx-auto block py-3 rounded-2xl font-black text-lg">Tiếp tục <i class="fa-solid fa-arrow-right ml-1"></i></button>`;
+    const exp = item.explanation ? `<p class="text-sm ${ok?'text-emerald-700':'text-rose-600'} font-bold mb-1">${ok?'✅ Chính xác!':'❌ Chưa đúng.'} ${item.explanation}</p>` : `<p class="text-sm ${ok?'text-emerald-700':'text-rose-600'} font-bold mb-1">${ok?'✅ Chính xác!':'❌ Chưa đúng.'}</p>`;
+    const viLine = item.vi ? `<p class="text-xs text-slate-400 italic mb-2">${item.vi}</p>` : '';
+    return `<div class="max-w-xl mx-auto"><div class="${ok?'text-emerald-700':'text-rose-600'}">${exp}${viLine}</div>${cont}</div>`;
+  }
+}
+
+function selectOption(i){ if(state.answered) return; state.selection=i; render(); }
+
+function checkAnswer(){
+  const item=currentItem();
+  const ok = state.selection===item.answer;
+  state.answered=true;
+  finalizeAnswer(item, ok);
+  render();
+}
+
+function finalizeAnswer(item, ok){
+  const s=state.session;
+  if(ok){ s.correct++; s.streak++; if(s.streak>state.progress.bestStreak) state.progress.bestStreak=s.streak; }
+  else { s.wrong++; s.streak=0; }
+  s.catStats[item.category] = s.catStats[item.category] || {correct:0,total:0};
+  s.catStats[item.category].total++;
+  if(ok) s.catStats[item.category].correct++;
+
+  let xp = ok ? 10 : 2;
+  state.progress.xp += xp; s.xpEarned += xp;
+
+  const hadMistakesBefore = Object.keys(state.progress.mistakes).length>0;
+  if(s.isMistakeMode){
+    const mb = state.progress.mistakes[item.id];
+    if(ok){
+      if(mb){ mb.box = (mb.box||0)+1; if(mb.box>=3){ delete state.progress.mistakes[item.id]; s.mistakesFixed++; state.progress.xp+=15; s.xpEarned+=15; } }
+    } else {
+      if(mb) mb.box = 0;
+    }
+  } else {
+    if(!ok){
+      const existing = state.progress.mistakes[item.id];
+      state.progress.mistakes[item.id] = { box:0, timesWrong: (existing?existing.timesWrong:0)+1, category:item.category };
+    } else if(state.progress.mistakes[item.id]){
+      state.progress.mistakes[item.id].box = (state.progress.mistakes[item.id].box||0)+1;
+      if(state.progress.mistakes[item.id].box>=3){ delete state.progress.mistakes[item.id]; s.mistakesFixed++; }
+    }
+  }
+  if(hadMistakesBefore) checkMistakeFixerBadge();
+  saveProgress();
+}
+
+function checkMistakeFixerBadge(){
+  if(Object.keys(state.progress.mistakes).length===0){
+    awardBadge('mistake_fixer');
+  }
+}
+
+function continueNext(){
+  const s=state.session;
+  s.idx++;
+  state.answered=false; state.selection=null;
+  if(s.idx>=s.items.length){ finishSession(); return; }
+  render();
+}
+
+function exitPlayer(){
+  state.screen='home'; state.session=null; render();
+}
+
+/* ---------------- SESSION FINISH / SUMMARY ---------------- */
+function finishSession(){
+  const s=state.session;
+  const scored = s.correct+s.wrong;
+  const accuracy = scored>0 ? Math.round((s.correct/scored)*100) : 100;
+  let stars = 1;
+  if(accuracy>=90) stars=3; else if(accuracy>=70) stars=2; else stars=1;
+  if(scored===0) stars=3;
+
+  if(!s.isMistakeMode){
+    const stProg = state.progress.stages[s.stageKey];
+    stProg.attempts++;
+    stProg.bestAccuracy = Math.max(stProg.bestAccuracy, accuracy);
+    stProg.stars = Math.max(stProg.stars, stars);
+    const wasMastered = stProg.status==='mastered';
+    if(accuracy>=80) stProg.status='mastered';
+    else if(accuracy>=40) stProg.status='in_progress';
+    else stProg.status='needs_practice';
+    if(stProg.status==='mastered' && !wasMastered){
+      if(awardBadge(s.stageKey)){ state.progress.xp += 50; s.xpEarned+=50; }
+    }
+    state.progress.xp += 20; s.xpEarned += 20;
+  }
+  checkUnitMastery();
+  saveProgress();
+  state.screen='summary';
+  render();
+  if((s.correct+s.wrong)>0 && s.correct===(s.correct+s.wrong)) fireConfetti();
+}
+
+function checkUnitMastery(){
+  const coreStages = ['s1','s2','s3','s4','s5'];
+  const allMastered = coreStages.every(k=>state.progress.stages[k].status==='mastered');
+  const noMistakes = Object.keys(state.progress.mistakes).length===0;
+  if(allMastered && noMistakes){
+    if(awardBadge('unit_master')){ state.progress.xp += 100; }
+  }
+}
+
+function renderSummary(){
+  const s=state.session;
+  const scored=s.correct+s.wrong;
+  const accuracy = scored>0 ? Math.round((s.correct/scored)*100) : 100;
+  let stars=1; if(accuracy>=90) stars=3; else if(accuracy>=70) stars=2; if(scored===0) stars=3;
+  const starHtml = [0,1,2].map(i=>`<i class="fa-solid fa-star text-4xl ${i<stars?'text-amber-400':'text-slate-200'}"></i>`).join(' ');
+
+  const catNames={vocab:'📚 Từ vựng', grammar:'🧩 Ngữ pháp', reading_sgk:'📖 Đọc hiểu SGK', reading_sbt:'📕 Đọc hiểu SBT'};
+  const catBlock = Object.keys(s.catStats).length>1 ? `<div class="space-y-2 mt-4">${Object.keys(s.catStats).map(c=>{
+    const cs=s.catStats[c]; const pct=Math.round((cs.correct/cs.total)*100);
+    return `<div><div class="flex justify-between text-xs font-bold text-slate-500 mb-1"><span>${catNames[c]||c}</span><span>${cs.correct}/${cs.total}</span></div>
+    <div class="progress-track" style="height:8px"><div class="progress-fill" style="width:${pct}%"></div></div></div>`;
+  }).join('')}</div>` : '';
+
+  const mistakeFixedLine = s.isMistakeMode && s.mistakesFixed>0 ? `<p class="text-emerald-600 font-bold text-sm mt-2">🔥 Đã sửa xong ${s.mistakesFixed} lỗi!</p>` : '';
+
+  let title = '🎉 Hoàn thành!';
+  if(accuracy>=90) title='🌟 Xuất sắc!';
+  else if(accuracy>=70) title='💪 Làm tốt lắm!';
+  else title="🔁 Cố lên, luyện thêm nhé!";
+
+  return `<div class="max-w-md mx-auto px-4 py-10 text-center pop-in">
+    <p class="text-5xl mb-2">${accuracy>=90?'🏆':accuracy>=70?'🎉':'💪'}</p>
+    <h2 class="font-baloo text-2xl font-extrabold text-slate-800 mb-1">${title}</h2>
+    <div class="my-3">${starHtml}</div>
+    <p class="text-slate-500 font-bold">Độ chính xác: <span class="text-slate-800">${accuracy}%</span> (${s.correct}/${scored||0} câu đúng)</p>
+    <p class="xp-pill inline-block mt-3" style="background:#fff7d6;border-color:#ca8a04;color:#7c5a00;">
+      <i class="fa-solid fa-bolt mr-1"></i>+${s.xpEarned} XP</p>
+    ${mistakeFixedLine}
+    ${catBlock}
+    <div class="mt-8 space-y-3">
+      <button onclick="goHomeFromSummary()" class="btn3d btn-green w-full py-3 rounded-2xl font-black text-lg">Về trang chủ</button>
+      <button onclick="retryStage()" class="btn3d btn-white w-full py-3 rounded-2xl font-black text-lg">Làm lại</button>
+    </div>
+  </div>`;
+}
+
+function goHomeFromSummary(){
+  const showMastery = state.progress.badges.includes('unit_master') && !state.__masteryShown;
+  if(showMastery){ state.__masteryShown=true; state.screen='mastery'; state.session=null; render(); fireConfetti(); return; }
+  state.screen='home'; state.session=null; render();
+}
+function retryStage(){ const key=state.session.stageKey; state.screen='home'; startStage(key); }
+
+/* ---------------- MASTERY SCREEN ---------------- */
+function renderMastery(){
+  return `<div class="max-w-md mx-auto px-4 py-16 text-center pop-in">
+    <p class="text-7xl mb-3">🏆</p>
+    <h2 class="font-baloo text-3xl font-extrabold text-amber-600 mb-2">BẠN ĐÃ CHINH PHỤC<br>UNIT 5: CUSTOMS AND TRADITIONS!</h2>
+    <p class="text-slate-500 mb-6">Bạn đã hoàn thành xuất sắc tất cả các chặng và không còn lỗi sai nào. Thật tuyệt vời!</p>
+    <p class="xp-pill inline-block mb-6" style="background:#fff7d6;border-color:#ca8a04;color:#7c5a00;"><i class="fa-solid fa-bolt mr-1"></i>Tổng ${state.progress.xp} XP</p>
+    <button onclick="state.screen='home'; render();" class="btn3d btn-green w-full py-3 rounded-2xl font-black text-lg">Về trang chủ</button>
+  </div>`;
+}
+
+/* ---------------- Confetti ---------------- */
+function fireConfetti(){
+  const wrap=document.getElementById('confettiWrap'); if(!wrap) return; wrap.innerHTML='';
+  const colors=['#7f1d1d','#b91c1c','#dc2626','#ca8a04','#f59e0b','#facc15'];
+  for(let i=0;i<100;i++){
+    const p=document.createElement('div'); p.className='confetti-piece';
+    p.style.cssText=`left:${Math.random()*100}vw;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>0.5?'50%':'2px'};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*0.8}s;`;
+    wrap.appendChild(p);
+  }
+  setTimeout(()=>{wrap.innerHTML='';},4000);
+}
+
+/* ---------------- INIT ---------------- */
+render();
+</script>
+</body>
+</html>

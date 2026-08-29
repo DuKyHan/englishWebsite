@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="U1 Review Game">
+<meta name="theme-color" content="#ea580c">
+<meta name="format-detection" content="telephone=no">
+<title>Unit 1 Review Game: Leisure Time - Tiếng Anh 8 (Global Success)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+  :root{ --amber:#f59e0b; --brown:#7c2d12; --orange:#ea580c; --green:#16a34a; --red:#dc2626; --blue:#0891b2; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html{ -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  body { font-family:'Nunito',sans-serif; background:#fff7ed; margin:0; overscroll-behavior-y: none; color:#3c2a1e; }
+  h1,h2,h3,.font-baloo{ font-family:'Baloo 2','Baloo_2',sans-serif; }
+  button, .tappable, [onclick]{ touch-action: manipulation; -webkit-user-select:none; user-select:none; }
+  input, textarea{ -webkit-user-select:text; user-select:text; }
+
+  #app{ min-height:100vh; padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
+  .topbar{ position:sticky; top:0; z-index:40; background:#fff; border-bottom:2px solid #fed7aa; padding: calc(.6rem + env(safe-area-inset-top)) 1rem .6rem; }
+  .footer-bar{ position:fixed; left:0; right:0; bottom:0; z-index:50; background:#fff; border-top:2px solid #fed7aa; padding: .8rem 1rem calc(.8rem + env(safe-area-inset-bottom)); }
+
+  .btn3d{ border-bottom:4px solid; transition: transform .06s, border-bottom-width .06s; cursor:pointer; }
+  .btn3d:active{ transform: translateY(3px); border-bottom-width:1px; }
+  .btn-green{ background:var(--green); border-color:#14532d; color:#fff; }
+  .btn-green:disabled{ background:#e5e5e5; border-color:#d0d0d0; color:#afafaf; cursor:not-allowed; }
+  .btn-orange{ background:var(--orange); border-color:var(--brown); color:#fff; }
+  .btn-white{ background:#fff; border-color:#fed7aa; color:#7c2d12; }
+  .btn-red{ background:#fff; border-color:#fecaca; color:var(--red); }
+
+  .path-wrap{ max-width:520px; margin:0 auto; padding: 2rem 1rem 3rem; position:relative; }
+  .stage-node{ width:88px; height:88px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2rem; border-bottom:6px solid; position:relative; transition:transform .15s; }
+  .stage-node:active{ transform: scale(.94); }
+  .stage-node.status-mastered{ background:var(--amber); border-color:#b45309; }
+  .stage-node.status-in_progress{ background:var(--blue); border-color:#0e7490; }
+  .stage-node.status-needs_practice{ background:var(--red); border-color:#991b1b; }
+  .stage-node.status-not_started{ background:#fff; border-color:#fed7aa; color:#d6a97a; }
+  .stage-row{ display:flex; align-items:center; gap:1rem; margin-bottom:2.2rem; }
+  .stage-row.right{ flex-direction:row-reverse; }
+  .status-dot{ position:absolute; bottom:-6px; right:-6px; width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.75rem; background:#fff; border:2px solid #fed7aa; }
+
+  .opt-card{ border:2px solid #fde7cf; border-bottom-width:4px; border-radius:1rem; padding:.9rem 1rem; cursor:pointer; transition: all .12s; font-weight:800; display:flex; align-items:center; gap:.6rem; }
+  .opt-card:active{ transform: translateY(2px); }
+  .opt-card.selected{ border-color:var(--blue); background:#e0f7fb; }
+  .opt-card.correct{ border-color:#15803d; background:#dcfce7; color:#14532d; }
+  .opt-card.wrong{ border-color:#b91c1c; background:#fee2e2; color:#7f1d1d; }
+  .opt-card.dim{ opacity:.5; }
+
+  .feedback-banner{ position:fixed; left:0; right:0; bottom:0; z-index:60; }
+  .xp-pill{ background:#fff7d6; border:2px solid var(--amber); color:#8a5a00; border-radius:999px; padding:.15rem .7rem; font-weight:900; font-size:.8rem; }
+  .streak-pill{ background:#fff0e0; border:2px solid var(--orange); color:#9a3412; border-radius:999px; padding:.15rem .7rem; font-weight:900; font-size:.8rem; }
+  .progress-track{ background:#fde7cf; border-radius:999px; height:14px; overflow:hidden; }
+  .progress-fill{ background:var(--orange); height:100%; transition: width .4s ease; }
+  .confetti-wrap{ position:fixed; inset:0; pointer-events:none; z-index:9999; }
+  .confetti-piece{ position:absolute; width:10px; height:10px; border-radius:2px; animation: confettiFall linear forwards; }
+  @keyframes confettiFall{ 0%{transform:translateY(-20px) rotate(0deg); opacity:1;} 100%{transform:translateY(100vh) rotate(720deg); opacity:0;} }
+  .pop-in{ animation: popIn .3s cubic-bezier(.36,1.6,.6,1) forwards; }
+  @keyframes popIn{ from{transform:scale(.6); opacity:0;} to{transform:scale(1); opacity:1;} }
+  .screen{ display:none; }
+  .screen.active{ display:block; }
+  .badge-chip{ background:#fff; border:2px solid var(--amber); border-radius:1rem; padding:.6rem; text-align:center; }
+  .passage-toggle-box{ background:#fffbeb; border:2px solid #fde68a; border-radius:1rem; padding:.9rem 1rem; margin-bottom:1rem; font-size:.92rem; line-height:1.85; color:#3c2a1e; }
+  .passage-vi{ display:none; margin-top:.6rem; padding-top:.6rem; border-top:1px dashed #fbbf24; color:#78716c; font-style:italic; }
+  .passage-vi.show{ display:block; }
+  .speak-btn{ cursor:pointer; }
+  .speak-btn.speaking{ animation: pulseSpeak .7s ease-in-out infinite; }
+  @keyframes pulseSpeak{ 0%,100%{transform:scale(1);} 50%{transform:scale(1.18);} }
+  .hero-gradient{ background: linear-gradient(135deg, #7c2d12 0%, #ea580c 55%, #f59e0b 100%); }
+</style>
+</head>
+<body>
+<div class="confetti-wrap" id="confettiWrap"></div>
+<div id="app"></div>
+
+<script>
+/* ============================================================
+   UNIT 1 REVIEW GAME — Leisure Time (Tiếng Anh 8, Global Success)
+   Standalone multiple-choice / true-false review game.
+   Sourced from GS8_UNIT1_Leisure_Time.html (SGK content):
+     - vocabulary of leisure activities & liking-collocations
+     - gerund vs to-infinitive grammar
+     - Reading: "Trang's leisure activities"
+     - Communication: "Teens' leisure activities around the world"
+     - Listening: interview with Mark
+   All items are type 'mcq' (4 options) or 'tf' (true/false) ONLY.
+   ============================================================ */
+
+/* ---------------- Passages (for stage intro cards) ---------------- */
+const PASSAGE_TRANG = {
+  title: "Trang's leisure activities",
+  html: "Some teenagers enjoy spending free time with their friends. Others prefer doing leisure activities with their family members. I love spending time with my family because it's a great way to connect with them.<br><br>At the weekend, we usually go for a bike ride. We cycle to some nearby villages to enjoy the fresh air. We take photos and look at them later. My big brother and I are also into cooking. My brother looks for easy recipes. After that, we prepare the ingredients and cook. Sometimes the food is good, but sometimes it isn't; nevertheless, we love whatever we cook. The leisure activity I like the most is doing DIY projects with my mum. She teaches me to make my own dresses and doll clothes. On special occasions, we make special dresses together. Once I won the first prize in a costume contest at my school.",
+  vi: "Một số bạn thanh thiếu niên thích dành thời gian rảnh với bạn bè. Một số khác lại thích các hoạt động giải trí cùng gia đình. Tôi thích dành thời gian với gia đình vì đó là cách tuyệt vời để gắn kết với họ. Vào cuối tuần, chúng tôi thường đi đạp xe. Chúng tôi đạp xe đến các ngôi làng gần đó để tận hưởng không khí trong lành. Chúng tôi chụp ảnh và xem lại sau. Anh trai tôi và tôi cũng thích nấu ăn. Anh tôi tìm công thức đơn giản. Sau đó chúng tôi chuẩn bị nguyên liệu và nấu. Đôi khi món ăn ngon, đôi khi không; tuy nhiên chúng tôi vẫn thích bất cứ món gì mình nấu. Hoạt động tôi thích nhất là làm đồ DIY cùng mẹ. Mẹ dạy tôi cách tự may váy và quần áo búp bê. Vào dịp đặc biệt, chúng tôi cùng may những chiếc váy đặc biệt. Có lần tôi đã giành giải nhất trong cuộc thi trang phục ở trường."
+};
+const PASSAGE_TEENS = {
+  title: "Teens' leisure activities around the world",
+  html: "<b>Sakura (Kyoto, Japan):</b> Origami is the art of paper folding. I love doing it on my own in my free time. With just some sheets of paper, I can create almost anything: flowers, birds, or fans. Doing origami helps me to relax.<br><br><b>Eric (St. Gallen, Switzerland):</b> My home town has some famous ski resorts. I'm into snowboarding and usually go to a nearby ski resort with my parents at weekends. Snowboarding improves my overall health and balance.<br><br><b>Lan (Quang Binh, Viet Nam):</b> I'm keen on playing sport, especially badminton. My best friend lives next door, so we play badminton almost every afternoon. It's an easy sport, and it also improves my muscle strength and helps reduce stress.",
+  vi: "Sakura (Kyoto, Nhật Bản): Origami là nghệ thuật gấp giấy. Tôi thích tự làm một mình trong thời gian rảnh. Chỉ với vài tờ giấy, tôi có thể tạo ra gần như mọi thứ: hoa, chim, hoặc quạt. Gấp giấy giúp tôi thư giãn. Eric (St. Gallen, Thụy Sĩ): Quê tôi có vài khu nghỉ dưỡng trượt tuyết nổi tiếng. Tôi mê trượt ván tuyết và thường đến khu nghỉ dưỡng gần nhà cùng bố mẹ vào cuối tuần. Trượt ván tuyết giúp cải thiện sức khỏe tổng thể và khả năng giữ thăng bằng của tôi. Lan (Quảng Bình, Việt Nam): Tôi rất thích chơi thể thao, đặc biệt là cầu lông. Bạn thân của tôi sống ngay bên cạnh, nên chúng tôi chơi cầu lông gần như mỗi buổi chiều. Đây là môn thể thao dễ chơi, và nó cũng giúp tăng cường sức mạnh cơ bắp và giảm căng thẳng."
+};
+const PASSAGE_MARK = {
+  title: "Interview with Mark about his leisure activities",
+  html: "<b>Interviewer:</b> When do you usually have free time?<br><b>Mark:</b> I usually have free time at the weekend.<br><b>Interviewer:</b> So how do you spend it?<br><b>Mark:</b> I spend time to connect with my family on Saturdays. We do puzzles, play board games, or go camping.<br><b>Interviewer:</b> What about Sundays?<br><b>Mark:</b> I usually spend Sundays with my friends. I have a group of friends and we do lots of things together.<br><b>Interviewer:</b> For example?<br><b>Mark:</b> Sometimes I invite them to my house. We cook our favourite food and watch a video. It's fun and better than going to the cinema.<br><b>Interviewer:</b> Do you do outdoor activities together?<br><b>Mark:</b> Yes, we love spending time outdoors. We go to the park to play volleyball or skateboard. It helps us stay in shape. Sometimes we go for a bike ride around our city. This gives us a chance to see different places in our city.<br><b>Interviewer:</b> Thanks for answering my questions.",
+  vi: "Phỏng vấn viên: Bạn thường có thời gian rảnh khi nào? Mark: Mình thường có thời gian rảnh vào cuối tuần. PV: Vậy bạn dùng thời gian đó thế nào? Mark: Mình dành thời gian gắn kết với gia đình vào thứ Bảy. Chúng mình chơi giải đố, chơi board game, hoặc đi cắm trại. PV: Còn Chủ nhật thì sao? Mark: Mình thường dành Chủ nhật cho bạn bè. Mình có một nhóm bạn và chúng mình làm rất nhiều thứ cùng nhau. PV: Ví dụ như gì? Mark: Đôi khi mình mời họ đến nhà. Chúng mình nấu món ăn yêu thích và xem video. Việc đó vui và tốt hơn so với đi xem phim. PV: Các bạn có làm hoạt động ngoài trời cùng nhau không? Mark: Có chứ, chúng mình rất thích dành thời gian ngoài trời. Chúng mình đến công viên để chơi bóng chuyền hoặc trượt ván. Nó giúp chúng mình giữ dáng. Thỉnh thoảng chúng mình đạp xe quanh thành phố. Điều này cho chúng mình cơ hội ngắm những địa điểm khác nhau trong thành phố. PV: Cảm ơn bạn đã trả lời phỏng vấn."
+};
+
+/* ---------------- Item banks ---------------- */
+/* Stage 1: Vocabulary (mcq only) */
+const VOCAB_ITEMS = [
+  {id:"v1", type:"mcq", category:"vocab", q:"\"doing DIY\" nghĩa là gì?", options:["làm đồ tự chế (DIY)","giải câu đố","lướt mạng","chơi thể thao"], answer:0, explanation:"doing DIY = tự làm đồ thủ công (Do It Yourself).", vi:"làm đồ tự chế"},
+  {id:"v2", type:"mcq", category:"vocab", q:"\"doing puzzles\" nghĩa là gì?", options:["chơi/giải câu đố","nấu ăn","đan len","nhắn tin cho bạn bè"], answer:0, explanation:"doing puzzles = chơi trò chơi đố, giải câu đố.", vi:"chơi trò chơi đố"},
+  {id:"v3", type:"mcq", category:"vocab", q:"\"surfing the net\" nghĩa là gì?", options:["lướt mạng","đạp xe","làm mô hình","chơi cầu lông"], answer:0, explanation:"surfing the net = lướt mạng, lướt web.", vi:"lướt mạng"},
+  {id:"v4", type:"mcq", category:"vocab", q:"\"messaging friends\" nghĩa là gì?", options:["nhắn tin cho bạn bè","gọi điện cho bạn bè","đi chơi với bạn bè","gặp gỡ bạn bè"], answer:0, explanation:"messaging friends = nhắn tin cho bạn bè.", vi:"nhắn tin cho bạn bè"},
+  {id:"v5", type:"mcq", category:"vocab", q:"\"playing sport\" nghĩa là gì?", options:["chơi thể thao","xem thể thao","đọc sách thể thao","mua đồ thể thao"], answer:0, explanation:"playing sport = chơi thể thao.", vi:"chơi thể thao"},
+  {id:"v6", type:"mcq", category:"vocab", q:"\"nhắn tin cho bạn bè\" trong tiếng Anh là gì?", options:["messaging friends","doing puzzles","doing DIY","surfing the net"], answer:0, explanation:"messaging friends = nhắn tin cho bạn bè.", vi:"nhắn tin cho bạn bè"},
+  {id:"v7", type:"mcq", category:"vocab", q:"\"làm đồ tự chế (DIY)\" trong tiếng Anh là gì?", options:["doing DIY","cooking","playing sport","doing puzzles"], answer:0, explanation:"doing DIY = làm đồ tự chế.", vi:"làm đồ tự chế"},
+  {id:"v8", type:"mcq", category:"vocab", q:"\"lướt mạng\" trong tiếng Anh là gì?", options:["surfing the net","messaging friends","doing DIY","cooking"], answer:0, explanation:"surfing the net = lướt mạng.", vi:"lướt mạng"},
+  {id:"v9", type:"mcq", category:"vocab", q:"\"giải câu đố\" trong tiếng Anh là gì?", options:["doing puzzles","doing DIY","cooking","playing sport"], answer:0, explanation:"doing puzzles = giải câu đố.", vi:"giải câu đố"},
+  {id:"v10", type:"mcq", category:"vocab", q:"\"chơi thể thao\" trong tiếng Anh là gì?", options:["playing sport","doing puzzles","surfing the net","messaging friends"], answer:0, explanation:"playing sport = chơi thể thao.", vi:"chơi thể thao"},
+  {id:"v11", type:"mcq", category:"vocab", q:"Hoạt động nào giúp \"cải thiện trí nhớ, là một bài tập cho trí óc\"?", options:["doing puzzles","doing DIY","playing sport","cooking"], answer:0, explanation:"Giải đố (doing puzzles) giúp cải thiện trí nhớ.", vi:"cải thiện trí nhớ, bài tập cho trí óc"},
+  {id:"v12", type:"mcq", category:"vocab", q:"Hoạt động nào giúp \"tiết kiệm tiền, tăng khả năng sáng tạo\"?", options:["doing DIY","cooking","doing puzzles","messaging friends"], answer:0, explanation:"Tự làm đồ (doing DIY) giúp tiết kiệm tiền và sáng tạo hơn.", vi:"tiết kiệm tiền, tăng sáng tạo"},
+  {id:"v13", type:"mcq", category:"vocab", q:"Hoạt động nào giúp \"cải thiện sức khỏe thể chất, kết bạn\"?", options:["playing sport","surfing the net","doing puzzles","doing DIY"], answer:0, explanation:"Chơi thể thao (playing sport) giúp cải thiện sức khỏe và kết bạn.", vi:"cải thiện sức khỏe, kết bạn"},
+  {id:"v14", type:"mcq", category:"vocab", q:"Hoạt động nào giúp \"giữ liên lạc, thư giãn\"?", options:["messaging friends","cooking","playing sport","doing DIY"], answer:0, explanation:"Nhắn tin (messaging friends) giúp giữ liên lạc và thư giãn.", vi:"giữ liên lạc, thư giãn"},
+  {id:"v15", type:"mcq", category:"vocab", q:"Hoạt động nào giúp \"học hỏi về CNTT, kỹ năng máy tính\"?", options:["surfing the net","doing puzzles","cooking","messaging friends"], answer:0, explanation:"Lướt mạng (surfing the net) giúp học hỏi về CNTT.", vi:"học hỏi về CNTT, kỹ năng máy tính"},
+  {id:"v16", type:"mcq", category:"vocab", q:"be fond ___ (thích)", options:["of","on","in","about"], answer:0, explanation:"be fond of = thích.", vi:"thích"},
+  {id:"v17", type:"mcq", category:"vocab", q:"be keen ___ (rất thích, mê)", options:["on","of","in","about"], answer:0, explanation:"be keen on = rất thích, mê.", vi:"rất thích, mê"},
+  {id:"v18", type:"mcq", category:"vocab", q:"be interested ___ (quan tâm, hứng thú)", options:["in","of","on","about"], answer:0, explanation:"be interested in = quan tâm, hứng thú.", vi:"quan tâm, hứng thú"},
+  {id:"v19", type:"mcq", category:"vocab", q:"be crazy ___ (rất mê, cuồng nhiệt)", options:["about","of","in","on"], answer:0, explanation:"be crazy about = rất mê, cuồng nhiệt.", vi:"rất mê, cuồng nhiệt"},
+  {id:"v20", type:"mcq", category:"vocab", q:"Từ nào diễn tả sự đam mê một cách thân mật: be ___ something?", options:["into","of","on","in"], answer:0, explanation:"be into = thích, đam mê (thân mật, informal).", vi:"thích, đam mê (thân mật)"},
+  {id:"v21", type:"mcq", category:"vocab", q:"I'm ___ of taking photos. (Tôi thích chụp ảnh.)", options:["fond","keen","interested","crazy"], answer:0, explanation:"be fond of = thích.", vi:"Tôi thích chụp ảnh."},
+  {id:"v22", type:"mcq", category:"vocab", q:"Mai is ___ in history. She often visits museums.", options:["interested","fond","keen","into"], answer:0, explanation:"be interested in = hứng thú, quan tâm.", vi:"Mai hứng thú với lịch sử."},
+];
+
+/* Stage 2: Grammar (mcq + tf) — gerund vs to-infinitive after verbs of liking/disliking */
+const GRAMMAR_ITEMS = [
+  {id:"g1", type:"tf", category:"grammar", q:"\"Enjoy\" luôn theo sau bởi V-ing (gerund), không bao giờ dùng to + V.", answer:true, explanation:"enjoy chỉ theo sau bởi gerund (V-ing).", vi:"Đúng."},
+  {id:"g2", type:"tf", category:"grammar", q:"\"Detest\" có thể theo sau bởi to + V.", answer:false, explanation:"detest chỉ theo sau bởi gerund (V-ing), không dùng to-V.", vi:"Sai."},
+  {id:"g3", type:"tf", category:"grammar", q:"\"Fancy\" có thể theo sau bởi to + V.", answer:false, explanation:"fancy chỉ theo sau bởi gerund (V-ing), không dùng to-V.", vi:"Sai."},
+  {id:"g4", type:"tf", category:"grammar", q:"\"Dislike\" có thể theo sau bởi to + V.", answer:false, explanation:"dislike chỉ theo sau bởi gerund (V-ing), không dùng to-V.", vi:"Sai."},
+  {id:"g5", type:"tf", category:"grammar", q:"\"Love\" có thể theo sau bởi cả V-ing và to + V.", answer:true, explanation:"love đi được với cả gerund và to-infinitive.", vi:"Đúng."},
+  {id:"g6", type:"tf", category:"grammar", q:"\"Like\" có thể theo sau bởi cả V-ing và to + V.", answer:true, explanation:"like đi được với cả gerund và to-infinitive.", vi:"Đúng."},
+  {id:"g7", type:"tf", category:"grammar", q:"\"Hate\" có thể theo sau bởi cả V-ing và to + V.", answer:true, explanation:"hate đi được với cả gerund và to-infinitive.", vi:"Đúng."},
+  {id:"g8", type:"tf", category:"grammar", q:"\"Prefer\" chỉ theo sau bởi V-ing, không bao giờ dùng to + V.", answer:false, explanation:"prefer đi được với cả gerund và to-infinitive.", vi:"Sai."},
+  {id:"g9", type:"mcq", category:"grammar", q:"I love ________, so I go to villages near Ha Noi to relax.", options:["travelling","travelled","a travel","travel"], answer:0, explanation:"love + V-ing (gerund).", vi:"Tôi rất thích du lịch."},
+  {id:"g10", type:"mcq", category:"grammar", q:"Tom enjoys ________ puzzles, especially Sudoku.", options:["doing","do","to do","does"], answer:0, explanation:"enjoy chỉ theo sau bởi gerund: doing.", vi:"Tom thích giải các câu đố."},
+  {id:"g11", type:"mcq", category:"grammar", q:"When do you like ________ TV?", options:["watched","watch","watching","watches"], answer:2, explanation:"like + V-ing (gerund): watching.", vi:"Khi nào bạn thích xem TV?"},
+  {id:"g12", type:"mcq", category:"grammar", q:"Do you fancy ________ to the cinema this weekend?", options:["go","going","to go","went"], answer:1, explanation:"fancy chỉ theo sau bởi gerund: going.", vi:"Bạn có thích đi xem phim cuối tuần này không?"},
+  {id:"g13", type:"mcq", category:"grammar", q:"I detest ________. I think it's cruel to harm animals.", options:["hunting","to hunt","hunt","hunted"], answer:0, explanation:"detest chỉ theo sau bởi gerund: hunting.", vi:"Tôi ghét cay ghét đắng việc săn bắn."},
+  {id:"g14", type:"mcq", category:"grammar", q:"Mark likes ________ the net every day.", options:["surfing","surf","surfed","is surfing"], answer:0, explanation:"like + V-ing (gerund): surfing.", vi:"Mark thích lướt mạng mỗi ngày."},
+  {id:"g15", type:"mcq", category:"grammar", q:"The girls enjoy ________ every afternoon.", options:["knitting","knit","to knit","knitted"], answer:0, explanation:"enjoy chỉ theo sau bởi gerund: knitting.", vi:"Các bạn gái thích đan len mỗi chiều."},
+  {id:"g16", type:"mcq", category:"grammar", q:"My cousin ________ (dislike) cooking every day; she says it's boring.", options:["dislikes","dislike","disliking","is dislike"], answer:0, explanation:"Chủ ngữ số ít 'My cousin' + hiện tại đơn → dislikes.", vi:"Chị họ tôi không thích nấu ăn mỗi ngày."},
+  {id:"g17", type:"mcq", category:"grammar", q:"My father hates ________ shopping.", options:["going","go","gone","goes"], answer:0, explanation:"hate + V-ing (gerund): going.", vi:"Bố tôi ghét đi mua sắm."},
+  {id:"g18", type:"mcq", category:"grammar", q:"Tom and his sister prefer ________ puzzles at the weekend.", options:["doing","does","did","done"], answer:0, explanation:"prefer + V-ing (gerund): doing.", vi:"Tom và em gái thích chơi trò chơi ghép hình hơn."},
+  {id:"g19", type:"mcq", category:"grammar", q:"Does Tom enjoy ________ in the park with his friends?", options:["cycling","cycle","to cycling","cycled"], answer:0, explanation:"enjoy chỉ theo sau bởi gerund: cycling.", vi:"Tom có thích đạp xe trong công viên với bạn bè không?"},
+  {id:"g20", type:"mcq", category:"grammar", q:"Choose the sentence that is grammatically INCORRECT.", options:["She enjoys to cook every weekend.","She enjoys cooking every weekend.","She loves cooking every weekend.","She loves to cook every weekend."], answer:0, explanation:"'enjoy' chỉ theo sau bởi gerund, KHÔNG dùng to-V → 'enjoys to cook' là sai.", vi:"'enjoy' không đi với to-V."},
+];
+
+/* Stage 3: Reading comprehension — "Trang's leisure activities" (SGK Skills 1 Reading) */
+const READING_TRANG_ITEMS = [
+  {id:"rt1", type:"mcq", category:"reading", q:"The text is about Trang's leisure activities ________.", options:["with her family","with her friends","in the past","at school"], answer:0, explanation:"Toàn bài nói về các hoạt động giải trí Trang làm cùng gia đình.", vi:"Bài đọc nói về hoạt động giải trí của Trang cùng gia đình."},
+  {id:"rt2", type:"mcq", category:"reading", q:"What does Trang's family usually do at the weekend?", options:["Go for a bike ride","Go swimming","Go shopping","Watch TV all day"], answer:0, explanation:"\"At the weekend, we usually go for a bike ride.\"", vi:""},
+  {id:"rt3", type:"mcq", category:"reading", q:"Where do they cycle to?", options:["Nearby villages","The beach","A shopping mall","Their school"], answer:0, explanation:"\"We cycle to some nearby villages to enjoy the fresh air.\"", vi:""},
+  {id:"rt4", type:"mcq", category:"reading", q:"Why does Trang love spending time with her family?", options:["Because it's a great way to connect with them","Because she has no friends","Because her parents force her to","Because it saves money"], answer:0, explanation:"\"I love spending time with my family because it's a great way to connect with them.\"", vi:""},
+  {id:"rt5", type:"mcq", category:"reading", q:"Who looks for easy recipes when Trang and her brother cook?", options:["Her brother","Her mum","Trang herself","Her dad"], answer:0, explanation:"\"My brother looks for easy recipes.\"", vi:""},
+  {id:"rt6", type:"tf", category:"reading", q:"The food Trang and her brother cook always turns out well.", answer:false, explanation:"\"Sometimes the food is good, but sometimes it isn't\" → không phải lúc nào cũng ngon.", vi:"Sai."},
+  {id:"rt7", type:"tf", category:"reading", q:"Trang and her brother love whatever they cook, even when it isn't good.", answer:true, explanation:"\"nevertheless, we love whatever we cook.\"", vi:"Đúng."},
+  {id:"rt8", type:"tf", category:"reading", q:"Trang's mum teaches her how to cook special recipes.", answer:false, explanation:"Mẹ Trang dạy cô ấy làm váy và quần áo búp bê (DIY), không phải nấu ăn.", vi:"Sai."},
+  {id:"rt9", type:"tf", category:"reading", q:"Trang once won the first prize in a costume contest at her school.", answer:true, explanation:"\"Once I won the first prize in a costume contest at my school.\"", vi:"Đúng."},
+  {id:"rt10", type:"mcq", category:"reading", q:"Which leisure activity does Trang like the most?", options:["Doing DIY projects with her mum","Going for a bike ride","Cooking with her brother","Taking photos"], answer:0, explanation:"\"The leisure activity I like the most is doing DIY projects with my mum.\"", vi:""},
+  {id:"rt11", type:"mcq", category:"reading", q:"The word \"connect\" in the text is closest in meaning to ________.", options:["better understand someone","join with something","speak to someone by phone","travel somewhere"], answer:0, explanation:"\"connect with them\" nghĩa là hiểu, gắn kết với gia đình tốt hơn.", vi:""},
+  {id:"rt12", type:"mcq", category:"reading", q:"What does Trang's mum teach her to make?", options:["Her own dresses and doll clothes","Special cakes","Paper flowers","Bracelets"], answer:0, explanation:"\"She teaches me to make my own dresses and doll clothes.\"", vi:""},
+  {id:"rt13", type:"tf", category:"reading", q:"In the text, Trang mentions going for a bike ride BEFORE she talks about doing DIY projects with her mum.", answer:true, explanation:"Thứ tự trong bài: đạp xe cuối tuần → nấu ăn cùng anh trai → làm DIY cùng mẹ.", vi:"Đúng."},
+];
+
+/* Stage 4: Reading/Listening comprehension — "Teens' leisure activities around the world" + Mark interview */
+const TEENS_LISTENING_ITEMS = [
+  {id:"tl1", type:"mcq", category:"reading", q:"Who does origami in their free time?", options:["Sakura","Eric","Lan","Trang"], answer:0, explanation:"\"Origami is the art of paper folding. I love doing it...\" — lời của Sakura.", vi:""},
+  {id:"tl2", type:"mcq", category:"reading", q:"Where is Eric from?", options:["St. Gallen, Switzerland","Kyoto, Japan","Quang Binh, Viet Nam","Ha Noi, Viet Nam"], answer:0, explanation:"\"Eric (St. Gallen, Switzerland)\"", vi:""},
+  {id:"tl3", type:"mcq", category:"reading", q:"What sport does Lan play almost every afternoon?", options:["Badminton","Football","Swimming","Tennis"], answer:0, explanation:"\"I'm keen on playing sport, especially badminton... we play badminton almost every afternoon.\"", vi:""},
+  {id:"tl4", type:"tf", category:"reading", q:"Eric usually goes snowboarding alone.", answer:false, explanation:"\"...usually go to a nearby ski resort with my parents\" → không phải một mình.", vi:"Sai, Eric đi cùng bố mẹ."},
+  {id:"tl5", type:"tf", category:"reading", q:"Lan's best friend lives next door to her.", answer:true, explanation:"\"My best friend lives next door, so we play badminton almost every afternoon.\"", vi:"Đúng."},
+  {id:"tl6", type:"mcq", category:"reading", q:"What does doing origami help Sakura to do?", options:["Relax","Make money","Travel abroad","Meet new friends"], answer:0, explanation:"\"Doing origami helps me to relax.\"", vi:""},
+  {id:"tl7", type:"mcq", category:"reading", q:"What are the benefits of snowboarding for Eric?", options:["Improves his overall health and balance","Saves him money","Helps him make new friends","Helps him relax alone"], answer:0, explanation:"\"Snowboarding improves my overall health and balance.\"", vi:""},
+  {id:"tl8", type:"mcq", category:"reading", q:"What are the benefits of playing badminton for Lan?", options:["Improves her muscle strength and reduces stress","Helps her travel","Teaches her cooking skills","Helps her study better"], answer:0, explanation:"\"...it also improves my muscle strength and helps reduce stress.\"", vi:""},
+  {id:"tl9", type:"mcq", category:"listening", q:"When does Mark usually have free time?", options:["At the weekend","On Mondays","Every evening","Only in summer"], answer:0, explanation:"\"I usually have free time at the weekend.\"", vi:""},
+  {id:"tl10", type:"mcq", category:"listening", q:"Who does Mark spend time with on Saturdays?", options:["His family","His friends","His neighbours","His teachers"], answer:0, explanation:"\"I spend time to connect with my family on Saturdays.\"", vi:""},
+  {id:"tl11", type:"tf", category:"listening", q:"Mark and his friends sometimes cook and watch a video at his house.", answer:true, explanation:"\"Sometimes I invite them to my house. We cook our favourite food and watch a video.\"", vi:"Đúng."},
+  {id:"tl12", type:"mcq", category:"listening", q:"What does going to the park help Mark and his friends do?", options:["Stay in shape","Make more money","Learn a new language","Meet their teachers"], answer:0, explanation:"\"It helps us stay in shape.\"", vi:""},
+  {id:"tl13", type:"tf", category:"listening", q:"Going for a bike ride gives Mark and his friends a chance to see different places in the city.", answer:true, explanation:"\"This gives us a chance to see different places in our city.\"", vi:"Đúng."},
+];
+
+/* Stage 5: Mixed challenge — rephrased across all categories */
+const MIXED_ITEMS = [
+  {id:"mx1", type:"mcq", category:"vocab", q:"Nếu bạn thích tự làm đồ thủ công như hoa giấy, vòng tay, bạn đang ________.", options:["doing DIY","doing puzzles","cooking","playing sport"], answer:0, explanation:"doing DIY = làm đồ tự chế/thủ công.", vi:""},
+  {id:"mx2", type:"mcq", category:"vocab", q:"She's really keen ________ playing the guitar.", options:["on","of","in","about"], answer:0, explanation:"be keen on = rất thích, mê.", vi:""},
+  {id:"mx3", type:"tf", category:"grammar", q:"\"Detest\" chỉ có thể theo sau bởi V-ing, không dùng to + V.", answer:true, explanation:"detest chỉ theo sau bởi gerund.", vi:"Đúng."},
+  {id:"mx4", type:"mcq", category:"grammar", q:"Choose the correct sentence.", options:["I enjoy playing badminton with my friends.","I enjoy to play badminton with my friends.","I enjoy played badminton with my friends.","I enjoy plays badminton with my friends."], answer:0, explanation:"enjoy chỉ theo sau bởi gerund: playing.", vi:""},
+  {id:"mx5", type:"mcq", category:"reading", q:"What does Trang's family do to enjoy the fresh air at the weekend?", options:["Go for a bike ride to nearby villages","Go to the beach","Go to a shopping mall","Stay home and watch TV"], answer:0, explanation:"\"We cycle to some nearby villages to enjoy the fresh air.\"", vi:""},
+  {id:"mx6", type:"tf", category:"reading", q:"Trang's mum teaches her to make dresses and doll clothes.", answer:true, explanation:"\"She teaches me to make my own dresses and doll clothes.\"", vi:"Đúng."},
+  {id:"mx7", type:"mcq", category:"reading", q:"Which teenager below is from Viet Nam?", options:["Lan","Sakura","Eric","Mark"], answer:0, explanation:"\"Lan (Quang Binh, Viet Nam)\"", vi:""},
+  {id:"mx8", type:"tf", category:"listening", q:"Mark spends Saturdays with his friends, not his family.", answer:false, explanation:"Mark dành thứ Bảy với gia đình, Chủ nhật với bạn bè.", vi:"Sai."},
+  {id:"mx9", type:"mcq", category:"vocab", q:"\"Origami\" nghĩa là gì?", options:["nghệ thuật gấp giấy","môn thể thao trượt tuyết","nấu ăn","đan len"], answer:0, explanation:"Origami = nghệ thuật gấp giấy.", vi:""},
+  {id:"mx10", type:"mcq", category:"grammar", q:"Trang and Ann ________ (love) chatting with each other.", options:["love","loves","loving","to loves"], answer:0, explanation:"Chủ ngữ số nhiều 'Trang and Ann' → love (không thêm -s).", vi:""},
+  {id:"mx11", type:"mcq", category:"reading", q:"What helps Eric improve his overall health and balance?", options:["Snowboarding","Playing badminton","Doing origami","Cooking"], answer:0, explanation:"\"Snowboarding improves my overall health and balance.\"", vi:""},
+  {id:"mx12", type:"tf", category:"vocab", q:"\"Be crazy about\" nghĩa là bạn không thích điều đó.", answer:false, explanation:"be crazy about = rất mê, cuồng nhiệt (thích rất nhiều), không phải không thích.", vi:"Sai."},
+  {id:"mx13", type:"mcq", category:"listening", q:"What do Mark and his friends do at the park?", options:["Play volleyball or skateboard","Play badminton","Have a picnic","Fly kites"], answer:0, explanation:"\"We go to the park to play volleyball or skateboard.\"", vi:""},
+  {id:"mx14", type:"mcq", category:"grammar", q:"Which verb below can ONLY be followed by V-ing (never to-V)?", options:["enjoy","love","like","hate"], answer:0, explanation:"enjoy chỉ theo sau bởi gerund (V-ing).", vi:""},
+];
+
+/* ---------------- Item bank + stage definitions ---------------- */
+const ITEM_BANK = {};
+[...VOCAB_ITEMS, ...GRAMMAR_ITEMS, ...READING_TRANG_ITEMS, ...TEENS_LISTENING_ITEMS, ...MIXED_ITEMS].forEach(it=>{ ITEM_BANK[it.id]=it; });
+
+const STAGE_DEFS = [
+  {key:'s1', title:'Từ vựng Leisure Time', icon:'🎨', items:VOCAB_ITEMS.map(i=>i.id), color:'orange'},
+  {key:'s2', title:'Ngữ pháp: V-ing / to-V', icon:'🧠', items:GRAMMAR_ITEMS.map(i=>i.id), color:'blue'},
+  {key:'s3', title:"Đọc hiểu: Trang's activities", icon:'📖', items:READING_TRANG_ITEMS.map(i=>i.id), color:'purple', intro:[PASSAGE_TRANG]},
+  {key:'s4', title:'Đọc & Nghe: Teens & Mark', icon:'🎧', items:TEENS_LISTENING_ITEMS.map(i=>i.id), color:'blue', intro:[PASSAGE_TEENS, PASSAGE_MARK]},
+  {key:'s5', title:'Thử thách Tổng hợp', icon:'🏆', items:MIXED_ITEMS.map(i=>i.id), color:'gold'},
+  {key:'s6', title:'Ôn lại lỗi sai', icon:'🔥', items:[], color:'red', mistakeStage:true},
+];
+const TOTAL_ITEM_COUNT = Object.keys(ITEM_BANK).length;
+
+/* ============================================================
+   ENGINE
+   ============================================================ */
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function uid(prefix){ return prefix+'_'+Math.random().toString(36).slice(2,9); }
+
+/* ---------------- Speech (iOS-safe) ---------------- */
+let cachedVoices=[]; let voicesReady=false; let currentUtterance=null;
+if('speechSynthesis' in window){
+  const refresh=()=>{ cachedVoices=window.speechSynthesis.getVoices()||[]; if(cachedVoices.length) voicesReady=true; };
+  window.speechSynthesis.onvoiceschanged=refresh; refresh();
+  let tries=0; const t=setInterval(()=>{ refresh(); tries++; if(voicesReady||tries>10) clearInterval(t); },300);
+}
+function pickEnVoice(){
+  const voices = cachedVoices.length?cachedVoices:(window.speechSynthesis.getVoices()||[]);
+  return voices.find(v=>/en[-_]?(us|gb)/i.test(v.lang)) || voices.find(v=>/^en/i.test(v.lang)) || null;
+}
+function speak(text, btn){
+  try{
+    if(!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    setTimeout(()=>{
+      const u=new SpeechSynthesisUtterance(text);
+      currentUtterance=u; u.lang='en-US'; u.rate=0.92; u.pitch=1; u.volume=1;
+      const en=pickEnVoice(); if(en) u.voice=en;
+      if(btn){ btn.classList.add('speaking'); const stop=()=>btn.classList.remove('speaking'); u.onend=stop; u.onerror=stop; }
+      window.speechSynthesis.speak(u);
+    },60);
+  }catch(e){}
+}
+
+/* ---------------- Storage ---------------- */
+const STORAGE_KEY = 'u1_review_game_v1';
+function defaultProgress(){
+  const stages={}; STAGE_DEFS.forEach(s=>stages[s.key]={status:'not_started', bestAccuracy:0, attempts:0, stars:0});
+  return { xp:0, bestStreak:0, badges:[], stages, mistakes:{}, createdAt:Date.now() };
+}
+function loadProgress(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if(!raw) return defaultProgress();
+    const parsed=JSON.parse(raw);
+    const def=defaultProgress();
+    return Object.assign(def, parsed, { stages:Object.assign(def.stages, parsed.stages||{}) });
+  }catch(e){ return defaultProgress(); }
+}
+function saveProgress(){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state.progress)); }catch(e){} }
+function resetProgress(){ state.progress=defaultProgress(); saveProgress(); state.screen='home'; render(); }
+
+/* ---------------- Global state ---------------- */
+const state = { screen:'home', progress: loadProgress(), session:null, selection:null, answered:false };
+
+/* ---------------- Badges ---------------- */
+const BADGE_DEFS = {
+  s1: {icon:'🎨', label:'Bậc thầy Từ vựng'},
+  s2: {icon:'🧠', label:'Cao thủ Ngữ pháp'},
+  s3: {icon:'📖', label:'Mọt sách - Trang'},
+  s4: {icon:'🎧', label:'Tai thính - Teens & Mark'},
+  s5: {icon:'🏆', label:'Nhà vô địch Thử thách'},
+  mistake_fixer: {icon:'🔥', label:'Người sửa lỗi'},
+  unit_master: {icon:'⭐', label:'Bậc thầy Unit 1'},
+};
+function awardBadge(key){
+  if(!state.progress.badges.includes(key)){ state.progress.badges.push(key); return true; }
+  return false;
+}
+
+/* ---------------- Session builders ---------------- */
+function buildStageSession(stageDef){
+  if(stageDef.mistakeStage){
+    const ids = Object.keys(state.progress.mistakes).filter(id=> ITEM_BANK[id] && state.progress.mistakes[id].box < 3);
+    return shuffle(ids.map(id=>ITEM_BANK[id]));
+  }
+  return shuffle(stageDef.items.map(id=>ITEM_BANK[id]));
+}
+
+function startStage(key){
+  const def = STAGE_DEFS.find(s=>s.key===key);
+  const items = buildStageSession(def);
+  if(def.mistakeStage && items.length===0){
+    alert('🎉 Tuyệt vời! Bạn hiện không có câu nào cần ôn lại. Hãy tiếp tục luyện tập các chặng khác nhé!');
+    return;
+  }
+  const introShown = !!(def.intro && def.intro.length);
+  state.session = { stageKey:key, items, idx:0, correct:0, wrong:0, streak:0, xpEarned:0,
+    catStats:{}, isMistakeMode: !!def.mistakeStage, mistakesFixed:0,
+    introPending: introShown ? def.intro.slice() : [] };
+  state.answered=false; state.selection=null;
+  state.screen='player';
+  render();
+}
+
+/* ---------------- Rendering ---------------- */
+function render(){
+  const app=document.getElementById('app');
+  if(state.screen==='home') app.innerHTML = renderHome();
+  else if(state.screen==='intro') app.innerHTML = renderIntroScreen();
+  else if(state.screen==='player') app.innerHTML = renderPlayer();
+  else if(state.screen==='summary') app.innerHTML = renderSummary();
+  else if(state.screen==='mastery') app.innerHTML = renderMastery();
+  window.scrollTo({top:0});
+  if(state.screen==='player'){
+    // nothing extra to focus for mcq/tf
+  }
+}
+
+function stageIcon(status){
+  if(status==='mastered') return '⭐';
+  if(status==='in_progress') return '🕓';
+  if(status==='needs_practice') return '❗';
+  return '';
+}
+
+function renderHome(){
+  const p=state.progress;
+  const rows = STAGE_DEFS.map((s,i)=>{
+    const st = p.stages[s.key];
+    const dot = stageIcon(st.status);
+    const align = i%2===0 ? '' : 'right';
+    const count = s.mistakeStage ? Object.keys(p.mistakes).length : s.items.length;
+    const subLabel = s.mistakeStage
+      ? (count>0 ? `${count} câu cần ôn lại` : 'Không có lỗi sai')
+      : (st.attempts>0 ? `Độ chính xác tốt nhất: ${st.bestAccuracy}%` : `${count} câu · Chưa bắt đầu`);
+    return `<div class="stage-row ${align}">
+      <button onclick="startStage('${s.key}')" class="stage-node status-${st.status} tappable">
+        <span>${s.icon}</span>
+        ${dot?`<span class="status-dot">${dot}</span>`:''}
+      </button>
+      <div class="flex-1">
+        <p class="font-extrabold text-sm text-slate-700">${s.title}</p>
+        <p class="text-xs text-slate-400">${subLabel}</p>
+      </div>
+    </div>`;
+  }).join(`<div class="stage-connector" style="width:4px;height:1.4rem;background:#fde7cf;margin:0 auto;"></div>`);
+
+  const badgeChips = p.badges.map(k=>{
+    const b=BADGE_DEFS[k]; if(!b) return '';
+    return `<div class="badge-chip"><div class="text-2xl">${b.icon}</div><div class="text-[10px] font-bold text-amber-700 mt-1">${b.label}</div></div>`;
+  }).join('');
+
+  const doneStages = STAGE_DEFS.filter(s=>!s.mistakeStage).filter(s=>p.stages[s.key].status==='mastered').length;
+  const totalCoreStages = STAGE_DEFS.filter(s=>!s.mistakeStage).length;
+
+  return `
+  <header class="hero-gradient text-white py-6 px-4 text-center shadow-xl relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10 pointer-events-none">
+      <div class="absolute top-3 left-6 text-5xl">🎨</div>
+      <div class="absolute top-2 right-10 text-4xl">🚴</div>
+      <div class="absolute bottom-2 left-1/3 text-3xl">🧩</div>
+      <div class="absolute bottom-3 right-1/4 text-4xl">🏸</div>
+    </div>
+    <p class="text-xs font-bold uppercase tracking-widest opacity-80 mb-1">Tiếng Anh 8 · Global Success · Unit 1</p>
+    <h1 class="font-baloo text-2xl md:text-3xl font-extrabold drop-shadow-lg">🎯 Unit 1: Leisure Time — Ôn tập Từ vựng &amp; Ngữ pháp (Trắc nghiệm)</h1>
+    <p class="mt-2 text-sm opacity-90 font-semibold">Game ôn tập trắc nghiệm · Từ vựng - Ngữ pháp - Đọc hiểu - Nghe hiểu</p>
+  </header>
+  <div class="topbar flex items-center justify-between">
+    <div>
+      <h2 class="font-baloo text-base font-extrabold text-orange-700">🗺️ Bản đồ ôn tập</h2>
+      <p class="text-[11px] text-slate-400 -mt-1">${doneStages}/${totalCoreStages} chặng đã hoàn thành xuất sắc</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="xp-pill"><i class="fa-solid fa-bolt mr-1"></i>${p.xp} XP</span>
+      <span class="streak-pill"><i class="fa-solid fa-fire mr-1"></i>${p.bestStreak}</span>
+    </div>
+  </div>
+  <div class="path-wrap">
+    ${rows}
+  </div>
+  ${p.badges.length?`<div class="max-w-md mx-auto px-4 pb-4"><p class="text-xs font-black text-slate-400 uppercase mb-2">Huy hiệu đã đạt</p><div class="grid grid-cols-4 gap-2">${badgeChips}</div></div>`:''}
+  <div class="max-w-md mx-auto px-4 pb-10 text-center">
+    <button onclick="confirmReset()" class="text-xs text-slate-400 underline">🔄 Đặt lại tiến trình học tập</button>
+  </div>`;
+}
+
+function confirmReset(){
+  if(confirm('Bạn có chắc muốn xoá toàn bộ tiến trình (XP, sao, lỗi sai đã lưu)? Hành động này không thể hoàn tác.')){
+    resetProgress();
+  }
+}
+
+/* ---------------- Intro (passage) screen, shown once before a reading/listening stage ---------------- */
+function renderIntroScreen(){
+  const s = state.session;
+  const passages = s.introPending;
+  return `
+  <div class="topbar">
+    <div class="flex items-center gap-3 max-w-xl mx-auto">
+      <button onclick="exitPlayer()" class="text-slate-400 text-xl"><i class="fa-solid fa-xmark"></i></button>
+      <p class="font-extrabold text-sm text-orange-700 flex-1">Đọc trước khi luyện tập</p>
+    </div>
+  </div>
+  <div class="max-w-xl mx-auto px-4 py-6" id="cardArea">
+    ${passages.map((p,i)=>renderPassageBlock(p, 'intro_'+i)).join('')}
+  </div>
+  <div class="footer-bar">
+    <button onclick="dismissIntro()" class="btn3d btn-green w-full max-w-xl mx-auto block py-3 rounded-2xl font-black text-lg"><i class="fa-solid fa-arrow-right mr-1"></i>Bắt đầu luyện tập</button>
+  </div>`;
+}
+function renderPassageBlock(p, uniq){
+  return `<div class="passage-toggle-box">
+    <div class="flex items-center justify-between gap-2 mb-1">
+      <b>${p.title}</b>
+      <button type="button" onclick="event.stopPropagation();speak(document.getElementById('${uniq}_txt').innerText, this)" class="speak-btn w-8 h-8 rounded-full bg-cyan-100 text-cyan-700 inline-flex items-center justify-center shrink-0" title="Nghe"><i class="fa-solid fa-volume-high"></i></button>
+    </div>
+    <div id="${uniq}_txt">${p.html}</div>
+    <button type="button" onclick="document.getElementById('${uniq}_vi').classList.toggle('show')" class="mt-2 text-xs font-bold bg-white border-2 border-amber-300 text-amber-700 px-3 py-1.5 rounded-full"><i class="fa-solid fa-language mr-1"></i>Dịch tiếng Việt</button>
+    <div id="${uniq}_vi" class="passage-vi">${p.vi}</div>
+  </div>`;
+}
+function dismissIntro(){
+  state.session.introPending = [];
+  state.screen='player';
+  render();
+}
+
+/* ---------------- Player ---------------- */
+function currentItem(){ return state.session ? state.session.items[state.session.idx] : null; }
+
+function renderPlayer(){
+  if(state.session.introPending && state.session.introPending.length){
+    state.screen='intro';
+    return renderIntroScreen();
+  }
+  const s=state.session; const item=currentItem();
+  const total=s.items.length;
+  const pct = total>0 ? Math.round((s.idx/total)*100) : 100;
+  return `
+  <div class="topbar">
+    <div class="flex items-center gap-3 max-w-xl mx-auto">
+      <button onclick="exitPlayer()" class="text-slate-400 text-xl"><i class="fa-solid fa-xmark"></i></button>
+      <div class="flex-1 progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+      <span class="streak-pill text-xs"><i class="fa-solid fa-fire mr-1"></i>${s.streak}</span>
+    </div>
+  </div>
+  <div class="max-w-xl mx-auto px-4 py-6" id="cardArea">
+    ${renderQuestionCard(item)}
+  </div>
+  <div class="footer-bar" id="footerArea">
+    ${renderFooter(item)}
+  </div>`;
+}
+
+function catTagLabel(cat){
+  return {vocab:'🎨 Từ vựng', grammar:'🧠 Ngữ pháp', reading:'📖 Đọc hiểu', listening:'🎧 Nghe hiểu'}[cat] || '';
+}
+
+function renderQuestionCard(item){
+  const opts = item.type==='tf' ? ['Đúng (True)','Sai (False)'] : item.options;
+  const correctIdx = item.type==='tf' ? (item.answer ? 0 : 1) : item.answer;
+  const body = `<div class="grid gap-2 mt-4">${opts.map((o,i)=>{
+    let cls='opt-card';
+    if(state.answered){
+      if(i===correctIdx) cls+=' correct';
+      else if(i===state.selection) cls+=' wrong';
+      else cls+=' dim';
+    } else if(state.selection===i){ cls+=' selected'; }
+    const label = item.type==='tf'
+      ? (i===0?'✅ Đúng (True)':'❌ Sai (False)')
+      : `<span class="text-indigo-500">${['A','B','C','D'][i]}.</span> <span class="flex-1">${o}</span>`;
+    const speakBtn = item.type!=='tf' ? `<button type="button" data-w="${String(o).replace(/"/g,'&quot;')}" onclick="event.stopPropagation();speak(this.dataset.w,this)" class="speak-btn w-7 h-7 rounded-full bg-indigo-100 text-indigo-700 hover:bg-indigo-200 flex items-center justify-center ml-auto shrink-0" title="Nghe phát âm"><i class="fa-solid fa-volume-high text-xs"></i></button>` : '';
+    return `<div class="${cls}" onclick="${state.answered?'':'selectOption('+i+')'}">${label}${speakBtn}</div>`;
+  }).join('')}</div>`;
+  const catTag = catTagLabel(item.category);
+  const typeTag = item.type==='tf' ? '· Đúng/Sai' : '· Trắc nghiệm';
+  return `
+    <p class="text-xs font-black uppercase tracking-wide text-slate-400 mb-1">${catTag} ${typeTag}</p>
+    <p class="text-lg font-extrabold text-slate-800 leading-snug">${item.q}
+      <button type="button" onclick="event.stopPropagation();speak(this.parentElement.childNodes[0].textContent.trim(),this)" class="speak-btn inline-flex w-7 h-7 rounded-full bg-cyan-100 text-cyan-700 items-center justify-center align-middle ml-1"><i class="fa-solid fa-volume-high text-xs"></i></button>
+    </p>
+    ${body}
+  `;
+}
+
+function selectOption(i){ if(state.answered) return; state.selection=i; render(); }
+
+function renderFooter(item){
+  if(!state.answered){
+    const canCheck = state.selection!==null && state.selection!==undefined;
+    return `<button onclick="checkAnswer()" class="btn3d btn-green w-full max-w-xl mx-auto block py-3 rounded-2xl font-black text-lg" ${canCheck?'':'disabled'}><i class="fa-solid fa-check mr-1"></i>Kiểm tra</button>`;
+  }
+  const ok = computeOk(item);
+  const cont = `<button onclick="continueNext()" class="btn3d ${ok?'btn-green':'btn-red'} w-full max-w-xl mx-auto block py-3 rounded-2xl font-black text-lg">Tiếp tục <i class="fa-solid fa-arrow-right ml-1"></i></button>`;
+  const exp = item.explanation ? `<p class="text-sm ${ok?'text-emerald-700':'text-rose-600'} font-bold mb-1">${ok?'✅ Chính xác!':'❌ Chưa đúng.'} ${item.explanation}</p>` : `<p class="text-sm ${ok?'text-emerald-700':'text-rose-600'} font-bold mb-1">${ok?'✅ Chính xác!':'❌ Chưa đúng.'}</p>`;
+  const viLine = item.vi ? `<p class="text-xs text-slate-400 italic mb-2">${item.vi}</p>` : '';
+  return `<div class="max-w-xl mx-auto"><div>${exp}${viLine}</div>${cont}</div>`;
+}
+
+function computeOk(item){
+  const correctIdx = item.type==='tf' ? (item.answer ? 0 : 1) : item.answer;
+  return state.selection===correctIdx;
+}
+
+function checkAnswer(){
+  const item=currentItem();
+  const ok = computeOk(item);
+  state.answered=true;
+  finalizeAnswer(item, ok);
+  render();
+}
+
+function finalizeAnswer(item, ok){
+  const s=state.session;
+  if(ok){ s.correct++; s.streak++; if(s.streak>state.progress.bestStreak) state.progress.bestStreak=s.streak; }
+  else { s.wrong++; s.streak=0; }
+  s.catStats[item.category] = s.catStats[item.category] || {correct:0,total:0};
+  s.catStats[item.category].total++;
+  if(ok) s.catStats[item.category].correct++;
+
+  // XP
+  let xp = ok ? 10 : 2;
+  state.progress.xp += xp; s.xpEarned += xp;
+
+  // Leitner mistake bank
+  if(s.isMistakeMode){
+    const mb = state.progress.mistakes[item.id];
+    if(ok){
+      if(mb){ mb.box = (mb.box||0)+1; if(mb.box>=3){ delete state.progress.mistakes[item.id]; s.mistakesFixed++; state.progress.xp+=15; s.xpEarned+=15; } }
+    } else {
+      if(mb) mb.box = 0;
+      else state.progress.mistakes[item.id] = { box:0, timesWrong:1, category:item.category };
+    }
+  } else {
+    if(!ok){
+      const existing = state.progress.mistakes[item.id];
+      state.progress.mistakes[item.id] = { box:0, timesWrong: (existing?existing.timesWrong:0)+1, category:item.category };
+    } else if(state.progress.mistakes[item.id]){
+      state.progress.mistakes[item.id].box = (state.progress.mistakes[item.id].box||0)+1;
+      if(state.progress.mistakes[item.id].box>=3){ delete state.progress.mistakes[item.id]; s.mistakesFixed++; }
+    }
+  }
+  checkMistakeFixerBadge();
+  saveProgress();
+}
+
+function checkMistakeFixerBadge(){
+  if(Object.keys(state.progress.mistakes).length===0){
+    awardBadge('mistake_fixer');
+  }
+}
+
+function continueNext(){
+  const s=state.session;
+  s.idx++;
+  state.answered=false; state.selection=null;
+  if(s.idx>=s.items.length){ finishSession(); return; }
+  render();
+}
+
+function exitPlayer(){
+  state.screen='home'; state.session=null; render();
+}
+
+/* ---------------- Session finish / summary ---------------- */
+function finishSession(){
+  const s=state.session;
+  const scored = s.correct+s.wrong;
+  const accuracy = scored>0 ? Math.round((s.correct/scored)*100) : 100;
+  let stars = 1;
+  if(accuracy>=90) stars=3; else if(accuracy>=70) stars=2; else stars=1;
+
+  if(!s.isMistakeMode){
+    const stProg = state.progress.stages[s.stageKey];
+    stProg.attempts++;
+    stProg.bestAccuracy = Math.max(stProg.bestAccuracy, accuracy);
+    stProg.stars = Math.max(stProg.stars, stars);
+    const wasMastered = stProg.status==='mastered';
+    if(accuracy>=80) stProg.status='mastered';
+    else if(accuracy>=40) stProg.status='in_progress';
+    else stProg.status='needs_practice';
+    if(stProg.status==='mastered' && !wasMastered){
+      if(awardBadge(s.stageKey)){ state.progress.xp += 50; s.xpEarned+=50; }
+    }
+    state.progress.xp += 20; s.xpEarned += 20; // completion bonus
+  }
+  checkUnitMastery();
+  saveProgress();
+  state.screen='summary';
+  render();
+}
+
+function checkUnitMastery(){
+  const coreStages = STAGE_DEFS.filter(s=>!s.mistakeStage).map(s=>s.key);
+  const allMastered = coreStages.every(k=>state.progress.stages[k].status==='mastered');
+  const noMistakes = Object.keys(state.progress.mistakes).length===0;
+  if(allMastered && noMistakes){
+    if(awardBadge('unit_master')){ state.progress.xp += 100; }
+  }
+}
+
+function renderSummary(){
+  const s=state.session;
+  const scored=s.correct+s.wrong;
+  const accuracy = scored>0 ? Math.round((s.correct/scored)*100) : 100;
+  let stars=1; if(accuracy>=90) stars=3; else if(accuracy>=70) stars=2;
+  const starHtml = [0,1,2].map(i=>`<i class="fa-solid fa-star text-4xl ${i<stars?'text-amber-400':'text-slate-200'}"></i>`).join(' ');
+
+  const catBlock = Object.keys(s.catStats).length>1 ? `<div class="space-y-2 mt-4">${Object.keys(s.catStats).map(c=>{
+    const cs=s.catStats[c]; const pct=Math.round((cs.correct/cs.total)*100);
+    return `<div><div class="flex justify-between text-xs font-bold text-slate-500 mb-1"><span>${catTagLabel(c)||c}</span><span>${cs.correct}/${cs.total}</span></div>
+    <div class="progress-track" style="height:8px"><div class="progress-fill" style="width:${pct}%"></div></div></div>`;
+  }).join('')}</div>` : '';
+
+  const mistakeFixedLine = s.isMistakeMode && s.mistakesFixed>0 ? `<p class="text-emerald-600 font-bold text-sm mt-2">🔥 Đã sửa xong ${s.mistakesFixed} lỗi!</p>` : '';
+
+  let title = '🎉 Hoàn thành!';
+  if(accuracy>=90) title='🌟 Xuất sắc!';
+  else if(accuracy>=70) title='💪 Làm tốt lắm!';
+  else title="🔁 Cố lên, luyện thêm nhé!";
+
+  return `<div class="max-w-md mx-auto px-4 py-10 text-center pop-in">
+    <p class="text-5xl mb-2">${accuracy>=90?'🏆':accuracy>=70?'🎉':'💪'}</p>
+    <h2 class="font-baloo text-2xl font-extrabold text-slate-800 mb-1">${title}</h2>
+    <div class="my-3">${starHtml}</div>
+    <p class="text-slate-500 font-bold">Độ chính xác: <span class="text-slate-800">${accuracy}%</span> (${s.correct}/${scored||0} câu đúng)</p>
+    <p class="xp-pill inline-block mt-3"><i class="fa-solid fa-bolt mr-1"></i>+${s.xpEarned} XP</p>
+    ${mistakeFixedLine}
+    ${catBlock}
+    <div class="mt-8 space-y-3">
+      <button onclick="goHomeFromSummary()" class="btn3d btn-orange w-full py-3 rounded-2xl font-black text-lg">Về trang chủ</button>
+      <button onclick="retryStage()" class="btn3d btn-white w-full py-3 rounded-2xl font-black text-lg">Làm lại</button>
+    </div>
+  </div>`;
+}
+
+function goHomeFromSummary(){
+  const showMastery = state.progress.badges.includes('unit_master') && !state.__masteryShown;
+  if(showMastery){ state.__masteryShown=true; state.screen='mastery'; state.session=null; render(); fireConfetti(); return; }
+  state.screen='home'; state.session=null; render();
+}
+function retryStage(){ const key=state.session.stageKey; state.screen='home'; startStage(key); }
+
+/* ---------------- Mastery screen ---------------- */
+function renderMastery(){
+  fireConfetti();
+  return `<div class="max-w-md mx-auto px-4 py-16 text-center pop-in">
+    <p class="text-7xl mb-3">🏆</p>
+    <h2 class="font-baloo text-3xl font-extrabold text-amber-500 mb-2">BẠN ĐÃ CHINH PHỤC<br>UNIT 1: LEISURE TIME!</h2>
+    <p class="text-slate-500 mb-6">Bạn đã hoàn thành xuất sắc tất cả các chặng và không còn lỗi sai nào. Thật tuyệt vời!</p>
+    <p class="xp-pill inline-block mb-6"><i class="fa-solid fa-bolt mr-1"></i>Tổng ${state.progress.xp} XP</p>
+    <button onclick="state.screen='home'; render();" class="btn3d btn-orange w-full py-3 rounded-2xl font-black text-lg">Về trang chủ</button>
+  </div>`;
+}
+
+/* ---------------- Confetti ---------------- */
+function fireConfetti(){
+  const wrap=document.getElementById('confettiWrap'); wrap.innerHTML='';
+  const colors=['#7c2d12','#ea580c','#f59e0b','#fbbf24','#0891b2','#16a34a'];
+  for(let i=0;i<100;i++){
+    const p=document.createElement('div'); p.className='confetti-piece';
+    p.style.cssText=`left:${Math.random()*100}vw;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>0.5?'50%':'2px'};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*0.8}s;`;
+    wrap.appendChild(p);
+  }
+  setTimeout(()=>{wrap.innerHTML='';},4000);
+}
+
+/* ---------------- Init ---------------- */
+render();
+</script>
+</body>
+</html>
