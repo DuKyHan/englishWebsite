@@ -151,6 +151,10 @@ def sync_with_disk(manifest):
                 new_manifest.append({"name": base, "file": entry, "desc": ""})
                 added.append(base)
 
+    # Thu muc (folder) luon xep truoc file roi, giu nguyen thu tu da co trong tung nhom
+    # (sort la stable nen khong xao tron thu tu ben trong moi nhom).
+    new_manifest.sort(key=lambda it: 0 if it.get('type') == 'folder' else 1)
+
     return new_manifest, added, removed
 
 
