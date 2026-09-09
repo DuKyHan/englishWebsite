@@ -420,8 +420,12 @@ class App(tk.Tk):
         self.after(0, self._reload_after_sync)
 
     def _reload_after_sync(self):
+        if self.dirty:
+            self.log("[i] Đã đồng bộ xong nhưng bạn đang có thay đổi chưa lưu (đã quét/sửa) — "
+                      "giữ nguyên dữ liệu hiện tại, không nạp lại để tránh mất thay đổi. "
+                      "Bấm \"Quét thư mục component/\" lại nếu muốn lấy thêm dữ liệu mới từ GitHub.")
+            return
         self.manifest = load_manifest()
-        self.dirty = False
         self._new_keys = set()
         self._refresh_table(save_state=False)
         self.status.set(f"Đã đồng bộ mới nhất — Đang mở: {MANIFEST_PATH}")
