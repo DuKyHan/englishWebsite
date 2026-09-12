@@ -389,6 +389,13 @@
     fetch(selected.external)
       .then(r => r.text())
       .then(html => {
+        // Chèn <base> để các link tương đối bên trong (vd: sang unit khác)
+        // được phân giải theo thư mục chứa file, không phải theo URL trang gốc
+        const base = new URL(selected.external, location.href).href.replace(/[^/]*$/, '');
+        const baseTag = `<base href="${base}">`;
+        html = /<head[^>]*>/i.test(html)
+          ? html.replace(/<head[^>]*>/i, m => m + baseTag)
+          : baseTag + html;
         iframe.contentDocument.open();
         iframe.contentDocument.write(html);
         iframe.contentDocument.close();
