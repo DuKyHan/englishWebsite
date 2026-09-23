@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+<title>Unit 3 - Grammar</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap');
+  * { box-sizing: border-box; }
+  body { font-family:'Nunito',sans-serif; background:#eef2ff; }
+  .hero-gradient{ background: linear-gradient(135deg, #312e81 0%, #4f46e5 55%, #818cf8 100%); }
+  .tab-btn.active{ background: linear-gradient(135deg, #312e81, #4f46e5); color:#fff; box-shadow:0 4px 14px rgba(49,46,129,.35); transform:translateY(-1px); }
+  .tab-btn{ transition:.2s; }
+  .page{ display:none; } .page.active{ display:block; }
+  table.border-collapse td, table.border-collapse th{ border:1px solid #e2e8f0; }
+  input.answer-input{ border:2px solid #cbd5e1; outline:none; background:#fff; }
+  input.answer-input:focus{ border-color:#4f46e5; }
+  input.correct-input{ border-color:#22c55e !important; background:#f0fdf4; }
+  input.wrong-input{ border-color:#ef4444 !important; background:#fef2f2; }
+  .group-card{ background:#fff; border-radius:1.25rem; box-shadow:0 4px 20px rgba(0,0,0,.06); padding:1.25rem; }
+  .practice-row{ border-top:1px dashed #e2e8f0; padding-top:.6rem; margin-top:.6rem; }
+  .option-label{ cursor:pointer; transition: all .18s; border:2px solid #e2e8f0; }
+  .option-label:hover{ border-color:#4f46e5; background:#eef2ff; }
+  .option-label.selected{ border-color:#312e81; background:#e0e7ff; }
+  .option-label.correct-opt{ border-color:#22c55e !important; background:#f0fdf4 !important; }
+  .option-label.wrong-opt{ border-color:#ef4444 !important; background:#fef2f2 !important; }
+  .dict-box{ background:#fef9c3; border:1px solid #fde68a; border-radius:1rem; padding:1rem 1.25rem; font-size:.9rem; color:#334155; }
+</style>
+</head>
+<body class="min-h-screen">
+<header class="hero-gradient text-white py-8 px-4 text-center shadow-xl">
+  <p class="text-sm font-bold uppercase tracking-widest opacity-80 mb-1">Unit 3 · Teenagers</p>
+  <h1 class="font-['Baloo_2'] text-3xl md:text-5xl font-extrabold drop-shadow-lg">✍️ Grammar &amp; Sentence Writing</h1>
+  <p class="mt-2 text-base md:text-lg opacity-90 font-semibold">Lý thuyết (có dịch) · Trắc nghiệm hiểu bài · Viết câu · Từ điển · Test</p>
+</header>
+
+<nav class="sticky top-0 z-50 bg-white/90 backdrop-blur shadow-sm px-3 py-2 overflow-x-auto">
+  <div class="flex gap-2 min-w-max mx-auto w-fit" id="navWrap">
+    <button class="tab-btn active text-sm font-bold px-4 py-2 rounded-full text-slate-600" onclick="showPage('lesson',this)"><i class="fa-solid fa-chalkboard mr-1"></i>Lý thuyết</button>
+    <button class="tab-btn text-sm font-bold px-4 py-2 rounded-full text-slate-600" onclick="showPage('comp',this)"><i class="fa-solid fa-brain mr-1"></i>Trắc nghiệm hiểu bài</button>
+    <button class="tab-btn text-sm font-bold px-4 py-2 rounded-full text-slate-600" onclick="showPage('dang0',this)"><i class="fa-solid fa-1 mr-1"></i>DẠNG 1</button><button class="tab-btn text-sm font-bold px-4 py-2 rounded-full text-slate-600" onclick="showPage('dang1',this)"><i class="fa-solid fa-2 mr-1"></i>DẠNG 2</button><button class="tab-btn text-sm font-bold px-4 py-2 rounded-full text-slate-600" onclick="showPage('dang2',this)"><i class="fa-solid fa-3 mr-1"></i>DẠNG 3</button>
+    <button class="tab-btn text-sm font-bold px-4 py-2 rounded-full text-slate-600" onclick="showPage('dict',this)"><i class="fa-solid fa-book-bookmark mr-1"></i>Từ điển</button>
+    <button class="tab-btn text-sm font-bold px-4 py-2 rounded-full text-slate-600" onclick="showPage('test',this)"><i class="fa-solid fa-graduation-cap mr-1"></i>Test tổng hợp</button>
+  </div>
+</nav>
+
+<main class="max-w-4xl mx-auto px-4 py-6 pb-20">
+
+<section id="page-lesson" class="page active">
+<div class="space-y-5">
+  <div class="bg-white rounded-2xl shadow-md p-5">
+    <p class="font-extrabold text-indigo-900 mb-2"><i class="fa-solid fa-chalkboard mr-1"></i>Câu đơn và câu ghép (Simple &amp; Compound Sentences)</p>
+    <p class="text-sm text-slate-700 mb-2"><b>Câu đơn (simple sentence)</b> chỉ có 1 mệnh đề độc lập. <b>Câu ghép (compound sentence)</b> gồm 2 mệnh đề độc lập (mỗi mệnh đề tự nó là 1 câu đúng ngữ pháp) nối với nhau.</p>
+    <div class="overflow-x-auto">
+    <table class="w-full text-sm border-collapse">
+      <tr class="bg-slate-100"><th class="border px-2 py-1">Liên từ kết hợp (FANBOYS)</th><th class="border px-2 py-1">Ý nghĩa</th><th class="border px-2 py-1">Ví dụ - Nghĩa</th></tr>
+      <tr><td class="border px-2 py-1 font-bold">for</td><td class="border px-2 py-1">vì (nêu lý do, trang trọng)</td><td class="border px-2 py-1 italic">She left early, for she was tired. <span class="not-italic text-slate-500">— Cô ấy về sớm vì mệt.</span></td></tr>
+      <tr><td class="border px-2 py-1 font-bold">and</td><td class="border px-2 py-1">và (bổ sung)</td><td class="border px-2 py-1 italic">He sings, and she dances. <span class="not-italic text-slate-500">— Anh ấy hát, và cô ấy nhảy.</span></td></tr>
+      <tr><td class="border px-2 py-1 font-bold">but</td><td class="border px-2 py-1">nhưng (đối lập)</td><td class="border px-2 py-1 italic">She is young, but she is wise. <span class="not-italic text-slate-500">— Cô ấy trẻ nhưng khôn ngoan.</span></td></tr>
+      <tr><td class="border px-2 py-1 font-bold">so</td><td class="border px-2 py-1">vì vậy (kết quả)</td><td class="border px-2 py-1 italic">He was late, so he ran. <span class="not-italic text-slate-500">— Cậu ấy trễ nên đã chạy.</span></td></tr>
+    </table>
+    </div>
+    <p class="text-xs text-slate-500 mt-2">💡 Trước liên từ kết hợp (and/but/so/for) khi nối 2 mệnh đề độc lập, luôn có DẤU PHẨY.</p>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-md p-5">
+    <p class="font-extrabold text-indigo-900 mb-2"><i class="fa-solid fa-link mr-1"></i>Trạng từ liên kết (Conjunctive Adverbs)</p>
+    <p class="text-sm text-slate-700 mb-2">Dùng để nối 2 câu độc lập, đứng sau dấu <b>chấm phẩy (;)</b> và trước dấu <b>phẩy (,)</b>: <b>S1; conjunctive adverb, S2.</b></p>
+    <div class="overflow-x-auto">
+    <table class="w-full text-sm border-collapse">
+      <tr class="bg-slate-100"><th class="border px-2 py-1">Trạng từ liên kết</th><th class="border px-2 py-1">Ý nghĩa</th></tr>
+      <tr><td class="border px-2 py-1 font-bold">however</td><td class="border px-2 py-1">tuy nhiên (đối lập)</td></tr>
+      <tr><td class="border px-2 py-1 font-bold">therefore</td><td class="border px-2 py-1">do đó, vì thế (kết quả)</td></tr>
+      <tr><td class="border px-2 py-1 font-bold">moreover</td><td class="border px-2 py-1">hơn thế nữa (bổ sung)</td></tr>
+      <tr><td class="border px-2 py-1 font-bold">otherwise</td><td class="border px-2 py-1">nếu không thì</td></tr>
+    </table>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-md p-5">
+    <p class="font-extrabold text-indigo-900 mb-2"><i class="fa-solid fa-circle-minus mr-1"></i>Liên từ phụ thuộc "Although" (dù, mặc dù)</p>
+    <p class="text-sm text-slate-700">\"Although\" đứng ĐẦU mệnh đề phụ (mệnh đề chứa ý bị nhượng bộ), có thể đứng đầu câu hoặc giữa câu: <b>Although + S1 + V1, S2 + V2.</b> hoặc <b>S2 + V2 + although + S1 + V1.</b></p>
+    <p class="text-sm text-slate-700 mt-1 italic">VD: Although it rained, we went out. = We went out although it rained. <span class="not-italic text-slate-500">(Mặc dù trời mưa, chúng tôi vẫn đi ra ngoài.)</span></p>
+  </div>
+
+  <div class="bg-rose-50 border border-rose-200 rounded-2xl p-5">
+    <p class="font-extrabold text-rose-800 mb-2"><i class="fa-solid fa-triangle-exclamation mr-1"></i>DON'T MAKE THESE MISTAKES</p>
+    <ol class="list-decimal ml-5 space-y-1.5 text-sm text-slate-700">
+      <li><s>He is tired, however he kept working.</s> ❌ → <b>He is tired; however, he kept working.</b> ✅ — trạng từ liên kết cần dấu chấm phẩy trước và dấu phẩy sau, không dùng dấu phẩy đơn.</li>
+      <li><s>Although it rained, but we went out.</s> ❌ → <b>Although it rained, we went out.</b> ✅ — không dùng cả \"although\" và \"but\" cùng lúc trong 1 câu.</li>
+      <li><s>He worked hard therefore he passed.</s> ❌ → <b>He worked hard; therefore, he passed.</b> ✅ — thiếu dấu câu bắt buộc quanh trạng từ liên kết.</li>
+    </ol>
+  </div>
+
+  <div class="grid sm:grid-cols-2 gap-3">
+    <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-4 relative">
+      <button onclick="copyNote(this)" data-copy="S1, but/however S2 = Although S1, S2" class="absolute top-3 right-3 text-xs text-indigo-600"><i class="fa-solid fa-copy"></i></button>
+      <p class="font-bold text-indigo-800 text-sm mb-1">📒 Công thức 1</p>
+      <p class="text-sm text-slate-700">S1, but/however S2<br>= Although S1, S2</p>
+    </div>
+    <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-4 relative">
+      <button onclick="copyNote(this)" data-copy="S1, so S2 = Because S1, S2" class="absolute top-3 right-3 text-xs text-indigo-600"><i class="fa-solid fa-copy"></i></button>
+      <p class="font-bold text-indigo-800 text-sm mb-1">📒 Công thức 2</p>
+      <p class="text-sm text-slate-700">S1, so S2<br>= Because S1, S2</p>
+    </div>
+    <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-4 relative">
+      <button onclick="copyNote(this)" data-copy="S1, for S2 (reason) = S1 because S2" class="absolute top-3 right-3 text-xs text-indigo-600"><i class="fa-solid fa-copy"></i></button>
+      <p class="font-bold text-indigo-800 text-sm mb-1">📒 Công thức 3</p>
+      <p class="text-sm text-slate-700">S1, for S2 (lý do)<br>= S1 because S2</p>
+    </div>
+    <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-4 relative">
+      <button onclick="copyNote(this)" data-copy="Câu1. Câu2. = Câu1; conjunctive adverb, câu2." class="absolute top-3 right-3 text-xs text-indigo-600"><i class="fa-solid fa-copy"></i></button>
+      <p class="font-bold text-indigo-800 text-sm mb-1">📒 Công thức 4</p>
+      <p class="text-sm text-slate-700">Câu1. Câu2.<br>= Câu1; conjunctive adverb, câu2.</p>
+    </div>
+  </div>
+
+  <div class="bg-amber-50 border border-amber-200 rounded-2xl p-5">
+    <p class="font-extrabold text-amber-800 mb-2"><i class="fa-solid fa-lightbulb mr-1"></i>Áp dụng phương pháp 6 bước (xem tab "Cách viết lại câu") vào bài này</p>
+    <p class="text-sm text-slate-700">Ví dụ: <i>"Jack has a new laptop; however, he never logs on his account on Facebook."</i> → nhận diện quan hệ ĐỐI LẬP → dùng \"Although\" thay cho \"however\" → chuyển 2 mệnh đề độc lập thành 1 câu phức, bỏ dấu chấm phẩy, thêm dấu phẩy: <b>Although Jack has a new laptop, he never logs on his account on Facebook.</b></p>
+  </div>
+</div>
+
+<div class="bg-white rounded-2xl shadow-md p-5">
+  <p class="font-extrabold text-indigo-900 mb-2"><i class="fa-solid fa-shoe-prints mr-1"></i>Các bước làm bài VIẾT LẠI CÂU / VIẾT CÂU (Sentence Writing)</p>
+  <ol class="list-decimal ml-5 space-y-2 text-sm text-slate-700">
+    <li><b>Bước 1 — Xác định chủ ngữ (subject)</b> của câu cần viết và đối tượng/hành động chính được nhắc tới.</li>
+    <li><b>Bước 2 — Xác định thì / cấu trúc ngữ pháp</b> cần dùng, dựa vào từ gợi ý (given word), dấu hiệu thời gian, hoặc yêu cầu của đề bài.</li>
+    <li><b>Bước 3 — Chọn đúng dạng động từ</b> theo cấu trúc đã xác định (V-ing, to V, V nguyên thể, động từ chia thì...).</li>
+    <li><b>Bước 4 — Kiểm tra sự hoà hợp chủ ngữ - động từ (subject–verb agreement):</b> chủ ngữ số ít ở hiện tại đơn cần thêm "-s/-es"; chủ ngữ giả "It" luôn chia số ít.</li>
+    <li><b>Bước 5 — Thêm đầy đủ tân ngữ/bổ ngữ (objects/complements)</b> và trạng ngữ chỉ thời gian, nơi chốn, cách thức nếu đề bài yêu cầu giữ nguyên thông tin đó.</li>
+    <li><b>Bước 6 — Kiểm tra lại chính tả và dấu câu</b>, rồi đọc lại toàn câu để so sánh với câu gốc, đảm bảo không đổi nghĩa và đúng ngữ pháp.</li>
+  </ol>
+  
+</div>
+</section>
+
+<section id="page-comp" class="page">
+  <p class="text-sm text-slate-500 italic mb-4">Trắc nghiệm kiểm tra mức độ HIỂU quy tắc ngữ pháp (không chỉ áp dụng máy móc). Chọn đáp án để xem giải thích ngay.</p>
+  <div id="compWrap" class="space-y-4"></div>
+  <div class="flex gap-2 mt-5">
+    <span id="compScore" class="ml-auto self-center font-extrabold text-emerald-600 text-sm"></span>
+  </div>
+</section>
+
+
+<section id="page-dang0" class="page">
+  <p class="text-sm text-slate-500 italic mb-4">DẠNG 1. Mỗi câu mẫu có sẵn hướng dẫn công thức; làm xong câu mẫu rồi luyện thêm các câu cùng dạng bên dưới.</p>
+  <div id="dangWrap0" class="space-y-5"></div>
+  <div class="flex gap-2 mt-5">
+    <button onclick="checkGroup('dangWrap0')" class="bg-gradient-to-r from-indigo-900 to-pink-600 text-white font-bold px-5 py-2.5 rounded-full text-sm">Kiểm tra tất cả</button>
+    <button onclick="resetGroup('dangWrap0')" class="bg-white border-2 border-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full text-sm">Làm lại</button>
+    <span id="score-dangWrap0" class="hidden ml-auto self-center font-extrabold text-emerald-600 text-sm"></span>
+  </div>
+</section>
+<section id="page-dang1" class="page">
+  <p class="text-sm text-slate-500 italic mb-4">DẠNG 2. Mỗi câu mẫu có sẵn hướng dẫn công thức; làm xong câu mẫu rồi luyện thêm các câu cùng dạng bên dưới.</p>
+  <div id="dangWrap1" class="space-y-5"></div>
+  <div class="flex gap-2 mt-5">
+    <button onclick="checkGroup('dangWrap1')" class="bg-gradient-to-r from-indigo-900 to-pink-600 text-white font-bold px-5 py-2.5 rounded-full text-sm">Kiểm tra tất cả</button>
+    <button onclick="resetGroup('dangWrap1')" class="bg-white border-2 border-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full text-sm">Làm lại</button>
+    <span id="score-dangWrap1" class="hidden ml-auto self-center font-extrabold text-emerald-600 text-sm"></span>
+  </div>
+</section>
+<section id="page-dang2" class="page">
+  <p class="text-sm text-slate-500 italic mb-4">DẠNG 3. Mỗi câu mẫu có sẵn hướng dẫn công thức; làm xong câu mẫu rồi luyện thêm các câu cùng dạng bên dưới.</p>
+  <div id="dangWrap2" class="space-y-5"></div>
+  <div class="flex gap-2 mt-5">
+    <button onclick="checkGroup('dangWrap2')" class="bg-gradient-to-r from-indigo-900 to-pink-600 text-white font-bold px-5 py-2.5 rounded-full text-sm">Kiểm tra tất cả</button>
+    <button onclick="resetGroup('dangWrap2')" class="bg-white border-2 border-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full text-sm">Làm lại</button>
+    <span id="score-dangWrap2" class="hidden ml-auto self-center font-extrabold text-emerald-600 text-sm"></span>
+  </div>
+</section>
+
+<section id="page-dict" class="page">
+  <p class="text-sm text-slate-500 italic mb-4">Tra từ điển rồi hoàn thành câu — cách làm dạng bài dựa vào mục từ điển (dictionary-based cloze).</p>
+  <div id="dictWrap" class="space-y-5"></div>
+  <div class="flex gap-2 mt-5">
+    <button onclick="checkDict()" class="bg-gradient-to-r from-indigo-900 to-pink-600 text-white font-bold px-5 py-2.5 rounded-full text-sm">Kiểm tra</button>
+    <button onclick="resetDict()" class="bg-white border-2 border-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full text-sm">Làm lại</button>
+    <span id="dictScore" class="hidden ml-auto self-center font-extrabold text-emerald-600 text-sm"></span>
+  </div>
+</section>
+
+<section id="page-test" class="page">
+  <p class="text-sm text-slate-500 italic mb-4">Trắc nghiệm + viết lại câu. Đáp án được giữ kín cho đến khi bạn nhấn "Nộp bài".</p>
+  <div id="testWrap" class="space-y-4"></div>
+  <div class="flex gap-2 mt-5">
+    <button onclick="submitTest()" class="bg-gradient-to-r from-indigo-900 to-pink-600 text-white font-bold px-6 py-3 rounded-full text-sm">📝 Nộp bài</button>
+    <button onclick="resetTest()" class="bg-white border-2 border-slate-200 text-slate-600 font-bold px-5 py-2.5 rounded-full text-sm">Làm lại</button>
+  </div>
+  <div id="testResult" class="hidden mt-5 bg-white rounded-2xl shadow-md p-6 text-center">
+    <div class="text-5xl mb-2">🏆</div>
+    <p class="text-2xl font-extrabold text-indigo-900" id="testScoreText"></p>
+    <button onclick="retryTestWrong()" id="retryTestBtn" class="hidden mt-4 bg-amber-500 text-white font-bold px-5 py-2.5 rounded-full">🎯 Làm lại các câu sai</button>
+  </div>
+</section>
+
+</main>
+
+<script>
+const DATA = {"dangGroups": [{"label": "DẠNG 1", "items": [{"q": "1.", "dang": "DẠNG 1", "original": "Jack has a new laptop; however, he never logs on his account on the Facebook.", "starter": "Although", "answer": "Jack has a new laptop, he never logs on his account on Facebook", "explanation": "S1; however, S2 → Although S1, S2 — nối 2 ý đối lập bằng \"although\" thay vì \"however\".", "vi": "Mặc dù Jack có laptop mới, cậu ấy không bao giờ đăng nhập tài khoản Facebook.", "note": "S1, but/however S2 → Although S1, S2 (nối 2 ý đối lập thành 1 câu phức)", "extra_practice": [{"original": "He has a new bike; however, he never rides it to school.", "starter": "Although", "answer": "he has a new bike, he never rides it to school", "vi": "Mặc dù có xe đạp mới, cậu ấy không bao giờ đạp đến trường."}, {"original": "She bought an expensive phone; however, she seldom uses its camera.", "starter": "Although", "answer": "she bought an expensive phone, she seldom uses its camera", "vi": "Mặc dù mua điện thoại đắt tiền, cô ấy hiếm khi dùng camera của nó."}]}, {"q": "5.", "dang": "DẠNG 1", "original": "Quan is a club member; however he never participates in any activities.", "starter": "Although", "answer": "Quan is a club member, he never participates in any activities", "explanation": "S1; however, S2 → Although S1, S2.", "vi": "Mặc dù Quân là thành viên câu lạc bộ, cậu ấy không bao giờ tham gia hoạt động nào.", "note": "S1, but/however S2 → Although S1, S2 (nối 2 ý đối lập thành 1 câu phức)", "extra_practice": [{"original": "Lisa is a team captain; however, she rarely attends practice.", "starter": "Although", "answer": "Lisa is a team captain, she rarely attends practice", "vi": "Mặc dù Lisa là đội trưởng, cô ấy hiếm khi tham gia tập luyện."}, {"original": "Tam is a class monitor; however, he seldom helps his classmates.", "starter": "Although", "answer": "Tam is a class monitor, he seldom helps his classmates", "vi": "Mặc dù Tâm là lớp trưởng, cậu ấy hiếm khi giúp đỡ bạn cùng lớp."}]}, {"q": "7.", "dang": "DẠNG 1", "original": "He has a smart phone, but he never logs on his account on Facebook.", "starter": "Although", "answer": "he has a smart phone, he never logs on his account on Facebook", "explanation": "S1, but S2 → Although S1, S2.", "vi": "Mặc dù có điện thoại thông minh, cậu ấy không bao giờ đăng nhập Facebook.", "note": "S1, but/however S2 → Although S1, S2 (nối 2 ý đối lập thành 1 câu phức)", "extra_practice": [{"original": "She has a tablet, but she never uses it for studying.", "starter": "Although", "answer": "she has a tablet, she never uses it for studying", "vi": "Mặc dù có máy tính bảng, cô ấy không bao giờ dùng để học."}, {"original": "They have fast internet, but they rarely watch videos online.", "starter": "Although", "answer": "they have fast internet, they rarely watch videos online", "vi": "Mặc dù có internet nhanh, họ hiếm khi xem video trực tuyến."}]}]}, {"label": "DẠNG 2", "items": [{"q": "2.", "dang": "DẠNG 2", "original": "Lan wants to study better, so she turns off her mobile phone.", "starter": "Because", "answer": "Lan wants to study better, she turns off her mobile phone", "explanation": "S1, so S2 → Because S1, S2 (S2 là kết quả của việc S1).", "vi": "Vì Lan muốn học tốt hơn nên cô ấy tắt điện thoại.", "note": "S1, so S2 → Because S1, S2 (S2 là kết quả của S1)", "extra_practice": [{"original": "He wants to save money, so he stopped buying coffee every day.", "starter": "Because", "answer": "he wants to save money, he stopped buying coffee every day", "vi": "Vì muốn tiết kiệm tiền nên cậu ấy đã ngừng mua cà phê mỗi ngày."}, {"original": "They want to protect the environment, so they recycle plastic bottles.", "starter": "Because", "answer": "they want to protect the environment, they recycle plastic bottles", "vi": "Vì muốn bảo vệ môi trường nên họ tái chế chai nhựa."}]}, {"q": "3.", "dang": "DẠNG 2", "original": "Tuan is hard-working, so he often gets good marks on exams.", "starter": "Because", "answer": "Tuan is hard-working, he often gets good marks on exams", "explanation": "S1, so S2 → Because S1, S2. (Lưu ý: câu gốc trong đề cương có lỗi đánh máy \"Tuan is hard\", đã sửa thành \"Tuan is hard-working\" cho đúng nghĩa và ngữ pháp.)", "vi": "Vì Tuấn chăm chỉ nên cậu ấy thường đạt điểm cao trong các kỳ thi.", "note": "S1, so S2 → Because S1, S2 (S2 là kết quả của S1)", "extra_practice": [{"original": "Mai is creative, so she always comes up with new ideas.", "starter": "Because", "answer": "Mai is creative, she always comes up with new ideas", "vi": "Vì Mai sáng tạo nên bạn ấy luôn nghĩ ra ý tưởng mới."}, {"original": "He is careless, so he often makes silly mistakes.", "starter": "Because", "answer": "he is careless, he often makes silly mistakes", "vi": "Vì cậu ấy bất cẩn nên thường mắc lỗi ngớ ngẩn."}]}, {"q": "4.", "dang": "DẠNG 2", "original": "Mono bought a lot of books, for he likes reading.", "starter": "Mono bought a lot of books", "answer": "because he likes reading", "explanation": "S1, for S2 (lý do) → S1 because S2. \"for\" mang nghĩa \"vì\" trong văn viết trang trọng, chuyển thành \"because\" thông dụng hơn.", "vi": "Mono mua nhiều sách vì cậu ấy thích đọc.", "note": "S1, for S2 (lý do) → S1 because S2", "extra_practice": [{"original": "She joined the club, for she loves singing.", "starter": "She joined the club", "answer": "because she loves singing", "vi": "Cô ấy tham gia câu lạc bộ vì cô ấy yêu thích ca hát."}, {"original": "He saved his allowance, for he wants to buy a new bike.", "starter": "He saved his allowance", "answer": "because he wants to buy a new bike", "vi": "Cậu ấy tiết kiệm tiền tiêu vặt vì muốn mua một chiếc xe đạp mới."}]}, {"q": "6.", "dang": "DẠNG 2", "original": "Phong didn't study hard, so he didn't pass the entrance exam.", "starter": "Because", "answer": "Phong didn't study hard, he didn't pass the entrance exam", "explanation": "S1, so S2 → Because S1, S2.", "vi": "Bởi vì Phong không học chăm, cậu ấy đã trượt kỳ thi tuyển sinh.", "note": "S1, so S2 → Because S1, S2 (S2 là kết quả của S1)", "extra_practice": [{"original": "She didn't practise enough, so she lost the competition.", "starter": "Because", "answer": "she didn't practise enough, she lost the competition", "vi": "Vì không luyện tập đủ nên cô ấy đã thua cuộc thi."}, {"original": "We didn't check the weather, so we got caught in the rain.", "starter": "Because", "answer": "we didn't check the weather, we got caught in the rain", "vi": "Vì không kiểm tra thời tiết nên chúng tôi bị mắc mưa."}]}]}, {"label": "DẠNG 3", "items": [{"q": "8.", "dang": "DẠNG 3", "original": "She first disagreed to join our journey. She changed her mind later. (however)", "starter": "She first disagreed to join our journey;", "answer": "however, she changed her mind later", "explanation": "Câu1. Câu2. (however) → Câu1; however, câu2. — trạng từ liên kết \"however\" đứng sau dấu chấm phẩy, trước dấu phẩy.", "vi": "Ban đầu cô ấy không đồng ý tham gia chuyến đi của chúng tôi; tuy nhiên, sau đó cô ấy đã đổi ý.", "note": "Câu1. Câu2. (+ liên từ gợi ý) → Câu1; liên từ, câu2.", "extra_practice": [{"original": "He first refused to help with the project. He agreed after talking to his friend. (however)", "starter": "He first refused to help with the project;", "answer": "however, he agreed after talking to his friend", "vi": "Ban đầu cậu ấy từ chối giúp dự án; tuy nhiên, cậu ấy đã đồng ý sau khi nói chuyện với bạn."}, {"original": "The team lost the first match. They won the next three games. (however)", "starter": "The team lost the first match;", "answer": "however, they won the next three games", "vi": "Đội đã thua trận đầu tiên; tuy nhiên, họ đã thắng ba trận tiếp theo."}]}, {"q": "9.", "dang": "DẠNG 3", "original": "I was ill yesterday. I could not come. (therefore)", "starter": "I was ill yesterday;", "answer": "therefore, I could not come", "explanation": "Câu1. Câu2. (therefore) → Câu1; therefore, câu2. — \"therefore\" chỉ kết quả.", "vi": "Hôm qua tôi bị ốm; do đó, tôi không thể đến.", "note": "Câu1. Câu2. (+ liên từ gợi ý) → Câu1; liên từ, câu2.", "extra_practice": [{"original": "It rained heavily last night. The match was cancelled. (therefore)", "starter": "It rained heavily last night;", "answer": "therefore, the match was cancelled", "vi": "Đêm qua mưa to; do đó, trận đấu đã bị hủy."}, {"original": "He forgot his homework. He got a low mark. (therefore)", "starter": "He forgot his homework;", "answer": "therefore, he got a low mark", "vi": "Cậu ấy quên bài tập về nhà; do đó, cậu ấy bị điểm thấp."}]}, {"q": "10.", "dang": "DẠNG 3", "original": "We will have five days off this holiday. It is preceded by a couple of weekends. (moreover)", "starter": "We will have five days off this holiday;", "answer": "moreover, it is preceded by a couple of weekends", "explanation": "Câu1. Câu2. (moreover) → Câu1; moreover, câu2. — \"moreover\" bổ sung thêm thông tin.", "vi": "Chúng ta sẽ được nghỉ 5 ngày dịp này; hơn thế nữa, kỳ nghỉ còn được nối liền với 2 cuối tuần.", "note": "Câu1. Câu2. (+ liên từ gợi ý) → Câu1; liên từ, câu2.", "extra_practice": [{"original": "The hotel offers free breakfast. It has a beautiful swimming pool. (moreover)", "starter": "The hotel offers free breakfast;", "answer": "moreover, it has a beautiful swimming pool", "vi": "Khách sạn có bữa sáng miễn phí; hơn nữa, còn có hồ bơi đẹp."}, {"original": "The new phone has a bigger screen. It also has a longer battery life. (moreover)", "starter": "The new phone has a bigger screen;", "answer": "moreover, it also has a longer battery life", "vi": "Điện thoại mới có màn hình lớn hơn; hơn nữa, còn có thời lượng pin lâu hơn."}]}]}], "test_mcq": [{"q": "1. Mono wants to become a singer; _________, he can't sing or play any instruments.", "options": ["therefore", "however", "because", "although"], "answer": 1, "explanation": "Hai mệnh đề mang ý đối lập (muốn thành ca sĩ nhưng không hát/chơi nhạc cụ được) → however.", "vis": ["vì vậy (sai — không phải quan hệ kết quả)", "tuy nhiên (đúng)", "bởi vì (sai — cần mệnh đề, không đứng giữa 2 câu độc lập kiểu này)", "mặc dù (sai — cần đứng đầu mệnh đề phụ)"], "tags": ["grammar"]}, {"q": "3. Parents should give teens some freedom, _________ they should also set limits.", "options": ["so", "but", "for", "however"], "answer": 1, "explanation": "Hai mệnh đề đối lập trong CÙNG một câu (nối bằng dấu phẩy) → dùng liên từ kết hợp \"but\".", "vis": ["vì vậy (sai quan hệ)", "nhưng (đúng)", "vì, bởi (sai quan hệ)", "tuy nhiên (sai — \"however\" không nối trực tiếp bằng dấu phẩy đơn giữa 2 mệnh đề)"], "tags": ["grammar"]}, {"q": "5. Lan ______ with some friends, so she can't concentrate on the lesson now.", "options": ["is chatting", "chatted", "chatting", "will chat"], "answer": 0, "explanation": "Sự việc đang diễn ra ngay lúc nói (\"now\") → thì hiện tại tiếp diễn: is chatting.", "vis": ["đang nhắn tin (đúng)", "đã nhắn tin (quá khứ, sai thì)", "nhắn tin (V-ing, thiếu trợ động từ, sai)", "sẽ nhắn tin (tương lai, sai)"], "tags": ["grammar"]}, {"q": "6. She wanted to prepare for the exam; ______, she turned off her mobile phone.", "options": ["so", "but", "however", "therefore"], "answer": 3, "explanation": "Đứng sau dấu chấm phẩy, trước dấu phẩy, chỉ KẾT QUẢ → therefore (trạng từ liên kết).", "vis": ["vì vậy (sai vị trí ngữ pháp — \"so\" không đứng sau dấu ;)", "nhưng (sai quan hệ — không đối lập)", "tuy nhiên (sai quan hệ — không đối lập)", "do đó (đúng)"], "tags": ["grammar"]}, {"q": "7. Mr Buong decided______a new laptop last week.", "options": ["buy", "bought", "buying", "to buy"], "answer": 3, "explanation": "Cấu trúc: decide + to V.", "vis": ["mua (nguyên mẫu, sai)", "đã mua (sai)", "mua (V-ing, sai)", "mua (to-V, đúng)"], "tags": ["grammar"]}, {"q": "8. She worked hard, _______she passed the exam easily.", "options": ["so", "because", "if", "although"], "answer": 0, "explanation": "Mệnh đề sau chỉ KẾT QUẢ của việc học chăm chỉ → so.", "vis": ["vì vậy (đúng)", "bởi vì (sai quan hệ — đây không phải nguyên nhân)", "nếu (sai nghĩa)", "mặc dù (sai quan hệ)"], "tags": ["grammar"]}, {"q": "9. Mr. Quang used the facebook _______10 p.m last night.", "options": ["on", "in", "at", "for"], "answer": 2, "explanation": "Dùng giới từ \"at\" trước mốc giờ cụ thể.", "vis": ["vào (dùng cho ngày/thứ, sai)", "trong (sai)", "vào lúc (đúng — dùng cho giờ)", "trong khoảng (sai)"], "tags": ["grammar"]}, {"q": "10. Ba is tired _______he stayed up late watching the clips on Tiktok last night.", "options": ["because", "as", "since", "A, B, C are correct"], "answer": 3, "explanation": "\"because\", \"as\", \"since\" đều có nghĩa \"bởi vì\" và đều dùng được ở đây.", "vis": ["bởi vì (đúng nhưng chưa đủ)", "vì, bởi (đúng nhưng chưa đủ)", "vì, bởi (đúng nhưng chưa đủ)", "cả A, B, C đều đúng (đúng nhất)"], "tags": ["grammar"]}, {"q": "11. He isn't going to the concert………….the tickets are too expensive.", "options": ["Though", "in spite of", "because", "because of"], "answer": 2, "explanation": "Sau chỗ trống là một MỆNH ĐỀ (S+V: \"the tickets are too expensive\") → dùng \"because\".", "vis": ["mặc dù (sai — cần mệnh đề đối lập, ở đây là nguyên nhân)", "mặc dù (sai — đi với cụm danh từ, không phải mệnh đề)", "bởi vì (đúng — đi với mệnh đề)", "bởi vì (sai — đi với cụm danh từ, không phải mệnh đề)"], "tags": ["grammar"]}, {"q": "12. No one in the volunteer group is ______Jack is.", "options": ["more active as", "as active than", "more active", "so active as"], "answer": 3, "explanation": "Cấu trúc so sánh bằng ở thể phủ định: not... so/as + adj + as.", "vis": ["sai cấu trúc (trộn lẫn 2 dạng)", "sai cấu trúc (trộn lẫn 2 dạng)", "thiếu \"as\" nên chưa hoàn chỉnh so sánh bằng", "tích cực bằng (đúng — so sánh bằng)"], "tags": ["grammar"]}, {"q": "13. There is nothing _____________ than going swimming in hot weather.", "options": ["gooder", "good", "better", "more goodly"], "answer": 2, "explanation": "So sánh hơn bất quy tắc của \"good\" là \"better\".", "vis": ["sai — không tồn tại dạng này", "tốt (nguyên thể, sai vì cần so sánh hơn)", "tốt hơn (đúng)", "sai — không tồn tại dạng này"], "tags": ["grammar"]}, {"q": "14. Lam is very sensitive, _________you shouldn't comment on his new shoes.", "options": ["but", "therefore", "however", "so"], "answer": 3, "explanation": "Mệnh đề sau chỉ KẾT QUẢ (vì nhạy cảm nên đừng bình luận) → so.", "vis": ["nhưng (sai quan hệ)", "do đó (sai vị trí — cần dấu ; trước \"therefore\", ở đây chỉ có dấu phẩy)", "tuy nhiên (sai quan hệ)", "vì vậy (đúng)"], "tags": ["grammar"]}], "test_transform": [{"q": "1.", "dang": "DẠNG 1", "original": "Jack has a new laptop; however, he never logs on his account on the Facebook.", "starter": "Although", "answer": "Jack has a new laptop, he never logs on his account on Facebook", "explanation": "S1; however, S2 → Although S1, S2 — nối 2 ý đối lập bằng \"although\" thay vì \"however\".", "vi": "Mặc dù Jack có laptop mới, cậu ấy không bao giờ đăng nhập tài khoản Facebook.", "note": "S1, but/however S2 → Although S1, S2 (nối 2 ý đối lập thành 1 câu phức)", "extra_practice": [{"original": "He has a new bike; however, he never rides it to school.", "starter": "Although", "answer": "he has a new bike, he never rides it to school", "vi": "Mặc dù có xe đạp mới, cậu ấy không bao giờ đạp đến trường."}, {"original": "She bought an expensive phone; however, she seldom uses its camera.", "starter": "Although", "answer": "she bought an expensive phone, she seldom uses its camera", "vi": "Mặc dù mua điện thoại đắt tiền, cô ấy hiếm khi dùng camera của nó."}]}, {"q": "2.", "dang": "DẠNG 2", "original": "Lan wants to study better, so she turns off her mobile phone.", "starter": "Because", "answer": "Lan wants to study better, she turns off her mobile phone", "explanation": "S1, so S2 → Because S1, S2 (S2 là kết quả của việc S1).", "vi": "Vì Lan muốn học tốt hơn nên cô ấy tắt điện thoại.", "note": "S1, so S2 → Because S1, S2 (S2 là kết quả của S1)", "extra_practice": [{"original": "He wants to save money, so he stopped buying coffee every day.", "starter": "Because", "answer": "he wants to save money, he stopped buying coffee every day", "vi": "Vì muốn tiết kiệm tiền nên cậu ấy đã ngừng mua cà phê mỗi ngày."}, {"original": "They want to protect the environment, so they recycle plastic bottles.", "starter": "Because", "answer": "they want to protect the environment, they recycle plastic bottles", "vi": "Vì muốn bảo vệ môi trường nên họ tái chế chai nhựa."}]}, {"q": "3.", "dang": "DẠNG 2", "original": "Tuan is hard-working, so he often gets good marks on exams.", "starter": "Because", "answer": "Tuan is hard-working, he often gets good marks on exams", "explanation": "S1, so S2 → Because S1, S2. (Lưu ý: câu gốc trong đề cương có lỗi đánh máy \"Tuan is hard\", đã sửa thành \"Tuan is hard-working\" cho đúng nghĩa và ngữ pháp.)", "vi": "Vì Tuấn chăm chỉ nên cậu ấy thường đạt điểm cao trong các kỳ thi.", "note": "S1, so S2 → Because S1, S2 (S2 là kết quả của S1)", "extra_practice": [{"original": "Mai is creative, so she always comes up with new ideas.", "starter": "Because", "answer": "Mai is creative, she always comes up with new ideas", "vi": "Vì Mai sáng tạo nên bạn ấy luôn nghĩ ra ý tưởng mới."}, {"original": "He is careless, so he often makes silly mistakes.", "starter": "Because", "answer": "he is careless, he often makes silly mistakes", "vi": "Vì cậu ấy bất cẩn nên thường mắc lỗi ngớ ngẩn."}]}, {"q": "4.", "dang": "DẠNG 2", "original": "Mono bought a lot of books, for he likes reading.", "starter": "Mono bought a lot of books", "answer": "because he likes reading", "explanation": "S1, for S2 (lý do) → S1 because S2. \"for\" mang nghĩa \"vì\" trong văn viết trang trọng, chuyển thành \"because\" thông dụng hơn.", "vi": "Mono mua nhiều sách vì cậu ấy thích đọc.", "note": "S1, for S2 (lý do) → S1 because S2", "extra_practice": [{"original": "She joined the club, for she loves singing.", "starter": "She joined the club", "answer": "because she loves singing", "vi": "Cô ấy tham gia câu lạc bộ vì cô ấy yêu thích ca hát."}, {"original": "He saved his allowance, for he wants to buy a new bike.", "starter": "He saved his allowance", "answer": "because he wants to buy a new bike", "vi": "Cậu ấy tiết kiệm tiền tiêu vặt vì muốn mua một chiếc xe đạp mới."}]}, {"q": "5.", "dang": "DẠNG 1", "original": "Quan is a club member; however he never participates in any activities.", "starter": "Although", "answer": "Quan is a club member, he never participates in any activities", "explanation": "S1; however, S2 → Although S1, S2.", "vi": "Mặc dù Quân là thành viên câu lạc bộ, cậu ấy không bao giờ tham gia hoạt động nào.", "note": "S1, but/however S2 → Although S1, S2 (nối 2 ý đối lập thành 1 câu phức)", "extra_practice": [{"original": "Lisa is a team captain; however, she rarely attends practice.", "starter": "Although", "answer": "Lisa is a team captain, she rarely attends practice", "vi": "Mặc dù Lisa là đội trưởng, cô ấy hiếm khi tham gia tập luyện."}, {"original": "Tam is a class monitor; however, he seldom helps his classmates.", "starter": "Although", "answer": "Tam is a class monitor, he seldom helps his classmates", "vi": "Mặc dù Tâm là lớp trưởng, cậu ấy hiếm khi giúp đỡ bạn cùng lớp."}]}, {"q": "6.", "dang": "DẠNG 2", "original": "Phong didn't study hard, so he didn't pass the entrance exam.", "starter": "Because", "answer": "Phong didn't study hard, he didn't pass the entrance exam", "explanation": "S1, so S2 → Because S1, S2.", "vi": "Bởi vì Phong không học chăm, cậu ấy đã trượt kỳ thi tuyển sinh.", "note": "S1, so S2 → Because S1, S2 (S2 là kết quả của S1)", "extra_practice": [{"original": "She didn't practise enough, so she lost the competition.", "starter": "Because", "answer": "she didn't practise enough, she lost the competition", "vi": "Vì không luyện tập đủ nên cô ấy đã thua cuộc thi."}, {"original": "We didn't check the weather, so we got caught in the rain.", "starter": "Because", "answer": "we didn't check the weather, we got caught in the rain", "vi": "Vì không kiểm tra thời tiết nên chúng tôi bị mắc mưa."}]}, {"q": "7.", "dang": "DẠNG 1", "original": "He has a smart phone, but he never logs on his account on Facebook.", "starter": "Although", "answer": "he has a smart phone, he never logs on his account on Facebook", "explanation": "S1, but S2 → Although S1, S2.", "vi": "Mặc dù có điện thoại thông minh, cậu ấy không bao giờ đăng nhập Facebook.", "note": "S1, but/however S2 → Although S1, S2 (nối 2 ý đối lập thành 1 câu phức)", "extra_practice": [{"original": "She has a tablet, but she never uses it for studying.", "starter": "Although", "answer": "she has a tablet, she never uses it for studying", "vi": "Mặc dù có máy tính bảng, cô ấy không bao giờ dùng để học."}, {"original": "They have fast internet, but they rarely watch videos online.", "starter": "Although", "answer": "they have fast internet, they rarely watch videos online", "vi": "Mặc dù có internet nhanh, họ hiếm khi xem video trực tuyến."}]}, {"q": "8.", "dang": "DẠNG 3", "original": "She first disagreed to join our journey. She changed her mind later. (however)", "starter": "She first disagreed to join our journey;", "answer": "however, she changed her mind later", "explanation": "Câu1. Câu2. (however) → Câu1; however, câu2. — trạng từ liên kết \"however\" đứng sau dấu chấm phẩy, trước dấu phẩy.", "vi": "Ban đầu cô ấy không đồng ý tham gia chuyến đi của chúng tôi; tuy nhiên, sau đó cô ấy đã đổi ý.", "note": "Câu1. Câu2. (+ liên từ gợi ý) → Câu1; liên từ, câu2.", "extra_practice": [{"original": "He first refused to help with the project. He agreed after talking to his friend. (however)", "starter": "He first refused to help with the project;", "answer": "however, he agreed after talking to his friend", "vi": "Ban đầu cậu ấy từ chối giúp dự án; tuy nhiên, cậu ấy đã đồng ý sau khi nói chuyện với bạn."}, {"original": "The team lost the first match. They won the next three games. (however)", "starter": "The team lost the first match;", "answer": "however, they won the next three games", "vi": "Đội đã thua trận đầu tiên; tuy nhiên, họ đã thắng ba trận tiếp theo."}]}, {"q": "9.", "dang": "DẠNG 3", "original": "I was ill yesterday. I could not come. (therefore)", "starter": "I was ill yesterday;", "answer": "therefore, I could not come", "explanation": "Câu1. Câu2. (therefore) → Câu1; therefore, câu2. — \"therefore\" chỉ kết quả.", "vi": "Hôm qua tôi bị ốm; do đó, tôi không thể đến.", "note": "Câu1. Câu2. (+ liên từ gợi ý) → Câu1; liên từ, câu2.", "extra_practice": [{"original": "It rained heavily last night. The match was cancelled. (therefore)", "starter": "It rained heavily last night;", "answer": "therefore, the match was cancelled", "vi": "Đêm qua mưa to; do đó, trận đấu đã bị hủy."}, {"original": "He forgot his homework. He got a low mark. (therefore)", "starter": "He forgot his homework;", "answer": "therefore, he got a low mark", "vi": "Cậu ấy quên bài tập về nhà; do đó, cậu ấy bị điểm thấp."}]}, {"q": "10.", "dang": "DẠNG 3", "original": "We will have five days off this holiday. It is preceded by a couple of weekends. (moreover)", "starter": "We will have five days off this holiday;", "answer": "moreover, it is preceded by a couple of weekends", "explanation": "Câu1. Câu2. (moreover) → Câu1; moreover, câu2. — \"moreover\" bổ sung thêm thông tin.", "vi": "Chúng ta sẽ được nghỉ 5 ngày dịp này; hơn thế nữa, kỳ nghỉ còn được nối liền với 2 cuối tuần.", "note": "Câu1. Câu2. (+ liên từ gợi ý) → Câu1; liên từ, câu2.", "extra_practice": [{"original": "The hotel offers free breakfast. It has a beautiful swimming pool. (moreover)", "starter": "The hotel offers free breakfast;", "answer": "moreover, it has a beautiful swimming pool", "vi": "Khách sạn có bữa sáng miễn phí; hơn nữa, còn có hồ bơi đẹp."}, {"original": "The new phone has a bigger screen. It also has a longer battery life. (moreover)", "starter": "The new phone has a bigger screen;", "answer": "moreover, it also has a longer battery life", "vi": "Điện thoại mới có màn hình lớn hơn; hơn nữa, còn có thời lượng pin lâu hơn."}]}], "comprehension": [{"q": "1. Câu ghép (compound sentence) là gì?", "options": ["Câu chỉ có 1 mệnh đề độc lập", "Gồm 2 mệnh đề độc lập nối với nhau", "Câu không có động từ", "Câu chỉ có mệnh đề phụ thuộc"], "answer": 1, "explanation": "Câu ghép gồm 2 mệnh đề độc lập (mỗi mệnh đề tự nó đúng ngữ pháp) được nối với nhau.", "vi": null}, {"q": "2. Liên từ nào thể hiện sự ĐỐI LẬP (tương phản)?", "options": ["so", "but", "for", "and"], "answer": 1, "explanation": "\"but\" (nhưng) thể hiện ý đối lập giữa 2 mệnh đề.", "vi": null}, {"q": "3. Liên từ nào thể hiện KẾT QUẢ?", "options": ["so", "but", "for", "or"], "answer": 0, "explanation": "\"so\" (vì vậy) giới thiệu kết quả của mệnh đề trước.", "vi": null}, {"q": "4. Liên từ nào thể hiện LÝ DO (đứng ngay trước lý do)?", "options": ["for", "so", "but", "and"], "answer": 0, "explanation": "\"for\" (vì) mang nghĩa trang trọng, đứng trước mệnh đề nêu lý do.", "vi": null}, {"q": "5. Dấu câu ĐÚNG trước trạng từ liên kết \"however\" khi nối 2 câu là gì?", "options": ["dấu phẩy (,)", "dấu chấm phẩy (;)", "dấu hai chấm (:)", "không cần dấu câu"], "answer": 1, "explanation": "Trạng từ liên kết luôn đứng sau dấu chấm phẩy: S1; however, S2.", "vi": null}, {"q": "6. Sau trạng từ liên kết \"however\" cần dấu gì?", "options": ["dấu phẩy (,)", "dấu chấm (.)", "dấu hai chấm (:)", "không cần dấu"], "answer": 0, "explanation": "Cấu trúc chuẩn: S1; however, S2. — có dấu phẩy ngay sau \"however\".", "vi": null}, {"q": "7. \"Although\" thường đứng ở đâu trong câu?", "options": ["Đầu mệnh đề phụ (có thể đầu câu hoặc giữa câu)", "Chỉ đứng cuối câu", "Giữa 2 mệnh đề độc lập không cần dấu phẩy", "Không thể dùng trong câu phức"], "answer": 0, "explanation": "\"Although\" mở đầu mệnh đề phụ, có thể đặt ở đầu câu hoặc sau mệnh đề chính.", "vi": null}, {"q": "8. Câu nào viết ĐÚNG?", "options": ["He is tired, however he kept working.", "He is tired; however, he kept working.", "He is tired. however he kept working.", "He is tired however, he kept working."], "answer": 1, "explanation": "Đúng cấu trúc: S1; however, S2. (dấu chấm phẩy trước, dấu phẩy sau \"however\").", "vi": null}], "dictionary": [{"word": "pressure", "ipa": "/ˈpreʃə(r)/", "pos": "noun", "senses": [{"def": "the act of trying to persuade or force somebody to do something", "examples": ["He backed down under pressure from his colleagues.", "The company is under pressure to increase its profits.", "Teachers are under constant pressure to improve exam results.", "She put pressure on him to sign the contract.", "There is growing pressure for changes in the law."]}], "vi": "<b>pressure</b> /ˈpreʃə(r)/ (danh từ)<br>hành động cố gắng thuyết phục hoặc ép buộc ai đó làm gì.<br>• Anh ấy đã nhượng bộ trước áp lực từ đồng nghiệp.<br>• Công ty đang chịu áp lực phải tăng lợi nhuận.<br>• Giáo viên liên tục chịu áp lực phải cải thiện kết quả thi.<br>• Cô ấy gây áp lực để anh ta ký hợp đồng.<br>• Có áp lực ngày càng tăng đòi thay đổi luật.", "questions": [{"q": "A. There is ______________ from the public for the government to lower taxes this year.", "answer": "growing pressure", "explanation": "Dựa vào ví dụ: growing pressure.", "vi": "Có áp lực ngày càng tăng từ công chúng đòi chính phủ giảm thuế năm nay."}, {"q": "B. The manager had to change his mind because he was ______________ from the team.", "answer": "under pressure", "explanation": "Dựa vào ví dụ: under pressure.", "vi": "Người quản lý phải đổi ý vì chịu áp lực từ đội nhóm."}]}, {"word": "bully", "ipa": "/ˈbʊli/", "pos": "verb", "senses": [{"def": "to frighten or hurt a weaker person; to use your strength or power to make somebody do something", "examples": ["Bullying is a problem in many schools — some students bully their classmates.", "He was bullied into signing the contract by his boss.", "She refused to be bullied by threats of violence.", "The older boys used to cyberbully younger students on social media."]}], "vi": "<b>bully</b> /ˈbʊli/ (động từ)<br>làm ai sợ hãi hoặc bị tổn thương; dùng sức mạnh/quyền lực để ép ai đó làm gì.<br>• Bắt nạt là vấn đề ở nhiều trường học — một số học sinh bắt nạt bạn cùng lớp.<br>• Anh ta bị ép ký hợp đồng bởi sếp của mình.<br>• Cô ấy từ chối bị đe dọa bằng bạo lực.<br>• Các anh lớn từng bắt nạt qua mạng các em nhỏ hơn trên mạng xã hội.", "questions": [{"q": "A. With the rise of smartphones, it has become easier for teenagers to _______________________, which causes severe mental health issues.", "answer": "cyberbully younger students", "explanation": "Dựa vào ví dụ: cyberbully younger students.", "vi": "Với sự phổ biến của điện thoại thông minh, việc bắt nạt qua mạng các học sinh nhỏ tuổi hơn trở nên dễ dàng hơn, gây ra các vấn đề tâm lý nghiêm trọng."}, {"q": "B. The school has a strict rule against students who try to _______________________ during break time.", "answer": "bully", "explanation": "Điền động từ \"bully\" (bắt nạt) theo đúng nghĩa từ điển.", "vi": "Nhà trường có quy định nghiêm ngặt đối với học sinh cố tình bắt nạt bạn khác trong giờ ra chơi."}]}]};
+
+function normalize(s){ return (s||'').trim().toLowerCase().replace(/[\u2018\u2019]/g,"'").replace(/[\u201c\u201d"]/g,'').replace(/[.,!?;:]/g,'').replace(/\s+/g,' '); }
+function optionLetter(i){ return ['A','B','C','D'][i]; }
+function shuffleArr(a){ return a.slice().sort(()=>Math.random()-0.5); }
+
+function copyNote(btn){ const t=btn.dataset.copy; navigator.clipboard && navigator.clipboard.writeText(t).then(()=>{ btn.innerHTML='<i class="fa-solid fa-check"></i>'; setTimeout(()=>btn.innerHTML='<i class="fa-solid fa-copy"></i>',1200); }); }
+
+function showPage(id, btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(`page-${id}`).classList.add('active');
+  document.querySelectorAll('#navWrap .tab-btn').forEach(b=>{b.classList.remove('active'); b.classList.add('text-slate-600');});
+  if(btn){ btn.classList.add('active'); btn.classList.remove('text-slate-600'); }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+let compScore=0, compAnswered=0;
+function renderComprehension(){
+  const wrap = document.getElementById('compWrap');
+  wrap.innerHTML = DATA.comprehension.map((q,i)=>`
+    <div class="group-card" id="comp_${i}">
+      <p class="font-bold text-slate-800 mb-2">${q.q}</p>
+      <div class="grid sm:grid-cols-2 gap-2">${q.options.map((o,j)=>`<label class="option-label rounded-xl px-3 py-2 text-sm font-semibold flex items-center gap-2" id="comp_${i}_${j}" onclick="answerComp(${i},${j})"><span class="font-black text-indigo-700">${optionLetter(j)}.</span> ${o}</label>`).join('')}</div>
+      <div class="mt-2 text-sm hidden bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-blue-800" id="comp_fb_${i}"></div>
+    </div>`).join('');
+}
+function answerComp(i,j){
+  const q = DATA.comprehension[i];
+  if(document.getElementById(`comp_${i}`).dataset.answered) return;
+  document.getElementById(`comp_${i}`).dataset.answered='1';
+  const ok = j===q.answer;
+  q.options.forEach((o,k)=>{ const el=document.getElementById(`comp_${i}_${k}`); if(k===q.answer) el.classList.add('correct-opt'); else if(k===j) el.classList.add('wrong-opt'); el.onclick=null; });
+  const fb=document.getElementById(`comp_fb_${i}`); fb.classList.remove('hidden');
+  fb.innerHTML = (ok?'<span class="text-emerald-700 font-bold">✅ Chính xác!</span>':`<span class="text-rose-600 font-bold">❌ Chưa đúng.</span> Đáp án đúng: <b>${optionLetter(q.answer)}. ${q.options[q.answer]}</b>`) + `<br>💡 ${q.explanation}<br>📖 <i>${q.vi}</i>`;
+  compAnswered++; if(ok) compScore++;
+  document.getElementById('compScore').textContent = compAnswered ? `🏆 ${compScore}/${compAnswered} đã trả lời` : '';
+}
+
+function sentenceRow(item, id, isModel){
+  const starterHtml = item.starter ? `<span class="text-slate-800 font-extrabold text-base whitespace-nowrap">${item.starter}</span>` : '';
+  return `<div class="${isModel?'':'practice-row'}">
+    <p class="text-slate-700 text-sm mb-1.5">${isModel?'<span class=\"font-black text-indigo-700\">Câu mẫu:</span> ':'<span class=\"font-black text-slate-400\">Luyện thêm:</span> '}${item.original}</p>
+    <div class="flex items-center gap-3 w-full flex-wrap">
+      ${starterHtml}
+      <input type="text" id="${id}" class="answer-input flex-1 min-w-[180px] px-3 py-2 rounded-lg text-sm font-semibold" placeholder="..." autocomplete="off" spellcheck="false" oninput="gradeSentenceInput('${id}')">
+    </div>
+    <div class="explanation-box mt-1.5 text-sm hidden bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-blue-800" id="fb_${id}"></div>
+  </div>`;
+}
+const SENT_ITEMS = {};
+function registerItem(id, item){ SENT_ITEMS[id] = item; }
+function renderDang(wrapId, items, prefix){
+  const wrap = document.getElementById(wrapId);
+  wrap.innerHTML = items.map((t,gi)=>{
+    const modelId = `${prefix}_${gi}_m`;
+    registerItem(modelId, t);
+    let html = `<div class="group-card">
+      <p class="text-xs font-bold text-indigo-400 mb-2">Câu ${t.q}</p>
+      ${sentenceRow(t, modelId, true)}
+      <div class="mt-1 text-xs text-violet-600">📐 Công thức: <b>${t.note}</b></div>`;
+    (t.extra_practice||[]).forEach((e,ei)=>{
+      const exId = `${prefix}_${gi}_e${ei}`;
+      const exItem = Object.assign({}, e, {explanation: t.explanation, note: t.note});
+      registerItem(exId, exItem);
+      html += sentenceRow(exItem, exId, false);
+    });
+    html += `</div>`;
+    return html;
+  }).join('');
+}
+function gradeSentenceInput(id){
+  const item = SENT_ITEMS[id];
+  const inp = document.getElementById(id);
+  const fb = document.getElementById('fb_'+id);
+  if(!inp || !fb) return;
+  const raw = inp.value.trim();
+  if(raw===''){ inp.classList.remove('correct-input','wrong-input'); fb.classList.add('hidden'); fb.innerHTML=''; return; }
+  const val = normalize(inp.value);
+  const acc = (item.accepted || [item.answer]).map(normalize);
+  const ok = acc.includes(val);
+  inp.classList.remove('correct-input','wrong-input'); inp.classList.add(ok?'correct-input':'wrong-input');
+  fb.classList.remove('hidden');
+  fb.innerHTML = (ok?'<span class="text-emerald-700 font-bold">✅ Chính xác!</span>':`<span class="text-rose-600 font-bold">❌ Chưa đúng.</span> Đáp án đúng: <b>${item.answer}</b>`) + `<br>💡 ${item.explanation}` + (item.vi?`<br>📖 <i>${item.vi}</i>`:'');
+}
+function checkGroup(wrapId){
+  const prefix = wrapId.replace('Wrap','').match(/d\d+/)[0]+'_';
+  const ids = Object.keys(SENT_ITEMS).filter(id=>id.startsWith(prefix));
+  let correct=0;
+  ids.forEach(id=>{
+    const item=SENT_ITEMS[id]; const inp=document.getElementById(id); const fb=document.getElementById('fb_'+id);
+    const val=normalize(inp.value); const acc=(item.accepted||[item.answer]).map(normalize);
+    const ok = val!=='' && acc.includes(val);
+    inp.classList.remove('correct-input','wrong-input'); inp.classList.add(ok?'correct-input':'wrong-input');
+    fb.classList.remove('hidden');
+    fb.innerHTML = (ok?'<span class="text-emerald-700 font-bold">✅ Chính xác!</span>':`<span class="text-rose-600 font-bold">❌ Chưa đúng.</span> Đáp án đúng: <b>${item.answer}</b>`) + `<br>💡 ${item.explanation}` + (item.vi?`<br>📖 <i>${item.vi}</i>`:'');
+    if(ok) correct++;
+  });
+  const scoreEl=document.getElementById('score-'+wrapId);
+  scoreEl.classList.remove('hidden'); scoreEl.textContent = `🏆 ${correct}/${ids.length}`;
+}
+function resetGroup(wrapId){
+  const prefix = wrapId.replace('Wrap','').match(/d\d+/)[0]+'_';
+  const ids = Object.keys(SENT_ITEMS).filter(id=>id.startsWith(prefix));
+  ids.forEach(id=>{ document.getElementById(id).value=''; document.getElementById(id).classList.remove('correct-input','wrong-input'); const fb=document.getElementById('fb_'+id); fb.classList.add('hidden'); fb.innerHTML=''; });
+  document.getElementById('score-'+wrapId).classList.add('hidden');
+}
+
+function renderDictEntry(d, prefix){
+  const senses = d.senses.map(x=>`<p class="mb-1">✱ ${x.def}</p>${(x.examples||[]).map(e=>`<p class="ml-4 italic text-slate-600">• ${e}</p>`).join('')}`).join('');
+  let html = `<div class="group-card">
+    <div class="dict-box mb-3"><p class="font-extrabold text-amber-800 mb-1"><i class="fa-solid fa-book-bookmark mr-1"></i>${d.word} <span class="font-normal italic">${d.ipa}</span> <span class="font-normal">(${d.pos})</span></p>${senses}<p class="mt-2 pt-2 border-t border-amber-300 text-slate-600">${d.vi}</p></div>`;
+  d.questions.forEach((q,i)=>{
+    const id = `${prefix}_${i}`;
+    registerItem(id, q);
+    html += `<div class="mb-3"><p class="text-sm text-slate-700 mb-1.5">${q.q}</p>
+      <input type="text" id="${id}" class="answer-input w-64 px-3 py-1.5 rounded-lg text-sm font-semibold" placeholder="Nhập đáp án..." autocomplete="off" spellcheck="false">
+      <div class="mt-1 text-sm hidden bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-blue-800" id="fb_${id}"></div>
+    </div>`;
+  });
+  html += `</div>`;
+  return html;
+}
+function renderDictTab(){
+  document.getElementById('dictWrap').innerHTML = DATA.dictionary.map((d,i)=>renderDictEntry(d,'dic'+i)).join('');
+}
+function checkDict(){
+  const ids = Object.keys(SENT_ITEMS).filter(id=>/^dic\d+_/.test(id));
+  let correct=0;
+  ids.forEach(id=>{
+    const item=SENT_ITEMS[id]; const inp=document.getElementById(id); const fb=document.getElementById('fb_'+id);
+    const val=normalize(inp.value); const ok = val!=='' && normalize(item.answer)===val;
+    inp.classList.remove('correct-input','wrong-input'); inp.classList.add(ok?'correct-input':'wrong-input');
+    fb.classList.remove('hidden');
+    fb.innerHTML = (ok?'<span class="text-emerald-700 font-bold">✅ Chính xác!</span>':`<span class="text-rose-600 font-bold">❌ Chưa đúng.</span> Đáp án: <b>${item.answer}</b>`) + `<br>💡 ${item.explanation}<br>📖 <i>${item.vi}</i>`;
+    if(ok) correct++;
+  });
+  const scoreEl=document.getElementById('dictScore'); scoreEl.classList.remove('hidden'); scoreEl.textContent = `🏆 ${correct}/${ids.length}`;
+}
+function resetDict(){
+  const ids = Object.keys(SENT_ITEMS).filter(id=>/^dic\d+_/.test(id));
+  ids.forEach(id=>{ document.getElementById(id).value=''; document.getElementById(id).classList.remove('correct-input','wrong-input'); const fb=document.getElementById('fb_'+id); fb.classList.add('hidden'); fb.innerHTML=''; });
+  document.getElementById('dictScore').classList.add('hidden');
+}
+
+let testWrong = [];
+function renderTest(){
+  const wrap = document.getElementById('testWrap');
+  let html='';
+  DATA.test_mcq.forEach((q,i)=>{
+    html += `<div class="group-card" id="tmcq_${i}">
+      <p class="font-bold text-slate-800 mb-2"><span class="bg-slate-100 text-slate-600 text-xs font-black px-2 py-1 rounded-lg mr-2">${i+1}</span>${q.q}</p>
+      <div class="grid sm:grid-cols-2 gap-2">${q.options.map((o,j)=>`<label class="option-label rounded-xl px-3 py-2 text-sm font-semibold flex items-center gap-2" id="tmcq_${i}_${j}" onclick="selectTestMcq(${i},${j})"><span class="font-black text-indigo-700">${optionLetter(j)}.</span> ${o}</label>`).join('')}</div>
+      <div class="explanation-box mt-2 text-sm hidden bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-blue-800" id="tmcq_fb_${i}"></div>
+    </div>`;
+  });
+  DATA.test_transform.forEach((t,i)=>{
+    const id = `ttrans_${i}`;
+    html += `<div class="group-card">
+      <p class="font-bold text-slate-800 mb-2"><span class="bg-slate-100 text-slate-600 text-xs font-black px-2 py-1 rounded-lg mr-2">${DATA.test_mcq.length+i+1}</span>${t.original}</p>
+      <div class="flex items-center gap-3 w-full flex-wrap">
+        <span class="text-slate-800 font-extrabold text-base whitespace-nowrap">${t.starter}</span>
+        <input type="text" id="${id}" class="answer-input flex-1 min-w-[180px] px-3 py-2 rounded-lg text-sm font-semibold" placeholder="..." autocomplete="off" spellcheck="false">
+      </div>
+      <div class="explanation-box mt-2 text-sm hidden bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-blue-800" id="fb_${id}"></div>
+    </div>`;
+  });
+  wrap.innerHTML = html;
+}
+function selectTestMcq(i,j){
+  document.querySelectorAll(`[id^="tmcq_${i}_"]`).forEach(el=>el.classList.remove('selected'));
+  document.getElementById(`tmcq_${i}_${j}`).classList.add('selected');
+  document.getElementById(`tmcq_${i}_${j}`).dataset.chosen=j;
+}
+function submitTest(){
+  let correct=0, total=DATA.test_mcq.length+DATA.test_transform.length;
+  testWrong = [];
+  DATA.test_mcq.forEach((q,i)=>{
+    const chosenEl = document.querySelector(`#testWrap [id^="tmcq_${i}_"].selected`);
+    const chosen = chosenEl ? parseInt(chosenEl.dataset.chosen) : -1;
+    const ok = chosen===q.answer;
+    q.options.forEach((o,j)=>{ const el=document.getElementById(`tmcq_${i}_${j}`); el.classList.remove('correct-opt','wrong-opt'); if(j===q.answer) el.classList.add('correct-opt'); else if(j===chosen) el.classList.add('wrong-opt'); });
+    const fb=document.getElementById(`tmcq_fb_${i}`); fb.classList.remove('hidden');
+    fb.innerHTML = (ok?'<span class="text-emerald-700 font-bold">✅ Chính xác!</span>':`<span class="text-rose-600 font-bold">❌ Chưa đúng.</span> Đáp án: <b>${optionLetter(q.answer)}. ${q.options[q.answer]}</b>`) + `<br>💡 ${q.explanation}` + (q.vi?`<br>📖 <i>${q.vi}</i>`:'');
+    if(ok) correct++; else testWrong.push({type:'mcq', idx:i});
+  });
+  DATA.test_transform.forEach((t,i)=>{
+    const id=`ttrans_${i}`; const inp=document.getElementById(id); const fb=document.getElementById('fb_'+id);
+    const val=normalize(inp.value); const acc=(t.accepted||[t.answer]).map(normalize);
+    const ok = val!=='' && acc.includes(val);
+    inp.classList.remove('correct-input','wrong-input'); inp.classList.add(ok?'correct-input':'wrong-input');
+    fb.classList.remove('hidden');
+    fb.innerHTML = (ok?'<span class="text-emerald-700 font-bold">✅ Chính xác!</span>':`<span class="text-rose-600 font-bold">❌ Chưa đúng.</span> Đáp án: <b>${t.answer}</b>`) + `<br>💡 ${t.explanation}<br>📖 <i>${t.vi}</i><br>📐 <b>${t.note}</b>`;
+    if(ok) correct++; else testWrong.push({type:'trans', idx:i});
+  });
+  document.getElementById('testResult').classList.remove('hidden');
+  document.getElementById('testScoreText').textContent = `${correct} / ${total} câu đúng`;
+  document.getElementById('retryTestBtn').classList.toggle('hidden', testWrong.length===0);
+  document.getElementById('testResult').scrollIntoView({behavior:'smooth'});
+}
+function resetTest(){
+  DATA.test_mcq.forEach((q,i)=>{ q.options.forEach((o,j)=>{ const el=document.getElementById(`tmcq_${i}_${j}`); el.classList.remove('selected','correct-opt','wrong-opt'); delete el.dataset.chosen; }); const fb=document.getElementById(`tmcq_fb_${i}`); fb.classList.add('hidden'); fb.innerHTML=''; });
+  DATA.test_transform.forEach((t,i)=>{ const id=`ttrans_${i}`; document.getElementById(id).value=''; document.getElementById(id).classList.remove('correct-input','wrong-input'); const fb=document.getElementById('fb_'+id); fb.classList.add('hidden'); fb.innerHTML=''; });
+  document.getElementById('testResult').classList.add('hidden');
+}
+function retryTestWrong(){
+  if(!testWrong.length) return;
+  alert('Các câu sai vẫn hiển thị màu đỏ ở trên — hãy sửa lại các câu đó rồi bấm "Nộp bài" lần nữa để chấm lại toàn bộ.');
+  document.getElementById('testWrap').scrollIntoView({behavior:'smooth'});
+}
+
+renderComprehension();
+renderDang('dangWrap0', DATA.dangGroups[0].items, 'd0');
+renderDang('dangWrap1', DATA.dangGroups[1].items, 'd1');
+renderDang('dangWrap2', DATA.dangGroups[2].items, 'd2');
+
+renderDictTab();
+renderTest();
+</script>
+</body>
+</html>
