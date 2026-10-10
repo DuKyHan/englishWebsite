@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 4: Ethnic Groups of Viet Nam — SGK</title>
+<style>
+:root{
+  --primary:#4f46e5; --primary-dark:#3730a3; --primary-light:#eef2ff;
+  --green:#16a34a; --green-light:#f0fdf4; --red:#dc2626; --red-light:#fef2f2;
+  --amber:#d97706; --amber-light:#fffbeb; --purple:#7c3aed; --purple-light:#f5f3ff;
+  --ink:#1f2937; --ink-soft:#6b7280; --border:#e5e7eb; --bg:#f8fafc; --card:#ffffff;
+  --radius:14px;
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);}
+a{color:inherit;}
+.app{display:flex;min-height:100vh;}
+.sidebar{width:250px;flex-shrink:0;background:linear-gradient(180deg,var(--primary),var(--primary-dark));color:#fff;padding:20px 14px;position:sticky;top:0;height:100vh;overflow-y:auto;}
+.sidebar h1{font-size:17px;margin:0 0 4px;line-height:1.3;}
+.sidebar .sub{font-size:12px;opacity:.85;margin-bottom:18px;}
+.navbtn{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:transparent;border:none;color:#fff;padding:10px 12px;border-radius:10px;font-size:14px;cursor:pointer;margin-bottom:4px;transition:.15s;}
+.navbtn:hover{background:rgba(255,255,255,.12);}
+.navbtn.active{background:#fff;color:var(--primary-dark);font-weight:600;}
+.main{flex:1;padding:24px 28px 60px;max-width:980px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;margin-bottom:16px;box-shadow:0 1px 2px rgba(0,0,0,.03);}
+.section-title{font-weight:700;font-size:16px;margin-bottom:8px;color:var(--primary-dark);}
+.section-desc{color:var(--ink-soft);font-size:13.5px;margin-bottom:10px;}
+h2.page-h{font-size:22px;margin:0 0 4px;}
+.badge{display:inline-block;background:var(--primary-light);color:var(--primary-dark);font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;margin-right:6px;}
+.btn{display:inline-flex;align-items:center;gap:6px;background:var(--primary);color:#fff;border:none;padding:9px 16px;border-radius:10px;font-size:14px;cursor:pointer;font-weight:600;transition:.15s;}
+.btn:hover{background:var(--primary-dark);}
+.btn.small{padding:5px 11px;font-size:12.5px;}
+.btn.secondary{background:#fff;color:var(--primary);border:1.5px solid var(--primary);}
+.btn.secondary:hover{background:var(--primary-light);}
+.btn.ghost{background:transparent;color:var(--ink-soft);border:1px solid var(--border);}
+.btn:disabled{opacity:.5;cursor:default;}
+.quiz-q{border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px;background:#fff;}
+.quiz-q .qtext{font-weight:600;margin-bottom:8px;line-height:1.5;}
+.opt-item{display:block;width:100%;text-align:left;background:#fff;border:1.5px solid var(--border);padding:9px 12px;border-radius:9px;margin-bottom:6px;cursor:pointer;font-size:14px;transition:.12s;}
+.opt-item:hover{border-color:var(--primary);background:var(--primary-light);}
+.opt-item.correct{background:var(--green-light);border-color:var(--green);color:#14532d;font-weight:600;}
+.opt-item.wrong{background:var(--red-light);border-color:var(--red);color:#7f1d1d;}
+.opt-item.disabled{pointer-events:none;}
+input[type=text].fillin{border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-size:14px;min-width:160px;}
+input[type=text].fillin:focus{outline:none;border-color:var(--primary);}
+.feedback{margin-top:10px;padding:10px 12px;border-radius:10px;font-size:13.5px;display:none;}
+.feedback.show{display:block;}
+.feedback.ok{background:var(--green-light);color:#14532d;border:1px solid #bbf7d0;}
+.feedback.bad{background:var(--red-light);color:#7f1d1d;border:1px solid #fecaca;}
+.explain{margin-top:8px;background:var(--amber-light);border:1px solid #fde68a;color:#78350f;padding:8px 10px;border-radius:8px;font-size:13px;}
+.vi-explain{background:var(--purple-light);border:1px solid #ddd6fe;color:#4c1d95;padding:8px 10px;border-radius:8px;font-size:13px;margin-top:6px;}
+.fill-vi-toggle{background:transparent;border:1px dashed var(--purple);color:var(--purple);font-size:12px;padding:3px 9px;border-radius:7px;cursor:pointer;margin-right:6px;}
+.tf-row{display:flex;gap:8px;margin-top:6px;}
+.tf-btn{flex:1;padding:8px;border-radius:9px;border:1.5px solid var(--border);background:#fff;cursor:pointer;font-weight:600;}
+.tf-btn:hover{border-color:var(--primary);}
+.progressbar{height:10px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin:6px 0;}
+.progressbar > div{height:100%;background:linear-gradient(90deg,var(--primary),var(--purple));}
+.vocab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;}
+.vcard{border:1px solid var(--border);border-radius:12px;padding:12px;background:#fff;}
+.vcard .w{font-weight:700;font-size:15.5px;color:var(--primary-dark);}
+.vcard .ipa{color:var(--ink-soft);font-size:12.5px;}
+.vcard .pos{display:inline-block;background:var(--purple-light);color:var(--purple);font-size:11px;padding:1px 7px;border-radius:6px;margin-left:6px;}
+.vcard .vi{margin:5px 0;font-weight:600;}
+.vcard .ex{font-size:12.5px;color:var(--ink-soft);font-style:italic;}
+.vcard .rowbtns{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+.iconbtn{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;}
+.iconbtn:hover{background:var(--primary-light);}
+.iconbtn.fav.active{background:#fef3c7;border-color:#f59e0b;}
+.flashcard{width:100%;max-width:340px;margin:0 auto;height:190px;perspective:1000px;cursor:pointer;}
+.flashcard-inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d;}
+.flashcard.flipped .flashcard-inner{transform:rotateY(180deg);}
+.flashcard-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;text-align:center;}
+.flashcard-front{background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;font-size:22px;font-weight:700;}
+.flashcard-back{background:#fff;border:2px solid var(--primary);transform:rotateY(180deg);}
+.match-wrap{display:flex;gap:24px;flex-wrap:wrap;}
+.match-col{flex:1;min-width:180px;}
+.match-item{display:block;width:100%;text-align:left;background:#fff;border:1.5px solid var(--border);padding:9px 11px;border-radius:9px;margin-bottom:7px;cursor:pointer;font-size:13.5px;}
+.match-item.picked{border-color:var(--primary);background:var(--primary-light);}
+.match-item.matched{border-color:var(--green);background:var(--green-light);pointer-events:none;opacity:.8;}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:8px 0;}
+table th,table td{border:1px solid var(--border);padding:7px 9px;text-align:left;}
+table th{background:var(--bg);}
+.note-box{background:var(--amber-light);border:1px solid #fde68a;color:#78350f;padding:9px 12px;border-radius:9px;font-size:13.5px;margin:8px 0;}
+.sentence-block{border-left:3px solid var(--primary);padding:8px 0 8px 14px;margin-bottom:10px;}
+.sentence-en{font-size:14.5px;}
+.sentence-vi{color:var(--purple);font-size:13.5px;margin-top:3px;display:none;}
+.sentence-vi.show{display:block;}
+.chip{display:inline-block;background:var(--primary-light);color:var(--primary-dark);padding:2px 9px;border-radius:8px;font-size:12px;margin:2px 4px 2px 0;}
+.dialog-row{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start;}
+.dialog-sp{font-weight:700;color:var(--primary-dark);min-width:56px;}
+.dialog-en{flex:1;}
+.tabs-mobile{display:none;}
+.topbar{display:none;}
+.mistake-card{border-left:4px solid var(--red);background:var(--red-light);border-radius:10px;padding:12px;margin-bottom:10px;}
+.tag-difficulty{font-size:11px;padding:2px 8px;border-radius:999px;font-weight:700;}
+.tag-must{background:#fee2e2;color:#991b1b;}
+.tag-should{background:#fef3c7;color:#92400e;}
+@media (max-width:820px){
+  .app{flex-direction:column;}
+  .sidebar{display:none;}
+  .topbar{display:flex;position:sticky;top:0;z-index:30;background:linear-gradient(90deg,var(--primary),var(--primary-dark));color:#fff;padding:12px 14px;align-items:center;justify-content:space-between;}
+  .topbar h1{font-size:15px;margin:0;}
+  .tabs-mobile{display:flex;overflow-x:auto;gap:6px;padding:10px 10px 4px;background:#fff;border-bottom:1px solid var(--border);position:sticky;top:48px;z-index:29;}
+  .tabs-mobile button{flex-shrink:0;padding:7px 12px;border-radius:999px;border:1px solid var(--border);background:#fff;font-size:12.5px;cursor:pointer;}
+  .tabs-mobile button.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+  .main{padding:14px;}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="sidebar" id="sidebarNav"></div>
+  <div class="topbar"><h1>Unit 4: Ethnic Groups of Viet Nam — SGK</h1><span>📱</span></div>
+  <div class="tabs-mobile" id="tabsMobile"></div>
+  <div class="main" id="mainArea"></div>
+</div>
+
+<script>
+const DATA = {"id": 4, "title": "ETHNIC GROUPS OF VIET NAM", "theme": "Các dân tộc ở Việt Nam", "includes": {"vocabulary": "The lifestyle of ethnic groups (Đời sống của các dân tộc thiểu số)", "pronunciation": "Sounds /k/ and /g/", "grammar": "Yes/No &amp; Wh-questions; Countable &amp; uncountable nouns", "skills": ["Đọc hiểu về nhà sàn", "Nói về loại nhà mà mình đang sống", "Nghe về cuộc sống của trẻ em dân tộc thiểu số", "Viết đoạn văn về những việc mình làm để giúp đỡ gia đình"], "everydayEnglish": "Giving opinions (Nêu ý kiến)"}, "dialogue": [{"sp": "Tom", "en": "Hi, I'm Tom. You look new here.", "vi": "Chào bạn, mình là Tom. Trông bạn có vẻ mới ở đây."}, {"sp": "Lai", "en": "I am. I'm Lai from Ha Giang.", "vi": "Đúng vậy. Mình là Lai, đến từ Hà Giang."}, {"sp": "Tom", "en": "Oh, I've heard about beautiful Ha Giang. Do you live in the mountains?", "vi": "Ồ, mình có nghe nói về Hà Giang xinh đẹp. Bạn sống trên núi à?"}, {"sp": "Lai", "en": "Yes, I do. I'm from the Tay ethnic group. We are the second largest ethnic group in Viet Nam, only after the Kinh.", "vi": "Đúng vậy. Mình thuộc dân tộc Tày. Chúng mình là dân tộc đông thứ hai ở Việt Nam, chỉ sau dân tộc Kinh."}, {"sp": "Tom", "en": "Oh ... I once saw a bamboo house on high posts in a travel brochure. Do you live in a home like that?", "vi": "Ồ... mình từng thấy một ngôi nhà tre trên những cây cột cao trong một tờ rơi du lịch. Bạn có sống trong ngôi nhà như vậy không?"}, {"sp": "Lai", "en": "Yes, we call it a \"stilt house\". Our house overlooks terraced fields.", "vi": "Có, bọn mình gọi đó là \"nhà sàn\". Nhà mình nhìn ra những thửa ruộng bậc thang."}, {"sp": "Tom", "en": "Awesome. What is life like in your village?", "vi": "Tuyệt quá. Cuộc sống ở làng bạn như thế nào?"}, {"sp": "Lai", "en": "It's peaceful. There are 16 houses in my village. We live very close to nature.", "vi": "Rất yên bình. Làng mình có 16 ngôi nhà. Bọn mình sống rất gần gũi với thiên nhiên."}, {"sp": "Tom", "en": "I love it. Can you tell me something about your culture?", "vi": "Mình thích điều đó. Bạn có thể kể cho mình nghe về văn hóa của bạn không?"}, {"sp": "Lai", "en": "Certainly. We have our own culture. You can see it in our folk dances, musical instruments like the đàn tính, and our special five-colour sticky rice.", "vi": "Được chứ. Bọn mình có nền văn hóa riêng. Bạn có thể thấy điều đó qua các điệu múa dân gian, các loại nhạc cụ như đàn tính, và món xôi ngũ sắc đặc biệt của bọn mình."}, {"sp": "Tom", "en": "It sounds interesting. I hope to visit Ha Giang one day.", "vi": "Nghe thú vị quá. Mình hy vọng sẽ được đến thăm Hà Giang một ngày nào đó."}], "dialogueMCQ": [{"q": "What are Tom and Lai talking about?", "qVi": "Tom và Lai đang nói về điều gì?", "opts": ["Minority groups in Viet Nam.", "Ha Giang.", "Life of the Tay people."], "optsVi": ["Các dân tộc thiểu số ở Việt Nam.", "Hà Giang.", "Cuộc sống của người Tày."], "a": 2, "exp": "Cả đoạn hội thoại xoay quanh việc Lai kể về dân tộc Tày, nhà sàn, làng và văn hóa của mình."}, {"q": "A \"stilt house\" ___.", "qVi": "Một 'nhà sàn' ___.", "opts": ["is a multi-storey home", "is on high posts", "always faces a field"], "optsVi": ["là nhà nhiều tầng", "được dựng trên những cây cột cao", "luôn hướng ra cánh đồng"], "a": 1, "exp": "'...a bamboo house on high posts... we call it a stilt house.'"}, {"q": "Lai mentions ___ of the Tay people.", "qVi": "Lai có nhắc đến ___ của người Tày.", "opts": ["folk dances", "popular festivals", "costumes"], "optsVi": ["các điệu múa dân gian", "các lễ hội phổ biến", "trang phục"], "a": 0, "exp": "'You can see it in our folk dances, musical instruments...'"}], "gettingStartedFill": {"box": ["overlooks", "traditional", "folk dance", "ethnic groups", "musical instrument"], "items": [{"s": "I love mua sạp, a popular ___ of the Thai people.", "a": "folk dance", "qVi": "Tôi thích múa sạp, một điệu múa dân gian nổi tiếng của người Thái.", "exp": "'folk dance' (điệu múa dân gian) phù hợp vì múa sạp là một loại hình múa truyền thống, dân gian của người Thái."}, {"s": "Their beautiful stilt house ___ a large rice field.", "a": "overlooks", "qVi": "Ngôi nhà sàn xinh đẹp của họ nhìn ra một cánh đồng lúa rộng lớn.", "exp": "'overlook' nghĩa là nhìn xuống/nhìn ra một khung cảnh từ trên cao, phù hợp với vị trí của nhà sàn."}, {"s": "A: What is the name of a popular Tay's ___? B: It's đàn tính.", "a": "musical instrument", "qVi": "A: Tên của một loại nhạc cụ nổi tiếng của người Tày là gì? B: Đó là đàn tính.", "exp": "'musical instrument' (nhạc cụ) phù hợp vì đàn tính là một loại nhạc cụ truyền thống của người Tày."}, {"s": "Every ethnic group has their own ___ culture.", "a": "traditional", "qVi": "Mỗi dân tộc đều có nền văn hóa truyền thống riêng của mình.", "exp": "'traditional' (truyền thống) là tính từ đứng trước danh từ 'culture' để mô tả nền văn hóa lâu đời của mỗi dân tộc."}, {"s": "Of the 54 ___ in Viet Nam, the Kinh is the largest.", "a": "ethnic groups", "qVi": "Trong số 54 dân tộc ở Việt Nam, người Kinh là dân tộc đông dân nhất.", "exp": "'ethnic groups' (các dân tộc) phù hợp vì câu đang nói về 54 dân tộc tại Việt Nam."}]}, "farmActivities": [{"en": "stilt house", "vi": "nhà sàn"}, {"en": "terraced fields", "vi": "ruộng bậc thang"}, {"en": "communal house", "vi": "nhà rông / nhà cộng đồng"}, {"en": "five-colour sticky rice", "vi": "xôi ngũ sắc"}, {"en": "weave clothing", "vi": "dệt vải"}, {"en": "raise livestock", "vi": "chăn nuôi gia súc"}], "closerLook1": {"defMatch": [{"w": "minority group", "def": "a group smaller in size than other groups in the same country", "vi": "dân tộc thiểu số"}, {"w": "livestock", "def": "the animals we keep on a farm like cows and sheep", "vi": "gia súc, vật nuôi"}, {"w": "gardening", "def": "work like growing, watering, weeding, and harvesting", "vi": "công việc làm vườn"}, {"w": "gong", "def": "a traditional musical instrument", "vi": "cồng, chiêng"}, {"w": "communal house", "def": "a large room for community activities", "vi": "nhà rông, nhà cộng đồng"}], "vocabFill": [{"s": "It's interesting to learn about the ___ of an ethnic group's traditional culture.", "a": "unique features", "qVi": "Thật thú vị khi tìm hiểu về những nét đặc trưng riêng trong văn hóa truyền thống của một dân tộc.", "exp": "'unique features' (những nét đặc trưng riêng) diễn tả những điểm riêng biệt, không lẫn với dân tộc khác."}, {"s": "Most mountain girls know how to ___ clothing.", "a": "weave", "qVi": "Hầu hết các cô gái vùng núi đều biết dệt vải.", "exp": "'weave' (dệt) là động từ chỉ hành động dệt vải, phù hợp với ngữ cảnh làm trang phục."}, {"s": "The Cham in Ninh Thuan ___ sheep and cows.", "a": "raise", "qVi": "Người Chăm ở Ninh Thuận nuôi cừu và bò.", "exp": "'raise' (nuôi/chăn nuôi) dùng với vật nuôi như cừu, bò."}, {"s": "A ___ is for community meetings and events.", "a": "communal house", "qVi": "Nhà rông/nhà cộng đồng dùng cho các cuộc họp và sự kiện của cả bản làng.", "exp": "'communal house' (nhà cộng đồng/nhà rông) là nơi sinh hoạt chung của cả cộng đồng."}, {"s": "There are fewer Nung than Kinh, so they are an ethnic ___.", "a": "minority group", "qVi": "Có ít người Nùng hơn người Kinh, vì vậy họ là một dân tộc thiểu số.", "exp": "'minority group' (dân tộc thiểu số) chỉ nhóm dân tộc có số dân ít hơn so với dân tộc đa số."}, {"s": "Children in both the lowlands and highlands help raise their family's ___.", "a": "livestock", "qVi": "Trẻ em ở cả vùng thấp và vùng cao đều giúp gia đình chăn nuôi gia súc.", "exp": "'livestock' (gia súc/vật nuôi) là danh từ không đếm được chỉ chung các loài vật nuôi trong gia đình."}], "pronSymbols": ["/k/", "/g/"], "pronGroups": [{"symbol": "/k/", "words": ["cultural", "communal", "musical", "folk", "overlook"]}, {"symbol": "/g/", "words": ["gong", "garden", "gathering", "tiger", "pig"]}], "pronSentences": ["The kitchen is for family gatherings.", "Tigers and monkeys live in the forest.", "I love five-colour sticky rice.", "Yesterday, we harvested cucumbers from our garden.", "Most girls know how to cook."], "picMatch": {"title": "A Closer Look 1 — Bài 1: Viết từ/cụm từ trong khung dưới mỗi hình (ghép từ với mô tả)", "items": [{"en": "Rong house", "vi": "nhà Rông — nhà cộng đồng lớn của người Ba Na, Ê Đê ở Tây Nguyên"}, {"en": "bamboo flute", "vi": "sáo trúc — nhạc cụ làm từ tre/trúc"}, {"en": "gong", "vi": "cồng, chiêng — nhạc cụ truyền thống bằng đồng"}, {"en": "terraced fields", "vi": "ruộng bậc thang — ruộng trồng lúa trên sườn núi"}, {"en": "weaving", "vi": "dệt vải — hoạt động tạo ra vải bằng khung cửi"}, {"en": "wooden statue", "vi": "tượng gỗ — tượng khắc từ gỗ, thường thấy ở nhà mồ Tây Nguyên"}]}}, "grammar": {"title": "Grammar Made Easy — Questions &amp; Countable/Uncountable Nouns (Câu hỏi Yes/No, Wh- và danh từ đếm được/không đếm được)", "rule": ["<b>1. CÂU HỎI YES/NO (Yes/No questions)</b> — dùng để hỏi mà câu trả lời chỉ là Có/Không. Cách tạo tùy theo loại động từ trong câu:<br>&nbsp;&nbsp;• Với động từ <b>to be</b> (am/is/are/was/were): đảo <i>be</i> lên trước chủ ngữ. Ví dụ: <i>They are farmers.</i> → <i>Are they farmers?</i><br>&nbsp;&nbsp;• Với <b>động từ khuyết thiếu</b> (can/could/will/would/should/must/may...): đảo trợ động từ đó lên trước chủ ngữ. Ví dụ: <i>They can weave.</i> → <i>Can they weave?</i><br>&nbsp;&nbsp;• Với <b>động từ thường ở hiện tại đơn</b>: dùng <b>Do/Does</b> + S + V(nguyên thể)...? (Does dùng khi chủ ngữ là he/she/it/số ít). Ví dụ: <i>She lives in Ha Giang.</i> → <i>Does she live in Ha Giang?</i><br>&nbsp;&nbsp;• Với <b>động từ thường ở quá khứ đơn</b>: dùng <b>Did</b> + S + V(nguyên thể)...? — động từ chính LUÔN về dạng nguyên thể, không chia quá khứ nữa. Ví dụ: <i>They attended the festival.</i> → <i>Did they attend the festival?</i><br>&nbsp;&nbsp;• Với các thì có <b>have/has/had</b> (hiện tại/quá khứ hoàn thành) hoặc <b>will</b> (tương lai đơn): đảo have/has/had/will lên trước chủ ngữ. Ví dụ: <i>We will watch a documentary.</i> → <i>Will we watch a documentary?</i><br>&nbsp;&nbsp;• <b>Trả lời ngắn:</b> Yes, S + trợ động từ. / No, S + trợ động từ + not. Ví dụ: <i>Yes, she does. / No, she doesn't.</i>", "<b>2. CÂU HỎI WH- (Wh-questions)</b> — dùng để hỏi lấy thông tin cụ thể (không phải chỉ Có/Không). Công thức chung:<br>&nbsp;&nbsp;<b>Từ để hỏi (Wh-word) + trợ động từ + chủ ngữ + động từ (+ tân ngữ)...?</b><br>&nbsp;&nbsp;Ví dụ: <i>Where do you live?</i> — <i>What did you do last October?</i> — <i>How old are minority children when they start helping their family?</i><br>&nbsp;&nbsp;<b>Bảng các từ để hỏi thường gặp:</b><br>&nbsp;&nbsp;• <b>What</b> — cái gì / hỏi chung, không giới hạn lựa chọn. <i>What do you think about...?</i><br>&nbsp;&nbsp;• <b>Which</b> — cái nào / dùng khi hỏi CHỌN LỰA giữa các phương án CỤ THỂ đã được nhắc tới trước đó. <i>Which festival is more important: the Mid-Autumn or the Lunar New Year?</i><br>&nbsp;&nbsp;• <b>Who</b> — ai (hỏi người). <b>Whose</b> — của ai (hỏi sở hữu).<br>&nbsp;&nbsp;• <b>Where</b> — ở đâu (hỏi địa điểm). <b>When</b> — khi nào (hỏi thời gian).<br>&nbsp;&nbsp;• <b>Why</b> — tại sao (hỏi lý do, thường trả lời bằng <i>Because...</i>).<br>&nbsp;&nbsp;• <b>How</b> — như thế nào/bằng cách nào. Các biến thể quan trọng: <b>How many</b> + danh từ ĐẾM ĐƯỢC số nhiều (hỏi số lượng đếm được), <b>How much</b> + danh từ KHÔNG ĐẾM ĐƯỢC (hỏi số lượng không đếm được), <b>How old</b> (hỏi tuổi), <b>How tall/long/far</b> (hỏi chiều cao/độ dài/khoảng cách).<br>&nbsp;&nbsp;<b>Mẹo phân biệt What vs Which:</b> nếu câu hỏi KHÔNG đưa ra sẵn các lựa chọn → dùng <i>What</i>; nếu câu hỏi đưa ra sẵn 2-3 lựa chọn cụ thể để chọn → dùng <i>Which</i>.", "<b>3. DANH TỪ ĐẾM ĐƯỢC (Countable nouns)</b> — là những vật/sự việc có thể đếm được bằng số cụ thể, có cả dạng số ít và số nhiều. Ví dụ: <i>a book → two books, one ethnic group → many ethnic groups</i>. Dấu hiệu nhận biết: có thể đi sau <b>a/an</b> (số ít) hoặc có thể thêm <b>-s/-es</b> để thành số nhiều.", "<b>4. DANH TỪ KHÔNG ĐẾM ĐƯỢC (Uncountable nouns)</b> — là những vật/chất liệu/khái niệm trừu tượng KHÔNG đếm được bằng số cụ thể (thường coi là một khối/lượng), KHÔNG có dạng số nhiều, KHÔNG đi với a/an. Ví dụ hay gặp trong Unit 4: <i>land (đất đai), soil (đất/thổ nhưỡng), ash (tro), information (thông tin), housework (việc nhà), water (nước), rice (gạo/cơm), livestock (gia súc — dùng như danh từ tập hợp không đếm được)</i>.", "<b>5. BẢNG LƯỢNG TỪ ĐI KÈM (quantifiers)</b> — chọn lượng từ phải khớp với loại danh từ đứng sau:<br>&nbsp;&nbsp;• <b>a / an</b> — chỉ đi với danh từ ĐẾM ĐƯỢC số ít. <i>a coffee plantation</i>.<br>&nbsp;&nbsp;• <b>many / a few / several / a number of</b> — đi với danh từ ĐẾM ĐƯỢC số nhiều. <i>many ethnic groups, a few waterwheels</i>.<br>&nbsp;&nbsp;• <b>much / a little / a great deal of</b> — đi với danh từ KHÔNG ĐẾM ĐƯỢC. <i>much information, a little water</i>.<br>&nbsp;&nbsp;• <b>some / any / a lot of / lots of / plenty of</b> — đi được với CẢ HAI loại danh từ. <i>some crops (đếm được) / some water (không đếm được)</i>.<br>&nbsp;&nbsp;• Hỏi số lượng: <b>How many</b> + danh từ đếm được số nhiều...? — <b>How much</b> + danh từ không đếm được...?", "<b>6. LỖI SAI HỌC SINH THƯỜNG MẮC (rất quan trọng — cần nhớ kỹ)</b>:<br>&nbsp;&nbsp;❌ Dùng <i>much</i> với danh từ đếm được: <i>much land</i> ✅ ĐÚNG (vì <i>land</i> không đếm được) nhưng <i>much people</i> ❌ SAI → phải là <i>many people</i> (vì <i>people</i> đếm được).<br>&nbsp;&nbsp;❌ Thêm <b>-s</b> vào danh từ không đếm được: <i>informations</i> ❌, <i>houseworks</i> ❌ — các từ này KHÔNG BAO GIỜ có số nhiều.<br>&nbsp;&nbsp;❌ Quên trợ động từ <i>do/does/did</i> khi lập câu hỏi Yes/No hoặc Wh- với động từ thường (không phải <i>to be</i>).<br>&nbsp;&nbsp;❌ Nhầm <i>What</i> và <i>Which</i> khi câu hỏi đã đưa ra sẵn các lựa chọn cụ thể (phải dùng <i>Which</i>)."], "exercises": [{"type": "fill", "title": "Exercise 1 — Change into Yes/No questions", "items": [{"s": "Women play an important role in a Jrai family. → ___", "a": "Do women play an important role in a Jrai family?", "qVi": "Phụ nữ đóng vai trò quan trọng trong gia đình người Jrai. → Phụ nữ có đóng vai trò quan trọng trong gia đình người Jrai không?", "exp": "Câu gốc dùng động từ thường 'play' ở thì hiện tại đơn nên câu hỏi Yes/No cần trợ động từ 'Do' đứng đầu câu: Do + S + V(nguyên thể)...?"}, {"s": "Mua sạp is a popular folk dance of the Thai people. → ___", "a": "Is mua sạp a popular folk dance of the Thai people?", "qVi": "Múa sạp là một điệu múa dân gian nổi tiếng của người Thái. → Múa sạp có phải là một điệu múa dân gian nổi tiếng của người Thái không?", "exp": "Câu gốc dùng động từ 'to be' (is) nên khi chuyển thành câu hỏi Yes/No chỉ cần đảo 'is' lên trước chủ ngữ: Is + S + ...?"}, {"s": "We didn't have boarding schools for minority students in 1950. → ___", "a": "Didn't we have boarding schools for minority students in 1950?", "qVi": "Chúng tôi đã không có trường nội trú cho học sinh dân tộc thiểu số vào năm 1950. → Chẳng phải chúng tôi đã không có trường nội trú cho học sinh dân tộc thiểu số vào năm 1950 sao?", "exp": "Câu gốc ở thể phủ định quá khứ đơn với 'didn't', nên câu hỏi Yes/No dùng dạng phủ định rút gọn 'Didn't' đứng đầu câu: Didn't + S + V(nguyên thể)...?"}, {"s": "I attended the Ban Flower Festival in Dien Bien last year. → ___", "a": "Did I attend the Ban Flower Festival in Dien Bien last year?", "qVi": "Tôi đã tham dự Lễ hội Hoa Ban ở Điện Biên năm ngoái. → Tôi có tham dự Lễ hội Hoa Ban ở Điện Biên năm ngoái không?", "exp": "Câu gốc ở thì quá khứ đơn với động từ thường 'attended', nên câu hỏi Yes/No cần trợ động từ 'Did' và động từ trở về nguyên thể: Did + S + V(nguyên thể)...?"}, {"s": "We will watch a documentary about the Khmer. → ___", "a": "Will we watch a documentary about the Khmer?", "qVi": "Chúng tôi sẽ xem một bộ phim tài liệu về người Khmer. → Chúng tôi có sẽ xem một bộ phim tài liệu về người Khmer không?", "exp": "Câu gốc dùng thì tương lai đơn với 'will', nên câu hỏi Yes/No chỉ cần đảo 'will' lên trước chủ ngữ: Will + S + V(nguyên thể)...?"}]}, {"type": "mcq", "title": "Exercise 2 — Choose the correct question word", "items": [{"q": "___ do you like best about Sa Pa? — I like its local markets best.", "qVi": "___ bạn thích nhất ở Sa Pa? — Mình thích các phiên chợ ở đó nhất.", "opts": ["Why", "What"], "optsVi": ["Tại sao", "Cái gì"], "a": 1, "exp": "Trả lời nêu MỘT ĐIỀU cụ thể (local markets) → hỏi bằng 'What'."}, {"q": "___ can we find the most beautiful terraced fields? — In Mu Cang Chai.", "qVi": "___ chúng ta có thể tìm thấy ruộng bậc thang đẹp nhất? — Ở Mù Cang Chải.", "opts": ["When", "Where"], "optsVi": ["Khi nào", "Ở đâu"], "a": 1, "exp": "Trả lời là một địa điểm → hỏi bằng 'Where'."}, {"q": "___ is the Ban Flower Festival? — It's in spring.", "qVi": "___ diễn ra Lễ hội Hoa Ban? — Vào mùa xuân.", "opts": ["When", "Why"], "optsVi": ["Khi nào", "Tại sao"], "a": 0, "exp": "Trả lời là thời gian → hỏi bằng 'When'."}, {"q": "___ tall is an average stilt house? — About 5-6 metres tall.", "qVi": "Một ngôi nhà sàn trung bình cao ___? — Khoảng 5-6 mét.", "opts": ["How", "What"], "optsVi": ["(để hỏi mức độ, kích thước)", "(sai — không đi với 'tall' theo cách này)"], "a": 0, "exp": "'How tall...?' là cấu trúc hỏi chiều cao chuẩn."}, {"q": "___ festival is more important for the Kinh: the Mid-Autumn or the Lunar New Year? — The Lunar New Year.", "qVi": "Lễ hội ___ quan trọng hơn với người Kinh: Trung Thu hay Tết Nguyên Đán? — Tết Nguyên Đán.", "opts": ["What", "Which"], "optsVi": ["(hỏi chung chung)", "(hỏi chọn lựa giữa các lựa chọn cụ thể đã cho)"], "a": 1, "exp": "Khi hỏi để CHỌN giữa các lựa chọn cụ thể đã nêu ra, dùng 'Which' thay vì 'What'."}]}, {"type": "mcq", "title": "Exercise 3 — Countable or Uncountable noun?", "items": [{"q": "Some minority groups are farmers.", "opts": ["Countable (đếm được)", "Uncountable (không đếm được)"], "a": 0, "exp": "'groups' có dạng số nhiều → đếm được.", "qVi": "Một số dân tộc thiểu số làm nông dân.", "optsVi": ["Đếm được (đúng)", "Không đếm được"]}, {"q": "They do not have much land.", "opts": ["Countable (đếm được)", "Uncountable (không đếm được)"], "a": 1, "exp": "'land' (đất đai) không có dạng số nhiều → không đếm được.", "qVi": "Họ không có nhiều đất đai.", "optsVi": ["Đếm được", "Không đếm được (đúng)"]}, {"q": "After finding an area for a garden...", "opts": ["Countable (đếm được)", "Uncountable (không đếm được)"], "a": 0, "exp": "'an area' có mạo từ 'an' → đếm được.", "qVi": "Sau khi tìm được một khu đất để làm vườn...", "optsVi": ["Đếm được (đúng)", "Không đếm được"]}, {"q": "...the men cut down and burn the trees on it.", "opts": ["Countable (đếm được)", "Uncountable (không đếm được)"], "a": 0, "exp": "'trees' có dạng số nhiều → đếm được.", "qVi": "...những người đàn ông chặt và đốt cây trên khu đất đó.", "optsVi": ["Đếm được (đúng)", "Không đếm được"]}, {"q": "Then they collect the ash which helps enrich the soil.", "opts": ["Countable (đếm được)", "Uncountable (không đếm được)"], "a": 1, "exp": "'ash' (tro) không có dạng số nhiều → không đếm được.", "qVi": "Sau đó họ thu gom tro, thứ giúp làm giàu cho đất.", "optsVi": ["Đếm được", "Không đếm được (đúng)"]}, {"q": "They then grow a few crops like rice and corn.", "opts": ["Countable (đếm được)", "Uncountable (không đếm được)"], "a": 0, "exp": "'crops' có dạng số nhiều, đi với 'a few' → đếm được.", "qVi": "Sau đó họ trồng một vài loại cây như lúa và ngô.", "optsVi": ["Đếm được (đúng)", "Không đếm được"]}, {"q": "When the soil becomes poor...", "opts": ["Countable (đếm được)", "Uncountable (không đếm được)"], "a": 1, "exp": "'soil' (đất, thổ nhưỡng) không có dạng số nhiều → không đếm được.", "qVi": "Khi đất trở nên bạc màu...", "optsVi": ["Đếm được", "Không đếm được (đúng)"]}, {"q": "...they move to a new place.", "opts": ["Countable (đếm được)", "Uncountable (không đếm được)"], "a": 0, "exp": "'a place' có mạo từ 'a' → đếm được.", "qVi": "...họ chuyển đến một nơi ở mới.", "optsVi": ["Đếm được (đúng)", "Không đếm được"]}]}, {"type": "mcq", "title": "Exercise 4 — Choose a, much, many, a little, or a few", "items": [{"q": "My uncle has ___ coffee plantation in Kon Tum.", "qVi": "Chú mình có ___ đồn điền cà phê ở Kon Tum.", "opts": ["a", "much", "many", "a little", "a few"], "optsVi": ["một (danh từ số ít)", "nhiều (không đếm được)", "nhiều (đếm được)", "một chút (không đếm được)", "một vài (đếm được)"], "a": 0, "exp": "'a coffee plantation' — danh từ số ít, đếm được → dùng 'a'."}, {"q": "How ___ ethnic groups live on the Hoang Lien Son mountain range?", "qVi": "Có bao nhiêu dân tộc sinh sống trên dãy Hoàng Liên Sơn?", "opts": ["a", "much", "many", "a little", "a few"], "optsVi": ["một", "nhiều (không đếm được)", "nhiều (đếm được)", "một chút", "một vài"], "a": 2, "exp": "'ethnic groups' đếm được, số nhiều → 'How many'."}, {"q": "There are only ___ waterwheels left in my village.", "qVi": "Chỉ còn lại ___ guồng nước ở làng mình.", "opts": ["a", "much", "many", "a little", "a few"], "optsVi": ["một", "nhiều (không đếm được)", "nhiều (đếm được)", "một chút", "một vài"], "a": 4, "exp": "'waterwheels' đếm được, số lượng ít, còn sót lại → 'a few'."}, {"q": "You should add ___ more water to your noodles. It's a bit dry.", "qVi": "Bạn nên cho thêm ___ nước vào mì. Nó hơi khô.", "opts": ["a", "much", "many", "a little", "a few"], "optsVi": ["một", "nhiều (không đếm được)", "nhiều (đếm được)", "một chút", "một vài"], "a": 3, "exp": "'water' không đếm được, cần một lượng nhỏ → 'a little'."}, {"q": "How ___ information about the Van Kieu have you collected?", "qVi": "Bạn đã thu thập được bao nhiêu thông tin về người Vân Kiều?", "opts": ["a", "much", "many", "a little", "a few"], "optsVi": ["một", "nhiều (không đếm được)", "nhiều (đếm được)", "một chút", "một vài"], "a": 1, "exp": "'information' không đếm được → 'How much'."}]}], "game": {"title": "A Closer Look 2 — GAME: Word games (Trò chơi từ vựng)", "instruction": "Work in groups. Think of six nouns related to each of the topics below, in which three nouns are countable and three are uncountable. The group that comes up with the correct six words first wins.", "instructionVi": "Làm việc theo nhóm. Nghĩ ra 6 danh từ liên quan đến mỗi chủ đề dưới đây, trong đó 3 danh từ đếm được và 3 danh từ không đếm được. Nhóm nào tìm đủ 6 từ đúng nhanh nhất sẽ thắng.", "topics": [{"topic": "Leisure time (Thời gian rảnh)", "countable": ["book (quyển sách)", "game (trò chơi)", "hobby (sở thích)"], "uncountable": ["music (âm nhạc)", "relaxation (sự thư giãn)", "entertainment (giải trí)"]}, {"topic": "Living in the mountains (Cuộc sống ở vùng núi)", "countable": ["mountain (ngọn núi)", "house (ngôi nhà)", "animal (con vật)"], "uncountable": ["air (không khí)", "land (đất đai)", "oxygen (ô-xy)"]}], "note": "Đây là gợi ý đáp án mẫu — trò chơi có nhiều đáp án đúng khác nhau, miễn là đúng 3 danh từ đếm được + 3 danh từ không đếm được cho mỗi chủ đề."}, "bonusPractice": {"title": "🌱 Luyện tập thêm (Bonus Practice) — dành cho bạn nào cần củng cố kiến thức", "note": "Đây là các câu hỏi trắc nghiệm ĐƠN GIẢN HƠN, làm thêm ngoài 4 bài tập chính của sách, giúp các bạn còn yếu về câu hỏi Yes/No, Wh- và danh từ đếm được/không đếm được nắm chắc kiến thức cơ bản trước khi làm lại các bài Ex1-Ex4 ở trên.", "items": [{"q": "Choose the correct Yes/No question for: 'She lives in Ha Giang.'", "qVi": "Chọn câu hỏi Yes/No đúng cho câu: 'She lives in Ha Giang.'", "opts": ["Does she lives in Ha Giang?", "Does she live in Ha Giang?", "Is she live in Ha Giang?"], "optsVi": ["sai — động từ chính không được chia khi đã có 'does'", "đúng", "sai — không dùng 'is' với động từ thường"], "a": 1, "exp": "Động từ thường 'live' ở hiện tại đơn, chủ ngữ 'she' (số ít) → dùng 'Does' + S + V(nguyên thể): 'Does she live...?'."}, {"q": "Choose the correct Yes/No question for: 'They attended the festival.'", "qVi": "Chọn câu hỏi Yes/No đúng cho câu: 'They attended the festival.'", "opts": ["Did they attend the festival?", "Did they attended the festival?", "Do they attend the festival?"], "optsVi": ["đúng", "sai — động từ phải về nguyên thể sau 'did'", "sai — câu gốc ở quá khứ, không phải hiện tại"], "a": 0, "exp": "Câu gốc ở quá khứ đơn ('attended') → dùng 'Did' + S + V(nguyên thể): 'Did they attend...?'."}, {"q": "___ do you live? — In a small village in Sa Pa.", "qVi": "___ bạn sống ở đâu? — Ở một ngôi làng nhỏ tại Sa Pa.", "opts": ["What", "Where", "When"], "optsVi": ["Cái gì", "Ở đâu", "Khi nào"], "a": 1, "exp": "Trả lời là một địa điểm (a small village) → hỏi bằng 'Where'."}, {"q": "___ is your birthday? — It's in June.", "qVi": "___ là sinh nhật của bạn? — Vào tháng Sáu.", "opts": ["When", "Why", "Who"], "optsVi": ["Khi nào", "Tại sao", "Ai"], "a": 0, "exp": "Trả lời là thời gian (in June) → hỏi bằng 'When'."}, {"q": "___ colour do you like, red or blue? — I like red.", "qVi": "Bạn thích màu ___, đỏ hay xanh? — Mình thích màu đỏ.", "opts": ["What", "Which"], "optsVi": ["hỏi chung chung", "hỏi chọn giữa các lựa chọn đã cho (đúng)"], "a": 1, "exp": "Câu hỏi đưa ra sẵn 2 lựa chọn cụ thể (red or blue) → dùng 'Which' thay vì 'What'."}, {"q": "Which word is an UNCOUNTABLE noun?", "qVi": "Từ nào dưới đây là danh từ KHÔNG ĐẾM ĐƯỢC?", "opts": ["book", "rice", "chair"], "optsVi": ["quyển sách (đếm được)", "gạo/cơm (không đếm được — đúng)", "cái ghế (đếm được)"], "a": 1, "exp": "'rice' (gạo/cơm) không có dạng số nhiều, không đi với a/an → là danh từ không đếm được. 'book' và 'chair' đều đếm được (a book, a chair)."}, {"q": "I don't have ___ money to buy a new bike.", "qVi": "Mình không có ___ tiền để mua xe đạp mới.", "opts": ["many", "much"], "optsVi": ["nhiều (dùng cho danh từ đếm được)", "nhiều (dùng cho danh từ không đếm được — đúng)"], "a": 1, "exp": "'money' (tiền) là danh từ không đếm được → dùng 'much', không dùng 'many'."}, {"q": "There are ___ students in my class who come from ethnic minority groups.", "qVi": "Có ___ bạn học sinh trong lớp mình đến từ các dân tộc thiểu số.", "opts": ["much", "many"], "optsVi": ["nhiều (không đếm được)", "nhiều (đếm được — đúng)"], "a": 1, "exp": "'students' có dạng số nhiều (đếm được) → dùng 'many', không dùng 'much'."}]}}, "dialogueTitle": "I'm from the Tay ethnic group.", "chatMine": ["Lai"], "farmActivitiesLabel": "🏔️ Đời sống dân tộc thiểu số", "gameFillItems": [{"s": "We call it a ___. Our house overlooks terraced fields.", "a": "stilt house", "qVi": "Chúng tôi gọi nó là nhà sàn. Nhà của chúng tôi nhìn ra những cánh đồng ruộng bậc thang.", "exp": "'stilt house' (nhà sàn) là loại nhà được dựng trên các cột cao, phổ biến ở vùng núi."}, {"s": "Most mountain girls know how to ___ clothing.", "a": "weave", "qVi": "Hầu hết các cô gái vùng núi đều biết dệt vải.", "exp": "'weave' (dệt) là động từ chỉ hành động dệt vải thành trang phục."}, {"s": "A ___ is for community meetings and events.", "a": "communal house", "qVi": "Nhà rông/nhà cộng đồng dùng cho các cuộc họp và sự kiện của cả bản làng.", "exp": "'communal house' (nhà cộng đồng/nhà rông) là nơi sinh hoạt và tổ chức sự kiện chung của bản làng."}, {"s": "There are fewer Nung than Kinh, so they are an ethnic ___.", "a": "minority group", "qVi": "Có ít người Nùng hơn người Kinh, vì vậy họ là một dân tộc thiểu số.", "exp": "'minority group' (dân tộc thiểu số) chỉ dân tộc có dân số ít hơn dân tộc đa số."}, {"s": "The Khmer do farm work and produce ___.", "a": "handicrafts", "qVi": "Người Khmer làm nông và sản xuất đồ thủ công.", "exp": "'handicrafts' (đồ thủ công) là các sản phẩm làm bằng tay, phù hợp với hoạt động sản xuất của người Khmer."}, {"s": "Many minority groups ___ cows and buffaloes for a living.", "a": "raise", "qVi": "Nhiều dân tộc thiểu số nuôi bò và trâu để kiếm sống.", "exp": "'raise' (nuôi/chăn nuôi) dùng với vật nuôi như bò, trâu để kiếm sống."}], "communication": {"title": "Everyday English — Giving Opinions", "dialogues": [{"a": "Tom", "b": "What do you think about life in the mountains?", "c": "Trang", "d": "I think it's very interesting. People in the mountains live close to nature.", "vi1": "Bạn nghĩ gì về cuộc sống ở miền núi?", "vi2": "Mình nghĩ nó rất thú vị. Người dân ở miền núi sống gần gũi với thiên nhiên."}, {"a": "Tom", "b": "What about you, Mai? What do you think?", "c": "Mai", "d": "To my way of thinking, there are better services in the cities.", "vi1": "Còn bạn thì sao, Mai? Bạn nghĩ gì?", "vi2": "Theo cách nghĩ của mình, thành phố có dịch vụ tốt hơn."}], "practiceNote": "Bài 2 — Luyện nói theo cặp: dùng các mẫu câu <b>\"I think...\"</b> và <b>\"To my way of thinking...\"</b> để nêu ý kiến của em về 2 chủ đề bên dưới.", "practiceTopics": ["Playing traditional games (chơi trò chơi dân gian)", "Living close to nature (sống gần gũi với thiên nhiên)"], "info": {"title": "Bài 4 — THE JRAI (Người Jrai)", "facts": ["Population (Dân số): 515,930 người (2019) — dân tộc thiểu số đông nhất ở Tây Nguyên (Central Highlands).", "Living place (Nơi sinh sống): chủ yếu ở tỉnh Gia Lai.", "Houses (Nhà ở): nhà sàn (stilt houses).", "Economy (Kinh tế): trồng trọt, dệt vải, trồng cây công nghiệp (cà phê, ca cao, cao su...), nuôi trâu và voi.", "Traditional culture (Văn hóa truyền thống): nhiều điệu múa dân gian, bài hát, trò chơi và nhạc cụ phong phú; phụ nữ giữ vai trò chủ đạo trong gia đình (chế độ mẫu hệ)."]}, "groupPrompt": "Bài 5: Work in groups. Share with your group the information about the Jrai people you find interesting. You may start sharing your opinion with: – I like ... because ... – I think that ..."}, "speakingMCQ": [{"q": "There are ___ ethnic groups in Viet Nam.", "qVi": "Có ___ dân tộc ở Việt Nam.", "opts": ["63", "45", "54"], "optsVi": ["63", "45", "54"], "a": 2, "exp": "Việt Nam có 54 dân tộc (đã nhắc ở phần Getting Started)."}, {"q": "Ethnic minority groups form ___ of the total population of Viet Nam.", "qVi": "Các dân tộc thiểu số chiếm ___ tổng dân số Việt Nam.", "opts": ["7%", "13%", "25%"], "optsVi": ["7%", "13%", "25%"], "a": 1, "exp": "Theo số liệu thống kê, các dân tộc thiểu số chiếm khoảng 14-15% dân số — gần nhất với đáp án 13%."}, {"q": "They mainly live ___.", "qVi": "Họ chủ yếu sinh sống ___.", "opts": ["in the lowlands", "in the mountains", "in the Mekong Delta"], "optsVi": ["ở vùng đồng bằng thấp", "ở miền núi", "ở đồng bằng sông Cửu Long"], "a": 1, "exp": "Phần lớn các dân tộc thiểu số ở Việt Nam sinh sống ở vùng núi (người Khmer ở đồng bằng sông Cửu Long là một ngoại lệ đáng chú ý)."}, {"q": "The Jrai decorate houses for the dead with a lot of ___.", "qVi": "Người Jrai trang trí nhà mồ bằng rất nhiều ___.", "opts": ["wood statues", "flowers", "colourful pictures"], "optsVi": ["tượng gỗ", "hoa", "tranh nhiều màu sắc"], "a": 0, "exp": "Nhà mồ của người Jrai được trang trí bằng tượng gỗ."}, {"q": "The Khmer mostly earn their living from weaving and ___.", "qVi": "Người Khmer chủ yếu kiếm sống bằng nghề dệt và ___.", "opts": ["farming", "hunting", "fishing"], "optsVi": ["làm nông", "săn bắn", "đánh cá"], "a": 0, "exp": "Người Khmer sống chủ yếu bằng nghề nông, đánh cá và làm thủ công."}, {"q": "Picture ___ shows a Thai woman's costume.", "qVi": "Bức tranh ___ cho thấy trang phục của một phụ nữ người Thái.", "opts": ["a", "b", "c"], "optsVi": ["a", "b", "c"], "a": 2, "exp": "Theo đáp án của sách, bức tranh (c) mô tả trang phục truyền thống của phụ nữ Thái. File này không có ảnh thật nên em hãy đối chiếu với 3 bức tranh a, b, c trong SGK giấy của mình để quan sát trực tiếp."}], "reading": {"title": "Stilt houses", "text": "Stilt houses are popular among different ethnic minority groups, from the Thai in the Northern Highlands to the Khmer in the Mekong Delta. The houses come in different sizes and styles, and show the traditional culture of their owners.\n\nStilt houses are made from natural materials like wood, bamboo, and leaves. They stand on strong posts, about two or three metres above the ground. This allows them to keep people safe from wild animals. People climb a seven- or nine-step staircase to enter the house. The most important place in the house is the kitchen. It has an open fire in the middle of the house. It is the place for family gatherings and receiving guests.\n\nThe stilt houses of the Tay and Nung usually overlook a field. The stilt houses of the Thai, however, face mountains or a forest. The Bahnar and Ede have a communal house (called a Rong house) as the heart of their village. These communal houses are the largest and tallest ones in the village.", "textVi": "Nhà sàn phổ biến ở nhiều dân tộc thiểu số khác nhau, từ người Thái ở vùng núi phía Bắc đến người Khmer ở đồng bằng sông Cửu Long. Những ngôi nhà này có nhiều kích cỡ và kiểu dáng khác nhau, thể hiện văn hóa truyền thống của chủ nhân.\n\nNhà sàn được làm từ các vật liệu tự nhiên như gỗ, tre và lá. Chúng đứng trên những cây cột chắc chắn, cao khoảng hai hoặc ba mét so với mặt đất. Điều này giúp bảo vệ con người khỏi thú dữ. Người ta leo lên cầu thang bảy hoặc chín bậc để vào nhà. Nơi quan trọng nhất trong nhà là bếp. Bếp có một bếp lửa ở giữa nhà. Đó là nơi diễn ra các buổi sum họp gia đình và tiếp khách.\n\nNhà sàn của người Tày và người Nùng thường nhìn ra cánh đồng. Tuy nhiên, nhà sàn của người Thái lại hướng ra núi hoặc rừng. Người Ba Na và Ê Đê có nhà cộng đồng (gọi là nhà Rông) là trung tâm của cả làng. Những ngôi nhà cộng đồng này là những ngôi nhà lớn nhất và cao nhất trong làng.", "tf": [{"s": "Only a few minority groups live in stilt houses.", "viS": "Chỉ một vài dân tộc thiểu số sống trong nhà sàn.", "a": false, "exp": "Bài đọc nói nhà sàn 'popular among different ethnic minority groups' (phổ biến ở NHIỀU dân tộc thiểu số khác nhau), không phải chỉ một vài."}, {"s": "All stilt houses look alike.", "viS": "Tất cả nhà sàn đều trông giống nhau.", "a": false, "exp": "'The houses come in different sizes and styles' — nhà sàn có nhiều kích cỡ và kiểu dáng khác nhau."}, {"s": "Family gatherings take place by the open fire in the middle of the house.", "viS": "Các buổi sum họp gia đình diễn ra bên bếp lửa giữa nhà.", "a": true, "exp": "'It has an open fire in the middle of the house. It is the place for family gatherings...'"}, {"s": "The Rong house serves as the centre of an Ede village.", "viS": "Nhà Rông là trung tâm của một ngôi làng Ê Đê.", "a": true, "exp": "'The Bahnar and Ede have a communal house (called a Rong house) as the heart of their village.'"}], "vocabMatch": [{"w": "open fire", "def": "bếp lửa ngoài trời/giữa nhà"}, {"w": "posts", "def": "cột nhà (cột chống đỡ nhà sàn)"}, {"w": "staircase", "def": "cầu thang"}], "fill": [{"s": "A stilt house shows the ___ culture of the owner.", "a": "traditional", "qVi": "Một ngôi nhà sàn thể hiện nền văn hóa truyền thống của chủ nhân.", "exp": "Bài đọc: '...show the traditional culture of their owners.' → đáp án là 'traditional'."}, {"s": "The Tay's and Nung's stilt houses overlook a ___.", "a": "field", "qVi": "Nhà sàn của người Tày và người Nùng thường nhìn ra một cánh đồng.", "exp": "Bài đọc: 'The stilt houses of the Tay and Nung usually overlook a field.'"}, {"s": "The Thai's stilt houses overlook ___.", "a": "mountains", "qVi": "Nhà sàn của người Thái nhìn ra núi.", "exp": "Bài đọc: 'The stilt houses of the Thai, however, face mountains or a forest.' — một trong hai đáp án đúng là 'mountains'."}, {"s": "Besides mountains, the Thai's stilt houses may also face a ___.", "a": "forest", "qVi": "Ngoài núi, nhà sàn của người Thái cũng có thể hướng ra một khu rừng.", "exp": "Bài đọc: '...face mountains or a forest.' — đáp án còn lại là 'forest'."}, {"s": "The largest and tallest house in an Ede village is the ___ house.", "a": "communal", "qVi": "Ngôi nhà lớn nhất và cao nhất trong làng Ê Đê là nhà cộng đồng (nhà Rông).", "exp": "Bài đọc: '...have a communal house (called a Rong house)... largest and tallest ones in the village.' (Đáp án 'Rong' cũng được chấp nhận.)"}], "speakingCheck": {"title": "🗣️ Speaking (Bài 4) — Tick (✓) the features of a stilt house", "note": "Thảo luận cặp đôi và đánh dấu đặc điểm ĐÚNG của nhà sàn, dựa trên bài đọc ở trên.", "items": [{"s": "A stilt house has a flat cement roof.", "a": false, "exp": "Nhà sàn làm từ vật liệu tự nhiên (gỗ, tre, lá), KHÔNG phải mái bê tông phẳng."}, {"s": "A stilt house stands on big posts.", "a": true, "exp": "Bài đọc: 'They stand on strong posts, about two or three metres above the ground.'"}, {"s": "A stilt house is made from natural materials.", "a": true, "exp": "Bài đọc: 'Stilt houses are made from natural materials like wood, bamboo, and leaves.'"}, {"s": "A stilt house has a modern toilet.", "a": false, "exp": "Bài đọc không nhắc đến nhà vệ sinh hiện đại — nhà sàn truyền thống không có tiện nghi này."}, {"s": "A stilt house is a flat in a big block.", "a": false, "exp": "Nhà sàn là nhà riêng lẻ dựng trên cột, không phải căn hộ trong toà nhà cao tầng."}, {"s": "A stilt house is close to nature.", "a": true, "exp": "Nhà sàn thường ở vùng núi/nông thôn, làm từ vật liệu tự nhiên, gần gũi thiên nhiên."}]}, "speakingPrompt": "Bài 5 (Speaking): Hỏi và trả lời với bạn về loại nhà em đang sống (a flat/a house/a detached house/a stilt house/a farmhouse/a cottage/a tree house...), nhà làm bằng vật liệu gì, và phòng nào quan trọng nhất trong nhà. (Hoạt động nói mở theo cặp, không chấm điểm.)"}, "listening": {"tableTitle": "Những hoạt động trẻ em dân tộc thiểu số làm để giúp gia đình:", "table": {"cols": ["STT", "Hoạt động", "Đúng?"], "rows": [["1", "look after the house (trông nhà)", true], ["2", "weave clothing (dệt vải)", true], ["3", "prepare food (chuẩn bị thức ăn)", true], ["4", "build houses (xây nhà)", false], ["5", "grow crops (trồng trọt)", true], ["6", "raise livestock (chăn nuôi gia súc)", true]]}, "questions": [{"q": "Minority children usually learn to work at ___.", "opts": ["twelve", "ten", "six"], "a": 2, "optsVi": ["mười hai tuổi", "mười tuổi", "sáu tuổi"], "exp": "Bài nghe nói trẻ em dân tộc thiểu số thường bắt đầu giúp gia đình 'từ năm sáu tuổi'."}, {"q": "Girls ___.", "opts": ["weave clothing", "do the gardening", "catch fish"], "a": 0, "optsVi": ["dệt vải", "làm vườn", "bắt cá"], "exp": "Bài nghe: các bé gái giúp mẹ dệt vải trên khung cửi."}, {"q": "Boys ___.", "opts": ["prepare food", "raise livestock", "do housework"], "a": 1, "optsVi": ["chuẩn bị thức ăn", "chăn nuôi gia súc", "làm việc nhà"], "exp": "Bài nghe: các bé trai giúp cha chăn nuôi gia súc như trâu, bò, lợn."}, {"q": "Children learn traditions through ___.", "opts": ["work", "music", "stories"], "a": 2, "optsVi": ["công việc", "âm nhạc", "những câu chuyện"], "exp": "Bài nghe: truyền thống được truyền lại qua những câu chuyện ông bà, cha mẹ kể."}, {"q": "The number of minority children going to school is ___.", "opts": ["going up", "going down", "staying the same"], "a": 0, "optsVi": ["đang tăng lên", "đang giảm xuống", "giữ nguyên"], "exp": "Bài nghe: nhờ các chương trình hỗ trợ, số trẻ em dân tộc thiểu số đến trường ngày càng tăng."}], "checkboxNote": "5 trong 6 hoạt động được nhắc đến trong bài nghe — riêng 'build houses' (xây nhà) KHÔNG được tick vì đây là việc của người lớn.", "script": "Minority children in Viet Nam start helping their families with housework and farm work from a very young age, often from the age of six.\n\nGirls usually help their mothers look after the house, prepare meals, and weave clothing on a loom. From a young age, they learn to weave beautiful patterns for their own clothes.\n\nBoys, on the other hand, often help their fathers grow crops in the fields and raise livestock such as buffaloes, cows, and pigs.\n\nAlthough building houses is usually done by the adult men in the community, children are not expected to help with this heavy work.\n\nTraditions and cultural values are passed down to the children mainly through stories that their grandparents and parents tell them in the evenings, rather than through books.\n\nIn recent years, thanks to government support programmes, the number of minority children going to school is going up, so they now have to balance schoolwork with helping their families.", "scriptVi": "Trẻ em dân tộc thiểu số ở Việt Nam bắt đầu giúp đỡ gia đình làm việc nhà và việc đồng áng từ rất sớm, thường là từ năm sáu tuổi.\n\nCác bé gái thường giúp mẹ trông nhà, chuẩn bị bữa ăn, và dệt vải trên khung cửi. Từ nhỏ, các em đã học cách dệt những hoa văn đẹp cho trang phục của chính mình.\n\nCác bé trai, mặt khác, thường giúp cha trồng trọt trên nương rẫy và chăn nuôi gia súc như trâu, bò, lợn.\n\nMặc dù việc dựng nhà thường do những người đàn ông trưởng thành trong cộng đồng đảm nhận, trẻ em không phải phụ giúp công việc nặng nhọc này.\n\nTruyền thống và giá trị văn hóa được truyền lại cho trẻ em chủ yếu qua những câu chuyện mà ông bà, cha mẹ kể vào buổi tối, chứ không phải qua sách vở.\n\nTrong những năm gần đây, nhờ các chương trình hỗ trợ của nhà nước, số lượng trẻ em dân tộc thiểu số đến trường ngày càng tăng, vì vậy các em giờ đây phải cân bằng giữa việc học và việc giúp đỡ gia đình.", "scriptNote": "Đây là kịch bản bài nghe được biên soạn lại để khớp với đáp án chính thức của SGK, giúp học sinh vừa luyện nghe (bấm 🔊 để nghe từng đoạn) vừa đối chiếu bản dịch — không phải văn bản gốc của băng ghi âm.", "picMatch": {"title": "Match the phrases with the correct pictures", "items": [{"en": "catching fish", "vi": "bắt cá"}, {"en": "weaving clothing", "vi": "dệt vải"}, {"en": "growing crops", "vi": "trồng trọt"}]}}, "writing": {"likeLabel": "VÍ DỤ MẪU (Example)", "like": "cook meals (nấu cơm)", "dislikeLabel": "GỢI Ý THÊM (More ideas — nghĩ thêm 5 việc của riêng em)", "dislike": "clean the house (dọn nhà); look after younger siblings (trông em); water the plants (tưới cây); wash the dishes (rửa bát); do the shopping (đi chợ, mua đồ).", "prompt": "Note five things you do to help your family, then write a paragraph (80-100 words) about them.", "sampleAnswer": "I study at school most of the day, but I still spend a little time helping my family. I help my parents in many ways. I wash the dishes after meals, make the bed in the morning, and iron clothes to keep them neat and tidy. Moreover, I take care of the laundry by washing and folding the clothes. I also take out the garbage regularly to keep our home clean. I believe that helping with household chores is important to support my parents.", "sampleAnswerVi": "Em học ở trường hầu hết cả ngày, nhưng em vẫn dành một chút thời gian để giúp đỡ gia đình. Em giúp bố mẹ bằng nhiều cách. Em rửa bát sau bữa ăn, dọn giường vào buổi sáng, và là quần áo để giữ chúng gọn gàng, phẳng phiu. Hơn nữa, em phụ trách việc giặt giũ bằng cách giặt và gấp quần áo. Em cũng đổ rác thường xuyên để giữ nhà cửa sạch sẽ. Em tin rằng giúp đỡ việc nhà là điều quan trọng để hỗ trợ bố mẹ.", "analysis": [{"en": "I study at school most of the day, but I still spend a little time helping my family.", "vi": "Câu mở đầu (topic sentence): nêu bối cảnh — dù bận học nhưng vẫn dành thời gian giúp gia đình.", "note": "Cấu trúc 'spend + thời gian + V-ing' = dành thời gian làm gì. 'but' nối 2 ý tương phản."}, {"en": "I help my parents in many ways.", "vi": "Câu chuyển ý, báo hiệu đoạn văn sẽ liệt kê các cách giúp đỡ cụ thể.", "note": "Đây là câu 'giới thiệu danh sách' — kỹ thuật thường dùng để mở đầu phần liệt kê trong đoạn văn."}, {"en": "I wash the dishes after meals, make the bed in the morning, and iron clothes to keep them neat and tidy.", "vi": "Liệt kê 3 việc làm bằng cấu trúc song song (parallel structure), nối bằng dấu phẩy và 'and'.", "note": "3 cụm động từ cùng dạng nguyên thể (wash, make, iron) đặt song song nhau. 'to keep them neat and tidy' là cụm động từ nguyên mẫu (to-infinitive) chỉ MỤC ĐÍCH."}, {"en": "Moreover, I take care of the laundry by washing and folding the clothes.", "vi": "Dùng từ nối 'Moreover' (hơn nữa) để thêm một ý mới, tránh liệt kê khô khan chỉ bằng dấu phẩy.", "note": "'by + V-ing' = giới từ 'by' chỉ CÁCH THỨC thực hiện hành động."}, {"en": "I also take out the garbage regularly to keep our home clean.", "vi": "'also' tiếp tục nối ý liệt kê; trạng từ 'regularly' bổ nghĩa cho tần suất hành động.", "note": "'take out the garbage' = đổ rác (cụm động từ hay dùng, học sinh nên ghi nhớ)."}, {"en": "I believe that helping with household chores is important to support my parents.", "vi": "Câu kết (concluding sentence): nêu quan điểm cá nhân để khép lại đoạn văn.", "note": "Cấu trúc 'I believe that + mệnh đề'; danh động từ 'helping' đóng vai trò chủ ngữ của mệnh đề đó."}], "tip": "Dàn ý gợi ý: (1) Câu mở đoạn nêu ý chính → (2) Liệt kê 3-5 việc cụ thể em làm để giúp gia đình, dùng các từ nối như also, moreover, in addition, besides → (3) Câu kết nêu cảm nghĩ/quan điểm. Thì chính dùng trong bài: hiện tại đơn (diễn tả thói quen)."}, "lookingBackGrammar": [{"s": "you / attend / the Khmer's Moon Worship Festival / last year / ? → ___", "a": "Did you attend the Khmer's Moon Worship Festival last year?", "qVi": "bạn / tham dự / Lễ hội Cúng trăng của người Khmer / năm ngoái / ? → Bạn có tham dự Lễ hội Cúng trăng của người Khmer năm ngoái không?", "exp": "Vì có mốc thời gian quá khứ 'last year' và động từ thường 'attend', câu hỏi Yes/No dùng trợ động từ 'Did' + S + V(nguyên thể)...?"}, {"s": "How many / ethnic minority groups / Viet Nam / ? → ___", "a": "How many ethnic minority groups are there in Viet Nam?", "qVi": "Bao nhiêu / dân tộc thiểu số / Việt Nam / ? → Việt Nam có bao nhiêu dân tộc thiểu số?", "exp": "Câu hỏi về số lượng dùng cấu trúc 'How many + danh từ số nhiều + are there + in...?' với 'there is/are'."}, {"s": "Where / the Hmong / live / ? → ___", "a": "Where do the Hmong live?", "qVi": "Ở đâu / người Hmông / sống / ? → Người Hmông sống ở đâu?", "exp": "Câu hỏi thông tin với từ để hỏi 'Where' và động từ thường 'live' ở hiện tại đơn cần trợ động từ 'do': Where + do + S + V(nguyên thể)?"}, {"s": "What / you / do / the Ede's Harvest Festival / last October / ? → ___", "a": "What did you do at the Ede's Harvest Festival last October?", "qVi": "Bạn đã làm gì / tại Lễ hội Mừng lúa mới của người Ê Đê / vào tháng Mười năm ngoái / ? → Bạn đã làm gì tại Lễ hội Mừng lúa mới của người Ê Đê vào tháng Mười năm ngoái?", "exp": "Câu hỏi về hành động trong quá khứ dùng 'What' kết hợp trợ động từ quá khứ 'did': What + did + S + V(nguyên thể)...?"}, {"s": "How old / minority children / when / they / start helping / the family / ? → ___", "a": "How old are minority children when they start helping their family?", "qVi": "Trẻ em dân tộc thiểu số bao nhiêu tuổi khi các em bắt đầu giúp đỡ gia đình?", "exp": "Câu hỏi về độ tuổi dùng cấu trúc 'How old + are/is + S + when...?' với động từ 'to be' đảo lên trước chủ ngữ."}], "errorCorrection": [{"s": "A big stilt houses stands on high posts.", "a": "A big stilt house stands on high posts.", "wrong": "houses", "right": "house"}, {"s": "The Lahu build their houses from wood and wild banana leave.", "a": "The Lahu build their houses from wood and wild banana leaves.", "wrong": "leave", "right": "leaves"}, {"s": "Much people in remote areas travel on foot.", "a": "Many people in remote areas travel on foot.", "wrong": "Much", "right": "Many"}, {"s": "Most minority women weave clothes and do houseworks.", "a": "Most minority women weave clothes and do housework.", "wrong": "houseworks", "right": "housework"}, {"s": "In the mountains, there is not many land for growing crops.", "a": "In the mountains, there is not much land for growing crops.", "wrong": "many", "right": "much"}], "project": {"title": "OUR ETHNIC GROUPS", "steps": ["Choose an ethnic group in Viet Nam you are most interested in.", "Do a little research about it, focusing on its living place (homes or villages), economy, and traditional culture.", "Make a poster (including pictures and information) to introduce the group.", "Present your poster to the class."]}, "nowICan": ["sử dụng từ vựng liên quan đến đời sống của các dân tộc thiểu số", "phát âm đúng các âm /k/ và /g/ trong từ và câu", "nhận biết và sử dụng câu hỏi Yes/No, Wh-, và danh từ đếm được/không đếm được", "nêu ý kiến (giving opinions)", "đọc hiểu về nhà sàn", "nói về loại nhà mình đang sống", "nghe về cuộc sống của trẻ em dân tộc thiểu số", "viết đoạn văn về những việc mình làm để giúp đỡ gia đình"], "remember": {"vocab": ["stilt house", "terraced fields", "ethnic group", "minority group", "livestock", "communal house", "gong", "weave", "waterwheel", "loom", "costume", "handicraft", "temple", "peaceful", "overlook", "staircase", "raise", "tradition"], "grammar": "<b>Yes/No question</b>: đảo trợ động từ lên trước chủ ngữ (Do you...? / Are they...?). <b>Wh-question</b>: từ hỏi + trợ động từ + chủ ngữ + động từ. <b>Danh từ đếm được</b> đi với a/an, many, a few, có số nhiều; <b>danh từ không đếm được</b> đi với much, a little, không có số nhiều.", "expressions": ["I think it's very interesting.", "To my way of thinking, there are better services in the cities.", "What do you think about...?", "We call it a \"stilt house\".", "Certainly. We have our own culture."], "readingSummary": "Bài đọc giới thiệu về nhà sàn: phổ biến ở nhiều dân tộc thiểu số, làm từ vật liệu tự nhiên (gỗ, tre, lá), đứng trên cột cao để tránh thú dữ, có bếp lửa giữa nhà là nơi sum họp; nhà sàn Tày/Nùng nhìn ra ruộng, nhà sàn Thái hướng núi/rừng, và người Ba Na/Ê Đê có nhà Rông làm trung tâm cộng đồng.", "mistakes": ["Đừng nhầm 'much' (không đếm được) với 'many' (đếm được) — 'much land' đúng, 'many land' sai.", "Danh từ không đếm được (housework, information, land...) KHÔNG có dạng số nhiều — không viết 'houseworks', 'informations'.", "Câu hỏi Yes/No và Wh- đều cần đảo trợ động từ lên trước chủ ngữ — đừng quên trợ động từ do/does/did khi động từ chính không phải 'be'."]}, "lookingBackVocab1": {"title": "Looking Back — Từ vựng 1: Nối từ với nghĩa/hình ảnh mô tả", "items": [{"en": "weaving", "vi": "dệt vải — hoạt động dùng khung cửi tạo ra vải, thổ cẩm"}, {"en": "folk dance", "vi": "múa dân gian — điệu múa truyền thống của một dân tộc"}, {"en": "open fire", "vi": "bếp lửa/đống lửa ngoài trời — nơi mọi người ngồi quây quần sưởi ấm"}, {"en": "fishing", "vi": "đánh bắt cá — hoạt động bắt cá dưới sông, suối"}, {"en": "minority group", "vi": "dân tộc thiểu số — nhóm dân tộc có dân số ít hơn dân tộc đa số"}]}, "lookingBackVocab2": {"title": "Looking Back — Từ vựng 2: Hoàn thành câu với từ trong khung", "box": ["folk songs", "communal house", "musical instruments", "staircase", "sticky rice"], "items": [{"s": "Minority groups have their own ___ like the dan tinh, gong, and t'rung.", "a": "musical instruments", "qVi": "Các dân tộc thiểu số có những nhạc cụ riêng như đàn tính, cồng chiêng và t'rưng.", "exp": "'musical instruments' (nhạc cụ) là đáp án phù hợp vì đàn tính, cồng chiêng, t'rưng đều là nhạc cụ."}, {"s": "The Kinh use ___ to make banh chung and banh tet.", "a": "sticky rice", "qVi": "Người Kinh dùng gạo nếp để làm bánh chưng và bánh tét.", "exp": "'sticky rice' (gạo nếp) là nguyên liệu chính để làm hai loại bánh truyền thống này."}, {"s": "For most minority groups like the Bahnar and Ede, the ___, usually known as Rong house, is the heart of the village.", "a": "communal house", "qVi": "Với hầu hết các dân tộc như Bahnar và Ê Đê, nhà cộng đồng (thường gọi là nhà Rông) là trung tâm của buôn làng.", "exp": "'communal house' (nhà cộng đồng/nhà chung) chính là nhà Rông — nơi sinh hoạt chung của cả làng."}, {"s": "My grandmother taught me to sing minority ___.", "a": "folk songs", "qVi": "Bà em đã dạy em hát những bài dân ca của dân tộc thiểu số.", "exp": "'folk songs' (dân ca) là những bài hát dân gian truyền thống."}, {"s": "The ___ of a Muong's stilt house has an odd number of steps: 5, 7, or 9.", "a": "staircase", "qVi": "Cầu thang của nhà sàn người Mường có số bậc lẻ: 5, 7 hoặc 9.", "exp": "'staircase' (cầu thang) là bộ phận dùng để leo lên nhà sàn."}]}, "dialogueMatch": {"title": "Getting Started — Bài 3: Match the pictures with the word and phrases from the conversation", "items": [{"en": "stilt house", "vi": "nhà sàn — nhà dựng trên cột cao"}, {"en": "terraced fields", "vi": "ruộng bậc thang — ruộng trồng lúa trên sườn núi"}, {"en": "bamboo", "vi": "tre, trúc — vật liệu làm nhà, đồ dùng, nhạc cụ"}, {"en": "five-colour sticky rice", "vi": "xôi ngũ sắc — món xôi nhiều màu của dân tộc thiểu số"}]}, "dialogueGame": {"title": "Getting Started — GAME: Where are they?", "instruction": "Work in groups. Discuss and label the map with the names of the ethnic groups from the box. The first team to get all the correct answers wins.", "instructionVi": "Làm việc theo nhóm. Thảo luận và điền tên các dân tộc vào đúng vị trí trên bản đồ. Nhóm đầu tiên điền đúng hết sẽ thắng.", "items": [{"en": "Hmong", "vi": "chủ yếu sống ở vùng núi cao phía Bắc (Northern Highlands) như Hà Giang, Lào Cai, Sơn La"}, {"en": "Nung", "vi": "chủ yếu sống ở vùng núi Đông Bắc như Lạng Sơn, Cao Bằng"}, {"en": "Bahnar", "vi": "chủ yếu sống ở Tây Nguyên (Central Highlands), tập trung ở Gia Lai, Kon Tum"}, {"en": "Ede", "vi": "chủ yếu sống ở Tây Nguyên (Central Highlands), tập trung ở Đắk Lắk"}, {"en": "Cham", "vi": "chủ yếu sống ở duyên hải Nam Trung Bộ như Ninh Thuận, Bình Thuận"}, {"en": "Khmer", "vi": "chủ yếu sống ở đồng bằng sông Cửu Long (Mekong Delta)"}], "note": "Đây là gợi ý vùng miền chính theo kiến thức địa lý — khi làm trên bản đồ thật trong SGK, em hãy quan sát vị trí các vùng miền được khoanh sẵn để điền tên dân tộc cho khớp với bản đồ trong sách."}};
+const VOCAB = [{"w": "stilt house", "ipa": "/stɪlt haʊs/", "pos": "n phrase", "vi": "nhà sàn", "ex": "We call it a stilt house. Our house overlooks terraced fields.", "lvl": "must"}, {"w": "terraced field", "ipa": "/ˈterəst fiːld/", "pos": "n phrase", "vi": "ruộng bậc thang", "ex": "Terraced fields attract a lot of visitors.", "lvl": "must"}, {"w": "ethnic group", "ipa": "/ˈeθnɪk ɡruːp/", "pos": "n phrase", "vi": "dân tộc, nhóm dân tộc", "ex": "Of the 54 ethnic groups in Viet Nam, the Kinh is the largest.", "lvl": "must"}, {"w": "minority group", "ipa": "/maɪˈnɒrəti ɡruːp/", "pos": "n phrase", "vi": "dân tộc thiểu số", "ex": "There are fewer Nung than Kinh, so they are an ethnic minority group.", "lvl": "must"}, {"w": "livestock", "ipa": "/ˈlaɪvstɒk/", "pos": "n", "vi": "gia súc, vật nuôi", "ex": "Children in both the lowlands and highlands help raise their family's livestock.", "lvl": "must"}, {"w": "communal house", "ipa": "/kəˈmjuːnəl haʊs/", "pos": "n phrase", "vi": "nhà rông, nhà cộng đồng", "ex": "A communal house is for community meetings and events.", "lvl": "must"}, {"w": "gong", "ipa": "/ɡɒŋ/", "pos": "n", "vi": "cồng, chiêng", "ex": "The gong is a popular musical instrument of the Ede.", "lvl": "must"}, {"w": "weave", "ipa": "/wiːv/", "pos": "v", "vi": "dệt (vải)", "ex": "Most mountain girls know how to weave clothing.", "lvl": "must"}, {"w": "gardening", "ipa": "/ˈɡɑːdnɪŋ/", "pos": "n", "vi": "công việc làm vườn", "ex": "Gardening includes growing, watering, weeding, and harvesting.", "lvl": "important"}, {"w": "unique features", "ipa": "/juˈniːk ˈfiːtʃəz/", "pos": "n phrase", "vi": "những nét đặc trưng riêng", "ex": "It's interesting to learn about the unique features of an ethnic group's traditional culture.", "lvl": "important"}, {"w": "waterwheel", "ipa": "/ˈwɔːtəwiːl/", "pos": "n", "vi": "guồng nước, cọn nước", "ex": "The waterwheel helps carry water from streams to the villages.", "lvl": "must"}, {"w": "loom", "ipa": "/luːm/", "pos": "n", "vi": "khung cửi", "ex": "Most minority households have a loom for weaving clothing.", "lvl": "must"}, {"w": "costume", "ipa": "/ˈkɒstjuːm/", "pos": "n", "vi": "trang phục (truyền thống)", "ex": "Minority girls often wear silver jewellery with their costume.", "lvl": "must"}, {"w": "silver jewellery", "ipa": "/ˈsɪlvə ˈdʒuːəlri/", "pos": "n phrase", "vi": "trang sức bạc", "ex": "Minority girls often wear silver jewellery.", "lvl": "important"}, {"w": "lion dance", "ipa": "/ˈlaɪən dɑːns/", "pos": "n phrase", "vi": "múa lân/sư tử", "ex": "The lion dance is a popular traditional performance.", "lvl": "important"}, {"w": "handicraft", "ipa": "/ˈhændikrɑːft/", "pos": "n", "vi": "đồ thủ công", "ex": "The Khmer do farm work and produce handicrafts.", "lvl": "must"}, {"w": "temple", "ipa": "/ˈtempl/", "pos": "n", "vi": "ngôi chùa", "ex": "There is a temple in every Khmer village.", "lvl": "must"}, {"w": "harmoniously", "ipa": "/hɑːˈməʊniəsli/", "pos": "adv", "vi": "một cách hòa thuận", "ex": "The Khmer live harmoniously with other ethnic groups in the Mekong Delta.", "lvl": "important"}, {"w": "oxygen", "ipa": "/ˈɒksɪdʒən/", "pos": "n", "vi": "oxy", "ex": "The higher we get, the thinner the air becomes — this means there is less oxygen.", "lvl": "important"}, {"w": "pollution", "ipa": "/pəˈluːʃn/", "pos": "n", "vi": "sự ô nhiễm", "ex": "Being on the mountaintops allows you to live far from pollution.", "lvl": "important"}, {"w": "medicinal plant", "ipa": "/məˈdɪsɪnl plɑːnt/", "pos": "n phrase", "vi": "cây thuốc", "ex": "They gather medicinal plants from the forests and mountains.", "lvl": "important"}, {"w": "poultry", "ipa": "/ˈpəʊltri/", "pos": "n", "vi": "gia cầm", "ex": "The market has a large place to sell poultry and animals.", "lvl": "important"}, {"w": "peaceful", "ipa": "/ˈpiːsfl/", "pos": "adj", "vi": "yên bình", "ex": "I love the peaceful life of the ethnic minorities living in the mountains.", "lvl": "must"}, {"w": "overlook", "ipa": "/ˌəʊvəˈlʊk/", "pos": "v", "vi": "nhìn ra, hướng ra", "ex": "Our house overlooks terraced fields.", "lvl": "must"}, {"w": "post", "ipa": "/pəʊst/", "pos": "n", "vi": "cây cột (nhà sàn)", "ex": "Stilt houses stand on strong posts, about two or three metres above the ground.", "lvl": "important"}, {"w": "wooden statue", "ipa": "/ˈwʊdn ˈstætʃuː/", "pos": "n phrase", "vi": "tượng gỗ", "ex": "The Jrai decorate houses for the dead with a lot of wooden statues.", "lvl": "extension"}, {"w": "staircase", "ipa": "/ˈsteəkeɪs/", "pos": "n", "vi": "cầu thang", "ex": "You climb the staircase to enter a stilt house.", "lvl": "must"}, {"w": "raise", "ipa": "/reɪz/", "pos": "v", "vi": "nuôi, chăn nuôi", "ex": "Many minority groups raise cows and buffaloes for a living.", "lvl": "must"}, {"w": "hard-working", "ipa": "/hɑːd ˈwɜːkɪŋ/", "pos": "adj", "vi": "chăm chỉ", "ex": "The Thai people are hard-working, helpful, cool, and hospitable.", "lvl": "extension"}, {"w": "tradition", "ipa": "/trəˈdɪʃn/", "pos": "n", "vi": "truyền thống, phong tục", "ex": "The elders often pass on their traditions to the young through stories and activities.", "lvl": "must"}];
+const STORAGE_KEY = "u4_sgk_progress_v1";
+const SITE_LABEL = "Tiếng Anh 8 — Unit 4 (SGK)";
+
+/* ---------- storage ---------- */
+function loadState(){
+  try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {done:{}, mistakes:{}, favs:{}}; }
+  catch(e){ return {done:{}, mistakes:{}, favs:{}}; }
+}
+function saveState(s){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); }catch(e){} }
+let STATE = loadState();
+function markDone(key, correct){
+  STATE.done[key] = STATE.done[key] || {tries:0, correct:false};
+  STATE.done[key].tries++;
+  if(correct) STATE.done[key].correct = true;
+  saveState(STATE);
+}
+function logMistake(key, data){
+  STATE.mistakes[key] = data;
+  saveState(STATE);
+}
+function clearMistake(key){
+  delete STATE.mistakes[key];
+  saveState(STATE);
+}
+function toggleFav(w){
+  STATE.favs[w] = !STATE.favs[w];
+  saveState(STATE);
+}
+
+/* ---------- TTS ---------- */
+function speak(text){
+  try{
+    if(!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US'; u.rate = 0.92;
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+/* ---------- helpers ---------- */
+function esc(s){ return (s===undefined||s===null) ? '' : String(s); }
+function normalize(s){ return String(s||'').trim().toLowerCase().replace(/[.,!?;:'"]/g,'').replace(/\s+/g,' '); }
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+/* ---------- generic widgets ---------- */
+function mountMCQBlock(holderId, items, keyPrefix){
+  const holder = document.getElementById(holderId);
+  if(!holder || !items) return;
+  window.__MCQDATA[keyPrefix] = items;
+  holder.innerHTML = items.map((q,i)=>{
+    const key = keyPrefix+'_'+i;
+    const already = STATE.done[key];
+    return `<div class="quiz-q" id="${key}_box">
+      <div class="qtext">${i+1}. ${esc(q.q)}</div>
+      ${q.opts.map((o,oi)=>`<button class="opt-item ${already&&already.correct?'disabled':''}" onclick="answerMCQ('${holderId}','${keyPrefix}',${i},${oi})" id="${key}_opt${oi}">${String.fromCharCode(65+oi)}. ${esc(o)}</button>`).join('')}
+      <div class="feedback" id="${key}_fb"></div>
+    </div>`;
+  }).join('');
+  // restore already-correct state visuals
+  items.forEach((q,i)=>{
+    const key = keyPrefix+'_'+i;
+    if(STATE.done[key] && STATE.done[key].correct){
+      const idx = q.a;
+      const el = document.getElementById(key+'_opt'+idx);
+      if(el) el.classList.add('correct');
+    }
+  });
+}
+window.__MCQDATA = {};
+function registerMCQ(keyPrefix, items){ window.__MCQDATA[keyPrefix] = items; }
+function answerMCQ(holderId, keyPrefix, i, oi){
+  const items = window.__MCQDATA[keyPrefix];
+  const q = items[i];
+  const key = keyPrefix+'_'+i;
+  const box = document.getElementById(key+'_box');
+  const fb = document.getElementById(key+'_fb');
+  const correct = oi === q.a;
+  box.querySelectorAll('.opt-item').forEach((el,idx)=>{
+    el.classList.add('disabled');
+    if(idx===q.a) el.classList.add('correct');
+    if(idx===oi && !correct) el.classList.add('wrong');
+  });
+  markDone(key, correct);
+  if(!correct){
+    logMistake(key, {q:q.q, your:q.opts[oi], correct:q.opts[q.a], exp:q.exp||'', type:'mcq'});
+  } else clearMistake(key);
+  let html = correct ? '✅ Chính xác!' : '❌ Chưa đúng. Đáp án đúng: '+String.fromCharCode(65+q.a)+'. '+esc(q.opts[q.a]);
+  if(q.exp) html += `<div class="explain">💡 ${esc(q.exp)}</div>`;
+  if(q.qVi || q.optsVi){
+    html += `<button class="fill-vi-toggle" onclick="this.nextElementSibling.classList.toggle('show')">🇻🇳 Xem nghĩa</button><div class="vi-explain">${q.qVi?esc(q.qVi)+'<br>':''}${(q.optsVi||[]).map((o,idx2)=>`${String.fromCharCode(65+idx2)}. ${esc(o)}`).join('<br>')}</div>`;
+  }
+  fb.innerHTML = html;
+  fb.className = 'feedback show '+(correct?'ok':'bad');
+  const retryBtn = document.createElement('button');
+  retryBtn.className='btn small secondary'; retryBtn.style.marginTop='8px'; retryBtn.textContent='🔄 Làm lại';
+  retryBtn.onclick = ()=>{ box.querySelectorAll('.opt-item').forEach(el=>{el.classList.remove('disabled','correct','wrong');}); fb.className='feedback'; fb.innerHTML=''; };
+  fb.appendChild(document.createElement('br'));
+  fb.appendChild(retryBtn);
+}
+
+function mountFillBlank(holderId, items, keyPrefix){
+  const holder = document.getElementById(holderId);
+  if(!holder || !items) return;
+  window.__MCQDATA[keyPrefix] = items;
+  holder.innerHTML = items.map((it,i)=>{
+    const key = keyPrefix+'_'+i;
+    const parts = String(it.s).split('___');
+    const already = STATE.done[key];
+    return `<div class="quiz-q" id="${key}_box">
+      <div class="qtext">${i+1}. ${esc(parts[0])}<input type="text" class="fillin" id="${key}_in" ${already&&already.correct?'disabled':''}>${esc(parts[1]||'')}</div>
+      ${it.qVi?`<button class="fill-vi-toggle" onclick="document.getElementById('${key}_vibox').classList.toggle('show')">🇻🇳 Dịch nghĩa</button>`:''}
+      <button class="btn small" onclick="checkFill('${keyPrefix}',${i})">Kiểm tra</button>
+      ${it.qVi?`<div class="vi-explain" id="${key}_vibox">${esc(it.qVi)}</div>`:''}
+      <div class="feedback" id="${key}_fb"></div>
+    </div>`;
+  }).join('');
+}
+function checkFill(keyPrefix, i){
+  const items = window.__MCQDATA[keyPrefix];
+  const it = items[i];
+  const key = keyPrefix+'_'+i;
+  const input = document.getElementById(key+'_in');
+  const fb = document.getElementById(key+'_fb');
+  const userVal = input.value;
+  const accepted = Array.isArray(it.a) ? it.a : [it.a];
+  const correct = accepted.some(a=>normalize(a)===normalize(userVal));
+  markDone(key, correct);
+  if(!correct) logMistake(key, {q:it.s, your:userVal, correct:accepted[0], exp:it.exp||'', type:'fill'});
+  else clearMistake(key);
+  let html = correct ? '🎉 Chính xác!' : `❌ Chưa đúng. Đáp án đúng: <b>${esc(accepted[0])}</b>`;
+  if(it.exp) html += `<div class="explain">💡 ${esc(it.exp)}</div>`;
+  fb.innerHTML = html;
+  fb.className = 'feedback show '+(correct?'ok':'bad');
+  if(correct) input.disabled = true;
+}
+
+function mountTF(holderId, items, keyPrefix){
+  const holder = document.getElementById(holderId);
+  if(!holder || !items) return;
+  window.__MCQDATA[keyPrefix] = items;
+  holder.innerHTML = items.map((it,i)=>{
+    const key = keyPrefix+'_'+i;
+    return `<div class="quiz-q" id="${key}_box">
+      <div class="qtext">${i+1}. ${esc(it.s)}</div>
+      <div class="tf-row">
+        <button class="tf-btn" onclick="answerTF('${keyPrefix}',${i},true)">✅ True / Đúng</button>
+        <button class="tf-btn" onclick="answerTF('${keyPrefix}',${i},false)">❌ False / Sai</button>
+      </div>
+      <div class="feedback" id="${key}_fb"></div>
+    </div>`;
+  }).join('');
+}
+function answerTF(keyPrefix, i, val){
+  const items = window.__MCQDATA[keyPrefix];
+  const it = items[i];
+  const key = keyPrefix+'_'+i;
+  const box = document.getElementById(key+'_box');
+  const fb = box.querySelector('.feedback');
+  const correct = val === it.a;
+  box.querySelectorAll('.tf-btn').forEach(b=>b.disabled=true);
+  markDone(key, correct);
+  if(!correct) logMistake(key, {q:it.s, your:val?'True':'False', correct:it.a?'True':'False', exp:it.exp||'', type:'tf'});
+  else clearMistake(key);
+  let html = correct ? '✅ Chính xác!' : `❌ Chưa đúng. Đáp án đúng: <b>${it.a?'True':'False'}</b>`;
+  if(it.viS) html += `<div class="vi-explain">🇻🇳 ${esc(it.viS)}</div>`;
+  if(it.exp) html += `<div class="explain">💡 ${esc(it.exp)}</div>`;
+  html += `<br><button class="btn small secondary" onclick="mountTFRetry('${holderId_of(box)}','${keyPrefix}',${i})">🔄 Làm lại</button>`;
+  fb.innerHTML = html;
+  fb.className = 'feedback show '+(correct?'ok':'bad');
+}
+function holderId_of(box){ return box.closest('[id$="Holder"]') ? box.closest('[id$="Holder"]').id : ''; }
+function mountTFRetry(holderId, keyPrefix, i){
+  if(!holderId) return;
+  const items = window.__MCQDATA[keyPrefix];
+  mountTF(holderId, items, keyPrefix);
+}
+
+function mountMatch(holderId, pairs, keyPrefix){
+  const holder = document.getElementById(holderId);
+  if(!holder || !pairs) return;
+  const left = pairs.map((p,i)=>({text:p.en||p.w, i}));
+  const right = shuffle(pairs.map((p,i)=>({text:p.vi||p.def, i})));
+  holder.innerHTML = `<div class="match-wrap">
+    <div class="match-col" id="${keyPrefix}_L">${left.map(l=>`<button class="match-item" data-i="${l.i}" onclick="matchPick(this,'${keyPrefix}','L')">${esc(l.text)}</button>`).join('')}</div>
+    <div class="match-col" id="${keyPrefix}_R">${right.map(r=>`<button class="match-item" data-i="${r.i}" onclick="matchPick(this,'${keyPrefix}','R')">${esc(r.text)}</button>`).join('')}</div>
+  </div><div class="feedback show ok" id="${keyPrefix}_score">Đã ghép đúng: 0/${pairs.length}</div>`;
+  window['__match_'+keyPrefix] = {picked:{L:null,R:null}, matchedCount:0, total:pairs.length};
+}
+function matchPick(el, keyPrefix, side){
+  const st = window['__match_'+keyPrefix];
+  if(el.classList.contains('matched')) return;
+  document.querySelectorAll(`#${keyPrefix}_${side} .match-item`).forEach(e=>e.classList.remove('picked'));
+  el.classList.add('picked');
+  st.picked[side] = el;
+  if(st.picked.L && st.picked.R){
+    const li = st.picked.L.dataset.i, ri = st.picked.R.dataset.i;
+    if(li === ri){
+      st.picked.L.classList.add('matched'); st.picked.R.classList.add('matched');
+      st.picked.L.classList.remove('picked'); st.picked.R.classList.remove('picked');
+      st.matchedCount++;
+      document.getElementById(keyPrefix+'_score').textContent = `Đã ghép đúng: ${st.matchedCount}/${st.total}`;
+    } else {
+      st.picked.L.style.background='#fef2f2'; st.picked.R.style.background='#fef2f2';
+      setTimeout(()=>{ if(st.picked.L){st.picked.L.classList.remove('picked'); st.picked.L.style.background='';} if(st.picked.R){st.picked.R.classList.remove('picked'); st.picked.R.style.background='';} },500);
+    }
+    st.picked = {L:null,R:null};
+  }
+}
+
+/* ---------- Navigation ---------- */
+let CURRENT_TAB = null;
+function openTab(key){
+  CURRENT_TAB = key;
+  const tab = TABS.find(t=>t.key===key);
+  if(!tab) return;
+  document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active', b.dataset.key===key));
+  document.querySelectorAll('.tabs-mobile button').forEach(b=>b.classList.toggle('active', b.dataset.key===key));
+  document.getElementById('mainArea').innerHTML = tab.render();
+  if(tab.after) tab.after();
+  window.scrollTo(0,0);
+}
+window.openTab = openTab;
+
+function renderNav(){
+  const visible = TABS.filter(t=>t.show());
+  document.getElementById('sidebarNav').innerHTML = `<h1>${esc(DATA.title||'')}</h1><div class="sub">${SITE_LABEL}</div>` +
+    visible.map(t=>`<button class="navbtn" data-key="${t.key}" onclick="openTab('${t.key}')">${t.label}</button>`).join('');
+  document.getElementById('tabsMobile').innerHTML = visible.map(t=>`<button data-key="${t.key}" onclick="openTab('${t.key}')">${t.label}</button>`).join('');
+}
+</script>
+
+<script>
+/* ============ TAB DEFINITIONS ============ */
+const TABS = [
+  {key:'overview', label:'🌱 Tổng quan', show:()=>true, render:renderOverview, after:afterOverviewMount},
+  {key:'chat', label:'💬 Getting Started', show:()=>!!(DATA.dialogue&&DATA.dialogue.length), render:renderChat, after:afterChatMount},
+  {key:'vocab', label:'📚 A Closer Look 1', show:()=>!!(VOCAB&&VOCAB.length) || !!DATA.closerLook1, render:renderVocab, after:afterVocabMount},
+  {key:'grammar', label:'✏️ A Closer Look 2', show:()=>!!DATA.grammar, render:renderGrammar, after:afterGrammarMount},
+  {key:'communication', label:'🗣️ Communication', show:()=>!!DATA.communication || !!(DATA.speakingMCQ&&DATA.speakingMCQ.length), render:renderCommunication, after:afterCommMount},
+  {key:'reading', label:'📖 Skills 1', show:()=>!!DATA.reading, render:renderReading, after:afterReadingMount},
+  {key:'listening', label:'🎧 Skills 2 (Nghe)', show:()=>!!DATA.listening, render:renderListening, after:afterListeningMount},
+  {key:'writing', label:'📝 Skills 2 (Viết)', show:()=>!!DATA.writing, render:renderWriting},
+  {key:'lookingback', label:'🔁 Looking Back', show:()=>!!(DATA.lookingBackMCQ&&DATA.lookingBackMCQ.length) || !!DATA.lookingBackVocab1 || !!DATA.lookingBackGrammar, render:renderLookingBack, after:afterLookingBackMount},
+  {key:'project', label:'🎨 Project', show:()=>!!DATA.project, render:renderProject},
+  {key:'remember', label:'📌 Ghi nhớ', show:()=>!!DATA.remember, render:renderRemember},
+  {key:'workbook', label:'📕 Bài tập (SBT)', show:()=>!!(DATA.workbook&&DATA.workbook.exercises&&DATA.workbook.exercises.length), render:renderWorkbook, after:afterWorkbookMount},
+  {key:'wbreading', label:'📗 Đọc hiểu (SBT)', show:()=>!!(DATA.workbook&&(DATA.workbook.readingFill||DATA.workbook.readingFill2||DATA.workbook.readingShort)), render:renderWbReading, after:afterWbReadingMount},
+  {key:'mistakes', label:'❌ Lỗi sai của tôi', show:()=>true, render:renderMistakes},
+  {key:'progress', label:'📊 Tiến độ học tập', show:()=>true, render:renderProgress},
+];
+
+/* ============ OVERVIEW ============ */
+function renderOverview(){
+  const inc = DATA.includes || {};
+  return `
+  <h2 class="page-h">UNIT ${DATA.id||''} — ${esc(DATA.title||'')}</h2>
+  <div class="section-desc">${esc(DATA.theme||'')}</div>
+  <div class="card">
+    <div class="section-title">📋 Nội dung chính của Unit</div>
+    ${inc.vocabulary?`<p><b>Từ vựng:</b> ${esc(inc.vocabulary)}</p>`:''}
+    ${inc.pronunciation?`<p><b>Phát âm:</b> ${esc(inc.pronunciation)}</p>`:''}
+    ${inc.grammar?`<p><b>Ngữ pháp:</b> ${esc(inc.grammar)}</p>`:''}
+    ${inc.everydayEnglish?`<p><b>Giao tiếp:</b> ${esc(inc.everydayEnglish)}</p>`:''}
+    ${inc.skills?`<p><b>Kỹ năng:</b></p><ul>${inc.skills.map(s=>`<li>${esc(s)}</li>`).join('')}</ul>`:''}
+  </div>
+  ${DATA.nowICan?`<div class="card"><div class="section-title">🧠 Sau khi học xong, em có thể:</div><ul>${DATA.nowICan.map(x=>`<li>✓ ${esc(x)}</li>`).join('')}</ul></div>`:''}
+  <div class="card">
+    <div class="section-title">📊 Tiến độ của em</div>
+    <div id="ovProgressHolder"></div>
+  </div>`;
+}
+
+function afterOverviewMount(){
+  const holder = document.getElementById('ovProgressHolder');
+  if(!holder) return;
+  const total = Object.keys(STATE.done||{}).length;
+  const correct = Object.values(STATE.done||{}).filter(d=>d.correct).length;
+  const pct = total ? Math.round(correct/total*100) : 0;
+  holder.innerHTML = `<div class="progressbar"><div style="width:${pct}%"></div></div><p>${correct}/${total} câu đã làm đúng (${pct}%)</p>`;
+}
+
+/* ============ GETTING STARTED / CHAT ============ */
+function renderChat(){
+  let html = `<h2 class="page-h">💬 GETTING STARTED</h2>`;
+  if(DATA.dialogueTitle) html += `<div class="section-desc">${esc(DATA.dialogueTitle)}</div>`;
+  if(DATA.dialogue && DATA.dialogue.length){
+    html += `<div class="card"><div class="section-title">Bài 1 — Hội thoại (Listen and read)</div>`;
+    html += DATA.dialogue.map(d=>`<div class="dialog-row"><div class="dialog-sp">${esc(d.sp)}:</div><div class="dialog-en"><span>${esc(d.en)}</span> <button class="iconbtn" onclick="speak(${JSON.stringify(d.en)})">🔊</button>${d.vi?`<div class="sentence-vi" id="dvi_${DATA.dialogue.indexOf(d)}">${esc(d.vi)}</div><button class="fill-vi-toggle" onclick="document.getElementById('dvi_${DATA.dialogue.indexOf(d)}').classList.toggle('show')">🇻🇳 Xem nghĩa</button>`:''}</div></div>`).join('');
+    html += `</div>`;
+  }
+  if(DATA.dialogueCheckType==='tf' && DATA.dialogueTF){
+    html += `<div class="card"><div class="section-title">Bài 2 — Đúng hay Sai?</div><div id="chatTFHolder"></div></div>`;
+  } else if(DATA.dialogueCheckType==='fill' && DATA.dialogueFill){
+    html += `<div class="card"><div class="section-title">Bài 2 — Điền từ</div><div id="chatFillHolder"></div></div>`;
+  } else if(DATA.dialogueMCQ && DATA.dialogueMCQ.length){
+    html += `<div class="card"><div class="section-title">Bài 2 — Kiểm tra hiểu bài (Circle the correct answers)</div><div id="chatMCQHolder"></div></div>`;
+  }
+  if(DATA.dialogueMatch && DATA.dialogueMatch.items && DATA.dialogueMatch.items.length){
+    html += `<div class="card"><div class="section-title">${esc(DATA.dialogueMatch.title||'Bài 3 — Match the pictures with the words/phrases')}</div><div id="dialogueMatchHolder"></div></div>`;
+  }
+  if(DATA.gettingStartedFill){
+    html += `<div class="card"><div class="section-title">Bài 4 — Điền từ vào chỗ trống</div>`;
+    if(DATA.gettingStartedFill.box) html += `<div class="section-desc">Chọn từ: <b>${DATA.gettingStartedFill.box.join(', ')}</b></div>`;
+    html += `<div id="gsFillHolder"></div></div>`;
+  }
+  if(DATA.dialogueGame){
+    const g = DATA.dialogueGame;
+    html += `<div class="card"><div class="section-title">${esc(g.title||'Bài 5 — GAME')}</div>
+      <p>${esc(g.instruction||'')}</p>
+      ${g.instructionVi?`<div class="vi-explain show">${esc(g.instructionVi)}</div>`:''}`;
+    html += (g.items||[]).map(it=>`
+      <div class="sentence-block"><b>${esc(it.en)}</b>
+        <button class="btn small secondary" style="margin-left:8px" onclick="this.nextElementSibling.style.display='block';this.style.display='none'">👁 Xem gợi ý</button>
+        <div class="explain" style="display:none">${esc(it.vi)}</div>
+      </div>`).join('');
+    if(g.note) html += `<div class="explain" style="margin-top:8px">💡 ${esc(g.note)}</div>`;
+    html += `</div>`;
+  }
+  if(DATA.farmActivities && DATA.farmActivities.length){
+    html += `<div class="card"><div class="section-title">${esc(DATA.farmActivitiesLabel||'Ghép từ vựng thêm')}</div><div id="farmMatchHolder"></div></div>`;
+  }
+  return html;
+}
+function afterChatMount(){
+  if(DATA.dialogueCheckType==='tf' && DATA.dialogueTF) mountTF('chatTFHolder', DATA.dialogueTF, 'chatTF');
+  else if(DATA.dialogueCheckType==='fill' && DATA.dialogueFill) mountFillBlank('chatFillHolder', DATA.dialogueFill, 'chatFill');
+  else if(DATA.dialogueMCQ && DATA.dialogueMCQ.length) mountMCQBlock('chatMCQHolder', DATA.dialogueMCQ, 'chatMCQ');
+  if(DATA.dialogueMatch && DATA.dialogueMatch.items && DATA.dialogueMatch.items.length) mountMatch('dialogueMatchHolder', DATA.dialogueMatch.items, 'dialogueMatch');
+  if(DATA.gettingStartedFill) mountFillBlank('gsFillHolder', DATA.gettingStartedFill.items, 'gsFill');
+  if(DATA.farmActivities && DATA.farmActivities.length) mountMatch('farmMatchHolder', DATA.farmActivities, 'farmMatch');
+}
+
+/* ============ VOCABULARY ============ */
+let VOCAB_MODE = 'list';
+function renderVocab(){
+  const cl1 = DATA.closerLook1 || {};
+  let html = `<h2 class="page-h">📚 A CLOSER LOOK 1 <span style="font-weight:400;font-size:15px">— Vocabulary &amp; Pronunciation</span></h2>`;
+  if(VOCAB && VOCAB.length){
+    html += `<div class="card"><div class="section-title">Kho từ vựng (${VOCAB.length} từ)</div>
+      <div style="margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn small ${VOCAB_MODE==='list'?'':'secondary'}" onclick="setVocabMode('list')">📋 Danh sách</button>
+        <button class="btn small ${VOCAB_MODE==='flash'?'':'secondary'}" onclick="setVocabMode('flash')">🎴 Flashcard</button>
+        <button class="btn small ${VOCAB_MODE==='quiz'?'':'secondary'}" onclick="setVocabMode('quiz')">❓ Trắc nghiệm</button>
+        <button class="btn small ${VOCAB_MODE==='match'?'':'secondary'}" onclick="setVocabMode('match')">🔗 Nối từ</button>
+        <button class="btn small ${VOCAB_MODE==='fill'?'':'secondary'}" onclick="setVocabMode('fill')">✏️ Điền từ</button>
+      </div>
+      <div id="vocabModeHolder"></div>
+    </div>`;
+  }
+  if(cl1.picMatch && cl1.picMatch.items.length){
+    html += `<div class="card"><div class="section-title">${esc(cl1.picMatch.title)}</div><div id="clPicMatchHolder"></div></div>`;
+  }
+  if(cl1.defMatch && cl1.defMatch.length){
+    html += `<div class="card"><div class="section-title">Nối từ với định nghĩa</div><div id="clDefMatchHolder"></div></div>`;
+  }
+  if(cl1.vocabFill && cl1.vocabFill.length){
+    html += `<div class="card"><div class="section-title">Điền từ vựng</div><div id="clVocabFillHolder"></div></div>`;
+  }
+  if(cl1.pronGroups && cl1.pronGroups.length){
+    html += `<div class="card"><div class="section-title">🔊 Phát âm</div><div class="section-desc">Nghe và phân loại từ theo âm phù hợp.</div><div id="clPronHolder"></div></div>`;
+  }
+  if(cl1.pronSentences && cl1.pronSentences.length){
+    html += `<div class="card"><div class="section-title">Câu luyện phát âm</div>${cl1.pronSentences.map(s=>`<div class="sentence-block"><span class="sentence-en">${esc(s)}</span> <button class="iconbtn" onclick="speak(${JSON.stringify(s)})">🔊</button></div>`).join('')}</div>`;
+  }
+  return html;
+}
+function setVocabMode(m){ VOCAB_MODE = m; renderVocabModeHolder(); }
+function renderVocabModeHolder(){
+  const holder = document.getElementById('vocabModeHolder');
+  if(!holder) return;
+  if(VOCAB_MODE==='list') holder.innerHTML = renderVocabList();
+  else if(VOCAB_MODE==='flash') { holder.innerHTML = renderVocabFlash(); mountFlash(); }
+  else if(VOCAB_MODE==='quiz') { holder.innerHTML = `<div id="vocabQuizHolder"></div>`; mountVocabQuiz(); }
+  else if(VOCAB_MODE==='match') { holder.innerHTML = `<div id="vocabMatchHolder"></div>`; mountMatch('vocabMatchHolder', VOCAB.map(v=>({en:v.w, vi:v.vi})), 'vocabMatch'); }
+  else if(VOCAB_MODE==='fill') { holder.innerHTML = `<div id="vocabFillPracticeHolder"></div>`; mountVocabFillPractice(); }
+  // re-run the button active styling
+  const btnRow = holder.parentElement.querySelector('div[style]');
+}
+function renderVocabList(){
+  return `<div class="vocab-grid">${VOCAB.map((v,i)=>`
+    <div class="vcard">
+      <div><span class="w">${esc(v.w)}</span><span class="pos">${esc(v.pos||'')}</span></div>
+      <div class="ipa">${esc(v.ipa||'')}</div>
+      <div class="vi">${esc(v.vi)}</div>
+      <div class="ex">${esc(v.ex||'')}</div>
+      <div class="rowbtns">
+        <button class="iconbtn" onclick="speak(${JSON.stringify(v.w)})">🔊 Nghe</button>
+        <button class="iconbtn fav ${STATE.favs[v.w]?'active':''}" onclick="toggleFav(${JSON.stringify(v.w)});this.classList.toggle('active')">⭐ Yêu thích</button>
+      </div>
+    </div>`).join('')}</div>`;
+}
+let FLASH_IDX = 0;
+function renderVocabFlash(){
+  FLASH_IDX = FLASH_IDX % VOCAB.length;
+  const v = VOCAB[FLASH_IDX];
+  return `<div class="flashcard" id="flashcardEl" onclick="this.classList.toggle('flipped')">
+    <div class="flashcard-inner">
+      <div class="flashcard-face flashcard-front">${esc(v.w)}</div>
+      <div class="flashcard-face flashcard-back">
+        <div class="vi" style="font-size:19px">${esc(v.vi)}</div>
+        <div class="ipa">${esc(v.ipa||'')} ${esc(v.pos?'('+v.pos+')':'')}</div>
+        <div class="ex">${esc(v.ex||'')}</div>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:14px;display:flex;gap:8px;justify-content:center">
+    <button class="btn small secondary" onclick="flashNav(-1)">⬅️ Trước</button>
+    <span style="align-self:center;color:var(--ink-soft);font-size:13px">${FLASH_IDX+1}/${VOCAB.length}</span>
+    <button class="btn small secondary" onclick="flashNav(1)">Tiếp ➡️</button>
+    <button class="btn small" onclick="speak(${JSON.stringify(v.w)})">🔊</button>
+  </div>`;
+}
+function mountFlash(){}
+function flashNav(dir){
+  FLASH_IDX = (FLASH_IDX + dir + VOCAB.length) % VOCAB.length;
+  document.getElementById('vocabModeHolder').innerHTML = renderVocabFlash();
+}
+function mountVocabQuiz(){
+  const items = VOCAB.map(v=>{
+    const distractors = shuffle(VOCAB.filter(x=>x.w!==v.w)).slice(0,3).map(x=>x.vi);
+    const opts = shuffle([v.vi, ...distractors]);
+    return {q:`"${v.w}" nghĩa là gì?`, opts, a:opts.indexOf(v.vi), exp:v.ex?`Ví dụ: ${v.ex}`:''};
+  });
+  mountMCQBlock('vocabQuizHolder', items, 'vocabQuiz');
+}
+function mountVocabFillPractice(){
+  const items = VOCAB.filter(v=>v.ex && v.ex.toLowerCase().includes(v.w.toLowerCase().split(' ')[0])).map(v=>{
+    const re = new RegExp(v.w.split(' ')[0], 'i');
+    return {s: v.ex.replace(re,'___'), a: v.w.split(' ')[0], qVi: v.vi, exp:`Từ cần điền: "${v.w}"`};
+  });
+  mountFillBlank('vocabFillPracticeHolder', items, 'vocabFillPractice');
+}
+function afterVocabMount(){
+  const cl1 = DATA.closerLook1 || {};
+  if(VOCAB && VOCAB.length) renderVocabModeHolder();
+  if(cl1.picMatch && cl1.picMatch.items.length) mountMatch('clPicMatchHolder', cl1.picMatch.items, 'clPicMatch');
+  if(cl1.defMatch && cl1.defMatch.length) mountMatch('clDefMatchHolder', cl1.defMatch.map(d=>({en:d.w, vi:d.vi||d.def})), 'clDefMatch');
+  if(cl1.vocabFill && cl1.vocabFill.length) mountFillBlank('clVocabFillHolder', cl1.vocabFill, 'clVocabFill');
+  if(cl1.pronGroups && cl1.pronGroups.length){
+    const items = [];
+    cl1.pronGroups.forEach(g=>g.words.forEach(w=>items.push({q:w, opts:cl1.pronSymbols||cl1.pronGroups.map(x=>x.symbol), a:(cl1.pronSymbols||cl1.pronGroups.map(x=>x.symbol)).indexOf(g.symbol), exp:`"${w}" chứa âm ${g.symbol}`})));
+    mountMCQBlock('clPronHolder', shuffle(items), 'clPron');
+  }
+}
+
+/* ============ GRAMMAR ============ */
+function renderGrammar(){
+  const g = DATA.grammar;
+  let html = `<h2 class="page-h">✏️ A CLOSER LOOK 2 <span style="font-weight:400;font-size:15px">— Grammar</span></h2>`;
+  html += `<div class="section-desc">${esc(g.title||'')}</div>`;
+  if(g.rule && g.rule.length){
+    html += `<div class="card"><div class="section-title">📘 Ghi nhớ ngữ pháp chi tiết</div>${g.rule.map(r=>`<p style="margin-bottom:12px">${r}</p>`).join('')}</div>`;
+  }
+  if(g.table){
+    html += `<div class="card"><table><thead><tr>${(g.tableHead||g.table.cols||[]).map(c=>`<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${(g.table.rows||[]).map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  }
+  (g.exercises||[]).forEach((ex,gi)=>{
+    html += `<div class="card"><div class="section-title">${esc(ex.title)}</div>`;
+    if(ex.box) html += `<div class="section-desc">Chọn từ: <b>${ex.box.join(', ')}</b></div>`;
+    html += `<div id="gramEx${gi}Holder"></div></div>`;
+  });
+  if(g.game){
+    html += `<div class="card"><div class="section-title">${esc(g.game.title)}</div>
+      <p>${esc(g.game.instruction)}</p>
+      <div class="vi-explain show">${esc(g.game.instructionVi)}</div>`;
+    html += g.game.topics.map(t=>`
+      <div class="sentence-block"><b>${esc(t.topic)}</b>
+        <button class="btn small secondary" style="margin-left:8px" onclick="this.nextElementSibling.style.display='block';this.style.display='none'">👁 Xem gợi ý đáp án</button>
+        <div class="explain" style="display:none">
+          <b>Đếm được (countable):</b> ${t.countable.map(esc).join(', ')}<br>
+          <b>Không đếm được (uncountable):</b> ${t.uncountable.map(esc).join(', ')}
+        </div>
+      </div>`).join('');
+    if(g.game.note) html += `<div class="explain" style="margin-top:8px">💡 ${esc(g.game.note)}</div>`;
+    html += `</div>`;
+  }
+  if(g.bonusPractice && g.bonusPractice.items && g.bonusPractice.items.length){
+    html += `<div class="card"><div class="section-title">${esc(g.bonusPractice.title)}</div>`;
+    if(g.bonusPractice.note) html += `<div class="section-desc">${esc(g.bonusPractice.note)}</div>`;
+    html += `<div id="gramBonusHolder"></div></div>`;
+  }
+  return html;
+}
+function afterGrammarMount(){
+  (DATA.grammar.exercises||[]).forEach((ex,gi)=>{
+    const holderId = 'gramEx'+gi+'Holder';
+    const key = 'gramEx'+gi;
+    if(ex.type==='mcq') mountMCQBlock(holderId, ex.items, key);
+    else if(ex.type==='tf') mountTF(holderId, ex.items, key);
+    else mountFillBlank(holderId, ex.items, key);
+  });
+  if(DATA.grammar.bonusPractice && DATA.grammar.bonusPractice.items && DATA.grammar.bonusPractice.items.length){
+    mountMCQBlock('gramBonusHolder', DATA.grammar.bonusPractice.items, 'gramBonus');
+  }
+}
+
+/* ============ COMMUNICATION ============ */
+function renderCommunication(){
+  const c = DATA.communication || {};
+  let html = `<h2 class="page-h">🗣️ COMMUNICATION <span style="font-weight:400;font-size:15px">— Everyday English: Giving opinions</span></h2>`;
+  if(c.dialogues && c.dialogues.length){
+    html += `<div class="card"><div class="section-title">Bài 1 — Mẫu hội thoại (Listen and read)</div>`;
+    html += c.dialogues.map((d,i)=>`
+      <div class="dialog-row"><div class="dialog-sp">${esc(d.a)}:</div><div class="dialog-en">${esc(d.b)} <button class="iconbtn" onclick="speak(${JSON.stringify(d.b)})">🔊</button>${d.vi1?`<div class="sentence-vi show" style="opacity:.8">${esc(d.vi1)}</div>`:''}</div></div>
+      <div class="dialog-row"><div class="dialog-sp">${esc(d.c)}:</div><div class="dialog-en">${esc(d.d)} <button class="iconbtn" onclick="speak(${JSON.stringify(d.d)})">🔊</button>${d.vi2?`<div class="sentence-vi show" style="opacity:.8">${esc(d.vi2)}</div>`:''}</div></div>`).join('<hr style="border:none;border-top:1px dashed var(--border);margin:10px 0">');
+    html += `</div>`;
+  }
+  if(c.practiceNote) html += `<div class="card"><div class="section-title">💡 Luyện tập</div><div class="note-box">${c.practiceNote}</div></div>`;
+  if(c.practiceTopics && c.practiceTopics.length){
+    html += `<div class="card"><ul style="margin:0;padding-left:20px">${c.practiceTopics.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></div>`;
+  }
+  if(DATA.speakingMCQ && DATA.speakingMCQ.length){
+    html += `<div class="card"><div class="section-title">Bài 3 — QUIZ: How much do you know about ethnic groups in Viet Nam?</div><div id="commMCQHolder"></div></div>`;
+  }
+  if(c.info){
+    html += `<div class="card"><div class="section-title">${esc(c.info.title)}</div><ul style="margin:0;padding-left:20px">${(c.info.facts||[]).map(f=>`<li style="margin-bottom:4px">${esc(f)}</li>`).join('')}</ul></div>`;
+  }
+  if(c.groupPrompt){
+    html += `<div class="note-box">🗣️ ${esc(c.groupPrompt)}</div>`;
+  }
+  return html;
+}
+function afterCommMount(){
+  if(DATA.speakingMCQ && DATA.speakingMCQ.length) mountMCQBlock('commMCQHolder', DATA.speakingMCQ, 'commMCQ');
+}
+
+/* ============ READING ============ */
+function renderReading(){
+  const r = DATA.reading;
+  let html = `<h2 class="page-h">📖 SKILLS 1 <span style="font-weight:400;font-size:15px">— Reading: ${esc(r.title||'')}</span></h2>`;
+  if(r.text){
+    const sentences = r.text.split(/\n\n/).flatMap(p=>p.split(/(?<=[.!?])\s+/));
+    const sentencesVi = r.textVi ? r.textVi.split(/\n\n/).flatMap(p=>p.split(/(?<=[.!?])\s+/)) : [];
+    html += `<div class="card"><div class="section-title">📄 Bài đọc (dịch từng câu)</div>`;
+    html += sentences.filter(s=>s.trim()).map((s,i)=>`
+      <div class="sentence-block">
+        <span class="sentence-en">${esc(s)}</span>
+        <button class="iconbtn" onclick="speak(${JSON.stringify(s)})">🔊</button>
+        <button class="fill-vi-toggle" onclick="document.getElementById('rvi_${i}').classList.toggle('show')">🇻🇳 Xem nghĩa</button>
+        <div class="sentence-vi" id="rvi_${i}">${esc(sentencesVi[i]||'')}</div>
+      </div>`).join('');
+    html += `</div>`;
+  }
+  if(r.vocabMatch && r.vocabMatch.length) html += `<div class="card"><div class="section-title">Bài 1 — Write the word/phrase from the box under the correct pictures</div><div id="readVocabMatchHolder"></div></div>`;
+  if(r.tf && r.tf.length) html += `<div class="card"><div class="section-title">Bài 2 — Đúng hay Sai (True/False)</div><div id="readTFHolder"></div></div>`;
+  if(r.mcq && r.mcq.length) html += `<div class="card"><div class="section-title">Trắc nghiệm</div><div id="readMCQHolder"></div></div>`;
+  if(r.fill && r.fill.length) html += `<div class="card"><div class="section-title">Bài 3 — Fill in each blank with ONE word</div><div id="readFillHolder"></div></div>`;
+  if(r.speakingCheck && r.speakingCheck.items && r.speakingCheck.items.length){
+    html += `<div class="card"><div class="section-title">${esc(r.speakingCheck.title)}</div>`;
+    if(r.speakingCheck.note) html += `<div class="section-desc">${esc(r.speakingCheck.note)}</div>`;
+    html += `<div id="readSpeakingCheckHolder"></div></div>`;
+  }
+  if(r.speakingPrompt) html += `<div class="note-box">${esc(r.speakingPrompt)}</div>`;
+  return html;
+}
+function afterReadingMount(){
+  const r = DATA.reading;
+  if(r.tf && r.tf.length) mountTF('readTFHolder', r.tf, 'readTF');
+  if(r.mcq && r.mcq.length) mountMCQBlock('readMCQHolder', r.mcq, 'readMCQ');
+  if(r.fill && r.fill.length) mountFillBlank('readFillHolder', r.fill, 'readFill');
+  if(r.vocabMatch && r.vocabMatch.length) mountMatch('readVocabMatchHolder', r.vocabMatch.map(v=>({en:v.w,vi:v.def})), 'readVocabMatch');
+  if(r.speakingCheck && r.speakingCheck.items && r.speakingCheck.items.length) mountTF('readSpeakingCheckHolder', r.speakingCheck.items, 'readSpeakingCheck');
+}
+
+/* ============ LISTENING (static reference) ============ */
+function renderListening(){
+  const l = DATA.listening;
+  let html = `<h2 class="page-h">🎧 SKILLS 2 <span style="font-weight:400;font-size:15px">— Listening</span></h2>`;
+  if(l.note) html += `<div class="note-box">⚠️ ${l.note}</div>`;
+  if(l.picMatch && l.picMatch.items && l.picMatch.items.length){
+    html += `<div class="card"><div class="section-title">${esc(l.picMatch.title||'Bài 1 — Match the phrases with the correct pictures')}</div><div id="listenPicMatchHolder"></div></div>`;
+  }
+  if(l.table){
+    const hasAns = l.table.cols[l.table.cols.length-1] === 'Đúng?';
+    html += `<div class="card"><div class="section-title">Bài 2 — ${esc(l.tableTitle||'')}</div><table><thead><tr>${l.table.cols.map(c=>`<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${l.table.rows.map(row=>{
+      const cells = hasAns ? row.slice(0,-1) : row;
+      const ans = hasAns ? row[row.length-1] : null;
+      return `<tr>${cells.map(c=>`<td>${esc(c)}</td>`).join('')}${hasAns?`<td>${ans?'✅':'—'}</td>`:''}</tr>`;
+    }).join('')}</tbody></table>${l.checkboxNote?`<div class="explain" style="margin-top:8px">💡 ${esc(l.checkboxNote)}</div>`:''}</div>`;
+  }
+  if(l.questions && l.questions.length){
+    html += `<div class="card"><div class="section-title">Bài 3 — Câu hỏi trắc nghiệm</div><div id="listenMCQHolder"></div></div>`;
+  }
+  if(l.script){
+    html += `<div class="card"><div class="section-title">📜 Kịch bản bài nghe (Audio script)</div>
+      ${l.scriptNote?`<div class="explain" style="margin-bottom:8px">ℹ️ ${esc(l.scriptNote)}</div>`:''}
+      <button class="btn small" onclick="speak(${JSON.stringify(l.script.replace(/\n+/g,' '))})">🔊 Nghe toàn bộ script</button>
+      <button class="fill-vi-toggle" onclick="document.getElementById('listenScriptVi').classList.toggle('show')">🇻🇳 Xem/Ẩn bản dịch</button>
+      <div style="margin-top:10px;white-space:pre-line;line-height:1.7">${esc(l.script)}</div>
+      <div class="vi-explain" id="listenScriptVi" style="white-space:pre-line">${esc(l.scriptVi||'')}</div>
+    </div>`;
+  }
+  return html;
+}
+function afterListeningMount(){
+  const l = DATA.listening;
+  if(l.picMatch && l.picMatch.items && l.picMatch.items.length) mountMatch('listenPicMatchHolder', l.picMatch.items, 'listenPicMatch');
+  if(l.questions && l.questions.length) mountMCQBlock('listenMCQHolder', l.questions, 'listenMCQ');
+}
+
+/* ============ WRITING ============ */
+function renderWriting(){
+  const w = DATA.writing;
+  let html = `<h2 class="page-h">📝 SKILLS 2 <span style="font-weight:400;font-size:15px">— Writing</span></h2>`;
+  html += `<div class="card"><div class="section-title">✍️ Đề bài</div><p>${esc(w.prompt||'')}</p></div>`;
+  if(w.like || w.dislike){
+    html += `<div class="card"><div class="section-title">${esc(w.likeLabel||'Gợi ý 1')}</div><p>${w.like||''}</p></div>`;
+    html += `<div class="card"><div class="section-title">${esc(w.dislikeLabel||'Gợi ý 2')}</div><p>${w.dislike||''}</p></div>`;
+  }
+  if(w.tip) html += `<div class="note-box">💡 ${w.tip}</div>`;
+  html += `<div class="card"><div class="section-title">Bài viết của em</div><textarea rows="8" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:10px;font-size:14px" placeholder="Viết bài của em vào đây..." id="writingArea" oninput="saveWritingDraft()"></textarea></div>`;
+  if(w.sampleAnswer){
+    html += `<div class="card"><details><summary style="cursor:pointer;font-weight:600">👁 Xem bài mẫu + dịch nghĩa + phân tích</summary>
+      <div style="margin-top:10px">
+        <button class="btn small" onclick="speak(${JSON.stringify(w.sampleAnswer)})">🔊 Nghe bài mẫu</button>
+        <p style="margin-top:8px">${esc(w.sampleAnswer)}</p>
+        ${w.sampleAnswerVi?`<button class="fill-vi-toggle" onclick="document.getElementById('writeSampleVi').classList.toggle('show')">🇻🇳 Xem/Ẩn bản dịch</button><div class="vi-explain" id="writeSampleVi">${esc(w.sampleAnswerVi)}</div>`:''}
+        ${w.analysis&&w.analysis.length?`<div class="section-title" style="margin-top:14px">🔍 Phân tích từng câu</div>${w.analysis.map((a,i)=>`<div class="sentence-block"><b>${i+1}. ${esc(a.en)}</b><div class="vi-explain show">${esc(a.vi)}</div>${a.note?`<div class="explain">📎 ${esc(a.note)}</div>`:''}</div>`).join('')}`:''}
+      </div>
+    </details></div>`;
+  }
+  return html;
+}
+function saveWritingDraft(){
+  const ta = document.getElementById('writingArea');
+  if(!ta) return;
+  STATE.draft = ta.value; saveState(STATE);
+}
+
+/* ============ LOOKING BACK ============ */
+function renderLookingBack(){
+  let html = `<h2 class="page-h">🔁 LOOKING BACK</h2>`;
+  if(DATA.lookingBackVocab1 && DATA.lookingBackVocab1.items.length) html += `<div class="card"><div class="section-title">${esc(DATA.lookingBackVocab1.title)}</div><div id="lbVocab1Holder"></div></div>`;
+  if(DATA.lookingBackVocab2 && DATA.lookingBackVocab2.items.length){
+    html += `<div class="card"><div class="section-title">${esc(DATA.lookingBackVocab2.title)}</div>`;
+    if(DATA.lookingBackVocab2.box) html += `<div class="section-desc">Chọn từ: <b>${DATA.lookingBackVocab2.box.join(', ')}</b></div>`;
+    html += `<div id="lbVocab2Holder"></div></div>`;
+  }
+  if(DATA.lookingBackMCQ && DATA.lookingBackMCQ.length) html += `<div class="card"><div class="section-title">Trắc nghiệm ôn tập</div><div id="lbMCQHolder"></div></div>`;
+  if(DATA.lookingBackGrammar && DATA.lookingBackGrammar.length) html += `<div class="card"><div class="section-title">Ngữ pháp ôn tập</div><div id="lbGramHolder"></div></div>`;
+  if(DATA.errorCorrection && DATA.errorCorrection.length){
+    html += `<div class="card"><div class="section-title">Tìm và sửa lỗi sai</div>`;
+    html += DATA.errorCorrection.map((e,i)=>`<div class="quiz-q"><div class="qtext">${i+1}. ${esc(e.s)}</div><button class="btn small secondary" onclick="this.nextElementSibling.style.display='block';this.style.display='none'">👁 Xem đáp án</button><div class="explain" style="display:none">✅ ${esc(e.a)}<br>Sửa: <s>${esc(e.wrong)}</s> → <b>${esc(e.right)}</b></div></div>`).join('');
+    html += `</div>`;
+  }
+  return html;
+}
+function afterLookingBackMount(){
+  if(DATA.lookingBackVocab1 && DATA.lookingBackVocab1.items.length) mountMatch('lbVocab1Holder', DATA.lookingBackVocab1.items, 'lbVocab1');
+  if(DATA.lookingBackVocab2 && DATA.lookingBackVocab2.items.length) mountFillBlank('lbVocab2Holder', DATA.lookingBackVocab2.items, 'lbVocab2');
+  if(DATA.lookingBackMCQ && DATA.lookingBackMCQ.length) mountMCQBlock('lbMCQHolder', DATA.lookingBackMCQ, 'lbMCQ');
+  if(DATA.lookingBackGrammar && DATA.lookingBackGrammar.length) mountFillBlank('lbGramHolder', DATA.lookingBackGrammar, 'lbGram');
+}
+
+/* ============ PROJECT ============ */
+function renderProject(){
+  const p = DATA.project;
+  return `<h2 class="page-h">🎨 PROJECT <span style="font-weight:400;font-size:15px">— ${esc(p.title||'')}</span></h2>
+  <div class="card"><div class="section-title">Các bước thực hiện</div><ol>${(p.steps||[]).map(s=>`<li>${esc(s)}</li>`).join('')}</ol></div>`;
+}
+
+/* ============ REMEMBER ============ */
+function renderRemember(){
+  const r = DATA.remember;
+  let html = `<h2 class="page-h">📌 Ghi nhớ</h2>`;
+  if(r.vocab) html += `<div class="card"><div class="section-title">Từ vựng cần nhớ</div>${r.vocab.map(v=>`<span class="chip">${esc(v)}</span>`).join('')}</div>`;
+  if(r.grammar) html += `<div class="card"><div class="section-title">Ngữ pháp</div><p>${r.grammar}</p></div>`;
+  if(r.expressions) html += `<div class="card"><div class="section-title">Mẫu câu hay dùng</div><ul>${r.expressions.map(e=>`<li>${esc(e)}</li>`).join('')}</ul></div>`;
+  if(r.readingSummary) html += `<div class="card"><div class="section-title">Tóm tắt bài đọc</div><p>${esc(r.readingSummary)}</p></div>`;
+  if(r.mistakes) html += `<div class="card"><div class="section-title">⚠️ Lỗi thường gặp</div><ul>${r.mistakes.map(m=>`<li>${esc(m)}</li>`).join('')}</ul></div>`;
+  return html;
+}
+
+/* ============ WORKBOOK EXERCISES (SBT) ============ */
+function renderWorkbook(){
+  let html = `<h2 class="page-h">📕 Bài tập Workbook (SBT)</h2>`;
+  (DATA.workbook.exercises||[]).forEach((ex,i)=>{
+    html += `<div class="card"><div class="section-title">${esc(ex.title)}</div>`;
+    if(ex.box) html += `<div class="section-desc">Chọn từ: <b>${ex.box.join(', ')}</b></div>`;
+    if(ex.type==='readaloud'){
+      html += ex.items.map(it=>`<div class="dialog-row"><span>${esc(it.en)}</span> <button class="btn small" onclick="speak(${JSON.stringify(it.en)})">🔊</button><div class="vi-explain show">${esc(it.vi)}</div></div>`).join('');
+    } else {
+      html += `<div id="wbEx${i}Holder"></div>`;
+    }
+    html += `</div>`;
+  });
+  const wb = DATA.workbook;
+  if(wb.speakingGame && wb.speakingGame.items.length){
+    html += `<div class="card"><div class="section-title">${esc(wb.speakingGame.title)}</div>`;
+    html += wb.speakingGame.items.map((it,i)=>`<div class="quiz-q"><div class="qtext">${i+1}. ${esc(it.q)}</div><div class="vi-explain show">${esc(it.qVi)}</div><button class="btn small secondary" onclick="this.nextElementSibling.style.display='block';this.style.display='none'">👁 Xem gợi ý đáp án</button><div class="explain" style="display:none">✅ ${esc(it.a)}<br>🇻🇳 ${esc(it.aVi)}</div></div>`).join('');
+    html += `</div>`;
+  }
+  if(wb.speakingInfo && wb.speakingInfo.facts.length){
+    html += `<div class="card"><div class="section-title">${esc(wb.speakingInfo.title)}</div><ul>${wb.speakingInfo.facts.map(f=>`<li>${esc(f)}</li>`).join('')}</ul></div>`;
+  }
+  if(wb.writingTask2){
+    const w2 = wb.writingTask2;
+    html += `<div class="card"><div class="section-title">${esc(w2.title)}</div>
+      <div class="section-desc"><b>Gợi ý:</b><ul>${w2.notes.map(n=>`<li>${esc(n)}</li>`).join('')}</ul></div>
+      <textarea rows="6" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:10px;font-size:14px" placeholder="Viết bài của em vào đây..." id="w2Area" oninput="saveW2Draft()"></textarea>
+      <details style="margin-top:10px"><summary style="cursor:pointer;font-weight:600">👁 Xem bài mẫu + dịch nghĩa + phân tích</summary>
+        <div style="margin-top:10px">
+          <button class="btn small" onclick="speak(${JSON.stringify(w2.sampleAnswer)})">🔊 Nghe bài mẫu</button>
+          <p style="margin-top:8px">${esc(w2.sampleAnswer)}</p>
+          <button class="fill-vi-toggle" onclick="document.getElementById('w2SampleVi').classList.toggle('show')">🇻🇳 Xem/Ẩn bản dịch</button>
+          <div class="vi-explain" id="w2SampleVi">${esc(w2.sampleAnswerVi)}</div>
+          <div class="section-title" style="margin-top:14px">🔍 Phân tích từng câu</div>
+          ${w2.analysis.map((a,i)=>`<div class="sentence-block"><b>${i+1}. ${esc(a.en)}</b><div class="vi-explain show">${esc(a.vi)}</div>${a.note?`<div class="explain">📎 ${esc(a.note)}</div>`:''}</div>`).join('')}
+        </div>
+      </details>
+    </div>`;
+  }
+  return html;
+}
+function afterWorkbookMount(){
+  (DATA.workbook.exercises||[]).forEach((ex,i)=>{
+    const holderId = 'wbEx'+i+'Holder', key='wbEx'+i;
+    if(ex.type==='readaloud') return;
+    if(ex.type==='mcq') mountMCQBlock(holderId, ex.items, key);
+    else if(ex.type==='match') mountMatch(holderId, ex.items, key);
+    else mountFillBlank(holderId, ex.items, key);
+  });
+}
+function saveW2Draft(){
+  const ta = document.getElementById('w2Area');
+  if(!ta) return;
+  STATE.draftW2 = ta.value; saveState(STATE);
+}
+
+/* ============ WORKBOOK READING (SBT) ============ */
+function renderWbReading(){
+  const wb = DATA.workbook;
+  let html = `<h2 class="page-h">📗 Đọc hiểu (SBT)</h2>`;
+  if(wb.readingFill){
+    html += `<div class="card"><div class="section-title">${esc(wb.readingFill.title)}</div>
+      <p>${esc(wb.readingFill.text).replace(/\(\d\)___/g,m=>`<b style="color:var(--primary)">${m}</b>`)}</p>
+      ${wb.readingFill.textVi?`<button class="fill-vi-toggle" onclick="document.getElementById('wbf_vi').classList.toggle('show')">🇻🇳 Xem/Ẩn bản dịch</button><div class="vi-explain" id="wbf_vi">${esc(wb.readingFill.textVi)}</div>`:''}
+      <div id="wbReadFillHolder" style="margin-top:10px"></div></div>`;
+  }
+  if(wb.readingFill2){
+    html += `<div class="card"><div class="section-title">${esc(wb.readingFill2.title)}</div>
+      <p>${esc(wb.readingFill2.text)}</p>
+      ${wb.readingFill2.textVi?`<button class="fill-vi-toggle" onclick="document.getElementById('wbm_vi').classList.toggle('show')">🇻🇳 Xem/Ẩn bản dịch</button><div class="vi-explain" id="wbm_vi">${esc(wb.readingFill2.textVi)}</div>`:''}
+      <div id="wbReadFill2Holder" style="margin-top:10px"></div></div>`;
+  }
+  if(wb.readingShort){
+    html += `<div class="card"><div class="section-title">${esc(wb.readingShort.title)}</div>
+      <p>${esc(wb.readingShort.text)}</p>
+      ${wb.readingShort.textVi?`<button class="fill-vi-toggle" onclick="document.getElementById('wbt_vi').classList.toggle('show')">🇻🇳 Xem/Ẩn bản dịch</button><div class="vi-explain" id="wbt_vi">${esc(wb.readingShort.textVi)}</div>`:''}
+      <div class="section-desc" style="margin-top:8px"><b>a. Điền từ vào chỗ trống:</b></div>
+      <div id="wbReadShortBlanksHolder"></div>
+      <div class="section-desc" style="margin-top:8px"><b>b. Trả lời câu hỏi ngắn:</b></div>
+      ${wb.readingShort.shortAnswer.map((qa,i)=>`<div class="quiz-q"><div class="qtext">${i+1}. ${esc(qa.q)}</div><div class="vi-explain show">${esc(qa.qVi)}</div><button class="btn small secondary" onclick="this.nextElementSibling.style.display='block';this.style.display='none'">👁 Xem đáp án mẫu</button><div class="explain" style="display:none">✅ ${esc(qa.a)}<br>🇻🇳 ${esc(qa.aVi)}</div></div>`).join('')}
+      </div>`;
+  }
+  return html;
+}
+function afterWbReadingMount(){
+  const wb = DATA.workbook;
+  if(wb.readingFill){
+    const items = wb.readingFill.blanks.map((b,i)=>({q:`Chỗ trống (${i+1}):`, qVi:b.qVi, opts:b.opts, optsVi:b.optsVi, a:b.a}));
+    mountMCQBlock('wbReadFillHolder', items, 'wbReadFill');
+  }
+  if(wb.readingFill2) mountFillBlank('wbReadFill2Holder', wb.readingFill2.blanks.map(b=>({s:b.q, qVi:b.qVi, a:b.a})), 'wbReadFill2');
+  if(wb.readingShort) mountFillBlank('wbReadShortBlanksHolder', wb.readingShort.blanks.map(b=>({s:b.q, qVi:b.qVi, a:b.a})), 'wbReadShort');
+}
+
+/* ============ MY MISTAKES ============ */
+function renderMistakes(){
+  const keys = Object.keys(STATE.mistakes||{});
+  let html = `<h2 class="page-h">❌ Lỗi sai của em</h2>`;
+  if(!keys.length){
+    html += `<div class="card">🎉 Chưa có lỗi sai nào được ghi lại. Cứ tiếp tục luyện tập nhé!</div>`;
+    return html;
+  }
+  html += `<div class="card"><button class="btn small ghost" onclick="clearAllMistakes()">🗑️ Xoá tất cả</button></div>`;
+  html += keys.map(k=>{
+    const m = STATE.mistakes[k];
+    return `<div class="mistake-card">
+      <div><b>Câu hỏi:</b> ${esc(m.q)}</div>
+      <div>❌ <b>Câu trả lời của em:</b> ${esc(m.your)}</div>
+      <div>✅ <b>Đáp án đúng:</b> ${esc(m.correct)}</div>
+      ${m.exp?`<div class="explain">💡 ${esc(m.exp)}</div>`:''}
+    </div>`;
+  }).join('');
+  return html;
+}
+function clearAllMistakes(){ STATE.mistakes = {}; saveState(STATE); openTab('mistakes'); }
+
+/* ============ PROGRESS ============ */
+function renderProgress(){
+  const total = Object.keys(STATE.done||{}).length;
+  const correct = Object.values(STATE.done||{}).filter(d=>d.correct).length;
+  const pct = total ? Math.round(correct/total*100) : 0;
+  let badge = '💪 Cố lên nào!';
+  if(pct>=90) badge = '🏆 Xuất sắc!';
+  else if(pct>=70) badge = '⭐ Khá tốt!';
+  return `<h2 class="page-h">📊 Tiến độ học tập</h2>
+  <div class="card">
+    <div class="section-title">Tổng quan</div>
+    <div class="progressbar"><div style="width:${pct}%"></div></div>
+    <p>${correct}/${total} câu đã làm đúng — <b>${pct}%</b> ${badge}</p>
+    <p style="color:var(--ink-soft);font-size:13px">Số lỗi sai đang lưu: ${Object.keys(STATE.mistakes||{}).length}</p>
+  </div>
+  <div class="card">
+    <button class="btn secondary" onclick="resetProgress()">🔄 Làm lại từ đầu (xoá toàn bộ tiến độ)</button>
+  </div>`;
+}
+function resetProgress(){
+  if(confirm('Xoá toàn bộ tiến độ và lỗi sai đã lưu?')){
+    STATE = {done:{}, mistakes:{}, favs:{}};
+    saveState(STATE);
+    openTab(CURRENT_TAB);
+  }
+}
+</script>
+
+
+<script>
+renderNav();
+openTab(TABS.find(t=>t.show()).key);
+</script>
+</body>
+</html>
