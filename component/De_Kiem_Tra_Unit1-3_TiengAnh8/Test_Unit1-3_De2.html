@@ -1,0 +1,705 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>De kiem tra Tieng Anh 8 - On tap Unit 1-2-3 - De so 2</title>
+<style>
+:root{
+  --bg:#f4f6fb; --card:#ffffff; --ink:#1f2937; --muted:#6b7280;
+  --brand:#2563eb; --brand-dark:#1d4ed8;
+  --good:#16a34a; --good-bg:#ecfdf3; --bad:#dc2626; --bad-bg:#fef2f2;
+  --warn-bg:#fffbeb; --warn-border:#f59e0b;
+  --border:#e5e7eb; --chip-bg:#eef2ff;
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:'Segoe UI',Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);padding-bottom:110px;}
+.wrap{max-width:780px;margin:0 auto;padding:16px;}
+header.top{background:linear-gradient(135deg,var(--brand),var(--brand-dark));color:#fff;border-radius:16px;padding:20px 18px;margin-bottom:16px;box-shadow:0 4px 14px rgba(37,99,235,.25);}
+header.top h1{margin:0 0 6px;font-size:1.25rem;}
+header.top p{margin:4px 0;font-size:.92rem;opacity:.95;}
+.meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.meta-chip{background:rgba(255,255,255,.18);border-radius:999px;padding:4px 10px;font-size:.78rem;}
+#scoreBanner{display:none;background:var(--card);border:2px solid var(--brand);border-radius:14px;padding:16px;margin-bottom:16px;text-align:center;position:sticky;top:8px;z-index:5;box-shadow:0 4px 14px rgba(0,0,0,.08);}
+#scoreBanner.show{display:block;}
+#scoreBanner .big{font-size:1.8rem;font-weight:800;color:var(--brand-dark);}
+#scoreBanner .sub{color:var(--muted);font-size:.85rem;margin-top:2px;}
+.card{background:var(--card);border-radius:14px;padding:16px;margin-bottom:14px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.passage-box{background:#f8fafc;border:1px dashed #94a3b8;border-radius:12px;padding:14px;margin-bottom:10px;}
+.passage-box h3{margin:0 0 8px;font-size:1rem;color:var(--brand-dark);}
+.passage-box p{margin:0;line-height:1.65;font-size:.94rem;color:#334155;}
+.q-tags{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;}
+.tag{font-size:.7rem;padding:2px 8px;border-radius:999px;background:var(--chip-bg);color:var(--brand-dark);font-weight:600;}
+.tag.skill-reading{background:#fdf2ff;color:#86198f;}
+.tag.skill-grammar{background:#eff6ff;color:#1d4ed8;}
+.tag.skill-vocab{background:#ecfdf5;color:#047857;}
+.q-text{font-weight:600;margin:0 0 10px;line-height:1.5;}
+.q-num{color:var(--brand-dark);margin-right:4px;}
+.opt{display:flex;align-items:flex-start;gap:8px;padding:9px 10px;border-radius:10px;border:1px solid var(--border);margin-bottom:6px;cursor:pointer;transition:.15s;}
+.opt:hover{background:#f1f5f9;}
+.opt input{margin-top:3px;}
+.opt.correct-ans{border-color:var(--good);background:var(--good-bg);}
+.opt.wrong-ans{border-color:var(--bad);background:var(--bad-bg);}
+.opt.disabled{cursor:default;}
+.explain{display:none;margin-top:10px;background:var(--warn-bg);border:1px solid var(--warn-border);border-radius:10px;padding:10px 12px;font-size:.88rem;color:#78350f;line-height:1.5;}
+.explain.show{display:block;}
+.explain b{color:#92400e;}
+.result-mark{font-weight:700;font-size:.82rem;margin-left:6px;}
+.result-mark.ok{color:var(--good);}
+.result-mark.no{color:var(--bad);}
+.footer-bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--border);padding:12px 16px;display:flex;gap:10px;justify-content:center;box-shadow:0 -4px 14px rgba(0,0,0,.08);z-index:10;}
+.btn{border:none;border-radius:999px;padding:12px 26px;font-size:1rem;font-weight:700;cursor:pointer;}
+.btn-submit{background:var(--brand);color:#fff;}
+.btn-submit:hover{background:var(--brand-dark);}
+.btn-reset{background:#fff;border:1px solid var(--border);color:var(--muted);}
+.btn-reset:hover{background:#f1f5f9;}
+.progress{font-size:.8rem;color:var(--muted);text-align:center;margin-bottom:10px;}
+.unanswered-note{color:var(--bad);font-weight:600;font-size:.85rem;text-align:center;margin-bottom:8px;display:none;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>ĐỀ KIỂM TRA TIẾNG ANH 8 — ÔN TẬP UNIT 1, 2, 3 — ĐỀ SỐ 2</h1>
+    <p>Ôn tập tổng hợp Unit 1 - 2 - 3 (nguồn: SGK &amp; SBT Tiếng Anh 8 Global Success)</p>
+    <div class="meta-row">
+      <span class="meta-chip">50 câu</span>
+      <span class="meta-chip">Từ vựng • Ngữ pháp • Đọc hiểu</span>
+      <span class="meta-chip">Làm xong bấm NỘP BÀI để xem điểm &amp; giải thích</span>
+    </div>
+  </header>
+
+  <div id="scoreBanner">
+    <div class="big" id="scoreBig">0/50</div>
+    <div class="sub" id="scoreSub">Điểm của bạn</div>
+  </div>
+
+  <div class="progress">Trả lời hết các câu rồi bấm "NỘP BÀI". Câu sai sẽ hiện đáp án đúng và phần giải thích/ôn tập ngay dưới câu đó.</div>
+  <div class="unanswered-note" id="unansweredNote">⚠️ Bạn còn câu chưa trả lời. Vẫn có thể nộp bài, các câu bỏ trống sẽ bị tính sai.</div>
+
+  <form id="testForm">
+    
+<div class="card" data-qid="96" data-answer="0">
+  <div class="q-tags"><span class="tag">Câu 1</span><span class="tag">Unit 2</span><span class="tag skill-grammar">Ngữ pháp</span></div>
+  <p class="q-text">This village is ___ (quiet) than the city.</p>
+  <label class="opt"><input type="radio" name="q96" value="0"> <span>A. quieter</span></label>
+<label class="opt"><input type="radio" name="q96" value="1"> <span>B. more quiet</span></label>
+<label class="opt"><input type="radio" name="q96" value="2"> <span>C. quietest</span></label>
+<label class="opt"><input type="radio" name="q96" value="3"> <span>D. quiet</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Ôn ngữ pháp: tính từ ngắn (quiet) thêm -er. → quieter than.</div>
+</div>
+
+<div class="card" data-qid="60" data-answer="1">
+  <div class="q-tags"><span class="tag">Câu 2</span><span class="tag">Unit 3</span><span class="tag skill-vocab">Từ vựng</span></div>
+  <p class="q-text">Từ/cụm từ &quot;mature&quot; trong câu &quot;She is quite mature for her age.&quot; có nghĩa là gì?</p>
+  <label class="opt"><input type="radio" name="q60" value="0"> <span>A. đọc lướt, tìm (trên mạng)</span></label>
+<label class="opt"><input type="radio" name="q60" value="1"> <span>B. chín chắn, trưởng thành</span></label>
+<label class="opt"><input type="radio" name="q60" value="2"> <span>C. sự mong chờ, kì vọng</span></label>
+<label class="opt"><input type="radio" name="q60" value="3"> <span>D. bắt nạt</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> &quot;mature&quot; (adj) /məˈtʃʊə/ nghĩa là &quot;chín chắn, trưởng thành&quot;. Ví dụ: She is quite mature for her age.</div>
+</div>
+
+<div class="card" data-qid="102" data-answer="1">
+  <div class="q-tags"><span class="tag">Câu 3</span><span class="tag">Unit 2</span><span class="tag skill-grammar">Ngữ pháp</span></div>
+  <p class="q-text">My father drives ___ (careful) than my brother.</p>
+  <label class="opt"><input type="radio" name="q102" value="0"> <span>A. carefuler</span></label>
+<label class="opt"><input type="radio" name="q102" value="1"> <span>B. more carefully</span></label>
+<label class="opt"><input type="radio" name="q102" value="2"> <span>C. carefully</span></label>
+<label class="opt"><input type="radio" name="q102" value="3"> <span>D. more careful</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Ôn ngữ pháp: trạng từ tận cùng -ly luôn dùng 'more' + trạng từ. → more carefully than.</div>
+</div>
+
+<div class="card" data-qid="122" data-answer="1">
+  <div class="q-tags"><span class="tag">Câu 4</span><span class="tag">Unit 3</span><span class="tag skill-grammar">Ngữ pháp</span></div>
+  <p class="q-text">He was tired, ___ he kept studying for the test.</p>
+  <label class="opt"><input type="radio" name="q122" value="0"> <span>A. so</span></label>
+<label class="opt"><input type="radio" name="q122" value="1"> <span>B. but</span></label>
+<label class="opt"><input type="radio" name="q122" value="2"> <span>C. and</span></label>
+<label class="opt"><input type="radio" name="q122" value="3"> <span>D. for</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Ôn ngữ pháp: 'but' diễn tả sự tương phản (mặc dù mệt vẫn tiếp tục học). → He was tired, but he kept studying.</div>
+</div>
+
+<div class="card" data-qid="28" data-answer="3">
+  <div class="q-tags"><span class="tag">Câu 5</span><span class="tag">Unit 2</span><span class="tag skill-vocab">Từ vựng</span></div>
+  <p class="q-text">Từ/cụm từ &quot;cultivate&quot; trong câu &quot;They cultivate rice and vegetables.&quot; có nghĩa là gì?</p>
+  <label class="opt"><input type="radio" name="q28" value="0"> <span>A. vụ thu hoạch; thu hoạch, gặt</span></label>
+<label class="opt"><input type="radio" name="q28" value="1"> <span>B. gia súc (bò, trâu...)</span></label>
+<label class="opt"><input type="radio" name="q28" value="2"> <span>C. trải dài, kéo dài</span></label>
+<label class="opt"><input type="radio" name="q28" value="3"> <span>D. canh tác, trồng trọt</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> &quot;cultivate&quot; (v) /ˈkʌltɪveɪt/ nghĩa là &quot;canh tác, trồng trọt&quot;. Ví dụ: They cultivate rice and vegetables.</div>
+</div>
+
+<div class="card" data-qid="103" data-answer="0">
+  <div class="q-tags"><span class="tag">Câu 6</span><span class="tag">Unit 2</span><span class="tag skill-grammar">Ngữ pháp</span></div>
+  <p class="q-text">This city is ___ (big) than my hometown.</p>
+  <label class="opt"><input type="radio" name="q103" value="0"> <span>A. bigger</span></label>
+<label class="opt"><input type="radio" name="q103" value="1"> <span>B. more big</span></label>
+<label class="opt"><input type="radio" name="q103" value="2"> <span>C. biger</span></label>
+<label class="opt"><input type="radio" name="q103" value="3"> <span>D. biggest</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Ôn ngữ pháp: tính từ 1 âm tiết, tận cùng phụ âm-nguyên âm-phụ âm (big) → gấp đôi phụ âm cuối + -er. → bigger than.</div>
+</div>
+
+<div class="card" data-qid="116" data-answer="0">
+  <div class="q-tags"><span class="tag">Câu 7</span><span class="tag">Unit 2</span><span class="tag skill-grammar">Ngữ pháp</span></div>
+  <p class="q-text">Choose the correct sentence.</p>
+  <label class="opt"><input type="radio" name="q116" value="0"> <span>A. She is more intelligent than her sister.</span></label>
+<label class="opt"><input type="radio" name="q116" value="1"> <span>B. She is intelligenter than her sister.</span></label>
+<label class="opt"><input type="radio" name="q116" value="2"> <span>C. She is more intelligenter than her sister.</span></label>
+<label class="opt"><input type="radio" name="q116" value="3"> <span>D. She is intelligent more than her sister.</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Ôn ngữ pháp: tính từ dài 'intelligent' dùng 'more', không thêm '-er'. → She is more intelligent than her sister.</div>
+</div>
+
+<div class="card" data-qid="85" data-answer="2">
+  <div class="q-tags"><span class="tag">Câu 8</span><span class="tag">Unit 1</span><span class="tag skill-grammar">Ngữ pháp</span></div>
+  <p class="q-text">Do you prefer ___ (watch) comedies or dramas?</p>
+  <label class="opt"><input type="radio" name="q85" value="0"> <span>A. watching</span></label>
+<label class="opt"><input type="radio" name="q85" value="1"> <span>B. to watch</span></label>
+<label class="opt"><input type="radio" name="q85" value="2"> <span>C. Cả A và B đều đúng</span></label>
+<label class="opt"><input type="radio" name="q85" value="3"> <span>D. watched</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Ôn ngữ pháp: 'prefer' đi được với cả V-ing và to-V. → Do you prefer watching/to watch comedies?</div>
+</div>
+
+<div class="card" data-qid="132" data-answer="0">
+  <div class="q-tags"><span class="tag">Câu 9</span><span class="tag">Unit 3</span><span class="tag skill-grammar">Ngữ pháp</span></div>
+  <p class="q-text">A simple sentence can contain:</p>
+  <label class="opt"><input type="radio" name="q132" value="0"> <span>A. Only one independent clause</span></label>
+<label class="opt"><input type="radio" name="q132" value="1"> <span>B. Two independent clauses joined by 'and'</span></label>
+<label class="opt"><input type="radio" name="q132" value="2"> <span>C. Two independent clauses joined by a comma only</span></label>
+<label class="opt"><input type="radio" name="q132" value="3"> <span>D. Three independent clauses</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Ôn ngữ pháp: câu đơn chỉ có duy nhất một mệnh đề độc lập.</div>
+</div>
+
+<div class="card" data-qid="136" data-answer="0">
+  <div class="q-tags"><span class="tag">Câu 10</span><span class="tag">Unit 3</span><span class="tag skill-grammar">Ngữ pháp</span></div>
+  <p class="q-text">Do your homework now, ___ you will not have time later.</p>
+  <label class="opt"><input type="radio" name="q136" value="0"> <span>A. or</span></label>
+<label class="opt"><input type="radio" name="q136" value="1"> <span>B. and</span></label>
+<label class="opt"><input type="radio" name="q136" value="2"> <span>C. for</span></label>
+<label class="opt"><input type="radio" name="q136" value="3"> <span>D. yet</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Ôn ngữ pháp: 'or' ở đây mang nghĩa cảnh báo 'nếu không' (do X, or Y sẽ xảy ra). → Do your homework now, or you will not have time later.</div>
+</div>
+
+<div class="card" data-qid="38" data-answer="3">
+  <div class="q-tags"><span class="tag">Câu 11</span><span class="tag">Unit 2</span><span class="tag skill-vocab">Từ vựng</span></div>
+  <p class="q-text">Từ/cụm từ &quot;orchard&quot; trong câu &quot;They grow fruit trees in their orchard.&quot; có nghĩa là gì?</p>
+  <label class="opt"><input type="radio" name="q38" value="0"> <span>A. gia súc (bò, trâu...)</span></label>
+<label class="opt"><input type="radio" name="q38" value="1"> <span>B. ruộng lúa</span></label>
+<label class="opt"><input type="radio" name="q38" value="2"> <span>C. lành nghề, có tay nghề</span></label>
+<label class="opt"><input type="radio" name="q38" value="3"> <span>D. vườn cây ăn quả</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> &quot;orchard&quot; (n) /ˈɔːtʃəd/ nghĩa là &quot;vườn cây ăn quả&quot;. Ví dụ: They grow fruit trees in their orchard.</div>
+</div>
+
+<div class="card" data-qid="89" data-answer="3">
+  <div class="q-tags"><span class="tag">Câu 12</span><span class="tag">Unit 1</span><span class="tag skill-grammar">Ngữ pháp</span></div>
+  <p class="q-text">She is really into ___ (collect) stamps.</p>
+  <label class="opt"><input type="radio" name="q89" value="0"> <span>A. collect</span></label>
+<label class="opt"><input type="radio" name="q89" value="1"> <span>B. to collect</span></label>
+<label class="opt"><input type="radio" name="q89" value="2"> <span>C. collects</span></label>
+<label class="opt"><input type="radio" name="q89" value="3"> <span>D. collecting</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Ôn ngữ pháp: cụm 'into' (say mê) + V-ing. → She is really into collecting stamps.</div>
+</div>
+
+<div class="card" data-qid="16" data-answer="0">
+  <div class="q-tags"><span class="tag">Câu 13</span><span class="tag">Unit 1</span><span class="tag skill-vocab">Từ vựng</span></div>
+  <p class="q-text">Từ/cụm từ &quot;outdoors&quot; trong câu &quot;They like playing sport outdoors.&quot; có nghĩa là gì?</p>
+  <label class="opt"><input type="radio" name="q16" value="0"> <span>A. ngoài trời</span></label>
+<label class="opt"><input type="radio" name="q16" value="1"> <span>B. giữ dáng, giữ sức khỏe</span></label>
+<label class="opt"><input type="radio" name="q16" value="2"> <span>C. mến, thích</span></label>
+<label class="opt"><input type="radio" name="q16" value="3"> <span>D. căm ghét, ghét</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> &quot;outdoors&quot; (adv) /ˌaʊtˈdɔːz/ nghĩa là &quot;ngoài trời&quot;. Ví dụ: They like playing sport outdoors.</div>
+</div>
+
+<div class="card" data-qid="40" data-answer="1">
+  <div class="q-tags"><span class="tag">Câu 14</span><span class="tag">Unit 2</span><span class="tag skill-vocab">Từ vựng</span></div>
+  <p class="q-text">Từ/cụm từ &quot;picturesque&quot; trong câu &quot;The countryside view was picturesque.&quot; có nghĩa là gì?</p>
+  <label class="opt"><input type="radio" name="q40" value="0"> <span>A. phơi, sấy khô</span></label>
+<label class="opt"><input type="radio" name="q40" value="1"> <span>B. đẹp như tranh</span></label>
+<label class="opt"><input type="radio" name="q40" value="2"> <span>C. canh tác, trồng trọt</span></label>
+<label class="opt"><input type="radio" name="q40" value="3"> <span>D. vắt sữa</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> &quot;picturesque&quot; (adj) /ˌpɪktʃəˈresk/ nghĩa là &quot;đẹp như tranh&quot;. Ví dụ: The countryside view was picturesque.</div>
+</div>
+
+<div class="card" data-qid="131" data-answer="0">
+  <div class="q-tags"><span class="tag">Câu 15</span><span class="tag">Unit 3</span><span class="tag skill-grammar">Ngữ pháp</span></div>
+  <p class="q-text">Which sentence pattern matches: 'The forum became very popular.'</p>
+  <label class="opt"><input type="radio" name="q131" value="0"> <span>A. S + V + C</span></label>
+<label class="opt"><input type="radio" name="q131" value="1"> <span>B. S + V + O</span></label>
+<label class="opt"><input type="radio" name="q131" value="2"> <span>C. S + V + Adv</span></label>
+<label class="opt"><input type="radio" name="q131" value="3"> <span>D. S + V + O + C</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Ôn ngữ pháp: 'became' là động từ nối (linking verb), theo sau là bổ ngữ chủ ngữ (complement) 'very popular' → S+V+C.</div>
+</div>
+
+<div class="card" data-qid="53" data-answer="3">
+  <div class="q-tags"><span class="tag">Câu 16</span><span class="tag">Unit 3</span><span class="tag skill-vocab">Từ vựng</span></div>
+  <p class="q-text">Từ/cụm từ &quot;connect&quot; trong câu &quot;Social media helps us connect with friends.&quot; có nghĩa là gì?</p>
+  <label class="opt"><input type="radio" name="q53" value="0"> <span>A. bắt nạt</span></label>
+<label class="opt"><input type="radio" name="q53" value="1"> <span>B. tài khoản</span></label>
+<label class="opt"><input type="radio" name="q53" value="2"> <span>C. sự thông báo</span></label>
+<label class="opt"><input type="radio" name="q53" value="3"> <span>D. kết nối</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> &quot;connect&quot; (v) /kəˈnekt/ nghĩa là &quot;kết nối&quot;. Ví dụ: Social media helps us connect with friends.</div>
+</div>
+<div class="passage-box"><h3>📖 Bài đọc — Unit 2: Life in a Picturesque Village</h3><p>Many tourists enjoy visiting the countryside because it is picturesque and peaceful. Local people there are usually very hospitable; they often invite visitors into their homes and share their regional specialities. Some villages near the sea have old lighthouses that guide fishing boats home at night. In the countryside, families often grow fruit trees in their orchards and raise cattle for milk and meat. Although life there can be less convenient than in the city because of the lack of facilities such as hospitals or shopping malls, many people believe it is a more peaceful place to live.</p></div>
+
+<div class="card" data-qid="165" data-answer="1">
+  <div class="q-tags"><span class="tag">Câu 17</span><span class="tag">Unit 2</span><span class="tag skill-reading">Đọc hiểu</span></div>
+  <p class="q-text">Why do many tourists enjoy the countryside?</p>
+  <label class="opt"><input type="radio" name="q165" value="0"> <span>A. It is noisy and modern</span></label>
+<label class="opt"><input type="radio" name="q165" value="1"> <span>B. It is picturesque and peaceful</span></label>
+<label class="opt"><input type="radio" name="q165" value="2"> <span>C. It has many shopping malls</span></label>
+<label class="opt"><input type="radio" name="q165" value="3"> <span>D. It has many factories</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Bài đọc nói khách du lịch thích nông thôn vì nó 'picturesque and peaceful'.</div>
+</div>
+
+<div class="card" data-qid="166" data-answer="1">
+  <div class="q-tags"><span class="tag">Câu 18</span><span class="tag">Unit 2</span><span class="tag skill-reading">Đọc hiểu</span></div>
+  <p class="q-text">What are the local people usually like?</p>
+  <label class="opt"><input type="radio" name="q166" value="0"> <span>A. Unfriendly</span></label>
+<label class="opt"><input type="radio" name="q166" value="1"> <span>B. Hospitable</span></label>
+<label class="opt"><input type="radio" name="q166" value="2"> <span>C. Lazy</span></label>
+<label class="opt"><input type="radio" name="q166" value="3"> <span>D. Careless</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Bài đọc nói người dân địa phương 'usually very hospitable' (hiếu khách).</div>
+</div>
+
+<div class="card" data-qid="167" data-answer="1">
+  <div class="q-tags"><span class="tag">Câu 19</span><span class="tag">Unit 2</span><span class="tag skill-reading">Đọc hiểu</span></div>
+  <p class="q-text">What do old lighthouses near the sea do?</p>
+  <label class="opt"><input type="radio" name="q167" value="0"> <span>A. Grow fruit</span></label>
+<label class="opt"><input type="radio" name="q167" value="1"> <span>B. Guide fishing boats home at night</span></label>
+<label class="opt"><input type="radio" name="q167" value="2"> <span>C. Produce milk</span></label>
+<label class="opt"><input type="radio" name="q167" value="3"> <span>D. Store rice</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Bài đọc nói hải đăng 'guide fishing boats home at night'.</div>
+</div>
+
+<div class="card" data-qid="168" data-answer="0">
+  <div class="q-tags"><span class="tag">Câu 20</span><span class="tag">Unit 2</span><span class="tag skill-reading">Đọc hiểu</span></div>
+  <p class="q-text">Families in the countryside often grow fruit trees in their orchards.</p>
+  <label class="opt"><input type="radio" name="q168" value="0"> <span>A. Đúng</span></label>
+<label class="opt"><input type="radio" name="q168" value="1"> <span>B. Sai</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Bài đọc nói 'families often grow fruit trees in their orchards' — đúng.</div>
+</div>
+
+<div class="card" data-qid="169" data-answer="1">
+  <div class="q-tags"><span class="tag">Câu 21</span><span class="tag">Unit 2</span><span class="tag skill-reading">Đọc hiểu</span></div>
+  <p class="q-text">The passage says the countryside has more hospitals and shopping malls than the city.</p>
+  <label class="opt"><input type="radio" name="q169" value="0"> <span>A. Đúng</span></label>
+<label class="opt"><input type="radio" name="q169" value="1"> <span>B. Sai</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Bài đọc nói ngược lại: nông thôn 'less convenient...because of the lack of facilities such as hospitals or shopping malls'.</div>
+</div>
+
+<div class="card" data-qid="170" data-answer="0">
+  <div class="q-tags"><span class="tag">Câu 22</span><span class="tag">Unit 2</span><span class="tag skill-reading">Đọc hiểu</span></div>
+  <p class="q-text">The word 'hospitable' means:</p>
+  <label class="opt"><input type="radio" name="q170" value="0"> <span>A. hiếu khách</span></label>
+<label class="opt"><input type="radio" name="q170" value="1"> <span>B. keo kiệt</span></label>
+<label class="opt"><input type="radio" name="q170" value="2"> <span>C. nhút nhát</span></label>
+<label class="opt"><input type="radio" name="q170" value="3"> <span>D. nóng nảy</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> 'hospitable' (adj) nghĩa là hiếu khách, đúng với từ vựng Unit 2.</div>
+</div>
+
+<div class="card" data-qid="171" data-answer="1">
+  <div class="q-tags"><span class="tag">Câu 23</span><span class="tag">Unit 2</span><span class="tag skill-reading">Đọc hiểu</span></div>
+  <p class="q-text">According to many people, why is the countryside a good place to live?</p>
+  <label class="opt"><input type="radio" name="q171" value="0"> <span>A. It has better hospitals</span></label>
+<label class="opt"><input type="radio" name="q171" value="1"> <span>B. It is more peaceful</span></label>
+<label class="opt"><input type="radio" name="q171" value="2"> <span>C. It has more shopping malls</span></label>
+<label class="opt"><input type="radio" name="q171" value="3"> <span>D. It is more crowded</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Bài đọc kết luận 'many people believe it is a more peaceful place to live'.</div>
+</div>
+
+<div class="card" data-qid="83" data-answer="2">
+  <div class="q-tags"><span class="tag">Câu 24</span><span class="tag">Unit 1</span><span class="tag skill-grammar">Ngữ pháp</span></div>
+  <p class="q-text">He likes ___ (play) chess with his grandfather.</p>
+  <label class="opt"><input type="radio" name="q83" value="0"> <span>A. playing</span></label>
+<label class="opt"><input type="radio" name="q83" value="1"> <span>B. to play</span></label>
+<label class="opt"><input type="radio" name="q83" value="2"> <span>C. Cả A và B đều đúng</span></label>
+<label class="opt"><input type="radio" name="q83" value="3"> <span>D. played</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Ôn ngữ pháp: 'like' đi được với cả V-ing và to-V. → He likes playing/to play chess.</div>
+</div>
+
+<div class="card" data-qid="6" data-answer="0">
+  <div class="q-tags"><span class="tag">Câu 25</span><span class="tag">Unit 1</span><span class="tag skill-vocab">Từ vựng</span></div>
+  <p class="q-text">Từ/cụm từ &quot;fancy&quot; trong câu &quot;Do you fancy going out tonight?&quot; có nghĩa là gì?</p>
+  <label class="opt"><input type="radio" name="q6" value="0"> <span>A. thích, hứng thú với</span></label>
+<label class="opt"><input type="radio" name="q6" value="1"> <span>B. độc ác, tàn nhẫn</span></label>
+<label class="opt"><input type="radio" name="q6" value="2"> <span>C. rất thích, mê, say mê</span></label>
+<label class="opt"><input type="radio" name="q6" value="3"> <span>D. gửi tin nhắn</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> &quot;fancy&quot; (v) /ˈfænsi/ nghĩa là &quot;thích, hứng thú với&quot;. Ví dụ: Do you fancy going out tonight?</div>
+</div>
+
+<div class="card" data-qid="55" data-answer="0">
+  <div class="q-tags"><span class="tag">Câu 26</span><span class="tag">Unit 3</span><span class="tag skill-vocab">Từ vựng</span></div>
+  <p class="q-text">Từ/cụm từ &quot;enjoyable&quot; trong câu &quot;Joining a club can be very enjoyable.&quot; có nghĩa là gì?</p>
+  <label class="opt"><input type="radio" name="q55" value="0"> <span>A. thú vị, gây hứng thú</span></label>
+<label class="opt"><input type="radio" name="q55" value="1"> <span>B. chín chắn, trưởng thành</span></label>
+<label class="opt"><input type="radio" name="q55" value="2"> <span>C. diễn đàn</span></label>
+<label class="opt"><input type="radio" name="q55" value="3"> <span>D. kết nối</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> &quot;enjoyable&quot; (adj) /ɪnˈdʒɔɪəbl/ nghĩa là &quot;thú vị, gây hứng thú&quot;. Ví dụ: Joining a club can be very enjoyable.</div>
+</div>
+
+<div class="card" data-qid="52" data-answer="0">
+  <div class="q-tags"><span class="tag">Câu 27</span><span class="tag">Unit 3</span><span class="tag skill-vocab">Từ vựng</span></div>
+  <p class="q-text">Từ/cụm từ &quot;concentrate&quot; trong câu &quot;It's hard to concentrate with so much noise.&quot; có nghĩa là gì?</p>
+  <label class="opt"><input type="radio" name="q52" value="0"> <span>A. tập trung (vào)</span></label>
+<label class="opt"><input type="radio" name="q52" value="1"> <span>B. tải lên</span></label>
+<label class="opt"><input type="radio" name="q52" value="2"> <span>C. (phương tiện) truyền thông</span></label>
+<label class="opt"><input type="radio" name="q52" value="3"> <span>D. kết nối</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> &quot;concentrate&quot; (v) /ˈkɒnsntreɪt/ nghĩa là &quot;tập trung (vào)&quot;. Ví dụ: It's hard to concentrate with so much noise.</div>
+</div>
+
+<div class="card" data-qid="76" data-answer="0">
+  <div class="q-tags"><span class="tag">Câu 28</span><span class="tag">Unit 1</span><span class="tag skill-grammar">Ngữ pháp</span></div>
+  <p class="q-text">___ you fancy ___ (go) out tonight?</p>
+  <label class="opt"><input type="radio" name="q76" value="0"> <span>A. Do / going</span></label>
+<label class="opt"><input type="radio" name="q76" value="1"> <span>B. Do / to go</span></label>
+<label class="opt"><input type="radio" name="q76" value="2"> <span>C. Are / going</span></label>
+<label class="opt"><input type="radio" name="q76" value="3"> <span>D. Does / go</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Ôn ngữ pháp: 'fancy' chỉ đi với V-ing, và câu hỏi với động từ thường dùng trợ động từ 'do'. → Do you fancy going out tonight?</div>
+</div>
+
+<div class="card" data-qid="57" data-answer="2">
+  <div class="q-tags"><span class="tag">Câu 29</span><span class="tag">Unit 3</span><span class="tag skill-vocab">Từ vựng</span></div>
+  <p class="q-text">Từ/cụm từ &quot;focused&quot; trong câu &quot;He stays focused during exam week.&quot; có nghĩa là gì?</p>
+  <label class="opt"><input type="radio" name="q57" value="0"> <span>A. tải lên</span></label>
+<label class="opt"><input type="radio" name="q57" value="1"> <span>B. tập trung (vào)</span></label>
+<label class="opt"><input type="radio" name="q57" value="2"> <span>C. chuyên tâm, tập trung</span></label>
+<label class="opt"><input type="radio" name="q57" value="3"> <span>D. sự bắt nạt</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> &quot;focused&quot; (adj) /ˈfəʊkəst/ nghĩa là &quot;chuyên tâm, tập trung&quot;. Ví dụ: He stays focused during exam week.</div>
+</div>
+
+<div class="card" data-qid="33" data-answer="3">
+  <div class="q-tags"><span class="tag">Câu 30</span><span class="tag">Unit 2</span><span class="tag skill-vocab">Từ vựng</span></div>
+  <p class="q-text">Từ/cụm từ &quot;herd&quot; trong câu &quot;Mai herded buffaloes with the village children.&quot; có nghĩa là gì?</p>
+  <label class="opt"><input type="radio" name="q33" value="0"> <span>A. trải dài, kéo dài</span></label>
+<label class="opt"><input type="radio" name="q33" value="1"> <span>B. bắt, câu (cá)</span></label>
+<label class="opt"><input type="radio" name="q33" value="2"> <span>C. phà</span></label>
+<label class="opt"><input type="radio" name="q33" value="3"> <span>D. chăn dắt (gia súc)</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> &quot;herd&quot; (v) /hɜːd/ nghĩa là &quot;chăn dắt (gia súc)&quot;. Ví dụ: Mai herded buffaloes with the village children.</div>
+</div>
+
+<div class="card" data-qid="142" data-answer="1">
+  <div class="q-tags"><span class="tag">Câu 31</span><span class="tag">Unit 3</span><span class="tag skill-grammar">Ngữ pháp</span></div>
+  <p class="q-text">Choose the connector that shows a choice between two options.</p>
+  <label class="opt"><input type="radio" name="q142" value="0"> <span>A. for</span></label>
+<label class="opt"><input type="radio" name="q142" value="1"> <span>B. or</span></label>
+<label class="opt"><input type="radio" name="q142" value="2"> <span>C. nor</span></label>
+<label class="opt"><input type="radio" name="q142" value="3"> <span>D. yet</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Ôn ngữ pháp: 'or' dùng để diễn tả sự lựa chọn giữa 2 khả năng.</div>
+</div>
+
+<div class="card" data-qid="115" data-answer="1">
+  <div class="q-tags"><span class="tag">Câu 32</span><span class="tag">Unit 2</span><span class="tag skill-grammar">Ngữ pháp</span></div>
+  <p class="q-text">Choose the correct sentence.</p>
+  <label class="opt"><input type="radio" name="q115" value="0"> <span>A. This house is more big than that one.</span></label>
+<label class="opt"><input type="radio" name="q115" value="1"> <span>B. This house is bigger than that one.</span></label>
+<label class="opt"><input type="radio" name="q115" value="2"> <span>C. This house is bigger that that one.</span></label>
+<label class="opt"><input type="radio" name="q115" value="3"> <span>D. This house bigger than that one.</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Ôn ngữ pháp: tính từ ngắn 'big' dùng -er, và sau so sánh hơn dùng 'than' (không phải 'that'). → This house is bigger than that one.</div>
+</div>
+
+<div class="card" data-qid="23" data-answer="0">
+  <div class="q-tags"><span class="tag">Câu 33</span><span class="tag">Unit 1</span><span class="tag skill-vocab">Từ vựng</span></div>
+  <p class="q-text">Điền từ đúng vào chỗ trống: We should exercise every day to ___ .</p>
+  <label class="opt"><input type="radio" name="q23" value="0"> <span>A. stay in shape</span></label>
+<label class="opt"><input type="radio" name="q23" value="1"> <span>B. keep in touch</span></label>
+<label class="opt"><input type="radio" name="q23" value="2"> <span>C. do DIY</span></label>
+<label class="opt"><input type="radio" name="q23" value="3"> <span>D. go outdoors</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> &quot;stay in shape&quot; nghĩa là giữ dáng, giữ sức khỏe — đúng về nghĩa khi nói về việc tập thể dục.</div>
+</div>
+<div class="passage-box"><h3>📖 Bài đọc — Unit 3: A Class Dealing with Stress and New Clubs</h3><p>Minh's class has recently moved their discussion forum to Facebook. They also joined several school clubs and are now preparing for their midterm tests, which makes many students feel stressed. Minh says he feels pressure not only from his studies but also from his parents and friends. His teacher advises the class to stay calm, work hard, and use the new Facebook group to discuss any problems. Ann, another student, says the Facebook group is very user-friendly. She is excited about joining the new arts-and-crafts club and the music club, which both offer a variety of activities and regular competitions.</p></div>
+
+<div class="card" data-qid="172" data-answer="1">
+  <div class="q-tags"><span class="tag">Câu 34</span><span class="tag">Unit 3</span><span class="tag skill-reading">Đọc hiểu</span></div>
+  <p class="q-text">Where has Minh's class moved its discussion forum to?</p>
+  <label class="opt"><input type="radio" name="q172" value="0"> <span>A. Twitter</span></label>
+<label class="opt"><input type="radio" name="q172" value="1"> <span>B. Facebook</span></label>
+<label class="opt"><input type="radio" name="q172" value="2"> <span>C. A school website</span></label>
+<label class="opt"><input type="radio" name="q172" value="3"> <span>D. Instagram</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Bài đọc nói lớp của Minh 'moved their discussion forum to Facebook'.</div>
+</div>
+
+<div class="card" data-qid="173" data-answer="1">
+  <div class="q-tags"><span class="tag">Câu 35</span><span class="tag">Unit 3</span><span class="tag skill-reading">Đọc hiểu</span></div>
+  <p class="q-text">Minh feels stressed only because of his midterm tests.</p>
+  <label class="opt"><input type="radio" name="q173" value="0"> <span>A. Đúng</span></label>
+<label class="opt"><input type="radio" name="q173" value="1"> <span>B. Sai</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Bài đọc nói Minh 'feels pressure not only from his studies but also from his parents and friends' — không chỉ vì bài kiểm tra.</div>
+</div>
+
+<div class="card" data-qid="174" data-answer="1">
+  <div class="q-tags"><span class="tag">Câu 36</span><span class="tag">Unit 3</span><span class="tag skill-reading">Đọc hiểu</span></div>
+  <p class="q-text">What does the teacher advise the class to do?</p>
+  <label class="opt"><input type="radio" name="q174" value="0"> <span>A. Stop studying</span></label>
+<label class="opt"><input type="radio" name="q174" value="1"> <span>B. Stay calm and work hard</span></label>
+<label class="opt"><input type="radio" name="q174" value="2"> <span>C. Quit the clubs</span></label>
+<label class="opt"><input type="radio" name="q174" value="3"> <span>D. Ignore their parents</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Bài đọc nói giáo viên 'advises the class to stay calm, work hard'.</div>
+</div>
+
+<div class="card" data-qid="175" data-answer="1">
+  <div class="q-tags"><span class="tag">Câu 37</span><span class="tag">Unit 3</span><span class="tag skill-reading">Đọc hiểu</span></div>
+  <p class="q-text">What does Ann think about the Facebook group?</p>
+  <label class="opt"><input type="radio" name="q175" value="0"> <span>A. It is difficult to use</span></label>
+<label class="opt"><input type="radio" name="q175" value="1"> <span>B. It is user-friendly</span></label>
+<label class="opt"><input type="radio" name="q175" value="2"> <span>C. It is boring</span></label>
+<label class="opt"><input type="radio" name="q175" value="3"> <span>D. It is expensive</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Bài đọc nói Ann cho rằng 'the Facebook group is very user-friendly'.</div>
+</div>
+
+<div class="card" data-qid="176" data-answer="0">
+  <div class="q-tags"><span class="tag">Câu 38</span><span class="tag">Unit 3</span><span class="tag skill-reading">Đọc hiểu</span></div>
+  <p class="q-text">Ann wants to join the arts-and-crafts club and the music club.</p>
+  <label class="opt"><input type="radio" name="q176" value="0"> <span>A. Đúng</span></label>
+<label class="opt"><input type="radio" name="q176" value="1"> <span>B. Sai</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Bài đọc nói Ann 'is excited about joining the new arts-and-crafts club and the music club' — đúng.</div>
+</div>
+
+<div class="card" data-qid="177" data-answer="0">
+  <div class="q-tags"><span class="tag">Câu 39</span><span class="tag">Unit 3</span><span class="tag skill-reading">Đọc hiểu</span></div>
+  <p class="q-text">The word 'pressure' in the passage is closest in meaning to:</p>
+  <label class="opt"><input type="radio" name="q177" value="0"> <span>A. áp lực</span></label>
+<label class="opt"><input type="radio" name="q177" value="1"> <span>B. niềm vui</span></label>
+<label class="opt"><input type="radio" name="q177" value="2"> <span>C. sự tự do</span></label>
+<label class="opt"><input type="radio" name="q177" value="3"> <span>D. sự thoải mái</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> 'pressure' (n) nghĩa là áp lực, đúng với từ vựng Unit 3.</div>
+</div>
+
+<div class="card" data-qid="178" data-answer="1">
+  <div class="q-tags"><span class="tag">Câu 40</span><span class="tag">Unit 3</span><span class="tag skill-reading">Đọc hiểu</span></div>
+  <p class="q-text">What is the main topic of this passage?</p>
+  <label class="opt"><input type="radio" name="q178" value="0"> <span>A. A sports competition</span></label>
+<label class="opt"><input type="radio" name="q178" value="1"> <span>B. A class dealing with stress and new clubs</span></label>
+<label class="opt"><input type="radio" name="q178" value="2"> <span>C. A family holiday</span></label>
+<label class="opt"><input type="radio" name="q178" value="3"> <span>D. A cooking lesson</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Toàn bài nói về việc lớp của Minh đối mặt với áp lực thi và tham gia các câu lạc bộ mới.</div>
+</div>
+
+<div class="card" data-qid="21" data-answer="2">
+  <div class="q-tags"><span class="tag">Câu 41</span><span class="tag">Unit 1</span><span class="tag skill-vocab">Từ vựng</span></div>
+  <p class="q-text">Từ/cụm từ &quot;stay in shape&quot; trong câu &quot;Playing sport helps you stay in shape.&quot; có nghĩa là gì?</p>
+  <label class="opt"><input type="radio" name="q21" value="0"> <span>A. mến, thích</span></label>
+<label class="opt"><input type="radio" name="q21" value="1"> <span>B. độc ác, tàn nhẫn</span></label>
+<label class="opt"><input type="radio" name="q21" value="2"> <span>C. giữ dáng, giữ sức khỏe</span></label>
+<label class="opt"><input type="radio" name="q21" value="3"> <span>D. thích (cái này) hơn (cái kia)</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> &quot;stay in shape&quot; (phrase) /steɪ ɪn ʃeɪp/ nghĩa là &quot;giữ dáng, giữ sức khỏe&quot;. Ví dụ: Playing sport helps you stay in shape.</div>
+</div>
+
+<div class="card" data-qid="97" data-answer="2">
+  <div class="q-tags"><span class="tag">Câu 42</span><span class="tag">Unit 2</span><span class="tag skill-grammar">Ngữ pháp</span></div>
+  <p class="q-text">The weather today is ___ (good) than yesterday.</p>
+  <label class="opt"><input type="radio" name="q97" value="0"> <span>A. gooder</span></label>
+<label class="opt"><input type="radio" name="q97" value="1"> <span>B. more good</span></label>
+<label class="opt"><input type="radio" name="q97" value="2"> <span>C. better</span></label>
+<label class="opt"><input type="radio" name="q97" value="3"> <span>D. best</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Ôn ngữ pháp: 'good' là tính từ bất quy tắc → so sánh hơn là 'better'.</div>
+</div>
+
+<div class="card" data-qid="133" data-answer="0">
+  <div class="q-tags"><span class="tag">Câu 43</span><span class="tag">Unit 3</span><span class="tag skill-grammar">Ngữ pháp</span></div>
+  <p class="q-text">The seven coordinating conjunctions are often remembered by the acronym:</p>
+  <label class="opt"><input type="radio" name="q133" value="0"> <span>A. FANBOYS</span></label>
+<label class="opt"><input type="radio" name="q133" value="1"> <span>B. SVOCA</span></label>
+<label class="opt"><input type="radio" name="q133" value="2"> <span>C. ABCDE</span></label>
+<label class="opt"><input type="radio" name="q133" value="3"> <span>D. WHWH</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Ôn ngữ pháp: FANBOYS = for, and, nor, but, or, yet, so - 7 liên từ kết hợp dùng để nối 2 mệnh đề độc lập.</div>
+</div>
+
+<div class="card" data-qid="88" data-answer="2">
+  <div class="q-tags"><span class="tag">Câu 44</span><span class="tag">Unit 1</span><span class="tag skill-grammar">Ngữ pháp</span></div>
+  <p class="q-text">I am interested in ___ (learn) foreign languages.</p>
+  <label class="opt"><input type="radio" name="q88" value="0"> <span>A. learn</span></label>
+<label class="opt"><input type="radio" name="q88" value="1"> <span>B. to learn</span></label>
+<label class="opt"><input type="radio" name="q88" value="2"> <span>C. learning</span></label>
+<label class="opt"><input type="radio" name="q88" value="3"> <span>D. learned</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Ôn ngữ pháp: cụm 'interested in' + V-ing. → I am interested in learning foreign languages.</div>
+</div>
+
+<div class="card" data-qid="78" data-answer="2">
+  <div class="q-tags"><span class="tag">Câu 45</span><span class="tag">Unit 1</span><span class="tag skill-grammar">Ngữ pháp</span></div>
+  <p class="q-text">Linh doesn't mind ___ (help) her mother cook.</p>
+  <label class="opt"><input type="radio" name="q78" value="0"> <span>A. help</span></label>
+<label class="opt"><input type="radio" name="q78" value="1"> <span>B. to help</span></label>
+<label class="opt"><input type="radio" name="q78" value="2"> <span>C. helping</span></label>
+<label class="opt"><input type="radio" name="q78" value="3"> <span>D. helps</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> Ôn ngữ pháp: 'mind' chỉ đi với V-ing. → Linh doesn't mind helping her mother cook.</div>
+</div>
+
+<div class="card" data-qid="58" data-answer="1">
+  <div class="q-tags"><span class="tag">Câu 46</span><span class="tag">Unit 3</span><span class="tag skill-vocab">Từ vựng</span></div>
+  <p class="q-text">Từ/cụm từ &quot;forum&quot; trong câu &quot;The class forum moved to Facebook.&quot; có nghĩa là gì?</p>
+  <label class="opt"><input type="radio" name="q58" value="0"> <span>A. bài làm trên lớp</span></label>
+<label class="opt"><input type="radio" name="q58" value="1"> <span>B. diễn đàn</span></label>
+<label class="opt"><input type="radio" name="q58" value="2"> <span>C. sự mong chờ, kì vọng</span></label>
+<label class="opt"><input type="radio" name="q58" value="3"> <span>D. tập trung (vào)</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> &quot;forum&quot; (n) /ˈfɔːrəm/ nghĩa là &quot;diễn đàn&quot;. Ví dụ: The class forum moved to Facebook.</div>
+</div>
+
+<div class="card" data-qid="46" data-answer="1">
+  <div class="q-tags"><span class="tag">Câu 47</span><span class="tag">Unit 2</span><span class="tag skill-vocab">Từ vựng</span></div>
+  <p class="q-text">Từ/cụm từ &quot;well-trained&quot; trong câu &quot;The farmer's dog is well-trained.&quot; có nghĩa là gì?</p>
+  <label class="opt"><input type="radio" name="q46" value="0"> <span>A. hiếu khách</span></label>
+<label class="opt"><input type="radio" name="q46" value="1"> <span>B. lành nghề, có tay nghề</span></label>
+<label class="opt"><input type="radio" name="q46" value="2"> <span>C. gia súc (bò, trâu...)</span></label>
+<label class="opt"><input type="radio" name="q46" value="3"> <span>D. đặc sản</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> &quot;well-trained&quot; (adj) /ˌwel ˈtreɪnd/ nghĩa là &quot;lành nghề, có tay nghề&quot;. Ví dụ: The farmer's dog is well-trained.</div>
+</div>
+
+<div class="card" data-qid="13" data-answer="2">
+  <div class="q-tags"><span class="tag">Câu 48</span><span class="tag">Unit 1</span><span class="tag skill-vocab">Từ vựng</span></div>
+  <p class="q-text">Từ/cụm từ &quot;message&quot; trong câu &quot;I will message you when I arrive.&quot; có nghĩa là gì?</p>
+  <label class="opt"><input type="radio" name="q13" value="0"> <span>A. giữ dáng, giữ sức khỏe</span></label>
+<label class="opt"><input type="radio" name="q13" value="1"> <span>B. gấp, gập</span></label>
+<label class="opt"><input type="radio" name="q13" value="2"> <span>C. gửi tin nhắn</span></label>
+<label class="opt"><input type="radio" name="q13" value="3"> <span>D. trò chơi đố, trò giải đố</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> &quot;message&quot; (v) /ˈmesɪdʒ/ nghĩa là &quot;gửi tin nhắn&quot;. Ví dụ: I will message you when I arrive.</div>
+</div>
+
+<div class="card" data-qid="45" data-answer="2">
+  <div class="q-tags"><span class="tag">Câu 49</span><span class="tag">Unit 2</span><span class="tag skill-vocab">Từ vựng</span></div>
+  <p class="q-text">Từ/cụm từ &quot;vast&quot; trong câu &quot;The rice field was vast and green.&quot; có nghĩa là gì?</p>
+  <label class="opt"><input type="radio" name="q45" value="0"> <span>A. chăn dắt (gia súc)</span></label>
+<label class="opt"><input type="radio" name="q45" value="1"> <span>B. cho ăn</span></label>
+<label class="opt"><input type="radio" name="q45" value="2"> <span>C. rộng lớn, bao la</span></label>
+<label class="opt"><input type="radio" name="q45" value="3"> <span>D. canh tác, trồng trọt</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> &quot;vast&quot; (adj) /vɑːst/ nghĩa là &quot;rộng lớn, bao la&quot;. Ví dụ: The rice field was vast and green.</div>
+</div>
+
+<div class="card" data-qid="19" data-answer="3">
+  <div class="q-tags"><span class="tag">Câu 50</span><span class="tag">Unit 1</span><span class="tag skill-vocab">Từ vựng</span></div>
+  <p class="q-text">Từ/cụm từ &quot;resort&quot; trong câu &quot;We stayed at a beach resort.&quot; có nghĩa là gì?</p>
+  <label class="opt"><input type="radio" name="q19" value="0"> <span>A. gửi tin nhắn</span></label>
+<label class="opt"><input type="radio" name="q19" value="1"> <span>B. hoạt động tự làm (do-it-yourself)</span></label>
+<label class="opt"><input type="radio" name="q19" value="2"> <span>C. căm ghét, ghét</span></label>
+<label class="opt"><input type="radio" name="q19" value="3"> <span>D. khu nghỉ dưỡng</span></label>
+
+  <div class="explain"><b>📝 Giải thích &amp; ôn tập:</b> &quot;resort&quot; (n) /rɪˈzɔːt/ nghĩa là &quot;khu nghỉ dưỡng&quot;. Ví dụ: We stayed at a beach resort.</div>
+</div>
+
+  </form>
+</div>
+
+<div class="footer-bar">
+  <button type="button" class="btn btn-reset" id="resetBtn">Làm lại</button>
+  <button type="button" class="btn btn-submit" id="submitBtn">NỘP BÀI</button>
+</div>
+
+<script>
+const DATA = {};
+let qCounter = 0;
+
+function render(){
+  // numbering already baked into DOM via data attributes; nothing dynamic needed before submit.
+}
+
+document.getElementById('submitBtn').addEventListener('click', function(){
+  let correct = 0, total = 0, unanswered = 0;
+  document.querySelectorAll('[data-qid]').forEach(function(qEl){
+    total++;
+    const qid = qEl.getAttribute('data-qid');
+    const answerIdx = qEl.getAttribute('data-answer');
+    const selected = qEl.querySelector('input[type=radio]:checked');
+    const explainEl = qEl.querySelector('.explain');
+    const opts = qEl.querySelectorAll('.opt');
+    opts.forEach(function(o){ o.classList.add('disabled'); });
+    qEl.querySelectorAll('input[type=radio]').forEach(function(r){ r.disabled = true; });
+
+    let mark = qEl.querySelector('.result-mark');
+    if(!mark){
+      mark = document.createElement('span');
+      mark.className = 'result-mark';
+      qEl.querySelector('.q-text').appendChild(mark);
+    }
+
+    if(!selected){
+      unanswered++;
+      mark.textContent = '(chưa trả lời)';
+      mark.className = 'result-mark no';
+      opts[parseInt(answerIdx)].classList.add('correct-ans');
+      if(explainEl) explainEl.classList.add('show');
+      return;
+    }
+    const chosenIdx = parseInt(selected.value);
+    const optWrap = selected.closest('.opt');
+    if(chosenIdx === parseInt(answerIdx)){
+      correct++;
+      mark.textContent = '✅ Đúng';
+      mark.className = 'result-mark ok';
+      optWrap.classList.add('correct-ans');
+    } else {
+      mark.textContent = '❌ Sai';
+      mark.className = 'result-mark no';
+      optWrap.classList.add('wrong-ans');
+      opts[parseInt(answerIdx)].classList.add('correct-ans');
+      if(explainEl) explainEl.classList.add('show');
+    }
+  });
+
+  const banner = document.getElementById('scoreBanner');
+  banner.classList.add('show');
+  const pct = Math.round((correct/total)*1000)/10;
+  document.getElementById('scoreBig').textContent = correct + '/' + total;
+  let comment = '';
+  if(pct >= 90) comment = 'Xuất sắc! 🎉';
+  else if(pct >= 75) comment = 'Khá tốt, cố thêm chút nữa nhé!';
+  else if(pct >= 50) comment = 'Cần ôn lại các phần làm sai bên dưới.';
+  else comment = 'Hãy đọc kỹ phần giải thích dưới mỗi câu sai để ôn lại kiến thức.';
+  document.getElementById('scoreSub').textContent = pct + '% — ' + comment + (unanswered? ' (' + unanswered + ' câu chưa trả lời)':'');
+  window.scrollTo({top:0, behavior:'smooth'});
+  document.getElementById('submitBtn').disabled = true;
+  document.getElementById('submitBtn').textContent = 'ĐÃ NỘP BÀI';
+});
+
+document.getElementById('resetBtn').addEventListener('click', function(){
+  location.reload();
+});
+</script>
+</body>
+</html>
