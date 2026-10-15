@@ -61,15 +61,22 @@ def save_manifest(data):
 
 
 def _list_html_in_dir(dir_path):
-    """File .html nam TRUC TIEP trong dir_path (khong de quy vao thu muc con)."""
+    """Moi file .html trong dir_path, KE CA thu muc con (de quy).
+    Tra ve duong dan tuong doi dang 'sub/file.html' (dau '/')."""
     if not os.path.isdir(dir_path):
         return []
     out = []
-    for f in os.listdir(dir_path):
-        full = os.path.join(dir_path, f)
-        if os.path.isfile(full) and f.lower().endswith('.html'):
-            out.append(f)
+    for root, _dirs, files in os.walk(dir_path):
+        for f in files:
+            if f.lower().endswith('.html'):
+                rel = os.path.relpath(os.path.join(root, f), dir_path)
+                out.append(rel.replace(os.sep, '/'))
     return sorted(out, key=str.lower)
+
+
+def _child_name(rel):
+    """'G7-Unit1/GS_UNIT1_VOCAB.html' -> 'G7-Unit1 / GS_UNIT1_VOCAB'."""
+    return os.path.splitext(rel)[0].replace('/', ' / ')
 
 
 def sync_with_disk(manifest):
@@ -107,7 +114,7 @@ def sync_with_disk(manifest):
             for f in _list_html_in_dir(folder_dir):
                 rel = f"{fname}/{f}"
                 if rel not in existing_children_files:
-                    base = os.path.splitext(f)[0]
+                    base = _child_name(f)
                     kept_children.append({"name": base, "file": rel, "desc": ""})
                     added.append(f"{fname}/{base}")
 
@@ -137,7 +144,7 @@ def sync_with_disk(manifest):
                     continue
                 children = []
                 for f in _list_html_in_dir(full):
-                    base = os.path.splitext(f)[0]
+                    base = _child_name(f)
                     rel = f"{entry}/{f}"
                     children.append({"name": base, "file": rel, "desc": ""})
                     added.append(rel)
