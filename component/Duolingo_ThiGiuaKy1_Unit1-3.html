@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thi Giữa Kì 1 — Unit 1-3 (kiểu Duolingo)</title>
+<style>
+  :root{
+    --green:#58cc02; --green-dark:#58a700; --blue:#1cb0f6; --blue-dark:#1899d6;
+    --orange:#ff9600; --orange-dark:#e08600; --purple:#cd2bff; --purple-dark:#a500d6;
+    --red:#ff4b4b; --red-dark:#ea2b2b; --gray:#e5e5e5; --gray-dark:#afafaf;
+    --text:#3c3c3c; --bg:#f7f7f7;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);}
+  .hidden{display:none !important;}
+  button{font-family:inherit;cursor:pointer;}
+
+  .topbar{position:sticky;top:0;z-index:50;background:#fff;border-bottom:2px solid var(--gray);
+    padding:10px 16px;display:flex;align-items:center;gap:14px;}
+  .topbar .brand{font-weight:800;color:var(--green);font-size:18px;flex:0 0 auto;}
+  .spacer{flex:1;}
+  .namechip{font-weight:700;background:var(--bg);border:2px solid var(--gray);border-radius:12px;
+    padding:4px 12px;font-size:14px;color:var(--blue-dark);}
+
+  /* START SCREEN */
+  .start-wrap{max-width:480px;margin:60px auto;text-align:center;padding:0 20px;}
+  .start-wrap .big-emoji{font-size:64px;}
+  .start-wrap h1{font-size:24px;margin:10px 0 8px;}
+  .start-wrap p{color:var(--gray-dark);font-size:14.5px;line-height:1.6;margin-bottom:22px;}
+  .start-card{background:#fff;border-radius:16px;padding:24px;box-shadow:0 3px 0 var(--gray);}
+  .name-input{width:100%;padding:14px 16px;font-size:16px;border:2px solid var(--gray);border-radius:12px;
+    margin-bottom:16px;font-family:inherit;}
+  .name-input:focus{outline:none;border-color:var(--blue);}
+  .start-note{font-size:12.5px;color:var(--gray-dark);margin-top:14px;line-height:1.5;}
+
+  /* LESSON SCREEN */
+  .lesson-screen{max-width:640px;margin:0 auto;padding:14px 16px 110px;}
+  .progress-bar-outer{flex:1;height:16px;background:var(--gray);border-radius:10px;overflow:hidden;}
+  .progress-bar-inner{height:100%;background:var(--green);border-radius:10px;transition:width .3s;}
+  .lesson-topbar{display:flex;align-items:center;gap:12px;padding:12px 4px;}
+  .qcounter{font-weight:800;color:var(--gray-dark);font-size:14px;white-space:nowrap;}
+
+  .qcard{background:#fff;border-radius:16px;padding:22px;margin-top:18px;}
+  .qmeta{font-size:13px;font-weight:700;color:var(--blue-dark);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+  .qprompt{font-size:20px;font-weight:700;margin-bottom:6px;line-height:1.4;}
+  .qpassage{background:var(--bg);border-left:4px solid var(--blue);padding:12px 14px;border-radius:8px;
+    font-size:14.5px;line-height:1.6;margin-bottom:14px;max-height:220px;overflow-y:auto;}
+  .qpassage .ptitle{font-weight:800;margin-bottom:6px;color:var(--blue-dark);}
+  .cloze-box{background:#fef9f0;border:1px dashed var(--orange);border-radius:8px;padding:12px 14px;
+    font-size:14.5px;line-height:1.7;margin-bottom:14px;}
+  .cloze-box .vi{color:var(--gray-dark);font-size:13px;margin-top:8px;}
+  .wordbox-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+  .wordbox-row span{background:#fff;border:1px solid var(--orange);border-radius:999px;padding:2px 10px;
+    font-size:13px;font-weight:600;color:var(--orange-dark);}
+  .listen-btn{display:flex;align-items:center;gap:8px;background:var(--blue);color:#fff;border:none;
+    border-radius:14px;padding:14px 20px;font-size:15px;font-weight:700;box-shadow:0 4px 0 var(--blue-dark);margin:6px 0 16px;}
+  .listen-btn:active{transform:translateY(3px);box-shadow:none;}
+  .script-link{font-size:12.5px;color:var(--gray-dark);text-decoration:underline;background:none;border:none;margin-left:8px;}
+  .script-reveal{display:none;margin-top:8px;font-size:13px;color:var(--gray-dark);background:var(--bg);border-radius:8px;padding:10px;line-height:1.6;}
+  .script-reveal.show{display:block;}
+
+  .opt-list{display:flex;flex-direction:column;gap:10px;margin-top:12px;}
+  .opt-btn{text-align:left;background:#fff;border:2px solid var(--gray);border-radius:12px;
+    padding:14px 16px;font-size:16px;font-weight:600;color:var(--text);box-shadow:0 3px 0 var(--gray);transition:.1s;}
+  .opt-btn:hover{background:#f0f8ff;border-color:var(--blue);}
+  .opt-btn:active{transform:translateY(2px);box-shadow:none;}
+  .opt-btn.selected{border-color:var(--blue);background:#ddf4ff;}
+  .opt-btn.correct{border-color:var(--green);background:#d7ffb8;color:var(--green-dark);}
+  .opt-btn.wrong{border-color:var(--red);background:#ffdfe0;color:var(--red-dark);}
+  .opt-btn:disabled{cursor:default;}
+
+  .bottombar{position:fixed;left:0;right:0;bottom:0;padding:16px;border-top:2px solid var(--gray);
+    background:#fff;display:flex;justify-content:center;z-index:40;}
+  .bottombar.feedback-correct{background:#d7ffb8;border-top-color:#94e345;}
+  .bottombar.feedback-wrong{background:#ffdfe0;border-top-color:#ff9b9c;}
+  .bottombar-inner{max-width:640px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .feedback-text{font-weight:800;font-size:16px;}
+  .feedback-text.correct{color:var(--green-dark);}
+  .feedback-text.wrong{color:var(--red-dark);}
+  .feedback-exp{font-size:13.5px;color:var(--text);margin-top:4px;font-weight:500;max-width:420px;}
+  .btn-main{padding:14px 32px;border:none;border-radius:14px;font-weight:800;font-size:16px;
+    color:#fff;background:var(--gray-dark);box-shadow:0 4px 0 #8f8f8f;}
+  .btn-main.enabled{background:var(--green);box-shadow:0 4px 0 var(--green-dark);}
+  .btn-main.wrongbtn{background:var(--red);box-shadow:0 4px 0 var(--red-dark);}
+  .btn-main:active{transform:translateY(3px);box-shadow:none;}
+
+  /* END SCREEN */
+  .end-screen{max-width:520px;margin:50px auto;text-align:center;padding:0 20px;}
+  .end-screen .big-emoji{font-size:72px;}
+  .end-screen h1{font-size:24px;margin:10px 0 4px;}
+  .end-screen .name-line{color:var(--blue-dark);font-weight:700;margin-bottom:6px;}
+  .score-circle{font-size:40px;font-weight:800;color:var(--green-dark);margin:14px 0;}
+  .score-pct{color:var(--gray-dark);font-size:14px;margin-bottom:18px;}
+  .partgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:18px 0;text-align:left;}
+  .partrow{background:#fff;border-radius:10px;padding:8px 12px;font-size:12.5px;box-shadow:0 2px 0 var(--gray);}
+  .end-actions{margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+
+  @media (max-width:480px){
+    .qprompt{font-size:18px;}
+    .partgrid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar" id="topbar">
+  <div class="brand">🦉 Thi Giữa Kì 1 — Unit 1-3</div>
+  <div class="spacer"></div>
+  <div class="namechip hidden" id="nameChip"></div>
+</div>
+
+<div id="startScreen" class="start-wrap">
+  <div class="big-emoji">📝</div>
+  <h1>Đề Thi Giữa Kì 1 — Unit 1-3</h1>
+  <p>40 câu trắc nghiệm, kiểu Duolingo: mỗi lần chỉ hiện 1 câu, đáp án được xáo trộn ngẫu nhiên mỗi lần làm. Trả lời xong sẽ biết đúng/sai ngay, và xem điểm cuối cùng theo tên của em.</p>
+  <div class="start-card">
+    <input type="text" id="nameInput" class="name-input" placeholder="Nhập tên của em...">
+    <button class="btn-main enabled" style="width:100%;" onclick="startExam()">BẮT ĐẦU LÀM BÀI</button>
+    <div class="start-note">📌 Phần Nghe dùng giọng đọc máy tính (bấm nút 🔊) thay cho file âm thanh gốc.</div>
+  </div>
+</div>
+
+<div id="lessonScreen" class="lesson-screen hidden"></div>
+
+<div id="endScreen" class="end-screen hidden"></div>
+
+<div id="bottombar" class="bottombar hidden">
+  <div class="bottombar-inner" id="bottombarInner"></div>
+</div>
+
+<script>
+const EXAM = {"questions": [{"id": "q1", "part": "listening", "partLabel": "I. Nghe (Listening)", "prompt": "Where is Lan's class going this weekend?", "opts": ["To the beach", "To a village in the countryside", "To a museum", "To a shopping mall"], "correctText": "To a village in the countryside", "exp": "Lan nói: 'This weekend my class is going on a trip to a village in the countryside.'", "listenScript": "Hi, I'm Lan. This weekend my class is going on a trip to a village in the countryside. We will visit a rice paddy field and help the farmers load rice onto a truck. In the afternoon, we will herd buffaloes with the local children and fly kites over the fields. Our teacher said the village is very picturesque, and the local people are hospitable, so we are all very excited. After the trip, each student has to upload three photos to our class forum and write a short report about the experience.", "listenScriptVi": "Chào, mình là Lan. Cuối tuần này lớp mình sẽ đi dã ngoại đến một ngôi làng ở nông thôn. Chúng mình sẽ ghé thăm một cánh đồng lúa và giúp nông dân chất lúa lên xe tải. Buổi chiều, chúng mình sẽ chăn trâu cùng trẻ em địa phương và thả diều trên cánh đồng. Cô giáo nói ngôi làng rất đẹp như tranh, và người dân địa phương rất hiếu khách, nên cả lớp đều rất háo hức. Sau chuyến đi, mỗi bạn phải tải lên 3 bức ảnh vào diễn đàn lớp và viết một bài báo cáo ngắn về trải nghiệm này."}, {"id": "q2", "part": "listening", "partLabel": "I. Nghe (Listening)", "prompt": "What will the students do in the morning?", "opts": ["Fly kites", "Herd buffaloes", "Help load rice onto a truck", "Write a report"], "correctText": "Help load rice onto a truck", "exp": "Bài nghe nói: 'We will visit a rice paddy field and help the farmers load rice onto a truck' — đây là hoạt động được nhắc trước, vào buổi sáng/khi vừa đến.", "listenScript": "Hi, I'm Lan. This weekend my class is going on a trip to a village in the countryside. We will visit a rice paddy field and help the farmers load rice onto a truck. In the afternoon, we will herd buffaloes with the local children and fly kites over the fields. Our teacher said the village is very picturesque, and the local people are hospitable, so we are all very excited. After the trip, each student has to upload three photos to our class forum and write a short report about the experience.", "listenScriptVi": "Chào, mình là Lan. Cuối tuần này lớp mình sẽ đi dã ngoại đến một ngôi làng ở nông thôn. Chúng mình sẽ ghé thăm một cánh đồng lúa và giúp nông dân chất lúa lên xe tải. Buổi chiều, chúng mình sẽ chăn trâu cùng trẻ em địa phương và thả diều trên cánh đồng. Cô giáo nói ngôi làng rất đẹp như tranh, và người dân địa phương rất hiếu khách, nên cả lớp đều rất háo hức. Sau chuyến đi, mỗi bạn phải tải lên 3 bức ảnh vào diễn đàn lớp và viết một bài báo cáo ngắn về trải nghiệm này."}, {"id": "q3", "part": "listening", "partLabel": "I. Nghe (Listening)", "prompt": "According to the teacher, the local people are...", "opts": ["shy", "hospitable", "strict", "noisy"], "correctText": "hospitable", "exp": "Bài nghe nói: 'the local people are hospitable' (hiếu khách).", "listenScript": "Hi, I'm Lan. This weekend my class is going on a trip to a village in the countryside. We will visit a rice paddy field and help the farmers load rice onto a truck. In the afternoon, we will herd buffaloes with the local children and fly kites over the fields. Our teacher said the village is very picturesque, and the local people are hospitable, so we are all very excited. After the trip, each student has to upload three photos to our class forum and write a short report about the experience.", "listenScriptVi": "Chào, mình là Lan. Cuối tuần này lớp mình sẽ đi dã ngoại đến một ngôi làng ở nông thôn. Chúng mình sẽ ghé thăm một cánh đồng lúa và giúp nông dân chất lúa lên xe tải. Buổi chiều, chúng mình sẽ chăn trâu cùng trẻ em địa phương và thả diều trên cánh đồng. Cô giáo nói ngôi làng rất đẹp như tranh, và người dân địa phương rất hiếu khách, nên cả lớp đều rất háo hức. Sau chuyến đi, mỗi bạn phải tải lên 3 bức ảnh vào diễn đàn lớp và viết một bài báo cáo ngắn về trải nghiệm này."}, {"id": "q4", "part": "listening", "partLabel": "I. Nghe (Listening)", "prompt": "What does each student have to do after the trip?", "opts": ["Pay a fee", "Upload three photos and write a report", "Draw a picture", "Give a speech"], "correctText": "Upload three photos and write a report", "exp": "Bài nghe nói: 'each student has to upload three photos to our class forum and write a short report about the experience.'", "listenScript": "Hi, I'm Lan. This weekend my class is going on a trip to a village in the countryside. We will visit a rice paddy field and help the farmers load rice onto a truck. In the afternoon, we will herd buffaloes with the local children and fly kites over the fields. Our teacher said the village is very picturesque, and the local people are hospitable, so we are all very excited. After the trip, each student has to upload three photos to our class forum and write a short report about the experience.", "listenScriptVi": "Chào, mình là Lan. Cuối tuần này lớp mình sẽ đi dã ngoại đến một ngôi làng ở nông thôn. Chúng mình sẽ ghé thăm một cánh đồng lúa và giúp nông dân chất lúa lên xe tải. Buổi chiều, chúng mình sẽ chăn trâu cùng trẻ em địa phương và thả diều trên cánh đồng. Cô giáo nói ngôi làng rất đẹp như tranh, và người dân địa phương rất hiếu khách, nên cả lớp đều rất háo hức. Sau chuyến đi, mỗi bạn phải tải lên 3 bức ảnh vào diễn đàn lớp và viết một bài báo cáo ngắn về trải nghiệm này."}, {"id": "q5", "part": "stress", "partLabel": "II.1 Trọng âm", "prompt": "Choose the word with a different stress pattern from the others.", "opts": ["balance", "bracelet", "detest", "puzzle"], "correctText": "detest", "exp": "'balance' /ˈbæləns/, 'bracelet' /ˈbreɪslət/, 'puzzle' /ˈpʌzl/ đều nhấn âm 1; riêng 'detest' /dɪˈtest/ nhấn âm 2 → khác biệt."}, {"id": "q6", "part": "stress", "partLabel": "II.1 Trọng âm", "prompt": "Choose the word with a different stress pattern from the others.", "opts": ["prefer", "resort", "outdoors", "leisure"], "correctText": "leisure", "exp": "'prefer' /prɪˈfɜː/, 'resort' /rɪˈzɔːt/, 'outdoors' /ˌaʊtˈdɔːz/ đều nhấn âm 2; riêng 'leisure' /ˈleʒə/ nhấn âm 1 → khác biệt."}, {"id": "q7", "part": "stress", "partLabel": "II.1 Trọng âm", "prompt": "Choose the word with a different stress pattern from the others.", "opts": ["cultivate", "concentrate", "stressful", "mature"], "correctText": "mature", "exp": "'cultivate' /ˈkʌltɪveɪt/, 'concentrate' /ˈkɒnsntreɪt/, 'stressful' /ˈstresfl/ đều nhấn âm 1; riêng 'mature' /məˈtʃʊə/ nhấn âm 2 → khác biệt."}, {"id": "q8", "part": "wordform", "partLabel": "II.2 Hình thái từ", "prompt": "Teenagers often feel ___ (STRESS) before exams.", "opts": ["stress", "stressful", "stressed out", "stressfully"], "correctText": "stressful", "exp": "Sau 'feel' + tính từ, và vật/tình huống gây ra cảm giác đó dùng '-ful': 'stressful' (gây căng thẳng) mô tả kỳ thi → Exams are stressful / Teenagers feel stressful before exams (mô tả tình huống). Đáp án: stressful."}, {"id": "q9", "part": "wordform", "partLabel": "II.2 Hình thái từ", "prompt": "___ (BULLY) is a serious problem among teenagers today.", "opts": ["Bully", "Bullies", "Bullying", "Bullied"], "correctText": "Bullying", "exp": "Danh động từ 'Bullying' (sự bắt nạt) làm chủ ngữ của câu, đứng đầu câu viết hoa chữ cái đầu."}, {"id": "q10", "part": "wordform", "partLabel": "II.2 Hình thái từ", "prompt": "The view from the hill was really ___ (PICTURE) — like a painting!", "opts": ["picture", "pictured", "picturesque", "picturing"], "correctText": "picturesque", "exp": "Cần tính từ sau 'really' để bổ nghĩa cho 'view' → 'picturesque' (đẹp như tranh)."}, {"id": "q11", "part": "wordform", "partLabel": "II.2 Hình thái từ", "prompt": "Farmers need to be very ___ (PATIENCE) when waiting for a good harvest.", "opts": ["patience", "patient", "patiently", "impatience"], "correctText": "patient", "exp": "Sau 'be' cần tính từ: 'patient' (kiên nhẫn), không dùng danh từ 'patience'."}, {"id": "q12", "part": "vocab", "partLabel": "II.3 Từ vựng-Giao tiếp", "prompt": "He feels a lot of peer ___ to fit in with his friends.", "opts": ["pressure", "stress", "balance", "notification"], "correctText": "pressure", "exp": "'peer pressure' = áp lực từ bạn bè, một cụm từ cố định trong Unit 3."}, {"id": "q13", "part": "vocab", "partLabel": "II.3 Từ vựng-Giao tiếp", "prompt": "The farmers used a ___ to harvest the rice field quickly.", "opts": ["ferry", "orchard", "combine harvester", "lighthouse"], "correctText": "combine harvester", "exp": "'combine harvester' = máy gặt đập liên hợp, dùng để thu hoạch lúa nhanh (từ vựng Unit 2)."}, {"id": "q14", "part": "vocab", "partLabel": "II.3 Từ vựng-Giao tiếp", "prompt": "A: \"Do you fancy going cycling this weekend?\"  B: \"___\"", "opts": ["Sure, that sounds fun!", "No, thanks, I'm full.", "It's two o'clock.", "I don't care at all."], "correctText": "Sure, that sounds fun!", "exp": "Trả lời đồng ý, phù hợp với lời mời/rủ rê (fancy = thích, hứng thú với việc gì)."}, {"id": "q15", "part": "vocab", "partLabel": "II.3 Từ vựng-Giao tiếp", "prompt": "People in the countryside are usually very ___ ; they always welcome visitors.", "opts": ["vast", "well-trained", "hospitable", "picturesque"], "correctText": "hospitable", "exp": "'hospitable' = hiếu khách, phù hợp với vế sau 'they always welcome visitors'."}, {"id": "q16", "part": "vocab", "partLabel": "II.3 Từ vựng-Giao tiếp", "prompt": "Please remember to ___ your photos to the class forum before Friday.", "opts": ["browse", "detest", "fold", "upload"], "correctText": "upload", "exp": "'upload' = tải lên (ảnh, bài viết...) — đúng nghĩa và ngữ pháp trong câu."}, {"id": "q17", "part": "grammar", "partLabel": "II.4 Ngữ pháp", "prompt": "She ___ (ENJOY) reading comic books in her free time.", "opts": ["enjoy", "enjoys", "enjoying", "to enjoy"], "correctText": "enjoys", "exp": "Chủ ngữ 'She' (ngôi thứ 3 số ít) ở thì hiện tại đơn → động từ thêm -s: 'enjoys'. Sau 'enjoy' là V-ing: 'enjoys reading'."}, {"id": "q18", "part": "grammar", "partLabel": "II.4 Ngữ pháp", "prompt": "This village is ___ (QUIET) than the city.", "opts": ["quiet", "quieter", "more quiet", "quietest"], "correctText": "quieter", "exp": "Tính từ ngắn 'quiet' (2 âm tiết nhưng theo quy tắc so sánh hơn vẫn dùng -er) → 'quieter than'."}, {"id": "q19", "part": "grammar", "partLabel": "II.4 Ngữ pháp", "prompt": "Life in the countryside is ___ (PEACEFUL) than life in the city.", "opts": ["peacefuler", "more peaceful", "peacefulest", "peaceful"], "correctText": "more peaceful", "exp": "Tính từ dài (peaceful, 2 âm tiết trở lên, không theo quy tắc -y/-er đơn giản) dùng 'more' + adj → 'more peaceful than'."}, {"id": "q20", "part": "grammar", "partLabel": "II.4 Ngữ pháp", "prompt": "He was tired, ___ he kept studying for the test.", "opts": ["so", "but", "and", "for"], "correctText": "but", "exp": "'but' diễn tả sự tương phản (mệt nhưng vẫn tiếp tục học) — một trong 7 liên từ FANBOYS nối 2 mệnh đề độc lập thành câu ghép."}, {"id": "q21", "part": "gapbox", "partLabel": "III.1 Điền từ (word box)", "prompt": "Chỗ trống (1) nên điền từ nào?", "opts": ["load", "herded", "peaceful", "keep", "browse", "detest"], "correctText": "load", "exp": "'load rice onto a truck' = chất lúa lên xe tải.", "clozeText": "Last weekend, Nam visited his cousin's village. In the morning, they helped the farmers (1)___ rice onto a truck. In the afternoon, they (2)___ the buffaloes near the river. Nam said the countryside was very (3)___ and different from the noisy city. He hopes to (4)___ in touch with his cousin and visit again next year.", "clozeVi": "Cuối tuần trước, Nam đến thăm làng quê của anh họ. Buổi sáng, họ giúp nông dân (1)___ lúa lên xe tải. Buổi chiều, họ (2)___ trâu gần bờ sông. Nam nói miền quê rất (3)___ và khác hẳn với thành phố ồn ào. Cậu ấy hy vọng sẽ (4)___ liên lạc với anh họ và ghé thăm lại vào năm sau.", "wordBox": ["load", "herded", "peaceful", "keep", "browse", "detest"]}, {"id": "q22", "part": "gapbox", "partLabel": "III.1 Điền từ (word box)", "prompt": "Chỗ trống (2) nên điền từ nào?", "opts": ["load", "herded", "peaceful", "keep", "browse", "detest"], "correctText": "herded", "exp": "'herded the buffaloes' = chăn trâu — chia quá khứ đơn vì cả đoạn kể lại chuyện đã xảy ra.", "clozeText": "Last weekend, Nam visited his cousin's village. In the morning, they helped the farmers (1)___ rice onto a truck. In the afternoon, they (2)___ the buffaloes near the river. Nam said the countryside was very (3)___ and different from the noisy city. He hopes to (4)___ in touch with his cousin and visit again next year.", "clozeVi": "Cuối tuần trước, Nam đến thăm làng quê của anh họ. Buổi sáng, họ giúp nông dân (1)___ lúa lên xe tải. Buổi chiều, họ (2)___ trâu gần bờ sông. Nam nói miền quê rất (3)___ và khác hẳn với thành phố ồn ào. Cậu ấy hy vọng sẽ (4)___ liên lạc với anh họ và ghé thăm lại vào năm sau.", "wordBox": ["load", "herded", "peaceful", "keep", "browse", "detest"]}, {"id": "q23", "part": "gapbox", "partLabel": "III.1 Điền từ (word box)", "prompt": "Chỗ trống (3) nên điền từ nào?", "opts": ["load", "herded", "peaceful", "keep", "browse", "detest"], "correctText": "peaceful", "exp": "'peaceful' = yên bình, hợp nghĩa khi so sánh với 'the noisy city' (thành phố ồn ào).", "clozeText": "Last weekend, Nam visited his cousin's village. In the morning, they helped the farmers (1)___ rice onto a truck. In the afternoon, they (2)___ the buffaloes near the river. Nam said the countryside was very (3)___ and different from the noisy city. He hopes to (4)___ in touch with his cousin and visit again next year.", "clozeVi": "Cuối tuần trước, Nam đến thăm làng quê của anh họ. Buổi sáng, họ giúp nông dân (1)___ lúa lên xe tải. Buổi chiều, họ (2)___ trâu gần bờ sông. Nam nói miền quê rất (3)___ và khác hẳn với thành phố ồn ào. Cậu ấy hy vọng sẽ (4)___ liên lạc với anh họ và ghé thăm lại vào năm sau.", "wordBox": ["load", "herded", "peaceful", "keep", "browse", "detest"]}, {"id": "q24", "part": "gapbox", "partLabel": "III.1 Điền từ (word box)", "prompt": "Chỗ trống (4) nên điền từ nào?", "opts": ["load", "herded", "peaceful", "keep", "browse", "detest"], "correctText": "keep", "exp": "'keep in touch with somebody' = giữ liên lạc với ai đó (cụm từ cố định, Unit 1).", "clozeText": "Last weekend, Nam visited his cousin's village. In the morning, they helped the farmers (1)___ rice onto a truck. In the afternoon, they (2)___ the buffaloes near the river. Nam said the countryside was very (3)___ and different from the noisy city. He hopes to (4)___ in touch with his cousin and visit again next year.", "clozeVi": "Cuối tuần trước, Nam đến thăm làng quê của anh họ. Buổi sáng, họ giúp nông dân (1)___ lúa lên xe tải. Buổi chiều, họ (2)___ trâu gần bờ sông. Nam nói miền quê rất (3)___ và khác hẳn với thành phố ồn ào. Cậu ấy hy vọng sẽ (4)___ liên lạc với anh họ và ghé thăm lại vào năm sau.", "wordBox": ["load", "herded", "peaceful", "keep", "browse", "detest"]}, {"id": "q25", "part": "gapmcq", "partLabel": "III.2 Điền từ (trắc nghiệm)", "prompt": "Chỗ trống (1):", "opts": ["browse", "browsing", "browsed", "to browse"], "correctText": "browsing", "exp": "Cấu trúc 'spend time + V-ing' → 'browsing'.", "clozeText": "Many teenagers today spend a lot of time (1)___ social media. They often feel (2)___ when they get too many notifications. To deal with this, schools now encourage students to join clubs (3)___ as the art club or the music club. Teachers believe clubs help students relax and make new friends, (4)___ than spending all their free time online.", "clozeVi": "Nhiều thanh thiếu niên ngày nay dành rất nhiều thời gian (1)___ mạng xã hội. Họ thường cảm thấy (2)___ khi nhận quá nhiều thông báo. Để giải quyết điều này, các trường hiện khuyến khích học sinh tham gia các câu lạc bộ (3)___ như câu lạc bộ mỹ thuật hoặc âm nhạc. Giáo viên tin rằng câu lạc bộ giúp học sinh thư giãn và kết bạn mới, tốt (4)___ là dành hết thời gian rảnh để lên mạng."}, {"id": "q26", "part": "gapmcq", "partLabel": "III.2 Điền từ (trắc nghiệm)", "prompt": "Chỗ trống (2):", "opts": ["stress", "stressed", "stressful", "stressing"], "correctText": "stressed", "exp": "Sau 'feel' mô tả CẢM GIÁC của người → dùng 'stressed' (cảm thấy căng thẳng), không dùng 'stressful' (dùng cho vật/tình huống gây ra cảm giác đó).", "clozeText": "Many teenagers today spend a lot of time (1)___ social media. They often feel (2)___ when they get too many notifications. To deal with this, schools now encourage students to join clubs (3)___ as the art club or the music club. Teachers believe clubs help students relax and make new friends, (4)___ than spending all their free time online.", "clozeVi": "Nhiều thanh thiếu niên ngày nay dành rất nhiều thời gian (1)___ mạng xã hội. Họ thường cảm thấy (2)___ khi nhận quá nhiều thông báo. Để giải quyết điều này, các trường hiện khuyến khích học sinh tham gia các câu lạc bộ (3)___ như câu lạc bộ mỹ thuật hoặc âm nhạc. Giáo viên tin rằng câu lạc bộ giúp học sinh thư giãn và kết bạn mới, tốt (4)___ là dành hết thời gian rảnh để lên mạng."}, {"id": "q27", "part": "gapmcq", "partLabel": "III.2 Điền từ (trắc nghiệm)", "prompt": "Chỗ trống (3):", "opts": ["so", "like", "such", "as"], "correctText": "such", "exp": "Cụm cố định 'such as' = chẳng hạn như, dùng để liệt kê ví dụ.", "clozeText": "Many teenagers today spend a lot of time (1)___ social media. They often feel (2)___ when they get too many notifications. To deal with this, schools now encourage students to join clubs (3)___ as the art club or the music club. Teachers believe clubs help students relax and make new friends, (4)___ than spending all their free time online.", "clozeVi": "Nhiều thanh thiếu niên ngày nay dành rất nhiều thời gian (1)___ mạng xã hội. Họ thường cảm thấy (2)___ khi nhận quá nhiều thông báo. Để giải quyết điều này, các trường hiện khuyến khích học sinh tham gia các câu lạc bộ (3)___ như câu lạc bộ mỹ thuật hoặc âm nhạc. Giáo viên tin rằng câu lạc bộ giúp học sinh thư giãn và kết bạn mới, tốt (4)___ là dành hết thời gian rảnh để lên mạng."}, {"id": "q28", "part": "gapmcq", "partLabel": "III.2 Điền từ (trắc nghiệm)", "prompt": "Chỗ trống (4):", "opts": ["rather", "more", "better", "less"], "correctText": "rather", "exp": "Cụm cố định 'rather than' = hơn là (so sánh 2 lựa chọn).", "clozeText": "Many teenagers today spend a lot of time (1)___ social media. They often feel (2)___ when they get too many notifications. To deal with this, schools now encourage students to join clubs (3)___ as the art club or the music club. Teachers believe clubs help students relax and make new friends, (4)___ than spending all their free time online.", "clozeVi": "Nhiều thanh thiếu niên ngày nay dành rất nhiều thời gian (1)___ mạng xã hội. Họ thường cảm thấy (2)___ khi nhận quá nhiều thông báo. Để giải quyết điều này, các trường hiện khuyến khích học sinh tham gia các câu lạc bộ (3)___ như câu lạc bộ mỹ thuật hoặc âm nhạc. Giáo viên tin rằng câu lạc bộ giúp học sinh thư giãn và kết bạn mới, tốt (4)___ là dành hết thời gian rảnh để lên mạng."}, {"id": "q29", "part": "readcomp", "partLabel": "III.3 Đọc hiểu", "prompt": "Why are many teenagers learning to knit?", "opts": ["Because it's relaxing and can save money", "Because their parents force them", "Because it is required at school", "Because it is a new sport"], "correctText": "Because it's relaxing and can save money", "exp": "Bài đọc nói đan len là hoạt động thư giãn và giúp tiết kiệm tiền.", "passageTitle": "A Popular Hobby among Teens", "passageText": "Knitting is becoming a popular hobby among teenagers again. Many young people learn to knit by watching online videos. It is a relaxing activity that helps reduce stress and can also save money because you can make your own clothes, scarves, or bags. However, knitting also requires patience because a simple scarf can take several days to finish. Some students even sell the things they knit to earn extra pocket money."}, {"id": "q30", "part": "readcomp", "partLabel": "III.3 Đọc hiểu", "prompt": "Teenagers mostly learn knitting from their grandmothers.", "opts": ["Đúng", "Sai"], "correctText": "Sai", "exp": "Bài đọc nói họ học đan len 'by watching online videos' (qua video trên mạng), không phải từ bà.", "passageTitle": "A Popular Hobby among Teens", "passageText": "Knitting is becoming a popular hobby among teenagers again. Many young people learn to knit by watching online videos. It is a relaxing activity that helps reduce stress and can also save money because you can make your own clothes, scarves, or bags. However, knitting also requires patience because a simple scarf can take several days to finish. Some students even sell the things they knit to earn extra pocket money."}, {"id": "q31", "part": "readcomp", "partLabel": "III.3 Đọc hiểu", "prompt": "According to the passage, knitting can help people __.", "opts": ["spend more money", "reduce stress and save money", "get fit", "make new friends only"], "correctText": "reduce stress and save money", "exp": "Bài đọc nói đan len 'helps reduce stress and can also save money'.", "passageTitle": "A Popular Hobby among Teens", "passageText": "Knitting is becoming a popular hobby among teenagers again. Many young people learn to knit by watching online videos. It is a relaxing activity that helps reduce stress and can also save money because you can make your own clothes, scarves, or bags. However, knitting also requires patience because a simple scarf can take several days to finish. Some students even sell the things they knit to earn extra pocket money."}, {"id": "q32", "part": "readcomp", "partLabel": "III.3 Đọc hiểu", "prompt": "What do some students do with the things they knit?", "opts": ["Throw them away", "Give them to teachers", "Sell them for extra money", "Donate them abroad"], "correctText": "Sell them for extra money", "exp": "Bài đọc nói một số học sinh 'sell the things they knit to earn extra pocket money'.", "passageTitle": "A Popular Hobby among Teens", "passageText": "Knitting is becoming a popular hobby among teenagers again. Many young people learn to knit by watching online videos. It is a relaxing activity that helps reduce stress and can also save money because you can make your own clothes, scarves, or bags. However, knitting also requires patience because a simple scarf can take several days to finish. Some students even sell the things they knit to earn extra pocket money."}, {"id": "q33", "part": "sentbuild", "partLabel": "IV.1 Dựng câu", "prompt": "Choose the correctly built sentence from: Mai / love / play / badminton / at / weekends.", "opts": ["Mai loves playing badminton at weekends.", "Mai love playing badminton at weekends.", "Mai loves play badminton at weekends.", "Loves Mai playing badminton at weekends."], "correctText": "Mai loves playing badminton at weekends.", "exp": "Chủ ngữ 'Mai' số ít → động từ 'loves'; sau 'love' dùng V-ing: 'playing'. → Mai loves playing badminton at weekends."}, {"id": "q34", "part": "sentbuild", "partLabel": "IV.1 Dựng câu", "prompt": "Choose the correctly built sentence from: the farmers / harvest / rice / every / autumn.", "opts": ["The farmers harvests rice every autumn.", "The farmers harvest rice every autumn.", "The farmers harvest rice autumn every.", "Harvest the farmers rice every autumn."], "correctText": "The farmers harvest rice every autumn.", "exp": "Chủ ngữ số nhiều 'The farmers' → động từ giữ nguyên 'harvest' (không thêm -s). → The farmers harvest rice every autumn."}, {"id": "q35", "part": "sentbuild", "partLabel": "IV.1 Dựng câu", "prompt": "Choose the correctly built sentence from: teenagers / should / not / spend / too much time / social media.", "opts": ["Teenagers should not spend too much time on social media.", "Teenagers should spend not too much time on social media.", "Teenagers not should spend too much time on social media.", "Teenagers should not spend too much time in social media."], "correctText": "Teenagers should not spend too much time on social media.", "exp": "'should not + V' và cụm cố định 'spend time ON social media' (không dùng 'in'). → Teenagers should not spend too much time on social media."}, {"id": "q36", "part": "sentbuild", "partLabel": "IV.1 Dựng câu", "prompt": "Choose the correctly built sentence from: this / village / be / peaceful / than / the city.", "opts": ["This village is peacefuler than the city.", "This village is more peaceful that the city.", "This village is more peaceful than the city.", "This village be more peaceful than the city."], "correctText": "This village is more peaceful than the city.", "exp": "Tính từ dài 'peaceful' dùng 'more', sau so sánh hơn dùng 'than' (không phải 'that'), và động từ 'to be' chia là 'is'. → This village is more peaceful than the city."}, {"id": "q37", "part": "sentrewrite", "partLabel": "IV.2 Viết lại câu", "prompt": "Which sentence has the SAME meaning as: \"This test is more difficult than the last one.\"", "opts": ["The last test was easier than this one.", "The last test was more difficult than this one.", "This test is as difficult as the last one.", "The last test is the most difficult."], "correctText": "The last test was easier than this one.", "exp": "'A hơn B' (khó hơn) = 'B kém hơn A' (dễ hơn) → The last test was easier than this one (cùng nghĩa, đổi chiều so sánh)."}, {"id": "q38", "part": "sentrewrite", "partLabel": "IV.2 Viết lại câu", "prompt": "Which sentence has the SAME meaning as: \"Minh feels stressed, but he tries to stay calm.\"", "opts": ["Although Minh feels stressed, he tries to stay calm.", "Because Minh feels stressed, he tries to stay calm.", "Minh feels stressed, so he cannot stay calm.", "Minh never feels stressed, but he stays calm."], "correctText": "Although Minh feels stressed, he tries to stay calm.", "exp": "'but' (tương phản) có thể đổi sang 'Although + mệnh đề, mệnh đề chính' mà vẫn giữ nguyên nghĩa tương phản."}, {"id": "q39", "part": "sentrewrite", "partLabel": "IV.2 Viết lại câu", "prompt": "Which sentence has the SAME meaning as: \"She enjoys knitting in her free time.\"", "opts": ["Knitting is something she enjoys doing in her free time.", "She never knits in her free time.", "She has to knit in her free time.", "Knitting is too difficult for her."], "correctText": "Knitting is something she enjoys doing in her free time.", "exp": "Đảo cấu trúc câu nhưng giữ nguyên nghĩa: 'cô ấy thích đan len lúc rảnh' = 'đan len là điều cô ấy thích làm lúc rảnh'."}, {"id": "q40", "part": "sentrewrite", "partLabel": "IV.2 Viết lại câu", "prompt": "Which sentence has the SAME meaning as: \"The countryside is quieter than the city.\"", "opts": ["The city is noisier than the countryside.", "The countryside is noisier than the city.", "The city is quieter than the countryside.", "The countryside and the city are equally quiet."], "correctText": "The city is noisier than the countryside.", "exp": "'A yên tĩnh hơn B' = 'B ồn ào hơn A' → The city is noisier than the countryside (cùng nghĩa, đổi chiều so sánh và tính từ trái nghĩa)."}], "partLabels": {"listening": "I. Nghe (Listening)", "stress": "II.1 Trọng âm", "wordform": "II.2 Hình thái từ", "vocab": "II.3 Từ vựng-Giao tiếp", "grammar": "II.4 Ngữ pháp", "gapbox": "III.1 Điền từ (word box)", "gapmcq": "III.2 Điền từ (trắc nghiệm)", "readcomp": "III.3 Đọc hiểu", "sentbuild": "IV.1 Dựng câu", "sentrewrite": "IV.2 Viết lại câu"}};
+const QUESTIONS_ORIG = EXAM.questions;
+const PART_LABELS = EXAM.partLabels;
+
+let STUDENT_NAME = "";
+let CUR = null; // {queue, idx, correctCount, mistakeCount, answered, selectedIdx, partStats}
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function speak(text){
+  try{
+    if(!('speechSynthesis' in window)) return false;
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US'; u.rate = 0.88;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+    return true;
+  }catch(e){ return false; }
+}
+function toggleReveal(id){ document.getElementById(id).classList.toggle('show'); }
+
+function showScreen(name){
+  document.getElementById('startScreen').classList.toggle('hidden', name!=='start');
+  document.getElementById('lessonScreen').classList.toggle('hidden', name!=='lesson');
+  document.getElementById('endScreen').classList.toggle('hidden', name!=='end');
+  document.getElementById('bottombar').classList.toggle('hidden', name!=='lesson');
+  window.scrollTo(0,0);
+}
+
+function startExam(){
+  const nameVal = document.getElementById('nameInput').value.trim();
+  STUDENT_NAME = nameVal || "Học sinh";
+  document.getElementById('nameChip').textContent = '👤 ' + STUDENT_NAME;
+  document.getElementById('nameChip').classList.remove('hidden');
+
+  const queue = QUESTIONS_ORIG.map(q=>{
+    const shuffledOpts = shuffle(q.opts);
+    return {...q, shuffledOpts, answerIdx: shuffledOpts.indexOf(q.correctText)};
+  });
+
+  CUR = {
+    queue, idx: 0,
+    correctCount: 0, mistakeCount: 0,
+    answered: false, selectedIdx: null,
+    partStats: {}
+  };
+  showScreen('lesson');
+  renderQuestion();
+}
+
+function currentQ(){ return CUR.queue[CUR.idx]; }
+
+function renderQuestion(){
+  const scr = document.getElementById('lessonScreen');
+  const q = currentQ();
+  CUR.answered = false; CUR.selectedIdx = null;
+  const total = CUR.queue.length;
+  const pct = Math.round((CUR.idx/total)*100);
+
+  let html = `<div class="lesson-topbar">
+    <div class="qcounter">Câu ${CUR.idx+1}/${total}</div>
+    <div class="progress-bar-outer"><div class="progress-bar-inner" style="width:${pct}%"></div></div>
+  </div>`;
+
+  html += `<div class="qcard">`;
+  html += `<div class="qmeta">${q.partLabel}</div>`;
+
+  if(q.listenScript){
+    const scriptId = 'script_' + q.id;
+    html += `<button class="listen-btn" onclick="speak(\`${q.listenScript.replace(/`/g,"'")}\`)">🔊 Nghe đoạn hội thoại</button>
+      <button class="script-link" onclick="toggleReveal('${scriptId}')">Hiện script</button>
+      <div class="script-reveal" id="${scriptId}">${q.listenScript}<div style="margin-top:6px;color:#94a3b8;">${q.listenScriptVi||''}</div></div>`;
+  }
+  if(q.clozeText){
+    html += `<div class="cloze-box">${q.clozeText}<div class="vi">${q.clozeVi||''}</div></div>`;
+    if(q.wordBox){
+      html += `<div class="wordbox-row">${q.wordBox.map(w=>`<span>${w}</span>`).join('')}</div>`;
+    }
+  }
+  if(q.passageText){
+    html += `<div class="qpassage"><div class="ptitle">📖 ${q.passageTitle||''}</div>${q.passageText}</div>`;
+  }
+
+  html += `<div class="qprompt">${q.prompt}</div>`;
+  html += `<div class="opt-list" id="optList"></div>`;
+  html += `</div>`;
+  scr.innerHTML = html;
+
+  const optList = document.getElementById('optList');
+  q.shuffledOpts.forEach((opt, i)=>{
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt;
+    b.onclick = ()=>selectOption(i);
+    optList.appendChild(b);
+  });
+
+  renderBottomBar();
+}
+
+function selectOption(i){
+  if(CUR.answered) return;
+  CUR.selectedIdx = i;
+  document.querySelectorAll('.opt-btn').forEach((b,idx)=>{
+    b.classList.toggle('selected', idx===i);
+  });
+  renderBottomBar();
+}
+
+function renderBottomBar(){
+  const bar = document.getElementById('bottombar');
+  const inner = document.getElementById('bottombarInner');
+  bar.className = 'bottombar';
+  if(!CUR.answered){
+    const enabled = CUR.selectedIdx !== null;
+    inner.innerHTML = `<div></div><button id="checkBtn" class="btn-main ${enabled?'enabled':''}" ${enabled?'':'disabled'} onclick="checkAnswer()">KIỂM TRA</button>`;
+  } else {
+    const q = currentQ();
+    const correct = CUR.selectedIdx === q.answerIdx;
+    bar.className = 'bottombar ' + (correct ? 'feedback-correct':'feedback-wrong');
+    const isLast = CUR.idx === CUR.queue.length-1;
+    inner.innerHTML = `<div>
+        <div class="feedback-text ${correct?'correct':'wrong'}">${correct ? '✅ Chính xác!' : '❌ Chưa đúng'}</div>
+        <div class="feedback-exp">${q.exp || ''}</div>
+      </div>
+      <button class="btn-main ${correct?'enabled':'wrongbtn'}" onclick="nextQuestion()">${isLast ? 'XEM KẾT QUẢ' : 'TIẾP TỤC'}</button>`;
+  }
+}
+
+function checkAnswer(){
+  if(CUR.selectedIdx===null || CUR.answered) return;
+  CUR.answered = true;
+  const q = currentQ();
+  const correct = CUR.selectedIdx === q.answerIdx;
+  document.querySelectorAll('.opt-btn').forEach((b,idx)=>{
+    b.disabled = true;
+    if(idx===q.answerIdx) b.classList.add('correct');
+    else if(idx===CUR.selectedIdx && !correct) b.classList.add('wrong');
+  });
+  if(!CUR.partStats[q.part]) CUR.partStats[q.part] = {correct:0, total:0};
+  CUR.partStats[q.part].total++;
+  if(correct){
+    CUR.correctCount++;
+    CUR.partStats[q.part].correct++;
+  } else {
+    CUR.mistakeCount++;
+  }
+  renderBottomBar();
+}
+
+function nextQuestion(){
+  CUR.idx++;
+  if(CUR.idx >= CUR.queue.length){
+    finishExam();
+  } else {
+    renderQuestion();
+  }
+}
+
+function finishExam(){
+  const total = CUR.queue.length;
+  const pct = Math.round((CUR.correctCount/total)*1000)/10;
+  let comment = '';
+  if(pct >= 90) comment = 'Xuất sắc! 🎉';
+  else if(pct >= 75) comment = 'Khá tốt, cố thêm chút nữa nhé!';
+  else if(pct >= 50) comment = 'Cần ôn lại các phần làm sai.';
+  else comment = 'Hãy ôn lại kỹ các phần ngữ pháp và từ vựng Unit 1-3.';
+
+  const scr = document.getElementById('endScreen');
+  scr.innerHTML = `<div class="big-emoji">${pct>=75?'🎉':(pct>=50?'📚':'💪')}</div>
+    <div class="name-line">👤 ${STUDENT_NAME}</div>
+    <h1>Hoàn thành bài thi!</h1>
+    <div class="score-circle">${CUR.correctCount}/${total}</div>
+    <div class="score-pct">${pct}% — ${comment}</div>
+    <div class="partgrid" id="partGrid"></div>
+    <div class="end-actions">
+      <button class="btn-main" style="background:#fff;color:#2563eb;border:2px solid #2563eb;box-shadow:0 4px 0 #bfdbfe;" onclick="location.reload()">LÀM LẠI (đáp án xáo trộn lại)</button>
+    </div>`;
+  const partGrid = document.getElementById('partGrid');
+  Object.keys(CUR.partStats).forEach(p=>{
+    const row = document.createElement('div');
+    row.className = 'partrow';
+    row.textContent = (PART_LABELS[p]||p) + ': ' + CUR.partStats[p].correct + '/' + CUR.partStats[p].total;
+    partGrid.appendChild(row);
+  });
+  showScreen('end');
+}
+</script>
+</body>
+</html>
