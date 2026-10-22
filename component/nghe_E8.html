@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ôn tập Nghe - Tiếng Anh 8 - Giữa kì 1</title>
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--ink:#1f2937;--mut:#6b7280;--pri:#2563eb;--pri2:#1e40af;--ok:#16a34a;--okbg:#dcfce7;--no:#dc2626;--nobg:#fee2e2;--line:#e5e7eb}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",system-ui,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+header{background:linear-gradient(135deg,#1e40af,#2563eb);color:#fff;padding:22px 16px;text-align:center}
+header h1{margin:0;font-size:1.5rem}
+header p{margin:6px 0 0;opacity:.9;font-size:.95rem}
+.wrap{max-width:860px;margin:0 auto;padding:16px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.tab{flex:1 1 180px;border:2px solid var(--line);background:#fff;border-radius:10px;padding:10px 12px;cursor:pointer;font:inherit;text-align:left}
+.tab b{display:block;font-size:.95rem}
+.tab span{font-size:.8rem;color:var(--mut)}
+.tab.active{border-color:var(--pri);background:#eff6ff}
+.tab.done b::after{content:" ✓";color:var(--ok)}
+.card{background:var(--card);border-radius:14px;padding:18px;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:14px}
+h2{margin:0 0 4px;font-size:1.2rem}
+h3{margin:18px 0 8px;font-size:1.05rem;color:var(--pri2);border-left:4px solid var(--pri);padding-left:8px}
+.sub{color:var(--mut);font-size:.9rem;margin:0 0 10px}
+.player{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:#eff6ff;border-radius:10px;padding:10px}
+button.b{border:0;border-radius:8px;padding:8px 14px;font:inherit;font-weight:600;cursor:pointer;background:var(--pri);color:#fff}
+button.b:hover{background:var(--pri2)}
+button.b.g{background:#e5e7eb;color:var(--ink)}
+button.b.g:hover{background:#d1d5db}
+select{font:inherit;padding:6px;border-radius:8px;border:1px solid #cbd5e1;max-width:220px}
+.pstat{font-size:.85rem;color:var(--mut);margin-left:auto}
+.bar{height:6px;background:#dbeafe;border-radius:4px;overflow:hidden;margin-top:8px;flex-basis:100%}
+.bar i{display:block;height:100%;width:0;background:var(--pri);transition:width .3s}
+.q{padding:10px 0;border-bottom:1px dashed var(--line)}
+.q:last-child{border-bottom:0}
+.q .t{margin-bottom:6px}
+.tf{display:flex;gap:10px}
+.tf label{border:2px solid var(--line);border-radius:8px;padding:4px 18px;cursor:pointer;font-weight:600;user-select:none}
+.tf input{display:none}
+.tf label:has(input:checked){border-color:var(--pri);background:#eff6ff;color:var(--pri2)}
+.fill input[type=text]{border:0;border-bottom:2px solid var(--pri);background:#f8fafc;font:inherit;font-weight:600;padding:2px 6px;width:150px;text-align:center;color:var(--pri2)}
+.fill input[type=text]:focus{outline:none;background:#eff6ff}
+.good{background:var(--okbg)!important;border-color:var(--ok)!important}
+.bad{background:var(--nobg)!important;border-color:var(--no)!important}
+.tf label.good{color:var(--ok)}
+.fb{font-size:.88rem;margin-top:4px}
+.fb.ok{color:var(--ok)}.fb.no{color:var(--no)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center}
+.score{font-weight:700;font-size:1.05rem}
+details{margin-top:12px;background:#f9fafb;border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+summary{cursor:pointer;font-weight:600;color:var(--pri2)}
+.line{margin:6px 0}
+.line b{color:var(--pri2)}
+.vocab{font-size:.9rem;color:var(--mut);margin-top:8px}
+.warn{background:#fef3c7;border:1px solid #fcd34d;border-radius:8px;padding:8px 12px;font-size:.88rem;display:none;margin-bottom:10px}
+footer{text-align:center;color:var(--mut);font-size:.8rem;padding:10px 16px 30px}
+</style>
+</head>
+<body>
+<header>
+  <h1>🎧 LISTENING REVIEW – ENGLISH 8</h1>
+  <p>Mid-term Test 1 • 2026–2027 • Unit 2 &amp; Unit 3 (Getting Started, Skills 2)</p>
+</header>
+<div class="wrap">
+  <div class="warn" id="warn">Trình duyệt chưa có giọng đọc tiếng Anh. Hãy dùng Chrome / Edge / Safari mới nhất, hoặc bấm “Xem script” để đọc thay cho nghe.</div>
+  <div class="tabs" id="tabs"></div>
+  <div id="main"></div>
+</div>
+<footer>Bài nghe do máy đọc (text-to-speech). Dạng bài: True/False &amp; Fill in the blank – mỗi phần 10 câu.</footer>
+
+<script>
+const SETS=[
+{id:"u2gs",title:"Unit 2 – Getting Started",sub:"Mai's summer holiday in the village",
+ vocab:"tanned • harvest • combine harvester • herd • paddy field • traditional games • slower • healthier",
+ lines:[
+ ["Nick","Hi, Mai! You look so tanned. Where have you been?"],
+ ["Mai","I've just come back from a wonderful summer holiday. I stayed at my uncle's house in a small village in Bac Ninh Province."],
+ ["Nick","Sounds great! What did you do there?"],
+ ["Mai","I helped my uncle's family with the rice harvest. The farmers there use a combine harvester, so it was quicker than I expected."],
+ ["Mai","I also herded buffaloes and cows with the village children, flew kites in the paddy fields, and played traditional games in the evenings."],
+ ["Nick","I'm so jealous!"],
+ ["Mai","Life there is slower than in the city, but people seem much healthier."]],
+ tf:[["Mai has just come back from a winter trip.",false],
+     ["Mai stayed at her uncle's house.",true],
+     ["The village is in Bac Giang Province.",false],
+     ["The farmers harvest rice with a combine harvester.",true],
+     ["Mai played traditional games in the evenings.",true]],
+ tfWhy:["It was a summer holiday.","“I stayed at my uncle's house…”","The village is in Bac Ninh Province.","“The farmers there use a combine harvester.”","“…played traditional games in the evenings.”"],
+ fill:[["Nick says Mai looks very ____.",["tanned"]],
+       ["Mai helped with the rice ____.",["harvest"]],
+       ["She herded buffaloes and ____ with the village children.",["cows"]],
+       ["She flew ____ in the paddy fields.",["kites"]],
+       ["Life in the village is ____ than in the city, but people are healthier.",["slower"]]]},
+
+{id:"u2s2",title:"Unit 2 – Skills 2",sub:"Three speakers talk about rural life",
+ vocab:"sense of community • supportive • entertainment • public transport • outdoor activities • peaceful • simple",
+ lines:[
+ ["Speaker 1","I love living in my village because there is a strong sense of community. Neighbours are always welcome in each other's homes, and people are very supportive. When someone is in trouble, everyone helps and shares what they have."],
+ ["Speaker 2","Honestly, I don't like life in the countryside. There are few good schools and colleges, and there is hardly any entertainment for young people. Public transport is also poor. I think we should improve the lives of people here."],
+ ["Speaker 3","I'd love to live in the countryside. There is so much space, and you can do many outdoor activities that are difficult to do in the city. Life here is peaceful and simple."]],
+ tf:[["Speaker 1 says there is a strong sense of community in the village.",true],
+     ["Speaker 1 says neighbours are not welcome in each other's homes.",false],
+     ["Speaker 2 likes life in the countryside.",false],
+     ["Speaker 2 complains about public transport.",true],
+     ["Speaker 3 thinks the countryside is noisy and busy.",false]],
+ tfWhy:["“…a strong sense of community.”","Neighbours are always welcome.","Speaker 2: “I don't like life in the countryside.”","“Public transport is also poor.”","She says it is peaceful and simple."],
+ fill:[["Speaker 1: There is a strong sense of ____ in my village.",["community"]],
+       ["Speaker 1: People in the village are very ____.",["supportive"]],
+       ["Speaker 2: There are few good schools and ____.",["colleges"]],
+       ["Speaker 3: You can do many ____ activities that are hard to do in the city.",["outdoor"]],
+       ["Speaker 3: Life in the countryside is peaceful and ____.",["simple"]]]},
+
+{id:"u3gs",title:"Unit 3 – Getting Started",sub:"Back to class: forum, clubs and pressure",
+ vocab:"forum • midterm test • stressful • pressure • easy to use • arts and crafts club • music club",
+ lines:[
+ ["Teacher","Welcome back, class. What's new?"],
+ ["Minh","Our class forum is now on Facebook, and we are preparing for the midterm tests. I find them stressful."],
+ ["Teacher","Try to stay calm and keep working hard. Do you feel any other pressure?"],
+ ["Minh","Yes. I feel pressure from my parents and from my friends."],
+ ["Ann","We chose Facebook because it's easy to use. We also have new clubs, like an arts and crafts club and a music club, with activities for different interests."],
+ ["Teacher","I hope everyone can join the clubs they like."]],
+ tf:[["The students have already finished their midterm tests.",false],
+     ["Minh finds the midterm tests stressful.",true],
+     ["The class forum is now on Facebook.",true],
+     ["Ann says they chose Facebook because it is difficult to use.",false],
+     ["The new clubs include an arts and crafts club and a music club.",true]],
+ tfWhy:["They are preparing for them.","“I find them stressful.”","“Our class forum is now on Facebook.”","It is easy to use.","Ann lists both clubs."],
+ fill:[["The class forum is now on ____.",["facebook"]],
+       ["Minh feels pressure from his parents and from his ____.",["friends"]],
+       ["Ann says Facebook is easy to ____.",["use"]],
+       ["The new clubs are an arts and ____ club and a music club.",["crafts"]],
+       ["The teacher hopes everyone can ____ the clubs they like.",["join"]]]},
+
+{id:"u3s2",title:"Unit 3 – Skills 2",sub:"Mi, Minh and Ann talk about stress",
+ vocab:"expectations • interests • abilities • focus on • fit • jealous • argument",
+ lines:[
+ ["Mi","Our teacher invited us to talk about stress on the class forum. What stress do you have?"],
+ ["Minh","My parents expect too much from me. They send me to a lot of classes that I don't want to attend."],
+ ["Ann","Why don't you talk to them about your interests and abilities? I did, and now they don't send me to classes I dislike. These days I focus on my health and try to lose weight."],
+ ["Minh","But you look fit, Ann. You should feel good about your body."],
+ ["Mi","My problem is my sister. She is jealous of everything I have, and she often starts arguments. So I talked to my mum."]],
+ tf:[["Three students are talking in the conversation.",true],
+     ["They are discussing the rules of the class forum.",false],
+     ["Minh's parents send him to classes he doesn't want to attend.",true],
+     ["Ann's parents still send her to classes she dislikes.",false],
+     ["Mi talked to her mum about her sister.",true]],
+ tfWhy:["Mi, Minh and Ann.","They are discussing their stress.","“…classes that I don't want to attend.”","They no longer send her.","“So I talked to my mum.”"],
+ fill:[["Minh's parents send him to a lot of ____.",["classes"]],
+       ["Ann tells Minh to talk about his interests and ____.",["abilities"]],
+       ["Ann now focuses on her ____.",["health"]],
+       ["Minh says Ann should feel ____ about her body.",["good"]],
+       ["Mi's sister is ____ of everything she has.",["jealous"]]]}
+];
+
+const $=s=>document.querySelector(s);
+const state={cur:0,plays:{},done:{},speaking:false,paused:false,token:0};
+let voices=[];
+function loadVoices(){voices=speechSynthesis.getVoices().filter(v=>/^en/i.test(v.lang));fillVoiceSel();$("#warn").style.display=voices.length?"none":"block"}
+if("speechSynthesis" in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}else{setTimeout(()=>$("#warn").style.display="block",0)}
+function fillVoiceSel(){const s=$("#voice");if(!s)return;const prev=s.value;s.innerHTML=voices.map((v,i)=>`<option value="${i}">${v.name} (${v.lang})</option>`).join("");if(prev)s.value=prev;
+ else{const i=voices.findIndex(v=>/en-US|en_US/.test(v.lang));if(i>=0)s.value=i}}
+
+function renderTabs(){
+ $("#tabs").innerHTML=SETS.map((s,i)=>`<button class="tab ${i==state.cur?"active":""} ${state.done[s.id]!=null?"done":""}" onclick="go(${i})"><b>${s.title}</b><span>${s.sub}</span></button>`).join("");
+}
+function go(i){stopAudio();state.cur=i;render()}
+
+function render(){
+ renderTabs();
+ const s=SETS[state.cur];
+ const tfH=s.tf.map((q,i)=>`<div class="q" id="tf${i}"><div class="t">${i+1}. ${q[0]}</div>
+  <div class="tf"><label><input type="radio" name="tf${i}" value="T">T</label><label><input type="radio" name="tf${i}" value="F">F</label></div><div class="fb"></div></div>`).join("");
+ const fiH=s.fill.map((q,i)=>`<div class="q fill" id="fi${i}"><div class="t">${i+6}. ${q[0].replace("____",`<input type="text" autocomplete="off" spellcheck="false" aria-label="blank ${i+1}">`)}</div><div class="fb"></div></div>`).join("");
+ $("#main").innerHTML=`
+ <div class="card">
+  <h2>${s.title}</h2><p class="sub">${s.sub}</p>
+  <div class="player">
+   <button class="b" onclick="play()">▶ Nghe</button>
+   <button class="b g" onclick="pauseAudio()">⏸ Tạm dừng</button>
+   <button class="b g" onclick="stopAudio()">⏹ Dừng</button>
+   <select id="rate" title="Tốc độ"><option value="0.75">Chậm 0.75x</option><option value="0.9" selected>Vừa 0.9x</option><option value="1">Thường 1x</option><option value="1.15">Nhanh 1.15x</option></select>
+   <select id="voice" title="Giọng đọc"></select>
+   <span class="pstat" id="pstat">Đã nghe: ${state.plays[s.id]||0} lần</span>
+   <div class="bar"><i id="pbar"></i></div>
+  </div>
+  <p class="vocab"><b>Từ khoá:</b> ${s.vocab}</p>
+  <h3>Task 1. Listen and decide whether the statements are True (T) or False (F).</h3>${tfH}
+  <h3>Task 2. Listen again and fill in each blank with ONE word or number.</h3>${fiH}
+  <div class="actions">
+   <button class="b" onclick="check()">✔ Nộp bài</button>
+   <button class="b g" onclick="reset()">↺ Làm lại</button>
+   <span class="score" id="score"></span>
+  </div>
+  <details><summary>📄 Xem script (bấm sau khi làm bài)</summary>
+   ${s.lines.map(l=>`<p class="line"><b>${l[0]}:</b> ${l[1]}</p>`).join("")}</details>
+ </div>
+ <div class="actions" style="justify-content:space-between">
+  <button class="b g" onclick="go((state.cur+3)%4)" ${state.cur==0?"disabled style='opacity:.4'":""}>← Bài trước</button>
+  <button class="b g" onclick="go(state.cur+1)" ${state.cur==3?"disabled style='opacity:.4'":""}>Bài sau →</button>
+ </div>`;
+ fillVoiceSel();
+}
+
+/* ---------- audio ---------- */
+function sentences(t){return t.match(/[^.!?]+[.!?]+["']?|[^.!?]+$/g).map(x=>x.trim()).filter(Boolean)}
+function play(){
+ if(!("speechSynthesis" in window)){alert("Trình duyệt không hỗ trợ đọc. Hãy xem script.");return}
+ if(state.paused){speechSynthesis.resume();state.paused=false;return}
+ stopAudio();
+ const s=SETS[state.cur],tok=++state.token;
+ const queue=[];
+ const speakers=[...new Set(s.lines.map(l=>l[0]))];
+ s.lines.forEach((l,li)=>sentences(l[1]).forEach(t=>queue.push({sp:l[0],t,li})));
+ const rate=parseFloat($("#rate").value);
+ const base=voices[+$("#voice").value]||null;
+ // use a second English voice for another speaker if available
+ const alt=voices.find(v=>v!==base&&v.lang===(base&&base.lang))||base;
+ let i=0;state.speaking=true;
+ state.plays[s.id]=(state.plays[s.id]||0)+1;$("#pstat").textContent=`Đã nghe: ${state.plays[s.id]} lần`;
+ (function next(){
+  if(tok!==state.token)return;
+  if(i>=queue.length){state.speaking=false;const b=$("#pbar");if(b)b.style.width="100%";setTimeout(()=>{if(tok===state.token&&$("#pbar"))$("#pbar").style.width="0"},1200);return}
+  const q=queue[i++],u=new SpeechSynthesisUtterance(q.t),k=speakers.indexOf(q.sp);
+  u.lang="en-US";u.rate=rate;
+  if(k%2===0){if(base)u.voice=base;u.pitch=1}else{if(alt)u.voice=alt;u.pitch=alt!==base?1:0.75}
+  if(speakers.length>2){u.pitch=[1,.8,.7][k%3]}
+  u.onend=()=>{const b=$("#pbar");if(b)b.style.width=(i/queue.length*100)+"%";setTimeout(next,q.li!==(queue[i]||{}).li?450:120)};
+  u.onerror=()=>{};
+  speechSynthesis.speak(u);
+ })();
+}
+function pauseAudio(){if(speechSynthesis.speaking&&!state.paused){speechSynthesis.pause();state.paused=true}}
+function stopAudio(){state.token++;state.paused=false;state.speaking=false;if("speechSynthesis" in window)speechSynthesis.cancel();const b=$("#pbar");if(b)b.style.width="0"}
+
+/* ---------- checking ---------- */
+const norm=x=>x.trim().toLowerCase().replace(/\s+/g," ").replace(/[.,!?]$/,"");
+function check(){
+ const s=SETS[state.cur];let sc=0;
+ s.tf.forEach((q,i)=>{
+  const box=$("#tf"+i),sel=box.querySelector("input:checked"),fb=box.querySelector(".fb");
+  box.querySelectorAll("label").forEach(l=>l.classList.remove("good","bad"));
+  const right=q[1]?"T":"F";
+  const ok=sel&&sel.value===right;
+  if(ok){sc++;sel.parentElement.classList.add("good");fb.className="fb ok";fb.textContent="✔ Đúng – "+s.tfWhy[i]}
+  else{if(sel)sel.parentElement.classList.add("bad");fb.className="fb no";fb.textContent=(sel?"✘ Sai":"✘ Chưa chọn")+". Đáp án: "+right+" – "+s.tfWhy[i]}
+ });
+ s.fill.forEach((q,i)=>{
+  const box=$("#fi"+i),inp=box.querySelector("input"),fb=box.querySelector(".fb");
+  inp.classList.remove("good","bad");
+  const ok=q[1].map(norm).includes(norm(inp.value));
+  if(ok){sc++;inp.classList.add("good");fb.className="fb ok";fb.textContent="✔ Đúng"}
+  else{inp.classList.add("bad");fb.className="fb no";fb.textContent="✘ Đáp án: "+q[1][0]}
+ });
+ state.done[s.id]=sc;renderTabs();
+ const total=s.tf.length+s.fill.length;
+ $("#score").textContent=`Điểm: ${sc}/${total} (${(sc/total*10).toFixed(1)}/10)`;
+ $("#score").style.color=sc>=total*.8?"var(--ok)":sc>=total*.5?"#d97706":"var(--no)";
+}
+function reset(){delete state.done[SETS[state.cur].id];stopAudio();render()}
+
+render();
+</script>
+</body>
+</html>
