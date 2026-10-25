@@ -522,15 +522,20 @@
 
   // ── ROUTING ──────────────────────────────────────────────────────────────
   function navigateFromHash() {
-    const hash = location.hash.slice(1); // bỏ dấu #
+    // location.hash luôn bị mã hoá (dấu cách -> %20, tiếng Việt -> %XX) nên phải giải mã
+    // trước khi so với đường dẫn trong manifest; chuẩn hoá NFC để dấu tiếng Việt khớp nhau
+    let hash = location.hash.slice(1); // bỏ dấu #
+    try { hash = decodeURIComponent(hash); } catch (e) {}
+    hash = hash.normalize('NFC');
+    const key = c => c.file && c.file.replace(/\.html$/, '').normalize('NFC');
     if (hash) {
       // Tìm trong root trước
-      let found = components.find(c => c.file && c.file.replace(/\.html$/, '') === hash);
+      let found = components.find(c => key(c) === hash);
       // Nếu không thấy, tìm trong folder children
       if (!found) {
         for (const comp of components) {
           if (comp.type === 'folder' && comp.children) {
-            const child = comp.children.find(c => c.file && c.file.replace(/\.html$/, '') === hash);
+            const child = comp.children.find(c => key(c) === hash);
             if (child) {
               found = child;
               currentFolder = comp; // Mở folder chứa file này
