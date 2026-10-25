@@ -310,7 +310,7 @@
   // ── LOAD EXTERNAL COMPONENTS ─────────────────────────────────────────────
   async function loadExternalComponents() {
     try {
-      const res = await fetch('./component/manifest.json');
+      const res = await fetch('./component/manifest.json', { cache: 'no-cache' });
       if (!res.ok) throw new Error('Không tìm thấy manifest.json');
       const external = await res.json();
       
@@ -386,7 +386,7 @@
     `;
 
     const iframe = document.getElementById('fulliframe');
-    fetch(selected.external)
+    fetch(selected.external, { cache: 'no-cache' })
       .then(r => r.text())
       .then(html => {
         // Chèn <base> để các link tương đối bên trong (vd: sang unit khác)
