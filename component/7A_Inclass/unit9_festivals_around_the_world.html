@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 9</title>
+<style>*{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#1e1b4b;--mut:#6b7280;--p:#4f46e5;--p2:#7c3aed;--pk:#db2777;--ok:#059669;--okbg:#ecfdf5;--bad:#dc2626;--badbg:#fef2f2;--am:#b45309;--ambg:#fffbeb;--line:#e4e6f7;--bg:#f3f4ff;--ph:"Doulos SIL","Charis SIL","Lucida Sans Unicode","Segoe UI",Arial,sans-serif}
+html,body{height:469px;overflow:hidden;background:var(--bg);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+button,input,textarea{font-family:inherit}
+::-webkit-scrollbar{width:7px;height:7px}::-webkit-scrollbar-thumb{background:#c7d2fe;border-radius:8px}::-webkit-scrollbar-track{background:transparent}
+.app{display:flex;height:469px;max-width:1128px;margin:0 auto;background:var(--bg)}
+
+/* sidebar */
+.side{width:206px;flex:none;background:linear-gradient(175deg,#2e2a86 0%,#4f46e5 58%,#7c3aed 100%);color:#fff;display:flex;flex-direction:column;padding:12px 10px 10px;position:relative;overflow:hidden}
+.side:before{content:"";position:absolute;right:-50px;top:-50px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.07)}
+.logo{display:flex;align-items:center;gap:9px;padding:0 4px 9px;cursor:pointer;position:relative}
+.logo .lg{width:36px;height:36px;border-radius:11px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:20px}
+.logo b{display:block;font-size:14px;letter-spacing:.05em}
+.logo small{font-size:11px;opacity:.85}
+.nav{flex:1;display:flex;flex-direction:column;gap:2px;min-height:0;position:relative}
+.ni{display:flex;align-items:center;gap:8px;height:28px;padding:0 8px;border:none;background:none;color:#e0e7ff;border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;text-align:left;width:100%;transition:.15s}
+.ni:hover{background:rgba(255,255,255,.13)}
+.ni .n{width:18px;height:18px;flex:none;border-radius:50%;background:rgba(255,255,255,.2);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.ni .t{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ni.on{background:#fff;color:#3730a3;box-shadow:0 4px 12px rgba(0,0,0,.18)}
+.ni.on .n{background:var(--p);color:#fff}
+.ni.done .n{background:#34d399;color:#064e3b}
+.ni.soon{opacity:.62}
+.prog{padding:8px 4px 0;position:relative}
+.pbar{height:7px;background:rgba(255,255,255,.22);border-radius:8px;overflow:hidden}
+.pbar i{display:block;height:100%;background:linear-gradient(90deg,#fde68a,#34d399);border-radius:8px;transition:width .4s}
+.prog small{display:flex;justify-content:space-between;font-size:10.5px;margin-top:4px;opacity:.9}
+
+/* main */
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.head{display:flex;align-items:center;gap:11px;padding:11px 18px 2px}
+.head .hi{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#6366f1,#c026d3);display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 5px 14px rgba(99,102,241,.35);flex:none}
+.head h1{font-size:18px;line-height:1.15;color:#312e81}
+.head p{font-size:12px;color:var(--mut);margin-top:1px}
+.subnav{display:flex;gap:6px;padding:8px 18px 7px;overflow-x:auto;flex:none}
+.stab{flex:none;border:1px solid #d6dafc;background:#fff;color:#4338ca;border-radius:999px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;transition:.15s}
+.stab:hover{background:#eef2ff;transform:translateY(-1px)}
+.stab.on{background:linear-gradient(90deg,#4f46e5,#7c3aed);border-color:transparent;color:#fff;box-shadow:0 4px 12px rgba(79,70,229,.3)}
+.stab i{font-style:normal;margin-left:5px;font-size:10px;background:#34d399;color:#064e3b;border-radius:999px;padding:0 5px}
+.body{flex:1;overflow:auto;padding:2px 18px 16px;min-height:0;animation:fade .25s}
+.body.split{overflow:hidden;padding-bottom:12px}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+/* generic */
+.btn{border:1px solid #c7d2fe;background:#fff;color:#4338ca;padding:6px 12px;border-radius:9px;cursor:pointer;font-size:12px;font-weight:700;transition:.15s}
+.btn:hover{background:#eef2ff;transform:translateY(-1px)}
+.btn.solid{background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff;border-color:transparent;box-shadow:0 4px 10px rgba(79,70,229,.28)}
+.btn.solid:hover{filter:brightness(1.07)}
+.btn.sm{padding:3px 9px;font-size:11px}
+.btn:disabled{opacity:.45;cursor:default;transform:none}
+.chip-s{display:inline-flex;align-items:center;gap:3px;background:#e0e7ff;color:#3730a3;border-radius:999px;padding:2px 10px;font-size:11.5px;font-weight:800}
+.chip-s.ok{background:#d1fae5;color:#065f46}
+.chip{display:inline-block;background:#eef2ff;color:#4338ca;border:1px solid #c7d2fe;border-radius:999px;padding:2px 11px;font-size:12px;font-weight:700}
+.muted{color:var(--mut);font-size:12px}
+.note{font-size:12.5px;background:#f5f3ff;border-left:3px solid #8b5cf6;border-radius:8px;padding:6px 10px;margin:6px 0;line-height:1.5}
+.note.am{background:var(--ambg);border-color:#f59e0b}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:0 3px 12px rgba(67,56,202,.06)}
+.card h3{font-size:14px;color:#312e81;margin-bottom:6px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+mark{background:#fde68a;color:#78350f;border-radius:4px;padding:0 3px;font-weight:800;box-shadow:inset 0 -2px 0 #f59e0b}
+u{text-decoration-thickness:2px;text-underline-offset:2px;text-decoration-color:#e11d48}
+.spk{border:none;background:#eef2ff;border-radius:7px;cursor:pointer;font-size:11px;padding:2px 6px;vertical-align:middle}
+.spk:hover{background:#c7d2fe}
+.ph{font-family:var(--ph)}
+details.tr{margin-top:8px;background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:12.5px;line-height:1.6}
+details.tr summary{cursor:pointer;color:var(--p);font-weight:700}
+details.tr p{margin-top:5px;color:#374151}
+.kw{background:linear-gradient(transparent 55%,#fde68a 55%);font-weight:700;cursor:help}
+.passage{font-size:13.5px;line-height:1.75;background:#fffdf5;border:1px solid #fde68a;border-radius:12px;padding:11px 14px;color:#1f2937}
+.colh{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#7c3aed;margin:2px 0 6px}
+.split>div{overflow:auto;height:100%;padding:0 2px 6px 0}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+/* coming soon */
+.soonbox{height:100%;min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px;color:var(--mut)}
+.soonbox .big{font-size:54px;animation:float 3s ease-in-out infinite}
+.soonbox b{font-size:18px;color:#312e81}
+.soonbox span{font-size:13px;max-width:380px;line-height:1.5}
+@keyframes float{50%{transform:translateY(-8px)}}
+
+/* vocabulary */
+.tools{display:flex;gap:8px;align-items:center;margin-bottom:9px}
+.search{flex:1;border:1.5px solid #d6dafc;border-radius:10px;padding:7px 12px;font-size:12.5px;outline:none;background:#fff}
+.search:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.vrow{display:grid;grid-template-columns:42px 34% 1fr;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:8px 12px;margin-bottom:7px;transition:.15s}
+.vrow:hover{border-color:#a5b4fc;box-shadow:0 5px 16px rgba(99,102,241,.14);transform:translateX(2px)}
+.vem{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#eef2ff,#faf5ff);display:flex;align-items:center;justify-content:center;font-size:22px}
+.vw{font-size:16px;font-weight:800;color:#312e81;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.pos{font-size:10.5px;font-style:italic;font-weight:800;border-radius:999px;padding:1px 8px}
+.pos-n{background:#dbeafe;color:#1d4ed8}.pos-v{background:#dcfce7;color:#15803d}.pos-adj{background:#ffedd5;color:#c2410c}.pos-idiom{background:#f3e8ff;color:#7e22ce}.pos-phr{background:#e0f2fe;color:#0369a1}
+.vp{font-family:var(--ph);font-size:12.5px;color:var(--mut);margin-top:2px}
+.vm{font-size:14px;font-weight:800;color:var(--ok)}
+.ven{font-size:12.8px;line-height:1.5;margin-top:2px}
+.vvi{font-size:12px;color:var(--mut);font-style:italic}
+.hide-mean .vm:not(.rev),.hide-mean .vvi:not(.rev){filter:blur(6px);cursor:pointer;user-select:none}
+.fcwrap{max-width:620px;margin:0 auto}
+.fcnav{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
+.fcdots{display:flex;gap:3px;flex-wrap:wrap;justify-content:center;margin-bottom:8px}
+.fcdots i{width:9px;height:9px;border-radius:50%;background:#e0e7ff}
+.fcdots i.k{background:#34d399}.fcdots i.cur{background:#6366f1;transform:scale(1.35)}
+.fcard{min-height:176px;border-radius:20px;background:linear-gradient(135deg,#eef2ff,#faf5ff);border:2px solid #c7d2fe;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px 24px;cursor:pointer;gap:6px;transition:.2s;box-shadow:0 10px 26px rgba(99,102,241,.14)}
+.fcard.back{background:linear-gradient(135deg,#ecfdf5,#f0fdfa);border-color:#6ee7b7}
+.fcard:hover{transform:translateY(-2px)}
+.fc-em{font-size:34px}.fc-w{font-size:30px;font-weight:900;color:#312e81}
+.fc-p{font-family:var(--ph);font-size:16px;color:var(--mut)}
+.fc-hint{font-size:11px;color:#9ca3af;margin-top:4px}
+.fc-m{font-size:24px;font-weight:900;color:var(--ok)}
+.fc-e{font-size:14px;line-height:1.5}.fc-v{font-size:12.5px;color:var(--mut);font-style:italic}
+.fcbtns{display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+
+/* match game */
+.mg-top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:8px 28px}
+.mc{border:2px solid #d6dafc;background:#fff;border-radius:12px;padding:9px 12px;font-size:13.5px;font-weight:700;cursor:pointer;text-align:left;transition:.15s;min-height:40px;color:#312e81}
+.mc:hover:not(.lock){border-color:#6366f1;background:#eef2ff;transform:scale(1.015)}
+.mc.sel{border-color:#4f46e5;background:#e0e7ff;box-shadow:0 0 0 3px rgba(79,70,229,.2)}
+.mc.lock{background:var(--okbg);border-color:#6ee7b7;color:#065f46;cursor:default;animation:pop .35s}
+.mc.err{border-color:#f87171;background:var(--badbg);animation:shake .4s}
+.mc.vi{font-weight:600;color:#374151}
+@keyframes pop{50%{transform:scale(1.05)}}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* quiz */
+.qz-top{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.qz-title{font-size:13.5px;font-weight:800;color:#312e81;flex:1}
+.qz-bar{height:6px;background:#e0e7ff;border-radius:8px;overflow:hidden;margin-bottom:10px}
+.qz-bar i{display:block;height:100%;background:linear-gradient(90deg,#6366f1,#c026d3);border-radius:8px;transition:width .4s}
+.qz-main{display:grid;grid-template-columns:1.08fr 1fr;gap:14px;align-items:start}
+.qz-q{font-size:15px;line-height:1.55;font-weight:600;margin-bottom:10px;color:#1f2937}
+.blank{display:inline-block;min-width:70px;border-bottom:3px dotted #6366f1;margin:0 2px}
+.fillw{display:inline-block;background:#d1fae5;color:#065f46;border-radius:6px;padding:0 7px;font-weight:800}
+.bigw{font-size:30px;font-weight:900;color:#312e81;letter-spacing:.02em;margin:2px 0}
+.qz-opts{display:flex;flex-direction:column;gap:7px}
+.qz-opts.tf{flex-direction:row}.qz-opts.tf .qo{flex:1;justify-content:center}
+.qo{display:flex;align-items:center;gap:10px;text-align:left;border:2px solid #d6dafc;background:#fff;border-radius:12px;padding:8px 12px;font-size:13.5px;cursor:pointer;transition:.15s;color:#1f2937}
+.qo b{width:24px;height:24px;border-radius:8px;background:#e0e7ff;color:#3730a3;display:flex;align-items:center;justify-content:center;font-size:12px;flex:none}
+.qo:hover:not(.lock){border-color:#6366f1;background:#f5f6ff;transform:translateX(3px)}
+.qo.lock{cursor:default}
+.qo.ok{border-color:#34d399;background:var(--okbg);color:#064e3b;font-weight:700;animation:pop .35s}
+.qo.ok b{background:#10b981;color:#fff}
+.qo.bad{border-color:#f87171;background:var(--badbg);color:#7f1d1d;animation:shake .4s}
+.qo.bad b{background:#ef4444;color:#fff}
+.fb{border-radius:14px;padding:10px 12px;font-size:12.8px;line-height:1.55;max-height:270px;overflow:auto;position:sticky;top:0}
+.fb.idle{background:#f8faff;border:2px dashed #c7d2fe;text-align:center;color:var(--mut);padding:26px 14px}
+.fb.idle .idle-i{font-size:30px}
+.fb.ok{background:var(--okbg);border:1.5px solid #6ee7b7}
+.fb.bad{background:var(--badbg);border:1.5px solid #fca5a5}
+.fb-h{font-weight:900;font-size:14px;margin-bottom:5px}
+.fb.ok .fb-h{color:#047857}.fb.bad .fb-h{color:#b91c1c}
+.fb-h small{display:block;font-size:12px;font-weight:600;color:#374151;margin-top:1px}
+.fb-b{color:#1f2937}
+.fb-tr{margin-top:6px;background:rgba(255,255,255,.7);border-radius:8px;padding:5px 8px;color:#374151}
+.fb-note{margin-top:5px;color:#4338ca;font-weight:600}
+.fb-n{margin-top:9px;width:100%}
+table.mt{width:100%;border-collapse:collapse;font-size:12.3px;margin-top:3px}
+table.mt td{padding:2px 5px;border-bottom:1px dashed rgba(0,0,0,.1);vertical-align:top}
+table.mt tr.hit td{background:rgba(16,185,129,.16);font-weight:700}
+.qz-res{text-align:center;padding:6px 0}
+.ring{width:96px;height:96px;border-radius:50%;margin:4px auto 8px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;color:#312e81;background:conic-gradient(#10b981 var(--pct),#e0e7ff 0);position:relative}
+.ring:before{content:"";position:absolute;inset:9px;background:#fff;border-radius:50%}
+.ring span{position:relative}
+.qz-res h3{font-size:18px;color:#312e81}
+.qz-res .acts{display:flex;gap:8px;justify-content:center;margin:10px 0}
+.wl{text-align:left;margin-top:6px}
+.wl details{background:#fff;border:1px solid #fecaca;border-radius:10px;padding:5px 10px;margin-bottom:5px;font-size:12.5px}
+.wl summary{cursor:pointer;font-weight:700;color:#991b1b}
+.wl .fb-b{margin-top:5px}
+.confetti{position:fixed;top:-12px;font-size:18px;z-index:99;pointer-events:none;animation:fall 1.8s ease-in forwards}
+@keyframes fall{to{transform:translateY(500px) rotate(540deg);opacity:0}}
+
+/* fill */
+.fl-top{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.fl-top .t{font-size:13.5px;font-weight:800;color:#312e81;flex:1;min-width:200px}
+.bank{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0;padding:8px 10px;background:#fff;border:2px dashed #c7d2fe;border-radius:12px}
+.bk{border:none;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border-radius:999px;padding:5px 14px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 3px 8px rgba(99,102,241,.3);transition:.15s}
+.bk:hover:not(.used){transform:translateY(-2px)}
+.bk.used{background:#e5e7eb;color:#9ca3af;box-shadow:none;cursor:default;text-decoration:line-through}
+.fx{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px;padding:7px 4px;border-bottom:1px dashed var(--line);font-size:14px;line-height:2}
+.fx .n{width:22px;height:22px;border-radius:50%;background:#e0e7ff;color:#3730a3;font-size:11px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.fi{width:104px;border:none;border-bottom:2.5px dotted #6366f1;background:#f5f6ff;padding:1px 6px;font-size:14px;text-align:center;outline:none;border-radius:6px 6px 0 0;color:#1e1b4b;font-weight:700}
+.fi:focus{background:#e0e7ff;border-bottom-style:solid}
+.fi.good,.slot.good{border-bottom:2.5px solid #10b981;background:var(--okbg);color:#065f46}
+.fi.bad,.slot.bad{border-bottom:2.5px solid #ef4444;background:var(--badbg);color:#991b1b}
+.slot{min-width:104px;border:none;border-bottom:2.5px dotted #6366f1;background:#f5f6ff;padding:1px 8px;font-size:14px;font-weight:800;cursor:pointer;border-radius:6px 6px 0 0;color:#4338ca;height:26px}
+.slot.act{background:#e0e7ff;border-bottom-style:solid;box-shadow:0 0 0 3px rgba(99,102,241,.25)}
+.fxfb{flex-basis:100%;font-size:12.5px;line-height:1.55;border-radius:10px;padding:5px 10px;margin:0 0 2px 28px}
+.fxfb.ok{background:var(--okbg);border-left:3px solid #10b981;color:#064e3b}
+.fxfb.bad{background:var(--badbg);border-left:3px solid #ef4444;color:#7f1d1d}
+.fxfb .tr{display:block;color:#4b5563;font-style:italic}
+
+/* sentence builder */
+.bd-line{min-height:56px;border:2px dashed #a5b4fc;border-radius:14px;background:#fff;padding:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0}
+.bd-line.ok{border-color:#34d399;background:var(--okbg);border-style:solid}
+.bd-line.bad{border-color:#f87171;background:var(--badbg);border-style:solid}
+.bd-pool{display:flex;flex-wrap:wrap;gap:7px;min-height:44px;padding:4px}
+.wd{border:none;background:#fff;border:2px solid #c7d2fe;color:#3730a3;border-radius:10px;padding:5px 12px;font-size:14px;font-weight:700;cursor:pointer;transition:.15s;box-shadow:0 2px 0 #c7d2fe}
+.wd:hover{transform:translateY(-2px);border-color:#6366f1}
+.wd.in{background:#eef2ff}
+.bd-hint{color:#9ca3af;font-size:12.5px}
+
+/* signals */
+.sg{display:flex;flex-wrap:wrap;gap:2px 1px;align-items:center;padding:8px 6px;border-bottom:1px dashed var(--line);font-size:14.5px;line-height:1.9}
+.sg .n{width:22px;height:22px;border-radius:50%;background:#e0e7ff;color:#3730a3;font-size:11px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-right:3px}
+.tok{padding:0 4px;border-radius:7px;cursor:pointer;transition:.12s}
+.tok:hover{background:#e0e7ff}
+.tok.sig{background:#fde68a;color:#78350f;font-weight:800;box-shadow:inset 0 -3px 0 #f59e0b;cursor:default}
+.tok.err{background:#fee2e2;animation:shake .35s}
+.sgnote{margin-left:6px;font-size:11.5px;background:#ede9fe;color:#5b21b6;border-radius:999px;padding:1px 9px;font-weight:700}
+
+/* grammar theory */
+.gc{border-radius:14px;padding:10px 13px;background:#fff;border:1px solid var(--line);border-top:5px solid #6366f1}
+.gc.t2{border-top-color:#db2777}.gc.t3{border-top-color:#0d9488}
+.gc .ic{font-size:24px}.gc h3{font-size:14px;margin:2px 0 4px;color:#312e81}
+.gc p{font-size:12.8px;line-height:1.55}
+.gex{margin-top:6px;background:#f5f3ff;border-radius:9px;padding:6px 9px;font-size:13px;line-height:1.5}
+.gex i{display:block;color:#6b7280;font-size:12px}
+.scale{display:flex;gap:6px;align-items:stretch;margin:6px 0}
+.sc{flex:1;border-radius:11px;padding:7px 4px;text-align:center;color:#fff;font-size:12.5px;font-weight:800;line-height:1.3}
+.sc small{display:block;font-weight:600;font-size:10.5px;opacity:.92}
+.sc.a{background:#4f46e5}.sc.b{background:#6366f1}.sc.c{background:#8b5cf6}.sc.d{background:#a78bfa}.sc.e{background:#c4b5fd;color:#4c1d95}
+.fm{display:inline-block;font-weight:800;color:#3730a3;background:#e0e7ff;border-radius:8px;padding:1px 9px;margin-bottom:3px}
+table.t{width:100%;border-collapse:separate;border-spacing:0;font-size:12.8px;line-height:1.5;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+table.t th{background:linear-gradient(90deg,#eef2ff,#faf5ff);color:#312e81;padding:7px 10px;text-align:left}
+table.t td{padding:7px 10px;border-top:1px solid var(--line);vertical-align:top}
+table.t i{color:#6b7280;display:block;font-size:12px}
+
+/* pronunciation */
+.pcard{border-radius:16px;overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:0 4px 14px rgba(67,56,202,.08)}
+.pcard .ph2{display:flex;align-items:center;gap:10px;padding:9px 13px;color:#fff}
+.pcard.c1 .ph2{background:linear-gradient(90deg,#4f46e5,#7c3aed)}.pcard.c2 .ph2{background:linear-gradient(90deg,#db2777,#f59e0b)}
+.pcard .sym{font-family:var(--ph);font-size:27px;font-weight:700;background:rgba(255,255,255,.22);border-radius:11px;padding:0 11px}
+.pcard .ph2 b{display:block;font-size:13px}.pcard .ph2 small{font-size:11.5px;opacity:.92}
+.pbody{padding:9px 13px 11px}
+.pbody figure{border:1px solid var(--line);border-radius:12px;padding:5px;text-align:center;background:#fff;margin-bottom:8px}
+.pbody figure img{width:100%;height:108px;object-fit:contain}
+.pbody figcaption{font-size:11.5px;color:var(--mut)}
+.how{font-size:12.5px;line-height:1.55;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:6px 10px;margin-bottom:7px}
+.plist{list-style:none}
+.plist li{font-size:13.3px;padding:4px 0;border-bottom:1px dashed var(--line)}
+.plist li:last-child{border:none}
+.pw{font-weight:800;color:#312e81}.pp{font-family:var(--ph);color:var(--mut);font-size:12.5px}
+.pw u,.pp u{color:#be123c}
+.plist i{font-size:11px;color:#7c3aed}
+.pics{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
+.pic{position:relative;border:2px solid var(--line);border-radius:14px;padding:8px 7px 7px;text-align:center;background:#fff;display:flex;flex-direction:column;align-items:center;gap:5px;transition:.2s}
+.pic img{height:64px;max-width:100%;object-fit:contain}
+.pic .pn{position:absolute;top:5px;left:6px;font-size:10.5px;font-weight:900;background:#e0e7ff;color:#3730a3;border-radius:999px;padding:0 7px}
+.pic input{width:100%;padding:4px 6px;border:1.5px solid #c7d2fe;border-radius:8px;font-size:12.5px;text-align:center;outline:none}
+.pic input:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.pic input.good{border-color:#10b981;background:var(--okbg)}.pic input.bad{border-color:#ef4444;background:var(--badbg)}
+.cols{display:flex;gap:5px}
+.cb{font-family:var(--ph);border:1.5px solid #c7d2fe;background:#fff;border-radius:8px;padding:2px 11px;font-size:13px;cursor:pointer;color:#4338ca;font-weight:700}
+.cb.sel{background:#4f46e5;color:#fff;border-color:#4f46e5}
+.pic.okc{background:var(--okbg);border-color:#6ee7b7}
+.pic.egp{background:#f5f3ff;border-color:#c4b5fd}
+.pmsg{font-size:11px;color:var(--mut);min-height:28px;line-height:1.35}
+.pic.okc .pmsg{color:#065f46}
+.tchip{display:inline-block;margin:2px;background:#e0e7ff;color:#3730a3;border-radius:999px;padding:1px 10px;font-size:12px;font-weight:800;animation:pop .35s}
+
+/* speaking / writing */
+.pickrow{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 8px}
+.pk{border:2px solid #d6dafc;background:#fff;border-radius:999px;padding:5px 13px;font-size:12.5px;font-weight:700;cursor:pointer;color:#3730a3;transition:.15s}
+.pk:hover{border-color:#6366f1}.pk.on{background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff;border-color:transparent;box-shadow:0 3px 9px rgba(79,70,229,.3)}
+.out{background:linear-gradient(135deg,#fffbeb,#fef3c7);border:1px solid #fcd34d;border-radius:14px;padding:11px 14px;font-size:14px;line-height:1.7;color:#1f2937}
+.cue{display:flex;gap:8px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 11px;font-size:13px}
+.cue b{color:#7c3aed}
+.ck{display:flex;gap:9px;align-items:center;padding:7px 10px;border:1.5px solid var(--line);border-radius:11px;margin-bottom:6px;background:#fff;cursor:pointer;font-size:13px;transition:.15s}
+.ck:hover{border-color:#a5b4fc}.ck.on{background:var(--okbg);border-color:#6ee7b7}
+.ck .bx{width:20px;height:20px;border-radius:6px;border:2px solid #c7d2fe;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;flex:none}
+.ck.on .bx{background:#10b981;border-color:#10b981}
+.wr{display:flex;flex-wrap:wrap;gap:6px;align-items:flex-start;padding:7px 4px;border-bottom:1px dashed var(--line)}
+.wr .cues{flex-basis:100%;font-size:13px;color:#4338ca;font-weight:700;padding-left:28px}
+.wr input{flex:1;min-width:260px;border:1.5px solid #c7d2fe;border-radius:10px;padding:6px 10px;font-size:13.5px;outline:none}
+.wr input:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.wr input.good{border-color:#10b981;background:var(--okbg)}.wr input.near{border-color:#f59e0b;background:var(--ambg)}
+.wr .n{width:22px;height:22px;border-radius:50%;background:#e0e7ff;color:#3730a3;font-size:11px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-top:5px}
+textarea.ta{width:100%;min-height:110px;border:2px solid #c7d2fe;border-radius:14px;padding:10px 12px;font-size:14px;line-height:1.6;outline:none;resize:vertical}
+textarea.ta:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.wc{display:flex;align-items:center;gap:8px;margin:6px 0}
+.wcbar{flex:1;height:8px;background:#e5e7eb;border-radius:8px;overflow:hidden;position:relative}
+.wcbar i{display:block;height:100%;background:#f59e0b;border-radius:8px;transition:width .2s,background .2s}
+.wcn{font-weight:900;font-size:13px;min-width:92px;text-align:right}
+
+/* listening */
+.player{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#eef2ff,#faf5ff);border:1px solid #c7d2fe;border-radius:16px;padding:12px 14px;margin-bottom:8px}
+.play{width:50px;height:50px;border-radius:50%;border:none;background:linear-gradient(135deg,#4f46e5,#c026d3);color:#fff;font-size:20px;cursor:pointer;box-shadow:0 6px 16px rgba(79,70,229,.4);flex:none}
+.play:hover{transform:scale(1.07)}
+.ss{padding:1px 2px;border-radius:5px;transition:.2s}.ss.now{background:#fde68a}
+.eq{display:flex;gap:3px;align-items:flex-end;height:22px}
+.eq i{width:4px;background:#6366f1;border-radius:3px;height:6px}
+.eq.on i{animation:eq .8s ease-in-out infinite}.eq.on i:nth-child(2){animation-delay:.15s}.eq.on i:nth-child(3){animation-delay:.3s}.eq.on i:nth-child(4){animation-delay:.45s}
+@keyframes eq{50%{height:22px}}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(30,27,75,.55);display:flex;align-items:center;justify-content:center;z-index:50;animation:fade .2s}
+.mbox{width:min(560px,92%);max-height:430px;overflow:auto;background:#fff;border-radius:20px;padding:18px 22px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.mbox h2{color:#312e81;font-size:19px}.mbox .sub{color:var(--mut);font-size:12.5px;margin-bottom:8px}
+.obj{display:flex;gap:10px;align-items:flex-start;padding:6px 0;border-bottom:1px dashed var(--line);font-size:13px;line-height:1.5}
+.obj .oi{font-size:19px}.obj b{color:#4338ca}
+
+@media (max-width:760px){
+  .app{flex-direction:column}.side{width:100%;flex-direction:row;align-items:center;padding:6px 8px;gap:6px;overflow-x:auto}
+  .logo,.prog{display:none}.nav{flex-direction:row;flex:none}.ni{width:auto;flex:none}
+  .grid2,.grid3,.split,.qz-main,.mg{grid-template-columns:1fr}.pics{grid-template-columns:repeat(2,1fr)}.vrow{grid-template-columns:40px 1fr}.vrow .vright{grid-column:1/-1}
+  .body.split{overflow:auto}.split>div{height:auto;overflow:visible}
+}
+
+/* ---- extra styles for Unit 2 / Unit 3 ---- */
+.so-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+.so-col{border:2px dashed #c7d2fe;border-radius:16px;background:#fff;min-height:128px;cursor:pointer;transition:.15s;overflow:hidden}
+.so-col:hover{border-color:#6366f1;background:#f8f9ff}
+.so-h{font-size:19px;font-weight:800;text-align:center;padding:6px;background:linear-gradient(90deg,#eef2ff,#faf5ff);color:#4338ca;border-bottom:1px solid var(--line)}
+.so-b{padding:8px;display:flex;flex-wrap:wrap;gap:6px;min-height:70px}
+.wd.selw{background:#4f46e5;color:#fff;border-color:#4f46e5;box-shadow:0 0 0 3px rgba(79,70,229,.25)}
+.wd.okw{background:#ecfdf5;border-color:#34d399;color:#065f46;box-shadow:0 2px 0 #34d399}
+.wd.badw{background:#fef2f2;border-color:#f87171;color:#991b1b;box-shadow:0 2px 0 #f87171}
+.tg{padding:1px 5px;border-radius:7px}
+.tg.tg0{background:#dbeafe;color:#1e3a8a;font-weight:800;box-shadow:inset 0 -3px 0 #3b82f6}
+.tg.tg1{background:#fce7f3;color:#831843;font-weight:800;box-shadow:0 0 0 2px #ec4899}
+.tg.tgok{outline:2px solid #34d399;outline-offset:1px}
+.tg.tgbad{background:#fee2e2;color:#991b1b;outline:2px dashed #ef4444;outline-offset:1px}
+.tg sup{font-size:9.5px;font-weight:800;margin-left:2px;color:#b91c1c}
+.tgleg{margin-left:6px}.tgleg .tok{cursor:default;margin-right:4px}
+.sg .fxfb{margin-left:0;flex-basis:100%}
+.formula{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;margin:8px 0}
+.formula .fm{margin:0}.formula .cj{background:linear-gradient(90deg,#4f46e5,#c026d3);color:#fff}
+.cj-card{border-radius:14px;padding:9px 13px;background:#fff;border:1px solid var(--line);border-left:6px solid #6366f1;font-size:12.8px;line-height:1.5}
+.cj-card b{font-size:18px;color:#312e81;letter-spacing:.03em}.cj-card small{color:#6b7280;font-weight:700;margin-left:4px}
+.cj-card p{font-weight:700;color:#4338ca;margin:2px 0}.cj-card i{display:block;color:#374151}
+.cj-card.b{border-left-color:#ec4899}.cj-card.c{border-left-color:#10b981}.cj-card.d{border-left-color:#f59e0b}
+.cj-card u{text-decoration-color:#e11d48;font-weight:800}
+.howl{margin:0 0 8px 18px;font-size:12.5px;line-height:1.55;color:#1f2937}
+.figs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
+.figs figure{border:1px solid var(--line);border-radius:10px;padding:3px;background:#fff}.figs img{width:100%;height:78px;object-fit:contain}
+.txt2{font-size:13.5px;line-height:1.7;margin-top:6px;color:#1f2937}
+.gc h3 small{font-size:11px;font-weight:600;margin-left:3px}
+.mc.vi{font-size:12.5px;line-height:1.35}
+
+.gl{list-style:none;font-size:12.8px}
+.gl li{padding:4px 0 4px 12px;border-left:3px solid #c7d2fe;margin:5px 0;line-height:1.45}
+.gl li span{color:#6b7280;font-size:12px}
+
+.fi{width:150px}
+
+.seg{display:inline-block;border-bottom:3px solid #6366f1;border-radius:3px;padding:0 3px;margin:0 1px;background:#eef2ff;position:relative}
+.seg sup{font-size:10px;font-weight:900;color:#fff;background:#4f46e5;border-radius:999px;padding:0 5px;margin-right:3px}
+.dl{display:flex;gap:10px;align-items:flex-start;margin-bottom:7px}
+.dl b{flex:none;min-width:48px;text-align:center;border-radius:999px;background:#e0e7ff;color:#3730a3;padding:2px 8px;font-size:11.5px}
+.dl div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px 10px;font-size:13px;line-height:1.5}
+.dl div i{display:block;color:var(--mut);font-size:12px}
+.dl.r{flex-direction:row-reverse}.dl.r b{background:#fce7f3;color:#9d174d}.dl.r div{background:#fffafc}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px}
+.step{display:flex;gap:8px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px;font-size:12.5px;line-height:1.4}
+.step b{flex:none;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#4f46e5,#c026d3);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px}
+.poll{display:grid;grid-template-columns:1fr auto 26px auto 90px 36px;gap:6px;align-items:center;margin-bottom:6px;font-size:12.5px}
+.pl{font-weight:700;color:#312e81}.pn2{text-align:center}.pbar2{height:10px;background:#e5e7eb;border-radius:8px;overflow:hidden}.pbar2 i{display:block;height:100%;background:linear-gradient(90deg,#6366f1,#c026d3);transition:width .3s}.pp2{font-size:11.5px;color:var(--mut)}
+@media (max-width:760px){.steps{grid-template-columns:1fr 1fr}.poll{grid-template-columns:1fr auto 26px auto}.pbar2,.pp2{display:none}}
+
+.nf{margin-bottom:8px}.nf label{display:block;font-size:12.5px;font-weight:800;color:#312e81;margin-bottom:3px}
+textarea.nta{min-height:0;font-size:13.5px;padding:7px 10px;border-radius:10px}
+.stt{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:4px}
+.mycard{background:linear-gradient(135deg,#fffbeb,#fdf2f8);border:2px solid #fcd34d;border-radius:16px;padding:12px 16px;font-size:13.5px;line-height:1.6;box-shadow:0 8px 20px rgba(217,119,6,.12);transform:rotate(-.4deg)}
+.mycard p{margin:4px 0}.cardh{font-weight:900;font-size:15px;color:#9d174d;margin-bottom:4px}
+.mycard table.t th{width:36%;text-align:left}
+.rt{display:flex;align-items:center;gap:10px;justify-content:space-between;background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px 12px;margin-bottom:6px;flex-wrap:wrap}
+.rtq{font-size:13px;flex:1;min-width:220px}.rtb{display:flex;gap:4px}
+.face{border:2px solid transparent;background:#f3f4ff;border-radius:50%;width:38px;height:38px;font-size:21px;cursor:pointer;transition:.15s;filter:grayscale(.7)}
+.face:hover{transform:scale(1.15);filter:none}.face.on{border-color:#6366f1;background:#e0e7ff;filter:none;transform:scale(1.12)}
+.drawcard{min-height:130px;border-radius:20px;background:linear-gradient(135deg,#eef2ff,#faf5ff);border:2px dashed #a5b4fc;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px 20px;gap:6px;transition:.2s}
+.drawcard.spin{background:linear-gradient(135deg,#fef3c7,#fce7f3);border-style:solid;animation:pop .2s infinite}
+.dc-t{font-size:20px;font-weight:900;color:#312e81;line-height:1.35}.dc-s{font-size:13px;color:#6b7280}
+.timerbox{background:#fff;border:2px solid #c7d2fe;border-radius:18px;padding:12px;text-align:center}
+.tm-l{font-size:12px;font-weight:800;color:#6b7280;text-transform:uppercase;letter-spacing:.06em}.tm-t{font-size:44px;font-weight:900;color:#4338ca;font-variant-numeric:tabular-nums;margin:2px 0 8px}
+.stepsv div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px 10px;margin-bottom:5px;font-size:13px}
+.so-cols .so-h{font-size:14px}
+@media (max-width:760px){.rtq{min-width:100%}}
+
+.shop{display:grid;grid-template-columns:repeat(3,1fr);gap:4px 12px}.shopg{min-width:0}
+.shopi{display:flex;justify-content:space-between;align-items:center;width:100%;gap:6px;border:2px solid #d6dafc;background:#fff;border-radius:10px;padding:4px 9px;margin-bottom:4px;font-size:12.5px;cursor:pointer;text-align:left;transition:.15s;color:#1f2937}
+.shopi b{color:#6b7280;font-size:12px;white-space:nowrap}.shopi:hover:not(.dis):not(:disabled){border-color:#6366f1;background:#f5f6ff}
+.shopi.on{background:#ecfdf5;border-color:#34d399}.shopi.on b{color:#047857}.shopi.dis{opacity:.4;cursor:not-allowed}
+.mrr{display:flex;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 12px;margin-bottom:6px;font-size:13px}
+.mrp{width:48px;height:48px;border-radius:50%;color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;flex:none}
+.bpr{display:flex;gap:8px;align-items:center;margin-bottom:5px}.bpr>span{min-width:96px;font-size:12.5px;font-weight:700;color:#312e81}.bpr .search{max-width:170px}
+@media (max-width:760px){.shop{grid-template-columns:1fr}}
+
+.hintc{display:flex;gap:10px;align-items:center;background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:8px 12px;margin-bottom:6px;font-size:13px;line-height:1.5}
+.hintc b{flex:none;background:#f59e0b;color:#fff;border-radius:999px;padding:1px 9px;font-size:12px}
+.hintc.lock{background:#f3f4f6;border-color:#e5e7eb;color:#9ca3af}.hintc.lock b{background:#9ca3af}
+.poster{text-align:center;padding:10px 4px}.poster .pt{font-size:19px;font-weight:900;color:#065f46;margin:6px 0;line-height:1.4}.poster .pt2{font-size:15px;color:#047857;font-weight:700}.poster .ps{font-size:12px;color:#6b7280;margin-top:6px}
+
+</style>
+<style>.source{background:white;border:1px solid var(--line);border-radius:12px;padding:16px;margin:8px 0;line-height:1.7;font-size:14px}.source p{margin:6px 0}.source table{border-collapse:collapse;width:100%;min-width:480px}.source td{border:1px solid #d6dafc;padding:8px;vertical-align:top}.tablewrap{overflow:auto}.nav{overflow:auto}.side small{display:block;font-size:10px}.studytextarea{width:100%;min-height:160px;padding:14px;border:1px solid #c7d2fe;border-radius:10px;margin:10px 0;font-size:14px}@media(max-width:650px){.side{width:100%}.head,.body{padding-left:10px;padding-right:10px}.qz-main,.grid2{grid-template-columns:1fr}.source{padding:10px}.vrow{grid-template-columns:1fr}.head h1{font-size:16px}}.main{min-height:0}.vrow{grid-template-columns:minmax(0,30%) minmax(0,24%) minmax(0,1fr)}.vrow>div{min-width:0;overflow-wrap:anywhere}@media(max-width:760px){.side{width:100%}.vrow{grid-template-columns:1fr}.nav{overflow:visible}}.source td p{overflow-wrap:anywhere}</style></head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="logo" onclick="showObjectives()" title="Xem mục tiêu bài học">
+      <div class="lg">🎯</div><div><b>UNIT 9</b><small>Festivals around the World</small></div>
+    </div>
+    <nav class="nav" id="nav"></nav>
+    <div class="prog"><div class="pbar"><i id="pbar"></i></div><small id="ptxt"></small></div>
+  </aside>
+  <main class="main">
+    <header class="head"><div class="hi" id="hi"></div><div><h1 id="ttl"></h1><p id="dsc"></p></div></header>
+    <div class="subnav" id="subnav"></div>
+    <div class="body" id="body"></div>
+  </main>
+</div>
+<script>/* ================= utilities ================= */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const normA = s => s.toLowerCase().replace(/[’‘`]/g, "'").replace(/[.,!?;:"“”]/g, '').replace(/\s+/g, ' ').trim();
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const hl = s => s.replace(/\{\{(.+?)\}\}/g, '<mark>$1</mark>');
+const plain = s => s.replace(/\{\{|\}\}/g, '').replace(/<[^>]+>/g, '');
+function say(t, rate) { try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-GB'; u.rate = rate || .9; speechSynthesis.speak(u); } catch (e) {} }
+function sayEl(el) { say(el.dataset.w); }
+const spk = w => `<button class="spk" data-w="${esc(plain(w))}" onclick="sayEl(this)" title="Nghe">🔊</button>`;
+function confetti() {
+  const em = ['🎉', '✨', '⭐', '🎊', '💜', '🌟'];
+  for (let i = 0; i < 22; i++) {
+    const s = document.createElement('span'); s.className = 'confetti'; s.textContent = em[i % em.length];
+    s.style.left = (10 + Math.random() * 80) + '%'; s.style.animationDelay = (Math.random() * .5) + 's'; s.style.fontSize = (14 + Math.random() * 14) + 'px';
+    document.body.appendChild(s); setTimeout(() => s.remove(), 2400);
+  }
+}
+
+/* ================= component registry & progress ================= */
+const COMP = {}, DONE = {};
+function markDone(id, s, t) { DONE[id] = { s, t }; navRender(); }
+function hydrate() { document.querySelectorAll('.comp').forEach(el => { const c = COMP[el.dataset.id]; if (c) c.render(el); }); }
+function rerender(id) { const el = document.querySelector(`.comp[data-id="${id}"]`); if (el) COMP[id].render(el); }
+const slot = id => `<div class="comp" data-id="${id}"></div>`;
+
+/* ================= QUIZ (one question at a time, explanation panel) ================= */
+function fillQ(q, txt) {
+  const parts = txt.split(' - '); let k = 0;
+  return q.replace(/_{3,}/g, () => `<span class="fillw">${parts[Math.min(k++, parts.length - 1)]}</span>`);
+}
+function quiz(id, cfg) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { i: 0, score: 0, sel: null, res: [], fin: false };
+  if (prev) cfg.items = prev.cfg.items; else if (cfg.regen) cfg.items = cfg.regen();
+  COMP[id] = { st, cfg, render: el => qzRender(id, el) };
+  return slot(id);
+}
+function qzRender(id, el) {
+  const { st, cfg } = COMP[id], items = cfg.items, n = items.length;
+  if (st.fin) { el.innerHTML = qzResult(id); return; }
+  const it = items[st.i], L = cfg.labels || ['A', 'B', 'C', 'D'], ans = st.sel !== null, ok = ans && st.sel === it.a;
+  const opts = it.opts.map((o, j) => {
+    let c = 'qo'; if (ans) { c += ' lock'; if (j === it.a) c += ' ok'; else if (j === st.sel) c += ' bad'; }
+    return `<button class="${c}" onclick="qzPick('${id}',${j})"><b>${L[j]}</b><span>${o}</span></button>`;
+  }).join('');
+  const q = ans ? fillQ(it.q, it.opts[it.a]) : it.q.replace(/_{3,}/g, '<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>');
+  const fb = ans
+    ? `<div class="fb ${ok ? 'ok' : 'bad'}"><div class="fb-h">${ok ? '🎉 Chính xác!' : '❌ Chưa đúng'}<small>Đáp án đúng: <b>${L[it.a]}. ${it.opts[it.a]}</b></small></div><div class="fb-b">${it.exp || ''}</div></div>
+       <button class="btn solid fb-n" onclick="qzNext('${id}')">${st.i === n - 1 ? 'Xem kết quả →' : 'Câu tiếp theo →'}</button>`
+    : `<div class="fb idle"><div class="idle-i">💡</div><p>Chọn một đáp án.<br>Giải thích và nghĩa sẽ hiện ở đây.</p></div>`;
+  el.innerHTML = `<div class="qz">
+    <div class="qz-top"><span class="qz-title">${cfg.title}</span><span class="chip-s">Câu ${st.i + 1}/${n}</span><span class="chip-s ok">★ ${st.score}</span></div>
+    <div class="qz-bar"><i style="width:${(st.i + (ans ? 1 : 0)) / n * 100}%"></i></div>
+    ${cfg.note ? `<div class="note">${cfg.note}</div>` : ''}
+    <div class="qz-main"><div><div class="qz-q">${q}</div><div class="qz-opts ${cfg.tf ? 'tf' : ''}">${opts}</div></div><div>${fb}</div></div></div>`;
+}
+function qzPick(id, j) {
+  const { st, cfg } = COMP[id]; if (st.sel !== null) return;
+  st.sel = j; st.res[st.i] = j; if (j === cfg.items[st.i].a) st.score++;
+  rerender(id);
+}
+function qzNext(id) {
+  const { st, cfg } = COMP[id]; st.sel = null; st.i++;
+  if (st.i >= cfg.items.length) { st.fin = true; markDone(id, st.score, cfg.items.length); if (st.score === cfg.items.length) confetti(); }
+  rerender(id);
+}
+function qzRestart(id) {
+  const c = COMP[id]; Object.assign(c.st, { i: 0, score: 0, sel: null, res: [], fin: false });
+  if (c.cfg.regen) c.cfg.items = c.cfg.regen();
+  rerender(id);
+}
+function qzResult(id) {
+  const { st, cfg } = COMP[id], n = cfg.items.length, pct = Math.round(st.score / n * 100), L = cfg.labels || ['A', 'B', 'C', 'D'];
+  const msg = pct === 100 ? 'Xuất sắc! 🏆' : pct >= 80 ? 'Rất tốt! 👏' : pct >= 50 ? 'Khá ổn, cố thêm chút nữa! 💪' : 'Đừng nản, thử lại nhé! 🌱';
+  const wrong = cfg.items.map((it, i) => ({ it, i })).filter(x => st.res[x.i] !== x.it.a);
+  return `<div class="qz-res"><div class="ring" style="--pct:${pct}%"><span>${st.score}/${n}</span></div><h3>${msg}</h3>
+    <p class="muted">${esc(plain(cfg.title))}</p>
+    <div class="acts"><button class="btn solid" onclick="qzRestart('${id}')">↺ Làm lại</button></div>
+    ${wrong.length ? `<div class="wl"><div class="colh">Các câu cần xem lại (${wrong.length})</div>${wrong.map(({ it, i }) => `<details><summary>Câu ${i + 1}: ${fillQ(it.q, it.opts[it.a])}</summary><div class="fb-b">Bạn chọn: <b>${L[st.res[i]]}. ${it.opts[st.res[i]]}</b> · Đáp án: <b>${L[it.a]}. ${it.opts[it.a]}</b><br>${it.exp || ''}</div></details>`).join('')}</div>` : '<p class="muted">Bạn đã trả lời đúng tất cả các câu 🎯</p>'}</div>`;
+}
+document.addEventListener('keydown', e => {
+  if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+  const m = document.querySelector('.comp .qz-main'); if (!m) return;
+  const id = m.closest('.comp').dataset.id, { st, cfg } = COMP[id], k = e.key.toLowerCase();
+  if (st.sel === null) {
+    const labs = (cfg.labels || ['A', 'B', 'C', 'D']).map(x => x.toLowerCase());
+    let j = labs.indexOf(k); if (j < 0) j = ['1', '2', '3', '4'].indexOf(k);
+    if (j >= 0 && j < cfg.items[st.i].opts.length) qzPick(id, j);
+  } else if (['enter', 'arrowright', ' '].includes(k)) { e.preventDefault(); qzNext(id); }
+});
+function meanExp(opts, mean, a, tr, note) {
+  return `<table class="mt">${opts.map((o, j) => `<tr class="${j === a ? 'hit' : ''}"><td>${'ABCD'[j]}. <b>${o}</b></td><td>${mean[j]}</td></tr>`).join('')}</table>${note ? `<p class="fb-note">${note}</p>` : ''}${tr ? `<p class="fb-tr">🇻🇳 ${tr}</p>` : ''}`;
+}
+const ruleExp = (rule, tr) => `<p>${rule}</p>${tr ? `<p class="fb-tr">🇻🇳 ${tr}</p>` : ''}`;
+
+/* ================= FILL (typing or tap-to-fill word bank) ================= */
+function fill(id, cfg) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { vals: {}, checked: false, res: [], active: null, score: 0 };
+  COMP[id] = { st, cfg, render: el => flRender(id, el) };
+  return slot(id);
+}
+function flRender(id, el) {
+  const { st, cfg } = COMP[id], bank = cfg.bank, items = cfg.items;
+  const used = Object.values(st.vals);
+  const rows = items.map((it, i) => {
+    let k = 0;
+    const q = it.q.replace(/___/g, () => {
+      const key = i + '-' + k, v = st.vals[key] || '', kk = k++;
+      const cls = st.checked ? (st.res[i] && st.res[i][kk] ? ' good' : ' bad') : '';
+      if (bank) return `<button class="slot${st.active === key ? ' act' : ''}${cls}" onclick="flSlot('${id}','${key}')">${v || '&nbsp;'}</button>`;
+      return `<input class="fi${cls}" data-key="${key}" value="${esc(v)}" autocomplete="off" spellcheck="false" oninput="COMP['${id}'].st.vals['${key}']=this.value" onkeydown="flKey(event,'${id}')">`;
+    });
+    let fb = '';
+    if (st.checked) {
+      const ok = st.res[i] && st.res[i].every(Boolean);
+      fb = `<div class="fxfb ${ok ? 'ok' : 'bad'}">${ok ? '✓ Đúng.' : '✗ Đáp án: <b>' + it.a.map(x => x.split('/')[0]).join(' … ') + '</b>.'} ${it.exp || ''}${it.tr ? `<span class="tr">🇻🇳 ${it.tr}</span>` : ''}</div>`;
+    }
+    return `<div class="fx"><span class="n">${i + 1}</span><span>${q}</span>${fb}</div>`;
+  }).join('');
+  el.innerHTML = `<div class="fl-top"><span class="t">${cfg.title}</span>
+      <span class="chip-s ok" ${st.checked ? '' : 'style="display:none"'}>★ ${st.score}/${items.length}</span>
+      <button class="btn solid" onclick="flCheck('${id}')">✔ Kiểm tra</button><button class="btn" onclick="flReveal('${id}')">💡 Xem đáp án</button><button class="btn" onclick="flReset('${id}')">↺ Làm lại</button></div>
+    ${cfg.note ? `<div class="note">${cfg.note}</div>` : ''}
+    ${bank ? `<div class="bank">${bank.map(w => `<button class="bk${used.includes(w) ? ' used' : ''}" onclick="flPut('${id}',this.dataset.w)" data-w="${esc(w)}">${w}</button>`).join('')}</div>` : ''}
+    ${rows}`;
+}
+function flKey(e, id) {
+  if (e.key !== 'Enter') return;
+  const ins = [...document.querySelectorAll(`.comp[data-id="${id}"] input.fi`)], i = ins.indexOf(e.target);
+  if (i < ins.length - 1) ins[i + 1].focus(); else flCheck(id);
+}
+function flSlot(id, key) {
+  const { st } = COMP[id]; if (st.checked) return;
+  if (st.vals[key]) { delete st.vals[key]; st.active = key; } else st.active = st.active === key ? null : key;
+  rerender(id);
+}
+function flPut(id, w) {
+  const { st, cfg } = COMP[id]; if (st.checked || Object.values(st.vals).includes(w)) return;
+  let key = st.active;
+  if (!key || st.vals[key]) { key = null; cfg.items.forEach((it, i) => it.a.forEach((_, k) => { const kk = i + '-' + k; if (!key && !st.vals[kk]) key = kk; })); }
+  if (!key) return;
+  st.vals[key] = w; st.active = null;
+  let nx = null; cfg.items.forEach((it, i) => it.a.forEach((_, k) => { const kk = i + '-' + k; if (!nx && !st.vals[kk]) nx = kk; }));
+  st.active = nx; rerender(id);
+}
+function flCheck(id) {
+  const { st, cfg } = COMP[id]; let s = 0;
+  st.res = cfg.items.map((it, i) => it.a.map((a, k) => a.split('/').map(normA).includes(normA(st.vals[i + '-' + k] || ''))));
+  cfg.items.forEach((it, i) => { if (st.res[i].every(Boolean)) s++; });
+  st.score = s; st.checked = true; st.active = null; markDone(id, s, cfg.items.length);
+  if (s === cfg.items.length) confetti(); rerender(id);
+}
+function flReveal(id) {
+  const { st, cfg } = COMP[id];
+  cfg.items.forEach((it, i) => it.a.forEach((a, k) => { st.vals[i + '-' + k] = a.split('/')[0]; })); flCheck(id);
+}
+function flReset(id) { const { st } = COMP[id]; Object.assign(st, { vals: {}, checked: false, res: [], active: null, score: 0 }); rerender(id); }
+
+/* ================= SENTENCE BUILDER ================= */
+function builder(id, cfg) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { i: 0, score: 0, fin: false, checked: false, ok: false, placed: [], pool: null };
+  if (!st.pool) st.pool = bdShuffle(cfg.items[0].w);
+  COMP[id] = { st, cfg, render: el => bdRender(id, el) };
+  return slot(id);
+}
+function bdShuffle(w) { let p, tries = 0; do { p = shuffle(w.map((x, i) => i)); tries++; } while (p.join() === w.map((x, i) => i).join() && tries < 9); return p; }
+function bdRender(id, el) {
+  const { st, cfg } = COMP[id], items = cfg.items, n = items.length;
+  if (st.fin) { el.innerHTML = `<div class="qz-res"><div class="ring" style="--pct:${Math.round(st.score / n * 100)}%"><span>${st.score}/${n}</span></div><h3>${st.score === n ? 'Hoàn hảo! 🏆' : 'Hoàn thành! 👏'}</h3><p class="muted">${esc(cfg.title)}</p><div class="acts"><button class="btn solid" onclick="bdRestart('${id}')">↺ Làm lại</button></div></div>`; return; }
+  const it = items[st.i], words = it.w;
+  const pool = st.pool.filter(x => !st.placed.includes(x));
+  el.innerHTML = `<div class="qz-top"><span class="qz-title">${cfg.title}</span><span class="chip-s">Câu ${st.i + 1}/${n}</span><span class="chip-s ok">★ ${st.score}</span></div>
+    <div class="qz-bar"><i style="width:${(st.i + (st.checked ? 1 : 0)) / n * 100}%"></i></div>
+    <div class="muted">Bấm các từ theo thứ tự để ghép thành câu hoàn chỉnh. Gợi ý nghĩa: <b>${it.vi}</b></div>
+    <div class="bd-line ${st.checked ? (st.ok ? 'ok' : 'bad') : ''}">${st.placed.length ? st.placed.map(x => `<button class="wd in" onclick="bdBack('${id}',${x})">${words[x]}</button>`).join('') : '<span class="bd-hint">Câu của bạn sẽ hiện ở đây…</span>'}</div>
+    <div class="bd-pool">${pool.map(x => `<button class="wd" onclick="bdAdd('${id}',${x})">${words[x]}</button>`).join('')}</div>
+    <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+      ${st.checked ? `<button class="btn solid" onclick="bdNext('${id}')">${st.i === n - 1 ? 'Xem kết quả →' : 'Câu tiếp theo →'}</button>`
+        : `<button class="btn solid" onclick="bdCheck('${id}')" ${st.placed.length ? '' : 'disabled'}>✔ Kiểm tra</button><button class="btn" onclick="bdClear('${id}')">Xóa hết</button>`}
+    </div>
+    ${st.checked ? `<div class="fb ${st.ok ? 'ok' : 'bad'}" style="margin-top:8px;position:static"><div class="fb-h">${st.ok ? '🎉 Chính xác!' : '❌ Chưa đúng'}<small>Câu đúng: <b>${words.join(' ')}</b></small></div><div class="fb-b">${it.exp || ''}<p class="fb-tr">🇻🇳 ${it.vi}</p></div></div>` : ''}`;
+}
+function bdAdd(id, x) { const { st } = COMP[id]; if (st.checked) return; st.placed.push(x); rerender(id); }
+function bdBack(id, x) { const { st } = COMP[id]; if (st.checked) return; st.placed = st.placed.filter(y => y !== x); rerender(id); }
+function bdClear(id) { COMP[id].st.placed = []; rerender(id); }
+function bdCheck(id) {
+  const { st, cfg } = COMP[id], w = cfg.items[st.i].w;
+  st.ok = normA(st.placed.map(x => w[x]).join(' ')) === normA(w.join(' '));
+  if (st.ok) st.score++; st.checked = true; rerender(id);
+}
+function bdNext(id) {
+  const { st, cfg } = COMP[id]; st.i++; st.checked = false; st.placed = [];
+  if (st.i >= cfg.items.length) { st.fin = true; markDone(id, st.score, cfg.items.length); if (st.score === cfg.items.length) confetti(); }
+  else st.pool = bdShuffle(cfg.items[st.i].w);
+  rerender(id);
+}
+function bdRestart(id) { const { st, cfg } = COMP[id]; Object.assign(st, { i: 0, score: 0, fin: false, checked: false, placed: [], pool: bdShuffle(cfg.items[0].w) }); rerender(id); }
+
+/* ================= MATCH GAME ================= */
+function matchGame(id, pool) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { round: null, sel: null, done: [], moves: 0, err: null, rounds: 0 };
+  if (!st.round) matchNew(st, pool);
+  COMP[id] = { st, pool, render: el => mgRender(id, el) };
+  return slot(id);
+}
+function matchNew(st, pool) { const r = shuffle(pool).slice(0, 6); st.round = { L: r, R: shuffle(r) }; st.sel = null; st.done = []; st.moves = 0; st.err = null; }
+function mgRender(id, el) {
+  const { st } = COMP[id], { L, R } = st.round, fin = st.done.length === L.length;
+  const left = L.map((v, i) => `<button class="mc ${st.done.includes(v.w) ? 'lock' : ''} ${st.sel && st.sel.side === 'L' && st.sel.w === v.w ? 'sel' : ''} ${st.err && st.err.includes('L:' + v.w) ? 'err' : ''}" onclick="mgPick('${id}','L',this.dataset.w)" data-w="${esc(v.w)}">${v.em || ''} ${v.w}</button>`);
+  const right = R.map(v => `<button class="mc vi ${st.done.includes(v.w) ? 'lock' : ''} ${st.sel && st.sel.side === 'R' && st.sel.w === v.w ? 'sel' : ''} ${st.err && st.err.includes('R:' + v.w) ? 'err' : ''}" onclick="mgPick('${id}','R',this.dataset.w)" data-w="${esc(v.w)}">${v.vi}</button>`);
+  el.innerHTML = `<div class="mg-top"><b style="color:#312e81;font-size:13.5px;flex:1">Ghép mỗi từ tiếng Anh với nghĩa tiếng Việt đúng</b><span class="chip-s">Ghép đúng ${st.done.length}/${L.length}</span><span class="chip-s">Lượt: ${st.moves}</span><button class="btn" onclick="mgNew('${id}')">🔀 Vòng mới</button></div>
+    <div class="mg">${L.map((_, i) => left[i] + right[i]).join('')}</div>
+    ${fin ? `<div class="note" style="margin-top:10px;background:#ecfdf5;border-color:#10b981">🎉 Hoàn thành sau <b>${st.moves}</b> lượt! Bấm “Vòng mới” để chơi với 6 từ khác.</div>` : ''}`;
+}
+function mgPick(id, side, w) {
+  const { st } = COMP[id]; if (st.done.includes(w) || st.err) return;
+  if (!st.sel || st.sel.side === side) { st.sel = { side, w }; rerender(id); return; }
+  st.moves++; const a = st.sel; st.sel = null;
+  if (a.w === w) { st.done.push(w); if (st.done.length === st.round.L.length) { markDone(id, st.round.L.length, st.moves); confetti(); } rerender(id); }
+  else { st.err = [`${a.side}:${a.w}`, `${side}:${w}`]; rerender(id); setTimeout(() => { st.err = null; rerender(id); }, 520); }
+}
+function mgNew(id) { const c = COMP[id]; matchNew(c.st, c.pool); rerender(id); }
+
+/* ================= SIGNAL FINDER (grammar) ================= */
+function signals(id, items) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { found: {}, wrong: {}, err: null };
+  COMP[id] = { st, items, render: el => sgRender(id, el) };
+  return slot(id);
+}
+function sgIdx(it) {
+  const toks = it.w.split(' '), ph = it.t.split(' ').map(normA), cl = toks.map(normA);
+  for (let i = 0; i < toks.length; i++) { if (ph.every((p, k) => cl[i + k] === p)) return [i, i + ph.length - 1]; }
+  return [0, 0];
+}
+function sgRender(id, el) {
+  const { st, items } = COMP[id], n = items.length, nf = Object.keys(st.found).length;
+  el.innerHTML = `<div class="fl-top"><span class="t">Tìm dấu hiệu nhận biết thì hiện tại đơn trong mỗi câu</span><span class="chip-s ok">Đã tìm ${nf}/${n}</span><button class="btn" onclick="sgReset('${id}')">↺ Làm lại</button></div>
+    ${items.map((it, i) => {
+      const [a, b] = sgIdx(it), found = st.found[i];
+      return `<div class="sg"><span class="n">${i + 1}</span>${it.w.split(' ').map((t, k) => `<span class="tok ${found && k >= a && k <= b ? 'sig' : ''} ${st.err === i + '-' + k ? 'err' : ''}" onclick="sgPick('${id}',${i},${k})">${t}</span>`).join('')}${found ? `<span class="sgnote">✓ ${it.note}</span>` : ''}</div>`;
+    }).join('')}
+    ${nf === n ? `<div class="note" style="background:#ecfdf5;border-color:#10b981">🎉 Bạn đã tìm đủ! Số câu tìm đúng ngay lần đầu: <b>${n - Object.keys(st.wrong).length}/${n}</b></div>` : ''}`;
+}
+function sgPick(id, i, k) {
+  const { st, items } = COMP[id]; if (st.found[i]) return;
+  const [a, b] = sgIdx(items[i]);
+  if (k >= a && k <= b) { st.found[i] = true; if (Object.keys(st.found).length === items.length) { markDone(id, items.length - Object.keys(st.wrong).length, items.length); confetti(); } rerender(id); }
+  else { st.wrong[i] = true; st.err = i + '-' + k; rerender(id); setTimeout(() => { st.err = null; rerender(id); }, 400); }
+}
+function sgReset(id) { Object.assign(COMP[id].st, { found: {}, wrong: {}, err: null }); rerender(id); }
+
+/* ================= PICTURES (pronunciation, exercise 1) ================= */
+function pics(id, items, example) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { v: [], c: [], ok: [], msg: [] };
+  COMP[id] = { st, items, example, render: el => pcRender(id, el) };
+  return slot(id);
+}
+function pcRender(id, el) {
+  const { st, items, example } = COMP[id], nOk = st.ok.filter(Boolean).length;
+  const col = c => items.map((p, i) => st.ok[i] && p.c === c ? `<span class="tchip">${p.w}</span>` : '').join('');
+  el.innerHTML = `<div class="fl-top"><span class="t">Viết từ dưới mỗi hình, rồi chọn cột âm đúng</span><span class="chip-s ok">★ ${nOk}/${items.length}</span>
+      <button class="btn solid" onclick="pcCheckAll('${id}')">✔ Kiểm tra tất cả</button><button class="btn" onclick="pcReveal('${id}')">💡 Đáp án</button><button class="btn" onclick="pcReset('${id}')">↺ Làm lại</button></div>
+    <div class="pics"><div class="pic egp"><span class="pn">Ví dụ</span><img src="${example.img}" alt=""><b style="color:#6d28d9;font-size:13px">${example.w}</b><span class="ph" style="font-size:13px">/ə/ ✓</span></div>
+    ${items.map((p, i) => `<div class="pic ${st.ok[i] ? 'okc' : ''}"><span class="pn">${i + 1}</span><img src="${p.img}" alt="">
+      <input class="${st.ok[i] ? 'good' : (st.msg[i] && st.msg[i][0] === '✗' && st.msg[i].includes('từ') ? 'bad' : '')}" value="${esc(st.v[i] || '')}" placeholder="Gõ từ…" autocomplete="off" spellcheck="false" ${st.ok[i] ? 'readonly' : ''} oninput="COMP['${id}'].st.v[${i}]=this.value" onkeydown="if(event.key==='Enter')pcCheck('${id}',${i},true)">
+      <div class="cols"><button class="cb ${st.c[i] === 'a' ? 'sel' : ''}" onclick="pcCol('${id}',${i},'a')">/ə/</button><button class="cb ${st.c[i] === '3' ? 'sel' : ''}" onclick="pcCol('${id}',${i},'3')">/ɜː/</button></div>
+      <div class="pmsg">${st.ok[i] ? `✓ <b>${p.w}</b> <span class="ph">${p.p}</span><br>${p.vi}` : (st.msg[i] || '')}</div></div>`).join('')}</div>
+    <table class="t" style="margin-top:10px"><tr><th style="width:50%" class="ph">/ə/</th><th class="ph">/ɜː/</th></tr><tr><td><span class="tchip">${example.w}</span>${col('a')}</td><td>${col('3')}</td></tr></table>`;
+}
+function pcCol(id, i, c) { const { st } = COMP[id]; if (st.ok[i]) return; st.c[i] = c; rerender(id); }
+function pcSave(id) { document.querySelectorAll(`.comp[data-id="${id}"] .pic input`).forEach((inp, i) => { COMP[id].st.v[i] = inp.value; }); }
+function pcCheck(id, i, rr) {
+  const { st, items } = COMP[id], p = items[i]; if (st.ok[i]) return;
+  const wOk = normA(st.v[i] || '') === p.w, cOk = st.c[i] === p.c;
+  if (wOk && cOk) { st.ok[i] = true; st.msg[i] = ''; } else st.msg[i] = !(st.v[i] || '').trim() && !st.c[i] ? 'Chưa điền' : !wOk ? '✗ Chưa đúng từ' : !st.c[i] ? 'Hãy chọn cột âm' : '✗ Sai cột âm';
+  if (rr) rerender(id); if (st.ok.filter(Boolean).length === items.length) { markDone(id, items.length, items.length); confetti(); }
+}
+function pcCheckAll(id) { COMP[id].items.forEach((_, i) => pcCheck(id, i)); rerender(id); }
+function pcReveal(id) { const { st, items } = COMP[id]; items.forEach((p, i) => { st.v[i] = p.w; st.c[i] = p.c; }); pcCheckAll(id); }
+function pcReset(id) { Object.assign(COMP[id].st, { v: [], c: [], ok: [], msg: [] }); rerender(id); }
+
+/* ================= WRITING I (cue → sentence) ================= */
+function writeSent(id, items) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { v: [], res: [], checked: false };
+  COMP[id] = { st, items, render: el => wsRender(id, el) };
+  return slot(id);
+}
+function wsRender(id, el) {
+  const { st, items } = COMP[id], good = st.res.filter(r => r === 'good').length;
+  el.innerHTML = `<div class="fl-top"><span class="t">Viết câu hoàn chỉnh từ các từ gợi ý (có thể thêm từ)</span><span class="chip-s ok" ${st.checked ? '' : 'style="display:none"'}>★ ${good}/${items.length}</span>
+      <button class="btn solid" onclick="wsCheck('${id}')">✔ Đối chiếu</button><button class="btn" onclick="wsReveal('${id}')">💡 Xem đáp án mẫu</button><button class="btn" onclick="wsReset('${id}')">↺ Làm lại</button></div>
+    ${items.map((it, i) => `<div class="wr"><span class="n">${i + 1}</span><input class="${st.checked ? st.res[i] : ''}" value="${esc(st.v[i] || '')}" placeholder="Viết câu của bạn…" spellcheck="false" oninput="COMP['${id}'].st.v[${i}]=this.value">
+      <div class="cues">${it.c}</div>
+      ${st.checked ? `<div class="fxfb ${st.res[i] === 'good' ? 'ok' : 'bad'}" style="flex-basis:100%;${st.res[i] === 'near' ? 'background:#fffbeb;border-color:#f59e0b;color:#78350f' : ''}">${st.res[i] === 'good' ? '✓ Khớp đáp án mẫu: <b>' + it.a + '</b>' : '↔ Chưa khớp hoàn toàn — nhiều cách viết đều có thể đúng, hãy đối chiếu. Đáp án mẫu: <b>' + it.a + '</b>'}<span class="tr">🇻🇳 ${it.vi}</span></div>` : ''}</div>`).join('')}`;
+}
+function wsCheck(id) {
+  const { st, items } = COMP[id];
+  st.res = items.map((it, i) => normA(st.v[i] || '') === normA(it.a) ? 'good' : 'near'); st.checked = true;
+  markDone(id, st.res.filter(r => r === 'good').length, items.length); rerender(id);
+}
+function wsReveal(id) { const { st, items } = COMP[id]; items.forEach((it, i) => { st.v[i] = it.a; }); wsCheck(id); }
+function wsReset(id) { Object.assign(COMP[id].st, { v: [], res: [], checked: false }); rerender(id); }
+
+/* ================= WRITING II (paragraph with live word counter) ================= */
+const WR2 = { text: '', sample: false };
+function wcUpdate() {
+  const t = document.getElementById('wr2t'); if (!t) return; WR2.text = t.value;
+  const n = (t.value.trim().match(/\S+/g) || []).length, bar = document.getElementById('wcb'), lab = document.getElementById('wcn');
+  const pct = Math.min(100, n / 80 * 100); bar.style.width = pct + '%';
+  const ok = n >= 60 && n <= 80; bar.style.background = ok ? '#10b981' : n > 80 ? '#ef4444' : '#f59e0b';
+  lab.textContent = n + ' từ' + (ok ? ' ✓' : n > 80 ? ' (quá dài)' : n >= 60 ? '' : ' (cần ≥ 60)'); lab.style.color = ok ? '#047857' : n > 80 ? '#b91c1c' : '#b45309';
+  if (ok && !DONE.wr2) markDone('wr2', n, n);
+}
+function wcAdd(txt) { const t = document.getElementById('wr2t'); t.value += (t.value && !/\s$/.test(t.value) ? ' ' : '') + txt; t.focus(); wcUpdate(); }
+
+/* ================= LISTENING PLAYER (browser text-to-speech) ================= */
+const LS = { sents: [], idx: 0, playing: false, rate: 1 };
+function lsPlay(script) {
+  try { speechSynthesis.cancel(); } catch (e) { return; }
+  LS.sents = script.match(/[^.!?]+[.!?]+/g) || [script]; LS.playing = true; lsUi();
+  LS.sents.forEach((s, i) => {
+    const u = new SpeechSynthesisUtterance(s.trim()); u.lang = 'en-GB'; u.rate = LS.rate;
+    u.onstart = () => { LS.idx = i; document.querySelectorAll('.ss').forEach((e, k) => e.classList.toggle('now', k === i)); };
+    if (i === LS.sents.length - 1) u.onend = () => { LS.playing = false; lsUi(); document.querySelectorAll('.ss').forEach(e => e.classList.remove('now')); };
+    speechSynthesis.speak(u);
+  });
+}
+function lsStop() { try { speechSynthesis.cancel(); } catch (e) {} LS.playing = false; lsUi(); document.querySelectorAll('.ss').forEach(e => e.classList.remove('now')); }
+function lsUi() { const b = document.getElementById('lsbtn'), q = document.getElementById('lseq'); if (b) b.textContent = LS.playing ? '⏹' : '▶'; if (q) q.classList.toggle('on', LS.playing); }
+
+/* ================= SHELL: navigation, sections ================= */
+let cur = { s: 0, t: 0 };
+function allEx() { return SECTIONS.flatMap(s => s.ex || []); }
+function navRender() {
+  const total = allEx().length, done = allEx().filter(id => DONE[id]).length;
+  $('#nav').innerHTML = SECTIONS.map((s, i) => {
+    const all = (s.ex || []).length && s.ex.every(id => DONE[id]);
+    return `<button class="ni ${i === cur.s ? 'on' : ''} ${all ? 'done' : ''} ${s.soon ? 'soon' : ''}" onclick="show(${i},0)"><span class="n">${all ? '✓' : i + 1}</span><span class="t">${s.nav || s.title}</span></button>`;
+  }).join('');
+  $('#pbar').style.width = (total ? done / total * 100 : 0) + '%';
+  $('#ptxt').innerHTML = `<span>Hoàn thành</span><b>${done}/${total} bài tập</b>`;
+  const sec = SECTIONS[cur.s]; const tabs = document.querySelectorAll('.stab');
+  sec.subs.forEach((sb, k) => { if (sb.ex && tabs[k]) { const d = sb.ex.every(i => DONE[i]); const old = tabs[k].querySelector('i'); if (d && !old) tabs[k].insertAdjacentHTML('beforeend', '<i>✓</i>'); } });
+}
+function show(s, t) {
+  cur = { s, t: t || 0 };
+  const sec = SECTIONS[s], sub = sec.subs[cur.t];
+  $('#hi').textContent = sec.icon; $('#ttl').textContent = sec.title + (sec.vi ? ' · ' + sec.vi : ''); $('#dsc').textContent = sec.desc;
+  $('#subnav').innerHTML = sec.subs.length > 1 ? sec.subs.map((x, k) => `<button class="stab ${k === cur.t ? 'on' : ''}" onclick="show(${s},${k})">${x.label}${x.ex && x.ex.every(i => DONE[i]) ? '<i>✓</i>' : ''}</button>`).join('') : '';
+  $('#subnav').style.display = sec.subs.length > 1 ? '' : 'none';
+  const b = $('#body'); b.className = 'body' + (sub.split ? ' split' : ''); b.innerHTML = sub.render(); b.scrollTop = 0;
+  hydrate(); if (sub.after) sub.after(); navRender(); try { speechSynthesis.cancel(); } catch (e) {} LS.playing = false;
+}
+function showObjectives() {
+  const o = OBJECTIVES.map(x => `<div class="obj"><span class="oi">${x.i}</span><div><b>${x.t}</b><br>${x.d}</div></div>`).join('');
+  document.body.insertAdjacentHTML('beforeend', `<div class="modal" onclick="if(event.target===this)this.remove()"><div class="mbox"><h2>🎯 Mục tiêu bài học</h2><div class="sub">Unit 9 · Festivals around the World — Festivals around the World</div>${o}<div style="text-align:right;margin-top:12px"><button class="btn solid" onclick="this.closest('.modal').remove()">Bắt đầu học →</button></div></div></div>`);
+}
+
+
+const DATA=[{"title": "Vocabulary · Từ vựng", "icon": "📚", "desc": "Unit 9 · Festivals around the World", "subs": [{"label": "27 từ vựng", "kind": "vocab"}]}, {"title": "Vocabulary practice", "icon": "✏️", "desc": "Unit 9 · Festivals around the World", "subs": [{"id": "v1", "label": "I · Dạng từ", "kind": "fill", "items": [{"q": "May Day Festival is a___festival in Europe. (SEASON)", "a": ["seasonal"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ “festival” (lễ hội) nên ta cần một tính từ.</p><p>Tính từ được phái sinh từ danh từ “season” (mùa) phù hợp với nội dung của câu là “seasonal” (thuộc về mùa). </p><p><b>Dịch nghĩa</b>: May Day Festival is a seasonal festival in Europe. <i>(Lễ hội May Day là một lễ hội theo mùa ở châu Âu.)</i></p>"}, {"q": "The hall looked very___with its Christmas tree. (FESTIVAL)", "a": ["festive"], "exp": "<p><b>Giải thích</b>: Từ cần điền đứng sau trạng từ “very” (rất) và bổ nghĩa cho chủ ngữ “The hall” nên ta cần một tính từ. Tính từ được phái sinh từ danh từ “festival” (lễ hội) phù hợp với nội dung của câu là “festive” (thuộc về lễ hội). </p><p><b>Dịch nghĩa</b>: The hall looked very festive with its Christmas tree. (<i>Hội trường rất có không khí lễ hội với cây thông Noel.)</i></p>"}, {"q": "There were lively New Year___all over the town. (CELEBRATE)", "a": ["celebrations"], "exp": "<p><b>Giải thích</b>: Trước vị trí cần điền là tính từ “lively” (sôi động nên ta cần một danh từ). Ta có cụm danh từ “New Year celebrations” (lễ đón năm mới).</p><p><b>Dịch nghĩa</b>: There were lively New Year celebrations all over the town. (<i>Có những lễ đón Năm mới sôi động khắp thị trấn.)</i></p>"}, {"q": "Australia has its own___festivals. They are very different from those of Britain. (CULTURE)", "a": ["cultural"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ “festivals” (lễ hội) nên ta cần một tính từ.</p><p>Tính từ được phái sinh từ danh từ “culture” (văn hóa) phù hợp với nội dung của câu là “cultural” (thuộc về văn hóa).</p><p><b>Dịch nghĩa:</b> Australia has its own cultural festivals. They are very different from those of Britain (<i>Úc có các lễ hội văn hóa riêng. Chúng rất khác so với lễ hội của Anh.)</i></p>"}, {"q": "Dancers’___in Flamenco Festival this year was so excellent! (PERFORM)", "a": ["performance"], "exp": "<p><b>Giải thích</b>: Trước vị trí cần điền là danh từ được sở hữu cách “Dancers’” (của các vũ công) nên ta cần một danh từ.</p><p>Danh từ được phái sinh từ động từ “perform” (trình diễn) phù hợp với nội dung của câu là “performance” (màn trình diễn).</p><p><b>Dịch nghĩa</b>: Dancers’ performance in Flamenco Festival this year was so excellent<i>! (Màn trình diễn của các vũ công trong Lễ hội Flamenco năm nay thật xuất sắc!)</i></p>"}, {"q": "Not all festivals are related to the___features. (RELIGION)", "a": ["religious"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ “features” (đặc tính) nên ta cần một tính từ.</p><p>Tính từ được phái sinh từ danh từ “religion” (tôn giáo) phù hợp với nội dung của câu là “religious” (thuộc về tôn giáo).</p><p><b>Dịch nghĩa</b>: Not all festivals are related to the religious features. (<i>Không phải tất cả các lễ hội đều liên quan đến các đặc tính của tôn giáo.)</i></p>"}], "before": "<div class=\"note\">I - Give the correct form of the word in the bracket to complete each of the following sentences.</div>"}, {"id": "v2", "label": "II · Chọn đáp án", "kind": "quiz", "items": [{"q": "The festival &quot;La Tomatina&quot; is___on the last Wednesday in August in Bunol, Spain. ", "opts": ["recommended", "harvested", "celebrated", "performed"], "a": 2, "exp": "<p><b>Giải thích</b>:</p><p><b>A</b>. recommended (<i>v</i>.): khuyến nghị<b>B</b>. harvested (<i>v</i>.): thu hoạch</p><p><b>C</b>. celebrated (<i>v</i>.): kỷ niệm<b>D</b>. performed <i>(v</i>): trình diễn</p><p>Xét về nghĩa, phương án c phù hợp nhất.</p><p><b>Dịch nghĩa</b>: La Tomatina is celebrated on the last Wednesday in August in Bunol, Spain. <i>(La Tomatina được tổ chức vào thứ Tư cuối cùng vào tháng 8 tại Buhol, Tây Ban Nha.)</i></p>"}, {"q": "Edinbourgh Fringe Festival has music, film, comedy, dance, musicals and street___. ", "opts": ["performances", "highlights", "surveys", "documentaries"], "a": 0, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. performances <i>(n</i>.): buổi trình diễn<b>B</b>. highlights (<i>n</i>.): điểm nhấn</p><p><b>C</b>. surveys (<i>n</i>.): sự khảo sát<b>D</b>. documentaries (<i>n</i>.): phim tài liệu</p><p>Xét về nghĩa, phương án A phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Edinbourgh Fringe Festival has music, film, comedy, dance, musicals and street performances. <i>(Lễ hội Edinbourgh Fringe có âm nhạc, phim ảnh, hài kịch, khiêu vũ, nhạc kịch và biểu diễn đường phố.)</i></p>"}, {"q": "Santa Claus and Christmas tree brings about___atmosphere every December. ", "opts": ["violent", "seasonal", "serious", "festive"], "a": 3, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. violent (<i>adj</i>.): bạo lực<b>B</b>. seasonal (<i>adj</i>.): theo mùa</p><p><b>C</b>. serious <i>(adj</i>.): nghiêm trọng<b>D</b>. festive (<i>adj.</i>): có tính lễ hội</p><p>Xét về nghĩa, phương án D phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Santa Claus and Christmas tree brings about festive atmosphere every December (<i>Ông già Noel và cây thông Noel mang đến không khí lễ hội vào mỗi tháng 12.)</i></p>"}, {"q": "___are used to protect players’ eyes from water in Songkran Festival in Thailand. ", "opts": ["Compasses", "Goggles", "Trousers", "Slippers"], "a": 1, "exp": "<p><b>Giải thích</b>:</p><p><b>A.</b> Compasses (<i>n</i>.): Com-pa<b>B</b>. Goggles (<i>n</i>.): Kính bảo hộ</p><p><b>C</b>. Trousers (<i>n</i>.): Quần dài<b>D</b>. Slippers (<i>n</i>.): Dép lê</p><p>Xét về nghĩa, phương án B phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Goggles are used to protect players’ eyes from water in Songkran Festival in Thailand<i>. (Kính bảo hộ được sử dụng để bảo vệ mắt người chơi khỏi nước trong Lễ hội Songkran ở Thái Lan.)</i></p>"}, {"q": "Festivals are one of the most interesting and important features in each country’s___. ", "opts": ["location", "science", "culture", "religion"], "a": 2, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. location (<i>n</i>.): vị trí<b>B</b>. science (<i>n</i>.): khoa học</p><p><b>C</b>. culture (<i>n</i>.): văn hóa<b>D</b>. religion (<i>n</i>.): tôn giáo</p><p>Xét về nghĩa, phương án C phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Festivals are one of the most interesting and important features in each country’s culture. (<i>Lễ hội là một trong những điểm thú vị và quan trọng nhất trong văn hóa của mỗi quốc gia.)</i></p>"}, {"q": "Easter is a___and holiday commemorating the resurrection of Jesus from the dead. ", "opts": ["time", "festival", "period", "season"], "a": 1, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. time (<i>n</i>.): thời gian <b>B</b>. festival (<i>n</i>.): lễ hội </p><p><b>C</b>. period (<i>n</i>.): giai đoạn <b>D</b>. season (<i>n</i>.): mùa</p><p>Xét về nghĩa, phương án B phù hợp nhất.</p><p><b>Dịch nghĩa:</b> Easter is a festival and holiday commemorating the resurrection of Jesus from the dead. <i>(Phục sinh là một lễ hội và ngày lễ kỷ niệm sự phục sinh của Chúa Giêsu từ cõi chết trở về.)</i></p>"}, {"q": "Da Nang will___International Fireworks Festival 2019. ", "opts": ["perform", "prove", "host", "care"], "a": 2, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. perform (<i>v</i>.): trình diễn<b>B</b>. prove (<i>v</i>.): chứng tỏ</p><p><b>C</b>. host (<i>v</i>.): đăng cai tổ chức<b>D</b>. care (<i>v</i>.): quan tâm</p><p>Xét về nghĩa, phương án C phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Da Nang will host International Fireworks Festival 2019. <i>(Đà Nẵng sẽ tổ chức Lễ hội pháo hoa quốc tế 2019.)</i></p>"}, {"q": "___pole Is a tall pole that is made slippery with lubricants and thus difficult to grip. ", "opts": ["Greasy", "Hot", "Colourful", "Smooth"], "a": 0, "exp": "<p><b>Giải thích</b>:</p><p><b>A</b>. Greasy <i>(adj</i>.): trơn, nhờ<b>B</b>. Hot (<i>adj.</i>): nóng</p><p><b>C</b>. Colourful (<i>adj.</i>): nhiều màu sắc<b>D</b>. Smooth <i>(adj.):</i> mượt mà</p><p>Xét về nghĩa, phương án A phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Greasy pole is a tall pole that is made slippery with lubricants and thus difficult to grip. <i>(Cột mỡ là một cột cao được làm trơn bằng chất gây trơn và do đó rất khó bám.)</i></p>"}, {"q": "The___season falls at different times of the year, but festivals celebrating its arrival are held all over the world. ", "opts": ["garden", "food", "crop", "harvest"], "a": 3, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. garden (<i>n</i>.): vườn<b>B</b>. food (<i>n.</i>): đồ ăn</p><p><b>C</b>. crop (<i>n</i>.): mùa màng<b>D</b>. harvest (<i>n</i>.): mùa thu hoạch</p><p>Xét về nghĩa, phương án D phù hợp nhất.</p><p><b>Dịch nghĩa</b>: The harvest season falls at different times of the year, but festivals celebrating its arrival are held all over the world. (<i>Mùa thu hoạch rơi vào các thời điềm khác nhau trong năm, nhưng các lễ hội tạ mùa thu hoạch được tổ chức trên toàn thế giới.)</i></p>"}, {"q": "A pet festival is taking___in Dublin this weekend in Smithfield Square. ", "opts": ["place", "a risk", "a holiday", "advantage"], "a": 0, "exp": "<p><b>Giải thích</b>:</p><p><b>A</b>. take place (<i>v.</i>): diễn ra<b>B</b>. take a risk (<i>v.</i>): mạo hiểm</p><p><b>C.</b> take a holiday (<i>v</i>.): có kỳ nghỉ<b>D</b>. take advantage of (<i>v</i>.): tận dụng lợl thế</p><p>Xét về nghĩa, phương án A phù hợp nhất.</p><p><b>Dịch nghĩa</b>: A pet festival is taking place in Dublin this weekend in Smithfield Square. (<i>Lễ hội thú cưng sẽ diễn ra ở Dublin vào cuối tuần này tại Quảng trường Smithfield.)</i></p>"}], "before": "<div class=\"note\">II – Choose the best option to complete each of the following sentences.</div>"}, {"id": "v3", "label": "III · Điền từ", "kind": "fill", "items": [{"q": "Each country has its own festivals in connection to its___.", "a": ["culture"], "exp": "<p><b>Giải thích</b>: Trước vị trí cần điền là tính từ sở hữu “its” nên ta cần một danh từ. Dựa vào nghĩa của câu, danh từ “culture” (văn hóa) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Each country has its own festivals in connection to its culture. (<i>Mỗi quốc gia có những lễ hội riêng liên quan đến văn hóa của quốc gia đó.)</i></p>"}, {"q": "___poles are often used as a tough duty for players to climb up in some festivals.", "a": ["Greasy"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ “poles” nên ta cần một tính từ. Dựa vào nghĩa của câu, tính từ “Greasy” (trơn, nhờn) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Greasy poles are often used as a tough duty for players to climb up in some festivals. <i>(Cột mỡ thường được sử dụng như một nhiệm vụ khó khăn để người chơi trèo lên trong một số lễ hội.)</i></p>"}, {"q": "For me, a fireworks display is the___during the New Year Festival.", "a": ["highlight"], "exp": "<p><b>Giải thích</b>: Trước vị trí cần điền là mạo từ “the” nên ta cần một danh từ. Dựa vào nghĩa của câu, danh từ “highlight” (điểm nhấn) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: For me, a fireworks display is the highlight during the New Year Festival. (<i>Đối với tôi, màn bắn pháo hoa là điểm nhấn trong Lễ hội đón Năm mới.)</i></p>"}, {"q": "Nha Trang___Sea Festival in May 2019.", "a": ["hosted"], "exp": "<p><b>Giải thích</b>: Trước vị trí cần điền là danh từ riêng “Nha Trang” đóng vai trò chủ ngữ, sau vị trí cần điền là danh từ “Sea Festival” đóng vai trò tân ngữ trong câu nên ta cần một động từ. Dựa vào nghĩa của câu, động từ “hosted” (đăng cai tổ chức) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Nha Trang hosted Sea Festival in May 2019. (<i>Nha Trang đăng cai tổ chức Lễ hội Biển vào tháng 5 năm 2019.)</i></p>"}, {"q": "___is a day for Americans to gather for a day of feasting, football and family.", "a": ["Thanksgiving"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là động từ to be “is” nên ta cần một danh từ làm chủ ngữ. Dựa vào nghĩa của câu, danh từ “Thanksgiving” (Lễ Tạ ơn) là phù hợp nhất.</p><p><b>Dịch nghĩa:</b> Thanksgiving is a day for Americans to gather for a day of feasting, football and family. <i>(Lễ Tạ ơn là một ngày để người Mỹ tập trung lại để tiệc tùng, chơi bóng đá và sum họp gia đình.)</i></p>"}, {"q": "We are going to Mexico for two weeks over the___season.", "a": ["festive"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ “season” nên ta cần một tính từ. Dựa vào nghĩa của câu, tính từ “festive” (mang tính lễ hội) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: We are going to Mexico for two weeks over the festive season. (<i>Chúng tôi sẽ đến Mê-hi-cô hai tuần trong mùa lễ hội.)</i></p>"}, {"q": "___Is the most Important and oldest festival to celebrate the resurrection of Jesus Christ.", "a": ["Easter"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là động từ to be “is” nên ta cần một danh từ làm chủ ngữ. Dựa vào nghĩa của câu, danh từ “Easter” (Lễ Phục sinh) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Easter is the most important and oldest festival to celebrate the resurrection of Jesus Christ. <i>(Phục sinh là lễ hội quan trọng và lâu đời nhất để kỷ niệm sự phục sinh của Chúa Giêsu.)</i></p>"}, {"q": "Vesak 2019 hosted by Ha Nam Province is a big ___festival.", "a": ["religious"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ “festival” nên ta cần một tính từ. Dựa vào nghĩa của câu, tính từ “religious” (thuộc tôn giáo) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Vesak 2019 hosted by Ha Nam Province is a big religious festival. (<i>Vesak 2019 do tỉnh Hà Nam tổ chức là một lễ hội tôn giáo lớn.)</i></p>"}], "before": "<div class=\"note\">III - Complete the following sentences using the given words in the box. There is one extra word.</div><div class=\"source\"><p><b>III </b>- Complete the following sentences using the given words in the box. There is one extra word.</p><div class=\"tablewrap\"><table><tr><td><p>Thanksgiving</p></td><td><p>performed</p></td><td><p>highlight</p></td><td><p>religious</p></td><td><p>culture</p></td></tr><tr><td><p>festive</p></td><td><p>serious</p></td><td><p>greasy</p></td><td><p>Easter</p></td><td><p>hosted</p></td></tr></table></div><p><i>Eg.: Many interesting songs were__performed__in the Music Festival this year.</i></p></div>"}]}, {"title": "Pronunciation · Ngữ âm", "icon": "🎧", "desc": "Unit 9 · Festivals around the World", "subs": [{"label": "Lý thuyết", "html": "<div class=\"source\"><p><b>NGỮ ÂM</b></p><p>Pronunciation</p><p>Đối với các từ có hai âm tiết, dấu (ˈ) được đánh vào trước âm tiết được nhấn trọng âm.</p><div class=\"tablewrap\"><table><tr><td><p><b>TỪ LOẠI</b></p></td><td><p><b>QUY TẮC CHUNG</b></p></td><td><p><b>NGOẠI LỆ</b></p></td></tr><tr><td><p><b>Phần lớn danh từ và tính từ</b></p></td><td><p>có trọng âm được nhấn vào âm tiết <b>thứ nhất</b></p><p>E.g.:</p><p>* costume /ˈkɒstjuːm/ (<i>n</i>.). trang phục</p><p>* CHEERful /ˈtʃɪəfl/ (<i>adj</i>.): tươi vui</p></td><td><p>bamBOO /ˌbæmˈbuː/ (<i>n)</i>: tre, trúc</p><p>surPRISE /səˈpraɪz/ (<i>n</i>): bất ngờ</p><p>aFRAID /əˈfreɪd/ <i>(adj</i>.): e ngại</p></td></tr><tr><td><p><b>Phần lớn động từ</b></p></td><td><p>có trọng âm được nhấn vào âm tiết <b>thứ hai </b></p><p>E.g.:</p><p>* diSCUSS /dɪˈ<u>skʌs</u>/ (<i>v</i>): thảo luận</p><p>* aGREE /əˈ<u>ɡriː</u>/ (<i>v</i>.): đồng ý</p></td><td><p>FINish /ˈfɪnɪʃ/ (<i>v</i>.): hoàn thành</p><p>Open /ˈəʊpən/ (<i>v</i>.): mở</p><p>SUFFer /ˈsʌfə(r)/ (<i>v.</i>): chịu đựng</p></td></tr></table></div><p><b></b></p></div>"}, {"id": "p1", "label": "I · Phân loại trọng âm", "kind": "quiz", "items": [{"q": "safety", "opts": ["Âm tiết 1", "Âm tiết 2"], "a": 0, "exp": "Đáp án: Âm tiết 1"}, {"q": "cannon", "opts": ["Âm tiết 1", "Âm tiết 2"], "a": 0, "exp": "Đáp án: Âm tiết 1"}, {"q": "statue", "opts": ["Âm tiết 1", "Âm tiết 2"], "a": 0, "exp": "Đáp án: Âm tiết 1"}, {"q": "highlight", "opts": ["Âm tiết 1", "Âm tiết 2"], "a": 0, "exp": "Đáp án: Âm tiết 1"}, {"q": "poster", "opts": ["Âm tiết 1", "Âm tiết 2"], "a": 0, "exp": "Đáp án: Âm tiết 1"}, {"q": "review", "opts": ["Âm tiết 1", "Âm tiết 2"], "a": 1, "exp": "Đáp án: Âm tiết 2"}, {"q": "perform", "opts": ["Âm tiết 1", "Âm tiết 2"], "a": 1, "exp": "Đáp án: Âm tiết 2"}, {"q": "locate", "opts": ["Âm tiết 1", "Âm tiết 2"], "a": 1, "exp": "Đáp án: Âm tiết 2"}, {"q": "surround", "opts": ["Âm tiết 1", "Âm tiết 2"], "a": 1, "exp": "Đáp án: Âm tiết 2"}, {"q": "reverse", "opts": ["Âm tiết 1", "Âm tiết 2"], "a": 1, "exp": "Đáp án: Âm tiết 2"}], "before": "<div class=\"note\">I- Put the gown words in the box to the correct column according to their stress pattern.</div>"}, {"id": "p2", "label": "II · Khác trọng âm", "kind": "quiz", "items": [{"q": "Choose the word with a different stress pattern.", "opts": ["science", "goggles", "review", "cannon"], "a": 2, "exp": "<p><b>Giải thích</b>: review /rɪˈvjuː/ có trọng âm nhấn vào âm tiết thứ hai, các phương án còn lại có trọng âm nhấn vào âm tiết thứ nhất.</p><p><b>A</b>. science /ˈsaɪəns/ <b>B</b>. goggles /ˈɡɒɡlz/ <b>D</b>. cannon /ˈkænən/</p>"}, {"q": "Choose the word with a different stress pattern.", "opts": ["poster", "tuna", "relic", "surround"], "a": 3, "exp": "<p><b>Giải thích</b>: surround /səˈraʊnd/ có trọng âm nhấn vào âm tiết thứ hai, các phương án còn lại có trọng âm nhấn vào âm tiết thứ nhất.</p><p><b>A</b>.poster /ˈpəʊstə(r)/<b>B.</b> tuna /ˈtjuːnə/<b>C</b>. relic /ˈrelɪk/</p>"}, {"q": "Choose the word with a different stress pattern.", "opts": ["construct", "horror", "pancake", "sausage"], "a": 0, "exp": "<p><b>Giải thích</b>: construct /kənˈstrʌkt/ có trọng âm nhấn vào âm tiết thứ hai, các phương án còn lại có trọng âm nhấn vào âm tiết thứ nhất.</p><p><b>B</b>.horror /ˈhɒrə(r)/  <b>C.</b> pancake /ˈpænkeɪk/ <b>D</b>. sausage /ˈsɒsɪdʒ/</p>"}, {"q": "Choose the word with a different stress pattern.", "opts": ["highlight", "regard", "critic", "circle"], "a": 1, "exp": "<p><b>Giải thích</b>: regard /rɪˈɡɑːd/ có trọng âm nhấn vào âm tiết thứ hai, các phương án còn lại có trọng âm nhấn vào âm tiết thứ nhất.</p><p><b>A</b>.highlight /ˈhaɪlaɪt/<b>C</b>. critic /ˈkrɪtɪk/<b>D</b>. circle /ˈsɜːkl/</p>"}, {"q": "Choose the word with a different stress pattern.", "opts": ["locate", "culture", "omelette", "harvest"], "a": 0, "exp": "<p><b>Giải thích</b>: locate /ləʊˈkeɪt/ có trọng âm nhấn vào âm tiết thứ hai, các phương án còn lại có trọng âm nhấn vào âm tiết thứ nhất.</p><p><b>B</b>.culture /ˈkʌltʃə(r)/<b>C</b>. omelette /ˈɒmlət/ <b>D</b>. harvest /ˈhɑːvɪst/</p>"}, {"q": "Choose the word with a different stress pattern.", "opts": ["horror", "perform", "cannon", "greasy"], "a": 1, "exp": "<p><b>Giải thích</b>: perform /pəˈfɔːm/ có trọng âm nhấn vào âm tiết thứ hai, các phương án còn lại có trọng âm nhấn vào âm tiết thứ nhất.</p><p><b>A</b>.horror /ˈhɒrə(r)/<b>C</b>. cannon /ˈkænən/<b>D</b>. greasy /ˈɡriːsi/</p>"}, {"q": "Choose the word with a different stress pattern.", "opts": ["direct", "harvest", "culture", "thriller"], "a": 0, "exp": "<p><b>Giải thích</b>: direct /dəˈrekt/ có trọng âm nhấn vào âm tiết thứ hai, các phương án còn lại có trọng âm nhấn vào âm tiết thứ nhất.</p><p><b>B</b>.harvest /ˈhɑːvɪst/ <b>C</b>. culture /ˈkʌltʃə(r)/ <b>D</b>. thriller /ˈθrɪlə(r)/</p>"}, {"q": "Choose the word with a different stress pattern.", "opts": ["replace", "reverse", "review", "festive"], "a": 3, "exp": "<p><b>Giải thích</b>: festive /ˈfestɪv/ có trọng âm nhấn vào âm tiết thứ nhất, các phương án còn lại có trọng âm nhấn vào âm tiết thứ hai.</p><p><b>A</b>. replace /rɪˈpleɪs/ <b>B</b>. reverse /rɪˈvɜːs/ <b>C</b>. review /rɪˈvjuː/</p>"}, {"q": "Choose the word with a different stress pattern.", "opts": ["Easter", "goggles", "consist", "highlight"], "a": 2, "exp": "<p><b>Giải thích</b>: consist /kənˈsɪst/ có trọng âm nhấn vào âm tiết thứ hai, các phương án còn lại có trọng âm nhấn vào âm tiết thứ nhất.</p><p><b>A</b>.Easter /ˈiːstə(r)/<b>B</b>. goggles /ˈɡɒɡlz/ <b>D</b>. highlight /ˈhaɪlaɪt/</p>"}, {"q": "Choose the word with a different stress pattern.", "opts": ["unique", "fiction", "poster", "gripping"], "a": 0, "exp": "<p><b>Giải thích</b>: unique /juˈniːk/ có trọng âm nhấn vào âm tiết thứ hai, các phương án còn lại có trọng âm nhấn vào âm tiết thứ nhất.</p><p><b>B</b>. fiction /ˈfɪkʃn/<b>C</b>. poster /ˈpəʊstə(r)/ <b>D</b>. gripping /ˈɡrɪpɪŋ/</p>"}, {"q": "Choose the word with a different stress pattern.", "opts": ["goggles", "repeat", "compose", "erect"], "a": 0, "exp": "<p><b>Giải thích</b>: goggles /ˈɡɒɡlz/ có trọng âm nhấn vào âm tiết thứ nhất, các phương án còn lại có trọng âm nhấn vào âm tiết thứ hai.</p><p><b>B</b>.repeat /rɪˈpiːt/<b>C.</b> compose /kəmˈpəʊz/ <b>D</b>. erect /ɪˈrekt/</p>"}, {"q": "Choose the word with a different stress pattern.", "opts": ["puppet", "poster", "festive", "control"], "a": 3, "exp": "<p><b>Giải thích</b>: control /ken&#x27;treul/ có trọng âm nhấn vào âm tiết thứ hai, các phương án còn lại có trọng âm nhấn vào âm tiết thứ nhất.</p><p><b>A</b>. puppet /ˈpʌpɪt/<b>B</b>. poster /ˈpəʊstə(r)/ <b>C</b>. festive /ˈfestɪv/</p>"}, {"q": "Choose the word with a different stress pattern.", "opts": ["opera", "repeat", "statue", "chaos"], "a": 1, "exp": "<p><b>Giải thích</b>: repeat /rɪˈpiːt/ có trọng âm nhấn vào âm tiết thứ hai, các phương án còn lại có trọng âm nhấn vào âm tiết thứ nhất.</p><p><b>A</b>. opera /ˈɒprə/<b>C. </b>statue /ˈstætʃuː/ <b>D</b>. chaos /ˈkeɪɒs/ </p>"}, {"q": "Choose the word with a different stress pattern.", "opts": ["circle", "traffic", "perform", "cannon"], "a": 2, "exp": "<p><b>Giải thích</b>: perform /pəˈfɔːm/ có trọng âm nhấn vào âm tiết thứ hai, các phương án còn lại có trọng âm nhấn vào âm tiết thứ nhất.</p><p><b>A.</b> circle /ˈsɜːkl/<b>B.</b> traffic /ˈtræfɪk/<b>D</b>. cannon /ˈkænən/</p>"}, {"q": "Choose the word with a different stress pattern.", "opts": ["tofu", "thriller", "greasy", "locate"], "a": 3, "exp": "<p><b>Giải thích</b>: locate /ləʊˈkeɪt/ có trọng âm nhấn vào âm tiết thứ hai, các phương án còn lại có trọng âm nhấn vào âm tiết thứ nhất.</p><p><b>A</b>. tofu /ˈtəʊfuː/<b>B</b>. thriller /ˈθrɪlə(r)/<b>C</b>. greasy /ˈɡriːsi/</p>"}], "before": "<div class=\"note\">II - Choose the word with a different stress pattern.</div>"}]}, {"title": "Grammar · Ngữ pháp", "icon": "🧩", "desc": "Unit 9 · Festivals around the World", "subs": [{"label": "Lý thuyết", "html": "<div class=\"source\"><p><b>NGỮ PHÁP</b></p><p>Grammar</p><p><b>1. CỤM TRẠNG NGỮ (</b>ADVERBIAL PHRASES)</p><p><b>a. Các cụm trạng ngữ thường gặp</b></p><div class=\"tablewrap\"><table><tr><td><p><b>THÔNG TIN VỀ</b></p></td><td><p><b>TRẢ LỜI CHO CÂU HỎI</b></p></td><td><p><b>VÍ DỤ</b></p></td></tr><tr><td><p><b>thời gian</b></p></td><td><p><b>When?</b></p><p>(Khi nào)</p></td><td><p>Mid-autumn festival takes place <b>on the 15th day of the 8th month in lunar calendar.</b> (<i>Tết trung thu diễn ra vào ngày 15 tháng Tám Âm lịch.)</i></p></td></tr><tr><td><p><b>nơi chốn</b></p></td><td><p><b>Where?</b></p><p>(ở đâu)</p></td><td><p>They’re performing <b>on the stage</b>. (<i>Họ đang biểu diễn trên sân khấu.)</i></p></td></tr><tr><td><p><b>tần suất</b></p></td><td><p><b>How often?</b></p><p>(Thường xuyên thế nào)</p></td><td><p>Harvest Festival is celebrated <b>once a year</b><i>. (Lễ hội mùa màng được tổ chức mỗi năm một lần.)</i></p></td></tr><tr><td><p><b>nguyên nhân</b></p></td><td><p><b>Why?</b></p><p>(Tại sao)</p></td><td><p>They sang a song <b>to cheer everybody up.</b> (<i>Họ đã hát để khiến cho mọi người vui vẻ lên.)</i></p></td></tr><tr><td><p><b>cách thức</b></p></td><td><p><b>How?</b></p><p>(Thế nào)</p></td><td><p>She came back home <b>by car</b>. (<i>Cô ấy đi về nhà bằng xe hơi.)</i></p></td></tr></table></div><p><b>b. Cấu tạo của một cụm trạng ngữ:</b></p><div class=\"tablewrap\"><table><tr><td><p>* Cấu trúc 1:</p><p>Giới từ Danh từ</p></td><td><p><b>Ví dụ:</b></p><p>Our Independence Day is <b>on September 2</b><b>nd</b></p><p>(<i>Ngày Độc Lập của chúng tôi là vào ngày 2 tháng Chín.)</i></p></td></tr><tr><td><p>* Cấu trúc 2:</p><p>To -V</p></td><td><p><b>Ví dụ:</b></p><p>I travel a lot <b>to gain knowledge</b>.</p><p>(<i>Tôi đi du lịch nhiều để có thêm kiến thức</i>.)</p></td></tr></table></div><p><b>2. ÔN TẬP: CÂU CÓ HỎI TỪ ĐỂ HỎI </b>(REVIEW: H/ WH-QUESTIONS)</p><p><b>a. Khái niệm</b></p><div class=\"tablewrap\"><table><tr><td><p>Câu hỏi có từ để hỏi bắt đầu bằng các từ hỏi: <b>What, When, Where, Who, Which, Whose, Why </b>và<b> How</b>.</p></td><td><p><b>Ví dụ:</b></p><p><b>A: Where </b>are you from? (<i>Bạn đến từ đâu?)</i></p><p><b>B</b>: America. (<i>Mỹ</i>.)</p></td></tr></table></div><p><b>b. Cấu trúc</b></p><div class=\"tablewrap\"><table><tr><td><p>* Cấu trúc 1:</p><div class=\"tablewrap\"><table><tr><td><p><b>What/ Who/Which/Whose</b></p></td><td><p>Động từ</p></td></tr></table></div></td><td><p><b>Ví dụ:</b></p><p><b>Who</b> is performing? (<i>Ai đang biểu diễn vậy?)</i></p></td></tr><tr><td><p>* Cấu trúc 2:</p><div class=\"tablewrap\"><table><tr><td><p><b>Từ hỏi</b></p></td><td><p>Động từ to be</p></td><td><p>Chủ ngữ</p></td></tr></table></div></td><td><p><b>Ví dụ:</b></p><p><b>Where</b> is the restroom? (<i>Phòng vệ sinh ở đâu?)</i></p></td></tr><tr><td><p>* Cấu trúc 3:</p><div class=\"tablewrap\"><table><tr><td><p><b>Từ hỏi</b></p></td><td><p>trợ động từ (to be/do/does/have/has/</p><p>động từ khuyết thiếu, ...)</p></td><td><p>Chủ ngữ</p></td><td><p>Động từ</p></td></tr></table></div></td><td><p><b>Ví dụ:</b></p><p>• <b>Where</b> are you studying? (<i>Bạn đang học ở đâu vậy?)</i></p><p>• <b>What </b>has he said? (<i>Anh ấy đã nói gì vậy</i>?)</p><p>• <b>Why</b> must he work overtime? (<i>Tại sao anh ta phải làm thêm giờ?)</i></p></td></tr></table></div><p><b>Chú ý:</b> Ta thường sử dụng dạng rút gọn của trợ động từ theo sau từ hỏi:</p><div class=\"tablewrap\"><table><tr><td><p>Who is</p><p>Who was = Who’s</p><p>Who has</p></td><td><p>What are= What’re</p><p>What were</p></td><td><p>Which will = Which’ll</p></td></tr></table></div><p>c. Cách dùng</p><div class=\"tablewrap\"><table><tr><td><p><b>TỪ ĐỂ HỎI</b></p></td><td><p><b>CÁCH DÙNG</b></p></td><td><p><b>VÍ DỤ</b></p></td></tr><tr><td><p><b>Who</b></p><p>(Ai)</p></td><td><p>được dùng để hỏi về người</p></td><td><p>A: <b>Who</b> wrote that article? (<i>Ai đã viết bài báo đấy?)</i> </p><p>B: It’s John. (<i>Là John.)</i></p><p>A: <b>Who</b> is John? (<i>John là ai thế?)</i></p><p>B: He’s a famous journalist.</p><p>(<i>Anh ấy là một phóng viên nổi tiếng.)</i></p></td></tr><tr><td><p><b>Whose</b></p><p>(Của ai/ Của cái gì)</p></td><td><p>được dùng để hỏi về sự sở hữu</p></td><td><p>A: <b>Whose</b> laptop is it? (<i>Đây là máy tính của ai?)</i> </p><p>B: Mine. (<i>Của tôi)</i></p></td></tr><tr><td><p><b>What</b></p><p>(Cái gì/ Việc gì)</p></td><td><p>được dùng để hỏi về sự vật, sự việc</p></td><td><p>A: <b>What</b> happened? (<i>Chuyện gì đã xảy ra vậy?)</i> </p><p>B: There’s a fire. (<i>Đã có một vụ hỏa hoạn</i>.)</p><p>A: <b>What </b>did you do? (<i>Bạn đã làm gì?)</i></p><p>B: I called 114. (<i>Tôi đã gọi 114.)</i></p></td></tr><tr><td><p><b>Which</b></p><p>(Ai/ Cái gì/ Việc gì)</p></td><td><p>được sử dụng thay cho <i>who</i> và <i>what </i>khi có một số lượng lựa chọn giới hạn</p></td><td><p>A: <b>Which</b> cake do you want? (<i>Bạn muốn cái bánh nào?)</i></p><p>B: The smallest one. (<i>Cái nhỏ nhất.)</i></p></td></tr><tr><td><p><b>When</b></p><p>(Khi nào)</p></td><td><p>được dùng để hỏi thời gian</p></td><td><p>A: <b>When </b>does the festival occur? (<i>Lễ hội diễn ra khi nào?)</i></p><p>B: At the end of the month. (<i>Cuối tháng.)</i></p></td></tr><tr><td><p><b>Where</b></p><p>(ở đâu)</p></td><td><p>được dùng để hỏi địa điểm, vị trí</p></td><td><p>A: <b>Where</b> did you meet Tom? (<i>Cậu đã gặp Tom ở đâu vậy?)</i></p><p>B: At a cafe (<i>Ở quán cà phê.)</i></p></td></tr><tr><td><p><b>Why </b></p><p>(Tại sao)</p></td><td><p>được dùng để hỏi về nguyên nhân</p></td><td><p>A: <b>Why</b> is he tired? (<i>Tại sao ông ấy lại mệt?)</i></p><p>B: Because he couldn’t sleep. (<i>Vì ông ấy đã không ngủ được.)</i></p></td></tr><tr><td><p><b>How</b></p><p>(Như thế nào)</p></td><td><p>được dùng để hỏi về đặc điểm, tính chất, cách thức, ...</p></td><td><p>A: <b>How</b> was your meal? (<i>Bữa ăn của bạn thế nào?)</i> </p><p>B: It’s great. We had a roast chicken. (<i>Tuyệt. Chúng tôi đã ăn một con gà nướng.)</i></p></td></tr><tr><td></td><td><p><i><b>How</b></i> có thể kết hợp với tính từ hoặc trạng từ</p></td><td><p>A: <b>How</b> <u>heavy </u>is it? (Nó nặng bao nhiêu?)</p><p>B: 2 kilos. (2 cân.)</p><p>A: <b>How</b> <u>often</u> do you eat out? (Ban thường xuyên đi ăn ngoài như thế nào?)</p><p>B: Once a week. (Tuần một lần.)</p></td></tr></table></div><p><b></b></p></div>"}]}, {"title": "Grammar practice", "icon": "📝", "desc": "Unit 9 · Festivals around the World", "subs": [{"id": "g1", "label": "I · Ghép câu hỏi", "kind": "quiz", "items": [{"q": "Where did you buy this dictionary?", "opts": ["Because it’s very interesting.", "She’s baking a cake.", "It’s on July 4th 1977.", "He goes to school by bus.", "I like the black one.", "I bought it in the bookshop near my house."], "a": 5, "exp": "<p><b>Giải thích:</b> Where did you buy this dictionary? (Bạn đã mua từ điển này ở đâu?)</p><p>Câu hỏi với “where” dùng để hỏi địa điểm “mua từ điển”. Dựa vào nghĩa các câu trả lời đã cho, phương án f là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: I bought it in the bookshop near my house. <i>(Tôi đã mua nó trong hiệu sách gần nhà tôi.)</i></p>"}, {"q": "Why have you read this novel many times?", "opts": ["Because it’s very interesting.", "She’s baking a cake.", "It’s on July 4th 1977.", "He goes to school by bus.", "I like the black one.", "I bought it in the bookshop near my house."], "a": 0, "exp": "<p><b>Giải thích</b>: Why have you read this novel many times? (Tại sao đã đọc cuốn tiểu thuyết này nhiều lần?)</p><p>Câu hỏi với “why” dùng để hỏi lí do “đọc tiểu thuyết nhiều lần”. Dựa vào nghĩa các câu trả lời đã cho, phương án a là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Because it’s very interesting. (<i>Bởi vì nó rất thú vị.)</i></p>"}, {"q": "Which laptop do you like, the black or the white one?", "opts": ["Because it’s very interesting.", "She’s baking a cake.", "It’s on July 4th 1977.", "He goes to school by bus.", "I like the black one.", "I bought it in the bookshop near my house."], "a": 4, "exp": "<p><b>Giải thích</b>: Which laptop do you like, the black or the white one? (Bạn thích máy tính xách tay nào, màu đen hay màu trắng?)</p><p>Câu hỏi với “which” dùng để đưa ra câu hỏi lựa chọn “máy tính xách tay nào”. Dựa vào nghĩa các câu trả lời đã cho, phương án e là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: I like the black one. (<i>Tôi thích cái màu đen</i>.)</p>"}, {"q": "What is your sister doing in the kitchen?", "opts": ["Because it’s very interesting.", "She’s baking a cake.", "It’s on July 4th 1977.", "He goes to school by bus.", "I like the black one.", "I bought it in the bookshop near my house."], "a": 1, "exp": "<p><b>Giải thích</b>: What is your sister doing in the kitchen? (Chị gái của bạn đang làm gì trong bếp?)</p><p>Câu hỏi với “what” dùng để hỏi việc “chị gái bạn đang làm”. Dựa vào nghĩa các câu trả lời đã cho, phương án b là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: She’s baking a cake. (<i>Chị ấy đang nướng bánh.)</i></p>"}, {"q": "How does your brother go to school everyday?", "opts": ["Because it’s very interesting.", "She’s baking a cake.", "It’s on July 4th 1977.", "He goes to school by bus.", "I like the black one.", "I bought it in the bookshop near my house."], "a": 3, "exp": "<p><b>Giải thích</b>: How does your brother go to school every day? (Anh cậu đi học hàng ngày bằng phương tiện gì?) Câu hỏi với “how” dùng trong câu này hỏi về việc đi bằng phương tiện gì. Dựa vào nghĩa các câu trả lời đã cho, phương án d là phù hợp nhất.</p><p>  </p><p><b>Dịch nghĩa</b>: He goes to school by bus. <i>(Anh đi học bằng xe buýt.)</i></p>"}], "before": "<div class=\"note\">I - Match the questions with their correct answers.</div>"}, {"id": "g2", "label": "II · H / Wh questions", "kind": "fill", "items": [{"q": "A: ___did you think of the film?<br>B: It’s interesting but too long.", "a": ["What"], "exp": "<p><b>Dịch nghĩa</b>:</p><p>A: What did you think of the film? (<i>Bạn nghĩ gì về bộ phim này?)</i></p><p>B: It’s interesting but too long. (<i>Nó hay đấy nhưng lại dài quá.)</i></p>"}, {"q": "A: ___did you last see him?<br>B: Last month.", "a": ["When"], "exp": "<p><b>Dịch nghĩa:</b></p><p>A: When did you last see him? (<i>Lần cuối bạn gặp anh ấy là khi nào?)</i></p><p>B: Last month. (<i>Tháng trước</i>.)</p>"}, {"q": "A: ___do people keep leaving the door open?<br>B: Because they are carrying something into the house.", "a": ["Why"], "exp": "<p><b>Dịch nghĩa</b>:</p><p>A: Why do people keep leaving the door open? (<i>Tại sao mọi người cứ để cửa mở?)</i></p><p>B: Because they are carrying something into the house. (<i>Bởi vì họ đang chuyển cái gì đó vào nhà.)</i></p>"}, {"q": "A: ___is the woman in white?<br>B: She’s my sister.", "a": ["Who"], "exp": "<p><b>Dịch nghĩa</b>:</p><p>A: Who is the woman in white? (<i>Người phụ nữ mặc đồ trắng là ai?)</i></p><p>B: She’s my sister. (<i>Cô ấy là chị gái tôi.)</i></p>"}, {"q": "A: ___mobile phones does he have?<br>B: He has two mobile phones.", "a": ["How many"], "exp": "<p><b>Dịch nghĩa:</b></p><p>A: How many mobile phones does he have? (<i>Anh ấy có mấy cái điện thoại di độn</i>g?)</p><p>B: He has two mobile phones. (<i>Anh ấy có 2 cái.)</i></p>"}, {"q": "A: ___does he go to school everyday?<br>B: He goes to school by bicycle.", "a": ["How"], "exp": "<p><b>Dịch nghĩa:</b></p><p>A: How does he go to school everyday? (<i>Anh ấy đi học hàng ngày bằng phương tiện gì?)</i></p><p>B: He goes to school by bicycle. (<i>Anh ấy đi học bằng xe đạp.)</i></p>"}, {"q": "A: ___, car do you like, the red one or the white one?<br>B: I like the white one.", "a": ["Which"], "exp": "<p><b>Dịch nghĩa</b>:</p><p>A: Which car do you like, the red one or the white one? (<i>Bạn thích chiếc xe nào, màu đỏ hay màu trắng?)</i> B: I like the white one. (<i>Tôi thích chiếc màu trắng.)</i></p>"}, {"q": "A: ___hat is it on the table?<br>B: It’s hers.", "a": ["Whose"], "exp": "<p><b>Dịch nghĩa</b>:</p><p>A: Whose hat Is it on the table? (<i>Chiếc mũ ở trên bàn là của ai?)</i></p><p>B: It’s hers. (<i>Nó là của cô ấy.)</i></p>"}, {"q": "A: ___did you put my coat?<br>B: I put it on the chair.", "a": ["Where"], "exp": "<p><b>Dịch nghĩa</b>:</p><p>A: Where did you put my coat? (<i>Bạn đã để áo khoác của tôi ở đâu?)</i></p><p>B: I put it on the chair. (<i>Tôi để nó ở trên ghế.)</i></p>"}, {"q": "A: ___have you received from Tom?<br>B: I have received a nice gift from South Korea.", "a": ["What"], "exp": "<p><b>Dịch nghĩa</b>:</p><p>A: What have you received from Tom? (<i>Bạn đã nhận được gì từ Tom?)</i></p><p>B: I have received a nice gift from South Korea. (<i>Tôi nhận được một món quà đẹp từ Hàn Quốc.)</i></p>"}, {"q": "A: ___will you go next summer holiday?<br>B: I Will go to Russia.", "a": ["Where"], "exp": "<p><b>Dịch nghĩa:</b></p><p>A: Where will you go next summer holiday? (<i>Bạn sẽ đi đâu vào kỳ nghỉ hè tới?)</i></p><p>B: I will go to Russia. (<i>Tôi sẽ đến nước Nga.)</i></p>"}, {"q": "A: ___didn’t he go to school yesterday?<br>B: Because he caught a cold.", "a": ["Why"], "exp": "<p><b>Dịch nghĩa:</b></p><p>A: Why didn’t he go to school yesterday? (<i>Tại sao hôm qua anh ấy không đi học?)</i></p><p>B: Because he caught a cold. (<i>Bởi vì anh ấy bị cảm.)</i></p>"}, {"q": "A: ___will come to the party this weekend?<br>B: Alexis and I will.", "a": ["Who"], "exp": "<p><b>Dịch nghĩa</b>:</p><p>A: Who will come to the party this weekend? <i>(Ai sẽ đến bữa tiệc cuối tuần này?)</i></p><p>B: Alexis and I will. (<i>Alexis và tôi sẽ đến.)</i></p>"}, {"q": "A: ___are you feeling now?<br>B: I feel a bit nervous.", "a": ["How"], "exp": "<p><b>Dịch nghĩa:</b></p><p>A: How are you feeling now? (<i>Bạn đang cảm thấy thế nào?)</i></p><p>B: I feel a bit nervous. (<i>Tôi cảm thấy hồi hộp</i>.)</p>"}, {"q": "A: ___is the man at the door?<br>B: He’s my father.", "a": ["Who"], "exp": "<p><b>Dịch nghĩa</b>:</p><p>A: Who is the man at the door? (<i>Người đàn ông đứng ở cửa là ai?)</i></p><p>B: He’s my father, (<i>ông ấy là bố tôi.)</i></p>"}, {"q": "A: ___did Mary go to school this morning?<br>B: By bus.", "a": ["How"], "exp": "<p><b>Dịch nghĩa</b>:</p><p>A: How did Mary go to school this morning? (<i>Sáng nay Mary đã đi học bằng phương tiện gì?)</i></p><p>B: By bus. (<i>Bằng xe buýt.)</i></p>"}, {"q": "A: ___is it so easy for you to complete exercises?<br>B: Because they’re quite easy for me.", "a": ["Why"], "exp": "<p><b>Dịch nghĩa</b>:</p><p>A: Why is it so easy for you to complete exercises? (<i>Tại sao bạn hoàn thành bài tập dễ dàng thế?)</i></p><p>B: Because they’re quite easy for me. (<i>Bởi vì chúng khá dễ với tôi.)</i></p>"}, {"q": "A: ___did you do last night?<br>B: I watched football on TV.", "a": ["What"], "exp": "<p><b>Dịch nghĩa:</b></p><p>A: What did you do last night? (<i>Bạn đã làm gì tối qua?)</i></p><p>B: I watched football on TV. (<i>Tôi xem bóng đá trên tivi.)</i></p>"}, {"q": "A: ___are you learning English?<br>B: at Apollo English centre.", "a": ["Where"], "exp": "<p><b>Dịch nghĩa:</b></p><p>A: Where are you learning English? (<i>Bạn đang học tiếng Anh ở đâu?)</i></p><p>B: at Apollo English centre (<i>Ở trung tâm tiếng Anh Apollo.)</i></p>"}], "before": "<div class=\"note\">II - Fill in the blank a suitable H/Wh question to complete the following sentences.</div>"}, {"id": "g3", "label": "III · Đặt câu hỏi", "kind": "write", "items": [{"c": "The boy is drinking <u>milk</u> in the kitchen.", "a": "What is the boy drinking in the kitchen?", "vi": "  Giải thích : The boy is drinking  milk  in the kitchen. (Cậu bé đang uống sữa trong bếp.)  Câu gốc gạch chân tân ngữ “milk” (sữa) nên ta đặt câu hỏi với “what” (cái gì).   Dịch nghĩa : Cậu bé đang uống gì trong bếp? "}, {"c": "My wife cooked a good meal for me <u>yesterday</u>.", "a": "When did your wife cook a good meal for you?", "vi": "  Giải thích : My wife cooked a good meal for me  yesterday . (Vợ tôi nấu một bữa ăn ngon cho tôi ngày hôm qua.)  Câu gốc gạch chân trạng từ chỉ thời gian “yesterday” (hôm qua) nên ta đặt câu hỏi với “when” (khi nào).   Dịch nghĩa : Khi nào vợ bạn nấu một bữa ăn ngon cho bạn? "}, {"c": "Mr. Trung came here <u>to ask for help</u>.", "a": "Why did Mr. Trung come here?", "vi": "  Giải thích : Mr. Trung came here  to   ask for help , (ông Trung đến đây để nhờ giúp đỡ.)  Câu gốc gạch chân cụm động từ nguyên thể chỉ mục đích “to ask for help” (để nhờ giúp đỡ) nên ta đặt câu hỏi với “why” (tại sao).   Giải thích : Tại sao ông Trung lại đến đây? "}, {"c": "He repaired his mobile <u>with the screwdriver and knife</u>.", "a": "How did he repair his mobile?", "vi": "  Giải thích : He repaired his mobile  with screwdriver and knife . (Anh ấy sửa điện thoại di động của mình bằng tuốc nơ vít và dao.)  Câu gốc gạch chân cụm giới từ chỉ cách thức “with screwdriver and knife” (bằng tuốc nơ vít và dao) nên ta đặt câu hỏi với “how” (như thế nào).   Dịch nghĩa : Anh ấy sửa điện thoại di động của mình như thế nào? "}, {"c": "The girl standing next to the window <u>is his daughter</u>.", "a": "Who is the girl standing next to the window?", "vi": "  Giải thích : The girl standing next to the window is  his daughter . (Cô gái đứng cạnh cửa sổ là con gái anh ấy.) Câu gốc gạch chân cụm tính từ sở hữu và danh từ chỉ sự sở hữu “his daughter” (con gái của anh ấy) nên ta đặt câu hỏi với “Who” (Ai).   Dịch nghĩa:  Cô gái đứng cạnh cửa sổ là ai? "}, {"c": "Both pens are beautiful, but I choose <u>the white one</u>.", "a": "Which pen do you choose?", "vi": "  Giải thích : Both pens are beautiful, but I choose  the white one . (Cả hai cây bút đều đẹp, nhưng tôi chọn màu trắng.) Câu gốc gạch chân tân ngữ “the white one” (cái màu trắng) và câu bắt đầu bằng “Both pens ...” thể hiện sự lựa chọn nên ta đặt câu hỏi với which (cái nào trong sự lựa chọn).   Dịch nghĩa : Bạn chọn cái bút nào? "}, {"c": "The black car <u>is his brother’s</u>.", "a": "Whose is the black car?", "vi": "  Giải thích:  The black car is  his brother’s . (Chiếc xe màu đen là của anh trai của anh ấy.)  Câu gốc gạch chân danh từ được sở hữu cách chỉ sự sở hữu “his brother’s” (của anh trai anh ấy) nên ta đặt câu hỏi với “whose” (của ai).   Dịch nghĩa : Xe ô tô màu đen là của ai? "}, {"c": "Long bought his new mobile phone <u>in the shop near here</u>.", "a": "Where did Long buy his new mobile phone?", "vi": "  Giải thích : Long bought his new mobile phone  in the shop near here . (Long mua điện thoại di động mới của mình ở cửa hàng gần đây.)  Câu gốc gạch chân trạng ngữ chỉ địa điểm “in the shop near here” (ở cửa hàng gần đây) nên ta đặt câu hỏi với “where” (ở đâu).   Dịch nghĩa:  Long đã mua điện thoại di động mới của mình ở đâu? "}, {"c": "They went to the cinema <u>to watch an interesting film</u> yesterday.", "a": "Why did they go to the cinema yesterday?", "vi": "  Giải thích : They went to the cinema  to watch an interesting film  yesterday. (Họ đã đến rạp chiếu phim để xem một bộ phim thú vị ngày hôm qua.)  Câu gốc gạch chân “to watch an interesting film” (để xem một bộ phim hay) diễn tả mục đích của hành động “đến rạp chiếu phim” nên ta đặt câu hỏi với “Why” (Tại sao).   Dịch nghĩa : Tại sao họ đã đi đến rạp chiếu phim ngày hôm qua? "}, {"c": "Mary <u>is watching a science fiction</u> now.", "a": "What is Mary doing now?", "vi": "  Giải thích : Mary  is watching science fiction  now. (Mary lúc này đang xem phim khoa học viễn tưởng.)  Câu gốc gạch chân “is watching science fiction” (đang xem phim khoa học viễn tưởng) diễn tả hành động mà Mary đang thực hiện nên ta đặt câu hỏi với “What” (Cái gì).   Dịch nghĩa : Bây giờ Mary đang làm gì? "}, {"c": "Tom has <u>2 pens </u>in the bag.", "a": "How many pens does Tom have in the bag?", "vi": "  Giải thích : Tom has  2 pens  in the bag. (Tom có 2 cây bút trong túi.)  Câu gốc gạch chân “2 pens” (2 cái bút) diễn tả số lượng bút mà Tom có nên ta đặt câu hỏi với “How many” (Bao nhiêu).   Dịch nghĩa : Tom có bao nhiêu bút ở trong túi? "}, {"c": "<u>Lan</u> is singing a beautiful song at the moment.", "a": "Who is singing a beautiful song at the moment?", "vi": "  Giải thích :  Lan  is singing a beautiful song at the moment. (Lan đang hát một bài hát hay vào lúc này.)  Câu gốc gạch chân “Lan” diễn tả người thực hiện hành động nên ta đặt câu hỏi với “Who” (Ai).   Dịch nghĩa : Ai đang hát một bài hát hay vào lúc này? "}, {"c": "My sister bought this souvenir for me <u>in Hanoi</u>.", "a": "Where did your sister buy this souvenir for you?", "vi": "  Giải thích : My sister bought this souvenir for me  in Hanoi . (Chị tôi mua quà lưu niệm này cho tôi ở Hà Nội.) Câu gốc gạch chân “in Hanoi” diễn tả địa điểm “chị tôi mua quà lưu niệm” nên ta đặt câu hỏi với “Where” (ở đau).   Dịch nghĩa : Chị gái của bạn đã mua món quà lưu niệm này cho bạn ở đâu? "}, {"c": "Thanh is working <u>in an oversea company</u>.", "a": "Where is Thanh working?", "vi": "  Giải thích : Thanh is working  in an oversea company . (Thanh đang làm việc ở một công ty nước ngoài.)  Câu gốc gạch chân trạng ngữ chỉ địa điểm “in an oversea company” (ở một công ty nước ngoài) nên ta đặt câu hỏi với “Where” (ở đâu).   Dịch nghĩa : Thanh làm việc ở đâu? "}, {"c": "Linh goes to the school library <u>every day</u>.", "a": "How often does Linh go to school library?", "vi": "  Giải thích : Linh goes to school library  every day . (Linh đến thư viện trường mỗi ngày.)  Câu gốc gạch chân trạng ngữ chỉ tần xuất “every day” (mỗi ngày) nên ta đặt câu hỏi với “How often” (Thường xuyên như thế nào).   Dịch nghĩa : Linh có thường xuyên đến thư viện trường không? "}, {"c": "Her family went to Ho Chi Minh City <u>last year</u>.", "a": "When did her family go to Ho Chi Minh City?", "vi": "  Giải thích : Her family went to Ho Chi Minh City  last year . (Gia đình cô đã đến thành phố Hồ Chí Minh vào năm ngoái.)  Câu gốc gạch chân trạng từ chỉ thời gian “last year” (năm ngoái) nên ta đặt câu hỏi với “When” (Khi nào).    Dịch nghĩa : Gia đình cô ấy đến thành phố Hồ Chí Minh khi nào? "}, {"c": "Nam will go to London <u>on business</u>.", "a": "Why will Nam go to London?", "vi": "  Giải thích : Mr. Nam will go to London  on business , (ông Nam sẽ đến Luân Đôn công tác.)  Câu gốc gạch chân trạng ngữ chỉ mục đích “on business” (đi công tác) nên ta đặt câu hỏi với “Why” (Tại sao).    Dịch nghĩa : Tại sao ông Nam sẽ đến London? "}, {"c": "She decorated her work table <u>with flowers.</u>", "a": "How did she decorate her work table?", "vi": "  Giải thích : She decorated her work table  with flowers . (Cô trang trí bàn làm việc của mình bằng hoa.)  Câu gốc gạch chân trạng ngữ chỉ cách thức “with flowers” (bằng hoa) nên ta đặt câu hỏi với “How” (Như thế nào).   Dịch nghĩa : Cô ấy trang trí bàn làm việc của mình như thế nào? "}], "before": "<div class=\"note\">III - Make question for the underlined part in the following sentences. </div>"}, {"id": "g4", "label": "IV · Cụm trạng từ", "kind": "fill", "items": [{"q": "Rio Carnival lasts___every year in Rio de Janeiro, Brazil.", "a": ["for 5 days"], "exp": "<p><b>Giải thích</b>: Trước chỗ trống cần điền là động từ “lasts” (kéo dài) nên ở đây ta cần một cụm trạng từ diễn tả khoảng thời gian. Cụm trạng từ “for 5 days” (trong năm ngày) là phù hợp.</p><p><b>Dịch nghĩa</b>: Rio Carnival lasts for 5 days every year in Rio de Janeiro, Brazil. <i>(Hằng năm Rio Carnival kéo dài 5 ngày tại Rio de Janeiro, Brazil.)</i></p>"}, {"q": "Pingxi Lantern Festival takes place every year___in Taiwan, China.", "a": ["between February and March"], "exp": "<p><b>Giải thích</b>: Trước chỗ trống cần điền là trạng ngữ chỉ thời gian “every year” (hằng năm) và sau nó là cụm trạng từ chỉ nơi chốn “in Taiwan, China (ở Đài Loan, Trung Quốc) nên ở đây ta có thể điền một cụm trạng ngữ chỉ thời gian để bổ sung thông tin cho “every year”. Cụm trạng từ “between February and March” (giữa tháng Hai và tháng Ba) là phù hợp.</p><p><b>Dịch nghĩa:</b> Pingxi Lantern Festival takes place every year between February and March in Taiwan, China. (<i>Lễ hội Đèn lồng Pingxi diễn ra hàng năm từ tháng Hai đến tháng Ba tại Đài Loan, Trung Quốc.)</i></p>"}, {"q": "Oktoberfest has been an important tradition of Bavarian culture___.", "a": ["since 1810"], "exp": "<p><b>Giải thích:</b> Động từ trong câu được chia ở thì hiện tại hoàn thành (has been) nên ở đây ta có thể lựa chọn cụm trạng từ chỉ thời gian “since 1810” (từ năm 1810).</p><p><b>Dịch nghĩa</b>: Oktoberfest has been an important tradition of Bavarian culture since 1810. <i>(Lễ hội Oktoberfest là một truyền thống quan trọng của ván hóa Bavaria kể từ năm 1810.)</i></p>"}, {"q": "Songkran Water Festival is known as the largest celebration___.", "a": ["in Thailand"], "exp": "<p><b>Giải thích</b>: Trong câu thiếu thông tin liên quan đến nơi diễn ra lễ hội và thực tế lễ hội này diễn ra ở Thái Lan, nên ở đây ta có thể lựa chọn cụm trạng từ chỉ nơi chốn “in Thailand”.</p><p><b>Dịch nghĩa</b>: Songkran Water Festival is known as the largest celebration in Thailand. (<i>Lễ hội Té nước Songkran được cho là lễ kỉ niệm lớn nhất ở Thái Lan.)</i></p>"}, {"q": "Hindu people in India celebrate Holi___.", "a": ["by throwing colourful powder to one another"], "exp": "<p><b>Giải thích</b>: Trong câu thiếu thông tin liên quan đến cách thức thực hiện và dựa vào nội dung của câu, ta điền cụm trạng từ chỉ cách thức “by throwing colourful powder to one another”.</p><p><b>Dịch nghĩa</b>: Hindu people in India celebrate Holi by throwing colourful powder to one another. (<i>Người theo đạo Hindu ở Ấn Độ kỷ niệm lễ Holi bằng cách ném bột màu vào nhau.)</i></p>"}, {"q": "Glastonbury Music Festival is a large music and performing arts festival held___.", "a": ["in Pilton, Somerset, England"], "exp": "<p><b>Giải thích</b>: Trong câu thiếu thông tin liên quan đến nơi diễn ra lễ hội và thực tế lễ hội này diễn ra Anh, nên ở đây ta có thể lựa chọn cụm trạng từ chỉ nơi chốn “in Pilton, Somerset, England”.</p><p><b>Dịch nghĩa</b>: Glastonbury Music Festival is a large music and performing arts festival held in Pilton, Somerset, England. <i>(Lễ hội Âm nhạc Glastonbury là một lễ hội âm nhạc và biểu diễn nghệ thuật lớn được tổ chức tại Piìton, Somerset, Anh.)</i></p>"}, {"q": "Quang often goes out drinking coffee___at weekend.", "a": ["with his close friends"], "exp": "<p><b>Giải thích</b>: with his close friends: cùng với bạn thân của anh ấy</p><p><b>Dịch nghĩa</b>: Quang often goes out drinking coffee with his close friends at weekend. (<i>Quang thường đi uống cà phê với những người bạn thân vào cuối tuần.)</i></p>"}], "before": "<div class=\"note\">IV - Complete the following sentences using adverbial phrases in the box</div><div class=\"source\"><p><b>IV - Complete the following sentences using adverbial phrases in the box</b></p><div class=\"tablewrap\"><table><tr><td><p>since 1810</p></td><td><p>in Pilton, Somerset, England</p></td></tr><tr><td><p>by throwing colourful powder to one another</p></td><td><p>in Thailand</p></td></tr><tr><td><p>for 5 days</p></td><td><p>between February and March</p></td></tr><tr><td><p>with his close friends</p></td><td><p>from New Castle, England</p></td></tr></table></div><p><i>Eg.: Mr. John comes__from New Castle, England__.</i></p></div>"}, {"id": "g5", "label": "V · Tìm lỗi sai", "kind": "quiz", "items": [{"q": "<u>Why</u> would you <u>buy</u> if I <u>gave you</u> ten million <u>Vietnamese dong</u>? ", "opts": ["Why", "buy", "gave you", "Vietnamese dong"], "a": 0, "exp": "<p><b>Giải thích</b>: “Why” (tại sao) dùng để hỏi nguyên nhân, lí do. Tuy nhiên trong câu chưa rõ “bạn mua cái gì” nên từ để hỏi “Why” (tại sao) phải sửa thành “What” (cái gì).</p><p><b>Dịch nghĩa:</b> What would you buy if I gave you ten million Vietnamese dong? (<i>Bạn sẽ mua gì nếu tôi cho bạn mười triệu Việt Nam đồng?)</i></p>"}, {"q": "<u>Who</u> <u>mobile phone </u>did you <u>us</u>e <u>yesterday</u>? ", "opts": ["Who", "mobile phone", "use", "yesterday"], "a": 0, "exp": "<p><b>Giải thích</b>: “Who” (ai) được dùng để hỏi về người khi đóng vai trò là chủ ngữ hoặc tân ngữ, nên không thể đứng trước “mobile phone”, thay vào đó chúng ta dùng từ để hỏi “Whose” (của ai) thay thế cho một tính từ sở hữu.</p><p><b>Dịch nghĩa</b>: Whose mobile phone did you use yesterday? (<i>Hôm qua bạn đã sử dụng điện thoại di động của ai?)</i></p>"}, {"q": "How many <u>TV set</u> <u>does</u> <u>your</u> family <u>have</u>? ", "opts": ["TV set", "does", "your", "have"], "a": 0, "exp": "<p><b>Giải thích</b>: Sau từ để hỏi “How many” là danh từ đếm được số nhiều nên “TV set” phải sửa thành “TV sets”. </p><p><b>Dịch nghĩa</b>: How many TV sets does your family have? <i>(Gia đình bạn có mấy cái tivi?)</i></p>"}, {"q": "<u>When</u> are <u>your</u> students <u>learning</u> <u>at</u> the moment? ", "opts": ["When", "your", "learning", "at"], "a": 0, "exp": "<p><b>Giải thích</b>: Trong câu đã có trạng ngữ chỉ thời gian “at the moment” nên từ để hỏi “When” (khi nào) là không hợp lý nên phải sửa thành “What” để hỏi về hành động mà “sinh viên đang làm lúc này” là gì.</p><p><b>Dịch nghĩa</b>: What are your students learning at the moment? <i>(Học sinh của bạn đang học gì vào lúc này?)</i></p>"}, {"q": "<u>English</u> is <u>now</u> being spoken <u>almos</u>t all <u>in </u>the world. ", "opts": ["English", "now", "almost", "in"], "a": 3, "exp": "<p><b>Giải thích</b>: Ta có cụm trạng từ cố định: “all over the world”: trên khắp thế giới</p><p><b>Dịch nghĩa</b>: English is now being spoken almost all over the world. (<i>Tiếng Anh hiện đang được nói gần như trên toàn thế giới.)</i></p>"}, {"q": "<u>Farmers</u> work hard <u>on</u> the fields <u>early</u> in the morning <u>till</u> late in the evening. ", "opts": ["Farmers", "on", "early", "till"], "a": 1, "exp": "<p><b>Giải thích</b>: Ta có cụm trạng từ chỉ nơi chốn: “in the fields” (trên đồng)</p><p><b>Dịch nghĩa</b>: Farmers work hard in the fields early in the morning till late in the evening. (<i>Nông dân làm việc chăm chỉ trên cánh đồng từ sáng sớm đến tối muộn.)</i></p>"}, {"q": "<u>The</u> man <u>smiled</u> with the boy <u>at</u> a <u>friendly</u> way. ", "opts": ["The", "smiled", "at", "friendly"], "a": 2, "exp": "<p><b>Giải thích</b>: Ta có trạng ngữ chỉ cách thức: “in a + tính từ + way”: một cách như thế nào</p><p><b>Dịch nghĩa</b>: The man smiled with the boy in a friendly way. (<i>Người đàn ông mỉm cười với cậu bé một cách thân thiện.)</i></p>"}, {"q": "<u>Christmas</u> is <u>celebrated</u> across <u>the</u> world <u>in</u> December 25th. ", "opts": ["Christmas", "celebrated", "the", "in"], "a": 3, "exp": "<p><b>Giải thích</b>: Cụm trạng ngữ chỉ ngày tháng “December 25th” dùng giới từ “on”.</p><p><b>Dịch nghĩa</b>: Christmas is celebrated across the world on December 25th. (<i>Giáng sinh được tổ chức trên khắp thế giới vào ngày 25 tháng 12.)</i></p>"}], "before": "<div class=\"note\">V - Choose the underlined part which needs correction.</div>"}]}, {"title": "Reading · Đọc hiểu", "icon": "📖", "desc": "Unit 9 · Festivals around the World", "subs": [{"label": "Do you know?", "html": "<div class=\"source\"><div class=\"tablewrap\"><table><tr><td><p><b>DO YOU KNOW?</b></p><p><b>THE SNAKE FESTIVAL</b></p><p>•Every year on the first Thursday in May, the small village of Cocullo in Italy sees thousands of visitors at the annual Snake Festival.</p><p>•In the 11th century, there were many snakes in the village and many people died of snakebite. Saint Domenlc got rid of the snakes and the people of Cocullo hold this festival every year to remember him.</p><p>•For some weeks before the festival, people collect snakes and then, on st Dominic’s Day, they put all the snakes on a statue of St Dominic.</p><p>•At midday, they carry the statue and the snakes in a procession through the village.</p><p>• At the end of the procession, there are fireworks.</p></td></tr></table></div></div>"}, {"id": "r1", "label": "I · Ice & Snow Festival", "kind": "quiz", "items": [{"q": "The world’s biggest snow and ice festival is held in Heilongjiang, China.", "opts": ["True", "False"], "a": 0, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Lễ hội băng tuyết lớn nhất thế giới được tổ chức tại Hắc Long Giang, Trung Quốc.</p><p><b>Giải thích</b>: Thông tin có ở đoạn: “Set in Heilongjiang Province in northern China, it’s the world’s biggest snow and ice festival and [...]”</p>"}, {"q": "The festival takes place every year for one month.", "opts": ["True", "False"], "a": 0, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Lễ hội diễn ra hàng năm trong một tháng.</p><p><b>Giải thích</b>: Thông tin có ở đoạn: “The annual festival officially runs from January 5 to February 5 but [...]”</p>"}, {"q": "ice used in the festival is carried to China from the North Pole.", "opts": ["True", "False"], "a": 1, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Băng được sử dụng trong lễ hội được mang đến Trung Quốc từ Bắc Cực.</p><p><b>Giải thích</b>: Thông tin có ở đoạn: “[...] including the most popular of them all - the Harbin Ice and Snow World, made with ice blocks pulled from the nearby Songhua River.”</p>"}, {"q": "There are 600 landmarks in the Harbin ice and Snow World this year.", "opts": ["True", "False"], "a": 1, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Có 600 địa danh trong Thế giới băng tuyết Cáp Nhĩ Tân năm nay.</p><p><b>Giải thích</b>: Thông tin có ở đoạn: “This year, the Harbin Ice and Snow World spans over 600,000 square meters and includes more than 100 landmarks.”</p>"}, {"q": "People use about 4,500 square cubic meters of snow to make Buddha statue. ", "opts": ["True", "False"], "a": 0, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Người ta sử dụng khoảng 4.500 mét khối tuyết để làm tượng Phật.</p><p><b>Giải thích:</b> Thông tin có ở đoạn: “[...] an exquisite snow Buddha statue made of more than 4,500 square cubic meters of snow [...]”</p>"}], "before": "<div class=\"source\"><p><b>I- Read the passage and decide whether the statements are True (T) or False (F).</b></p><p>If you think suffering teeth-chattering cold is part of the fun when you travel, then the Harbin International Ice and Snow Sculpture Festival is the carnival for you. Set in Heilongjiang Province in northern China, it’s the world’s biggest snow and ice festival and has plenty of spectacular works and activities.</p><p>The annual festival officially runs from January 5 to February 5 but some attractions open to visitors before the opening ceremony, including the most popular of them all - the Harbin Ice and Snow World, made with ice blocks pulled from the nearby Songhua River.</p><p>This year, the Harbin Ice and Snow World spans over 600,000 square meters and includes more than 100 landmarks. In addition to walking up the huge shining ice castles, other highlights include an exquisite snow Buddha statue made of more than 4,500 square cubic meters of snow, a 3D light show and the 340-meter-long Northern Lights-themed ice slides.</p></div><details class=\"tr\"><summary>🇻🇳 Bản dịch bài đọc</summary><div class=\"source\"><p>Nếu bạn nghĩ việc chịu đựng cái rét run cầm cập là một thú vui khi đi du lịch thì Lễ hội điêu khắc băng và tuyết quốc tế Cáp Nhĩ Tân là lễ hội dành cho bạn. Tổ chức tại tỉnh Hắc Long Giang ở miền bắc Trung Quốc, đây là lễ hội băng tuyết lớn nhất thế giới và có nhiều hoạt động và nghệ thuật sắp đặt ngoạn mục.</p><p>Lễ hội hàng năm chính thức diễn ra từ ngày 5 tháng 1 đến ngày 5 tháng 2 nhưng một số điểm tham quan mở cửa cho du khách trước lễ khai mạc, bao gồm điểm tham quan phổ biến nhất trong số đó - Thế giới băng tuyết Cáp Nhĩ Tân, được làm bằng những khối băng được kéo về từ sông Tùng Hoa gần đó.</p><p>Năm nay, Thế giới băng và tuyết Cáp Nhĩ Tân trải rộng trên 600.000 mét vuông và bao gồm hơn 100 địa danh. Ngoài việc đi bộ lên các lâu đài bàng khổng lồ được chiếu sáng, các điểm nổi bật khác bao gồm một bức tượng Phật bằng tuyết tinh xảo được làm từ hơn 4.500 mét khối tuyết, một màn trình diễn ánh sáng 3D và các đường trượt băng theo chủ đề Ánh sáng phương Bắc dài 340 mét.</p></div></details>"}, {"id": "r2", "label": "II · Canadian festivals", "kind": "quiz", "items": [{"q": "How many grey whales swim near Vancouver Island every year? ", "opts": ["15,000", "16,000", "20,000", "No one knows."], "a": 2, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Có bao nhiêu con cá voi xám bơi gần đảo Vancouver mỗi năm?</p><p><b>A</b>.15.000</p><p><b>B</b>.16.000</p><p><b>C</b>. 20.000</p><p><b>D</b>. Không ai biết.</p><p><b>Giải thích</b>: Thông tin ở câu đầu tiên của đoạn 1: “Every year, about 20,000 grey whales swim past the west coast of Vancouver Island.”</p>"}, {"q": "Where do the grey whales start their annual trip? ", "opts": ["Vancouver Island", "the Arctic", "somewhere in the open ocean", "Mexico"], "a": 3, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Những con cá voi xám bắt đầu chuyến đi hàng năm của chúng ở đâu?</p><p><b>A</b>.Đảo Vancouver</p><p><b>B</b>.Bắc Cực</p><p><b>C</b>. ở đâu đó trong đại dương bao la</p><p><b>D</b>. Mexico</p><p><b>Giải thích</b>: Thông tin ở câu 2 đoạn 1: “The whales travel from Mexico to the Arctic and back again.”</p>"}, {"q": "According to the reading, why is it easy for people to see the whales? ", "opts": ["The people use binoculars.", "The whales swim close to land.", "The people are also swimming in the water.", "They fly over the whales in helicopters."], "a": 1, "exp": "<p><b>Dịch nghĩa câu hỏi:</b> Theo bài đọc, tại sao mọi người dễ dàng nhìn thấy cá voi?</p><p><b>A</b>.Người dân dùng ống nhòm.</p><p><b>B</b>.Cá voi bơi sát đất liền.</p><p><b>C</b>. Người dân cũng đang bơi dưới nước.</p><p><b>D</b>. Mọi người sử dụng máy bay trực thăng bay qua những con cá voi.</p><p><b>Giải thích</b>: Thông tin ở hai câu cuối đoạn 1: “The whales travel very close to the shore as they swim north. This allows people to gather together to watch the whales from land and from boats.”</p>"}, {"q": "Where does the Nanaimo Bathtub Race happen? ", "opts": ["Far off the north coast of Vancouver Island.", "On the South Shore of Vancouver Island.", "On the west side of Vancouver Island.", "On the east side of Vancouver Island."], "a": 3, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Cuộc đua bồn tắm Nanaimo xảy ra ở đâu?</p><p><b>A</b>.Xa bờ biển phía bắc Đảo Vancouver.</p><p><b>B</b>.Trên bờ Nam của Đảo Vancouver.</p><p><b>C</b>. ở phía tây của Đảo Vancouver.</p><p><b>D</b>. Ở phía đông của đảo Vancouver.</p><p><b>Giải thích</b>: Thông tin ở câu đầu tiên của đoạn 2: “On the east coast of Vancouver Island, you can see people moving through the water in a strange type of boat.”</p>"}, {"q": "What is special about every boat in the race? ", "opts": ["Each boat can carry three people.", "Every boat is made from a bathtub.", "Every boat gets a safety inspection.", "All the boats have sails."], "a": 1, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Điều gì đặc biệt về mỗi chiếc thuyền trong cuộc đua?</p><p><b>A</b>.Mỗi thuyền có thể chở ba người.</p><p><b>B</b>.Mỗi chiếc thuyền được làm từ bồn tắm.</p><p><b>C</b>. Mỗi thuyền được kiểm tra an toàn.</p><p><b>D</b>. Tất cả các thuyền đều có buồm.</p><p><b>Giải thích</b>: Thông tin ở câu 2 đoạn 2: “In the Nanaimo Bathtub Race, all the boats are made from bathtubs.” </p>"}], "before": "<div class=\"source\"><p><b>II - Read the passage and choose the best answer to each of the following questions.</b></p><p><b>The Pacific Rim Whale Festival</b></p><p>Every year, about 20,000 grey whales swim past the west coast of Vancouver Island. The whales travel from Mexico to the Arctic and back again. The whole trip is about 16,000 kilometres. Every March, the people who live around the Pacific Rim National Park have a festival to celebrate the whales’ journey. The festival is the Pacific Rim Whale Festival. The whales travel very close to the shore as they swim north. This allows people to gather together to watch the whales from land and from boats.</p><p><b>Nanaimo Bathtub Race</b></p><p>On the east coast of Vancouver Island, you can see people moving through the water in a strange type of boat. In the Nanaimo Bathtub Race, all the boats are made from bathtubs. The city of Nanaimo is home to the oldest and most famous bathtub boat race in the world. Today, Nanaimo World Championship Bathtub Race is a serious sport that attracts many racers and visitors from around the world.</p></div><details class=\"tr\"><summary>🇻🇳 Bản dịch bài đọc</summary><div class=\"source\"><p><b>Lễ hội cá voi Paciffic Rim</b></p><p>Hàng năm, có khoảng 20.000 con cá voi xám bơi qua bờ biển phía tây của Đảo Vancouver. Những con cá voi bơi từ Mexico đến Bắc Cực và sau đó bơi trở lại. Toàn bộ chuyến đi khoảng 16.000 km. Cứ vào tháng Ba, những người sống xung quanh Vườn Quốc gia Pacific Rim có một lễ hội để kỷ niệm hành trình của cá voi. Lễ hội có tên là Lễ hội cá voi Pacific Rim. Những con cá voi di chuyển vào rất gần bờ khi chúng bơi về phía bắc. Điều này cho phép mọi người có thể tụ tập xem cá voi từ đất liền và trên thuyền.</p></div></details>"}]}, {"title": "Listening · Nghe", "icon": "🔊", "desc": "Unit 9 · Festivals around the World", "subs": [{"id": "l1", "label": "Nghe & làm bài", "kind": "fill", "items": [{"q": "Songkran is Thailand’s___at the beginning of the traditional Thai New Year.", "a": ["water festival"], "exp": "<p><b>Dịch nghĩa câu hỏi:</b> Songkran là________của Thái Lan vào đầu năm mới truyền thống của Thái Lan.</p><p><b>Giải thích</b>: Thông tin ở câu: “An important event on the Buddhist calendar, this water festival marks the beginning of the traditional Thai New Year.”</p>"}, {"q": "“Songkran” means “passing” or “___”, and the festival is held annually in April.", "a": ["approaching"], "exp": "<p><b>Dịch nghĩa câu hỏi</b>: “Songkran” có nghĩa là “đi ngang qua” hoặc “_________”, và lễ hội được tổ chức hàng năm vào tháng Tư.</p><p><b>Giải thích</b>: Thông tin ở câu: “The name Songkran comes from a Sanskrit word meaning ‘passing’ or ‘approaching’.”</p>"}, {"q": "The festival takes place from the 13th to the 15th in___every year.", "a": ["April"], "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Lễ hội diễn ra từ ngày 13 đến ngày 15 trong_________hàng năm.</p><p><b>Giải thích</b>: Thông tin ở câu: Songkran Festival takes place in April every year, from the 13th to the 15th.</p>"}, {"q": "An important part of the festival is___to other people.", "a": ["throwing water"], "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Một phần quan trọng của lễ hội là_________vào những người khác.</p><p><b>Giải thích</b>: Thông tin ở câu: “Water is an important element of Songkran, especially in more recent times when the throwing of water has become a huge part of the annual celebrations.”</p>"}, {"q": "Pouring water on___is a way to show respect.", "a": ["Buddha images"], "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Đổ nước vào_________Phật là một cách để thề hiện sự tôn trọng.</p><p><b>Giải thích:</b> Thông tin ở câu: “Buddhists also visit temples throughout Songkran where water is poured on Buddha images and on the hands of Buddhist monks as a mark of respect.”</p>"}], "before": "<div class=\"note\">Giọng đọc tổng hợp từ lời thoại trong tài liệu.</div><button class=\"btn solid\" onclick=\"say(LISTEN)\">▶ Nghe</button> <button class=\"btn\" onclick=\"speechSynthesis.cancel()\">■ Dừng</button>"}, {"label": "Lời thoại & bản dịch", "html": "<div class=\"source\"><div class=\"tablewrap\"><table><tr><td><p>Songkran is Thailand’s most famous festival. An important event in the Buddhist calendar, this water festival marks the beginning of the traditional Thai New Year. The name Songkran comes from a Sanskrit word meaning ‘passing’ or ‘approaching’. Songkran Festival takes place in April every year, from the 13th to the 15th. Water is an important element of Songkran, especially in more recent times when the throwing of water has become a huge part of the annual celebrations. If you’re visiting Thailand during this festival, prepare to get splashed! Crowds of people roam around throwing buckets of water, using water pistols and just generally soaking anyone in the vicinity. Buddhists also visit temples throughout Songkran where water is poured on Buddha images and on the hands of Buddhist monks as a mark of respect.</p></td><td><p>Songkran là lễ hội nổi tiếng nhất Thái Lan. Một sự kiện quan trọng trong lịch Phật giáo, lễ hội té nước này đánh dấu sự khởi đầu của năm mới truyền thống của Thái Lan. Cái tên Songkran xuất phát từ một từ tiếng Phạn có nghĩa là “đi ngang qua” hoặc “tiếp cận”. Lễ hội Songkran diễn ra vào tháng 4 hàng năm, từ ngày 13 đến ngày 15. Nước là một yếu tố quan trọng trong lễ Songkran, đặc biệt là thời gian gần đây khi việc té nước đã trở thành một phần rất quan trọng trong các lễ kỷ niệm hàng năm. Nếu bạn đến thăm Thái Lan trong thời gian diễn ra lễ hội này, hãy chuẩn bị tinh thần bị ướt! Rất đông người dân lang thang khắp nơi, hắt xô nước, sử dụng súng nước và làm ướt bất cứ ai đứng xung quanh họ. Phật tử cũng đến thăm các ngôi đền trong suốt lễ hội Songkran, ở đó nước được té vào hình Phật và đổ vào tay của các nhà sư Phật giáo như một cách thể hiện sự tôn trọng.</p></td></tr></table></div></div>"}]}, {"title": "Speaking · Nói", "icon": "💬", "desc": "Unit 9 · Festivals around the World", "subs": [{"label": "Đề bài & hướng dẫn", "html": "<div class=\"source\"><p><b>Talk about the festival of a foreign country you are most interested in.</b></p><p>You can use the following questions as cues:</p><p>• What and where is the festival?</p><p>•When is the festival held?</p><p>•What are the main activities of the festival?</p><p>• Why are you most interested in that festival?</p><p><b>Useful languages:</b></p><div class=\"tablewrap\"><table><tr><td><p><b>Useful vocabulary</b></p></td><td><p><b>Useful structures</b></p></td></tr><tr><td><p>• Harbin Ice Festival</p><p>• Lantern Festival</p><p>• Easter</p><p>• Thanksgiving</p><p>• Jan-Feb</p><p>• 15/12 lunar year</p><p>• seeing lanterns</p><p>• seeing ice castles</p><p>• exciting</p><p>• entertaining</p></td><td><p>• My favourite festival is ... in ...</p><p>• This festival is held ...</p><p>• Participating the festival, people can ...</p><p>• During the festival, people ...</p><p>• I&#x27;m most interested in that festival because ...</p></td></tr></table></div><p><b>Complete the notes:</b></p><div class=\"tablewrap\"><table><tr><td><p><b>Structures of the talk</b></p></td><td><p><b>Your notes</b></p></td></tr><tr><td><p>What and where is the festival?</p></td><td><p>__________________________________________</p><p>__________________________________________</p><p>__________________________________________</p></td></tr><tr><td><p>When is the festival held?</p></td><td><p>__________________________________________</p><p>__________________________________________</p><p>__________________________________________</p></td></tr><tr><td><p>What are the main activities of the festival?</p></td><td><p>__________________________________________</p><p>__________________________________________</p><p>__________________________________________</p></td></tr><tr><td><p>Why are you most interested in that festival?</p></td><td><p>__________________________________________</p><p>__________________________________________</p><p>__________________________________________</p></td></tr></table></div><p><b>Now you try!</b></p><p><b>Give your answer using the following cues. You should speak for 1-2 minutes.</b></p><p>1. My favourite festival is ... In ...</p><p>2. This festival is held ...</p><p>3. Participating the festival, people can ...</p><p>4. I’m most interested in that festival because ...</p><p><b>Now you tick!</b></p><p><b>Did you ...</b></p><p> answer all the questions in the task?</p><p> give some details to each main point?</p><p> speak slowly and fluently with only some hesitation?</p><p> use vocabulary wide enough to talk about the topic?</p><p> use various sentence structures (simple, compound, complex) accurately?</p><p> pronounce correctly (vowels, consonants, stress, intonation)?</p><p><b> </b><b>Let’s compare!</b></p><p>Finally, compare with the sample answer on page 170.</p></div>"}, {"label": "Ghi chú luyện nói", "kind": "notes"}, {"label": "Gợi ý & bài mẫu", "html": "<div class=\"source\"><p><b>Talk about the festival of a foreign country you are most interested in.</b></p><p><b>Dịch nghĩa câu hỏi</b> :</p><p>Nói về lễ hội của một quốc gia nước ngoài mà em quan tâm nhất.</p><p>Bạn có thể sử dụng các câu hỏi sau đây như gợi ý:</p><p>• Lễ hội gì và ở đâu?</p><p>• Khi nào lễ hội được tổ chức?</p><p>• Các hoạt động chính của lễ hội là gì?</p><p>• Tại sao bạn quan tâm nhất đến lễ hội đó?</p><p><b>Gợi ý trả lời:</b></p><p><b>MAIN IDEAS (Ý chính)</b></p><p><b>Festivals (Lễ hội)</b></p><p>- Oktoberfest (<i>n</i>.) (Lễ hội bia)</p><p>- Harbin Ice Festival (<i>n</i>.) (Lễ hội băng)</p><p>- Songkran (<i>n</i>.) (Lễ té nước)</p><p>- Lantern Festival (<i>n</i>.) (Lễ hội đèn lồng)</p><p><b>Time (Thời gian)</b></p><p>- Sep-Oct (Tháng 9-10)</p><p>- April 13M 5th (13-15 tháng Tư)</p><p>- 15/12 lunar year (15/12 Âm lịch)</p><p>- Jan-Feb (Tháng 1-2)</p><p><b>Activities (Hoạt động)</b></p><p>- drinking good beer (uống bia ngon)</p><p>- seeing ice castles (ngắm lâu đài băng)</p><p>- throwing water (té nước)</p><p>- seeing lanterns (xem đèn lồng)</p><p><b>Reasons (Lí do thích)</b></p><p>- being fond of beer (thích bia)</p><p>- enjoying ice (thích thú băng)</p><p>- exciting (vui vẻ)</p><p>- interesting (thú vị)</p><p>Bài mẫu:</p><div class=\"tablewrap\"><table><tr><td><p>My favourite festival is Oktoberfest in Munich, Germany. This festival is held from the end of September to the beginning of October every year. Coming to this festival, people have a chance to enjoy the greatest and freshest beer. That’s the biggest beer festival in Germany and in the world in general. Participating in the festival, people can have a drink, relax and make friends. In addition, the participants can experience German culture, history, fun games, good food and great beer during the festival. It will be great if one day I have a chance to participate in this festival.</p></td><td><p>Lễ hội mà em yêu thích nhất là Oktoberfest diễn ra ở thành phố Munich, nước Đức từ cuối tháng Chín đến đầu tháng Mười hàng năm. Đến với lễ hội này mọi người có cơ hội được thưởng thức những cốc bia ngon và tươi nhất. Đó là lễ hội bia lớn nhất ở Đức nói riêng và thế giới nói chung. Tham gia lễ hội giúp mọi người có dịp được giải khát, thư giãn và kết bạn với nhau. Lễ hội còn cho phép người tham gia trải nghiệm văn hóa, lịch sử, các trò chơi vui nhộn, đồ ăn ngon và các loại bia hảo hạng của Đức. Sẽ thật tuyệt vời nếu có một ngày em được tham gia lễ hội nổi tiếng và hấp dẫn này.</p></td></tr></table></div></div>"}]}, {"title": "Writing · Viết", "icon": "✍️", "desc": "Unit 9 · Festivals around the World", "subs": [{"id": "w1", "label": "I · Viết câu", "kind": "write", "items": [{"c": "She/ participate/ Boryeong Mud Festival/ three/ year/ ago.", "a": "She participated in Boryeong Mud Festival three years ago.", "vi": "  Dịch nghĩa : Cô ấy đã tham gia lễ hội bùn Boryeong vào ba năm trước. "}, {"c": "Mud Festival/ take place/ July/ every year/ Boryeong town, Korea.", "a": "The Mud Festival takes place in July every year in Boryeong town, Korea.", "vi": "  Dịch nghĩa : Lễ hội bùn diễn ra vào tháng 7 hàng năm tại thị trấn Boryeong, Hàn Quốc. "}, {"c": "It/ be/ originally/ provide people/ cosmetics/ use/ mud/ area.", "a": "It was originally to provide people with cosmetics using the mud from the area.", "vi": "  Dịch nghĩa : Ban đầu là để cung cấp cho mọi người mỹ phẩm làm từ bùn trong khu vực. "}, {"c": "Participate/ festival, people/ have/ great excuse/ get dirty/ have fun.", "a": "Participating in the festival, people have a great excuse to get dirty and have fun.", "vi": "  Dịch nghĩa : Tham gia lễ hội, mọi người có cái cớ tuyệt vời để bị bẩn và có niềm vui. "}, {"c": "Participants/ immerse themselves/ nutrient-rich mud/ mud pool.", "a": "Participants can immerse themselves in nutrient-rich mud in the mud pool.", "vi": "  Dịch nghĩa : Người tham gia có thể đắm mình trong bùn giàu chất dinh dưỡng tại bể bùn. "}, {"c": "People/ often have/ much fun/ when/ play/ colored mud.", "a": "People often have much fun when they play with coloured mud.", "vi": "  Dịch nghĩa : Mọi người thường có nhiều niềm vui khi chơi với bùn màu. "}], "before": ""}, {"label": "II · Viết đoạn văn", "kind": "writing", "html": "<div class=\"source\"><p><b>II - Write a short paragraph (about 60-80 words) about the festival you experienced and remembered the best.</b></p><p>You can answer some of the following questions:</p><p>• What is the festival?</p><p>• When is the festival held?</p><p>• What are the main activities of the festival?</p><p>• What is the most impressive to you?</p><p>__________________________________________________________________</p></div>"}, {"label": "Gợi ý & bài mẫu", "html": "<div class=\"source\"><p><b>II - Write a short paragraph (about 60-80 words) about the festival you experienced and remembered the best.</b></p><p><b>Dịch nghĩa câu hỏi:</b></p><p>Viết một đoạn văn ngắn (khoảng 60-80 từ) về lễ hội mà bạn đã tham dự và nhớ nhất.</p><p>Bạn có thể trả lời một số câu hỏi sau:</p><p>• Đó là lễ hội gì?</p><p>• Khi nào lễ hội được tổ chức?</p><p>• Các hoạt động chính của lễ hội là gì?</p><p>• Điều gì ấn tượng nhất với bạn?</p><p><b>Gợi ý trả lời:</b></p><p><b>MAIN IDEAS (Ý chính)</b></p><p><b>Festivals (Lễ hội)</b></p><p>- Harbin Ice Festival (Lễ hội băng Cáp Nhĩ Tân)</p><p>- Holi Festival (Lễ hội Holi)</p><p>- Carnival of Venice (Lễ hội Venice)</p><p>- Rio Carnival (Lễ hội Rio)</p><p><b>Time (Thời gian)</b></p><p>- in Jan and Feb <i>(prep. phr</i>.) (trong tháng 1 và 2)</p><p>- 40 days before Easter (<i>prep. phr</i>.) (trước lễ Phục sinh 40 ngày)</p><p>- in Feb and Mar (<i>prep. phr.)</i> (trong tháng 2 và 3)</p><p>- on Fri-Ash Wed (<i>prep. phr</i>.) (vào thứ Sáu - thứ Tư Lễ Tro)</p><p><b>Locations (Địa điểm)</b></p><p>- in Harbin, China <i>(prep. phr</i>.) (Cáp Nhĩ Tân, Trung Quốc)</p><p>- in India <i>(prep. phr</i>.) (Ấn Độ)</p><p>- in Venice, Italy (<i>prep. Phr</i>.) (Venice, Ý)</p><p>- in Rio de Janeiro, Brazil <i>(prep. Phr.)</i> (Rio de Janeiro, Bra-xin)</p><p><b>Activities (Hoạt động)</b></p><p>- see ice castles (<i>v. phr</i>.) (ngắm lâu đài băng)</p><p>- sing and dance (<i>v. phr</i>.) (hát và nhảy múa)</p><p>- wear costumes and masks (<i>v. phr</i>.) (trang phục và mặt nạ)</p><p>- Samba dance (<i>v. phr</i>.) (nhảy Samba)</p><p>Bài mẫu:</p><div class=\"tablewrap\"><table><tr><td><p>The festival I participated and remembered the best is Holi Festival in India. It took place at the end of February last year. The festival is to welcome spring and to fight against the evils. Participating in the festival, I had a chance to play, dance and sing. The local people and I threw colourful powder to one another, and danced under water sprinklers. I had a wonderful vacation there. If having a chance, I still choose to go to India and enjoy the Holi Festival once again.</p></td><td><p>Lễ hội mà em đã tham gia và nhớ nhất là lễ hội Holi ở Ấn Độ. Lễ hội này diễn ra vào cuối tháng Hai năm ngoái. Lễ hội được tổ chức để chào đón mùa xuân và chống lại cái ác. Tham gia vào lễ hội, em đã có cơ hội vui chơi, nhảy múa và ca hát. Em cùng người dân địa phương ném bột nhiều màu sắc vào nhau và nhảy múa dưới vòi phun nước. Em đã có một kỳ nghỉ tuyệt vời ở đó. Nếu có cơ hội, em vẫn chọn đến Ấn Độ và tận hưởng lễ hội Holi một lần nữa</p></td></tr></table></div></div>"}]}, {"title": "Objectives · Mục tiêu", "icon": "🎯", "desc": "Unit 9 · Festivals around the World", "subs": [{"label": "Mục tiêu", "html": "<div class=\"source\"><p><b>UNIT </b><b>9</b><b> </b></p><p><b>FESTIVALS AROUND THE WORLD</b></p><p>Các lễ hội trên thế giới</p><p><b>MỤC TIÊU – Objectives</b></p><p>* <b>TỪ VỰNG</b> – Vocabulary</p><p>sử dụng từ vựng liên quan đến chủ đề “Các lễ hội trên thế giới”</p><p>* <b>NGỮ ÂM</b> – Pronunciation</p><p>phát âm các từ có hai âm tiết với trọng âm chính xác khi đứng riêng lẻ và trong ngữ cảnh</p><p>* <b>NGỮ PHÁP</b> – Grammar</p><p>sử dụng cụm trạng ngữ một cách chính xác và phù hợp</p><p>đặt câu và trả lời đúng các câu hỏi có từ để hỏi</p><p><b>* KỸ NĂNG ĐỌC</b> – Reading skills</p><p>đọc tìm thông tin cụ thể về một lễ hội kỳ lạ</p><p>* <b>KỸ NĂNG NÓI</b> – Speaking skills</p><p>thảo luận về các lễ hội khác nhau</p><p>* <b>KỸ NĂNG NGHE</b> – Listening Skills</p><p>nghe lấy thông tin cụ thể về một lễ hội âm nhạc</p><p>* <b>KỸ NĂNG VIẾT</b> – Writing skills</p><p>viết đoạn văn kể về một lễ hội mà bạn đã tham gia</p><p><b>A – NGÔN NGỮ</b></p></div>"}]}];
+const V12=[{"w": "cannon", "p": "/ˈkænən/", "pos": "n.", "vi": "súng thần công, đại bác", "ex": "There’s a cannon in front of the City Hall. (Có một khẩu súng thần công trước tòa thị chính)"}, {"w": "celebrate", "p": "/ˈselɪbreɪt/", "pos": "v.", "vi": "kỉ niệm, làm lễ kỉ niệm", "ex": "We should celebrate this memorable trip. (Chúng ta nên kỉ niệm chuyến đi đáng nhớ này)"}, {"w": "celebration", "p": "/ˌselɪˈbreɪʃn/", "pos": "n.", "vi": "sự/ lễ kỉ niệm, chúc mừng", "ex": "They planned a special celebration for her homecoming. (Họ đã lên kế hoạch cho một buổi liên hoan đặc biệt mừng cô ấy trở về)"}, {"w": "celebratory", "p": "/ˌseləˈbreɪtəri/", "pos": "adj.", "vi": "mang tính kỉ niệm", "ex": "“Pride Day” is a celebratory occasion for us. (“Pride Day” là một dịp mang tính kỉ niệm đối với chúng tôi)"}, {"w": "chaos", "p": "/ˈkeɪɒs/", "pos": "n.", "vi": "sự hỗn loạn, sự lộn xộn", "ex": "My room is in complete chaos at the moment (Phòng tôi bây giờ đang hoàn toàn lộn xộn)"}, {"w": "cultural", "p": "/ˈkʌltʃərəl/", "pos": "adj.", "vi": "mang tính văn hóa, thuộc về văn hóa", "ex": "You have to respect the cultural diversity in your school. (Bạn phải tôn trọng sự đa dạng văn hóa ở trường học)"}, {"w": "culture", "p": "/ˈkʌltʃə(r)/", "pos": "n.", "vi": "văn hóa, nền văn hóa", "ex": "She’s learnt Japanese language and culture since 2017. (Cô ấy đã học ngôn ngữ và văn hóa Nhật Bản từ năm 2017)"}, {"w": "Easter", "p": "/ˈiːstə(r)/", "pos": "n.", "vi": "lễ Phục sinh", "ex": "I get two weeks off school at Easter. (Tôi được nghỉ học hai tuần vào lễ Phục sinh)"}, {"w": "festival", "p": "/ˈfestɪvl/", "pos": "n.", "vi": "lễ hội", "ex": "There’s many impressive festivals in this country. (Có nhiều lễ hội ấn tượng ở đất nước này)"}, {"w": "festive", "p": "/ˈfestɪv/", "pos": "adj.", "vi": "mang tính lễ hội, thuộc về lễ hội", "ex": "The festive atmosphere makes everyone cheerful. (Không khí lễ hội khiến ai cũng vui tươi)"}, {"w": "goggles", "p": "/ˈɡɒɡlz/", "pos": "n.", "vi": "kính bảo hộ", "ex": "Don’t forget to wear goggles to protect your eyes. (Đừng quên đeo kính bảo hộ để bảo vệ mắt)"}, {"w": "greasy", "p": "/ˈɡriːsi/", "pos": "adj.", "vi": "trơn, nhờn", "ex": "Her hair has become greasy after using that bottle of shampoo. (Tóc cô ấy đã trở nên mượt mà sau khi sử dụng chai dầu gội kia)"}, {"w": "harvest", "p": "/ˈhɑːvɪst/", "pos": "n.", "vi": "mùa màng", "ex": "We had a good harvest this year. (Năm nay chúng tôi đã có một vụ mùa bội thu)"}, {"w": "highlight", "p": "/ˈhaɪlaɪt/", "pos": "n.", "vi": "điểm nhấn", "ex": "The highlight of her presentation is some beautiful illustrations. (Điểm nhấn của bài thuyết trình của cô ấy là một số hình minh họa đẹp)"}, {"w": "host", "p": "/həʊst/", "pos": "v.", "vi": "đăng cai tổ chức", "ex": "Russia was selected to host the 2018 FIFA World Cup. (Nước Nga đã được chọn để đăng cai tổ chức Giải vô địch bóng đá thế giới vào năm 2018)"}, {"w": "jet", "p": "/dʒet/", "pos": "n.", "vi": "tia, vòi", "ex": "The whale blew a jet of water into the air. (Cá voi phun một tia nước vào không trung)"}, {"w": "perform", "p": "/pəˈfɔːm/", "pos": "v.", "vi": "biểu diễn, trình diễn", "ex": "She performed well in the show. (Cô ấy đã trình diễn tốt trong buổi diễn đó)"}, {"w": "performance", "p": "/pəˈfɔːməns/", "pos": "n.", "vi": "sự trình diễn, buổi biểu diễn", "ex": "It was an impressive performance by a famous band. (Đó là một buổi biểu diễn ấn tượng do một ban nhạc nổi tiếng trình diễn)"}, {"w": "performer", "p": "/pəˈfɔːmə(r)/", "pos": "n.", "vi": "người biểu diễn", "ex": "They are not great singers but excellent performers (Họ không phải là những ca sĩ giỏi nhưng là những người biểu diễn xuất sắc)"}, {"w": "project", "p": "/ˈprɒdʒekt/", "pos": "n.", "vi": "dự án", "ex": "We’re working really hard on a new project. (Chúng tôi đang làm việc rất chăm chỉ cho một dự án mới)"}, {"w": "religious", "p": "/rɪˈlɪdʒəs/", "pos": "adj.", "vi": "mang tính tôn giáo, thuộc về tôn giáo", "ex": "They shouldn’t impose their religious beliefs on their children. (Họ không nên áp đặt niềm tin tôn giáo của mình lên con gái của họ)"}, {"w": "seasonal", "p": "/ˈsiːzənl/", "pos": "adj.", "vi": "thuộc về mùa", "ex": "This restaurant serves seasonal vegetables. (Nhà hàng này phục vụ rau củ theo mùa)"}, {"w": "serious", "p": "/ˈsɪəriəs/", "pos": "adj.", "vi": "nghiêm túc", "ex": "This is a serious meeting so you must dress formally. (Đây là cuộc họp nghiêm túc nên bạn phải ăn mặc một cách trang trọng)"}, {"w": "steep", "p": "/stiːp/", "pos": "adj.", "vi": "dốc", "ex": "They climbed up a steep mountain yesterday. (Họ đã leo lên một ngọn núi dốc vào hôm qua)"}, {"w": "superstitious", "p": "/ˌsuːpəˈstɪʃəs/", "pos": "adj.", "vi": "mang tính mê tín", "ex": "Some people are superstitious about black cats. (Một số người rất mê tín về mèo đen)"}, {"w": "take place", "p": "/teɪk pleɪs/", "pos": "v.", "vi": "diễn ra, xảy ra", "ex": "The concert takes place next Thursday. (Buổi hòa nhạc diễn ra vào thứ Năm tới)"}, {"w": "thanksgiving", "p": "/ˌθæŋksˈɡɪvɪŋ/", "pos": "n.", "vi": "lễ Tạ ơn", "ex": "My family members always gather to celebrate Thanksgiving together. (Các thành viên gia đình tôi luôn sum họp để kỉ niệm lễ Tạ ơn cùng nhau.)"}];
+const LISTEN="Songkran is Thailand’s most famous festival. An important event in the Buddhist calendar, this water festival marks the beginning of the traditional Thai New Year. The name Songkran comes from a Sanskrit word meaning ‘passing’ or ‘approaching’. Songkran Festival takes place in April every year, from the 13th to the 15th. Water is an important element of Songkran, especially in more recent times when the throwing of water has become a huge part of the annual celebrations. If you’re visiting Thailand during this festival, prepare to get splashed! Crowds of people roam around throwing buckets of water, using water pistols and just generally soaking anyone in the vicinity. Buddhists also visit temples throughout Songkran where water is poured on Buddha images and on the hands of Buddhist monks as a mark of respect. ";
+const OBJECTIVES=[{i:'🚀',t:'Unit 9 · Festivals around the World',d:'Từ vựng, ngữ âm, ngữ pháp và các kỹ năng theo tài liệu Unit 9.'}];
+const drafts={notes:'',writing:''};
+function vocab12(filter=''){return V12.filter(v=>(v.w+' '+v.vi).toLowerCase().includes(filter.toLowerCase())).map(v=>`<div class="vrow"><div><div class="vw">${esc(v.w)} ${spk(v.w)}</div><div class="vp">${esc(v.p)} · ${esc(v.pos)}</div></div><div class="vm">${esc(v.vi)}</div><div class="ven">${esc(v.ex)}</div></div>`).join('')}
+function draw12(s){
+ if(s.kind==='vocab')return `<div class="tools"><input class="search" placeholder="Tìm từ tiếng Anh hoặc nghĩa tiếng Việt…" oninput="document.getElementById('words12').innerHTML=vocab12(this.value)"></div><div id="words12">${vocab12()}</div>`;
+ if(s.kind==='notes')return `<div class="card"><h3>Talk about the festival of a foreign country you are most interested in.</h3><p>Ghi ý chính, sau đó luyện nói trong 1–2 phút.</p><textarea class="studytextarea" oninput="drafts.notes=this.value">${esc(drafts.notes)}</textarea></div>`;
+ if(s.kind==='writing')return s.html+`<textarea class="studytextarea" placeholder="Write your paragraph here…" oninput="drafts.writing=this.value;document.getElementById('count12').textContent=this.value.trim().split(/\s+/).filter(Boolean).length+' / 60–80 từ'">${esc(drafts.writing)}</textarea><p id="count12">${drafts.writing.trim().split(/\s+/).filter(Boolean).length} / 60–80 từ</p>`;
+ if(!s.id)return s.html;
+ const cfg={title:s.label,items:s.items,labels:s.items[0].opts?s.items[0].opts.map((_,i)=>String.fromCharCode(65+i)):undefined};
+ return (s.before||'')+(s.kind==='quiz'?quiz(s.id,cfg):s.kind==='fill'?fill(s.id,cfg):writeSent(s.id,s.items));
+}
+const SECTIONS=DATA.map(s=>({...s,ex:s.subs.filter(x=>x.id).map(x=>x.id),subs:s.subs.map(x=>({...x,ex:x.id?[x.id]:undefined,render:()=>draw12(x)}))}));
+document.title='Unit 9 - Festivals around the World';
+$('.logo .lg').textContent='🚀';
+show(0,0);
+</script></body></html>

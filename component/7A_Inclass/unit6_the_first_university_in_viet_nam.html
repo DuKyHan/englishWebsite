@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 6</title>
+<style>*{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#1e1b4b;--mut:#6b7280;--p:#4f46e5;--p2:#7c3aed;--pk:#db2777;--ok:#059669;--okbg:#ecfdf5;--bad:#dc2626;--badbg:#fef2f2;--am:#b45309;--ambg:#fffbeb;--line:#e4e6f7;--bg:#f3f4ff;--ph:"Doulos SIL","Charis SIL","Lucida Sans Unicode","Segoe UI",Arial,sans-serif}
+html,body{height:469px;overflow:hidden;background:var(--bg);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+button,input,textarea{font-family:inherit}
+::-webkit-scrollbar{width:7px;height:7px}::-webkit-scrollbar-thumb{background:#c7d2fe;border-radius:8px}::-webkit-scrollbar-track{background:transparent}
+.app{display:flex;height:469px;max-width:1128px;margin:0 auto;background:var(--bg)}
+
+/* sidebar */
+.side{width:206px;flex:none;background:linear-gradient(175deg,#2e2a86 0%,#4f46e5 58%,#7c3aed 100%);color:#fff;display:flex;flex-direction:column;padding:12px 10px 10px;position:relative;overflow:hidden}
+.side:before{content:"";position:absolute;right:-50px;top:-50px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.07)}
+.logo{display:flex;align-items:center;gap:9px;padding:0 4px 9px;cursor:pointer;position:relative}
+.logo .lg{width:36px;height:36px;border-radius:11px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:20px}
+.logo b{display:block;font-size:14px;letter-spacing:.05em}
+.logo small{font-size:11px;opacity:.85}
+.nav{flex:1;display:flex;flex-direction:column;gap:2px;min-height:0;position:relative}
+.ni{display:flex;align-items:center;gap:8px;height:28px;padding:0 8px;border:none;background:none;color:#e0e7ff;border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;text-align:left;width:100%;transition:.15s}
+.ni:hover{background:rgba(255,255,255,.13)}
+.ni .n{width:18px;height:18px;flex:none;border-radius:50%;background:rgba(255,255,255,.2);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.ni .t{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ni.on{background:#fff;color:#3730a3;box-shadow:0 4px 12px rgba(0,0,0,.18)}
+.ni.on .n{background:var(--p);color:#fff}
+.ni.done .n{background:#34d399;color:#064e3b}
+.ni.soon{opacity:.62}
+.prog{padding:8px 4px 0;position:relative}
+.pbar{height:7px;background:rgba(255,255,255,.22);border-radius:8px;overflow:hidden}
+.pbar i{display:block;height:100%;background:linear-gradient(90deg,#fde68a,#34d399);border-radius:8px;transition:width .4s}
+.prog small{display:flex;justify-content:space-between;font-size:10.5px;margin-top:4px;opacity:.9}
+
+/* main */
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.head{display:flex;align-items:center;gap:11px;padding:11px 18px 2px}
+.head .hi{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#6366f1,#c026d3);display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 5px 14px rgba(99,102,241,.35);flex:none}
+.head h1{font-size:18px;line-height:1.15;color:#312e81}
+.head p{font-size:12px;color:var(--mut);margin-top:1px}
+.subnav{display:flex;gap:6px;padding:8px 18px 7px;overflow-x:auto;flex:none}
+.stab{flex:none;border:1px solid #d6dafc;background:#fff;color:#4338ca;border-radius:999px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;transition:.15s}
+.stab:hover{background:#eef2ff;transform:translateY(-1px)}
+.stab.on{background:linear-gradient(90deg,#4f46e5,#7c3aed);border-color:transparent;color:#fff;box-shadow:0 4px 12px rgba(79,70,229,.3)}
+.stab i{font-style:normal;margin-left:5px;font-size:10px;background:#34d399;color:#064e3b;border-radius:999px;padding:0 5px}
+.body{flex:1;overflow:auto;padding:2px 18px 16px;min-height:0;animation:fade .25s}
+.body.split{overflow:hidden;padding-bottom:12px}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+/* generic */
+.btn{border:1px solid #c7d2fe;background:#fff;color:#4338ca;padding:6px 12px;border-radius:9px;cursor:pointer;font-size:12px;font-weight:700;transition:.15s}
+.btn:hover{background:#eef2ff;transform:translateY(-1px)}
+.btn.solid{background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff;border-color:transparent;box-shadow:0 4px 10px rgba(79,70,229,.28)}
+.btn.solid:hover{filter:brightness(1.07)}
+.btn.sm{padding:3px 9px;font-size:11px}
+.btn:disabled{opacity:.45;cursor:default;transform:none}
+.chip-s{display:inline-flex;align-items:center;gap:3px;background:#e0e7ff;color:#3730a3;border-radius:999px;padding:2px 10px;font-size:11.5px;font-weight:800}
+.chip-s.ok{background:#d1fae5;color:#065f46}
+.chip{display:inline-block;background:#eef2ff;color:#4338ca;border:1px solid #c7d2fe;border-radius:999px;padding:2px 11px;font-size:12px;font-weight:700}
+.muted{color:var(--mut);font-size:12px}
+.note{font-size:12.5px;background:#f5f3ff;border-left:3px solid #8b5cf6;border-radius:8px;padding:6px 10px;margin:6px 0;line-height:1.5}
+.note.am{background:var(--ambg);border-color:#f59e0b}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:0 3px 12px rgba(67,56,202,.06)}
+.card h3{font-size:14px;color:#312e81;margin-bottom:6px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+mark{background:#fde68a;color:#78350f;border-radius:4px;padding:0 3px;font-weight:800;box-shadow:inset 0 -2px 0 #f59e0b}
+u{text-decoration-thickness:2px;text-underline-offset:2px;text-decoration-color:#e11d48}
+.spk{border:none;background:#eef2ff;border-radius:7px;cursor:pointer;font-size:11px;padding:2px 6px;vertical-align:middle}
+.spk:hover{background:#c7d2fe}
+.ph{font-family:var(--ph)}
+details.tr{margin-top:8px;background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:12.5px;line-height:1.6}
+details.tr summary{cursor:pointer;color:var(--p);font-weight:700}
+details.tr p{margin-top:5px;color:#374151}
+.kw{background:linear-gradient(transparent 55%,#fde68a 55%);font-weight:700;cursor:help}
+.passage{font-size:13.5px;line-height:1.75;background:#fffdf5;border:1px solid #fde68a;border-radius:12px;padding:11px 14px;color:#1f2937}
+.colh{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#7c3aed;margin:2px 0 6px}
+.split>div{overflow:auto;height:100%;padding:0 2px 6px 0}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+/* coming soon */
+.soonbox{height:100%;min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px;color:var(--mut)}
+.soonbox .big{font-size:54px;animation:float 3s ease-in-out infinite}
+.soonbox b{font-size:18px;color:#312e81}
+.soonbox span{font-size:13px;max-width:380px;line-height:1.5}
+@keyframes float{50%{transform:translateY(-8px)}}
+
+/* vocabulary */
+.tools{display:flex;gap:8px;align-items:center;margin-bottom:9px}
+.search{flex:1;border:1.5px solid #d6dafc;border-radius:10px;padding:7px 12px;font-size:12.5px;outline:none;background:#fff}
+.search:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.vrow{display:grid;grid-template-columns:42px 34% 1fr;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:8px 12px;margin-bottom:7px;transition:.15s}
+.vrow:hover{border-color:#a5b4fc;box-shadow:0 5px 16px rgba(99,102,241,.14);transform:translateX(2px)}
+.vem{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#eef2ff,#faf5ff);display:flex;align-items:center;justify-content:center;font-size:22px}
+.vw{font-size:16px;font-weight:800;color:#312e81;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.pos{font-size:10.5px;font-style:italic;font-weight:800;border-radius:999px;padding:1px 8px}
+.pos-n{background:#dbeafe;color:#1d4ed8}.pos-v{background:#dcfce7;color:#15803d}.pos-adj{background:#ffedd5;color:#c2410c}.pos-idiom{background:#f3e8ff;color:#7e22ce}.pos-phr{background:#e0f2fe;color:#0369a1}
+.vp{font-family:var(--ph);font-size:12.5px;color:var(--mut);margin-top:2px}
+.vm{font-size:14px;font-weight:800;color:var(--ok)}
+.ven{font-size:12.8px;line-height:1.5;margin-top:2px}
+.vvi{font-size:12px;color:var(--mut);font-style:italic}
+.hide-mean .vm:not(.rev),.hide-mean .vvi:not(.rev){filter:blur(6px);cursor:pointer;user-select:none}
+.fcwrap{max-width:620px;margin:0 auto}
+.fcnav{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
+.fcdots{display:flex;gap:3px;flex-wrap:wrap;justify-content:center;margin-bottom:8px}
+.fcdots i{width:9px;height:9px;border-radius:50%;background:#e0e7ff}
+.fcdots i.k{background:#34d399}.fcdots i.cur{background:#6366f1;transform:scale(1.35)}
+.fcard{min-height:176px;border-radius:20px;background:linear-gradient(135deg,#eef2ff,#faf5ff);border:2px solid #c7d2fe;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px 24px;cursor:pointer;gap:6px;transition:.2s;box-shadow:0 10px 26px rgba(99,102,241,.14)}
+.fcard.back{background:linear-gradient(135deg,#ecfdf5,#f0fdfa);border-color:#6ee7b7}
+.fcard:hover{transform:translateY(-2px)}
+.fc-em{font-size:34px}.fc-w{font-size:30px;font-weight:900;color:#312e81}
+.fc-p{font-family:var(--ph);font-size:16px;color:var(--mut)}
+.fc-hint{font-size:11px;color:#9ca3af;margin-top:4px}
+.fc-m{font-size:24px;font-weight:900;color:var(--ok)}
+.fc-e{font-size:14px;line-height:1.5}.fc-v{font-size:12.5px;color:var(--mut);font-style:italic}
+.fcbtns{display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+
+/* match game */
+.mg-top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:8px 28px}
+.mc{border:2px solid #d6dafc;background:#fff;border-radius:12px;padding:9px 12px;font-size:13.5px;font-weight:700;cursor:pointer;text-align:left;transition:.15s;min-height:40px;color:#312e81}
+.mc:hover:not(.lock){border-color:#6366f1;background:#eef2ff;transform:scale(1.015)}
+.mc.sel{border-color:#4f46e5;background:#e0e7ff;box-shadow:0 0 0 3px rgba(79,70,229,.2)}
+.mc.lock{background:var(--okbg);border-color:#6ee7b7;color:#065f46;cursor:default;animation:pop .35s}
+.mc.err{border-color:#f87171;background:var(--badbg);animation:shake .4s}
+.mc.vi{font-weight:600;color:#374151}
+@keyframes pop{50%{transform:scale(1.05)}}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* quiz */
+.qz-top{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.qz-title{font-size:13.5px;font-weight:800;color:#312e81;flex:1}
+.qz-bar{height:6px;background:#e0e7ff;border-radius:8px;overflow:hidden;margin-bottom:10px}
+.qz-bar i{display:block;height:100%;background:linear-gradient(90deg,#6366f1,#c026d3);border-radius:8px;transition:width .4s}
+.qz-main{display:grid;grid-template-columns:1.08fr 1fr;gap:14px;align-items:start}
+.qz-q{font-size:15px;line-height:1.55;font-weight:600;margin-bottom:10px;color:#1f2937}
+.blank{display:inline-block;min-width:70px;border-bottom:3px dotted #6366f1;margin:0 2px}
+.fillw{display:inline-block;background:#d1fae5;color:#065f46;border-radius:6px;padding:0 7px;font-weight:800}
+.bigw{font-size:30px;font-weight:900;color:#312e81;letter-spacing:.02em;margin:2px 0}
+.qz-opts{display:flex;flex-direction:column;gap:7px}
+.qz-opts.tf{flex-direction:row}.qz-opts.tf .qo{flex:1;justify-content:center}
+.qo{display:flex;align-items:center;gap:10px;text-align:left;border:2px solid #d6dafc;background:#fff;border-radius:12px;padding:8px 12px;font-size:13.5px;cursor:pointer;transition:.15s;color:#1f2937}
+.qo b{width:24px;height:24px;border-radius:8px;background:#e0e7ff;color:#3730a3;display:flex;align-items:center;justify-content:center;font-size:12px;flex:none}
+.qo:hover:not(.lock){border-color:#6366f1;background:#f5f6ff;transform:translateX(3px)}
+.qo.lock{cursor:default}
+.qo.ok{border-color:#34d399;background:var(--okbg);color:#064e3b;font-weight:700;animation:pop .35s}
+.qo.ok b{background:#10b981;color:#fff}
+.qo.bad{border-color:#f87171;background:var(--badbg);color:#7f1d1d;animation:shake .4s}
+.qo.bad b{background:#ef4444;color:#fff}
+.fb{border-radius:14px;padding:10px 12px;font-size:12.8px;line-height:1.55;max-height:270px;overflow:auto;position:sticky;top:0}
+.fb.idle{background:#f8faff;border:2px dashed #c7d2fe;text-align:center;color:var(--mut);padding:26px 14px}
+.fb.idle .idle-i{font-size:30px}
+.fb.ok{background:var(--okbg);border:1.5px solid #6ee7b7}
+.fb.bad{background:var(--badbg);border:1.5px solid #fca5a5}
+.fb-h{font-weight:900;font-size:14px;margin-bottom:5px}
+.fb.ok .fb-h{color:#047857}.fb.bad .fb-h{color:#b91c1c}
+.fb-h small{display:block;font-size:12px;font-weight:600;color:#374151;margin-top:1px}
+.fb-b{color:#1f2937}
+.fb-tr{margin-top:6px;background:rgba(255,255,255,.7);border-radius:8px;padding:5px 8px;color:#374151}
+.fb-note{margin-top:5px;color:#4338ca;font-weight:600}
+.fb-n{margin-top:9px;width:100%}
+table.mt{width:100%;border-collapse:collapse;font-size:12.3px;margin-top:3px}
+table.mt td{padding:2px 5px;border-bottom:1px dashed rgba(0,0,0,.1);vertical-align:top}
+table.mt tr.hit td{background:rgba(16,185,129,.16);font-weight:700}
+.qz-res{text-align:center;padding:6px 0}
+.ring{width:96px;height:96px;border-radius:50%;margin:4px auto 8px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;color:#312e81;background:conic-gradient(#10b981 var(--pct),#e0e7ff 0);position:relative}
+.ring:before{content:"";position:absolute;inset:9px;background:#fff;border-radius:50%}
+.ring span{position:relative}
+.qz-res h3{font-size:18px;color:#312e81}
+.qz-res .acts{display:flex;gap:8px;justify-content:center;margin:10px 0}
+.wl{text-align:left;margin-top:6px}
+.wl details{background:#fff;border:1px solid #fecaca;border-radius:10px;padding:5px 10px;margin-bottom:5px;font-size:12.5px}
+.wl summary{cursor:pointer;font-weight:700;color:#991b1b}
+.wl .fb-b{margin-top:5px}
+.confetti{position:fixed;top:-12px;font-size:18px;z-index:99;pointer-events:none;animation:fall 1.8s ease-in forwards}
+@keyframes fall{to{transform:translateY(500px) rotate(540deg);opacity:0}}
+
+/* fill */
+.fl-top{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.fl-top .t{font-size:13.5px;font-weight:800;color:#312e81;flex:1;min-width:200px}
+.bank{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0;padding:8px 10px;background:#fff;border:2px dashed #c7d2fe;border-radius:12px}
+.bk{border:none;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border-radius:999px;padding:5px 14px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 3px 8px rgba(99,102,241,.3);transition:.15s}
+.bk:hover:not(.used){transform:translateY(-2px)}
+.bk.used{background:#e5e7eb;color:#9ca3af;box-shadow:none;cursor:default;text-decoration:line-through}
+.fx{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px;padding:7px 4px;border-bottom:1px dashed var(--line);font-size:14px;line-height:2}
+.fx .n{width:22px;height:22px;border-radius:50%;background:#e0e7ff;color:#3730a3;font-size:11px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.fi{width:104px;border:none;border-bottom:2.5px dotted #6366f1;background:#f5f6ff;padding:1px 6px;font-size:14px;text-align:center;outline:none;border-radius:6px 6px 0 0;color:#1e1b4b;font-weight:700}
+.fi:focus{background:#e0e7ff;border-bottom-style:solid}
+.fi.good,.slot.good{border-bottom:2.5px solid #10b981;background:var(--okbg);color:#065f46}
+.fi.bad,.slot.bad{border-bottom:2.5px solid #ef4444;background:var(--badbg);color:#991b1b}
+.slot{min-width:104px;border:none;border-bottom:2.5px dotted #6366f1;background:#f5f6ff;padding:1px 8px;font-size:14px;font-weight:800;cursor:pointer;border-radius:6px 6px 0 0;color:#4338ca;height:26px}
+.slot.act{background:#e0e7ff;border-bottom-style:solid;box-shadow:0 0 0 3px rgba(99,102,241,.25)}
+.fxfb{flex-basis:100%;font-size:12.5px;line-height:1.55;border-radius:10px;padding:5px 10px;margin:0 0 2px 28px}
+.fxfb.ok{background:var(--okbg);border-left:3px solid #10b981;color:#064e3b}
+.fxfb.bad{background:var(--badbg);border-left:3px solid #ef4444;color:#7f1d1d}
+.fxfb .tr{display:block;color:#4b5563;font-style:italic}
+
+/* sentence builder */
+.bd-line{min-height:56px;border:2px dashed #a5b4fc;border-radius:14px;background:#fff;padding:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0}
+.bd-line.ok{border-color:#34d399;background:var(--okbg);border-style:solid}
+.bd-line.bad{border-color:#f87171;background:var(--badbg);border-style:solid}
+.bd-pool{display:flex;flex-wrap:wrap;gap:7px;min-height:44px;padding:4px}
+.wd{border:none;background:#fff;border:2px solid #c7d2fe;color:#3730a3;border-radius:10px;padding:5px 12px;font-size:14px;font-weight:700;cursor:pointer;transition:.15s;box-shadow:0 2px 0 #c7d2fe}
+.wd:hover{transform:translateY(-2px);border-color:#6366f1}
+.wd.in{background:#eef2ff}
+.bd-hint{color:#9ca3af;font-size:12.5px}
+
+/* signals */
+.sg{display:flex;flex-wrap:wrap;gap:2px 1px;align-items:center;padding:8px 6px;border-bottom:1px dashed var(--line);font-size:14.5px;line-height:1.9}
+.sg .n{width:22px;height:22px;border-radius:50%;background:#e0e7ff;color:#3730a3;font-size:11px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-right:3px}
+.tok{padding:0 4px;border-radius:7px;cursor:pointer;transition:.12s}
+.tok:hover{background:#e0e7ff}
+.tok.sig{background:#fde68a;color:#78350f;font-weight:800;box-shadow:inset 0 -3px 0 #f59e0b;cursor:default}
+.tok.err{background:#fee2e2;animation:shake .35s}
+.sgnote{margin-left:6px;font-size:11.5px;background:#ede9fe;color:#5b21b6;border-radius:999px;padding:1px 9px;font-weight:700}
+
+/* grammar theory */
+.gc{border-radius:14px;padding:10px 13px;background:#fff;border:1px solid var(--line);border-top:5px solid #6366f1}
+.gc.t2{border-top-color:#db2777}.gc.t3{border-top-color:#0d9488}
+.gc .ic{font-size:24px}.gc h3{font-size:14px;margin:2px 0 4px;color:#312e81}
+.gc p{font-size:12.8px;line-height:1.55}
+.gex{margin-top:6px;background:#f5f3ff;border-radius:9px;padding:6px 9px;font-size:13px;line-height:1.5}
+.gex i{display:block;color:#6b7280;font-size:12px}
+.scale{display:flex;gap:6px;align-items:stretch;margin:6px 0}
+.sc{flex:1;border-radius:11px;padding:7px 4px;text-align:center;color:#fff;font-size:12.5px;font-weight:800;line-height:1.3}
+.sc small{display:block;font-weight:600;font-size:10.5px;opacity:.92}
+.sc.a{background:#4f46e5}.sc.b{background:#6366f1}.sc.c{background:#8b5cf6}.sc.d{background:#a78bfa}.sc.e{background:#c4b5fd;color:#4c1d95}
+.fm{display:inline-block;font-weight:800;color:#3730a3;background:#e0e7ff;border-radius:8px;padding:1px 9px;margin-bottom:3px}
+table.t{width:100%;border-collapse:separate;border-spacing:0;font-size:12.8px;line-height:1.5;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+table.t th{background:linear-gradient(90deg,#eef2ff,#faf5ff);color:#312e81;padding:7px 10px;text-align:left}
+table.t td{padding:7px 10px;border-top:1px solid var(--line);vertical-align:top}
+table.t i{color:#6b7280;display:block;font-size:12px}
+
+/* pronunciation */
+.pcard{border-radius:16px;overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:0 4px 14px rgba(67,56,202,.08)}
+.pcard .ph2{display:flex;align-items:center;gap:10px;padding:9px 13px;color:#fff}
+.pcard.c1 .ph2{background:linear-gradient(90deg,#4f46e5,#7c3aed)}.pcard.c2 .ph2{background:linear-gradient(90deg,#db2777,#f59e0b)}
+.pcard .sym{font-family:var(--ph);font-size:27px;font-weight:700;background:rgba(255,255,255,.22);border-radius:11px;padding:0 11px}
+.pcard .ph2 b{display:block;font-size:13px}.pcard .ph2 small{font-size:11.5px;opacity:.92}
+.pbody{padding:9px 13px 11px}
+.pbody figure{border:1px solid var(--line);border-radius:12px;padding:5px;text-align:center;background:#fff;margin-bottom:8px}
+.pbody figure img{width:100%;height:108px;object-fit:contain}
+.pbody figcaption{font-size:11.5px;color:var(--mut)}
+.how{font-size:12.5px;line-height:1.55;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:6px 10px;margin-bottom:7px}
+.plist{list-style:none}
+.plist li{font-size:13.3px;padding:4px 0;border-bottom:1px dashed var(--line)}
+.plist li:last-child{border:none}
+.pw{font-weight:800;color:#312e81}.pp{font-family:var(--ph);color:var(--mut);font-size:12.5px}
+.pw u,.pp u{color:#be123c}
+.plist i{font-size:11px;color:#7c3aed}
+.pics{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
+.pic{position:relative;border:2px solid var(--line);border-radius:14px;padding:8px 7px 7px;text-align:center;background:#fff;display:flex;flex-direction:column;align-items:center;gap:5px;transition:.2s}
+.pic img{height:64px;max-width:100%;object-fit:contain}
+.pic .pn{position:absolute;top:5px;left:6px;font-size:10.5px;font-weight:900;background:#e0e7ff;color:#3730a3;border-radius:999px;padding:0 7px}
+.pic input{width:100%;padding:4px 6px;border:1.5px solid #c7d2fe;border-radius:8px;font-size:12.5px;text-align:center;outline:none}
+.pic input:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.pic input.good{border-color:#10b981;background:var(--okbg)}.pic input.bad{border-color:#ef4444;background:var(--badbg)}
+.cols{display:flex;gap:5px}
+.cb{font-family:var(--ph);border:1.5px solid #c7d2fe;background:#fff;border-radius:8px;padding:2px 11px;font-size:13px;cursor:pointer;color:#4338ca;font-weight:700}
+.cb.sel{background:#4f46e5;color:#fff;border-color:#4f46e5}
+.pic.okc{background:var(--okbg);border-color:#6ee7b7}
+.pic.egp{background:#f5f3ff;border-color:#c4b5fd}
+.pmsg{font-size:11px;color:var(--mut);min-height:28px;line-height:1.35}
+.pic.okc .pmsg{color:#065f46}
+.tchip{display:inline-block;margin:2px;background:#e0e7ff;color:#3730a3;border-radius:999px;padding:1px 10px;font-size:12px;font-weight:800;animation:pop .35s}
+
+/* speaking / writing */
+.pickrow{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 8px}
+.pk{border:2px solid #d6dafc;background:#fff;border-radius:999px;padding:5px 13px;font-size:12.5px;font-weight:700;cursor:pointer;color:#3730a3;transition:.15s}
+.pk:hover{border-color:#6366f1}.pk.on{background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff;border-color:transparent;box-shadow:0 3px 9px rgba(79,70,229,.3)}
+.out{background:linear-gradient(135deg,#fffbeb,#fef3c7);border:1px solid #fcd34d;border-radius:14px;padding:11px 14px;font-size:14px;line-height:1.7;color:#1f2937}
+.cue{display:flex;gap:8px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 11px;font-size:13px}
+.cue b{color:#7c3aed}
+.ck{display:flex;gap:9px;align-items:center;padding:7px 10px;border:1.5px solid var(--line);border-radius:11px;margin-bottom:6px;background:#fff;cursor:pointer;font-size:13px;transition:.15s}
+.ck:hover{border-color:#a5b4fc}.ck.on{background:var(--okbg);border-color:#6ee7b7}
+.ck .bx{width:20px;height:20px;border-radius:6px;border:2px solid #c7d2fe;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;flex:none}
+.ck.on .bx{background:#10b981;border-color:#10b981}
+.wr{display:flex;flex-wrap:wrap;gap:6px;align-items:flex-start;padding:7px 4px;border-bottom:1px dashed var(--line)}
+.wr .cues{flex-basis:100%;font-size:13px;color:#4338ca;font-weight:700;padding-left:28px}
+.wr input{flex:1;min-width:260px;border:1.5px solid #c7d2fe;border-radius:10px;padding:6px 10px;font-size:13.5px;outline:none}
+.wr input:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.wr input.good{border-color:#10b981;background:var(--okbg)}.wr input.near{border-color:#f59e0b;background:var(--ambg)}
+.wr .n{width:22px;height:22px;border-radius:50%;background:#e0e7ff;color:#3730a3;font-size:11px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-top:5px}
+textarea.ta{width:100%;min-height:110px;border:2px solid #c7d2fe;border-radius:14px;padding:10px 12px;font-size:14px;line-height:1.6;outline:none;resize:vertical}
+textarea.ta:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.wc{display:flex;align-items:center;gap:8px;margin:6px 0}
+.wcbar{flex:1;height:8px;background:#e5e7eb;border-radius:8px;overflow:hidden;position:relative}
+.wcbar i{display:block;height:100%;background:#f59e0b;border-radius:8px;transition:width .2s,background .2s}
+.wcn{font-weight:900;font-size:13px;min-width:92px;text-align:right}
+
+/* listening */
+.player{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#eef2ff,#faf5ff);border:1px solid #c7d2fe;border-radius:16px;padding:12px 14px;margin-bottom:8px}
+.play{width:50px;height:50px;border-radius:50%;border:none;background:linear-gradient(135deg,#4f46e5,#c026d3);color:#fff;font-size:20px;cursor:pointer;box-shadow:0 6px 16px rgba(79,70,229,.4);flex:none}
+.play:hover{transform:scale(1.07)}
+.ss{padding:1px 2px;border-radius:5px;transition:.2s}.ss.now{background:#fde68a}
+.eq{display:flex;gap:3px;align-items:flex-end;height:22px}
+.eq i{width:4px;background:#6366f1;border-radius:3px;height:6px}
+.eq.on i{animation:eq .8s ease-in-out infinite}.eq.on i:nth-child(2){animation-delay:.15s}.eq.on i:nth-child(3){animation-delay:.3s}.eq.on i:nth-child(4){animation-delay:.45s}
+@keyframes eq{50%{height:22px}}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(30,27,75,.55);display:flex;align-items:center;justify-content:center;z-index:50;animation:fade .2s}
+.mbox{width:min(560px,92%);max-height:430px;overflow:auto;background:#fff;border-radius:20px;padding:18px 22px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.mbox h2{color:#312e81;font-size:19px}.mbox .sub{color:var(--mut);font-size:12.5px;margin-bottom:8px}
+.obj{display:flex;gap:10px;align-items:flex-start;padding:6px 0;border-bottom:1px dashed var(--line);font-size:13px;line-height:1.5}
+.obj .oi{font-size:19px}.obj b{color:#4338ca}
+
+@media (max-width:760px){
+  .app{flex-direction:column}.side{width:100%;flex-direction:row;align-items:center;padding:6px 8px;gap:6px;overflow-x:auto}
+  .logo,.prog{display:none}.nav{flex-direction:row;flex:none}.ni{width:auto;flex:none}
+  .grid2,.grid3,.split,.qz-main,.mg{grid-template-columns:1fr}.pics{grid-template-columns:repeat(2,1fr)}.vrow{grid-template-columns:40px 1fr}.vrow .vright{grid-column:1/-1}
+  .body.split{overflow:auto}.split>div{height:auto;overflow:visible}
+}
+
+/* ---- extra styles for Unit 2 / Unit 3 ---- */
+.so-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+.so-col{border:2px dashed #c7d2fe;border-radius:16px;background:#fff;min-height:128px;cursor:pointer;transition:.15s;overflow:hidden}
+.so-col:hover{border-color:#6366f1;background:#f8f9ff}
+.so-h{font-size:19px;font-weight:800;text-align:center;padding:6px;background:linear-gradient(90deg,#eef2ff,#faf5ff);color:#4338ca;border-bottom:1px solid var(--line)}
+.so-b{padding:8px;display:flex;flex-wrap:wrap;gap:6px;min-height:70px}
+.wd.selw{background:#4f46e5;color:#fff;border-color:#4f46e5;box-shadow:0 0 0 3px rgba(79,70,229,.25)}
+.wd.okw{background:#ecfdf5;border-color:#34d399;color:#065f46;box-shadow:0 2px 0 #34d399}
+.wd.badw{background:#fef2f2;border-color:#f87171;color:#991b1b;box-shadow:0 2px 0 #f87171}
+.tg{padding:1px 5px;border-radius:7px}
+.tg.tg0{background:#dbeafe;color:#1e3a8a;font-weight:800;box-shadow:inset 0 -3px 0 #3b82f6}
+.tg.tg1{background:#fce7f3;color:#831843;font-weight:800;box-shadow:0 0 0 2px #ec4899}
+.tg.tgok{outline:2px solid #34d399;outline-offset:1px}
+.tg.tgbad{background:#fee2e2;color:#991b1b;outline:2px dashed #ef4444;outline-offset:1px}
+.tg sup{font-size:9.5px;font-weight:800;margin-left:2px;color:#b91c1c}
+.tgleg{margin-left:6px}.tgleg .tok{cursor:default;margin-right:4px}
+.sg .fxfb{margin-left:0;flex-basis:100%}
+.formula{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;margin:8px 0}
+.formula .fm{margin:0}.formula .cj{background:linear-gradient(90deg,#4f46e5,#c026d3);color:#fff}
+.cj-card{border-radius:14px;padding:9px 13px;background:#fff;border:1px solid var(--line);border-left:6px solid #6366f1;font-size:12.8px;line-height:1.5}
+.cj-card b{font-size:18px;color:#312e81;letter-spacing:.03em}.cj-card small{color:#6b7280;font-weight:700;margin-left:4px}
+.cj-card p{font-weight:700;color:#4338ca;margin:2px 0}.cj-card i{display:block;color:#374151}
+.cj-card.b{border-left-color:#ec4899}.cj-card.c{border-left-color:#10b981}.cj-card.d{border-left-color:#f59e0b}
+.cj-card u{text-decoration-color:#e11d48;font-weight:800}
+.howl{margin:0 0 8px 18px;font-size:12.5px;line-height:1.55;color:#1f2937}
+.figs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
+.figs figure{border:1px solid var(--line);border-radius:10px;padding:3px;background:#fff}.figs img{width:100%;height:78px;object-fit:contain}
+.txt2{font-size:13.5px;line-height:1.7;margin-top:6px;color:#1f2937}
+.gc h3 small{font-size:11px;font-weight:600;margin-left:3px}
+.mc.vi{font-size:12.5px;line-height:1.35}
+
+.gl{list-style:none;font-size:12.8px}
+.gl li{padding:4px 0 4px 12px;border-left:3px solid #c7d2fe;margin:5px 0;line-height:1.45}
+.gl li span{color:#6b7280;font-size:12px}
+
+.fi{width:150px}
+
+.seg{display:inline-block;border-bottom:3px solid #6366f1;border-radius:3px;padding:0 3px;margin:0 1px;background:#eef2ff;position:relative}
+.seg sup{font-size:10px;font-weight:900;color:#fff;background:#4f46e5;border-radius:999px;padding:0 5px;margin-right:3px}
+.dl{display:flex;gap:10px;align-items:flex-start;margin-bottom:7px}
+.dl b{flex:none;min-width:48px;text-align:center;border-radius:999px;background:#e0e7ff;color:#3730a3;padding:2px 8px;font-size:11.5px}
+.dl div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px 10px;font-size:13px;line-height:1.5}
+.dl div i{display:block;color:var(--mut);font-size:12px}
+.dl.r{flex-direction:row-reverse}.dl.r b{background:#fce7f3;color:#9d174d}.dl.r div{background:#fffafc}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px}
+.step{display:flex;gap:8px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px;font-size:12.5px;line-height:1.4}
+.step b{flex:none;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#4f46e5,#c026d3);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px}
+.poll{display:grid;grid-template-columns:1fr auto 26px auto 90px 36px;gap:6px;align-items:center;margin-bottom:6px;font-size:12.5px}
+.pl{font-weight:700;color:#312e81}.pn2{text-align:center}.pbar2{height:10px;background:#e5e7eb;border-radius:8px;overflow:hidden}.pbar2 i{display:block;height:100%;background:linear-gradient(90deg,#6366f1,#c026d3);transition:width .3s}.pp2{font-size:11.5px;color:var(--mut)}
+@media (max-width:760px){.steps{grid-template-columns:1fr 1fr}.poll{grid-template-columns:1fr auto 26px auto}.pbar2,.pp2{display:none}}
+
+.nf{margin-bottom:8px}.nf label{display:block;font-size:12.5px;font-weight:800;color:#312e81;margin-bottom:3px}
+textarea.nta{min-height:0;font-size:13.5px;padding:7px 10px;border-radius:10px}
+.stt{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:4px}
+.mycard{background:linear-gradient(135deg,#fffbeb,#fdf2f8);border:2px solid #fcd34d;border-radius:16px;padding:12px 16px;font-size:13.5px;line-height:1.6;box-shadow:0 8px 20px rgba(217,119,6,.12);transform:rotate(-.4deg)}
+.mycard p{margin:4px 0}.cardh{font-weight:900;font-size:15px;color:#9d174d;margin-bottom:4px}
+.mycard table.t th{width:36%;text-align:left}
+.rt{display:flex;align-items:center;gap:10px;justify-content:space-between;background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px 12px;margin-bottom:6px;flex-wrap:wrap}
+.rtq{font-size:13px;flex:1;min-width:220px}.rtb{display:flex;gap:4px}
+.face{border:2px solid transparent;background:#f3f4ff;border-radius:50%;width:38px;height:38px;font-size:21px;cursor:pointer;transition:.15s;filter:grayscale(.7)}
+.face:hover{transform:scale(1.15);filter:none}.face.on{border-color:#6366f1;background:#e0e7ff;filter:none;transform:scale(1.12)}
+.drawcard{min-height:130px;border-radius:20px;background:linear-gradient(135deg,#eef2ff,#faf5ff);border:2px dashed #a5b4fc;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px 20px;gap:6px;transition:.2s}
+.drawcard.spin{background:linear-gradient(135deg,#fef3c7,#fce7f3);border-style:solid;animation:pop .2s infinite}
+.dc-t{font-size:20px;font-weight:900;color:#312e81;line-height:1.35}.dc-s{font-size:13px;color:#6b7280}
+.timerbox{background:#fff;border:2px solid #c7d2fe;border-radius:18px;padding:12px;text-align:center}
+.tm-l{font-size:12px;font-weight:800;color:#6b7280;text-transform:uppercase;letter-spacing:.06em}.tm-t{font-size:44px;font-weight:900;color:#4338ca;font-variant-numeric:tabular-nums;margin:2px 0 8px}
+.stepsv div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px 10px;margin-bottom:5px;font-size:13px}
+.so-cols .so-h{font-size:14px}
+@media (max-width:760px){.rtq{min-width:100%}}
+
+.shop{display:grid;grid-template-columns:repeat(3,1fr);gap:4px 12px}.shopg{min-width:0}
+.shopi{display:flex;justify-content:space-between;align-items:center;width:100%;gap:6px;border:2px solid #d6dafc;background:#fff;border-radius:10px;padding:4px 9px;margin-bottom:4px;font-size:12.5px;cursor:pointer;text-align:left;transition:.15s;color:#1f2937}
+.shopi b{color:#6b7280;font-size:12px;white-space:nowrap}.shopi:hover:not(.dis):not(:disabled){border-color:#6366f1;background:#f5f6ff}
+.shopi.on{background:#ecfdf5;border-color:#34d399}.shopi.on b{color:#047857}.shopi.dis{opacity:.4;cursor:not-allowed}
+.mrr{display:flex;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 12px;margin-bottom:6px;font-size:13px}
+.mrp{width:48px;height:48px;border-radius:50%;color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;flex:none}
+.bpr{display:flex;gap:8px;align-items:center;margin-bottom:5px}.bpr>span{min-width:96px;font-size:12.5px;font-weight:700;color:#312e81}.bpr .search{max-width:170px}
+@media (max-width:760px){.shop{grid-template-columns:1fr}}
+
+.hintc{display:flex;gap:10px;align-items:center;background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:8px 12px;margin-bottom:6px;font-size:13px;line-height:1.5}
+.hintc b{flex:none;background:#f59e0b;color:#fff;border-radius:999px;padding:1px 9px;font-size:12px}
+.hintc.lock{background:#f3f4f6;border-color:#e5e7eb;color:#9ca3af}.hintc.lock b{background:#9ca3af}
+.poster{text-align:center;padding:10px 4px}.poster .pt{font-size:19px;font-weight:900;color:#065f46;margin:6px 0;line-height:1.4}.poster .pt2{font-size:15px;color:#047857;font-weight:700}.poster .ps{font-size:12px;color:#6b7280;margin-top:6px}
+
+</style>
+<style>.source{background:white;border:1px solid var(--line);border-radius:12px;padding:16px;margin:8px 0;line-height:1.7;font-size:14px}.source p{margin:6px 0}.source table{border-collapse:collapse;width:100%;min-width:480px}.source td{border:1px solid #d6dafc;padding:8px;vertical-align:top}.tablewrap{overflow:auto}.nav{overflow:auto}.side small{display:block;font-size:10px}.studytextarea{width:100%;min-height:160px;padding:14px;border:1px solid #c7d2fe;border-radius:10px;margin:10px 0;font-size:14px}@media(max-width:650px){.side{width:100%}.head,.body{padding-left:10px;padding-right:10px}.qz-main,.grid2{grid-template-columns:1fr}.source{padding:10px}.vrow{grid-template-columns:1fr}.head h1{font-size:16px}}.main{min-height:0}.vrow{grid-template-columns:minmax(0,30%) minmax(0,24%) minmax(0,1fr)}.vrow>div{min-width:0;overflow-wrap:anywhere}@media(max-width:760px){.side{width:100%}.vrow{grid-template-columns:1fr}.nav{overflow:visible}}.source td p{overflow-wrap:anywhere}</style></head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="logo" onclick="showObjectives()" title="Xem mục tiêu bài học">
+      <div class="lg">🎯</div><div><b>UNIT 6</b><small>The first university in Viet Nam</small></div>
+    </div>
+    <nav class="nav" id="nav"></nav>
+    <div class="prog"><div class="pbar"><i id="pbar"></i></div><small id="ptxt"></small></div>
+  </aside>
+  <main class="main">
+    <header class="head"><div class="hi" id="hi"></div><div><h1 id="ttl"></h1><p id="dsc"></p></div></header>
+    <div class="subnav" id="subnav"></div>
+    <div class="body" id="body"></div>
+  </main>
+</div>
+<script>/* ================= utilities ================= */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const normA = s => s.toLowerCase().replace(/[’‘`]/g, "'").replace(/[.,!?;:"“”]/g, '').replace(/\s+/g, ' ').trim();
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const hl = s => s.replace(/\{\{(.+?)\}\}/g, '<mark>$1</mark>');
+const plain = s => s.replace(/\{\{|\}\}/g, '').replace(/<[^>]+>/g, '');
+function say(t, rate) { try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-GB'; u.rate = rate || .9; speechSynthesis.speak(u); } catch (e) {} }
+function sayEl(el) { say(el.dataset.w); }
+const spk = w => `<button class="spk" data-w="${esc(plain(w))}" onclick="sayEl(this)" title="Nghe">🔊</button>`;
+function confetti() {
+  const em = ['🎉', '✨', '⭐', '🎊', '💜', '🌟'];
+  for (let i = 0; i < 22; i++) {
+    const s = document.createElement('span'); s.className = 'confetti'; s.textContent = em[i % em.length];
+    s.style.left = (10 + Math.random() * 80) + '%'; s.style.animationDelay = (Math.random() * .5) + 's'; s.style.fontSize = (14 + Math.random() * 14) + 'px';
+    document.body.appendChild(s); setTimeout(() => s.remove(), 2400);
+  }
+}
+
+/* ================= component registry & progress ================= */
+const COMP = {}, DONE = {};
+function markDone(id, s, t) { DONE[id] = { s, t }; navRender(); }
+function hydrate() { document.querySelectorAll('.comp').forEach(el => { const c = COMP[el.dataset.id]; if (c) c.render(el); }); }
+function rerender(id) { const el = document.querySelector(`.comp[data-id="${id}"]`); if (el) COMP[id].render(el); }
+const slot = id => `<div class="comp" data-id="${id}"></div>`;
+
+/* ================= QUIZ (one question at a time, explanation panel) ================= */
+function fillQ(q, txt) {
+  const parts = txt.split(' - '); let k = 0;
+  return q.replace(/_{3,}/g, () => `<span class="fillw">${parts[Math.min(k++, parts.length - 1)]}</span>`);
+}
+function quiz(id, cfg) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { i: 0, score: 0, sel: null, res: [], fin: false };
+  if (prev) cfg.items = prev.cfg.items; else if (cfg.regen) cfg.items = cfg.regen();
+  COMP[id] = { st, cfg, render: el => qzRender(id, el) };
+  return slot(id);
+}
+function qzRender(id, el) {
+  const { st, cfg } = COMP[id], items = cfg.items, n = items.length;
+  if (st.fin) { el.innerHTML = qzResult(id); return; }
+  const it = items[st.i], L = cfg.labels || ['A', 'B', 'C', 'D'], ans = st.sel !== null, ok = ans && st.sel === it.a;
+  const opts = it.opts.map((o, j) => {
+    let c = 'qo'; if (ans) { c += ' lock'; if (j === it.a) c += ' ok'; else if (j === st.sel) c += ' bad'; }
+    return `<button class="${c}" onclick="qzPick('${id}',${j})"><b>${L[j]}</b><span>${o}</span></button>`;
+  }).join('');
+  const q = ans ? fillQ(it.q, it.opts[it.a]) : it.q.replace(/_{3,}/g, '<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>');
+  const fb = ans
+    ? `<div class="fb ${ok ? 'ok' : 'bad'}"><div class="fb-h">${ok ? '🎉 Chính xác!' : '❌ Chưa đúng'}<small>Đáp án đúng: <b>${L[it.a]}. ${it.opts[it.a]}</b></small></div><div class="fb-b">${it.exp || ''}</div></div>
+       <button class="btn solid fb-n" onclick="qzNext('${id}')">${st.i === n - 1 ? 'Xem kết quả →' : 'Câu tiếp theo →'}</button>`
+    : `<div class="fb idle"><div class="idle-i">💡</div><p>Chọn một đáp án.<br>Giải thích và nghĩa sẽ hiện ở đây.</p></div>`;
+  el.innerHTML = `<div class="qz">
+    <div class="qz-top"><span class="qz-title">${cfg.title}</span><span class="chip-s">Câu ${st.i + 1}/${n}</span><span class="chip-s ok">★ ${st.score}</span></div>
+    <div class="qz-bar"><i style="width:${(st.i + (ans ? 1 : 0)) / n * 100}%"></i></div>
+    ${cfg.note ? `<div class="note">${cfg.note}</div>` : ''}
+    <div class="qz-main"><div><div class="qz-q">${q}</div><div class="qz-opts ${cfg.tf ? 'tf' : ''}">${opts}</div></div><div>${fb}</div></div></div>`;
+}
+function qzPick(id, j) {
+  const { st, cfg } = COMP[id]; if (st.sel !== null) return;
+  st.sel = j; st.res[st.i] = j; if (j === cfg.items[st.i].a) st.score++;
+  rerender(id);
+}
+function qzNext(id) {
+  const { st, cfg } = COMP[id]; st.sel = null; st.i++;
+  if (st.i >= cfg.items.length) { st.fin = true; markDone(id, st.score, cfg.items.length); if (st.score === cfg.items.length) confetti(); }
+  rerender(id);
+}
+function qzRestart(id) {
+  const c = COMP[id]; Object.assign(c.st, { i: 0, score: 0, sel: null, res: [], fin: false });
+  if (c.cfg.regen) c.cfg.items = c.cfg.regen();
+  rerender(id);
+}
+function qzResult(id) {
+  const { st, cfg } = COMP[id], n = cfg.items.length, pct = Math.round(st.score / n * 100), L = cfg.labels || ['A', 'B', 'C', 'D'];
+  const msg = pct === 100 ? 'Xuất sắc! 🏆' : pct >= 80 ? 'Rất tốt! 👏' : pct >= 50 ? 'Khá ổn, cố thêm chút nữa! 💪' : 'Đừng nản, thử lại nhé! 🌱';
+  const wrong = cfg.items.map((it, i) => ({ it, i })).filter(x => st.res[x.i] !== x.it.a);
+  return `<div class="qz-res"><div class="ring" style="--pct:${pct}%"><span>${st.score}/${n}</span></div><h3>${msg}</h3>
+    <p class="muted">${esc(plain(cfg.title))}</p>
+    <div class="acts"><button class="btn solid" onclick="qzRestart('${id}')">↺ Làm lại</button></div>
+    ${wrong.length ? `<div class="wl"><div class="colh">Các câu cần xem lại (${wrong.length})</div>${wrong.map(({ it, i }) => `<details><summary>Câu ${i + 1}: ${fillQ(it.q, it.opts[it.a])}</summary><div class="fb-b">Bạn chọn: <b>${L[st.res[i]]}. ${it.opts[st.res[i]]}</b> · Đáp án: <b>${L[it.a]}. ${it.opts[it.a]}</b><br>${it.exp || ''}</div></details>`).join('')}</div>` : '<p class="muted">Bạn đã trả lời đúng tất cả các câu 🎯</p>'}</div>`;
+}
+document.addEventListener('keydown', e => {
+  if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+  const m = document.querySelector('.comp .qz-main'); if (!m) return;
+  const id = m.closest('.comp').dataset.id, { st, cfg } = COMP[id], k = e.key.toLowerCase();
+  if (st.sel === null) {
+    const labs = (cfg.labels || ['A', 'B', 'C', 'D']).map(x => x.toLowerCase());
+    let j = labs.indexOf(k); if (j < 0) j = ['1', '2', '3', '4'].indexOf(k);
+    if (j >= 0 && j < cfg.items[st.i].opts.length) qzPick(id, j);
+  } else if (['enter', 'arrowright', ' '].includes(k)) { e.preventDefault(); qzNext(id); }
+});
+function meanExp(opts, mean, a, tr, note) {
+  return `<table class="mt">${opts.map((o, j) => `<tr class="${j === a ? 'hit' : ''}"><td>${'ABCD'[j]}. <b>${o}</b></td><td>${mean[j]}</td></tr>`).join('')}</table>${note ? `<p class="fb-note">${note}</p>` : ''}${tr ? `<p class="fb-tr">🇻🇳 ${tr}</p>` : ''}`;
+}
+const ruleExp = (rule, tr) => `<p>${rule}</p>${tr ? `<p class="fb-tr">🇻🇳 ${tr}</p>` : ''}`;
+
+/* ================= FILL (typing or tap-to-fill word bank) ================= */
+function fill(id, cfg) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { vals: {}, checked: false, res: [], active: null, score: 0 };
+  COMP[id] = { st, cfg, render: el => flRender(id, el) };
+  return slot(id);
+}
+function flRender(id, el) {
+  const { st, cfg } = COMP[id], bank = cfg.bank, items = cfg.items;
+  const used = Object.values(st.vals);
+  const rows = items.map((it, i) => {
+    let k = 0;
+    const q = it.q.replace(/___/g, () => {
+      const key = i + '-' + k, v = st.vals[key] || '', kk = k++;
+      const cls = st.checked ? (st.res[i] && st.res[i][kk] ? ' good' : ' bad') : '';
+      if (bank) return `<button class="slot${st.active === key ? ' act' : ''}${cls}" onclick="flSlot('${id}','${key}')">${v || '&nbsp;'}</button>`;
+      return `<input class="fi${cls}" data-key="${key}" value="${esc(v)}" autocomplete="off" spellcheck="false" oninput="COMP['${id}'].st.vals['${key}']=this.value" onkeydown="flKey(event,'${id}')">`;
+    });
+    let fb = '';
+    if (st.checked) {
+      const ok = st.res[i] && st.res[i].every(Boolean);
+      fb = `<div class="fxfb ${ok ? 'ok' : 'bad'}">${ok ? '✓ Đúng.' : '✗ Đáp án: <b>' + it.a.map(x => x.split('/')[0]).join(' … ') + '</b>.'} ${it.exp || ''}${it.tr ? `<span class="tr">🇻🇳 ${it.tr}</span>` : ''}</div>`;
+    }
+    return `<div class="fx"><span class="n">${i + 1}</span><span>${q}</span>${fb}</div>`;
+  }).join('');
+  el.innerHTML = `<div class="fl-top"><span class="t">${cfg.title}</span>
+      <span class="chip-s ok" ${st.checked ? '' : 'style="display:none"'}>★ ${st.score}/${items.length}</span>
+      <button class="btn solid" onclick="flCheck('${id}')">✔ Kiểm tra</button><button class="btn" onclick="flReveal('${id}')">💡 Xem đáp án</button><button class="btn" onclick="flReset('${id}')">↺ Làm lại</button></div>
+    ${cfg.note ? `<div class="note">${cfg.note}</div>` : ''}
+    ${bank ? `<div class="bank">${bank.map(w => `<button class="bk${used.includes(w) ? ' used' : ''}" onclick="flPut('${id}',this.dataset.w)" data-w="${esc(w)}">${w}</button>`).join('')}</div>` : ''}
+    ${rows}`;
+}
+function flKey(e, id) {
+  if (e.key !== 'Enter') return;
+  const ins = [...document.querySelectorAll(`.comp[data-id="${id}"] input.fi`)], i = ins.indexOf(e.target);
+  if (i < ins.length - 1) ins[i + 1].focus(); else flCheck(id);
+}
+function flSlot(id, key) {
+  const { st } = COMP[id]; if (st.checked) return;
+  if (st.vals[key]) { delete st.vals[key]; st.active = key; } else st.active = st.active === key ? null : key;
+  rerender(id);
+}
+function flPut(id, w) {
+  const { st, cfg } = COMP[id]; if (st.checked || Object.values(st.vals).includes(w)) return;
+  let key = st.active;
+  if (!key || st.vals[key]) { key = null; cfg.items.forEach((it, i) => it.a.forEach((_, k) => { const kk = i + '-' + k; if (!key && !st.vals[kk]) key = kk; })); }
+  if (!key) return;
+  st.vals[key] = w; st.active = null;
+  let nx = null; cfg.items.forEach((it, i) => it.a.forEach((_, k) => { const kk = i + '-' + k; if (!nx && !st.vals[kk]) nx = kk; }));
+  st.active = nx; rerender(id);
+}
+function flCheck(id) {
+  const { st, cfg } = COMP[id]; let s = 0;
+  st.res = cfg.items.map((it, i) => it.a.map((a, k) => a.split('/').map(normA).includes(normA(st.vals[i + '-' + k] || ''))));
+  cfg.items.forEach((it, i) => { if (st.res[i].every(Boolean)) s++; });
+  st.score = s; st.checked = true; st.active = null; markDone(id, s, cfg.items.length);
+  if (s === cfg.items.length) confetti(); rerender(id);
+}
+function flReveal(id) {
+  const { st, cfg } = COMP[id];
+  cfg.items.forEach((it, i) => it.a.forEach((a, k) => { st.vals[i + '-' + k] = a.split('/')[0]; })); flCheck(id);
+}
+function flReset(id) { const { st } = COMP[id]; Object.assign(st, { vals: {}, checked: false, res: [], active: null, score: 0 }); rerender(id); }
+
+/* ================= SENTENCE BUILDER ================= */
+function builder(id, cfg) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { i: 0, score: 0, fin: false, checked: false, ok: false, placed: [], pool: null };
+  if (!st.pool) st.pool = bdShuffle(cfg.items[0].w);
+  COMP[id] = { st, cfg, render: el => bdRender(id, el) };
+  return slot(id);
+}
+function bdShuffle(w) { let p, tries = 0; do { p = shuffle(w.map((x, i) => i)); tries++; } while (p.join() === w.map((x, i) => i).join() && tries < 9); return p; }
+function bdRender(id, el) {
+  const { st, cfg } = COMP[id], items = cfg.items, n = items.length;
+  if (st.fin) { el.innerHTML = `<div class="qz-res"><div class="ring" style="--pct:${Math.round(st.score / n * 100)}%"><span>${st.score}/${n}</span></div><h3>${st.score === n ? 'Hoàn hảo! 🏆' : 'Hoàn thành! 👏'}</h3><p class="muted">${esc(cfg.title)}</p><div class="acts"><button class="btn solid" onclick="bdRestart('${id}')">↺ Làm lại</button></div></div>`; return; }
+  const it = items[st.i], words = it.w;
+  const pool = st.pool.filter(x => !st.placed.includes(x));
+  el.innerHTML = `<div class="qz-top"><span class="qz-title">${cfg.title}</span><span class="chip-s">Câu ${st.i + 1}/${n}</span><span class="chip-s ok">★ ${st.score}</span></div>
+    <div class="qz-bar"><i style="width:${(st.i + (st.checked ? 1 : 0)) / n * 100}%"></i></div>
+    <div class="muted">Bấm các từ theo thứ tự để ghép thành câu hoàn chỉnh. Gợi ý nghĩa: <b>${it.vi}</b></div>
+    <div class="bd-line ${st.checked ? (st.ok ? 'ok' : 'bad') : ''}">${st.placed.length ? st.placed.map(x => `<button class="wd in" onclick="bdBack('${id}',${x})">${words[x]}</button>`).join('') : '<span class="bd-hint">Câu của bạn sẽ hiện ở đây…</span>'}</div>
+    <div class="bd-pool">${pool.map(x => `<button class="wd" onclick="bdAdd('${id}',${x})">${words[x]}</button>`).join('')}</div>
+    <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+      ${st.checked ? `<button class="btn solid" onclick="bdNext('${id}')">${st.i === n - 1 ? 'Xem kết quả →' : 'Câu tiếp theo →'}</button>`
+        : `<button class="btn solid" onclick="bdCheck('${id}')" ${st.placed.length ? '' : 'disabled'}>✔ Kiểm tra</button><button class="btn" onclick="bdClear('${id}')">Xóa hết</button>`}
+    </div>
+    ${st.checked ? `<div class="fb ${st.ok ? 'ok' : 'bad'}" style="margin-top:8px;position:static"><div class="fb-h">${st.ok ? '🎉 Chính xác!' : '❌ Chưa đúng'}<small>Câu đúng: <b>${words.join(' ')}</b></small></div><div class="fb-b">${it.exp || ''}<p class="fb-tr">🇻🇳 ${it.vi}</p></div></div>` : ''}`;
+}
+function bdAdd(id, x) { const { st } = COMP[id]; if (st.checked) return; st.placed.push(x); rerender(id); }
+function bdBack(id, x) { const { st } = COMP[id]; if (st.checked) return; st.placed = st.placed.filter(y => y !== x); rerender(id); }
+function bdClear(id) { COMP[id].st.placed = []; rerender(id); }
+function bdCheck(id) {
+  const { st, cfg } = COMP[id], w = cfg.items[st.i].w;
+  st.ok = normA(st.placed.map(x => w[x]).join(' ')) === normA(w.join(' '));
+  if (st.ok) st.score++; st.checked = true; rerender(id);
+}
+function bdNext(id) {
+  const { st, cfg } = COMP[id]; st.i++; st.checked = false; st.placed = [];
+  if (st.i >= cfg.items.length) { st.fin = true; markDone(id, st.score, cfg.items.length); if (st.score === cfg.items.length) confetti(); }
+  else st.pool = bdShuffle(cfg.items[st.i].w);
+  rerender(id);
+}
+function bdRestart(id) { const { st, cfg } = COMP[id]; Object.assign(st, { i: 0, score: 0, fin: false, checked: false, placed: [], pool: bdShuffle(cfg.items[0].w) }); rerender(id); }
+
+/* ================= MATCH GAME ================= */
+function matchGame(id, pool) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { round: null, sel: null, done: [], moves: 0, err: null, rounds: 0 };
+  if (!st.round) matchNew(st, pool);
+  COMP[id] = { st, pool, render: el => mgRender(id, el) };
+  return slot(id);
+}
+function matchNew(st, pool) { const r = shuffle(pool).slice(0, 6); st.round = { L: r, R: shuffle(r) }; st.sel = null; st.done = []; st.moves = 0; st.err = null; }
+function mgRender(id, el) {
+  const { st } = COMP[id], { L, R } = st.round, fin = st.done.length === L.length;
+  const left = L.map((v, i) => `<button class="mc ${st.done.includes(v.w) ? 'lock' : ''} ${st.sel && st.sel.side === 'L' && st.sel.w === v.w ? 'sel' : ''} ${st.err && st.err.includes('L:' + v.w) ? 'err' : ''}" onclick="mgPick('${id}','L',this.dataset.w)" data-w="${esc(v.w)}">${v.em || ''} ${v.w}</button>`);
+  const right = R.map(v => `<button class="mc vi ${st.done.includes(v.w) ? 'lock' : ''} ${st.sel && st.sel.side === 'R' && st.sel.w === v.w ? 'sel' : ''} ${st.err && st.err.includes('R:' + v.w) ? 'err' : ''}" onclick="mgPick('${id}','R',this.dataset.w)" data-w="${esc(v.w)}">${v.vi}</button>`);
+  el.innerHTML = `<div class="mg-top"><b style="color:#312e81;font-size:13.5px;flex:1">Ghép mỗi từ tiếng Anh với nghĩa tiếng Việt đúng</b><span class="chip-s">Ghép đúng ${st.done.length}/${L.length}</span><span class="chip-s">Lượt: ${st.moves}</span><button class="btn" onclick="mgNew('${id}')">🔀 Vòng mới</button></div>
+    <div class="mg">${L.map((_, i) => left[i] + right[i]).join('')}</div>
+    ${fin ? `<div class="note" style="margin-top:10px;background:#ecfdf5;border-color:#10b981">🎉 Hoàn thành sau <b>${st.moves}</b> lượt! Bấm “Vòng mới” để chơi với 6 từ khác.</div>` : ''}`;
+}
+function mgPick(id, side, w) {
+  const { st } = COMP[id]; if (st.done.includes(w) || st.err) return;
+  if (!st.sel || st.sel.side === side) { st.sel = { side, w }; rerender(id); return; }
+  st.moves++; const a = st.sel; st.sel = null;
+  if (a.w === w) { st.done.push(w); if (st.done.length === st.round.L.length) { markDone(id, st.round.L.length, st.moves); confetti(); } rerender(id); }
+  else { st.err = [`${a.side}:${a.w}`, `${side}:${w}`]; rerender(id); setTimeout(() => { st.err = null; rerender(id); }, 520); }
+}
+function mgNew(id) { const c = COMP[id]; matchNew(c.st, c.pool); rerender(id); }
+
+/* ================= SIGNAL FINDER (grammar) ================= */
+function signals(id, items) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { found: {}, wrong: {}, err: null };
+  COMP[id] = { st, items, render: el => sgRender(id, el) };
+  return slot(id);
+}
+function sgIdx(it) {
+  const toks = it.w.split(' '), ph = it.t.split(' ').map(normA), cl = toks.map(normA);
+  for (let i = 0; i < toks.length; i++) { if (ph.every((p, k) => cl[i + k] === p)) return [i, i + ph.length - 1]; }
+  return [0, 0];
+}
+function sgRender(id, el) {
+  const { st, items } = COMP[id], n = items.length, nf = Object.keys(st.found).length;
+  el.innerHTML = `<div class="fl-top"><span class="t">Tìm dấu hiệu nhận biết thì hiện tại đơn trong mỗi câu</span><span class="chip-s ok">Đã tìm ${nf}/${n}</span><button class="btn" onclick="sgReset('${id}')">↺ Làm lại</button></div>
+    ${items.map((it, i) => {
+      const [a, b] = sgIdx(it), found = st.found[i];
+      return `<div class="sg"><span class="n">${i + 1}</span>${it.w.split(' ').map((t, k) => `<span class="tok ${found && k >= a && k <= b ? 'sig' : ''} ${st.err === i + '-' + k ? 'err' : ''}" onclick="sgPick('${id}',${i},${k})">${t}</span>`).join('')}${found ? `<span class="sgnote">✓ ${it.note}</span>` : ''}</div>`;
+    }).join('')}
+    ${nf === n ? `<div class="note" style="background:#ecfdf5;border-color:#10b981">🎉 Bạn đã tìm đủ! Số câu tìm đúng ngay lần đầu: <b>${n - Object.keys(st.wrong).length}/${n}</b></div>` : ''}`;
+}
+function sgPick(id, i, k) {
+  const { st, items } = COMP[id]; if (st.found[i]) return;
+  const [a, b] = sgIdx(items[i]);
+  if (k >= a && k <= b) { st.found[i] = true; if (Object.keys(st.found).length === items.length) { markDone(id, items.length - Object.keys(st.wrong).length, items.length); confetti(); } rerender(id); }
+  else { st.wrong[i] = true; st.err = i + '-' + k; rerender(id); setTimeout(() => { st.err = null; rerender(id); }, 400); }
+}
+function sgReset(id) { Object.assign(COMP[id].st, { found: {}, wrong: {}, err: null }); rerender(id); }
+
+/* ================= PICTURES (pronunciation, exercise 1) ================= */
+function pics(id, items, example) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { v: [], c: [], ok: [], msg: [] };
+  COMP[id] = { st, items, example, render: el => pcRender(id, el) };
+  return slot(id);
+}
+function pcRender(id, el) {
+  const { st, items, example } = COMP[id], nOk = st.ok.filter(Boolean).length;
+  const col = c => items.map((p, i) => st.ok[i] && p.c === c ? `<span class="tchip">${p.w}</span>` : '').join('');
+  el.innerHTML = `<div class="fl-top"><span class="t">Viết từ dưới mỗi hình, rồi chọn cột âm đúng</span><span class="chip-s ok">★ ${nOk}/${items.length}</span>
+      <button class="btn solid" onclick="pcCheckAll('${id}')">✔ Kiểm tra tất cả</button><button class="btn" onclick="pcReveal('${id}')">💡 Đáp án</button><button class="btn" onclick="pcReset('${id}')">↺ Làm lại</button></div>
+    <div class="pics"><div class="pic egp"><span class="pn">Ví dụ</span><img src="${example.img}" alt=""><b style="color:#6d28d9;font-size:13px">${example.w}</b><span class="ph" style="font-size:13px">/ə/ ✓</span></div>
+    ${items.map((p, i) => `<div class="pic ${st.ok[i] ? 'okc' : ''}"><span class="pn">${i + 1}</span><img src="${p.img}" alt="">
+      <input class="${st.ok[i] ? 'good' : (st.msg[i] && st.msg[i][0] === '✗' && st.msg[i].includes('từ') ? 'bad' : '')}" value="${esc(st.v[i] || '')}" placeholder="Gõ từ…" autocomplete="off" spellcheck="false" ${st.ok[i] ? 'readonly' : ''} oninput="COMP['${id}'].st.v[${i}]=this.value" onkeydown="if(event.key==='Enter')pcCheck('${id}',${i},true)">
+      <div class="cols"><button class="cb ${st.c[i] === 'a' ? 'sel' : ''}" onclick="pcCol('${id}',${i},'a')">/ə/</button><button class="cb ${st.c[i] === '3' ? 'sel' : ''}" onclick="pcCol('${id}',${i},'3')">/ɜː/</button></div>
+      <div class="pmsg">${st.ok[i] ? `✓ <b>${p.w}</b> <span class="ph">${p.p}</span><br>${p.vi}` : (st.msg[i] || '')}</div></div>`).join('')}</div>
+    <table class="t" style="margin-top:10px"><tr><th style="width:50%" class="ph">/ə/</th><th class="ph">/ɜː/</th></tr><tr><td><span class="tchip">${example.w}</span>${col('a')}</td><td>${col('3')}</td></tr></table>`;
+}
+function pcCol(id, i, c) { const { st } = COMP[id]; if (st.ok[i]) return; st.c[i] = c; rerender(id); }
+function pcSave(id) { document.querySelectorAll(`.comp[data-id="${id}"] .pic input`).forEach((inp, i) => { COMP[id].st.v[i] = inp.value; }); }
+function pcCheck(id, i, rr) {
+  const { st, items } = COMP[id], p = items[i]; if (st.ok[i]) return;
+  const wOk = normA(st.v[i] || '') === p.w, cOk = st.c[i] === p.c;
+  if (wOk && cOk) { st.ok[i] = true; st.msg[i] = ''; } else st.msg[i] = !(st.v[i] || '').trim() && !st.c[i] ? 'Chưa điền' : !wOk ? '✗ Chưa đúng từ' : !st.c[i] ? 'Hãy chọn cột âm' : '✗ Sai cột âm';
+  if (rr) rerender(id); if (st.ok.filter(Boolean).length === items.length) { markDone(id, items.length, items.length); confetti(); }
+}
+function pcCheckAll(id) { COMP[id].items.forEach((_, i) => pcCheck(id, i)); rerender(id); }
+function pcReveal(id) { const { st, items } = COMP[id]; items.forEach((p, i) => { st.v[i] = p.w; st.c[i] = p.c; }); pcCheckAll(id); }
+function pcReset(id) { Object.assign(COMP[id].st, { v: [], c: [], ok: [], msg: [] }); rerender(id); }
+
+/* ================= WRITING I (cue → sentence) ================= */
+function writeSent(id, items) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { v: [], res: [], checked: false };
+  COMP[id] = { st, items, render: el => wsRender(id, el) };
+  return slot(id);
+}
+function wsRender(id, el) {
+  const { st, items } = COMP[id], good = st.res.filter(r => r === 'good').length;
+  el.innerHTML = `<div class="fl-top"><span class="t">Viết câu hoàn chỉnh từ các từ gợi ý (có thể thêm từ)</span><span class="chip-s ok" ${st.checked ? '' : 'style="display:none"'}>★ ${good}/${items.length}</span>
+      <button class="btn solid" onclick="wsCheck('${id}')">✔ Đối chiếu</button><button class="btn" onclick="wsReveal('${id}')">💡 Xem đáp án mẫu</button><button class="btn" onclick="wsReset('${id}')">↺ Làm lại</button></div>
+    ${items.map((it, i) => `<div class="wr"><span class="n">${i + 1}</span><input class="${st.checked ? st.res[i] : ''}" value="${esc(st.v[i] || '')}" placeholder="Viết câu của bạn…" spellcheck="false" oninput="COMP['${id}'].st.v[${i}]=this.value">
+      <div class="cues">${it.c}</div>
+      ${st.checked ? `<div class="fxfb ${st.res[i] === 'good' ? 'ok' : 'bad'}" style="flex-basis:100%;${st.res[i] === 'near' ? 'background:#fffbeb;border-color:#f59e0b;color:#78350f' : ''}">${st.res[i] === 'good' ? '✓ Khớp đáp án mẫu: <b>' + it.a + '</b>' : '↔ Chưa khớp hoàn toàn — nhiều cách viết đều có thể đúng, hãy đối chiếu. Đáp án mẫu: <b>' + it.a + '</b>'}<span class="tr">🇻🇳 ${it.vi}</span></div>` : ''}</div>`).join('')}`;
+}
+function wsCheck(id) {
+  const { st, items } = COMP[id];
+  st.res = items.map((it, i) => normA(st.v[i] || '') === normA(it.a) ? 'good' : 'near'); st.checked = true;
+  markDone(id, st.res.filter(r => r === 'good').length, items.length); rerender(id);
+}
+function wsReveal(id) { const { st, items } = COMP[id]; items.forEach((it, i) => { st.v[i] = it.a; }); wsCheck(id); }
+function wsReset(id) { Object.assign(COMP[id].st, { v: [], res: [], checked: false }); rerender(id); }
+
+/* ================= WRITING II (paragraph with live word counter) ================= */
+const WR2 = { text: '', sample: false };
+function wcUpdate() {
+  const t = document.getElementById('wr2t'); if (!t) return; WR2.text = t.value;
+  const n = (t.value.trim().match(/\S+/g) || []).length, bar = document.getElementById('wcb'), lab = document.getElementById('wcn');
+  const pct = Math.min(100, n / 80 * 100); bar.style.width = pct + '%';
+  const ok = n >= 60 && n <= 80; bar.style.background = ok ? '#10b981' : n > 80 ? '#ef4444' : '#f59e0b';
+  lab.textContent = n + ' từ' + (ok ? ' ✓' : n > 80 ? ' (quá dài)' : n >= 60 ? '' : ' (cần ≥ 60)'); lab.style.color = ok ? '#047857' : n > 80 ? '#b91c1c' : '#b45309';
+  if (ok && !DONE.wr2) markDone('wr2', n, n);
+}
+function wcAdd(txt) { const t = document.getElementById('wr2t'); t.value += (t.value && !/\s$/.test(t.value) ? ' ' : '') + txt; t.focus(); wcUpdate(); }
+
+/* ================= LISTENING PLAYER (browser text-to-speech) ================= */
+const LS = { sents: [], idx: 0, playing: false, rate: 1 };
+function lsPlay(script) {
+  try { speechSynthesis.cancel(); } catch (e) { return; }
+  LS.sents = script.match(/[^.!?]+[.!?]+/g) || [script]; LS.playing = true; lsUi();
+  LS.sents.forEach((s, i) => {
+    const u = new SpeechSynthesisUtterance(s.trim()); u.lang = 'en-GB'; u.rate = LS.rate;
+    u.onstart = () => { LS.idx = i; document.querySelectorAll('.ss').forEach((e, k) => e.classList.toggle('now', k === i)); };
+    if (i === LS.sents.length - 1) u.onend = () => { LS.playing = false; lsUi(); document.querySelectorAll('.ss').forEach(e => e.classList.remove('now')); };
+    speechSynthesis.speak(u);
+  });
+}
+function lsStop() { try { speechSynthesis.cancel(); } catch (e) {} LS.playing = false; lsUi(); document.querySelectorAll('.ss').forEach(e => e.classList.remove('now')); }
+function lsUi() { const b = document.getElementById('lsbtn'), q = document.getElementById('lseq'); if (b) b.textContent = LS.playing ? '⏹' : '▶'; if (q) q.classList.toggle('on', LS.playing); }
+
+/* ================= SHELL: navigation, sections ================= */
+let cur = { s: 0, t: 0 };
+function allEx() { return SECTIONS.flatMap(s => s.ex || []); }
+function navRender() {
+  const total = allEx().length, done = allEx().filter(id => DONE[id]).length;
+  $('#nav').innerHTML = SECTIONS.map((s, i) => {
+    const all = (s.ex || []).length && s.ex.every(id => DONE[id]);
+    return `<button class="ni ${i === cur.s ? 'on' : ''} ${all ? 'done' : ''} ${s.soon ? 'soon' : ''}" onclick="show(${i},0)"><span class="n">${all ? '✓' : i + 1}</span><span class="t">${s.nav || s.title}</span></button>`;
+  }).join('');
+  $('#pbar').style.width = (total ? done / total * 100 : 0) + '%';
+  $('#ptxt').innerHTML = `<span>Hoàn thành</span><b>${done}/${total} bài tập</b>`;
+  const sec = SECTIONS[cur.s]; const tabs = document.querySelectorAll('.stab');
+  sec.subs.forEach((sb, k) => { if (sb.ex && tabs[k]) { const d = sb.ex.every(i => DONE[i]); const old = tabs[k].querySelector('i'); if (d && !old) tabs[k].insertAdjacentHTML('beforeend', '<i>✓</i>'); } });
+}
+function show(s, t) {
+  cur = { s, t: t || 0 };
+  const sec = SECTIONS[s], sub = sec.subs[cur.t];
+  $('#hi').textContent = sec.icon; $('#ttl').textContent = sec.title + (sec.vi ? ' · ' + sec.vi : ''); $('#dsc').textContent = sec.desc;
+  $('#subnav').innerHTML = sec.subs.length > 1 ? sec.subs.map((x, k) => `<button class="stab ${k === cur.t ? 'on' : ''}" onclick="show(${s},${k})">${x.label}${x.ex && x.ex.every(i => DONE[i]) ? '<i>✓</i>' : ''}</button>`).join('') : '';
+  $('#subnav').style.display = sec.subs.length > 1 ? '' : 'none';
+  const b = $('#body'); b.className = 'body' + (sub.split ? ' split' : ''); b.innerHTML = sub.render(); b.scrollTop = 0;
+  hydrate(); if (sub.after) sub.after(); navRender(); try { speechSynthesis.cancel(); } catch (e) {} LS.playing = false;
+}
+function showObjectives() {
+  const o = OBJECTIVES.map(x => `<div class="obj"><span class="oi">${x.i}</span><div><b>${x.t}</b><br>${x.d}</div></div>`).join('');
+  document.body.insertAdjacentHTML('beforeend', `<div class="modal" onclick="if(event.target===this)this.remove()"><div class="mbox"><h2>🎯 Mục tiêu bài học</h2><div class="sub">Unit 6 · The first university in Viet Nam — The first university in Viet Nam</div>${o}<div style="text-align:right;margin-top:12px"><button class="btn solid" onclick="this.closest('.modal').remove()">Bắt đầu học →</button></div></div></div>`);
+}
+
+
+const DATA=[{"title": "Vocabulary · Từ vựng", "icon": "📚", "desc": "Unit 6 · The first university in Viet Nam", "subs": [{"label": "21 từ vựng", "kind": "vocab"}]}, {"title": "Vocabulary practice", "icon": "✏️", "desc": "Unit 6 · The first university in Viet Nam", "subs": [{"id": "puzzle", "label": "I · Tìm từ trong ô chữ", "kind": "puzzle", "items": [], "before": "<div class=\"source\"><p><b>I - Search for all the words available in the puzzle and use them to complete the sentences </b></p><p><b>Part 1: Search for all the words available in the rows and columns.</b></p></div>"}, {"id": "v1", "label": "I · Điền từ", "kind": "fill", "items": [{"q": "The football___starts training talented young players from the age of eight.", "a": ["academy"], "exp": "<p><b>Giải thích</b>: Sau danh từ “football” và trước động từ “start” ta cần điền một danh từ. Dựa vào nghĩa của câu, danh từ “academy” (học viện) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: The football academy starts training talented young players from the age of eight. <i>(Học viện bóng đá bắt đầu huấn luyện các cầu thủ trẻ tài năng từ lúc tám tuổi.) </i></p>"}, {"q": "“Truyen Kieu” is a classic of Vietnamese___.", "a": ["literature"], "exp": "<p><b>Giải thích</b>: Sau tính từ “Vietnamese” ta cần điền một danh từ. Dựa vào nghĩa của câu, danh từ “literature” (văn học) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: “Truyen Kieu” is a classic of Vietnamese literature. (<i>Truyện Kiều là một tác phẩm kinh điển của văn học Việt Nam.)</i></p>"}, {"q": "The area has been designated a world___site.", "a": ["heritage"], "exp": "<p><b>Giải thích</b>: Sau danh từ “world” và trước danh từ “site” ta cần điền một danh từ. Dựa vào nghĩa của câu, danh từ “heritage” (di sản) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: The area has been designated a world heritage site. (<i>Khu vực này đã được chỉ định là một khu di sản thế giới.)</i></p>"}, {"q": "A___is a place purely for Buddhism.", "a": ["pagoda"], "exp": "<p><b>Giải thích</b>: Sau mạo từ “a” và trước động từ “is” ta cần điền một danh từ. Dựa vào nghĩa của câu, danh từ “pagoda” (ngôi chùa) là phù hợp nhất.</p><p><b>Dịch nghĩa:</b> A pagoda is a place purely for Buddhism. (<i>Chùa là một nơi chỉ hoàn toàn dành cho Phật giáo.)</i></p>"}, {"q": "During the dig, the archaeological team found some___from the stone Age.", "a": ["relics"], "exp": "<p><b>Giải thích</b>: Sau lượng từ “some” và trước giới từ “from” ta cần điền một danh từ. Dựa vào nghĩa của câu, danh từ “relic” (di vật) là phù hợp nhất. Do “relic” là danh từ đếm được nên sau lượng từ “some” ta phải chia ở dạng số nhiều là “relics”.</p><p><b>Dịch nghĩa</b>: During the dig, the archaeological team found some relics from the stone Age. <i>(Trong quá trình đào bới, đội khảo cổ đã tìm thấy một vài cổ vật từ thời Đồ Đá.)</i></p>"}, {"q": "Her parents always___her the smartest of their children.", "a": ["regard"], "exp": "<p><b>Giải thích</b>: Sau chủ ngữ số nhiều “Her parents” ta cần điền một động từ. Dựa vào nghĩa của câu, động từ “regard” (đánh giá) là phù hợp nhất. Trong câu có trạng từ “always” diễn tả sự việc thường xuyên diễn ra ở thời điểm hiện tại nên ta sử dụng thì hiện tại đơn.</p><p><b>Dịch nghĩa</b>: Her parents always regard her the smartest of their children. <i>(Cha mẹ cô ấy luôn đánh giá cô ấy là đứa thông minh nhất trong những đứa con của họ.)</i></p>"}, {"q": "Military engineers have hurriedly___a bridge across the river.", "a": ["constructed"], "exp": "<p><b>Giải thích</b>: Dựa vào nghĩa của câu, động từ “construct” (xây dựng) là phù hợp nhất. Vị trí cần điền ở phía sau động từ “have” trong cấu trúc câu thì hiện tại hoàn thành nên ta chia động từ ở dạng p.p. là “constructed”.</p><p><b>Dịch nghĩa</b>: Military engineers have hurriedly constructed a bridge across the river. (<i>Các kỹ sư quân độị đã nhanh chóng xây dựng một cây cầu bắc qua sông.)</i></p>"}, {"q": "Have you ever___a career in the police force?", "a": ["considered"], "exp": "<p><b>Giải thích:</b> Dựa vào nghĩa của câu, động từ “consider” (cân nhắc) là phù hợp nhất. Vị trí cần điền ở phía sau động từ “have” trong cấu trúc câu thì hiện tại hoàn thành nên ta chia động từ ở dạng p.p. là “considered”.</p><p><b>Dịch nghĩa</b>: Have you ever considered a career in the police force? <i>(Bạn đã bao giờ từng suy nghĩ về việc làm việc trong lực lượng cảnh sát chưa?)</i></p>"}, {"q": "A___was erected to glorify the country’s national heroes.", "a": ["statue"], "exp": "<p><b>Giải thích</b>: Sau mạo từ “a” và trước động từ “was” ta cần điền một danh từ. Dựa vào nghĩa của câu, danh từ “statue” (bức tượng) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: A statue was erected to glorify the country’s national heroes<i>. (Một bức tượng đã được dựng lên để vinh danh những anh hùng dân tộc của đất nước.)</i></p>"}, {"q": "Snow-capped mountains___the city.", "a": ["surround"], "exp": "<p><b>Giải thích</b>: Sau chủ ngữ số nhiều “Snow-capped mountains” ta cần điền một động từ. Dựa vào nghĩa của câu, động từ “surround” (bao quanh) là phù hợp nhất. Nội dung trong câu diễn tả một sự việc xảy ra ở thời điểm hiện tại nên ta sử dụng thì hiện tại đơn.</p><p><b>Dịch nghĩa</b>: Snow-capped mountains surround the city. <i>(Những đỉnh núi phủ đầy tuyết bao bọc quanh thành phố.)</i></p>"}, {"q": "The villagers___coffee and avocados to sell in the market.", "a": ["grow"], "exp": "<p><b>Giải thích</b>: Sau chủ ngữ số nhiều “The villagers” ta cần điền một động từ. Dựa vào nghĩa của câu, động từ “grow” (trồng) là phù hợp nhất. Nội dung trong câu diễn tả một sự việc xảy ra ở thời điểm Nện tại nên ta sử dụng thì hiện tại đơn.</p><p><b>Dịch nghĩa</b>: The villagers grow coffee and avocados to sell in the market. (<i>Dân làng trồng cà phê và bơ để bán ở chợ.)</i></p>"}], "before": "<div class=\"note\">Part 2: Use the words you have found to complete the following sentences.</div>"}, {"id": "v2", "label": "II · Từ khác nhóm", "kind": "quiz", "items": [{"q": "Circle one odd word.", "opts": ["well", "gate", "blanket", "pavillion"], "a": 2, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. well (<i>n</i>): giếng nước<b>B</b>. gate (<i>n</i>.): cổng</p><p><b>C</b>. blanket (<i>n</i>.): chăn<b>D</b>. pavillion (<i>n</i>.): lầu, các</p><p>Phương án C là danh từ chỉ đồ vật trong gia đình, các phương án còn lại đều là về cơ sở vật chất.</p>"}, {"q": "Circle one odd word.", "opts": ["tent", "pagoda", "umbrella", "compass"], "a": 1, "exp": "<p><b>Giải thích</b>:</p><p><b>A</b>. tent (<i>n</i>.): chiếc lều<b>B</b>. pagoda (<i>n.</i>): ngôi chùa</p><p><b>C</b>. umbrella (<i>n</i>.): cái ô<b>D</b>. compass (<i>n</i>.): la bàn</p><p>Phương án B là danh từ chỉ nơi chốn, các phương án còn lại đều là danh từ chỉ vật dụng.</p>"}, {"q": "Circle one odd word.", "opts": ["pagoda", "temple", "shrine", "university"], "a": 3, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. pagoda (<i>n</i>.): chùa<b>B</b>. temple (<i>n</i>.): đền, đình</p><p><b>C</b>. shrine (<i>n</i>.): miếu<b>D</b>. university (<i>n</i>.): trường đại học</p><p>Phương án D là danh từ chỉ nơi chốn cho việc dạy và học, các phương án còn lại đều là danh từ chỉ nơi chốn cho việc thờ cúng.</p>"}, {"q": "Circle one odd word.", "opts": ["imperial", "royal", "poor", "noble"], "a": 2, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. imperial (<i>adj.</i>): thuộc về hoàng đế<b>B</b>. royal (<i>adj</i>.): thuộc về hoàng gia</p><p><b>C</b>. poor (<i>adj.</i>): nghèo khổ<b>D</b>. noble (<i>adj</i>.): quý tộc</p><p>Phương án C là tính từ chỉ tính chất, các phương án còn lại đều là tính từ liên quan đến hoàng gia.</p>"}, {"q": "Circle one odd word.", "opts": ["fame", "talent", "recognition", "location"], "a": 3, "exp": "<p><b>Giải thích</b>:</p><p><b>A</b>. fame (<i>n.</i>): danh tiếng<b>B</b>. talent (<i>n</i>.): tài năng</p><p><b>C</b>. recognition (<i>n</i>.): sự công nhận<b>D</b>. location (<i>n</i>.): địa điểm</p><p>Phương án D là danh từ cụ thể, các phương án còn lại đều là danh từ trừu tượng.</p>"}], "before": "<div class=\"note\">II - Circle one odd word A, B, C or D.</div>"}, {"id": "v3", "label": "III · Chọn đáp án", "kind": "quiz", "items": [{"q": "A___has been built to commemorate the 100th anniversary of Leo Tolstoy’s birthday. ", "opts": ["statue", "painting", "picture", "drawing"], "a": 0, "exp": "<p><b>Giải thích</b>:</p><p><b>A</b>. statue (<i>n.</i>): bức tượng<b>B</b>. painting (<i>n</i>.): bức tranh</p><p><b>C</b>. picture (<i>n</i>.): bức ảnh<b>D</b>. drawing (<i>n</i>.): bản vẽ</p><p>Xét về nghĩa, phương án A phù hợp nhất.</p><p><b>Dịch nghĩa</b>: A statue has been built to commemorate the 100th anniversary of Leo Tolstoy’s birthday. <i>(Một bức tượng đã được xây dựng để kỷ niệm sinh nhật lần thứ 100 của Leo Tolstoy.)</i></p>"}, {"q": "These monuments are parts of the cultural___of South America. ", "opts": ["science", "fashion", "heritage", "model"], "a": 2, "exp": "<p><b>Giải thích</b>:</p><p><b>A</b>. science (<i>n</i>.): khoa học <b>B</b>. fashion (<i>n</i>.). thời trang</p><p><b>C</b>. heritage (<i>n</i>.): di sản <b>D</b>. model (<i>n</i>.): hình mẫu</p><p>Xét về nghĩa, phương án C phù hợp nhất.</p><p><b>Dịch nghĩa</b>: These monuments are parts of the cultural heritage of South America. (<i>Những tượng đài này thuộc về di sản văn hóa của Nam Mỹ.)</i></p>"}, {"q": "The pipeline was___to transport oil across Alaska to ports on the coast. ", "opts": ["surrounded", "constructed", "consisted", "bottled"], "a": 1, "exp": "<p><b>Giải thích</b>:</p><p><b>A</b>. surrounded (<i>v</i>.): bao bọc <b>B</b>. constructed (<i>v</i>.). xây dựng</p><p><b>C</b>. consisted (<i>v</i>.). bao gồm <b>D</b>. bottled (<i>v</i>.). đóng chai</p><p>Xét về nghĩa, phương án B phù hợp nhất.</p><p><b>Dịch nghĩa</b>: The pipeline was constructed to transport oil across Alaska to ports on the coast. <i>(Đường ống dẫn đã được xây dựng để vận chuyển dầu vượt qua Alaska để tới các cảng trên bờ biển.)</i></p>"}, {"q": "All passengers for flight LH103 please proceed to___16. ", "opts": ["tent", "well", "pavillion", "gate"], "a": 3, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. tent (n): cái lều <b>B.</b> well (n.): giếng</p><p><b>C</b>. pavillion (n.): lầu, các <b>D</b>. gate (n.): cổng</p><p>Xét về nghĩa, phương án D phù hợp nhất.</p><p><b>Dịch nghĩa</b>: All passengers for flight LH103 please proceed to gate 16. <i>(Tất cả các hành khách đi chuyến bay LH103 xin vui lòng đi tới cổng số 16.)</i></p>"}, {"q": "This___is a place of great holiness for the religion’s followers. ", "opts": ["academy", "temple", "university", "palace"], "a": 1, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. academy (<i>n</i>.): học viện <b>B</b>. temple (<i>n</i>.): đền, đình</p><p><b>C</b>. university (<i>n</i>.): trường đại học <b>D</b>. palace (<i>n</i>.): cung điện</p><p>Xét về nghĩa, phương án B phù hợp nhất.</p><p><b>Dịch nghĩa:</b> This temple is a place of great holiness for the religion’s followers. <i>(Ngồi đền này là một nơi hết sức linh thiêng với những người theo tôn giáo.)</i></p>"}, {"q": "The hotel is___by perfectly manicured gardens. ", "opts": ["surrounded", "constructed", "consisted", "bottled"], "a": 0, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. surrounded (<i>v</i>.): bao bọc <b>B</b>. constructed (<i>v</i>.): xây dựng</p><p><b>C</b>. consisted (<i>v</i>.): bao gồm <b>D</b>. bottled (<i>v</i>.): đóng chai</p><p>Xét về nghĩa, phương án A phù hợp nhất.</p><p><b>Dịch nghĩa</b>: The hotel is surrounded by perfectly manicured gardens. <i>(Khách sạn đó đã được bao quanh bởi những khu vườn được chăm sóc một cách hoàn hảo.)</i></p>"}, {"q": "Sinking more___is the best way of supplying the population with clean drinking water. ", "opts": ["compasses", "wells", "blankets", "tents"], "a": 1, "exp": "<p><b>Giải thích</b>:</p><p><b>A</b>. compasses (<i>pl. n</i>.): la bàn <b>B</b>. wells (<i>pl. n</i>.): giếng nước</p><p><b>C</b>. blankets (<i>pl. n.).</i> chăn <b>D</b>. tents (<i>pl. n.):</i> lều</p><p>Xét về nghĩa, phương án B phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Sinking more wells is the best way of supplying the population with clean drinking water. <i>(Đào thêm nhiều giếng nước là cách tốt nhất để cung cấp nước sạch cho người dân.)</i></p>"}, {"q": "Michelle’s being___for a position in the New York City Police Department. ", "opts": ["regarded", "considered", "recognised", "constructed"], "a": 1, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. regarded (<i>v</i>.): đánh giá<b>B</b>. considered <i>(v</i>.): xem xét</p><p><b>C</b>. recognised (<i>v</i>.): nhận ra, công nhận<b>D</b>. constructed (<i>v</i>.): xây dựng</p><p>Xét về nghĩa, phương án B phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Michelle’s being considered fora position in the New York City Police Department. <i>(Michelle dang được xem xét vào một vị trí trong Sở Cảnh Sát Thành phố New York.)</i></p>"}, {"q": "Ella complained that the company never gave her any___for her contribution. ", "opts": ["location", "relic", "literature", "recognition"], "a": 3, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. location (<i>n</i>.): địa điểm<b>B</b>. relic (<i>n.</i>): di tích</p><p><b>C</b>. literature (<i>n</i>.): văn học<b>D</b>. recognition (n.): sự công nhận</p><p>Xét về nghĩa, phương án D phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Ella complained that the company never gave her any recognition for her contribution. <i>(Ella đã than phiền rằng công ty chẳng bao giờ đưa ra bất kỳ sự công nhận nào đối với cống hiến của cô ấy cả.)</i></p>"}, {"q": "The crowd___of college kids and office workers. ", "opts": ["regards", "erects", "consists", "recognises"], "a": 2, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. regards (<i>v</i>.): đánh giá<b>B</b>. erects (<i>v</i>.): dựng lên</p><p><b>C</b>. consists <i>(v</i>.): bao gồm<b>D</b>. recognises (<i>v</i>.): nhận ra, công nhận</p><p>Xét về nghĩa, phương án C phù hợp nhất.</p><p><b>Dịch nghĩa</b>: The crowd consists of college kids and office workers. (<i>Đám đông bao gồm mấy sinh viên cao đẳng và dân văn phòng.)</i></p>"}], "before": "<div class=\"note\">III - Choose the best option to complete each of the following sentences.</div>"}]}, {"title": "Pronunciation · Ngữ âm", "icon": "🎧", "desc": "Unit 6 · The first university in Viet Nam", "subs": [{"label": "Lý thuyết", "html": "<div class=\"source\"><p><b>NGỮ ÂM</b></p><p>Pronunciation</p><p><b>1. PHỤ ÂM /</b><b>tʃ</b><b>/</b></p><div class=\"tablewrap\"><table><tr><td><p><b>CÁCH PHÁT ÂM</b></p></td><td><p><b>VÍ DỤ</b></p></td></tr><tr><td></td><td><p>* <u><b>ch</b></u><b>ur</b><u><b>ch</b></u> /<u><b>tʃ</b></u>ɜː<u><b>tʃ</b></u>/ <i>n. (nhà thờ)</i></p><p>* <b>arm</b><u><b>ch</b></u><b>air</b> /ˈɑːm<u><b>tʃ</b></u>eə(r)/ <i>n. (ghế bành)</i></p></td></tr><tr><td></td><td></td></tr></table></div><p><b>2. PHỤ ÂM /</b><b>dʒ</b><b>/</b></p><div class=\"tablewrap\"><table><tr><td><p><b>CÁCH PHÁT ÂM</b></p></td><td><p><b>VÍ DỤ</b></p></td></tr><tr><td></td><td><p>* <u><b>j</b></u><b>am</b> /<u><b>dʒ</b></u>æm/ <i>n. mứt</i></p><p>* <b>messa</b><u><b>g</b></u><b>e</b> /ˈmesɪ<u><b>dʒ</b></u>/ <i>n. tin nhắn</i></p></td></tr><tr><td></td><td></td></tr></table></div></div>"}, {"id": "p1", "label": "I · Hoàn thành từ", "kind": "fill", "items": [{"q": "chea- → ___", "a": ["cheap"], "exp": "Âm /tʃ/"}, {"q": "--ildren → ___", "a": ["children"], "exp": "Âm /tʃ/"}, {"q": "ques--on → ___", "a": ["question"], "exp": "Âm /tʃ/"}, {"q": "architec--re → ___", "a": ["architecture"], "exp": "Âm /tʃ/"}, {"q": "wat-- → ___", "a": ["watch"], "exp": "Âm /tʃ/"}, {"q": "-ob → ___", "a": ["job"], "exp": "Âm /dʒ/"}, {"q": "-uice → ___", "a": ["juice"], "exp": "Âm /dʒ/"}, {"q": "oran-- → ___", "a": ["orange"], "exp": "Âm /dʒ/"}, {"q": "-ym → ___", "a": ["gym"], "exp": "Âm /dʒ/"}, {"q": "--ant → ___", "a": ["giant"], "exp": "Âm /dʒ/"}], "before": "<div class=\"note\">I - Make words with the sound /tʃ/ and /dʒ/. Then read them aloud</div>"}, {"id": "p2", "label": "II · Phân loại âm", "kind": "quiz", "items": [{"q": "teacher", "opts": ["/tʃ/", "/dʒ/"], "a": 0, "exp": "Đáp án: /tʃ/"}, {"q": "cultural", "opts": ["/tʃ/", "/dʒ/"], "a": 0, "exp": "Đáp án: /tʃ/"}, {"q": "nature", "opts": ["/tʃ/", "/dʒ/"], "a": 0, "exp": "Đáp án: /tʃ/"}, {"q": "cherry", "opts": ["/tʃ/", "/dʒ/"], "a": 0, "exp": "Đáp án: /tʃ/"}, {"q": "chicken", "opts": ["/tʃ/", "/dʒ/"], "a": 0, "exp": "Đáp án: /tʃ/"}, {"q": "achievement", "opts": ["/tʃ/", "/dʒ/"], "a": 0, "exp": "Đáp án: /tʃ/"}, {"q": "researcher", "opts": ["/tʃ/", "/dʒ/"], "a": 0, "exp": "Đáp án: /tʃ/"}, {"q": "challenger", "opts": ["/tʃ/", "/dʒ/"], "a": 0, "exp": "Đáp án: /tʃ/"}, {"q": "approach", "opts": ["/tʃ/", "/dʒ/"], "a": 0, "exp": "Đáp án: /tʃ/"}, {"q": "suggestion", "opts": ["/tʃ/", "/dʒ/"], "a": 0, "exp": "Đáp án: /tʃ/"}, {"q": "village", "opts": ["/tʃ/", "/dʒ/"], "a": 1, "exp": "Đáp án: /dʒ/"}, {"q": "heritage", "opts": ["/tʃ/", "/dʒ/"], "a": 1, "exp": "Đáp án: /dʒ/"}, {"q": "jeans", "opts": ["/tʃ/", "/dʒ/"], "a": 1, "exp": "Đáp án: /dʒ/"}, {"q": "luggage", "opts": ["/tʃ/", "/dʒ/"], "a": 1, "exp": "Đáp án: /dʒ/"}, {"q": "engineer", "opts": ["/tʃ/", "/dʒ/"], "a": 1, "exp": "Đáp án: /dʒ/"}, {"q": "jam", "opts": ["/tʃ/", "/dʒ/"], "a": 1, "exp": "Đáp án: /dʒ/"}, {"q": "engine", "opts": ["/tʃ/", "/dʒ/"], "a": 1, "exp": "Đáp án: /dʒ/"}, {"q": "average", "opts": ["/tʃ/", "/dʒ/"], "a": 1, "exp": "Đáp án: /dʒ/"}, {"q": "imagine", "opts": ["/tʃ/", "/dʒ/"], "a": 1, "exp": "Đáp án: /dʒ/"}, {"q": "origin", "opts": ["/tʃ/", "/dʒ/"], "a": 1, "exp": "Đáp án: /dʒ/"}, {"q": "ginger", "opts": ["/tʃ/", "/dʒ/"], "a": 1, "exp": "Đáp án: /dʒ/"}, {"q": "region", "opts": ["/tʃ/", "/dʒ/"], "a": 1, "exp": "Đáp án: /dʒ/"}, {"q": "advantage", "opts": ["/tʃ/", "/dʒ/"], "a": 1, "exp": "Đáp án: /dʒ/"}], "before": "<div class=\"note\">II - Put the following words into the correct columns according to the pronunciation of the underlined parts.</div><div class=\"source\"><p><b>II - Put the following words into the correct columns according to the pronunciation of the underlined parts.</b></p><div class=\"tablewrap\"><table><tr><td><p>tea<u>ch</u>er</p></td><td><p>villa<u>ge</u></p></td><td><p>cul<u>tu</u>ral</p></td><td><p>herita<u>g</u>e</p></td><td><p><u>j</u>eans</p></td><td><p>lugga<u>g</u>e</p></td></tr><tr><td><p>en<u>gi</u>neer</p></td><td><p>na<u>t</u>ure</p></td><td><p><u>ch</u>erry</p></td><td><p><u>j</u>am</p></td><td><p><u>ch</u>icken</p></td><td><p>en<u>gi</u>ne</p></td></tr><tr><td><p>a<u>ch</u>ievement</p></td><td><p>resear<u>ch</u>er</p></td><td><p><u>ch</u>allenger</p></td><td><p>approa<u>ch</u></p></td><td><p>sugges<u>t</u>ion</p></td><td><p>avera<u>g</u>e</p></td></tr><tr><td><p>ima<u>g</u>ine</p></td><td><p>ori<u>gi</u>n</p></td><td><p><u>g</u>inger</p></td><td><p>re<u>g</u>ion</p></td><td><p>advanta<u>g</u>e</p></td><td></td></tr></table></div></div>"}, {"id": "p3", "label": "III · Chọn âm khác", "kind": "quiz", "items": [{"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["resear<u>ch</u>er", "<u>ch</u>allenger", "ar<u>ch</u>itect", "a<u>chi</u>evement"], "a": 2, "exp": "<p><b>Giải thích</b>: ar<u>ch</u>itect /ˈɑːkɪtekt/ có “ch” được phát âm là /k/, các phương án còn lại có “ch” được phát âm là /tʃ/. </p><p><b>A</b>. resear<u>ch</u>er /rɪˈsɜːtʃə(r)/ <b>B.</b> <u>ch</u>allenger /ˈtʃælɪndʒə(r)/ <b>D</b>. a<u>ch</u>ievement /əˈtʃiːvmənt/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["<u>ch</u>eapness", "ex<u>ch</u>ange", "approa<u>ch</u>", "bro<u>ch</u>ure"], "a": 3, "exp": "<p><b>Giải thích</b>: bro<u>ch</u>ure /ˈbrəʊʃə(r)/ có “ch” được phát âm là /ʃ/, các phương án còn lại có “ch” được phát âm là /tʃ/. </p><p><b>A</b>. <u>ch</u>eapness /ˈtʃiːpnəs/<b>B</b>. ex<u>c</u>hange /ɪksˈtʃeɪndʒ/<b>C</b>. approa<u>ch</u> /əˈprəʊtʃ/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["tradi<u>t</u>ion", "condi<u>ti</u>on", "loca<u>ti</u>on", "sugges<u>t</u>ion"], "a": 3, "exp": "<p><b>Giải thích</b>: sugges<u>t</u>ion /səˈdʒestʃən/ có “t” được phát âm là /tʃ/, các phương án còn lại có “t” được phát âm là /ʃ/. </p><p><b>A</b>. tradi<u>t</u>ion /trəˈdɪʃn/ <b>B</b>. condi<u>t</u>ion /kənˈdɪʃn/ <b>C</b>. loca<u>t</u>ion /ləʊˈkeɪʃn/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["avera<u>g</u>e", "herita<u>g</u>e", "to<u>g</u>ether", "advanta<u>g</u>e"], "a": 2, "exp": "<p><b>Giải thích</b>: together /təˈ<u>ɡ</u>eðə(r)/ có “g” được phát âm là /ɡ/, các phương án còn lại có “g” được phát âm là /dʒ/.</p><p><b>A</b>.avera<u>g</u>e /ˈævərɪdʒ/ <b>B</b>. herita<u>g</u>e /ˈherɪtɪdʒ/ <b>D</b>. advanta<u>g</u>e /ədˈvɑːntɪdʒ/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["en<u>g</u>ineer", "ima<u>g</u>ine", "ori<u>g</u>in", "be<u>g</u>inner"], "a": 3, "exp": "<p><b>Giải thích</b>: be<u>g</u>inner /bɪˈɡɪnə(r)/ có “g” được phát âm là /ɡ/, các phương án còn lại có “g” được phát âm là /dʒ/. </p><p><b>A</b>. en<u>g</u>ineer /ˌendʒɪˈnɪə(r)/<b>B</b>. ima<u>g</u>ine /ɪˈmædʒɪn/<b>C</b>. ori<u>g</u>in /ˈɒrɪdʒɪn/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["<u>ch</u>ildren", "<u>ch</u>emist", "an<u>ch</u>or", "s<u>ch</u>ool"], "a": 0, "exp": "<p><b>Giải thích</b>: <u>ch</u>ildren /tʃaɪld/ có “ch” được phát âm là /tʃ/, các phương án còn lại có “ch” được phát âm là /k/.</p><p><b>B</b>.<u>ch</u>emist /ˈkemɪst/ <b>C</b>. an<u>ch</u>or /ˈæŋkə(r)/<b>D</b>. s<u>ch</u>ool /skuːl/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["<u>ch</u>icken", "<u>ch</u>erry", "tea<u>ch</u>er", "ma<u>ch</u>ine"], "a": 3, "exp": "<p><b>Giải thích</b>: ma<u>ch</u>ine /məˈʃiːn/ có “ch” được phát âm là /ʃ/, các phương án còn lại có “ch” được phát âm là /tʃ/.</p><p><b>A</b>.<u>ch</u>icken /ˈtʃɪkɪn/ <b>B</b>. <u>ch</u>erry /ˈtʃeri/<b>C</b>. tea<u>ch</u>er /ˈtiːtʃə(r)/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["ques<u>t</u>ion", "na<u>t</u>ion", "op<u>t</u>ion", "ac<u>t</u>ion"], "a": 0, "exp": "<p><b>Giải thích</b>: ques<u>t</u>ion /ˈkwestʃən/  có “t” được phát âm là /tʃ/, các phương án còn lại có “ti” được phát âm là /ʃ/.</p><p><b>B</b>.na<u>t</u>ion /ˈneɪʃn/<b>C</b>. op<u>t</u>ion /ˈɒpʃn/<b>D</b>. ac<u>t</u>ion /ˈækʃn/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["tar<u>g</u>et", "villa<u>g</u>e", "oran<u>g</u>e", "lugga<u>g</u>e"], "a": 0, "exp": "<p><b>Giải thích</b>: tar<u>g</u>et /ˈtɑːɡɪt/ có “g” được phát âm là /ɡ/, các phương án còn lại có “g” được phát âm là /dʒ/.</p><p><b>B</b>. villa<u>g</u>e /ˈvɪlɪdʒ/<b>C</b>. oran<u>g</u>e /ˈɒrɪndʒ/<b>D</b>. lugga<u>g</u>e /ˈlʌɡɪdʒ/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["en<u>g</u>ine", "be<u>g</u>in", "gin<u>g</u>er", "re<u>g</u>ion"], "a": 1, "exp": "<p><b>Giải thích</b>: be<u>g</u>in /bɪˈɡɪn/ có “g” được phát âm là /ɡ/, các phương án còn lại có “g” được phát âm là /dʒ/.</p><p><b>A</b>. en<u>g</u>ine /ˈendʒɪn/<b>C</b>. <u>g</u>in<u>g</u>er /ˈdʒɪndʒə(r)/<b>D</b>. re<u>g</u>ion /ˈriːdʒən/</p>"}], "before": "<div class=\"note\">III - Find the word which is pronounced differently in the part underlined.</div>"}]}, {"title": "Grammar · Ngữ pháp", "icon": "🧩", "desc": "Unit 6 · The first university in Viet Nam", "subs": [{"label": "Lý thuyết", "html": "<div class=\"source\"><p><b>NGỮ PHÁP</b></p><p>Grammar</p><p><b>CÂU BỊ ĐỘNG </b>(PASSIVE SENTENCES)</p><div class=\"tablewrap\"><table><tr><td><p><b>a. Cách dùng</b></p><p>• Câu bị động được sử dụng khi hành động quan trọng hơn chủ thể của hành động.</p></td><td><p><b>Ví dụ:</b></p><p>The guitar <b>is played</b> by Susan every day. <i>(Cây ghi-ta được Susan chơi mỗi ngày.)</i></p></td></tr></table></div><p>b. Cấu trúc</p><div class=\"tablewrap\"><table><tr><td></td><td><p><b>Câu bị động ở thì hiện tại đơn </b></p><p><b>(The present simple passive)</b></p></td><td><p><b>Câu bị động ở thì quá khứ đơn </b></p><p><b>(The past simple passive)</b></p></td></tr><tr><td><p><b>Khẳng định</b></p></td><td><p><b>S + am/ is/ are + pp</b></p><p>The plants <b>are grown</b> in a Greenhouse.</p><p><i>(Cây được trồng trong nhà kính.)</i></p></td><td><p><b>S + was/ were + pp</b></p><p>The building <b>was built</b> last year.</p><p><i>(Tòa nhà được xây vào năm ngoái.)</i></p></td></tr><tr><td><p><b>Phủ định</b></p></td><td><p><b>S am/ is/ are + not + pp</b></p><p>The plants <b>aren’t grown</b> in a greenhouse.</p><p><i>(Cây không được trồng trong nhà kính.)</i></p></td><td><p><b>S was/ were + not + pp</b></p><p>The building <b>wasn’t built</b> last year.</p><p><i>(Tòa nhà không được xây vào năm ngoái.)</i></p></td></tr><tr><td><p><b>Nghi vấn</b></p></td><td><p><b>Am/ Is/ Are S + pp</b></p><p><b>Are</b> the plants <b>grown</b> in a greenhouse? <i>(Cây được trồng trong nhà kính phải không?)</i></p></td><td><p><b>Was/ Were + S + pp</b></p><p><b>Was t</b>he building <b>built l</b>ast year?</p><p><i>(Tòa nhà được xây vào năm ngoái phải không?)</i></p></td></tr></table></div><p><b>c. Chú ý:</b></p><div class=\"tablewrap\"><table><tr><td><p>• Trong câu bị động, chủ thể của hành động thường được đặt ở cuối câu.</p><p>• Câu bị động thường được dùng trong văn viết hơn văn nói.</p></td><td><p><b>Ví dụ:</b></p><p>Dinner was made by <b>Anna.</b></p><p>(<i>Bữa tối đã được nấu bởi Anna.)</i></p></td></tr></table></div></div>"}]}, {"title": "Grammar practice", "icon": "📝", "desc": "Unit 6 · The first university in Viet Nam", "subs": [{"id": "g1", "label": "I · Dạng động từ", "kind": "fill", "items": [{"q": "General George Washington was___for his wisdom and courage.", "a": ["known"], "exp": "<p><b>Dịch nghĩa</b>: General George Washington was known for his wisdom and courage. <i>(Tướng George Washington đã rất nổi tiếng vì trí tuệ và lòng can đảm của mình.)</i></p>"}, {"q": "James was___a huge fortune for his invention.", "a": ["paid"], "exp": "<p><b>Dịch nghĩa</b>: James was paid a huge fortune for his invention. <i>(James đã được trả một gia tài khổng lồ nhờ vào phát minh của mình.)</i></p>"}, {"q": "The examination papers were___out at nine o’clock.", "a": ["given"], "exp": "<p><b>Dịch nghĩa</b>: The examination papers were given out at nine o’clock. (<i>Đề thi đã được phát ra vào lúc chín giờ.)</i></p>"}, {"q": "The statue of King Hupugarta was___of gold and jewelry.", "a": ["made"], "exp": "<p><b>Dịch nghĩa</b>: The statue of King Hupugarta was made of gold and jewelry. <i>(Bức tượng của Vua Hupugarta đã được làm bằng vàng và đá quý.)</i></p>"}, {"q": "My watch is___. I don’t know what time it is now.", "a": ["broken"], "exp": "<p><b>Dịch nghĩa</b>: My watch is broken. I don’t know what time it is now. (<i>Đồng hồ đeo tay của tôi bị hỏng. Tôi không biết bây giờ là mấy giờ.)</i></p>"}, {"q": "Over 10 million dollars was___on the SpaceX project last year.", "a": ["spent"], "exp": "<p><b>Dịch nghĩa</b>: Over 10 million dollars was spent on the SpaceX project last year. (<i>Hơn 10 triệu đô la Mỹ đã được chi vào dự án SpaceX trong năm ngoái.)</i></p>"}, {"q": "“A Hard Day’s Night” was___by The Beatles.", "a": ["written"], "exp": "<p><b>Dịch nghĩa</b>: “A Hard Day’s Night” was written by The Beatles. <i>(“A Hard Day’s Night” đã được viết bởi nhóm The Beatles.)</i></p>"}, {"q": "The Royal Palace of Bucharest was___in 1937.", "a": ["built"], "exp": "<p><b>Dịch nghĩa</b>: The Royal Palace of Bucharest was built in 1937. <i>(Cung điện Hoàng gia của thành phố Bucharest đã được xây dựng vào năm 1937.)</i></p>"}], "before": "<div class=\"note\">I - Complete the following sentences using the correct form of the verbs in the box. There is one EXTRA verb.</div><div class=\"source\"><p><b>I - Complete the following sentences using the correct form of the verbs in the box. There i</b>s one EXTRA verb.</p><div class=\"tablewrap\"><table><tr><td><p>pay</p></td><td><p>break</p></td><td><p>catch</p></td><td><p>make</p></td><td><p>build</p></td></tr><tr><td><p>give</p></td><td><p>spend</p></td><td><p>write</p></td><td><p>know</p></td><td><p>teach</p></td></tr></table></div><p><i>E.g.: Adam was__caught__on security camera shoplifting clothes.</i></p></div>"}, {"id": "g2", "label": "II · Chọn đáp án", "kind": "quiz", "items": [{"q": "“Harry Potter and the Goblet of Fire” ___by J. K. Rowling 20 years ago. ", "opts": ["was written", "were written", "are written", "is written"], "a": 0, "exp": "<p><b>Giải thích</b>: Trong câu có trạng từ chỉ thời gian “20 years ago” (20 năm về trước) diễn tả sự việc xảy ra ở trong quá khứ nên ta dùng thì quá khứ đơn. Chủ ngữ “Harry Potter and the Goblet of Fire” (tên tác phẩm) chịu tác động của hành động “write” nên động từ được chia ở dạng bị động là “was written”.</p><p><b>Dịch nghĩa</b>: “Harry Potter and the Goblet of Fire” was written by J. K. Rowling 20 years ago. <i>(“Harry Potter và chiếc cốc lửa” đã được viết bởi J. K. Rowling 20 năm về trước.)</i></p>"}, {"q": "At the trial yesterday, Noah___to five years in prison for robbery. ", "opts": ["sentences", "are sentenced", "sentenced", "was sentenced"], "a": 3, "exp": "<p><b>Giải thích:</b> Trong câu có trạng từ chỉ thời gian “yesterday” (ngày hôm qua) diễn tả sự việc xảy ra ở trong quá khứ nên ta dùng thì quá khứ đơn. Chủ ngữ “Noah” chịu tác động của hành động “sentence” nên động từ được chia ở dạng bị động là “was sentenced”.</p><p><b>Dịch nghĩa</b>: At the trial yesterday, Noah was sentenced to five years in prison for robbery. (<i>Trong phiên tòa ngày hôm qua, Noah đã bị kết án năm năm tù giam vì tội trộm cắp tài sản.)</i></p>"}, {"q": "Volkswagen cars___in Germany and the Czech Republic. ", "opts": ["are made", "is made", "makes", "make"], "a": 0, "exp": "<p><b>Giải thích</b>: Nội dung trong câu dùng để diễn tả một sự thật hiển nhiên diễn ra ở thời điểm hiện tại, nên ta sử dụng thì hiện tại đơn. Chủ ngữ “Volkswagen cars” là chịu tác động của hành động “make” nên động từ được chia ở dạng bị động là “are made”.</p><p><b>Dịch nghĩa</b>: Volkswagen cars are made in Germany and the Czech Republic. (<i>Những chiếc ô tô của hãng Volkswagen được sản xuất tại Đức và Cộng hòa Séc.)</i></p>"}, {"q": "Coal miners___gold in a cave near the top of the mountain. ", "opts": ["were discovered", "was discovered", "discovered", "have been discovered"], "a": 2, "exp": "<p><b>Giải thích</b>: Chủ ngữ “Coal miners” là chủ thể của hành động “discover” nên động từ phải được chia ở dạng chủ động, c là phương án chính xác duy nhất.</p><p><b>Dịch nghĩa</b>: Coal miners discovered gold in a cave near the top of the mountain. <i>(Những người thợ mỏ than đã phát hiện ra vàng trong một cái hang gần đỉnh núi.)</i></p>"}, {"q": "A million dollars in cash___from the Bank of East Asia last week. ", "opts": ["were stolen", "was stolen", "stole", "stolen"], "a": 1, "exp": "<p><b>Giải thích</b>: Trong câu có trạng từ chỉ thời gian “last week” (tuần trước) diễn tả sự việc xảy ra trong quá khứ nên ta dùng thì quá khứ đơn. Chủ ngữ “A million dollars in cash” chịu tác động của hành động “steal” nên động từ được chia ở dạng bị động là “was stolen”.</p><p><b>Dịch nghĩa</b>: A million dollars in cash was stolen from the Bank of East Asia last week. (<i>Một triệu đô la tiền mặt đã bị lấy trộm từ Ngân hàng Đông Á trong tuần trước.)</i></p>"}, {"q": "Nowadays, most experts___that the painting is fake. ", "opts": ["believe", "believed", "is believed", "were believed"], "a": 0, "exp": "<p><b>Giải thích</b>: Trong câu có trạng từ chỉ thời gian “Nowadays” (ngày nay) diễn tả sự việc xảy ra ở thời điểm hiện tại nên ta dùng thì hiện tại đơn. Chủ ngữ “most experts” là chủ thể của hành động “believe” nên động từ được chia ở dạng chủ động là “believe”.</p><p><b>Dịch nghĩa</b>: Nowadays, most experts believe that the painting is fake. (<i>Ngày nay, phần lớn các chuyên gia tin rằng bức tranh này là giả.)</i></p>"}, {"q": "The council___to postpone the next meeting until the end of the month. ", "opts": ["has decided", "is decided", "was decided", "will be decided"], "a": 0, "exp": "<p><b>Giải thích</b>: Chủ ngữ “The council” là chủ thể của hành động “decide” nên động từ phải được chia ở dạng chủ động, A là phương án chính xác duy nhất.</p><p><b>Dịch nghĩa</b>: The council has decided to postpone the next meeting until the end of the month. (<i>Hội đồng đã quyết định hoãn buổi họp tiếp theo tới tận cuối tháng.)</i></p>"}, {"q": "The National Museum of Thailand___at 4.30 p.m. every day. ", "opts": ["closes", "closed", "is closed", "was closed"], "a": 0, "exp": "<p><b>Giải thích</b>: Trong câu có trạng từ chỉ thời gian “every day” (hàng ngày) diễn tả sự việc thường xuyên xảy ra ở thời điểm hiện tại nên ta dùng thì hiện tại đơn. Chủ ngữ “The National Museum of Thailand” là chủ thể của hành động “close” nên động từ được chia ở dạng chủ động là “closes”.</p><p><b>Dịch nghĩa</b>: The National Museum of Thailand closes at 4.30 p.m. every day. (<i>Bảo tàng Quốc gia Thái Lan đóng cửa vào 4:30 chiều mỗi ngày.)</i></p>"}, {"q": "In 2018, 88 outstanding university graduates___at a ceremony at Van Mieu - Quoc Tu Giam. ", "opts": ["honoured", "had honoured", "was honoured", "were honoured"], "a": 3, "exp": "<p><b>Giải thích</b>: Trong câu có trạng từ chỉ thời gian “In 2018” (vào năm 2018) diễn tả sự việc xảy ra ở thời điểm quá khứ nên ta dùng thì quá khứ đơn. Chủ ngữ “88 outstanding university graduates” chịu tác động của hành động “honour” nên động từ được chia ở dạng bị động là “were honoured”.</p><p><b>Dịch nghĩa</b>: In 2018, 88 outstanding universities graduates were honoured at a ceremony at Van Mleu - Quoc Tu Giam. (<i>Trong năm 2018, 88 sinh viên đại học tốt nghiệp đặc biệt xuất sắc đã được vinh danh trong một buổi lễ tại Văn Miếu - Quốc Tử Giám.)</i></p>"}, {"q": "When Tony started his business, he___a financial advisor to help him manage the company. ", "opts": ["hired", "hires", "hire", "was hired"], "a": 0, "exp": "<p><b>Giải thích</b>: Trong ngữ cảnh có sử dụng thì quá khứ đơn “When Tony started his business ...” diễn tả sự việc đã xảy ra trong quá khứ nên ta dùng thì quá khứ đơn. Chủ ngữ “he” là chủ thể của hành động “hire” nên động từ được chia ở dạng chủ động là “hired”.</p><p><b>Dịch nghĩa</b>: When Tony started his business, he hired a financial advisor to help him manage the company. (<i>Khi Tony bắt đầu khởi nghiệp, anh ấy đã thuê một cố vấn tài chính để giúp mình quản lý công ty.)</i></p>"}, {"q": "- “What a beautiful dress you’re wearing!” - “Thank you. It___by a very talented tailor.” ", "opts": ["is made", "will make", "made", "was made"], "a": 3, "exp": "<p><b>Giải thích</b>: Nội dung trong câu dùng để diễn tả một sự việc đã xảy ra trong quá khứ, nên ta sử dụng thì quá khứ đơn. Chủ ngữ “It” chịu tác động của hành động “make” nên động từ được chia ở dạng bị động là “was made”.</p><p><b>Dịch nghĩa</b>: - “What a beautiful dress you’re wearing!” - “Thank you. It was made by a very talented tailor.” (-“<i>Chiếc váy bạn mặc đẹp quá!” - “Cảm ơn bạn. Nó được một thợ may rất giỏi làm đấy.”)</i></p>"}, {"q": "- “Where did you get these old dresses?” - “I___them in the old trunk.” ", "opts": ["found", "was found", "am found", "find"], "a": 0, "exp": "<p><b>Giải thích</b>: Trong ngữ cảnh có sử dụng thì quá khứ đơn “Where did you get...” diễn tả sự việc đã xảy ra ở thời điểm quá khứ nên ta dùng thì quá khứ đơn. Chủ ngữ “I” là chủ thể của hành động “find” nên động từ được chia ở dạng chủ động là “found”.</p><p><b>Dịch nghĩa:</b> - “Where did you get these old dresses?” - “I found them in the old trunk.” <i>(- “Bạn lấy mấy cái váy cũ này ở đâu ra thế?” - “Tôi đã tìm thấy chúng trong cái hòm cũ.”)</i></p>"}, {"q": "- “Do you know that the new secretary___at 100 words per minute?” - “Wow, that’s amazing!” ", "opts": ["can type", "can be typed", "could type", "could be typed"], "a": 0, "exp": "<p><b>Giải thích</b>: Nội dung trong câu dùng để diễn tả một sự thật hiển nhiên diễn ra ở thời điểm hiện tại, nên ta sử dụng thì hiện tại đơn. Chủ ngữ “the new secretary” là chủ thể của hành động “type” nên động từ được chia ở dạng chủ động là “can type”.</p><p><b>Dịch nghĩa</b>: - “Do you know that the new secretary can type at 100 words per minute?” - “Wow, that’s amazing!” <i>(- “Bạn biết là cô thư ký mới có thể đánh máy được 100 từ một phút không?” - “Wow, đáng nể thật!”)</i></p>"}, {"q": "A young girl___to hospital after she broke her leg. ", "opts": ["had taken", "were taken", "took", "was taken"], "a": 3, "exp": "<p><b>Giải thích</b>: Trong ngữ cảnh có sử dụng thì quá khứ đơn “she broke her leg ...” diễn tả sự việc đã xảy ra ở thời điểm quá khứ nên ta dùng thì quá khứ đơn. Chủ ngữ “A young girl” chịu tác động của hành động “take” nên động từ được chia ở dạng bị động là “was taken”.</p><p><b>Dịch nghĩa</b>: A young girl was taken to hospital after she broke her leg. (<i>Một cô gái trẻ đã được đưa tới bệnh viện sau khi cô bị gãy chân.)</i></p>"}, {"q": "America___by Columbus in 1492. ", "opts": ["has been discovered", "was discovered", "discovered", "had discovered"], "a": 1, "exp": "<p><b>Giải thích</b>: Trong câu có trạng từ chỉ thời gian “in 1492” (trong năm 1492) diễn tả sự việc xảy ra ờ trong quá khứ nên ta dùng thì quá khứ đơn. Chủ ngữ “America” chịu tác động của hành động “discover” nên động từ được chia ở dạng bị động là “was discovered”.</p><p><b>Dịch nghĩa</b>: America was discovered by Columbus in 1492. (<i>Châu Mỹ đã được phát hiện bởi Columbus năm 1492.) </i>Giaoandethitienganh.info sưu tầm</p><p><i></i></p>"}, {"q": "The old shopping mall___so that a new supermarket could be built. ", "opts": ["were demolished", "has demolished", "was demolished", "have demolished"], "a": 2, "exp": "<p><b>Giải thích</b>: Trong ngữ cảnh có sử dụng thì quá khứ đơn “... a new supermarket could be built.” diễn tả sự việc đã xảy ra trong quá khứ nên ta dùng thì quá khứ đơn. Chủ ngữ “The old shopping mall” chịu tác động của hành động “demolish” nên động từ được chia ở dạng bị động là “was demolished”.</p><p><b>Dịch nghĩa</b>: The old shopping mall was demolished so that a new supermarket could be built. (<i>Trung tâm thương mại cũ đã bị phá dỡ để cho một siêu thị mới có thể được xây dựng.)</i></p>"}, {"q": "When Brandon Communication first opened, the sales department___by Mr. Johnson. ", "opts": ["was run", "is run", "ran", "runs"], "a": 0, "exp": "<p><b>Giải thích:</b> Trong ngữ cảnh có sử dụng thì quá khứ đơn “When Brandon Communication first opened ...” diễn tả sự việc đã xảy ra trong quá khứ nên ta dùng thì quá khứ đơn. Chủ ngữ “the sales department” chịu tác động của hành động “run” nên động từ được chia ở dạng bị động là “was run”.</p><p><b>Dịch nghĩa:</b> When Brandon Communication first opened, the sales department was run by Mr. Johnson. <i>(Khi công ty truyền thông Brandon mới được thành lập, bộ phận kinh doanh do ông Johnson điều hành.)</i></p>"}, {"q": "Wind speeds___ninety miles an hour in some places during the storm last night. ", "opts": ["were reached", "reached", "has reached", "have reached"], "a": 1, "exp": "<p><b>Giải thích</b>: Trong câu có trạng từ chỉ thời gian “last night” (đêm qua) diễn tả sự việc xảy ra trong quá khứ nên ta dùng thì quá khứ đơn. Chủ ngữ “Wind speeds” là chủ thể của hành động “reach” nên động từ được chia ở dạng chủ động là “reached”.</p><p><b>Dịch nghĩa</b>: Wind speeds reached ninety miles an hour in some places during the storm last night<i>. (Tốc độ gió đã đạt tới 90 dặm một giờ ở một vài địa điểm trong cơn bão tối hôm qua.)</i></p>"}, {"q": "In the U.S, 350 slices of pizza___every second. ", "opts": ["are eaten", "were eaten", "have eaten", "eat"], "a": 0, "exp": "<p><b>Giải thích</b>: Trong câu có trạng từ chỉ thời gian “Nowadays” (ngày nay) diễn tả sự việc xảy ra ở thời điểm hiện tại nên ta dùng thì hiện tại đơn. Chủ ngữ “350 slices of pizza” chịu tác động của hành động “eat” nên động từ được chia ở dạng bị động là “are eaten”.</p><p><b>Dịch nghĩa</b>: In the U.S, 350 slices of pizza are eaten every second. (<i>Ở nước Mỹ, 350 miếng bánh pizza được ăn mỗi giây.)</i></p>"}, {"q": "More than 10,000 students___from univesities in Vietnam every year. ", "opts": ["are graduated", "graduated", "had graduated", "graduate"], "a": 3, "exp": "<p><b>Giải thích</b>: Trong câu có trạng từ chỉ thời gian “every year” (hàng năm) diễn tả sự việc xảy ra ở thời điểm hiện tại nên ta dùng thì hiện tại đơn. Chủ ngữ “more than 10,000 students” là chủ thể của hành động “graduate” nên động từ được chia ở dạng chủ động là “graduate”.</p><p><b>Dịch nghĩa</b>: More than 10,000 students graduate from univesities in Vietnam every year. (<i>Hàng năm, hơn 10.000 sinh viên tốt nghiệp từ các trường đại học ở Việt Nam.)</i></p>"}], "before": "<div class=\"note\">II- Choose the best option to complete each of the following sentences.</div>"}, {"id": "g3", "label": "III · Câu bị động", "kind": "write", "items": [{"c": "I didn’t do my homework yesterday.", "a": "My homework wasn’t done (by me) yesterday.", "vi": "  Giải thích : I didn’t do my homework yesterday. (Tôi đã không làm bài tập về nhà ngày hôm qua.)  Cấu trúc bị động của câu phủ định ở thì quá khứ đơn là “S + wasn’t/ weren’t + p.p. ”. Động từ “do” được chia theo chủ ngữ số ít (danh từ không đếm được) “my homework” là “wasn’t done”.   Dịch nghĩa : Bài tập về nhà của tôi đã không được làm (bởi tôi) ngày hôm qua. "}, {"c": "Did Joana clean up her room?", "a": "Was Joana’s room cleaned (by her)?", "vi": "  Giải thích : Did Joana clean up her room? (Joana đã dọn phòng cô ấy chưa?)  Cấu trúc bị động của câu nghi vấn ở thì quá khứ đơn là “Was/ Were + S + p.p.?”. Động từ “clean” được chia theo chủ ngữ số ít “Joana’s room” là “Was ... cleaned”.   Dịch nghĩa : Phòng của Joana đã được dọn (bởi cô ấy) phải không? "}, {"c": "John painted the house With blue and white paint last week.", "a": "The house was painted blue and white by John last week.", "vi": "  Giải thích : John painted the house blue and white last week. (John đã sơn ngôi nhà với sơn màu lam và màu trắng vào tuần trước.)  Cấu trúc bị động của câu khẳng định ở thì quá khứ đơn là “S + was/ were + p.p. ”. Động từ “paint” được chia theo chủ ngữ số ít “John” là “was painted”.   Dịch nghĩa : Ngôi nhà đã được John sơn bằng màu lam và màu trắng vào tuần trước. "}, {"c": "People usually drink champagne on New Year’s Eve.", "a": "Champagne is usually drunk on New Year’s Eve.", "vi": "  Giải thích : People usually drink champagne on New Year’s Eve. (Mọi người thường uống rượu sâm-panh vào đêm Giao thừa.)  Cấu trúc bị động của câu khẳng định ở thì hiện tại đơn là “S + is/ are + p.p. ”. Động từ “drink” được chia theo chủ ngữ số ít “Champagne” là “is drunk”.   Dịch nghĩa : Rượu sâm-panh thường được uống vào đêm Giao thừa. "}, {"c": "The head chef uses these machines to mix all the ingredients.", "a": "These machines are used by the head chef to mix all the ingredients.", "vi": "  Giải thích : The head chef uses these machines to mix all the ingredients, (ông bếp trưởng sử dụng những chiếc máy này để trộn các loại nguyên liệu.)  Cấu trúc bị động của câu khẳng định ở thì hiện tại đơn là “S + isn’t/ aren’t + p.p. ”. Động từ “use” được chia theo chủ ngữ số nhiều “These machines” là “are used”.   Dịch nghĩa : Những chiếc máy này được sử dụng bởi bếp trưởng để trộn tất cả các loại nguyên liệu. "}, {"c": "English students don’t consider French a difficult language.", "a": "French isn’t considered a difficult language by English students.", "vi": "  Giải thích:  English students don’t consider French a difficult language. (Các học sinh người Anh không coi tiếng Pháp là một ngôn ngữ khó.)  cấu trúc bị động của câu phủ định ở thì hiện tại đơn là “S + isn’t/ aren’t + p.p. ”. Động từ “consider” được chia theo chủ ngữ số ít “French” là “isn’t considered”.   Dịch nghĩa : Tiếng Pháp không được các học sinh người Anh coi là một ngôn ngữ khó. "}, {"c": "Do people speak English in Vietnam?", "a": "Is English spoken in Vietnam?", "vi": "  Giải thích : Do people speak English in Vietnam? (Người ta có nói tiếng Anh ở Việt Nam không?)  Cấu trúc bị động của câu nghi vấn ở thì hiện tại đơn là “Is/ Are + S + + p.p.?”. Động từ “speak” được chia theo chủ ngữ số ít “English” là “Is ... spoken”.   Dịch nghĩa : Tiếng Anh có được nói ở Việt Nam không? "}, {"c": "Manchester United paid Alexis Sanchez 300,000 pounds per week in 2018.", "a": "Alexis Sanchez was paid 300,000 pounds per week by Manchester United in 2018.", "vi": "  Giải thích : Manchester United paid Alexis Sanchez 300,000 pounds per week in 2018. (Manchester United đã trả cho Alexis Sanchez 300.000 bảng mỗi tuần trong năm 2018.)  Cấu trúc bị động của câu khẳng định ở thì quá khứ đơn là “S + was/ were + p.p.”. Động từ “pay” được chia theo chủ ngữ số ít “Alexis Sanchez” là “was paid”.   Dịch nghĩa : Alexis Sanchez đã được trả 300.000 bảng mỗi tuần bởi Manchester United trong năm 2018. "}], "before": "<div class=\"note\">III - Rewrite the following sentences using the correct passive voice.</div>"}]}, {"title": "Reading · Đọc hiểu", "icon": "📖", "desc": "Unit 6 · The first university in Viet Nam", "subs": [{"label": "Do you know?", "html": "<div class=\"source\"><div class=\"tablewrap\"><table><tr><td><p><b>DO YOU KNOW?</b></p><p><b>THE TEMPLE OF LITERATURE</b></p><p>*The Temple of Literature or Temple of Culture is a Temple of Confucius in Hanoi, northern Vietnam.</p><p>* The temple hosts the Imperial Academy, Vietnam’s first national university. The temple was built in 1070 at the time of Emperor Ly Thanh Tong.</p><p>* It is one of several temples in Vietnam which is dedicated to Confucius, sages and scholars. The temple Is located to the south of the Imperial Citadel of Thang Long.</p><p>* The various pavilions, halls, statues and stelae of doctors are places where offering ceremonies, study sessions and the strict exams of the Dai Viet took place.</p></td></tr></table></div></div>"}, {"id": "r1", "label": "I · Imperial Academy of Hue", "kind": "quiz", "items": [{"q": "The Impreial Academy of Hue was built following Emperor Minh Mang’s order.", "opts": ["True", "False"], "a": 1, "exp": "<p><b>Dịch nghĩa câu hỏi:</b> Trường Quốc Tử Giám thành phố Huế đã được xây dựng theo lệnh của Hoàng đế Minh Mạng.</p><p><b>Giải thích</b>: Thông tin ở câu 1 đoạn 1: “Under the reign of Emperor Gia Long, [...] , an Imperial Academy was built to replace the Imperial Academy in Thang Long.”</p>"}, {"q": "As of 1826, the Imperial Academy had been renovated twice.", "opts": ["True", "False"], "a": 0, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Tính đến năm 1826, trường Quốc Tử Giám đã được cải tạo hai lần.</p><p><b>Giải thích</b>: Thông tin ở câu 3 và câu 4 đoạn 1: “In 1821, an auditorium and three rows of houses for student residence were additionally constructed. In 1825, yet another row of 20 apartments were added.”</p>"}, {"q": "There were accomodations for students inside the Academy.", "opts": ["True", "False"], "a": 0, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Đã có các công trình nhà ở, lưu trú dành cho sĩ tử bên trong Trường Quốc Tử Giám.</p><p><b>Giải thích</b>: Thông tin ở câu 3 và câu 4 đoạn 1: “In 1821, an auditorium and three rows of houses for student residence were additionally constructed. In 1825, yet another row of 20 apartments were added.”</p>"}, {"q": "In 1908, it was relocated into its modern-day location.", "opts": ["True", "False"], "a": 0, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Năm 1908, trường đã được di dời tới địa điểm như ngày nay.</p><p><b>Giải thích</b>: Thông tin ở câu 1 đoạn 2: “In 1908, in the reign of Duy Tan, the Imperial Academy was moved to its present-day site in the Forbidden City.”</p>"}, {"q": "The Imperial Academy of Hue is the oldest tertiary training insitutions in Viet Nam.", "opts": ["True", "False"], "a": 1, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Trường Quốc Tử Giám của thành phố Huế là cơ sở đào tạo đại học lâu đời nhất ở Việt Nam.</p><p><b>Giải thích</b>: Thông tin ở câu 1 đoạn 1: “[...] , an Imperial Academy was built to replace the Imperial Academy in Thang Long.”</p>"}], "before": "<div class=\"source\"><p><b>I</b> <b>- Read the passage and decide whether the statements are True (T) or False (F).</b></p><p><b>THE IMPERIAL ACADEMY OF HUE</b></p><p>Under the reign of Emperor Gia Long, along with the construction of the Temple of Literature In the new capital, an Imperial Academy was built to replace the Imperial Academy in Thang Long. By that time, the number of students was increasing each day, which required the expansion of the Academy. In 1821, an auditorium and three rows of houses for student residence were additionally constructed. In 1825, yet another row of 20 apartments were added.</p><p>In 1908, in the reign of Duy Tan, the Imperial Academy was moved to its present-day site in the Forbidden City. The Imperial Academy consists of Di Luan Mansion, located in the center and two rows of classrooms on either side. Behind the Academy stands the Tan Tho Museum (Imperial Fine Arts Museum) and the former houses of principals and vice-principals to either side. The Imperial Academy, a historic and cultural vestige of remarkable value, is one of the two oldest tertiary training insitutions of the monarchist regime in our country.</p><p>(www. huefestival, com)</p></div><details class=\"tr\"><summary>🇻🇳 Bản dịch bài đọc</summary><div class=\"source\"><p><b>TRƯỜNG QUỐC TỬ GIÁM THÀNH PHỐ HUẾ</b></p><p>Dưới triều Hoàng đế Gia Long, cùng với việc xây dựng Văn Miếu (Văn Miếu thành phố Huế) ở kinh đô mới, trường Quốc Tử Giám (Quốc Tử Giám Huế) đã được xây dựng để thay thế trường Quốc Tử Giám thành Thăng Long. Thời kỳ đó, số lượng sĩ tử đang tăng lên mỗi ngày, đòi hỏi sự mở rộng của trường Quốc Tử Giám. Năm 1821, một tòa giảng đường và ba dãy nhà ở cho sĩ tử lưu trú đã được xây dựng thêm. Năm 1825, thêm một dãy 20 gian nhà cũng được bổ sung.</p><p>Năm 1908, dưới đời vua Duy Tân, trường Quốc Tử Giám đã được di dời tới địa điểm hiện tại bên trong Tử Cấm Thành. Quốc Tử Giám gồm có tòa Di Luân Đường, nằm ở trung tâm và có hai dãy phòng học ở hai bên. Phía sau trường Quốc Tử Giám là Tân Thơ Viện (Bảo tàng Mỹ thuật Cung đình) và những gian nhà cũ của các quan Tế Tửu (hiệu trưởng) và Tư Nghiệp (hiệu phó) nằm ở hai bên. Trường Quốc Tử Giám, một di tích lịch sử và văn hóa có những giá trị đặc biệt, là một trong hai cơ sở đào tạo đại học cổ xưa nhất dưới các triều đại quân chủ của đất nước ta.</p></div></details>"}, {"id": "r2", "label": "II · Temple of Literature", "kind": "fill", "items": [{"q": "The complex of the Temple of Literature___an area of 54,000 square meters.", "a": ["sprawls across"], "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Khu phức hợp Văn Miếu_________diện tích 54.000 mét vuông.</p><p><b>Giải thích</b>: Thông tin có ở câu: “Sprawling across an area of 54,000 square meters, the complex of the Temple of Literature comprises of Van lake, Giam park, and five interior courtyards.”</p>"}, {"q": "The authentic Vietnamese style___is perfectly preserved.", "a": ["architecture"], "exp": "<p><b>Dịch nghĩa câu hỏi: </b>_________phong cách Việt Nam đích thực đưọ’c bảo tồn hoàn hảo.</p><p><b>Giải thích</b>: Thông tin có ở câu: “The authentic Vietnamese style architecture of it resembles the temples in China, set in a perfectly preserved state.”</p>"}, {"q": "Each of the courtyards in the temple unfolds___for every master of beauty and art.", "a": ["surprises"], "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Mỗi sân trong văn miếu mở ra những_________cho mọi người sành lịch sử về vẻ đẹp và nghệ thuật.</p><p><b>Giải thích</b>: Thông tin có ở câu: “The courtyards in the temple are edged with brick walls and each of these unfolds surprises for every history buff or a connoisseur of beauty and art.”</p>"}, {"q": "There is a large pond in the third courtyard, which was___as the Well of Heavenly Clarity.", "a": ["christened"], "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Có một cái ao lớn trong sân thứ ba, được__________là Giếng Thiên Quang.</p><p><b>Giải thích</b>: Thông tin có ở câu: “The third courtyard surrounds a large pond which was christened as the Well of Heavenly Clarity.”</p>"}, {"q": "Thai Hoc that features a bell tower and a large drum is in the___courtyard", "a": ["fifth"], "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Thái Học có tháp chuông và trống lớn ở sân__________.</p><p><b>Giải thích</b>: Thông tin có ở câu: “The fourth courtyard is marked by the statue of Confucius and a house of ceremonies, and finally, the fifth courtyard, famous as Thai Hoc, features a bell tower and a large drum.”</p>"}], "before": "<div class=\"source\"><p><b>II - Read the passage and fill in the blank ONE or TWO words to complete the statements.</b></p><p>Sprawling across an area of 54,000 square meters, the complex of the Temple of Literature comprises of Van lake, Giam park, and five interior courtyards. The authentic Vietnamese style architecture of it resembles the temples in China, set in a perfectly preserved state.</p><p>The courtyards in the temple are edged with brick walls and each of these unfolds surprises for every history expert or a master of beauty and art. The first two courtyards are decorated with perfectly manicured gardens posing against a backdrop of majestic landscapes. The third courtyard surrounds a large pond which was chris¬tened as the Well of Heavenly Clarity. The fourth courtyard is marked by the statue of Confucius and a house of ceremonies, and finally, the fifth courtyard, famous as Thai Hoc, features a bell tower and a large drum.</p></div><details class=\"tr\"><summary>🇻🇳 Bản dịch bài đọc</summary><div class=\"source\"><p>Trải dài trên diện tích 54.000 mét vuông, khu phức hợp Văn Miếu bao gồm hồ Văn, vườn Giám và năm sân trong. Kiến trúc theo phong cách Việt Nam đích thực của nó giống như những ngôi đền ở Trung Quốc, được đặt trong một trạng thái được bảo tồn hoàn hảo.</p><p>Các sân trong đền được bao quanh bằng những bức tường gạch và mỗi bức tường này lại mở ra những bất ngờ cho người yêu thích lịch sử hoặc một người sành về vẻ đẹp và nghệ thuật. Hai sân đầu tiên được trang trí với những khu vườn được cắt tỉa hoàn hảo tạo dáng trên nền của những cảnh quan hùng vĩ. Khoảng sân thứ ba bao gồm một cái ao lớn được đặt tên là Giếng Thiên Quang. Khoảng sân thứ tư được chú ý bởi tượng Khổng Tử và một ngôi nhà để thực hiện nghi lễ, và cuối cùng, sân thứ năm, nổi tiếng là Thái Học, có một tháp chuông và một cái trống lớn.</p></div></details>"}]}, {"title": "Listening · Nghe", "icon": "🔊", "desc": "Unit 6 · The first university in Viet Nam", "subs": [{"id": "l1", "label": "Nghe & làm bài", "kind": "quiz", "items": [{"q": "Emperor Le Thanh Tong was the___emperor of the Le dynasty. ", "opts": ["3rd", "4th", "5th", "6th"], "a": 2, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Vua Lê Thánh Tông là vị vua_________của triều nhà Lê.</p><p><b>A</b>. thứ ba<b>B</b>. thứ tư <b>C</b>. thứ năm<b>D</b>. thứ sáu</p><p><b>Giải thích</b>: Thông tin được đưa ra ở câu: “Emperor Lê Thanh Tong was the 5th emperor of the Kingdom of Dai Viet during the Le dynasty, [...]”</p>"}, {"q": "He was born in___. ", "opts": ["1414", "1442", "1460", "1463"], "a": 1, "exp": "<p><b>Dịch nghĩa câu hỏi:</b> Ông được sinh ra vào_________.</p><p><b>A</b>. năm 1414<b>B</b>. năm 1442 <b>C</b>. năm 1460<b>D</b>. năm 1463</p><p><b>Giải thích:</b> Thông tin được đưa ra ở câu: “He was born in 1442.”</p>"}, {"q": "He ordered___to be erected across the country. ", "opts": ["Imperial academies", "temples of literature", "Buddhist pagodas", "All are correct."], "a": 1, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Ông đã ra lệnh cho___________được dựng lên trên khắp đất nước.</p><p><b>A</b>. trường Quốc Tử Giám<b>B</b>. Văn Miếu</p><p><b>C</b>. chùa Phật Giáo<b>D</b>. Tất cả đều đúng.</p><p><b>Giải thích</b>: Thông tin được đưa ra ở câu: “He had “temples of literature” built in many provinces.”</p>"}, {"q": "He set up Doctor’s stone tablets in the Temple of Literature - the Imperial Academy to___. ", "opts": ["praise the laureates", "record the examination process", "Inspire other students", "All are correct."], "a": 3, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Ông đã lập ra bia đá Tiến sĩ ở Văn Miếu - Quốc Tử Giám để__________.</p><p><b>A</b>. khen ngợi những thí sinh đỗ đạt<b>B</b>. ghi lại quá trình thi cử</p><p><b>C</b>. truyền cảm hứng cho các sĩ tử khác<b>D</b>. Tất cả đều đúng.</p><p><b>Giải thích:</b> Thông tin được đưa ra ở đoạn 3: “Later, in order to honour the laureates and encourage other students [...] Emperor Le Thanh Tong ordered to build Doctor’s stone tablets in the Temple of Literature - the Imperial Academy in 1484. The information of each examination was engraved on the tablets.”</p>"}, {"q": "He passed away in___. ", "opts": ["1467", "1474", "1484", "1497"], "a": 3, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Ông đã qua đời vào__________.</p><p><b>A</b>. năm 1467<b>B</b>. năm 1474<b>C</b>. năm 1484<b>D</b>. năm 1497</p><p><b>Giải thích: </b>Thông tin được đưa ra ở câu: “The emperor died in 1497.”</p>"}], "before": "<div class=\"note\">Giọng đọc tổng hợp từ lời thoại trong tài liệu.</div><button class=\"btn solid\" onclick=\"say(LISTEN)\">▶ Nghe</button> <button class=\"btn\" onclick=\"speechSynthesis.cancel()\">■ Dừng</button>"}, {"label": "Lời thoại & bản dịch", "html": "<div class=\"source\"><div class=\"tablewrap\"><table><tr><td><p>Emperor Le Thanh Tong was the 5th emperor of the Kingdom of Dai Viet during the Le dynasty, and he is one of the greatest monarchs in Vietnamese feudal history.</p><p>He was born in 1442. He was the son of Emperor Le Thai Tong. After succeeding to the throne in 1460, he encouraged the spread of Confucianism throughout Dai Viet. He had “temples of literature” built in many provinces. He revived the examination process to recruit top scholars into the government. The Imperial exams were held every three years since the first examination in 1463.</p><p>Later, in order to honour the laureates and encourage other students to serve the realm in similar manner, Emperor Le Thanh Tong ordered to build Doctor’s stone tablets in the Temple of Literature - the Imperial Academy in 1484. The information of each examination was engraved on the tablets.</p><p>The emperor died in 1497. Nowadays, many scholars consider him to be one of the pioneers in the development of Vietnamese education.</p></td><td><p>Vua Lê Thánh Tông là vị vua thứ 5 của nước Đại Việt dưới thời nhà Lê, và ông là một trong những vị vua vĩ đại nhất trong lịch sử phong kiến Việt Nam.</p><p>Ông sinh năm 1442. ông là con trai của vua Lê Thái Tông. Sau khi lên ngôi vào năm 1460, ông đã khuyến khích sự truyền bá Nho giáo trên toàn cõi Đại Việt. Ông cho xây dựng “văn miếu” ở rất nhiều tỉnh thành trên cả nước, ông đã cho khôi phục chế độ khoa bảng để tuyển mộ các học giả ưu tú vào bộ máy quan lại. Khoa thi Đình được tổ chức ba năm một lần kể từ khoa thi đầu tiên vào năm 1463.</p><p>Sau này, nhằm mục đích vinh danh các sĩ tử thi đỗ và khuyến khích các sĩ tử khác theo đó mà cống hiến cho quê hương, vua Lê Thánh Tông đã lệnh cho xây dựng bia đá Tiến Sĩ tại Văn Miếu - Quốc Tử Giám vào năm 1484. Thông tin của mỗi kỳ thi đều được khắc lên trên các bia đá.</p><p>Nhà vua đã qua đời năm 1497. Ngày nay, rất nhiều học giả đánh giá ông là một trong những nhân vật then chốt trong quá trình phát triển của nền giáo dục Việt Nam.</p></td></tr></table></div></div>"}]}, {"title": "Speaking · Nói", "icon": "💬", "desc": "Unit 6 · The first university in Viet Nam", "subs": [{"label": "Đề bài & hướng dẫn", "html": "<div class=\"source\"><p><b>Talk about a historical place in your hometown.</b></p><p>You can use the following questions as cues.</p><p>•What is the name and location of the place?</p><p>• When was it built?</p><p>•What are its attractions?</p><p>• What do people often do when visiting it?</p><p><b>Useful languages:</b></p><div class=\"tablewrap\"><table><tr><td><p><b>Useful vocabulary</b></p></td><td><p><b>Useful structures</b></p></td></tr><tr><td><p>• Perfume pagoda, Hue Imperial City, Independence Palace, Notre-Dame cathedral</p><p>•under the reign of, 19th century, 60 years ago, French colonial era</p><p>•natural landscape, Meridian Gate, President’s Office, Virgin Mary statue</p><p>•religious festival, going sightseeing, taking pictures, praying</p></td><td><p>• ...is located in...</p><p>• ...is in..., and it... Many people say that it...</p><p>• It actually consists of..., and...</p><p>• There are..., and...</p><p>• ... are natural beauty, for...</p><p>• From...to..., thousands of people come there to...</p></td></tr></table></div><p><b>Complete the notes:</b></p><div class=\"tablewrap\"><table><tr><td><p><b>Structures of the talk</b></p></td><td><p><b>Your notes</b></p></td></tr><tr><td><p>What is the name and location of the place?</p></td><td><p>__________________________________________</p><p>__________________________________________</p><p>__________________________________________</p></td></tr><tr><td><p>When was it built?</p></td><td><p>__________________________________________</p><p>__________________________________________</p><p>__________________________________________</p></td></tr><tr><td><p>What are its attractions?</p></td><td><p>__________________________________________</p><p>__________________________________________</p><p>__________________________________________</p></td></tr><tr><td><p>What do people often do when visiting it?</p></td><td><p>__________________________________________</p><p>__________________________________________</p><p>__________________________________________</p></td></tr></table></div><p><b>Now you try!</b></p><p><b>Give your answer using the following cues. You should speak for 1-2 minutes.</b></p><p>1. The Perfume pagoda is located in...</p><p>2. Many people say that it...</p><p>3. It actually consists of..., and...</p><p>4. ...are natural beauty, for...</p><p>5. From...to..., thousands of people come there to...</p><p><b>Now you tick!</b></p><p><b>Did you ...</b></p><p> answer all the questions in the task?</p><p> give some details to each main point?</p><p> speak slowly and fluently with only some hesitation?</p><p> use vocabulary wide enough to talk about the topic?</p><p> use various sentence structures (simple, compound, complex) accurately?</p><p> pronounce correctly (vowels, consonants, stress, intonation)?</p><p><b> </b><b>Let’s compare!</b></p><p>Finally, compare with the sample answer on page 209.</p></div>"}, {"label": "Ghi chú luyện nói", "kind": "notes"}, {"label": "Gợi ý & bài mẫu", "html": "<div class=\"source\"><p><b>Talk about a historical place in your hometown. </b></p><p><b>Dịch nghĩa câu hỏi:</b></p><p>Nói về một địa danh lịch sử ở quê hương bạn.</p><p>Bạn có thể sử dụng các câu hỏi sau đây làm gợi ý:</p><p>• Tên và địa điểm của địa danh đó là gì?</p><p>• Nó đã được xây dựng khi nào?</p><p>• Nó có những yếu tố gì hấp dẫn?</p><p>• Mọi người thường làm gì khi ghé thăm nó?</p><p><b>Gợi ý trả lời:</b></p><p><b>MAIN IDEAS (Ý chính)</b></p><p><b>Historical places (Di tích lịch sử)</b></p><p>- Perfume pagoda <i>(n. phr</i>.) (chùa Hương)</p><p>- Independence Palace (<i>n. phr.)</i> (dinh Độc Lập)</p><p>- Hue Imperial City (<i>n. phr</i>.) (Kinh thành Huế)</p><p>- Notre-Dame cathedral <i>(n. phr.)</i> (nhà Đức Bà)</p><p><b>First built (Được xây lần đầu)</b></p><p>- under the reign of <i>(pre. phr</i>.) (dưới triều đại của)</p><p>- 60 years ago (<i>prep. phr</i>.) (60 năm trước)</p><p>- in 19th century (<i>prep. phr</i>.) (thế kỷ 19)</p><p>- in French colonial era (<i>prep. phr</i>.) (thời Pháp thuộc)</p><p><b>Attractions (Điểm hấp dẫn)</b></p><p>- natural landscape (<i>n. phr</i>.) (cảnh quan tự nhiên)</p><p>- President’s Office (<i>n. phr</i>.) (văn phòng Tổng Thống)</p><p>- Meridian Gate (<i>n. phr</i>.) (cổng Ngọ Môn)</p><p>- Virgin Mary statue (<i>n. phr.)</i> (tượng Đức Mẹ)</p><p><b>Activities (Các hoạt động)</b></p><p>- religious festival <i>(n. phr</i>.) (lễ hội tôn giáo)</p><p>- taking pictures (<i>n. phr</i>.) (chụp ảnh)</p><p>- going sightseeing (<i>n. phr</i>.) (đi ngắm cảnh)</p><p>- praying (<i>n. phr</i>.) (cầu nguyện)</p><p>Bài mẫu:</p><div class=\"tablewrap\"><table><tr><td><p>The Perfume pagoda is located in the Huong Tich mountains, Hanoi. Many people say that it has been there since the reign of King Le Thanh Tong 500 years ago. it actually consists of many small temples, and the main temple is inside the Huong Tich Cave. All the mountain footpaths are natural beauty, for they are surrounded with streams, plants and flowers. Every year, from January to March on the Lunar Calendar, thousands of people come there to join a religious festival and pray for blessing</p></td><td><p>Chùa Hương nằm ở dãy núi Hương Tích, Hà Nội. Có nhiều người cho rằng chùa đã có ở đó từ thời Vua Lê Thánh Tông 500 năm về trước. Thực tế thì chùa gồm có rất nhiều chùa nhỏ, và chùa chính thì nằm ở trong Động Hương Tích. Mọi con đường mòn dẫn lên núi đều là những cảnh đẹp tự nhiên, bởi chúng được bao quanh bởi những con suối, cỏ cây và hoa lá. Hàng năm, từ tháng Một tới tháng Ba Âm lịch, hàng ngàn người tới đó để tham gia lễ hội tôn giáo và cầu xin được ban phước lành</p></td></tr></table></div></div>"}]}, {"title": "Writing · Viết", "icon": "✍️", "desc": "Unit 6 · The first university in Viet Nam", "subs": [{"id": "w1", "label": "I · Viết câu", "kind": "write", "items": [{"c": "Thien Mu pagoda/ regard/ as/ symbol/ Hue city.", "a": "Thien Mu pagoda is regarded as the symbol of Hue city.", "vi": "  Dịch nghĩa : Chùa Thiên Mụ được xem là biểu tượng của thành phố Huế. "}, {"c": "Notre-Dame Cathedral of Saigon/ cathedral/ locate/ downtown/ Ho Chi Minh City.", "a": "Notre-Dame Cathedral of Saigon is a cathedral located in the downtown of Ho Chi Minh city. ", "vi": " Nhà thờ Đức Bà Sài Gòn là một nhà thờ nằm ở khu trung tâm thành phố Hồ Chí Minh."}, {"c": "The Temple of Literature/ first/ build/ 1070/ and/ reconstruct/ during/ Tran dynasty.", "a": "The Temple of Literature was first built in 1070 and was reconstructed during the Tran dynasty.", "vi": "  Dịch nghĩa : Văn Miếu đã được xây dựng lần đầu vào năm 1070 và sau đó được xây dựng lại dưới thời nhà Trần. "}, {"c": "The Perfume pagoda/ huge/ complex/ Buddhist/ temples.", "a": "The Perfume pagoda is a huge complex of Buddhist temples.", "vi": "  Dịch nghĩa : Chùa Hương là một tổ hợp khổng lồ của các ngôi chùa Phật giáo. "}, {"c": "Hung/ King/ Temple/ Festival/ hold/ commemoration/ Kinh Duong Vuong.", "a": "Hung King Temple Festival is held in commemoration of Kinh Duong Vuong.", "vi": "  Dịch nghĩa : Lễ hội Đền Hùng được tổ chức để tưởng nhớ Kinh Dương Vương. "}], "before": ""}, {"label": "II · Viết 60–80 từ", "kind": "writing", "html": "<div class=\"source\"><p><b>II- Write an e-mail (60-80 words) to a friend and remind him/ her about preparing for your next trip. </b></p><p>You can use the following questions as cues:</p><p>• Where do you plan to go?</p><p>• What should you and your friends bring along?</p><p>• Why do you need it?</p><p>__________________________________________________________________</p><p>__________________________________________________________________</p></div>"}, {"label": "Gợi ý & bài mẫu", "html": "<div class=\"source\"><p><b>II - Write an email (60 - 80 words) to a friend and remind him/ her about preparing for your next trip.</b></p><p><b>Dịch nghĩa câu hỏi:</b></p><p>Viết một bức thư điện tử (60-80 từ) gửi tới một người bạn và nhắc anh ấy/ cô ấy chuẩn bị cho chuyến đi sắp tới. Bạn có thể sử dụng các câu hỏi sau đây làm gợi ý.</p><p>• Bạn sắp sửa tới địa điểm nào?</p><p>• Các bạn nên mang theo những gì?</p><p>• Tại sao các bạn lại cần nó?</p><p><b>Gợi ý trả lời:</b></p><p><b>MAIN IDEAS (Ý chính)</b></p><p><b>Destinations (Điểm đến)</b></p><p>- Hue Imperial City (<i>n. phr</i>.) (Kinh thành Huế)</p><p>- Temple of Literature (<i>n.phr</i>) (Văn Miếu)</p><p>- Phu Quoc Island (<i>n. phr</i>.) (đảo Phú Quốc)</p><p>- Thien Mu pagoda (<i>n. phr.)</i> (chùa Thiên Mụ)</p><p><b>Items (Đồ đạc)</b></p><p>- umbrella (<i>n</i>.) (Ô)</p><p>- swimsuit (<i>n</i>.) (đồ bơi)</p><p>- camera (<i>n</i>.) (máy ảnh)</p><p>- long pants (<i>n</i>.) (quần dài)</p><p><b>Reasons (Lý do)</b></p><p>- rainy (<i>adj</i>.) (có mưa)</p><p>- go swimming (đi bơi)</p><p>- taking pictures (<i>n. phr</i>.) (chụp ảnh)</p><p>- dress code (<i>n. phr</i>.) (quy định trang phục)</p><p>Bài mẫu:</p><div class=\"tablewrap\"><table><tr><td><p>To: huyenthu2289@gmail.com</p><p>Subject: Our upcoming trip to Hue</p><p>Dear Huyen,</p><p>It’s only five days left to our excursion to the Imperial City. Have you prepared anything for it yet? Here are the things that we should definitely bring along.</p><p>There are a lot of attractions in the Royal Palace, and they’re great subjects for our photographs. Sadly, since my camera is broken, we only have your camera to rely on. Please remember to take it with you.</p><p>Besides, you should also bring your umbrella. As our teacher has said it is always rainy during this time of the year in Hue, so bringing it with us is surely not a bad idea.</p><p>Yours,</p><p>Ly</p></td><td><p>Tới: huyenthu2289@gmail.com</p><p>Chủ đề: Chuyến đi sắp tới của chúng ta đến Huế.</p><p>Huyền thân mến,</p><p>Chỉ còn năm ngày nữa là tới chuyến tham quan của bọn mình tới Hoàng Thành. Bạn đã chuẩn bị được gì chưa? Đây là những thứ chúng ta nhất định phải mang theo.</p><p>Có rất nhiều địa điểm thú vị ở Cung điện Hoàng gia, và đó là những nơi tuyệt vời để bọn mình chụp ảnh. Tiếc là, vì cái máy ảnh của mình bị hỏng rồi, nên chúng ta chỉ còn trông chờ vào cái máy của bạn thôi. Làm ơn nhớ mang nó đi cùng nhé.</p><p>Ngoài ra, bạn cũng nên mang theo ô nhé. Vì cô giáo bọn mình đã nói là khoảng thời gian này trong năm thì ở Huế lúc nào cũng có mưa, nên mang theo ô chắc chắn là ý tưởng không tồi.</p><p>Bạn của bạn,</p><p>Ly</p></td></tr></table></div><p>Giaoandethitienganh.info sưu tầm</p></div>"}]}, {"title": "Objectives · Mục tiêu", "icon": "🎯", "desc": "Unit 6 · The first university in Viet Nam", "subs": [{"label": "Mục tiêu", "html": "<div class=\"source\"><p><b>UNIT </b><b>6</b><b> </b></p><p><b>THE FIRST UNIVERSITY IN VIET NAM</b></p><p>Trường đại học đầu tiên ở Việt Nam</p><p><b>MỤC TIÊU – Objectives</b></p><p>* <b>TỪ VỰNG</b> – Vocabulary</p><p>Sử dụng các từ vựng liên quan đến các địa điểm và sự việc lịch sử, và sự sắp xếp cho một chuyến đi</p><p>* <b>NGỮ ÂM</b> – Pronunciation</p><p>Phát âm chính xác các âm phụ âm <b>/tʃ</b>/ và /<b>dʒ</b>/ đứng riêng lẻ và trong ngữ cảnh</p><p>* <b>NGỮ PHÁP</b> – Grammar</p><p>Sử dụng câu bị động để nhấn mạnh hành động hoặc sự việc</p><p><b>* KỸ NĂNG ĐỌC</b> – Reading skills</p><p>Đọc để biết thông tin cụ thể về lịch sử của Văn Miếu - Quốc Tử Giám</p><p>* <b>KỸ NĂNG NÓI</b> – Speaking skills</p><p>Nói về việc sắp xếp cho một chuyến đi đến Văn Miếu</p><p>* <b>KỸ NĂNG NGHE</b> – Listening Skills</p><p>Nghe thông tin cụ thể về tiểu sử của một giáo viên nổi tiếng nhất</p><p>* <b>KỸ NĂNG VIẾT</b> – Writing skills</p><p>Viết về một địa điểm lịch sử</p><p><b>A – NGÔN NGỮ</b></p></div>"}]}];
+const V12=[{"w": "build", "p": "/bɪld/", "pos": "v.", "vi": "xây dựng", "ex": "This house was built 5 years ago. (Ngôi nhà này được xây 5 năm trước)"}, {"w": "consider", "p": "/kənˈsɪdə(r)/", "pos": "v.", "vi": "coi như", "ex": "He was considered the best student in this class. (Cậu ấy được coi là học sinh giỏi nhất lớp này)"}, {"w": "consist of", "p": "/kənˈsɪst əv/", "pos": "n.", "vi": "bao gồm", "ex": "The United States consists of fifty states. (Liên bang Mĩ bao gồm 50 bang)"}, {"w": "construct", "p": "/kənˈstrʌkt/", "pos": "v.", "vi": "xây dựng", "ex": "The city officials decided to construct a new bridge. (Các quan chức thành phố quyết định xây dựng một cây cầu mới)"}, {"w": "doctors’ stone tablet", "p": "/ˈdɒktə(r) stəʊn ˈtæblət/", "pos": "n.", "vi": "bia tiến sĩ", "ex": "The 82 Doctor’s stone tablets was recognised as World Heritage by UNESCO in 2010. (82 bia Tiến sĩ được UNESCO công nhận là Di sản Thế giới vào năm 2010)"}, {"w": "erect", "p": "/ɪˈrekt/", "pos": "v.", "vi": "xây dựng, dựng lên", "ex": "The first Doctor’s stone tablets were erected in 1484. (Các bia tiến sĩ đầu tiên được dựng lên vào năm 1484.)"}, {"w": "found", "p": "/faʊnd/", "pos": "v.", "vi": "thành lập", "ex": "Mark Zuckerberg founded Facebook at the age of 23. (Mark Zuckerberg thành lập Facebook vào năm 23 tuổi)"}, {"w": "grow", "p": "/ɡrəʊ/", "pos": "v.", "vi": "trồng, mọc", "ex": "He loves to grow plants in his garden. (Anh ấy thích trồng cây trong vườn của mình)"}, {"w": "imperial Academy", "p": "/ɪmˈpɪəriəl əˈkædəmi/", "pos": "n.", "vi": "quốc Tử Giám", "ex": "The Imperial Academy is considered VietNam’s first university. (Quốc Tử Giám được coi là trường đại học đầu tiên của Việt Nam)"}, {"w": "Khue Van Pavilion", "p": "/pəˈvɪliən/", "pos": "n.", "vi": "Khuê Văn Các", "ex": "Khue Van Pavilion is chosen to be the symbol of Ha Noi (Khuê Văn Các được chọn làm biểu tượng của Hà Nội)"}, {"w": "locate", "p": "/ləʊˈkeɪt/", "pos": "v.", "vi": "đóng, đặt, để ở một vị trí", "ex": "My store is located near a school. (Cửa hàng của tôi nằm gần một trường học)"}, {"w": "pagoda", "p": "/pəˈɡəʊdə/", "pos": "n.", "vi": "chùa", "ex": "My family went to a holy pagoda in Hue last year. (Gia đình tôi đã tới một ngôi chùa linh thiêng ở Huế vào năm ngoái)"}, {"w": "recognise", "p": "/ˈrekəɡnaɪz/", "pos": "v.", "vi": "hiểu ra, thừa nhận", "ex": "You must recognise the seriousness of the problem we are facing. (Bạn phải hiểu ra tính nghiêm trọng của vấn đề mà chúng ta đang đối mặt)"}, {"w": "regard", "p": "/rɪˈɡɑːd/", "pos": "v.", "vi": "đánh giá", "ex": "Jane is highly regarded by her teachers. (Jane được giáo viên của mình đánh giá cao)"}, {"w": "relic", "p": "/ˈrelɪk/", "pos": "n.", "vi": "di tích", "ex": "The ship was a relic of the Spanish – American War. (Con thuyền này là di tích của cuộc chiến Tây Ban Nha – Mĩ)"}, {"w": "site", "p": "/saɪt/", "pos": "n.", "vi": "địa điểm", "ex": "You shouldn’t enter the construciton site. (Bạn không nên đi vào công trường xây dựng)"}, {"w": "statue", "p": "/ˈstætʃuː/", "pos": "n.", "vi": "tượng", "ex": "The Merlion statue is Singapore’s national icon. (Tượng Merlion là biểu tượng quốc gia của Xin-ga-po)"}, {"w": "surround", "p": "/səˈraʊnd/", "pos": "v.", "vi": "bao quanh, vây quanh", "ex": "The police surrounded the thief. (Cảnh sát đã bao vây tên trộm)"}, {"w": "take care of", "p": "/teɪk keə(r) əv/", "pos": "n.", "vi": "trông nom, chăm sóc", "ex": "My mum alwas takes care of me and my brother. (Mẹ luôn chăm sóc tôi và anh trai tôi)"}, {"w": "temple of Literature", "p": "/ˈtempl əv ˈlɪtrətʃə(r)/", "pos": "n.", "vi": "Văn Miếu", "ex": "The Temple of Literature honours VietNam’s finest scholars. (Văn Miếu tôn vinh những học giả ưu tú nhất của Việt Nam)"}, {"w": "World Heritage", "p": "/ˌwɜːld ˈherɪtɪdʒ/", "pos": "n.", "vi": "di sản thế giới", "ex": "Ha Long Bay was recognised as a UNESCO World Heritage Site in 1994. (Vịnh Hạ Long được UNESCO công nhận là Di sản Thế giới vào năm 1994)"}];
+const LISTEN="Emperor Le Thanh Tong was the 5th emperor of the Kingdom of Dai Viet during the Le dynasty, and he is one of the greatest monarchs in Vietnamese feudal history. He was born in 1442. He was the son of Emperor Le Thai Tong. After succeeding to the throne in 1460, he encouraged the spread of Confucianism throughout Dai Viet. He had “temples of literature” built in many provinces. He revived the examination process to recruit top scholars into the government. The Imperial exams were held every three years since the first examination in 1463. Later, in order to honour the laureates and encourage other students to serve the realm in similar manner, Emperor Le Thanh Tong ordered to build Doctor’s stone tablets in the Temple of Literature - the Imperial Academy in 1484. The information of each examination was engraved on the tablets. The emperor died in 1497. Nowadays, many scholars consider him to be one of the pioneers in the development of Vietnamese education. ";
+const PUZZLE=[["L", "I", "T", "E", "R", "A", "T", "U", "R", "E", "O", "O", "D"], ["A", "O", "O", "S", "H", "U", "R", "R", "E", "C", "T", "N", "E"], ["P", "C", "L", "S", "R", "D", "L", "O", "L", "D", "A", "T", "Y"], ["N", "R", "E", "G", "A", "R", "D", "O", "I", "M", "G", "F", "S"], ["O", "U", "A", "G", "C", "L", "A", "A", "C", "L", "A", "O", "U"], ["L", "K", "N", "A", "A", "C", "O", "N", "S", "I", "S", "T", "R"], ["S", "T", "O", "B", "D", "D", "T", "Y", "U", "C", "P", "I", "R"], ["Q", "I", "P", "F", "E", "E", "Q", "C", "W", "O", "A", "H", "O"], ["J", "O", "A", "Y", "M", "K", "T", "O", "P", "N", "O", "O", "U"], ["H", "N", "G", "R", "Y", "W", "G", "N", "F", "S", "A", "D", "N"], ["G", "C", "O", "R", "P", "U", "G", "S", "T", "T", "A", "S", "D"], ["X", "R", "D", "W", "G", "C", "V", "I", "L", "R", "A", "N", "O"], ["S", "T", "A", "T", "U", "E", "T", "D", "A", "U", "T", "Y", "U"], ["H", "T", "I", "A", "H", "J", "R", "E", "Q", "C", "A", "N", "E"], ["G", "R", "O", "W", "T", "H", "E", "R", "I", "T", "A", "G", "E"]];const puzzleWords=['literature','regard','consist','statue','grow','heritage','pagoda','academy','consider','relic','construct','surround'];const puzzleState={start:null,found:[],cells:[]};
+function puzzleRender(){return `<div class="card"><h3>Tìm 12 từ theo hàng ngang hoặc cột dọc</h3><p>Bấm chữ đầu, rồi bấm chữ cuối của từ.</p><div style="overflow:auto;margin:10px 0"><div style="display:grid;grid-template-columns:repeat(${PUZZLE[0].length},28px);gap:2px">${PUZZLE.flatMap((r,i)=>r.map((c,j)=>`<button class="btn sm" style="padding:3px;background:${puzzleState.cells.includes(i+','+j)?'#bbf7d0':puzzleState.start?.join()===[i,j].join()?'#fde68a':'white'}" onclick="puzzlePick(${i},${j})">${esc(c)}</button>`)).join('')}</div></div><p>Đã tìm ${puzzleState.found.length}/12: ${puzzleState.found.join(', ')}</p><button class="btn" onclick="puzzleState.start=null;puzzleState.found=[];puzzleState.cells=[];show(cur.s,cur.t)">Làm lại</button><p id="puzzlemsg"></p></div>`}
+function puzzlePick(r,c){if(!puzzleState.start){puzzleState.start=[r,c];show(cur.s,cur.t);return;}const[a,b]=puzzleState.start;puzzleState.start=null;if(r!==a&&c!==b){show(cur.s,cur.t);return;}let cells=[],word='',dr=Math.sign(r-a),dc=Math.sign(c-b),len=Math.max(Math.abs(r-a),Math.abs(c-b));for(let k=0;k<=len;k++){let x=a+k*dr,y=b+k*dc;cells.push(x+','+y);word+=PUZZLE[x][y];}word=word.toLowerCase();if(!puzzleWords.includes(word))word=[...word].reverse().join('');if(puzzleWords.includes(word)&&!puzzleState.found.includes(word)){puzzleState.found.push(word);puzzleState.cells.push(...cells);if(puzzleState.found.length===12)markDone('puzzle',12,12);}show(cur.s,cur.t);}
+const OBJECTIVES=[{i:'🚀',t:'Unit 6 · The first university in Viet Nam',d:'Từ vựng, ngữ âm, ngữ pháp và các kỹ năng theo tài liệu Unit 6.'}];
+const drafts={notes:'',writing:''};
+function vocab12(filter=''){return V12.filter(v=>(v.w+' '+v.vi).toLowerCase().includes(filter.toLowerCase())).map(v=>`<div class="vrow"><div><div class="vw">${esc(v.w)} ${spk(v.w)}</div><div class="vp">${esc(v.p)} · ${esc(v.pos)}</div></div><div class="vm">${esc(v.vi)}</div><div class="ven">${esc(v.ex)}</div></div>`).join('')}
+function draw12(s){
+ if(s.kind==='puzzle')return puzzleRender();
+ if(s.kind==='vocab')return `<div class="tools"><input class="search" placeholder="Tìm từ tiếng Anh hoặc nghĩa tiếng Việt…" oninput="document.getElementById('words12').innerHTML=vocab12(this.value)"></div><div id="words12">${vocab12()}</div>`;
+ if(s.kind==='notes')return `<div class="card"><h3>Talk about a historical place in your hometown.</h3><p>Ghi ý chính, sau đó luyện nói trong 1–2 phút.</p><textarea class="studytextarea" oninput="drafts.notes=this.value">${esc(drafts.notes)}</textarea></div>`;
+ if(s.kind==='writing')return s.html+`<textarea class="studytextarea" placeholder="Write your paragraph here…" oninput="drafts.writing=this.value;document.getElementById('count12').textContent=this.value.trim().split(/\s+/).filter(Boolean).length+' / 60–80 từ'">${esc(drafts.writing)}</textarea><p id="count12">${drafts.writing.trim().split(/\s+/).filter(Boolean).length} / 60–80 từ</p>`;
+ if(!s.id)return s.html;
+ const cfg={title:s.label,items:s.items,labels:s.items[0].opts?s.items[0].opts.map((_,i)=>String.fromCharCode(65+i)):undefined};
+ return (s.before||'')+(s.kind==='quiz'?quiz(s.id,cfg):s.kind==='fill'?fill(s.id,cfg):writeSent(s.id,s.items));
+}
+const SECTIONS=DATA.map(s=>({...s,ex:s.subs.filter(x=>x.id).map(x=>x.id),subs:s.subs.map(x=>({...x,ex:x.id?[x.id]:undefined,render:()=>draw12(x)}))}));
+document.title='Unit 6 - The first university in Viet Nam';
+$('.logo .lg').textContent='🚀';
+show(0,0);
+</script></body></html>

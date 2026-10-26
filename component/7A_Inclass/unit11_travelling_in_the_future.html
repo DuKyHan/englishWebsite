@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 11</title>
+<style>*{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#1e1b4b;--mut:#6b7280;--p:#4f46e5;--p2:#7c3aed;--pk:#db2777;--ok:#059669;--okbg:#ecfdf5;--bad:#dc2626;--badbg:#fef2f2;--am:#b45309;--ambg:#fffbeb;--line:#e4e6f7;--bg:#f3f4ff;--ph:"Doulos SIL","Charis SIL","Lucida Sans Unicode","Segoe UI",Arial,sans-serif}
+html,body{height:469px;overflow:hidden;background:var(--bg);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+button,input,textarea{font-family:inherit}
+::-webkit-scrollbar{width:7px;height:7px}::-webkit-scrollbar-thumb{background:#c7d2fe;border-radius:8px}::-webkit-scrollbar-track{background:transparent}
+.app{display:flex;height:469px;max-width:1128px;margin:0 auto;background:var(--bg)}
+
+/* sidebar */
+.side{width:206px;flex:none;background:linear-gradient(175deg,#2e2a86 0%,#4f46e5 58%,#7c3aed 100%);color:#fff;display:flex;flex-direction:column;padding:12px 10px 10px;position:relative;overflow:hidden}
+.side:before{content:"";position:absolute;right:-50px;top:-50px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.07)}
+.logo{display:flex;align-items:center;gap:9px;padding:0 4px 9px;cursor:pointer;position:relative}
+.logo .lg{width:36px;height:36px;border-radius:11px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:20px}
+.logo b{display:block;font-size:14px;letter-spacing:.05em}
+.logo small{font-size:11px;opacity:.85}
+.nav{flex:1;display:flex;flex-direction:column;gap:2px;min-height:0;position:relative}
+.ni{display:flex;align-items:center;gap:8px;height:28px;padding:0 8px;border:none;background:none;color:#e0e7ff;border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;text-align:left;width:100%;transition:.15s}
+.ni:hover{background:rgba(255,255,255,.13)}
+.ni .n{width:18px;height:18px;flex:none;border-radius:50%;background:rgba(255,255,255,.2);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.ni .t{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ni.on{background:#fff;color:#3730a3;box-shadow:0 4px 12px rgba(0,0,0,.18)}
+.ni.on .n{background:var(--p);color:#fff}
+.ni.done .n{background:#34d399;color:#064e3b}
+.ni.soon{opacity:.62}
+.prog{padding:8px 4px 0;position:relative}
+.pbar{height:7px;background:rgba(255,255,255,.22);border-radius:8px;overflow:hidden}
+.pbar i{display:block;height:100%;background:linear-gradient(90deg,#fde68a,#34d399);border-radius:8px;transition:width .4s}
+.prog small{display:flex;justify-content:space-between;font-size:10.5px;margin-top:4px;opacity:.9}
+
+/* main */
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.head{display:flex;align-items:center;gap:11px;padding:11px 18px 2px}
+.head .hi{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#6366f1,#c026d3);display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 5px 14px rgba(99,102,241,.35);flex:none}
+.head h1{font-size:18px;line-height:1.15;color:#312e81}
+.head p{font-size:12px;color:var(--mut);margin-top:1px}
+.subnav{display:flex;gap:6px;padding:8px 18px 7px;overflow-x:auto;flex:none}
+.stab{flex:none;border:1px solid #d6dafc;background:#fff;color:#4338ca;border-radius:999px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;transition:.15s}
+.stab:hover{background:#eef2ff;transform:translateY(-1px)}
+.stab.on{background:linear-gradient(90deg,#4f46e5,#7c3aed);border-color:transparent;color:#fff;box-shadow:0 4px 12px rgba(79,70,229,.3)}
+.stab i{font-style:normal;margin-left:5px;font-size:10px;background:#34d399;color:#064e3b;border-radius:999px;padding:0 5px}
+.body{flex:1;overflow:auto;padding:2px 18px 16px;min-height:0;animation:fade .25s}
+.body.split{overflow:hidden;padding-bottom:12px}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+/* generic */
+.btn{border:1px solid #c7d2fe;background:#fff;color:#4338ca;padding:6px 12px;border-radius:9px;cursor:pointer;font-size:12px;font-weight:700;transition:.15s}
+.btn:hover{background:#eef2ff;transform:translateY(-1px)}
+.btn.solid{background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff;border-color:transparent;box-shadow:0 4px 10px rgba(79,70,229,.28)}
+.btn.solid:hover{filter:brightness(1.07)}
+.btn.sm{padding:3px 9px;font-size:11px}
+.btn:disabled{opacity:.45;cursor:default;transform:none}
+.chip-s{display:inline-flex;align-items:center;gap:3px;background:#e0e7ff;color:#3730a3;border-radius:999px;padding:2px 10px;font-size:11.5px;font-weight:800}
+.chip-s.ok{background:#d1fae5;color:#065f46}
+.chip{display:inline-block;background:#eef2ff;color:#4338ca;border:1px solid #c7d2fe;border-radius:999px;padding:2px 11px;font-size:12px;font-weight:700}
+.muted{color:var(--mut);font-size:12px}
+.note{font-size:12.5px;background:#f5f3ff;border-left:3px solid #8b5cf6;border-radius:8px;padding:6px 10px;margin:6px 0;line-height:1.5}
+.note.am{background:var(--ambg);border-color:#f59e0b}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:0 3px 12px rgba(67,56,202,.06)}
+.card h3{font-size:14px;color:#312e81;margin-bottom:6px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+mark{background:#fde68a;color:#78350f;border-radius:4px;padding:0 3px;font-weight:800;box-shadow:inset 0 -2px 0 #f59e0b}
+u{text-decoration-thickness:2px;text-underline-offset:2px;text-decoration-color:#e11d48}
+.spk{border:none;background:#eef2ff;border-radius:7px;cursor:pointer;font-size:11px;padding:2px 6px;vertical-align:middle}
+.spk:hover{background:#c7d2fe}
+.ph{font-family:var(--ph)}
+details.tr{margin-top:8px;background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:12.5px;line-height:1.6}
+details.tr summary{cursor:pointer;color:var(--p);font-weight:700}
+details.tr p{margin-top:5px;color:#374151}
+.kw{background:linear-gradient(transparent 55%,#fde68a 55%);font-weight:700;cursor:help}
+.passage{font-size:13.5px;line-height:1.75;background:#fffdf5;border:1px solid #fde68a;border-radius:12px;padding:11px 14px;color:#1f2937}
+.colh{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#7c3aed;margin:2px 0 6px}
+.split>div{overflow:auto;height:100%;padding:0 2px 6px 0}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+/* coming soon */
+.soonbox{height:100%;min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px;color:var(--mut)}
+.soonbox .big{font-size:54px;animation:float 3s ease-in-out infinite}
+.soonbox b{font-size:18px;color:#312e81}
+.soonbox span{font-size:13px;max-width:380px;line-height:1.5}
+@keyframes float{50%{transform:translateY(-8px)}}
+
+/* vocabulary */
+.tools{display:flex;gap:8px;align-items:center;margin-bottom:9px}
+.search{flex:1;border:1.5px solid #d6dafc;border-radius:10px;padding:7px 12px;font-size:12.5px;outline:none;background:#fff}
+.search:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.vrow{display:grid;grid-template-columns:42px 34% 1fr;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:8px 12px;margin-bottom:7px;transition:.15s}
+.vrow:hover{border-color:#a5b4fc;box-shadow:0 5px 16px rgba(99,102,241,.14);transform:translateX(2px)}
+.vem{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#eef2ff,#faf5ff);display:flex;align-items:center;justify-content:center;font-size:22px}
+.vw{font-size:16px;font-weight:800;color:#312e81;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.pos{font-size:10.5px;font-style:italic;font-weight:800;border-radius:999px;padding:1px 8px}
+.pos-n{background:#dbeafe;color:#1d4ed8}.pos-v{background:#dcfce7;color:#15803d}.pos-adj{background:#ffedd5;color:#c2410c}.pos-idiom{background:#f3e8ff;color:#7e22ce}.pos-phr{background:#e0f2fe;color:#0369a1}
+.vp{font-family:var(--ph);font-size:12.5px;color:var(--mut);margin-top:2px}
+.vm{font-size:14px;font-weight:800;color:var(--ok)}
+.ven{font-size:12.8px;line-height:1.5;margin-top:2px}
+.vvi{font-size:12px;color:var(--mut);font-style:italic}
+.hide-mean .vm:not(.rev),.hide-mean .vvi:not(.rev){filter:blur(6px);cursor:pointer;user-select:none}
+.fcwrap{max-width:620px;margin:0 auto}
+.fcnav{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
+.fcdots{display:flex;gap:3px;flex-wrap:wrap;justify-content:center;margin-bottom:8px}
+.fcdots i{width:9px;height:9px;border-radius:50%;background:#e0e7ff}
+.fcdots i.k{background:#34d399}.fcdots i.cur{background:#6366f1;transform:scale(1.35)}
+.fcard{min-height:176px;border-radius:20px;background:linear-gradient(135deg,#eef2ff,#faf5ff);border:2px solid #c7d2fe;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px 24px;cursor:pointer;gap:6px;transition:.2s;box-shadow:0 10px 26px rgba(99,102,241,.14)}
+.fcard.back{background:linear-gradient(135deg,#ecfdf5,#f0fdfa);border-color:#6ee7b7}
+.fcard:hover{transform:translateY(-2px)}
+.fc-em{font-size:34px}.fc-w{font-size:30px;font-weight:900;color:#312e81}
+.fc-p{font-family:var(--ph);font-size:16px;color:var(--mut)}
+.fc-hint{font-size:11px;color:#9ca3af;margin-top:4px}
+.fc-m{font-size:24px;font-weight:900;color:var(--ok)}
+.fc-e{font-size:14px;line-height:1.5}.fc-v{font-size:12.5px;color:var(--mut);font-style:italic}
+.fcbtns{display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+
+/* match game */
+.mg-top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:8px 28px}
+.mc{border:2px solid #d6dafc;background:#fff;border-radius:12px;padding:9px 12px;font-size:13.5px;font-weight:700;cursor:pointer;text-align:left;transition:.15s;min-height:40px;color:#312e81}
+.mc:hover:not(.lock){border-color:#6366f1;background:#eef2ff;transform:scale(1.015)}
+.mc.sel{border-color:#4f46e5;background:#e0e7ff;box-shadow:0 0 0 3px rgba(79,70,229,.2)}
+.mc.lock{background:var(--okbg);border-color:#6ee7b7;color:#065f46;cursor:default;animation:pop .35s}
+.mc.err{border-color:#f87171;background:var(--badbg);animation:shake .4s}
+.mc.vi{font-weight:600;color:#374151}
+@keyframes pop{50%{transform:scale(1.05)}}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* quiz */
+.qz-top{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.qz-title{font-size:13.5px;font-weight:800;color:#312e81;flex:1}
+.qz-bar{height:6px;background:#e0e7ff;border-radius:8px;overflow:hidden;margin-bottom:10px}
+.qz-bar i{display:block;height:100%;background:linear-gradient(90deg,#6366f1,#c026d3);border-radius:8px;transition:width .4s}
+.qz-main{display:grid;grid-template-columns:1.08fr 1fr;gap:14px;align-items:start}
+.qz-q{font-size:15px;line-height:1.55;font-weight:600;margin-bottom:10px;color:#1f2937}
+.blank{display:inline-block;min-width:70px;border-bottom:3px dotted #6366f1;margin:0 2px}
+.fillw{display:inline-block;background:#d1fae5;color:#065f46;border-radius:6px;padding:0 7px;font-weight:800}
+.bigw{font-size:30px;font-weight:900;color:#312e81;letter-spacing:.02em;margin:2px 0}
+.qz-opts{display:flex;flex-direction:column;gap:7px}
+.qz-opts.tf{flex-direction:row}.qz-opts.tf .qo{flex:1;justify-content:center}
+.qo{display:flex;align-items:center;gap:10px;text-align:left;border:2px solid #d6dafc;background:#fff;border-radius:12px;padding:8px 12px;font-size:13.5px;cursor:pointer;transition:.15s;color:#1f2937}
+.qo b{width:24px;height:24px;border-radius:8px;background:#e0e7ff;color:#3730a3;display:flex;align-items:center;justify-content:center;font-size:12px;flex:none}
+.qo:hover:not(.lock){border-color:#6366f1;background:#f5f6ff;transform:translateX(3px)}
+.qo.lock{cursor:default}
+.qo.ok{border-color:#34d399;background:var(--okbg);color:#064e3b;font-weight:700;animation:pop .35s}
+.qo.ok b{background:#10b981;color:#fff}
+.qo.bad{border-color:#f87171;background:var(--badbg);color:#7f1d1d;animation:shake .4s}
+.qo.bad b{background:#ef4444;color:#fff}
+.fb{border-radius:14px;padding:10px 12px;font-size:12.8px;line-height:1.55;max-height:270px;overflow:auto;position:sticky;top:0}
+.fb.idle{background:#f8faff;border:2px dashed #c7d2fe;text-align:center;color:var(--mut);padding:26px 14px}
+.fb.idle .idle-i{font-size:30px}
+.fb.ok{background:var(--okbg);border:1.5px solid #6ee7b7}
+.fb.bad{background:var(--badbg);border:1.5px solid #fca5a5}
+.fb-h{font-weight:900;font-size:14px;margin-bottom:5px}
+.fb.ok .fb-h{color:#047857}.fb.bad .fb-h{color:#b91c1c}
+.fb-h small{display:block;font-size:12px;font-weight:600;color:#374151;margin-top:1px}
+.fb-b{color:#1f2937}
+.fb-tr{margin-top:6px;background:rgba(255,255,255,.7);border-radius:8px;padding:5px 8px;color:#374151}
+.fb-note{margin-top:5px;color:#4338ca;font-weight:600}
+.fb-n{margin-top:9px;width:100%}
+table.mt{width:100%;border-collapse:collapse;font-size:12.3px;margin-top:3px}
+table.mt td{padding:2px 5px;border-bottom:1px dashed rgba(0,0,0,.1);vertical-align:top}
+table.mt tr.hit td{background:rgba(16,185,129,.16);font-weight:700}
+.qz-res{text-align:center;padding:6px 0}
+.ring{width:96px;height:96px;border-radius:50%;margin:4px auto 8px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;color:#312e81;background:conic-gradient(#10b981 var(--pct),#e0e7ff 0);position:relative}
+.ring:before{content:"";position:absolute;inset:9px;background:#fff;border-radius:50%}
+.ring span{position:relative}
+.qz-res h3{font-size:18px;color:#312e81}
+.qz-res .acts{display:flex;gap:8px;justify-content:center;margin:10px 0}
+.wl{text-align:left;margin-top:6px}
+.wl details{background:#fff;border:1px solid #fecaca;border-radius:10px;padding:5px 10px;margin-bottom:5px;font-size:12.5px}
+.wl summary{cursor:pointer;font-weight:700;color:#991b1b}
+.wl .fb-b{margin-top:5px}
+.confetti{position:fixed;top:-12px;font-size:18px;z-index:99;pointer-events:none;animation:fall 1.8s ease-in forwards}
+@keyframes fall{to{transform:translateY(500px) rotate(540deg);opacity:0}}
+
+/* fill */
+.fl-top{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.fl-top .t{font-size:13.5px;font-weight:800;color:#312e81;flex:1;min-width:200px}
+.bank{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0;padding:8px 10px;background:#fff;border:2px dashed #c7d2fe;border-radius:12px}
+.bk{border:none;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border-radius:999px;padding:5px 14px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 3px 8px rgba(99,102,241,.3);transition:.15s}
+.bk:hover:not(.used){transform:translateY(-2px)}
+.bk.used{background:#e5e7eb;color:#9ca3af;box-shadow:none;cursor:default;text-decoration:line-through}
+.fx{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px;padding:7px 4px;border-bottom:1px dashed var(--line);font-size:14px;line-height:2}
+.fx .n{width:22px;height:22px;border-radius:50%;background:#e0e7ff;color:#3730a3;font-size:11px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.fi{width:104px;border:none;border-bottom:2.5px dotted #6366f1;background:#f5f6ff;padding:1px 6px;font-size:14px;text-align:center;outline:none;border-radius:6px 6px 0 0;color:#1e1b4b;font-weight:700}
+.fi:focus{background:#e0e7ff;border-bottom-style:solid}
+.fi.good,.slot.good{border-bottom:2.5px solid #10b981;background:var(--okbg);color:#065f46}
+.fi.bad,.slot.bad{border-bottom:2.5px solid #ef4444;background:var(--badbg);color:#991b1b}
+.slot{min-width:104px;border:none;border-bottom:2.5px dotted #6366f1;background:#f5f6ff;padding:1px 8px;font-size:14px;font-weight:800;cursor:pointer;border-radius:6px 6px 0 0;color:#4338ca;height:26px}
+.slot.act{background:#e0e7ff;border-bottom-style:solid;box-shadow:0 0 0 3px rgba(99,102,241,.25)}
+.fxfb{flex-basis:100%;font-size:12.5px;line-height:1.55;border-radius:10px;padding:5px 10px;margin:0 0 2px 28px}
+.fxfb.ok{background:var(--okbg);border-left:3px solid #10b981;color:#064e3b}
+.fxfb.bad{background:var(--badbg);border-left:3px solid #ef4444;color:#7f1d1d}
+.fxfb .tr{display:block;color:#4b5563;font-style:italic}
+
+/* sentence builder */
+.bd-line{min-height:56px;border:2px dashed #a5b4fc;border-radius:14px;background:#fff;padding:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0}
+.bd-line.ok{border-color:#34d399;background:var(--okbg);border-style:solid}
+.bd-line.bad{border-color:#f87171;background:var(--badbg);border-style:solid}
+.bd-pool{display:flex;flex-wrap:wrap;gap:7px;min-height:44px;padding:4px}
+.wd{border:none;background:#fff;border:2px solid #c7d2fe;color:#3730a3;border-radius:10px;padding:5px 12px;font-size:14px;font-weight:700;cursor:pointer;transition:.15s;box-shadow:0 2px 0 #c7d2fe}
+.wd:hover{transform:translateY(-2px);border-color:#6366f1}
+.wd.in{background:#eef2ff}
+.bd-hint{color:#9ca3af;font-size:12.5px}
+
+/* signals */
+.sg{display:flex;flex-wrap:wrap;gap:2px 1px;align-items:center;padding:8px 6px;border-bottom:1px dashed var(--line);font-size:14.5px;line-height:1.9}
+.sg .n{width:22px;height:22px;border-radius:50%;background:#e0e7ff;color:#3730a3;font-size:11px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-right:3px}
+.tok{padding:0 4px;border-radius:7px;cursor:pointer;transition:.12s}
+.tok:hover{background:#e0e7ff}
+.tok.sig{background:#fde68a;color:#78350f;font-weight:800;box-shadow:inset 0 -3px 0 #f59e0b;cursor:default}
+.tok.err{background:#fee2e2;animation:shake .35s}
+.sgnote{margin-left:6px;font-size:11.5px;background:#ede9fe;color:#5b21b6;border-radius:999px;padding:1px 9px;font-weight:700}
+
+/* grammar theory */
+.gc{border-radius:14px;padding:10px 13px;background:#fff;border:1px solid var(--line);border-top:5px solid #6366f1}
+.gc.t2{border-top-color:#db2777}.gc.t3{border-top-color:#0d9488}
+.gc .ic{font-size:24px}.gc h3{font-size:14px;margin:2px 0 4px;color:#312e81}
+.gc p{font-size:12.8px;line-height:1.55}
+.gex{margin-top:6px;background:#f5f3ff;border-radius:9px;padding:6px 9px;font-size:13px;line-height:1.5}
+.gex i{display:block;color:#6b7280;font-size:12px}
+.scale{display:flex;gap:6px;align-items:stretch;margin:6px 0}
+.sc{flex:1;border-radius:11px;padding:7px 4px;text-align:center;color:#fff;font-size:12.5px;font-weight:800;line-height:1.3}
+.sc small{display:block;font-weight:600;font-size:10.5px;opacity:.92}
+.sc.a{background:#4f46e5}.sc.b{background:#6366f1}.sc.c{background:#8b5cf6}.sc.d{background:#a78bfa}.sc.e{background:#c4b5fd;color:#4c1d95}
+.fm{display:inline-block;font-weight:800;color:#3730a3;background:#e0e7ff;border-radius:8px;padding:1px 9px;margin-bottom:3px}
+table.t{width:100%;border-collapse:separate;border-spacing:0;font-size:12.8px;line-height:1.5;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+table.t th{background:linear-gradient(90deg,#eef2ff,#faf5ff);color:#312e81;padding:7px 10px;text-align:left}
+table.t td{padding:7px 10px;border-top:1px solid var(--line);vertical-align:top}
+table.t i{color:#6b7280;display:block;font-size:12px}
+
+/* pronunciation */
+.pcard{border-radius:16px;overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:0 4px 14px rgba(67,56,202,.08)}
+.pcard .ph2{display:flex;align-items:center;gap:10px;padding:9px 13px;color:#fff}
+.pcard.c1 .ph2{background:linear-gradient(90deg,#4f46e5,#7c3aed)}.pcard.c2 .ph2{background:linear-gradient(90deg,#db2777,#f59e0b)}
+.pcard .sym{font-family:var(--ph);font-size:27px;font-weight:700;background:rgba(255,255,255,.22);border-radius:11px;padding:0 11px}
+.pcard .ph2 b{display:block;font-size:13px}.pcard .ph2 small{font-size:11.5px;opacity:.92}
+.pbody{padding:9px 13px 11px}
+.pbody figure{border:1px solid var(--line);border-radius:12px;padding:5px;text-align:center;background:#fff;margin-bottom:8px}
+.pbody figure img{width:100%;height:108px;object-fit:contain}
+.pbody figcaption{font-size:11.5px;color:var(--mut)}
+.how{font-size:12.5px;line-height:1.55;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:6px 10px;margin-bottom:7px}
+.plist{list-style:none}
+.plist li{font-size:13.3px;padding:4px 0;border-bottom:1px dashed var(--line)}
+.plist li:last-child{border:none}
+.pw{font-weight:800;color:#312e81}.pp{font-family:var(--ph);color:var(--mut);font-size:12.5px}
+.pw u,.pp u{color:#be123c}
+.plist i{font-size:11px;color:#7c3aed}
+.pics{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
+.pic{position:relative;border:2px solid var(--line);border-radius:14px;padding:8px 7px 7px;text-align:center;background:#fff;display:flex;flex-direction:column;align-items:center;gap:5px;transition:.2s}
+.pic img{height:64px;max-width:100%;object-fit:contain}
+.pic .pn{position:absolute;top:5px;left:6px;font-size:10.5px;font-weight:900;background:#e0e7ff;color:#3730a3;border-radius:999px;padding:0 7px}
+.pic input{width:100%;padding:4px 6px;border:1.5px solid #c7d2fe;border-radius:8px;font-size:12.5px;text-align:center;outline:none}
+.pic input:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.pic input.good{border-color:#10b981;background:var(--okbg)}.pic input.bad{border-color:#ef4444;background:var(--badbg)}
+.cols{display:flex;gap:5px}
+.cb{font-family:var(--ph);border:1.5px solid #c7d2fe;background:#fff;border-radius:8px;padding:2px 11px;font-size:13px;cursor:pointer;color:#4338ca;font-weight:700}
+.cb.sel{background:#4f46e5;color:#fff;border-color:#4f46e5}
+.pic.okc{background:var(--okbg);border-color:#6ee7b7}
+.pic.egp{background:#f5f3ff;border-color:#c4b5fd}
+.pmsg{font-size:11px;color:var(--mut);min-height:28px;line-height:1.35}
+.pic.okc .pmsg{color:#065f46}
+.tchip{display:inline-block;margin:2px;background:#e0e7ff;color:#3730a3;border-radius:999px;padding:1px 10px;font-size:12px;font-weight:800;animation:pop .35s}
+
+/* speaking / writing */
+.pickrow{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 8px}
+.pk{border:2px solid #d6dafc;background:#fff;border-radius:999px;padding:5px 13px;font-size:12.5px;font-weight:700;cursor:pointer;color:#3730a3;transition:.15s}
+.pk:hover{border-color:#6366f1}.pk.on{background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff;border-color:transparent;box-shadow:0 3px 9px rgba(79,70,229,.3)}
+.out{background:linear-gradient(135deg,#fffbeb,#fef3c7);border:1px solid #fcd34d;border-radius:14px;padding:11px 14px;font-size:14px;line-height:1.7;color:#1f2937}
+.cue{display:flex;gap:8px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 11px;font-size:13px}
+.cue b{color:#7c3aed}
+.ck{display:flex;gap:9px;align-items:center;padding:7px 10px;border:1.5px solid var(--line);border-radius:11px;margin-bottom:6px;background:#fff;cursor:pointer;font-size:13px;transition:.15s}
+.ck:hover{border-color:#a5b4fc}.ck.on{background:var(--okbg);border-color:#6ee7b7}
+.ck .bx{width:20px;height:20px;border-radius:6px;border:2px solid #c7d2fe;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;flex:none}
+.ck.on .bx{background:#10b981;border-color:#10b981}
+.wr{display:flex;flex-wrap:wrap;gap:6px;align-items:flex-start;padding:7px 4px;border-bottom:1px dashed var(--line)}
+.wr .cues{flex-basis:100%;font-size:13px;color:#4338ca;font-weight:700;padding-left:28px}
+.wr input{flex:1;min-width:260px;border:1.5px solid #c7d2fe;border-radius:10px;padding:6px 10px;font-size:13.5px;outline:none}
+.wr input:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.wr input.good{border-color:#10b981;background:var(--okbg)}.wr input.near{border-color:#f59e0b;background:var(--ambg)}
+.wr .n{width:22px;height:22px;border-radius:50%;background:#e0e7ff;color:#3730a3;font-size:11px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-top:5px}
+textarea.ta{width:100%;min-height:110px;border:2px solid #c7d2fe;border-radius:14px;padding:10px 12px;font-size:14px;line-height:1.6;outline:none;resize:vertical}
+textarea.ta:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.wc{display:flex;align-items:center;gap:8px;margin:6px 0}
+.wcbar{flex:1;height:8px;background:#e5e7eb;border-radius:8px;overflow:hidden;position:relative}
+.wcbar i{display:block;height:100%;background:#f59e0b;border-radius:8px;transition:width .2s,background .2s}
+.wcn{font-weight:900;font-size:13px;min-width:92px;text-align:right}
+
+/* listening */
+.player{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#eef2ff,#faf5ff);border:1px solid #c7d2fe;border-radius:16px;padding:12px 14px;margin-bottom:8px}
+.play{width:50px;height:50px;border-radius:50%;border:none;background:linear-gradient(135deg,#4f46e5,#c026d3);color:#fff;font-size:20px;cursor:pointer;box-shadow:0 6px 16px rgba(79,70,229,.4);flex:none}
+.play:hover{transform:scale(1.07)}
+.ss{padding:1px 2px;border-radius:5px;transition:.2s}.ss.now{background:#fde68a}
+.eq{display:flex;gap:3px;align-items:flex-end;height:22px}
+.eq i{width:4px;background:#6366f1;border-radius:3px;height:6px}
+.eq.on i{animation:eq .8s ease-in-out infinite}.eq.on i:nth-child(2){animation-delay:.15s}.eq.on i:nth-child(3){animation-delay:.3s}.eq.on i:nth-child(4){animation-delay:.45s}
+@keyframes eq{50%{height:22px}}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(30,27,75,.55);display:flex;align-items:center;justify-content:center;z-index:50;animation:fade .2s}
+.mbox{width:min(560px,92%);max-height:430px;overflow:auto;background:#fff;border-radius:20px;padding:18px 22px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.mbox h2{color:#312e81;font-size:19px}.mbox .sub{color:var(--mut);font-size:12.5px;margin-bottom:8px}
+.obj{display:flex;gap:10px;align-items:flex-start;padding:6px 0;border-bottom:1px dashed var(--line);font-size:13px;line-height:1.5}
+.obj .oi{font-size:19px}.obj b{color:#4338ca}
+
+@media (max-width:760px){
+  .app{flex-direction:column}.side{width:100%;flex-direction:row;align-items:center;padding:6px 8px;gap:6px;overflow-x:auto}
+  .logo,.prog{display:none}.nav{flex-direction:row;flex:none}.ni{width:auto;flex:none}
+  .grid2,.grid3,.split,.qz-main,.mg{grid-template-columns:1fr}.pics{grid-template-columns:repeat(2,1fr)}.vrow{grid-template-columns:40px 1fr}.vrow .vright{grid-column:1/-1}
+  .body.split{overflow:auto}.split>div{height:auto;overflow:visible}
+}
+
+/* ---- extra styles for Unit 2 / Unit 3 ---- */
+.so-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+.so-col{border:2px dashed #c7d2fe;border-radius:16px;background:#fff;min-height:128px;cursor:pointer;transition:.15s;overflow:hidden}
+.so-col:hover{border-color:#6366f1;background:#f8f9ff}
+.so-h{font-size:19px;font-weight:800;text-align:center;padding:6px;background:linear-gradient(90deg,#eef2ff,#faf5ff);color:#4338ca;border-bottom:1px solid var(--line)}
+.so-b{padding:8px;display:flex;flex-wrap:wrap;gap:6px;min-height:70px}
+.wd.selw{background:#4f46e5;color:#fff;border-color:#4f46e5;box-shadow:0 0 0 3px rgba(79,70,229,.25)}
+.wd.okw{background:#ecfdf5;border-color:#34d399;color:#065f46;box-shadow:0 2px 0 #34d399}
+.wd.badw{background:#fef2f2;border-color:#f87171;color:#991b1b;box-shadow:0 2px 0 #f87171}
+.tg{padding:1px 5px;border-radius:7px}
+.tg.tg0{background:#dbeafe;color:#1e3a8a;font-weight:800;box-shadow:inset 0 -3px 0 #3b82f6}
+.tg.tg1{background:#fce7f3;color:#831843;font-weight:800;box-shadow:0 0 0 2px #ec4899}
+.tg.tgok{outline:2px solid #34d399;outline-offset:1px}
+.tg.tgbad{background:#fee2e2;color:#991b1b;outline:2px dashed #ef4444;outline-offset:1px}
+.tg sup{font-size:9.5px;font-weight:800;margin-left:2px;color:#b91c1c}
+.tgleg{margin-left:6px}.tgleg .tok{cursor:default;margin-right:4px}
+.sg .fxfb{margin-left:0;flex-basis:100%}
+.formula{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;margin:8px 0}
+.formula .fm{margin:0}.formula .cj{background:linear-gradient(90deg,#4f46e5,#c026d3);color:#fff}
+.cj-card{border-radius:14px;padding:9px 13px;background:#fff;border:1px solid var(--line);border-left:6px solid #6366f1;font-size:12.8px;line-height:1.5}
+.cj-card b{font-size:18px;color:#312e81;letter-spacing:.03em}.cj-card small{color:#6b7280;font-weight:700;margin-left:4px}
+.cj-card p{font-weight:700;color:#4338ca;margin:2px 0}.cj-card i{display:block;color:#374151}
+.cj-card.b{border-left-color:#ec4899}.cj-card.c{border-left-color:#10b981}.cj-card.d{border-left-color:#f59e0b}
+.cj-card u{text-decoration-color:#e11d48;font-weight:800}
+.howl{margin:0 0 8px 18px;font-size:12.5px;line-height:1.55;color:#1f2937}
+.figs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
+.figs figure{border:1px solid var(--line);border-radius:10px;padding:3px;background:#fff}.figs img{width:100%;height:78px;object-fit:contain}
+.txt2{font-size:13.5px;line-height:1.7;margin-top:6px;color:#1f2937}
+.gc h3 small{font-size:11px;font-weight:600;margin-left:3px}
+.mc.vi{font-size:12.5px;line-height:1.35}
+
+.gl{list-style:none;font-size:12.8px}
+.gl li{padding:4px 0 4px 12px;border-left:3px solid #c7d2fe;margin:5px 0;line-height:1.45}
+.gl li span{color:#6b7280;font-size:12px}
+
+.fi{width:150px}
+
+.seg{display:inline-block;border-bottom:3px solid #6366f1;border-radius:3px;padding:0 3px;margin:0 1px;background:#eef2ff;position:relative}
+.seg sup{font-size:10px;font-weight:900;color:#fff;background:#4f46e5;border-radius:999px;padding:0 5px;margin-right:3px}
+.dl{display:flex;gap:10px;align-items:flex-start;margin-bottom:7px}
+.dl b{flex:none;min-width:48px;text-align:center;border-radius:999px;background:#e0e7ff;color:#3730a3;padding:2px 8px;font-size:11.5px}
+.dl div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px 10px;font-size:13px;line-height:1.5}
+.dl div i{display:block;color:var(--mut);font-size:12px}
+.dl.r{flex-direction:row-reverse}.dl.r b{background:#fce7f3;color:#9d174d}.dl.r div{background:#fffafc}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px}
+.step{display:flex;gap:8px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px;font-size:12.5px;line-height:1.4}
+.step b{flex:none;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#4f46e5,#c026d3);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px}
+.poll{display:grid;grid-template-columns:1fr auto 26px auto 90px 36px;gap:6px;align-items:center;margin-bottom:6px;font-size:12.5px}
+.pl{font-weight:700;color:#312e81}.pn2{text-align:center}.pbar2{height:10px;background:#e5e7eb;border-radius:8px;overflow:hidden}.pbar2 i{display:block;height:100%;background:linear-gradient(90deg,#6366f1,#c026d3);transition:width .3s}.pp2{font-size:11.5px;color:var(--mut)}
+@media (max-width:760px){.steps{grid-template-columns:1fr 1fr}.poll{grid-template-columns:1fr auto 26px auto}.pbar2,.pp2{display:none}}
+
+.nf{margin-bottom:8px}.nf label{display:block;font-size:12.5px;font-weight:800;color:#312e81;margin-bottom:3px}
+textarea.nta{min-height:0;font-size:13.5px;padding:7px 10px;border-radius:10px}
+.stt{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:4px}
+.mycard{background:linear-gradient(135deg,#fffbeb,#fdf2f8);border:2px solid #fcd34d;border-radius:16px;padding:12px 16px;font-size:13.5px;line-height:1.6;box-shadow:0 8px 20px rgba(217,119,6,.12);transform:rotate(-.4deg)}
+.mycard p{margin:4px 0}.cardh{font-weight:900;font-size:15px;color:#9d174d;margin-bottom:4px}
+.mycard table.t th{width:36%;text-align:left}
+.rt{display:flex;align-items:center;gap:10px;justify-content:space-between;background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px 12px;margin-bottom:6px;flex-wrap:wrap}
+.rtq{font-size:13px;flex:1;min-width:220px}.rtb{display:flex;gap:4px}
+.face{border:2px solid transparent;background:#f3f4ff;border-radius:50%;width:38px;height:38px;font-size:21px;cursor:pointer;transition:.15s;filter:grayscale(.7)}
+.face:hover{transform:scale(1.15);filter:none}.face.on{border-color:#6366f1;background:#e0e7ff;filter:none;transform:scale(1.12)}
+.drawcard{min-height:130px;border-radius:20px;background:linear-gradient(135deg,#eef2ff,#faf5ff);border:2px dashed #a5b4fc;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px 20px;gap:6px;transition:.2s}
+.drawcard.spin{background:linear-gradient(135deg,#fef3c7,#fce7f3);border-style:solid;animation:pop .2s infinite}
+.dc-t{font-size:20px;font-weight:900;color:#312e81;line-height:1.35}.dc-s{font-size:13px;color:#6b7280}
+.timerbox{background:#fff;border:2px solid #c7d2fe;border-radius:18px;padding:12px;text-align:center}
+.tm-l{font-size:12px;font-weight:800;color:#6b7280;text-transform:uppercase;letter-spacing:.06em}.tm-t{font-size:44px;font-weight:900;color:#4338ca;font-variant-numeric:tabular-nums;margin:2px 0 8px}
+.stepsv div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px 10px;margin-bottom:5px;font-size:13px}
+.so-cols .so-h{font-size:14px}
+@media (max-width:760px){.rtq{min-width:100%}}
+
+.shop{display:grid;grid-template-columns:repeat(3,1fr);gap:4px 12px}.shopg{min-width:0}
+.shopi{display:flex;justify-content:space-between;align-items:center;width:100%;gap:6px;border:2px solid #d6dafc;background:#fff;border-radius:10px;padding:4px 9px;margin-bottom:4px;font-size:12.5px;cursor:pointer;text-align:left;transition:.15s;color:#1f2937}
+.shopi b{color:#6b7280;font-size:12px;white-space:nowrap}.shopi:hover:not(.dis):not(:disabled){border-color:#6366f1;background:#f5f6ff}
+.shopi.on{background:#ecfdf5;border-color:#34d399}.shopi.on b{color:#047857}.shopi.dis{opacity:.4;cursor:not-allowed}
+.mrr{display:flex;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 12px;margin-bottom:6px;font-size:13px}
+.mrp{width:48px;height:48px;border-radius:50%;color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;flex:none}
+.bpr{display:flex;gap:8px;align-items:center;margin-bottom:5px}.bpr>span{min-width:96px;font-size:12.5px;font-weight:700;color:#312e81}.bpr .search{max-width:170px}
+@media (max-width:760px){.shop{grid-template-columns:1fr}}
+
+.hintc{display:flex;gap:10px;align-items:center;background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:8px 12px;margin-bottom:6px;font-size:13px;line-height:1.5}
+.hintc b{flex:none;background:#f59e0b;color:#fff;border-radius:999px;padding:1px 9px;font-size:12px}
+.hintc.lock{background:#f3f4f6;border-color:#e5e7eb;color:#9ca3af}.hintc.lock b{background:#9ca3af}
+.poster{text-align:center;padding:10px 4px}.poster .pt{font-size:19px;font-weight:900;color:#065f46;margin:6px 0;line-height:1.4}.poster .pt2{font-size:15px;color:#047857;font-weight:700}.poster .ps{font-size:12px;color:#6b7280;margin-top:6px}
+
+</style>
+<style>.source{background:white;border:1px solid var(--line);border-radius:12px;padding:16px;margin:8px 0;line-height:1.7;font-size:14px}.source p{margin:6px 0}.source table{border-collapse:collapse;width:100%;min-width:480px}.source td{border:1px solid #d6dafc;padding:8px;vertical-align:top}.tablewrap{overflow:auto}.nav{overflow:auto}.side small{display:block;font-size:10px}.studytextarea{width:100%;min-height:160px;padding:14px;border:1px solid #c7d2fe;border-radius:10px;margin:10px 0;font-size:14px}@media(max-width:650px){.side{width:100%}.head,.body{padding-left:10px;padding-right:10px}.qz-main,.grid2{grid-template-columns:1fr}.source{padding:10px}.vrow{grid-template-columns:1fr}.head h1{font-size:16px}}.main{min-height:0}.vrow{grid-template-columns:minmax(0,30%) minmax(0,24%) minmax(0,1fr)}.vrow>div{min-width:0;overflow-wrap:anywhere}@media(max-width:760px){.side{width:100%}.vrow{grid-template-columns:1fr}.nav{overflow:visible}}.source td p{overflow-wrap:anywhere}</style></head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="logo" onclick="showObjectives()" title="Xem mục tiêu bài học">
+      <div class="lg">🎯</div><div><b>UNIT 11</b><small>Travelling in the future</small></div>
+    </div>
+    <nav class="nav" id="nav"></nav>
+    <div class="prog"><div class="pbar"><i id="pbar"></i></div><small id="ptxt"></small></div>
+  </aside>
+  <main class="main">
+    <header class="head"><div class="hi" id="hi"></div><div><h1 id="ttl"></h1><p id="dsc"></p></div></header>
+    <div class="subnav" id="subnav"></div>
+    <div class="body" id="body"></div>
+  </main>
+</div>
+<script>/* ================= utilities ================= */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const normA = s => s.toLowerCase().replace(/[’‘`]/g, "'").replace(/[.,!?;:"“”]/g, '').replace(/\s+/g, ' ').trim();
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const hl = s => s.replace(/\{\{(.+?)\}\}/g, '<mark>$1</mark>');
+const plain = s => s.replace(/\{\{|\}\}/g, '').replace(/<[^>]+>/g, '');
+function say(t, rate) { try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-GB'; u.rate = rate || .9; speechSynthesis.speak(u); } catch (e) {} }
+function sayEl(el) { say(el.dataset.w); }
+const spk = w => `<button class="spk" data-w="${esc(plain(w))}" onclick="sayEl(this)" title="Nghe">🔊</button>`;
+function confetti() {
+  const em = ['🎉', '✨', '⭐', '🎊', '💜', '🌟'];
+  for (let i = 0; i < 22; i++) {
+    const s = document.createElement('span'); s.className = 'confetti'; s.textContent = em[i % em.length];
+    s.style.left = (10 + Math.random() * 80) + '%'; s.style.animationDelay = (Math.random() * .5) + 's'; s.style.fontSize = (14 + Math.random() * 14) + 'px';
+    document.body.appendChild(s); setTimeout(() => s.remove(), 2400);
+  }
+}
+
+/* ================= component registry & progress ================= */
+const COMP = {}, DONE = {};
+function markDone(id, s, t) { DONE[id] = { s, t }; navRender(); }
+function hydrate() { document.querySelectorAll('.comp').forEach(el => { const c = COMP[el.dataset.id]; if (c) c.render(el); }); }
+function rerender(id) { const el = document.querySelector(`.comp[data-id="${id}"]`); if (el) COMP[id].render(el); }
+const slot = id => `<div class="comp" data-id="${id}"></div>`;
+
+/* ================= QUIZ (one question at a time, explanation panel) ================= */
+function fillQ(q, txt) {
+  const parts = txt.split(' - '); let k = 0;
+  return q.replace(/_{3,}/g, () => `<span class="fillw">${parts[Math.min(k++, parts.length - 1)]}</span>`);
+}
+function quiz(id, cfg) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { i: 0, score: 0, sel: null, res: [], fin: false };
+  if (prev) cfg.items = prev.cfg.items; else if (cfg.regen) cfg.items = cfg.regen();
+  COMP[id] = { st, cfg, render: el => qzRender(id, el) };
+  return slot(id);
+}
+function qzRender(id, el) {
+  const { st, cfg } = COMP[id], items = cfg.items, n = items.length;
+  if (st.fin) { el.innerHTML = qzResult(id); return; }
+  const it = items[st.i], L = cfg.labels || ['A', 'B', 'C', 'D'], ans = st.sel !== null, ok = ans && st.sel === it.a;
+  const opts = it.opts.map((o, j) => {
+    let c = 'qo'; if (ans) { c += ' lock'; if (j === it.a) c += ' ok'; else if (j === st.sel) c += ' bad'; }
+    return `<button class="${c}" onclick="qzPick('${id}',${j})"><b>${L[j]}</b><span>${o}</span></button>`;
+  }).join('');
+  const q = ans ? fillQ(it.q, it.opts[it.a]) : it.q.replace(/_{3,}/g, '<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>');
+  const fb = ans
+    ? `<div class="fb ${ok ? 'ok' : 'bad'}"><div class="fb-h">${ok ? '🎉 Chính xác!' : '❌ Chưa đúng'}<small>Đáp án đúng: <b>${L[it.a]}. ${it.opts[it.a]}</b></small></div><div class="fb-b">${it.exp || ''}</div></div>
+       <button class="btn solid fb-n" onclick="qzNext('${id}')">${st.i === n - 1 ? 'Xem kết quả →' : 'Câu tiếp theo →'}</button>`
+    : `<div class="fb idle"><div class="idle-i">💡</div><p>Chọn một đáp án.<br>Giải thích và nghĩa sẽ hiện ở đây.</p></div>`;
+  el.innerHTML = `<div class="qz">
+    <div class="qz-top"><span class="qz-title">${cfg.title}</span><span class="chip-s">Câu ${st.i + 1}/${n}</span><span class="chip-s ok">★ ${st.score}</span></div>
+    <div class="qz-bar"><i style="width:${(st.i + (ans ? 1 : 0)) / n * 100}%"></i></div>
+    ${cfg.note ? `<div class="note">${cfg.note}</div>` : ''}
+    <div class="qz-main"><div><div class="qz-q">${q}</div><div class="qz-opts ${cfg.tf ? 'tf' : ''}">${opts}</div></div><div>${fb}</div></div></div>`;
+}
+function qzPick(id, j) {
+  const { st, cfg } = COMP[id]; if (st.sel !== null) return;
+  st.sel = j; st.res[st.i] = j; if (j === cfg.items[st.i].a) st.score++;
+  rerender(id);
+}
+function qzNext(id) {
+  const { st, cfg } = COMP[id]; st.sel = null; st.i++;
+  if (st.i >= cfg.items.length) { st.fin = true; markDone(id, st.score, cfg.items.length); if (st.score === cfg.items.length) confetti(); }
+  rerender(id);
+}
+function qzRestart(id) {
+  const c = COMP[id]; Object.assign(c.st, { i: 0, score: 0, sel: null, res: [], fin: false });
+  if (c.cfg.regen) c.cfg.items = c.cfg.regen();
+  rerender(id);
+}
+function qzResult(id) {
+  const { st, cfg } = COMP[id], n = cfg.items.length, pct = Math.round(st.score / n * 100), L = cfg.labels || ['A', 'B', 'C', 'D'];
+  const msg = pct === 100 ? 'Xuất sắc! 🏆' : pct >= 80 ? 'Rất tốt! 👏' : pct >= 50 ? 'Khá ổn, cố thêm chút nữa! 💪' : 'Đừng nản, thử lại nhé! 🌱';
+  const wrong = cfg.items.map((it, i) => ({ it, i })).filter(x => st.res[x.i] !== x.it.a);
+  return `<div class="qz-res"><div class="ring" style="--pct:${pct}%"><span>${st.score}/${n}</span></div><h3>${msg}</h3>
+    <p class="muted">${esc(plain(cfg.title))}</p>
+    <div class="acts"><button class="btn solid" onclick="qzRestart('${id}')">↺ Làm lại</button></div>
+    ${wrong.length ? `<div class="wl"><div class="colh">Các câu cần xem lại (${wrong.length})</div>${wrong.map(({ it, i }) => `<details><summary>Câu ${i + 1}: ${fillQ(it.q, it.opts[it.a])}</summary><div class="fb-b">Bạn chọn: <b>${L[st.res[i]]}. ${it.opts[st.res[i]]}</b> · Đáp án: <b>${L[it.a]}. ${it.opts[it.a]}</b><br>${it.exp || ''}</div></details>`).join('')}</div>` : '<p class="muted">Bạn đã trả lời đúng tất cả các câu 🎯</p>'}</div>`;
+}
+document.addEventListener('keydown', e => {
+  if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+  const m = document.querySelector('.comp .qz-main'); if (!m) return;
+  const id = m.closest('.comp').dataset.id, { st, cfg } = COMP[id], k = e.key.toLowerCase();
+  if (st.sel === null) {
+    const labs = (cfg.labels || ['A', 'B', 'C', 'D']).map(x => x.toLowerCase());
+    let j = labs.indexOf(k); if (j < 0) j = ['1', '2', '3', '4'].indexOf(k);
+    if (j >= 0 && j < cfg.items[st.i].opts.length) qzPick(id, j);
+  } else if (['enter', 'arrowright', ' '].includes(k)) { e.preventDefault(); qzNext(id); }
+});
+function meanExp(opts, mean, a, tr, note) {
+  return `<table class="mt">${opts.map((o, j) => `<tr class="${j === a ? 'hit' : ''}"><td>${'ABCD'[j]}. <b>${o}</b></td><td>${mean[j]}</td></tr>`).join('')}</table>${note ? `<p class="fb-note">${note}</p>` : ''}${tr ? `<p class="fb-tr">🇻🇳 ${tr}</p>` : ''}`;
+}
+const ruleExp = (rule, tr) => `<p>${rule}</p>${tr ? `<p class="fb-tr">🇻🇳 ${tr}</p>` : ''}`;
+
+/* ================= FILL (typing or tap-to-fill word bank) ================= */
+function fill(id, cfg) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { vals: {}, checked: false, res: [], active: null, score: 0 };
+  COMP[id] = { st, cfg, render: el => flRender(id, el) };
+  return slot(id);
+}
+function flRender(id, el) {
+  const { st, cfg } = COMP[id], bank = cfg.bank, items = cfg.items;
+  const used = Object.values(st.vals);
+  const rows = items.map((it, i) => {
+    let k = 0;
+    const q = it.q.replace(/___/g, () => {
+      const key = i + '-' + k, v = st.vals[key] || '', kk = k++;
+      const cls = st.checked ? (st.res[i] && st.res[i][kk] ? ' good' : ' bad') : '';
+      if (bank) return `<button class="slot${st.active === key ? ' act' : ''}${cls}" onclick="flSlot('${id}','${key}')">${v || '&nbsp;'}</button>`;
+      return `<input class="fi${cls}" data-key="${key}" value="${esc(v)}" autocomplete="off" spellcheck="false" oninput="COMP['${id}'].st.vals['${key}']=this.value" onkeydown="flKey(event,'${id}')">`;
+    });
+    let fb = '';
+    if (st.checked) {
+      const ok = st.res[i] && st.res[i].every(Boolean);
+      fb = `<div class="fxfb ${ok ? 'ok' : 'bad'}">${ok ? '✓ Đúng.' : '✗ Đáp án: <b>' + it.a.map(x => x.split('/')[0]).join(' … ') + '</b>.'} ${it.exp || ''}${it.tr ? `<span class="tr">🇻🇳 ${it.tr}</span>` : ''}</div>`;
+    }
+    return `<div class="fx"><span class="n">${i + 1}</span><span>${q}</span>${fb}</div>`;
+  }).join('');
+  el.innerHTML = `<div class="fl-top"><span class="t">${cfg.title}</span>
+      <span class="chip-s ok" ${st.checked ? '' : 'style="display:none"'}>★ ${st.score}/${items.length}</span>
+      <button class="btn solid" onclick="flCheck('${id}')">✔ Kiểm tra</button><button class="btn" onclick="flReveal('${id}')">💡 Xem đáp án</button><button class="btn" onclick="flReset('${id}')">↺ Làm lại</button></div>
+    ${cfg.note ? `<div class="note">${cfg.note}</div>` : ''}
+    ${bank ? `<div class="bank">${bank.map(w => `<button class="bk${used.includes(w) ? ' used' : ''}" onclick="flPut('${id}',this.dataset.w)" data-w="${esc(w)}">${w}</button>`).join('')}</div>` : ''}
+    ${rows}`;
+}
+function flKey(e, id) {
+  if (e.key !== 'Enter') return;
+  const ins = [...document.querySelectorAll(`.comp[data-id="${id}"] input.fi`)], i = ins.indexOf(e.target);
+  if (i < ins.length - 1) ins[i + 1].focus(); else flCheck(id);
+}
+function flSlot(id, key) {
+  const { st } = COMP[id]; if (st.checked) return;
+  if (st.vals[key]) { delete st.vals[key]; st.active = key; } else st.active = st.active === key ? null : key;
+  rerender(id);
+}
+function flPut(id, w) {
+  const { st, cfg } = COMP[id]; if (st.checked || Object.values(st.vals).includes(w)) return;
+  let key = st.active;
+  if (!key || st.vals[key]) { key = null; cfg.items.forEach((it, i) => it.a.forEach((_, k) => { const kk = i + '-' + k; if (!key && !st.vals[kk]) key = kk; })); }
+  if (!key) return;
+  st.vals[key] = w; st.active = null;
+  let nx = null; cfg.items.forEach((it, i) => it.a.forEach((_, k) => { const kk = i + '-' + k; if (!nx && !st.vals[kk]) nx = kk; }));
+  st.active = nx; rerender(id);
+}
+function flCheck(id) {
+  const { st, cfg } = COMP[id]; let s = 0;
+  st.res = cfg.items.map((it, i) => it.a.map((a, k) => a.split('/').map(normA).includes(normA(st.vals[i + '-' + k] || ''))));
+  cfg.items.forEach((it, i) => { if (st.res[i].every(Boolean)) s++; });
+  st.score = s; st.checked = true; st.active = null; markDone(id, s, cfg.items.length);
+  if (s === cfg.items.length) confetti(); rerender(id);
+}
+function flReveal(id) {
+  const { st, cfg } = COMP[id];
+  cfg.items.forEach((it, i) => it.a.forEach((a, k) => { st.vals[i + '-' + k] = a.split('/')[0]; })); flCheck(id);
+}
+function flReset(id) { const { st } = COMP[id]; Object.assign(st, { vals: {}, checked: false, res: [], active: null, score: 0 }); rerender(id); }
+
+/* ================= SENTENCE BUILDER ================= */
+function builder(id, cfg) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { i: 0, score: 0, fin: false, checked: false, ok: false, placed: [], pool: null };
+  if (!st.pool) st.pool = bdShuffle(cfg.items[0].w);
+  COMP[id] = { st, cfg, render: el => bdRender(id, el) };
+  return slot(id);
+}
+function bdShuffle(w) { let p, tries = 0; do { p = shuffle(w.map((x, i) => i)); tries++; } while (p.join() === w.map((x, i) => i).join() && tries < 9); return p; }
+function bdRender(id, el) {
+  const { st, cfg } = COMP[id], items = cfg.items, n = items.length;
+  if (st.fin) { el.innerHTML = `<div class="qz-res"><div class="ring" style="--pct:${Math.round(st.score / n * 100)}%"><span>${st.score}/${n}</span></div><h3>${st.score === n ? 'Hoàn hảo! 🏆' : 'Hoàn thành! 👏'}</h3><p class="muted">${esc(cfg.title)}</p><div class="acts"><button class="btn solid" onclick="bdRestart('${id}')">↺ Làm lại</button></div></div>`; return; }
+  const it = items[st.i], words = it.w;
+  const pool = st.pool.filter(x => !st.placed.includes(x));
+  el.innerHTML = `<div class="qz-top"><span class="qz-title">${cfg.title}</span><span class="chip-s">Câu ${st.i + 1}/${n}</span><span class="chip-s ok">★ ${st.score}</span></div>
+    <div class="qz-bar"><i style="width:${(st.i + (st.checked ? 1 : 0)) / n * 100}%"></i></div>
+    <div class="muted">Bấm các từ theo thứ tự để ghép thành câu hoàn chỉnh. Gợi ý nghĩa: <b>${it.vi}</b></div>
+    <div class="bd-line ${st.checked ? (st.ok ? 'ok' : 'bad') : ''}">${st.placed.length ? st.placed.map(x => `<button class="wd in" onclick="bdBack('${id}',${x})">${words[x]}</button>`).join('') : '<span class="bd-hint">Câu của bạn sẽ hiện ở đây…</span>'}</div>
+    <div class="bd-pool">${pool.map(x => `<button class="wd" onclick="bdAdd('${id}',${x})">${words[x]}</button>`).join('')}</div>
+    <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+      ${st.checked ? `<button class="btn solid" onclick="bdNext('${id}')">${st.i === n - 1 ? 'Xem kết quả →' : 'Câu tiếp theo →'}</button>`
+        : `<button class="btn solid" onclick="bdCheck('${id}')" ${st.placed.length ? '' : 'disabled'}>✔ Kiểm tra</button><button class="btn" onclick="bdClear('${id}')">Xóa hết</button>`}
+    </div>
+    ${st.checked ? `<div class="fb ${st.ok ? 'ok' : 'bad'}" style="margin-top:8px;position:static"><div class="fb-h">${st.ok ? '🎉 Chính xác!' : '❌ Chưa đúng'}<small>Câu đúng: <b>${words.join(' ')}</b></small></div><div class="fb-b">${it.exp || ''}<p class="fb-tr">🇻🇳 ${it.vi}</p></div></div>` : ''}`;
+}
+function bdAdd(id, x) { const { st } = COMP[id]; if (st.checked) return; st.placed.push(x); rerender(id); }
+function bdBack(id, x) { const { st } = COMP[id]; if (st.checked) return; st.placed = st.placed.filter(y => y !== x); rerender(id); }
+function bdClear(id) { COMP[id].st.placed = []; rerender(id); }
+function bdCheck(id) {
+  const { st, cfg } = COMP[id], w = cfg.items[st.i].w;
+  st.ok = normA(st.placed.map(x => w[x]).join(' ')) === normA(w.join(' '));
+  if (st.ok) st.score++; st.checked = true; rerender(id);
+}
+function bdNext(id) {
+  const { st, cfg } = COMP[id]; st.i++; st.checked = false; st.placed = [];
+  if (st.i >= cfg.items.length) { st.fin = true; markDone(id, st.score, cfg.items.length); if (st.score === cfg.items.length) confetti(); }
+  else st.pool = bdShuffle(cfg.items[st.i].w);
+  rerender(id);
+}
+function bdRestart(id) { const { st, cfg } = COMP[id]; Object.assign(st, { i: 0, score: 0, fin: false, checked: false, placed: [], pool: bdShuffle(cfg.items[0].w) }); rerender(id); }
+
+/* ================= MATCH GAME ================= */
+function matchGame(id, pool) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { round: null, sel: null, done: [], moves: 0, err: null, rounds: 0 };
+  if (!st.round) matchNew(st, pool);
+  COMP[id] = { st, pool, render: el => mgRender(id, el) };
+  return slot(id);
+}
+function matchNew(st, pool) { const r = shuffle(pool).slice(0, 6); st.round = { L: r, R: shuffle(r) }; st.sel = null; st.done = []; st.moves = 0; st.err = null; }
+function mgRender(id, el) {
+  const { st } = COMP[id], { L, R } = st.round, fin = st.done.length === L.length;
+  const left = L.map((v, i) => `<button class="mc ${st.done.includes(v.w) ? 'lock' : ''} ${st.sel && st.sel.side === 'L' && st.sel.w === v.w ? 'sel' : ''} ${st.err && st.err.includes('L:' + v.w) ? 'err' : ''}" onclick="mgPick('${id}','L',this.dataset.w)" data-w="${esc(v.w)}">${v.em || ''} ${v.w}</button>`);
+  const right = R.map(v => `<button class="mc vi ${st.done.includes(v.w) ? 'lock' : ''} ${st.sel && st.sel.side === 'R' && st.sel.w === v.w ? 'sel' : ''} ${st.err && st.err.includes('R:' + v.w) ? 'err' : ''}" onclick="mgPick('${id}','R',this.dataset.w)" data-w="${esc(v.w)}">${v.vi}</button>`);
+  el.innerHTML = `<div class="mg-top"><b style="color:#312e81;font-size:13.5px;flex:1">Ghép mỗi từ tiếng Anh với nghĩa tiếng Việt đúng</b><span class="chip-s">Ghép đúng ${st.done.length}/${L.length}</span><span class="chip-s">Lượt: ${st.moves}</span><button class="btn" onclick="mgNew('${id}')">🔀 Vòng mới</button></div>
+    <div class="mg">${L.map((_, i) => left[i] + right[i]).join('')}</div>
+    ${fin ? `<div class="note" style="margin-top:10px;background:#ecfdf5;border-color:#10b981">🎉 Hoàn thành sau <b>${st.moves}</b> lượt! Bấm “Vòng mới” để chơi với 6 từ khác.</div>` : ''}`;
+}
+function mgPick(id, side, w) {
+  const { st } = COMP[id]; if (st.done.includes(w) || st.err) return;
+  if (!st.sel || st.sel.side === side) { st.sel = { side, w }; rerender(id); return; }
+  st.moves++; const a = st.sel; st.sel = null;
+  if (a.w === w) { st.done.push(w); if (st.done.length === st.round.L.length) { markDone(id, st.round.L.length, st.moves); confetti(); } rerender(id); }
+  else { st.err = [`${a.side}:${a.w}`, `${side}:${w}`]; rerender(id); setTimeout(() => { st.err = null; rerender(id); }, 520); }
+}
+function mgNew(id) { const c = COMP[id]; matchNew(c.st, c.pool); rerender(id); }
+
+/* ================= SIGNAL FINDER (grammar) ================= */
+function signals(id, items) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { found: {}, wrong: {}, err: null };
+  COMP[id] = { st, items, render: el => sgRender(id, el) };
+  return slot(id);
+}
+function sgIdx(it) {
+  const toks = it.w.split(' '), ph = it.t.split(' ').map(normA), cl = toks.map(normA);
+  for (let i = 0; i < toks.length; i++) { if (ph.every((p, k) => cl[i + k] === p)) return [i, i + ph.length - 1]; }
+  return [0, 0];
+}
+function sgRender(id, el) {
+  const { st, items } = COMP[id], n = items.length, nf = Object.keys(st.found).length;
+  el.innerHTML = `<div class="fl-top"><span class="t">Tìm dấu hiệu nhận biết thì hiện tại đơn trong mỗi câu</span><span class="chip-s ok">Đã tìm ${nf}/${n}</span><button class="btn" onclick="sgReset('${id}')">↺ Làm lại</button></div>
+    ${items.map((it, i) => {
+      const [a, b] = sgIdx(it), found = st.found[i];
+      return `<div class="sg"><span class="n">${i + 1}</span>${it.w.split(' ').map((t, k) => `<span class="tok ${found && k >= a && k <= b ? 'sig' : ''} ${st.err === i + '-' + k ? 'err' : ''}" onclick="sgPick('${id}',${i},${k})">${t}</span>`).join('')}${found ? `<span class="sgnote">✓ ${it.note}</span>` : ''}</div>`;
+    }).join('')}
+    ${nf === n ? `<div class="note" style="background:#ecfdf5;border-color:#10b981">🎉 Bạn đã tìm đủ! Số câu tìm đúng ngay lần đầu: <b>${n - Object.keys(st.wrong).length}/${n}</b></div>` : ''}`;
+}
+function sgPick(id, i, k) {
+  const { st, items } = COMP[id]; if (st.found[i]) return;
+  const [a, b] = sgIdx(items[i]);
+  if (k >= a && k <= b) { st.found[i] = true; if (Object.keys(st.found).length === items.length) { markDone(id, items.length - Object.keys(st.wrong).length, items.length); confetti(); } rerender(id); }
+  else { st.wrong[i] = true; st.err = i + '-' + k; rerender(id); setTimeout(() => { st.err = null; rerender(id); }, 400); }
+}
+function sgReset(id) { Object.assign(COMP[id].st, { found: {}, wrong: {}, err: null }); rerender(id); }
+
+/* ================= PICTURES (pronunciation, exercise 1) ================= */
+function pics(id, items, example) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { v: [], c: [], ok: [], msg: [] };
+  COMP[id] = { st, items, example, render: el => pcRender(id, el) };
+  return slot(id);
+}
+function pcRender(id, el) {
+  const { st, items, example } = COMP[id], nOk = st.ok.filter(Boolean).length;
+  const col = c => items.map((p, i) => st.ok[i] && p.c === c ? `<span class="tchip">${p.w}</span>` : '').join('');
+  el.innerHTML = `<div class="fl-top"><span class="t">Viết từ dưới mỗi hình, rồi chọn cột âm đúng</span><span class="chip-s ok">★ ${nOk}/${items.length}</span>
+      <button class="btn solid" onclick="pcCheckAll('${id}')">✔ Kiểm tra tất cả</button><button class="btn" onclick="pcReveal('${id}')">💡 Đáp án</button><button class="btn" onclick="pcReset('${id}')">↺ Làm lại</button></div>
+    <div class="pics"><div class="pic egp"><span class="pn">Ví dụ</span><img src="${example.img}" alt=""><b style="color:#6d28d9;font-size:13px">${example.w}</b><span class="ph" style="font-size:13px">/ə/ ✓</span></div>
+    ${items.map((p, i) => `<div class="pic ${st.ok[i] ? 'okc' : ''}"><span class="pn">${i + 1}</span><img src="${p.img}" alt="">
+      <input class="${st.ok[i] ? 'good' : (st.msg[i] && st.msg[i][0] === '✗' && st.msg[i].includes('từ') ? 'bad' : '')}" value="${esc(st.v[i] || '')}" placeholder="Gõ từ…" autocomplete="off" spellcheck="false" ${st.ok[i] ? 'readonly' : ''} oninput="COMP['${id}'].st.v[${i}]=this.value" onkeydown="if(event.key==='Enter')pcCheck('${id}',${i},true)">
+      <div class="cols"><button class="cb ${st.c[i] === 'a' ? 'sel' : ''}" onclick="pcCol('${id}',${i},'a')">/ə/</button><button class="cb ${st.c[i] === '3' ? 'sel' : ''}" onclick="pcCol('${id}',${i},'3')">/ɜː/</button></div>
+      <div class="pmsg">${st.ok[i] ? `✓ <b>${p.w}</b> <span class="ph">${p.p}</span><br>${p.vi}` : (st.msg[i] || '')}</div></div>`).join('')}</div>
+    <table class="t" style="margin-top:10px"><tr><th style="width:50%" class="ph">/ə/</th><th class="ph">/ɜː/</th></tr><tr><td><span class="tchip">${example.w}</span>${col('a')}</td><td>${col('3')}</td></tr></table>`;
+}
+function pcCol(id, i, c) { const { st } = COMP[id]; if (st.ok[i]) return; st.c[i] = c; rerender(id); }
+function pcSave(id) { document.querySelectorAll(`.comp[data-id="${id}"] .pic input`).forEach((inp, i) => { COMP[id].st.v[i] = inp.value; }); }
+function pcCheck(id, i, rr) {
+  const { st, items } = COMP[id], p = items[i]; if (st.ok[i]) return;
+  const wOk = normA(st.v[i] || '') === p.w, cOk = st.c[i] === p.c;
+  if (wOk && cOk) { st.ok[i] = true; st.msg[i] = ''; } else st.msg[i] = !(st.v[i] || '').trim() && !st.c[i] ? 'Chưa điền' : !wOk ? '✗ Chưa đúng từ' : !st.c[i] ? 'Hãy chọn cột âm' : '✗ Sai cột âm';
+  if (rr) rerender(id); if (st.ok.filter(Boolean).length === items.length) { markDone(id, items.length, items.length); confetti(); }
+}
+function pcCheckAll(id) { COMP[id].items.forEach((_, i) => pcCheck(id, i)); rerender(id); }
+function pcReveal(id) { const { st, items } = COMP[id]; items.forEach((p, i) => { st.v[i] = p.w; st.c[i] = p.c; }); pcCheckAll(id); }
+function pcReset(id) { Object.assign(COMP[id].st, { v: [], c: [], ok: [], msg: [] }); rerender(id); }
+
+/* ================= WRITING I (cue → sentence) ================= */
+function writeSent(id, items) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { v: [], res: [], checked: false };
+  COMP[id] = { st, items, render: el => wsRender(id, el) };
+  return slot(id);
+}
+function wsRender(id, el) {
+  const { st, items } = COMP[id], good = st.res.filter(r => r === 'good').length;
+  el.innerHTML = `<div class="fl-top"><span class="t">Viết câu hoàn chỉnh từ các từ gợi ý (có thể thêm từ)</span><span class="chip-s ok" ${st.checked ? '' : 'style="display:none"'}>★ ${good}/${items.length}</span>
+      <button class="btn solid" onclick="wsCheck('${id}')">✔ Đối chiếu</button><button class="btn" onclick="wsReveal('${id}')">💡 Xem đáp án mẫu</button><button class="btn" onclick="wsReset('${id}')">↺ Làm lại</button></div>
+    ${items.map((it, i) => `<div class="wr"><span class="n">${i + 1}</span><input class="${st.checked ? st.res[i] : ''}" value="${esc(st.v[i] || '')}" placeholder="Viết câu của bạn…" spellcheck="false" oninput="COMP['${id}'].st.v[${i}]=this.value">
+      <div class="cues">${it.c}</div>
+      ${st.checked ? `<div class="fxfb ${st.res[i] === 'good' ? 'ok' : 'bad'}" style="flex-basis:100%;${st.res[i] === 'near' ? 'background:#fffbeb;border-color:#f59e0b;color:#78350f' : ''}">${st.res[i] === 'good' ? '✓ Khớp đáp án mẫu: <b>' + it.a + '</b>' : '↔ Chưa khớp hoàn toàn — nhiều cách viết đều có thể đúng, hãy đối chiếu. Đáp án mẫu: <b>' + it.a + '</b>'}<span class="tr">🇻🇳 ${it.vi}</span></div>` : ''}</div>`).join('')}`;
+}
+function wsCheck(id) {
+  const { st, items } = COMP[id];
+  st.res = items.map((it, i) => normA(st.v[i] || '') === normA(it.a) ? 'good' : 'near'); st.checked = true;
+  markDone(id, st.res.filter(r => r === 'good').length, items.length); rerender(id);
+}
+function wsReveal(id) { const { st, items } = COMP[id]; items.forEach((it, i) => { st.v[i] = it.a; }); wsCheck(id); }
+function wsReset(id) { Object.assign(COMP[id].st, { v: [], res: [], checked: false }); rerender(id); }
+
+/* ================= WRITING II (paragraph with live word counter) ================= */
+const WR2 = { text: '', sample: false };
+function wcUpdate() {
+  const t = document.getElementById('wr2t'); if (!t) return; WR2.text = t.value;
+  const n = (t.value.trim().match(/\S+/g) || []).length, bar = document.getElementById('wcb'), lab = document.getElementById('wcn');
+  const pct = Math.min(100, n / 80 * 100); bar.style.width = pct + '%';
+  const ok = n >= 60 && n <= 80; bar.style.background = ok ? '#10b981' : n > 80 ? '#ef4444' : '#f59e0b';
+  lab.textContent = n + ' từ' + (ok ? ' ✓' : n > 80 ? ' (quá dài)' : n >= 60 ? '' : ' (cần ≥ 60)'); lab.style.color = ok ? '#047857' : n > 80 ? '#b91c1c' : '#b45309';
+  if (ok && !DONE.wr2) markDone('wr2', n, n);
+}
+function wcAdd(txt) { const t = document.getElementById('wr2t'); t.value += (t.value && !/\s$/.test(t.value) ? ' ' : '') + txt; t.focus(); wcUpdate(); }
+
+/* ================= LISTENING PLAYER (browser text-to-speech) ================= */
+const LS = { sents: [], idx: 0, playing: false, rate: 1 };
+function lsPlay(script) {
+  try { speechSynthesis.cancel(); } catch (e) { return; }
+  LS.sents = script.match(/[^.!?]+[.!?]+/g) || [script]; LS.playing = true; lsUi();
+  LS.sents.forEach((s, i) => {
+    const u = new SpeechSynthesisUtterance(s.trim()); u.lang = 'en-GB'; u.rate = LS.rate;
+    u.onstart = () => { LS.idx = i; document.querySelectorAll('.ss').forEach((e, k) => e.classList.toggle('now', k === i)); };
+    if (i === LS.sents.length - 1) u.onend = () => { LS.playing = false; lsUi(); document.querySelectorAll('.ss').forEach(e => e.classList.remove('now')); };
+    speechSynthesis.speak(u);
+  });
+}
+function lsStop() { try { speechSynthesis.cancel(); } catch (e) {} LS.playing = false; lsUi(); document.querySelectorAll('.ss').forEach(e => e.classList.remove('now')); }
+function lsUi() { const b = document.getElementById('lsbtn'), q = document.getElementById('lseq'); if (b) b.textContent = LS.playing ? '⏹' : '▶'; if (q) q.classList.toggle('on', LS.playing); }
+
+/* ================= SHELL: navigation, sections ================= */
+let cur = { s: 0, t: 0 };
+function allEx() { return SECTIONS.flatMap(s => s.ex || []); }
+function navRender() {
+  const total = allEx().length, done = allEx().filter(id => DONE[id]).length;
+  $('#nav').innerHTML = SECTIONS.map((s, i) => {
+    const all = (s.ex || []).length && s.ex.every(id => DONE[id]);
+    return `<button class="ni ${i === cur.s ? 'on' : ''} ${all ? 'done' : ''} ${s.soon ? 'soon' : ''}" onclick="show(${i},0)"><span class="n">${all ? '✓' : i + 1}</span><span class="t">${s.nav || s.title}</span></button>`;
+  }).join('');
+  $('#pbar').style.width = (total ? done / total * 100 : 0) + '%';
+  $('#ptxt').innerHTML = `<span>Hoàn thành</span><b>${done}/${total} bài tập</b>`;
+  const sec = SECTIONS[cur.s]; const tabs = document.querySelectorAll('.stab');
+  sec.subs.forEach((sb, k) => { if (sb.ex && tabs[k]) { const d = sb.ex.every(i => DONE[i]); const old = tabs[k].querySelector('i'); if (d && !old) tabs[k].insertAdjacentHTML('beforeend', '<i>✓</i>'); } });
+}
+function show(s, t) {
+  cur = { s, t: t || 0 };
+  const sec = SECTIONS[s], sub = sec.subs[cur.t];
+  $('#hi').textContent = sec.icon; $('#ttl').textContent = sec.title + (sec.vi ? ' · ' + sec.vi : ''); $('#dsc').textContent = sec.desc;
+  $('#subnav').innerHTML = sec.subs.length > 1 ? sec.subs.map((x, k) => `<button class="stab ${k === cur.t ? 'on' : ''}" onclick="show(${s},${k})">${x.label}${x.ex && x.ex.every(i => DONE[i]) ? '<i>✓</i>' : ''}</button>`).join('') : '';
+  $('#subnav').style.display = sec.subs.length > 1 ? '' : 'none';
+  const b = $('#body'); b.className = 'body' + (sub.split ? ' split' : ''); b.innerHTML = sub.render(); b.scrollTop = 0;
+  hydrate(); if (sub.after) sub.after(); navRender(); try { speechSynthesis.cancel(); } catch (e) {} LS.playing = false;
+}
+function showObjectives() {
+  const o = OBJECTIVES.map(x => `<div class="obj"><span class="oi">${x.i}</span><div><b>${x.t}</b><br>${x.d}</div></div>`).join('');
+  document.body.insertAdjacentHTML('beforeend', `<div class="modal" onclick="if(event.target===this)this.remove()"><div class="mbox"><h2>🎯 Mục tiêu bài học</h2><div class="sub">Unit 11 · Travelling in the future — Đi lại trong tương lai</div>${o}<div style="text-align:right;margin-top:12px"><button class="btn solid" onclick="this.closest('.modal').remove()">Bắt đầu học →</button></div></div></div>`);
+}
+
+
+const DATA=[{"title": "Vocabulary · Từ vựng", "icon": "📚", "desc": "Unit 11 · Travelling in the future", "subs": [{"label": "21 từ vựng", "kind": "vocab"}, {"label": "Bảng từ vựng gốc", "html": "<div class=\"source\"><div class=\"tablewrap\"><table><tr><td><p><b>automated</b></p></td><td><p>/ˈɔːtəmeɪtɪd/</p></td><td><p><i>adj.</i></p></td><td><p>tự động</p></td><td><p><u><b>Automated</b></u> driving systems can reduce fuel use and carbon emissions.<i> (Hệ thống lái xe tự động có thể giảm việc sử dụng nhiên liệu và lượng khí thải các-bon)</i></p></td></tr><tr><td><p><b>crash</b></p></td><td><p>/kræʃ/</p></td><td><p><i>v.</i></p></td><td><p>va chạm</p></td><td><p>A truck <u><b>crashed</b></u> into the back of a bus.<i> (Một chiếc xe tải đã đâm vào phía sau xe buýt)</i></p></td></tr><tr><td><p><b>driverless</b></p></td><td><p>/ˈdraɪvələs/</p></td><td><p><i>adj.</i></p></td><td><p>không người lái (tự động)</p></td><td><p><u><b>Driverless</b></u> cars may help ease traffic congestion and lower pollution<i>. (Ô tô không người lái có thể giúp giảm bớt tắc nghẽn giao thông và ô nhiễm môi trường)</i></p></td></tr><tr><td><p><b>environmentally- friendly</b></p></td><td><p>/ɪnˌvaɪrənmentəli ˈfrendli/</p></td><td><p><i>adj.</i></p></td><td><p>thân thiện với môi trường</p></td><td><p><u><b>Environmentally- friendly</b></u> cars use less toxic fuels<i>. (Ô tô thân thiện với môi trường sử dụng ít nhiên liệu độc hại hơn)</i></p></td></tr><tr><td><p><b>eco-friendly</b></p></td><td><p>/ˌiːkəʊ ˈfrendli/</p></td><td><p><i>adj.</i></p></td><td><p>thân thiện với hệ sinh thái/ thân thiện với môi trường</p></td><td><p><u><b>Eco-friendly</b></u> transport helps reduce harmful effects on the environment. (<i>Các phương tiện giao thông thân thiện với môi trường giúp giảm tác hại đối với môi trường)</i></p></td></tr><tr><td><p><b>float</b></p></td><td><p>/fləʊt/</p></td><td><p><i>v.</i></p></td><td><p>nổi</p></td><td><p>This car can <u><b>float</b></u> on water. <i>(Chiếc xe này có thể nổi trên mặt nước)</i></p></td></tr><tr><td><p><b>flop</b></p></td><td><p>/flɒp/</p></td><td><p><i>v.</i></p></td><td><p>thất bại</p></td><td><p>Although his transport invention was unique, it <u><b>flopped</b></u><i>. (Mặc dù phát minh phương tiện của ông ấy độc đáo nhưng nó vẫn thất bại)</i></p></td></tr><tr><td><p><b>flying car</b></p></td><td><p>/ˌflaɪɪŋ kɑː(r)/</p></td><td><p><i>n.</i></p></td><td><p>một loại xe kết hợp giữa ô tô và máy bay/ xe ô tô bay</p></td><td><p>Will <u><b>flying cars</b></u> ease traffic congestion?<i> (Ô tô bay sẽ làm giảm bớt tắc nghẽn giao thông phải không?)</i></p></td></tr><tr><td><p><b>gridlocked</b></p></td><td><p>/ˈɡrɪdlɒkt/</p></td><td><p><i>adj.</i></p></td><td><p>(giao thông) tắc nghẽn</p></td><td><p>Traffic in Ha Noi was <u><b>gridlocked</b></u> this morning<i>. (Giao thông ở Hà Nội đã bị tắc nghẽn vào sáng nay)</i></p></td></tr><tr><td><p><b>high –speed</b></p></td><td><p>/ˌhaɪ ˈspiːd/</p></td><td><p><i>adj.</i></p></td><td><p>tốc độ cao, siêu tốc</p></td><td><p>There are many different types of <u><b>high-speed</b></u> trains in the world. (<i>Có nhiều loại tàu cao</i> <i>tốc khác nhau trên thế giới)</i></p></td></tr><tr><td><p><b>hover scooter</b></p></td><td><p>/ˈhɒvə(r) ˈskuːtə(r) /</p></td><td><p><i>n.</i></p></td><td><p>xe trượt thăng bằng</p></td><td><p>My son really likes his new <u><b>hover scooter</b></u><u><i><b> </b></i></u><i>(Con trai tôi thực sự thích chiếc xe trượt thăng bằng mới của mình)</i></p></td></tr><tr><td><p><b>jet pack</b></p></td><td><p>/ˈdʒetpæk/</p></td><td><p><i>n.</i></p></td><td><p>thiết bị bay cá nhân (đeo trên vai) dùng động cơ phản lực</p></td><td><p>I love using a <u><b>jet pack </b></u>to fly in the sky <i>(Tôi thích sử dụng thiết bị dùng động cơ phản lực để bay trên bầu trời)</i></p></td></tr><tr><td><p><b>metro</b></p></td><td><p>/ˈmetrəʊ/</p></td><td><p><i>n.</i></p></td><td><p>tàu ngầm (trong thành phố)</p></td><td><p>There is a modern <u><b>metro</b></u> system in my city. (<i>Có một hệ thống tàu điện ngầm hiện đại trong thành phố của tôi)</i></p></td></tr><tr><td><p><b>monowheel</b></p></td><td><p>/ˈmɒnəʊ wiːl/</p></td><td><p><i>n.</i></p></td><td><p>một loại xe đạp có một bánh</p></td><td><p>This is the first time I have ridden a <u><b>monowheel</b></u><i> (Đây là lần đầu tiên tôi lái chiếc xe đạp có một bánh)</i></p></td></tr><tr><td><p><b>pedal</b></p></td><td><p>/ˈpedl/</p></td><td><p><i>v., n</i></p></td><td><p>bàn đạp</p></td><td><p>I couldn’t reach the <u><b>pedals</b></u> on her bike<i> (Tôi không thể với tới bàn đạp của chiếc xe đạp của cô ấy)</i></p></td></tr><tr><td><p><b>segway</b></p></td><td><p>/ˈseɡweɪ/</p></td><td><p><i>n.</i></p></td><td><p>phương tiện di chuyển bằng cách đẩy chân để chạy bánh xe trên mặt đất</p></td><td><p>The <u><b>Segway</b></u> is very easy to control by moving the handlebars forward or backward. <i>(Xe Segway rất dễ điều khiển bằng cách di chuyển tay lái về phía trước hoặc phía sau)</i></p></td></tr><tr><td><p><b>skycycling tube</b></p></td><td><p>/skaɪ ˈsaɪklɪŋ tjuːb/</p></td><td><p><i>n.</i></p></td><td><p>khoang của loại tàu skycycling</p></td><td><p>I think <u><b>skycycling tubes</b></u> will be environmentally-friendly<i>. (Tôi nghĩ khoang của loại tàu skycycling sẽ thân thiện; với môi trường)</i></p></td></tr><tr><td><p><b>skytrain</b></p></td><td><p>/skaɪtreɪn/</p></td><td><p><i>n.</i></p></td><td><p>tàu trên không (trong thành phố)</p></td><td><p>Most big cities have a metro system or <u><b>skytrain</b></u> (<i>Hầu hết các thành phố lớn đều có hệ thống tàu điện ngầm hoặc tàu trên không</i>)</p></td></tr><tr><td><p><b>solar – powered</b></p></td><td><p>/ˌsəʊlə ˈpaʊə(r)d/</p></td><td><p><i>adj.</i></p></td><td><p>dùng năng lượng mặt trời</p></td><td><p>We believe that trains will be <u><b>solar-powered </b></u>in the near future<i>. (Chúng tôi tin rằng tàu hỏa sẽ dùng năng lượng mặt trời trong tương lai gần)</i></p></td></tr><tr><td><p><b>supersonic</b></p></td><td><p>/ˌsuːpəˈsɒnɪk/</p></td><td><p><i>adj.</i></p></td><td><p>tốc độ siêu thanh</p></td><td><p>These planes travel at <u><b>supersonic</b></u> speeds<i>. (Những chiếc máy bay này di chuyển với tốc độ siêu thanh)</i></p></td></tr><tr><td><p><b>teleporter</b></p></td><td><p>/ˈtelɪpɔːtər/</p></td><td><p><i>n.</i></p></td><td><p>hình thức dịch chuyển tức thời</p></td><td><p><u><b>Teleporters</b></u> may be the best method of<i> transportation in the future. (Hình thức dịch chuyển tức thời có thể là phương thức đi lại tốt nhất trong tương lai)</i></p></td></tr></table></div></div>"}]}, {"title": "Vocabulary practice", "icon": "✏️", "desc": "Unit 11 · Travelling in the future", "subs": [{"label": "I · Trắc nghiệm", "id": "v1", "kind": "quiz", "items": [{"q": "___is a new means of transport, and it has only one wheel.", "opts": ["Teleporter", "Jetpack", "Monowheel", "Segway"], "a": 2, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>.Teleporter <i>(n</i>.): hình thức dịch chuyển tức thời</p><p><b>B</b>.Jetpack (<i>n</i>.): thiết bị bay cá nhân dùng động cơ phản lực</p><p><b>C</b>. Monowheel (<i>n</i>.): xe đạp một bánh</p><p><b>D</b>. Segway (<i>n</i>.): phương tiện di chuyển cá nhân bằng cách đẩy chân để chạy bánh xe</p><p>Xét về nghĩa, phương án C phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Monowheel is a new means of transport, and it has only one wheel. (<i>Xe một bánh là một phương tiện giao thông mới, và nó chỉ có một bánh xe.)</i></p>"}, {"q": "Vehicles in the future will use electricity or solar energy, so it is___.", "opts": ["supersonic", "driverless", "gridlocked", "eco - friendly"], "a": 3, "exp": "<p><b>Giải thích</b>:</p><p><b>A</b>. supersonic (<i>adj.</i>): siêu thanh<b>B</b>. driverless (<i>adj.</i>): không người lái</p><p><b>C</b>. gridlocked (<i>adj</i>.): tắc nghẽn<b>D</b>. eco-friendly (<i>adj</i>.): thân thiện với môi trường</p><p>Xét về nghĩa, phương án D phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Vehicles in the future will use electricity or solar energy, so it is eco-friendly. (<i>Xe trong tương lai sẽ sử dụng điện hoặc năng lượng mặt trời, vì vậy nó thân thiện với môi trường.)</i></p>"}, {"q": "People can now manufacture driverless cars after having tested and___for many times.", "opts": ["flopped", "floated", "crashed", "stopped"], "a": 0, "exp": "<p><b>Giải thích</b>:</p><p><b>A</b>. flopped (<i>v</i>.): thất bại<b>B</b>. floated (<i>v</i>.): trôi nổi</p><p><b>C</b>. crashed (<i>v</i>.): đâm sầm<b>D</b>. stopped (<i>v</i>.): dừng lại</p><p>Xét về nghĩa, phương án A phù hợp nhất.</p><p><b>Dịch nghĩa</b>: People can now manufacture driverless cars after having tested and flopped for many times. <i>(Giờ đây con người có thể sản xuất những chiếc ô tô không người lái sau khi đã thử nghiệm và thất bại nhiều lần.)</i></p>"}, {"q": "I think the___is available in science fiction as it’s impossible to move immediately from one place to another.", "opts": ["bike", "teleporter", "driverless car", "flying car"], "a": 1, "exp": "<p><b>Giải thích</b>:</p><p><b>A</b>. bike <i>(n</i>.): xe đạp<b>B.</b> teleporter (<i>n</i>.): hình thức dịch chuyển tức thời</p><p><b>C</b>. driverless car (<i>n</i>.): ô tô không người lái<b>D</b>. flying car (<i>n</i>.): ô tô bay</p><p>Xét về nghĩa, phương án B phù hợp nhất.</p><p><b>Dịch nghĩa: </b>I think the teleporter is available In science fiction as it’s impossible to move immediately from one place to another. (<i>Tôi nghĩ rằng dịch chuyển tức thời chỉ có trong phim viễn tưởng vì không thể di chuyển ngay lập tức từ nơi này sang nơi khác được.)</i></p>"}, {"q": "The___is a two-wheeled, self-balancing personal transporter. It’s often used by policemen in Germany.", "opts": ["Segway", "supersonic airplane", "skycycling tube", "flying car"], "a": 0, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>.Segway (<i>n.</i>): phương tiện di chuyển cá nhân bằng cách đẩy chân để chạy bánh xe</p><p><b>B</b>.supersonic airplane (<i>n</i>.): máy bay siêu thanh</p><p><b>C</b>. skycycling tube (<i>n</i>.): khoang của loại tàu skycycling</p><p><b>D</b>. flying car (<i>n</i>.): ồ tô bay</p><p>Xét về nghĩa, phương án A phù hợp nhất.</p><p><b>Dịch nghĩa</b>: The Segway is a two-wheeled, self-balancing personal transporter. It’s often used by policemen in Germany. (<i>Phương tiện di chuyển cá nhân bằng cách đẩy chân để chạy bánh xe là một phương tiện giao thông cá nhân hai bánh, tự cân bằng. Nó thường được cảnh sát Đức sử dụng.)</i></p>"}, {"q": "A___car requires no driver because it has sensors to identify surrounding environment.", "opts": ["high-speed", "driverless", "solar-powered", "flying"], "a": 1, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. high-speed (<i>adj.</i>): tốc độ cao<b>B</b>. driverless (<i>adj</i>.): không người lái</p><p><b>C</b>. solar-powered (<i>adj.</i>): dùng năng lượng mặt trời <b>D</b>. flying (<i>adj</i>.): bay</p><p>Xét về nghĩa, phương án B phù hợp nhất.</p><p><b>Dịch nghĩa</b>: A driverless car requires no driver because it has sensors to identify surrounding environment. (<i>Một chiếc ô tô không người lái không cần lái xe vì nó có cảm biến để nhận biết môi trường xung quanh.)</i></p>"}, {"q": "___trains can run very fast and you can save much time of travelling.", "opts": ["Solar-powered", "Friendly", "Long-lasting", "High - speed"], "a": 3, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. Solar-powered (<i>adj</i>.): dùng năng lượng mặt trời<b>B</b>. Friendly (<i>adj</i>.): thân thiện</p><p><b>C</b>. Long-lasting (<i>adj.). </i>lâu dài<b>D</b>. High-speed (<i>adj</i>.): tốc độ cao</p><p>Xét về nghĩa, phương án D phù hợp nhất.</p><p><b>Dịch nghĩa</b>: High-speed trains can run very fast and you can save much time of travelling. <i>(Tàu cao tốc có thể chạy rất nhanh và bạn có thể tiết kiệm nhiều thời gian di chuyển.)</i></p>"}, {"q": "The___is a railway system that runs under the ground below a city.", "opts": ["Motorbike", "Flying car", "Metro", "Jetpack"], "a": 2, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>.Motorbike (<i>n</i>.): xe mô tô</p><p><b>B</b>.Flying car (<i>n</i>.): ô tô bay</p><p><b>C</b>. Metro (<i>n</i>.): tàu điện ngầm</p><p><b>D</b>. Jetpack (<i>n</i>.): thiết bị bay cá nhân dùng động cơ phản lực</p><p>Xét về nghĩa, phương án C phù hợp nhất.</p><p><b>Dịch nghĩa</b>: The metro is a railway system that runs under the ground below a city. (<i>Tàu điện ngầm là một hệ thống đường sắt chạy dưới mặt đất bên dưới một thành phố.)</i></p>"}, {"q": "___run on elevated railway lines, helping reduce traffic jams during the rush hour.", "opts": ["Skytrains", "Teleporter", "Bicycles", "Boats"], "a": 0, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. Skytrains (<i>n</i>.): tàu trên không<b>B</b>. Teleporter (<i>n</i>.): hình thức dịch chuyển tức thời</p><p><b>C</b>. Bicycles (<i>n</i>.): xe đạp<b>D</b>. Boats (<i>n</i>.): thuyền</p><p>Xét về nghĩa, phương án A phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Skytrains run on elevated railway lines, helping reduce traffic jam during the rush hour<i>. (Tàu trên không chạy trên đường ray ở trên cao, giúp giảm ách tắc giao thông vào giờ cao điểm.)</i></p>"}, {"q": "No man needs to operate metro in Dubai since it is___.", "opts": ["invested", "decorated", "modified", "automated"], "a": 3, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. invested (<i>v</i>.): đầu tư<b>B</b>. decorated (<i>v</i>.): trang trí</p><p><b>C</b>. modified (<i>v</i>.): thay đổi<b>D</b>. automated (<i>v</i>.): tự động</p><p>Xét về nghĩa, phương án D phù hợp nhất.</p><p><b>Dịch nghĩa:</b> No man needs to operate metro in Dubai since it is automated. <i>(Không cần con người vận hành tàu điện ngầm ở Dubai vì nó được tự động hóa.)</i></p>"}, {"q": "It’s healthy and environmentally friendly to___a bicycle.", "opts": ["ride", "drive", "sit", "fly"], "a": 0, "exp": "<p><b>Giải thích</b>:</p><p><b>A</b>. ride (<i>v</i>.): cưỡi (ngựa), đi (xe máy, xe đạp) <b>B</b>. drive (<i>v</i>.): lái (ô tô)</p><p><b>C</b>. sit (<i>v</i>.): ngòi<b>D</b>. fly (<i>v</i>.): bay</p><p>Xét về nghĩa, phương án A phù hợp nhất.</p><p><b>Dịch nghĩa</b>: It’s healthy and environmentally friendly to ride a bicycle. (<i>Đi xe đạp tốt cho sức khỏe và thân thiện với môi trường.)</i></p>"}, {"q": "My father has___Vietnam Airlines to Paris.", "opts": ["driven", "flown", "taken", "floated"], "a": 1, "exp": "<p><b>Giải thích</b>:</p><p><b>A</b>. driven (<i>v</i>.): lái (ô tô)<b>B</b>. flown (<i>v</i>.): bay</p><p><b>C</b>. taken (<i>v</i>.): lấy<b>D</b>. floated (<i>v.</i>): nổi</p><p>Xét về nghĩa, phương án B phù hợp nhất.</p><p><b>Dịch nghĩa</b>: My father has flown Vietnam Airlines to Paris. <i>(Bố tôi đã đi chuyến bay của Hãng Vietnam Airlines đến Paris.)</i></p>"}, {"q": "She often listens to music when she is___a bus.", "opts": ["at", "on", "with", "by"], "a": 1, "exp": "<p><b>Giải thích</b>:</p><p><b>A</b>. at <i>(prep.): </i>ở, tại<b>B.</b> on (<i>prep.</i>): ở trên</p><p><b>C</b>. with (<i>prep</i>.): với<b>D</b>. by (<i>prep</i>.): bằng (phương tiện)</p><p>Ta có: “be on a bus”: ở trên (đang đi) xe buýt. Xét về cấu trúc, phương án B phù hợp nhất.</p><p><b>Dịch nghĩa</b>: She often listens to music when she is on a bus. (<i>Cô ấy thường nghe nhạc khi đi xe buýt.)</i></p>"}, {"q": "A___usually causes damage and often injures or kills the passengers.", "opts": ["red light", "rush hour", "traffic jam", "crash"], "a": 3, "exp": "<p><b>Giải thích</b>:</p><p><b>A</b>. red light (<i>n</i>.): đèn đỏ<b>B</b>. rush hour (<i>n</i>.): giờ cao điểm</p><p><b>C</b>. traffic jam (<i>n</i>.): kẹt xe, tắc đường<b>D</b>. crash (<i>n</i>.): vụ va chạm</p><p>Xét về nghĩa, phương án D phù hợp nhất.</p><p><b>Dịch nghĩa</b>: A crash usually causes damage and often injures or kills the passengers<i>. (Một vụ tai nạn luôn luôn gây ra thiệt hại và thường làm hành khách bị thương hoặc thiệt mạng.)</i></p>"}, {"q": "This___aircraft has top speed of 2,179 kilometres per hour.", "opts": ["express", "rapid", "supersonic", "hurry"], "a": 2, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. express (<i>adj</i>.): tốc hành<b>B</b>. rapid <i>(adj</i>.): nhanh chóng</p><p><b>C.</b> supersonic (<i>adj</i>.): siêu thanh<b>D</b>. hurry (<i>adj.):</i> khẩn trương</p><p>Xét về nghĩa, phương án C phù hợp nhất.</p><p><b>Dịch nghĩa</b>: This supersonic aircraft has top speed of 2,179 kilometres per hour. (<i>Chiếc máy bay siêu thanh này có tốc độ tối đa là 2.179km/h.)</i></p>"}]}, {"label": "II · Điền từ", "id": "v2", "kind": "fill", "items": [{"q": "A___is powered by ducted fans and can fly for up to 30 minutes at a time.", "a": ["jetpack"], "exp": "<p><b>Giải thích</b>: Trước vị trí cần điền là mạo từ “A” nên ta cần một danh từ. Dựa vào nghĩa của câu, danh từ “jetpack” (thiết bị bay cá nhân) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: A jetpack is powered by ducted fans and can fly for up to 30 minutes at a time<i>. (Một thiết bi bay cá nhân được cấp năng lượng bởi quạt gió và có thể bay tối đa 30 phút mỗi lần.)</i></p>"}, {"q": "___combine sensors and software to control, navigate, and drive.", "a": ["Automated cars"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là động từ “combine” nên ta cần một danh từ đứng làm chủ ngữ trong câu. Dựa vào nghĩa của câu, danh từ “automated cars” (xe tự động) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Automated cars combine sensors and software to control, navigate, and drive <i>(ô tô tự động kết hợp các cảm biến và phần mềm đề điều khiển, điều hướng và lái xe.)</i></p>"}, {"q": "___cars use energy collected from sunlight to run the vehicle.", "a": ["Solar-powered"], "exp": "<p><b>Giải thích:</b> Sau vị trí cần điền là danh từ “cars” nên ta cần một tính từ đứng trước và bổ nghĩa cho nó. Dựa vào nghĩa của câu, tính từ “solar-powered” (dùng năng lượng mặt trời) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Solar-powered cars use energy collected from sunlight to run the vehicle (<i>ô tô dùng năng lượng mặt trời sử dụng năng lượng thu được từ ánh sáng mặt trời để chạy xe.)</i></p>"}, {"q": "A___aircraft is an aircraft able to fly faster than the speed of sound.", "a": ["supersonic"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ “aircraft” nên ta cần một tính từ đứng trước và bổ nghĩa cho nó. Dựa vào nghĩa của câu, tính từ “supersonic” (siêu thanh) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: A supersonic aircraft is an aircraft able to fly faster than the speed of sound. (<i>Máy bay siêu thanh là máy bay có khả năng bay nhanh hơn tốc độ âm thanh.)</i></p>"}, {"q": "A practical___must be both strong enough to pass road safety standards and light enough to fly.", "a": ["flying car"], "exp": "<p><b>Giải thích</b>: Trước vị trí cần điền là mạo từ “A” và tính từ “practical” (thực tế) nên ta cần một danh từ. Dựa vào nghĩa của câu, danh từ “flying car” (ô tô bay) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: A practical flying car must be both strong enough to pass road safety standards and light enough to fly. (<i>Một chiếc ô tô bay thực tế phải đủ mạnh để vượt qua các tiêu chuẩn an toàn trên đường và đủ nhẹ để bay.)</i></p>"}, {"q": "___is an elevated steel tube. It contains aluminum capsules that could travel at 1,200 km/h.", "a": ["Hyperloop"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là động từ to be “is” nên ta cần một danh từ đứng đầu câu, giữ vai trò chủ ngữ. Dựa vào nghĩa của câu, danh từ “hyperloop” (tàu siêu tốc) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Hyperloop is an elevated Steel tube. It contains aluminum capsules that could travel at 1,200 km/h. (<i>Tàu siêu tốc là một ống thép được nâng lên cao. Nó chứa các khoang bằng nhôm có thể di chuyển với tốc độ 1.200 km/h.)</i></p>"}], "before": "<div class=\"source\"><p><b>II </b>- Complete the following sentences using the given words in the box. There is one extra word.</p><div class=\"tablewrap\"><table><tr><td><p>solar-powered</p></td><td><p>teleporter</p></td><td><p>hyperloop</p></td><td><p>jetpack</p></td></tr><tr><td><p>automated cars</p></td><td><p>crashed</p></td><td><p>supersonic</p></td><td><p>flying car</p></td></tr></table></div><p><i>E.g.: A truck went out of control and__crashed__into the back of a bus.</i></p></div>"}, {"label": "III · Dạng từ", "id": "v3", "kind": "fill", "items": [{"q": "Asia and Europe make up almost 75% of fully___metro lines. (AUTOMATE)", "a": ["automated"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ “metro lines” nên ta cần một tính từ đứng trước và bổ nghĩa cho nó. Tính từ được phái sinh từ động từ “automate” (tự động hóa) phù hợp với nội dung của câu là “automated” (được tự động hóa).</p><p><b>Dịch nghĩa</b>: Asia and Europe make up almost 75% of fully automated metro lines. (<i>Châu Á và Châu Âu chiếm gần 75% các tuyến tàu điện ngầm hoàn toàn tự động.)</i></p>"}, {"q": "The road was___because a car broke down. (GRIDLOCK)", "a": ["gridlocked"], "exp": "<p><b>Giải thích</b>: Trước vị trí cần điền là động từ to be “was” nên ta cần một tính từ đứng trước và bổ nghĩa cho nó. Tính từ được phái sinh từ danh từ “gridlock” (tình trạng kẹt xe) phù hợp với nội dung của câu là “gridlocked” (bị tắc nghẽn).</p><p><b>Dịch nghĩa</b>: The road was gridlocked because a car broke down. (<i>Con đường bị tắc nghẽn vì một chiếc ô tô bị hỏng.)</i></p>"}, {"q": "Hybrid cars and solar-powered cars are___. (FRIEND)", "a": ["eco-friendly"], "exp": "<p><b>Giải thích</b>: Trước vị trí cần điền là động từ to be “are” nên ta cần một tính từ.</p><p>Tính từ được phái sinh từ danh từ “friend” (bạn bè) phù hợp với nội dung của câu là “eco-friendly” (thân thiện với môi trường).</p><p><b>Dịch nghĩa</b>: Hybrid cars and solar-powered cars are eco-friendly. (<i>Xe lai (giữa động cơ xăng và động cơ điện) và xe chạy bằng năng lượng mặt trời thân thiện với môi trường.)</i></p>"}, {"q": "___cars need no driver, and they can help prevent accidents. (DRIVE)", "a": ["Driverless"], "exp": "<p>Giaoandethitienganh.info sưu tầm</p><p><b>Giải thích</b>: Sau vị trí cần điền là danh từ “cars” nên ta cần một tính từ đứng trước và bổ nghĩa cho nó.</p><p>Tính từ được phái sinh từ động từ “drive” (lái xe) phù hợp với nội dung của câu là “driverless” (không người lái). </p><p><b>Dịch nghĩa</b>: Driverless cars need no driver, and they can help prevent accidents. (<i>Xe không người lái không cần lái xe, và chúng có thể giúp ngăn ngừa tai nạn.)</i></p>"}, {"q": "Passengers have taken a tour around the city on this___friendly vehicle. (ENVIRONMENT)", "a": ["environmentally"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là tính từ “friendly” nên ta cần một trạng từ đứng trước và bổ nghĩa cho nó. Trạng từ được phái sinh từ danh từ “environment” (môi trường) phù hợp với nội dung của câu là “environmentally” (về phương diện môi trường).</p><p><b>Dịch nghĩa</b>: Passengers have taken a tour around the city on this environmentally friendly vehicle. (<i>Hành khách đã thực hiện một chuyến tham quan quanh thành phố trên phương tiện thân thiện với môi trường này.)</i></p>"}]}, {"label": "Đề bài đầy đủ", "html": "<div class=\"source\"><p><b>I – Choose the best option to complete each of the following sentences.</b></p><p><i>E.g.: He struggled to_________his bicycle up the hill.</i></p><p><i><b>A</b></i><i>. pedal</i><i><b>B</b></i><i>. drive</i><i><b>C</b></i><i>. operate</i><i><b>D</b></i><i>. lift</i></p><p>1. _________is a new means of transport, and it has only one wheel.</p><p><b>A</b>. Teleporter<b>B</b>. Jetpack<b>C</b>. Monowheel<b>D</b>.  Segway</p><p>2. Vehicles in the future will use electricity or solar energy, so it is_________.</p><p><b>A</b>. supersonic<b>B</b>. driverless<b>C</b>. gridlocked<b>D</b>. eco - friendly</p><p>3. People can now manufacture driverless cars after having tested and_________for many times.</p><p><b>A</b>. flopped<b>B</b>. floated<b>C.</b> crashed<b>D</b>. stopped</p><p>4. I think the_________is available in science fiction as it’s impossible to move immediately from one place to another.</p><p><b>A</b>. bike<b>B</b>. teleporter<b>C</b>. driverless car<b>D</b>. flying car</p><p>5. The_________is a two-wheeled, self-balancing personal transporter. It’s often used by policemen in Germany.</p><p><b>A</b>. Segway<b>B</b>. supersonic airplane <b>C</b>. skycycling tube<b>D</b>. flying car</p><p>6. A_________car requires no driver because it has sensors to identify surrounding environment.</p><p><b>A</b>. high-speed<b>B</b>. driverless<b>C</b>. solar-powered<b>D</b>. flying</p><p>7. _________trains can run very fast and you can save much time of travelling.</p><p><b>A</b>. Solar-powered<b>B</b>. Friendly<b>C</b>. Long-lasting<b>D</b>. High - speed</p><p>8. The_________is a railway system that runs under the ground below a city.</p><p><b>A</b>. Motorbike<b>B</b>. Flying car<b>C</b>. Metro<b>D</b>. Jetpack</p><p>9. _________run on elevated railway lines, helping reduce traffic jams during the rush hour.</p><p><b>A</b>. Skytrains<b>B</b>. Teleporter<b>C</b>. Bicycles<b>D</b>. Boats</p><p>10. No man needs to operate metro in Dubai since it is_________.</p><p><b>A</b>. invested<b>B</b>. decorated<b>C</b>. modified<b>D</b>. automated</p><p>11. It’s healthy and environmentally friendly to_________a bicycle.</p><p><b>A</b>. ride<b>B</b>. drive<b>C</b>. sit<b>D</b>. fly</p><p>12. My father has_________Vietnam Airlines to Paris.</p><p><b>A.</b> driven<b>B</b>. flown<b>C</b>. taken<b>D</b>. floated</p><p>13. She often listens to music when she is_________a bus.</p><p><b>A</b>. at<b>B.</b> on<b>C</b>. with<b>D</b>. by</p><p>14. A_________usually causes damage and often injures or kills the passengers.</p><p><b>A</b>. red light<b>B.</b> rush hour<b>C</b>. traffic jam<b>D</b>. crash</p><p>15. This_________aircraft has top speed of 2,179 kilometres per hour.</p><p><b>A</b>. express<b>B.</b> rapid<b>C.</b> supersonic<b>D.</b> hurry</p><p><b>II </b>- Complete the following sentences using the given words in the box. There is one extra word.</p><div class=\"tablewrap\"><table><tr><td><p>solar-powered</p></td><td><p>teleporter</p></td><td><p>hyperloop</p></td><td><p>jetpack</p></td></tr><tr><td><p>automated cars</p></td><td><p>crashed</p></td><td><p>supersonic</p></td><td><p>flying car</p></td></tr></table></div><p><i>E.g.: A truck went out of control and__crashed__into the back of a bus.</i></p><p>1. A_________is powered by ducted fans and can fly for up to 30 minutes at a time.</p><p>2. _________combine sensors and software to control, navigate, and drive.</p><p>3. _________cars use energy collected from sunlight to run the vehicle.</p><p>4. A_________aircraft is an aircraft able to fly faster than the speed of sound.</p><p>5. A practical_________must be both strong enough to pass road safety standards and light enough to fly.</p><p>6. _________is an elevated steel tube. It contains aluminum capsules that could travel at 1,200 km/h.</p><p><b>III - Give the correct form of the words in brackets to complete the following sentences.</b></p><p><i>E.g.: A__monowheel__looks like something out of a science fiction film. (WHEEL)</i></p><p>1. Asia and Europe make up almost 75% of fully_________metro lines. (AUTOMATE)</p><p>2. The road was_________because a car broke down. (GRIDLOCK)</p><p>3. Hybrid cars and solar-powered cars are_________. (FRIEND)</p><p>4. _________cars need no driver, and they can help prevent accidents. (DRIVE)</p><p>5. Passengers have taken a tour around the city on this_________friendly vehicle. (ENVIRONMENT)</p></div>"}]}, {"title": "Pronunciation · Ngữ điệu", "icon": "🎧", "desc": "Unit 11 · Travelling in the future", "subs": [{"label": "Lên giọng & xuống giọng", "html": "<div class=\"source\"><p><b>NGỮ ÂM</b></p><p>Pronunciation</p><p>Đối với các từ có hai âm tiết, dấu (ˈ) được đánh vào trước âm tiết được nhấn trọng âm.</p><div class=\"tablewrap\"><table><tr><td><p><b>TỪ LOẠI</b></p></td><td><p><b>GIỌNG ĐIỆU</b></p></td><td><p><b>VÍ DỤ</b></p></td></tr><tr><td><p><b>Câu hỏi Yes/ No</b></p></td><td><p>lên giọng</p></td><td><p>•<b>Do</b> you think flying cars will replace planes? </p><p>(<i>Bạn có nghĩ rằng những chiếc xe ô tô bay sẽ thay thế những chiếc máy bay không?)</i></p><p>•<b>Will </b>your brother be a pilot in the future? </p><p>(<i>Anh trai của bạn sẽ trở thành một phi công trong tương lai phải không?)</i></p></td></tr><tr><td><p><b>Câu hỏi có từ để hỏi</b></p></td><td><p>xuống giọng</p></td><td><p>•What would you like to have for breakfast? </p><p>(<i>Bạn muốn ăn gì cho bữa sáng?)</i></p><p>•Where will you travel to for your next vacation?  (<i>Bạn sẽ đi du lịch ở đâu cho kỳ nghỉ</i> <i>tiếp theo vậy?)</i></p></td></tr></table></div></div>"}, {"label": "Luyện ngữ điệu", "id": "p1", "kind": "quiz", "items": [{"q": "Will a flying car be safe?", "opts": ["↗ Rising tone (R)", "↘ Falling tone (F)"], "a": 0, "exp": "<p><b>Giải thích</b>: Câu hỏi dạng “Yes/ No question” có ngữ điệu lên giọng ở cuối câu.</p><p><b>Dịch nghĩa</b>: Will a flying car safe? (<i>Một chiếc ô tô bay sẽ an toàn chứ?)</i></p>"}, {"q": "What will you buy for your child?", "opts": ["↗ Rising tone (R)", "↘ Falling tone (F)"], "a": 1, "exp": "<p><b>Giải thích</b>: Câu hỏi có từ để hỏi (What) có ngữ điệu xuống giọng ở cuối câu.</p><p><b>Dịch nghĩa</b>: What will you buy for your child? (<i>Bạn sẽ mua gì cho con của bạn?)</i></p>"}, {"q": "Do you think there is a real skycycling tube?", "opts": ["↗ Rising tone (R)", "↘ Falling tone (F)"], "a": 0, "exp": "<p><b>Giải thích</b>: Câu hỏi dạng “Yes/ No question” có ngữ điệu lên giọng ở cuối câu.</p><p><b>Dịch nghĩa</b>: Do you think there is a real skycycling tube? (<i>Bạn có nghĩ rằng có khoang tàu skycycling thực sự không?)</i></p>"}, {"q": "Why do you think there is no teleporter?", "opts": ["↗ Rising tone (R)", "↘ Falling tone (F)"], "a": 1, "exp": "<p><b>Giải thích</b>: Câu hỏi có từ để hỏi (Why) có ngữ điệu xuống giọng ở cuối câu.</p><p><b>Dịch nghĩa</b>: Why do you think there is no teleporter? (<i>Tại sao bạn nghĩ rằng không có dịch chuyển tức thời?)</i></p>"}, {"q": "When did you last use the metro?", "opts": ["↗ Rising tone (R)", "↘ Falling tone (F)"], "a": 1, "exp": "<p><b>Giải thích</b>: Câu hỏi có từ để hỏi (When) có ngữ điệu xuống giọng ở cuối câu.</p><p><b>Dịch nghĩa</b>: When did you last use the metro? (<i>Lần cuối bạn sử dụng tàu điện ngầm là khi nào?)</i></p>"}, {"q": "Will you travel on a supersonic airplane?", "opts": ["↗ Rising tone (R)", "↘ Falling tone (F)"], "a": 0, "exp": "<p><b>Giải thích</b>: Câu hỏi dạng “Yes/ No question” có ngữ điệu lên giọng ở cuối câu.</p><p><b>Dịch nghĩa</b>: Will you travel on a supersonic airplane? (<i>Bạn sẽ đi bằng một chiếc máy bay siêu thanh phải không?)</i></p>"}, {"q": "How could you escape the gridlocked road yesterday?", "opts": ["↗ Rising tone (R)", "↘ Falling tone (F)"], "a": 1, "exp": "<p><b>Giải thích</b>: Câu hỏi có từ để hỏi (How) có ngữ điệu xuống giọng ở cuối câu.</p><p><b>Dịch nghĩa</b>: How could you escape the gridlocked road yesterday? (<i>Làm thế nào bạn có thể thoát khỏi con đường tắc nghẽn ngày hôm qua?)</i></p>"}, {"q": "Have you ever used the metro?", "opts": ["↗ Rising tone (R)", "↘ Falling tone (F)"], "a": 0, "exp": "<p><b>Giải thích</b>: Câu hỏi dạng “Yes/ No question” có ngữ điệu lên giọng ở cuối câu.</p><p><b>Dịch nghĩa</b>: Have you ever used the metro? (<i>Bạn đã bao giờ đi tàu điện ngầm chưa?)</i></p>"}, {"q": "Will she lend you her hover scooter?", "opts": ["↗ Rising tone (R)", "↘ Falling tone (F)"], "a": 0, "exp": "<p><b>Giải thích</b>: Câu hỏi dạng “Yes/ No question” có ngữ điệu lên giọng ở cuối câu.</p><p><b>Dịch nghĩa</b>: Will she lend you her hover scooter? (<i>Cô ấy sẽ cho bạn mượn chiếc xe trượt thăng bằng của cô ấy chứ?)</i></p>"}, {"q": "Who has helped us build the skytrain system?", "opts": ["↗ Rising tone (R)", "↘ Falling tone (F)"], "a": 1, "exp": "<p><b>Giải thích</b>: Câu hỏi có từ để hỏi (Who) có ngữ điệu xuống giọng ở cuối câu.</p><p><b>Dịch nghĩa</b>: Who has helped us build the skytrain system? (<i>Ai đã giúp chúng ta xây dựng hệ thống tàu trên không?)</i></p>"}]}, {"label": "Đề bài gốc", "html": "<div class=\"source\"><p>Decide whether each of the following questions has raising tone (R) or falling tone (F).</p><div class=\"tablewrap\"><table><tr><td><p><i>E.g.: Which job will you do in the future?</i></p></td><td><p><i>F</i></p></td></tr><tr><td><p>1. Will a flying car safe?</p></td><td></td></tr><tr><td><p>2. What will you buy for your child?</p></td><td></td></tr><tr><td><p>3. Do you think there is a real skycycling tube?</p></td><td></td></tr><tr><td><p>4. Why do you think there is no teleporter?</p></td><td></td></tr><tr><td><p>5. When did you last use the metro?</p></td><td></td></tr><tr><td><p>6. Will you travel on a supersonic airplane?</p></td><td></td></tr><tr><td><p>7. How could you escape the gridlocked road yesterday?</p></td><td></td></tr><tr><td><p>8. Have you ever used the metro?</p></td><td></td></tr><tr><td><p>9. Will she lend you her hover scooter?</p></td><td></td></tr><tr><td><p>10. Who has helped us build the skytrain system?</p></td><td></td></tr></table></div></div>"}]}, {"title": "Grammar · Ngữ pháp", "icon": "🧩", "desc": "Unit 11 · Travelling in the future", "subs": [{"label": "Will · Dự đoán tương lai", "html": "<div class=\"source\"><p><b>1. ÔN TẬP: DỰ ĐOÁN VỀ TƯƠNG LAI VỚI WILL </b>(REVIEW: WILL FOR FUTURE PREDICTION)</p><p><b>a.Cách dùng</b></p><div class=\"tablewrap\"><table><tr><td><p>Chúng ta thường sử dụng “<b>will</b>” để diễn đạt <b>những dự đoán</b> về tương lai</p></td><td><p><b>Ví dụ:</b></p><p>I think every family <b>will have</b> a robot to do all the household chores in the next 20 years.</p><p>(<i>Tôi nghĩ mỗi gia đình sẽ đều có một rô bốt giúp làm tất cả các công việc nhà trong 20 năm tới.)</i></p></td></tr></table></div><p>b. Cấu trúc</p><div class=\"tablewrap\"><table><tr><td><p><b>Dạng khẳng định</b></p><p>(Affirmative form)</p></td><td><p><b>S + will + bare_V</b></p></td><td><p>It <b>will rain</b> heavily tomorrow. </p><p>(<i>Ngày mai trời sẽ mưa to.)</i></p></td></tr><tr><td><p><b>Dạng phủ định </b>(Negative form)</p></td><td><p><b>S + will not + bare_V</b> will not = won’t</p></td><td><p>People <b>won’t ride</b> bicycles in the future.</p><p>(<i>Mọi người sẽ không đi xe đạp trong tương lai.)</i></p></td></tr><tr><td><p><b>Dạng nghi vấn</b></p><p>(Interrogative form)</p></td><td><p><b>Will + S + bare_V?</b></p></td><td><p><b>Will </b>the house price <b>increase</b> next year? </p><p>(<i>Sang năm giá nhà sẽ tăng phải không?)</i></p></td></tr><tr><td><p><b>Trả lời câu hỏi </b></p><p><b>Có/ Không</b></p><p>(Yes/ No response)</p></td><td><p><b>Yes, S + will. </b></p><p><b>No, S + won’t</b></p></td><td><p>Yes, I will (<i>Ừ, đúng rồi.)</i></p><p>No, I won’t. (<i>Không phải</i>.)</p></td></tr></table></div></div>"}, {"label": "Đại từ sở hữu", "html": "<div class=\"source\"><p><b>2. ĐẠI TỪ SỞ HỮU (</b>POSSESSIVE PRONOUNS)</p><p><b>a. Tính từ sở hữu</b></p><div class=\"tablewrap\"><table><tr><td><p>Tính từ sở hữu được sử dụng trước danh từ để diễn tả mối quan hệ sở hữu hay họ hàng, ruột thịt</p></td><td><p><b>Ví dụ:</b></p><p>* my father (<i>bố của tôi)</i></p><p>* my pen (<i>cây bút mực của tôi)</i></p></td></tr></table></div><div class=\"tablewrap\"><table><tr><td><p><b>TÍNH TỪ SỞ HỮU</b></p></td><td><p><b>NGHĨA</b></p></td><td><p><b>VÍ DỤ</b></p></td></tr><tr><td><p><b>My</b></p></td><td><p>của tôi</p></td><td><p>my sister (chị gái tôi)</p></td></tr><tr><td><p><b>Your</b></p></td><td><p>của bạn</p></td><td><p>your car (chiếc xe của bạrì)</p></td></tr><tr><td><p><b></b></p></td><td><p>của các bạn</p></td><td><p>your cars (những chiếc xe của các bạn)</p></td></tr><tr><td><p><b>Her</b></p></td><td><p>của cô ấy</p></td><td><p>her dress (chiếc váy của cô ấy)</p></td></tr><tr><td><p><b>His</b></p></td><td><p>của anh ây</p></td><td><p>his mother (mẹ của anh ắy)</p></td></tr><tr><td><p><b>Its</b></p></td><td><p>của nó</p></td><td><p>its tail (cái đuôi của nó)</p></td></tr><tr><td><p><b>Their</b></p></td><td><p>của họ (người)</p></td><td><p>their son (con trai của họ)</p></td></tr><tr><td><p><b></b></p></td><td><p>của chúng (vật)</p></td><td><p>their cage (chiếc lồng của chúng)</p></td></tr><tr><td><p><b>our</b></p></td><td><p>của chúng tôi</p></td><td><p>our books (những cuốn sách của chúng tôi)</p></td></tr></table></div><p>b.Đại từ sở hữu</p><div class=\"tablewrap\"><table><tr><td><p>Đại từ sở hữu được sử dụng để thay thế cho danh từ khi chúng ta không muốn lặp lại danh từ này lần thứ hai.</p><p><b>Đại từ sở hữu = tính từ sở hữu + danh từ</b></p><p><b></b></p></td><td><p><b>Ví dụ:</b></p><p>There are two <u>pencils</u> on the table. <u><b>Hers</b></u> is blue and <u><b>mine</b></u> is brown.</p><p>(<i>Có hai chiếc bút chì trên bàn. Chiếc bút của cô ấy có màu xanh còn chiếc của tôi có màu nâu.)</i></p><p>* hers = her pencil (<i>chiếc bút của cô</i> <i>ấy</i>)</p><p>* mine = my pencil (<i>chiếc bút của tôi</i>)</p></td></tr></table></div><p><b>Bảng đại từ sở hữu tương ứng với tính từ sà hữu và đại từ nhân xưng</b></p><div class=\"tablewrap\"><table><tr><td><p><b>ĐẠI TỪ NHÂN XƯNG</b></p></td><td><p><b>TÍNH TỪ SỞ HỮU</b></p></td><td><p><b>ĐẠI TỪ SỞ HỮU</b></p></td></tr><tr><td><p>I (<i>tôi)</i></p></td><td><p>my</p></td><td><p>mine</p></td></tr><tr><td><p>you (<i>bạn/ các bạn</i>)</p></td><td><p>your</p></td><td><p>yours</p></td></tr><tr><td><p>she (<i>cô ấy)</i></p></td><td><p>her</p></td><td><p>hers</p></td></tr><tr><td><p>he (<i>anh ấy)</i></p></td><td><p>his</p></td><td><p>his</p></td></tr><tr><td><p>it (<i>nó)</i></p></td><td><p>its</p></td><td><p>its</p></td></tr><tr><td><p>we (<i>chúng tôi/ta</i>)</p></td><td><p>our</p></td><td><p>ours</p></td></tr><tr><td><p>they (<i>họ, chúng</i>)</p></td><td><p>their</p></td><td><p>theirs</p></td></tr></table></div></div>"}, {"label": "Giới từ giao thông", "html": "<div class=\"source\"><p><b>2. CÁC GIỚI TỪ ĐI VỚI PHƯƠNG TIỆN GIAO THÔNG</b> (TRANSPORTATION PREPOSITIONS)</p><div class=\"tablewrap\"><table><tr><td><p><b>GIỚI TỪ</b></p></td><td><p><b>PHƯƠNG TIỆN GIAO THÔNG</b></p></td></tr><tr><td><p><b>in</b></p></td><td><p>a car (<i>trong xe hơi)</i></p></td></tr><tr><td></td><td><p>a taxi (<i>trong xe taxi</i>)</p></td></tr><tr><td><p>go on foot (<i>đi bộ</i>)</p></td></tr><tr><td><p><b>on</b></p></td><td><p>a bus (<i>trên xe buýt)</i></p></td></tr><tr><td></td><td><p>a train (<i>trên tàu)</i></p></td></tr><tr><td></td><td><p>a plane (<i>trên máy bay)</i></p></td></tr><tr><td></td><td><p>a boat (<i>trên thuyền)</i></p></td></tr><tr><td></td><td><p>a bicycle (<i>trên xe đạp</i>)</p></td></tr><tr><td></td><td><p>a motorbike (<i>trên xe máy)</i></p></td></tr></table></div></div>"}]}, {"title": "Grammar practice", "icon": "📝", "desc": "Unit 11 · Travelling in the future", "subs": [{"label": "I · Giới từ", "id": "g1", "kind": "fill", "items": [{"q": "I don’t often sleep or read newspapers when I’m___a plane.", "a": ["on"], "exp": "<p><b>Giải thích</b>: Ta có: “be on a plane”: ở trên máy bay</p><p><b>Dịch nghĩa</b>: I don’t often sleep or read newspaper when I’m on a plane. (<i>Tôi thường không ngủ hoặc đọc báo khi đi máy bay.)</i></p>"}, {"q": "His brother usually travels to his hometown___his sport car.", "a": ["in"], "exp": "<p><b>Giải thích</b>: Ta có: “travel in a car”: di chuyển bằng ô tô</p><p><b>Dịch nghĩa</b>: His brother usually travels to his hometown in his sport car. <i>(Anh trai anh ấy thường đi về quê trên chiếc xe thể thao của mình.)</i></p>"}, {"q": "What do you often do when you are___the train?", "a": ["on"], "exp": "<p><b>Giải thích</b>: Ta có: “be on the train”: ở trên tàu</p><p><b>Dịch nghĩa</b>: What do you often do when you are on the train? (<i>Bạn thường làm gì khi ở trên tàu?)</i></p>"}, {"q": "Did you go to school___bus yesterday?", "a": ["by"], "exp": "<p><b>Giải thích</b>: Ta có: “go by bus”: đi bằng xe buýt</p><p><b>Dịch nghĩa</b>: Did you go to school by bus yesterday? (<i>Hôm qua bạn có đi học bằng xe buýt không?)</i></p>"}, {"q": "She decided not to go___car because of traffic jams.", "a": ["by"], "exp": "<p><b>Giải thích</b>: Ta có: “go by car”: đi bằng ô tô</p><p><b>Dịch nghĩa</b>: She decided not to go by car because of traffic jams. (<i>Cô ấy quyết định không đi bằng ô tô vì kẹt xe.)</i></p>"}, {"q": "Have you ever been___a tram?", "a": ["on"], "exp": "<p><b>Giải thích</b>: Ta có: “be on a tram”: ở trên xe điện</p><p><b>Dịch nghĩa</b>: Have you ever been on a tram? (<i>Bạn đã bao giờ đi xe điện chưa?)</i></p>"}, {"q": "My mother sometimes goes to her hometown___train.", "a": ["by"], "exp": "<p><b>Giải thích</b>: Ta có: “go by train”: đi bằng tàu</p><p><b>Dịch nghĩa</b>: My mother sometimes goes to her hometown by train. <i>(Mẹ tôi thỉnh thoảng về quê bằng tàu hỏa.)</i></p>"}, {"q": "I went to school___foot when I was small.", "a": ["on"], "exp": "<p><b>Giải thích</b>: Ta có: “go on foot”: đi bộ</p><p><b>Dịch nghĩa</b>: I went to school on foot when I was small. (<i>Tôi đi bộ đi học khi còn nhỏ.)</i></p>"}]}, {"label": "II · Chọn từ", "id": "g2", "kind": "quiz", "items": [{"q": "My mobile phone is cheap, but ___ is expensive.", "opts": ["his", "he", "him"], "a": 0, "exp": "<p><b>Giải thích:</b> Ta cần đại từ sở hữu “his” (cái của anh ấy) để thay thế cho tính từ sở hữu và danh từ “his mobile phone” (điện thoại di động của anh ấy).</p><p><b>Dịch nghĩa</b>: My mobile phone is cheap, and his is expensive. (<i>Điện thoại di động của tôi rẻ còn cái của anh ấy thì đắt.)</i></p>"}, {"q": "This is my parents’ TV. That is ___.", "opts": ["me", "my", "mine"], "a": 2, "exp": "<p><b>Giải thích</b>: Ta cần đại từ sở hữu “mine” (cái của tôi) để thay thế cho tính từ sở hữu và danh từ “my TV” (tivi của tôi).</p><p><b>Dịch nghĩa</b>: This is my parents’ TV. That is mine. (<i>Đây là tivi của bố mẹ tôi. Đó là tivi của tôi.)</i></p>"}, {"q": "___ book is thin, and theirs is thick.", "opts": ["She", "Her", "Hers"], "a": 1, "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ “book” nên ta cần tính từ sở hữu “her” (của cô ấy) để bổ nghĩa cho danh từ đó.</p><p><b>Dịch nghĩa</b>: Her book is thin, and theirs is thick. (<i>Cuốn sách của cô ấy mỏng còn của họ thì dày.)</i></p>"}, {"q": "Is this amount of money ___?", "opts": ["you", "your", "yours"], "a": 2, "exp": "<p><b>Giải thích</b>: Ta cần đại từ sở hữu “yours” (cái của bạn) để thay thế cho tính từ sở hữu và danh từ “your amount of money” (số tiền của bạn).</p><p><b>Dịch nghĩa</b>: Is this amount of money yours? (<i>Số tiền này có phải là của bạn không?)</i></p>"}, {"q": "My son has just broken ___ glasses.", "opts": ["he", "his", "him"], "a": 1, "exp": "<p><b>Dịch nghĩa</b>: Sau vị trí cần điền là danh từ “glasses” nên ta cần tính từ sở hữu “his” (của anh ấy) để bổ nghĩa cho danh từ đó.</p><p><b>Dịch nghĩa</b>: My son has just broken his glasses. (<i>Con trai tôi vừa mới làm vỡ cái kính của nó.)</i></p>"}, {"q": "His pen is blue. ___ is red.", "opts": ["My", "Me", "Mine"], "a": 2, "exp": "<p><b>Giải thích</b>: Ta cần đại từ sở hữu “Mine” (Cái của tôi) để thay thế cho tính từ sở hữu và danh từ “my pen” (cái bút của tôi).</p><p><b>Dịch nghĩa</b>: His pen is blue. Mine is red. (<i>Bút của anh ấy màu xanh. Của tôi là màu đỏ.)</i></p>"}, {"q": "Those books are all ___.", "opts": ["hers", "she", "her"], "a": 0, "exp": "<p><b>Giải thích</b>: Ta cần đại từ sở hữu “hers” (cái của cô ấy) để thay thế cho tính từ sở hữu và danh từ “her books” (sách của cô ấy).</p><p><b>Dịch nghĩa</b>: Those books are all hers. (<i>Những cuốn sách đó đều là của cô ấy.)</i></p>"}, {"q": "I bought ___ dictionary last week.", "opts": ["me", "my", "mine"], "a": 1, "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ “dictionary” nên ta cần tính từ sở hữu “my” (của tôi) để bổ nghĩa cho danh từ đó.</p><p><b>Dịch nghĩa:</b> I bought my dictionary last week. (<i>Tôi đã mua từ điển của tôi tuần trước.)</i></p>"}, {"q": "Is this bicycle ___?", "opts": ["yours", "your", "you"], "a": 0, "exp": "<p><b>Giải thích</b>: Ta cần đại từ sở hữu “yours” (cái của bạn) để thay thế cho tính từ sở hữu và danh từ “your bicycle” (xe đạp của bạn).</p><p><b>Dịch nghĩa</b>: Is this bicycle yours? (<i>Chiếc xe đạp này có phải của bạn không?)</i></p>"}, {"q": "___ wallet is in the drawer. Where is yours?", "opts": ["My", "Me", "Mine"], "a": 0, "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ “wallet” nên ta cần tính từ sở hữu “my” (của tôi) để bổ nghĩa cho danh từ đó.</p><p><b>Dịch nghĩa:</b> My wallet is in the drawer. Where is yours? (<i>Ví của tôi nằm trong ngăn kéo. Của bạn đâu</i>?)</p>"}]}, {"label": "III · Đại từ sở hữu", "id": "g3", "kind": "fill", "items": [{"q": "These are their books. → These books are___.", "a": ["theirs"], "exp": "<p><b>Giải thích</b>: These are their books. (Đây là những cuốn sách của họ.)</p><p>Đại từ sở hữu “theirs” thay thế cho tính từ sở hữu và danh từ (their books).</p><p><b>Dịch nghĩa</b>: These books are theirs. (<i>Những cuốn sách này là của họ.)</i></p>"}, {"q": "This is his laptop. → This laptop is___.", "a": ["his"], "exp": "<p><b>Giải thích</b>: This is his laptop. (Đây là máy tính xách tay của anh ấy.)</p><p>Đại từ sở hữu “his” thay thế cho tính từ sở hữu và danh từ (his laptop).</p><p><b>Dịch nghĩa</b>: This laptop is his. (<i>Máy tính xách tay này là của anh ấy.)</i></p>"}, {"q": "Are those your glasses. → Are those glasses___?", "a": ["yours"], "exp": "<p><b>Giải thích:</b> Are those your glasses? (Đó là kính của bạn phải không?)</p><p>Đại từ sở hữu “yours” thay thế cho tính từ sở hữu và danh từ (your glasses).</p><p><b>Dịch nghĩa</b>: Are those glasses yours? (<i>Cái kính đó là của bạn phải không?)</i></p>"}, {"q": "That is her paper clip. → That paper clip is___.", "a": ["hers"], "exp": "<p><b>Giải thích</b>: That is her paper clip. (Đó là kẹp giấy của cô ấy.) </p><p>Đại từ sở hữu “hers” thay thế cho tính từ sở hữu và danh từ (her paper clip).</p><p><b>Dịch nghĩa</b>: That paper clip Is hers. (<i>Chiếc kẹp giấy đó là của cô ấy.)</i></p>"}, {"q": "It’s my wallet and mobile. → The wallet and mobile are___.", "a": ["mine"], "exp": "<p><b>Giải thích</b>: It’s my wallet and mobile. (Đó là ví và điện thoại của tôi.)</p><p>Đại từ sở hữu “mine” thay thế cho tính từ sở hữu và danh từ (my wallet and mobile).</p><p><b>Dịch nghĩa</b>: The wallet and mobile are mine. (<i>Điện thoại và ví là của tôi.)</i></p>"}, {"q": "This is my mobile phone. → This mobile phone is___.", "a": ["mine"], "exp": "<p><b>Giải thích</b>: This is my mobile phone. (Đây là điện thoại di động của tôi.) Đại từ sở hữu “mine” thay thế cho tính từ sở hữu và danh từ (my mobile phone).</p><p><b>Dịch nghĩa:</b> This mobile phone is mine. (<i>Điện thoại di động này là của tôi.)</i></p>"}, {"q": "That is their beautiful house. → That beautiful house is___.", "a": ["theirs"], "exp": "<p><b>Giải thích</b>: That is their beautiful house. (Đó là ngôi nhà xinh đẹp của họ.) Đại từ sở hữu “theirs” thay thế cho tính từ sở hữu và danh từ (their beautiful house).</p><p><b>Dịch nghĩa</b>: That beautiful house is theirs. (<i>Ngôi nhà xinh đẹp đó là của họ.)</i></p>"}, {"q": "These are Tom’s toys. → These toys are ___.", "a": ["Tom’s"], "exp": "<p><b>Giải thích</b>: These are Tom’s toys. (Đây là những đồ chơi của Tom.)</p><p>Danh từ được sở hữu cánh có chức năng như đại từ sở hữu. “Tom’s” thay thế cho danh từ được sở hữu cách và danh từ (Tom’s toys).</p><p><b>Dịch nghĩa</b>: These toys are Tom’s. (<i>Những đồ chơi này là của Tom.)</i></p>"}, {"q": "It’s her hat and glasses. → The hat and glasses are___.", "a": ["hers"], "exp": "<p><b>Giải thích</b>: It’s her hat and glasses. (Đó là mũ và kính của cô ấy.) Đại từ sở hữu “hers” thay thế cho tính từ sở hữu và danh từ (her hat and glasses).</p><p><b>Dịch nghĩa</b>: The hat and glasses are hers. (<i>Mũ và kính là của cô ấy.)</i></p>"}, {"q": "Those are our classrooms. → Those classrooms are___.", "a": ["ours"], "exp": "<p><b>Giải thích</b>: Those are our classrooms. (Đó là lớp học của chúng ta.) Đại từ sở hữu “ours” thay thế cho tính từ sở hữu và danh từ (our classrooms).</p><p><b>Dịch nghĩa</b>: Those classrooms are ours. <i>(Những lớp học kia là của chúng ta.)</i></p>"}]}, {"label": "IV · Will", "id": "g4", "kind": "fill", "items": [{"q": "___they (win) ___their match today?", "a": ["Will", "win"], "exp": "<p><b>Giải thích</b>: cấu trúc thì tương lai đơn ở dạng nghi vấn: Will + S + V?</p><p><b>Dịch nghĩa</b>: Will they win their match today? (<i>Họ sẽ thắng trận đấu hôm nay chứ?)</i></p>"}, {"q": "Do you think she (come) ___soon?", "a": ["will come"], "exp": "<p><b>Giải thích</b>: cấu trúc thì tương lai đơn ở dạng khẳng định: S + Will + V.</p><p><b>Dịch nghĩa</b>: Do you think she will come soon? (<i>Bạn có nghĩ rằng cô ấy sẽ đến sớm không?)</i></p>"}, {"q": "Who do you think (get) ___the job?", "a": ["will get"], "exp": "<p><b>Giải thích</b>: cấu trúc thì tương lai đơn ở dạng khẳng định: S + will + V.</p><p><b>Dịch nghĩa</b>: Who do you think will get the job? (<i>Bạn nghĩ ai sẽ nhận được công việc đó?)</i></p>"}, {"q": "I think it (not snow) ___during this Christmas.", "a": ["won’t snow/will not snow"], "exp": "<p><b>Giải thích</b>: cấu trúc thì tương lai đơn ở dạng phủ định: S + won’t + V.</p><p><b>Dịch nghĩa</b>: I think it won’t snow during this Christmas. (<i>Tôi nghĩ tuyết sẽ không rơi trong Giáng sinh này.)</i></p>"}, {"q": "I think she (pass) ___the exam this June.", "a": ["will pass"], "exp": "<p><b>Giải thích</b>: cấu trúc thì tương lai đơn ở dạng khẳng định: S + will + V.</p><p><b>Dịch nghĩa</b>: I think she will pass the exam this June. (<i>Tôi nghĩ cô ấy sẽ vượt qua kỳ thi vào tháng 6 này.)</i></p>"}, {"q": "___scientists (find) ___out the cure for HIV/AIDS?", "a": ["Will", "find"], "exp": "<p><b>Giải thích</b>: cấu trúc thì tương lai đơn ở dạng nghi vấn: Will + S + V?</p><p><b>Dịch nghĩa</b>: Will scientists find out the cure for HIV/AIDS? <i>(Các nhà khoa học sẽ tìm ra cách chữa trị HIV/AIDS?)</i></p>"}, {"q": "A gentleman (hold) ___the door for ladies.", "a": ["will hold"], "exp": "<p><b>Giải thích</b>: cấu trúc thì tương lai đơn ở dạng khẳng định: S + will + V.</p><p><b>Dịch nghĩa</b>: A gentleman will hold the door for ladies. (<i>Một quý ông sẽ giữ cửa cho các quý cô.)</i></p>"}, {"q": "___he (give) ___me a lift if I ask him?", "a": ["Will", "give"], "exp": "<p><b>Giải thích</b>: Cấu trúc thì tương lai đơn ở dạng nghi vấn: Will + S + V?</p><p><b>Dịch nghĩa</b>: Will he give me a lift if I ask him? (<i>Anh ấy sẽ cho tôi đi nhờ nếu tôi hỏi anh ấy phải không?)</i></p>"}, {"q": "I know her parents (not let) ___ her go to the party.", "a": ["won’t let/will not let"], "exp": "<p><b>Giải thích</b>: cấu trúc thì tương lai đơn ở dạng phủ định: S + won’t + V.</p><p><b>Dịch nghĩa</b>: I know her parents won’t let her go to the party. (<i>Tôi biết bố mẹ cô ấy sẽ không cho cô ấy đi dự tiệc.)</i></p>"}, {"q": "Man (not go) ___to Jupiter before the 22nd century.", "a": ["won’t go/will not go"], "exp": "<p><b>Giải thích</b>: cấu trúc thì tương lai đơn ở dạng phủ định: S + won’t + V.</p><p><b>Dịch nghĩa</b>: Man won’t go to Jupiter before the 22nd century. (<i>Con người sẽ không đến Sao Mộc trước thế kỷ 22.)</i></p>"}, {"q": "Mark (arrive) ___on time. He is always very punctual.", "a": ["will arrive"], "exp": "<p><b>Giải thích: </b>cấu trúc thì tương lai đơn ở dạng khẳng định: S + will + V.</p><p><b>Dịch nghĩa</b>: Mark will arrive on time. He is always very punctual. (<i>Mark sẽ đến đúng giờ. Anh ấy luôn rất đúng giờ.)</i></p>"}, {"q": "Lunch time today (be) ___10 minutes longer than usual.", "a": ["will be"], "exp": "<p><b>Giải thích</b>: cấu trúc thì tương lai đơn ở dạng khẳng định: S + will + V.</p><p><b>Dịch nghĩa</b>: Lunch time today will be 10 minutes longer than usual. (<i>Thời gian ăn trưa hôm nay sẽ dài hơn bình thường 10 phút.)</i></p>"}]}, {"label": "V · Tìm lỗi sai", "id": "g5", "kind": "quiz", "items": [{"q": "You will pass your exams if you don’t start working harder.", "opts": ["will pass", "if", "working", "harder"], "a": 0, "exp": "<p><b>Giải thích</b>: Mệnh đề chính là kết quả của mệnh đề điều kiện (nếu bạn không bắt đầu học tập chăm chỉ hơn) nên để cho hợp lô-gic, động từ trong mệnh đề chính phải ở thể phủ định (won’t pass).</p><p><b>Dịch nghĩa</b>: You won’t pass your exams if you don’t start working harder. (<i>Bạn sẽ không đỗ nếu bạn không bắt đầu học tập chăm chỉ hơn.)</i></p>"}, {"q": "Salty water will to freeze at a lower temperature than pure water.", "opts": ["Salty", "to freeze", "lower", "pure water"], "a": 1, "exp": "<p><b>Giải thích</b>: Ta có cấu trúc thì tương lai đơn ở dạng khẳng định: “will + bare-V”</p><p><b>Dịch nghĩa</b>: Salty water will freeze at a lower temperature than pure water. (<i>Nước mặn sẽ đóng băng ở nhiệt độ thấp hơn nước tinh khiết.)</i></p>"}, {"q": "In the year 2050, all students will having their own computers at school.", "opts": ["the year", "all", "will having", "at"], "a": 2, "exp": "<p><b>Giải thích</b>: Ta có cấu trúc thì tương lai đơn ở dạng khẳng định: “will + bare-V”</p><p><b>Dịch nghĩa</b>: In the year 2050, all students will have their own computers at school. (<i>Vào năm 2050, tất cả học sinh sẽ có máy tính riêng ở trường.)</i></p>"}, {"q": "He will have any trouble at his job interview today. He feels very confident!", "opts": ["will have", "at", "today", "feels"], "a": 0, "exp": "<p><b>Giải thích</b>: Dựa vào tính lô-gic trong nghĩa của câu, vì “anh ấy tự tin” nên “sẽ không gặp rắc rối” nên động từ trong câu đầu phải sửa thành dạng phủ định (won’t have).</p><p><b>Dịch nghĩa</b>: He won’t have any trouble at his job interview today. He feels very confident! (<i>Anh ấy sẽ không gặp rắc rối tại buổi phỏng vấn xin việc hôm nay. Anh ấy cảm thấy rất tự tin!)</i></p>"}, {"q": "I think they will have a romantic relationship. Maybe they get married someday!", "opts": ["think", "will have", "relationship", "get"], "a": 3, "exp": "<p><b>Giải thích</b>: Việc “họ sẽ kết hôn” là do người nói phỏng đoán nên phải dùng thì tương lai đơn cho động từ “get”.</p><p>Do đó, “get” phải sửa thành “will get”.</p><p><b>Dịch nghĩa: </b>I think they will have a romantic relationship. Maybe they will get married someday! (<i>Tôi nghĩ họ sẽ có một mối quan hệ íãng mạn. Có lẽ họ sẽ kết hôn vào một ngày nào đó!)</i></p>"}]}, {"label": "Đề bài đầy đủ", "html": "<div class=\"source\"><p><b>I- Fill in the blank a suitable preposition.</b></p><p><i>E.g.: My sister goes to school __by__bicycle every day.</i></p><p>1. I don’t often sleep or read newspapers when I’m_________a plane.</p><p>2. His brother usually travels to his hometown_________his sport car.</p><p>3. What do you often do when you are_________the train?</p><p>4. Did you go to school_________bus yesterday?</p><p>5. She decided not to go_________car because of traffic jams.</p><p>6. Have you ever been_________a tram?</p><p>7. My mother sometimes goes to her hometown_________train.</p><p>8. I went to school_________foot when I was small.</p><p><b>II - Underline the correct word to complete the following sentences.</b></p><p><i>E.g.: That is my book. Where is </i><i><b>you/ your/ </b></i><u><i><b>yours</b></i></u><i>?</i></p><p>1. My mobile phone is cheap, but <b>his/ he/ him</b> is expensive.</p><p>2. This is my parents’ TV. That is <b>me/ my/ mine</b>.</p><p>3. <b>She/ Her/ Hers </b>book is thin, and theirs is thick.</p><p>4. Is this amount of money <b>you/ your/ yours</b>?</p><p>5. My son has just broken <b>he/ his/ him</b> glasses.</p><p>6. His pen is blue. <b>My/ Me/ Mine</b> is red.</p><p>7. Those books are all <b>hers/ she/ her</b>.</p><p>8. I bought <b>me/ my/ mine</b> dictionary last week.</p><p>9. Is this bicycle <b>yours/ your/ you</b>?</p><p>10. <b>My/ Me/ Mine</b> wallet is in the drawer. Where is yours?</p><p><b>III - Complete the following sentences with a suitable possessive pronoun.</b></p><p><i>E.g.: This is my house. → This house is __mine__.</i></p><p>1. These are their books. → These books are_________.</p><p>2. This is his laptop. → This laptop is_________.</p><p>3. Are those your glasses. → Are those glasses_________?</p><p>4. That is her paper clip. → That paper clip is_________.</p><p>5. It’s my wallet and mobile. → The wallet and mobile are_________.</p><p>6. This is my mobile phone. → This mobile phone is_________.</p><p>7. That is their beautiful house. → That beautiful house is_________.</p><p>8. These are Tom’s toys. → These toys are.</p><p>9. It’s her hat and glasses. → The hat and glasses are_________.</p><p>10. Those are our classrooms. → Those classrooms are_________.</p><p><b>IV - Give the correct form of the verb in the brackets with “will” to complete the following sentences.</b></p><p><i>E.g.: I (become) __will become__a teacher in the future.</i></p><p>1. _________they (win) _________their match today?</p><p>2. Do you think she (come) _________soon?</p><p>3. Who do you think (get) _________the job?</p><p>4. I think it (not snow) _________during this Christmas.</p><p>5. I think she (pass) _________the exam this June.</p><p>6. _________scientists (find) _________out the cure for HIV/AIDS?</p><p>7. A gentleman (hold) _________the door for ladies.</p><p>8. _________he (give) _________me a lift if I ask him?</p><p>9. I know her parents (not let) _________ her go to the party.</p><p>10. Man (not go) _________to Jupiter before the 22nd century.</p><p>11.  Mark (arrive) _________on time. He is always very punctual.</p><p>12. Lunch time today (be) _________10 minutes longer than usual.</p><p><b>V- Choose the underlined part which needs correction.</b></p><p><i>E.g.: </i><u><i>Where</i></u><i> will you </i><u><i>to live</i></u><i> if you have </i><u><i>a lot of </i></u><i>money, and </i><u><i>don’t </i></u><i>have to work?</i></p><p><i><b>A</b></i><i>. Where</i><i><b>B</b></i><i>. to live</i><i><b>C</b></i><i>. a lot of</i><i><b>D</b></i><i>. don’t</i></p><p>1. You <u>will pass</u> your exams <u>if</u> you don’t start <u>working</u> <u>harder.</u></p><p><b>A</b>. will pass<b>B</b>. if<b>C</b>. working<b>D</b>. harder</p><p>2. <u>Salty</u> water will <u>to freeze</u> at a <u>lower</u> temperature than <u>pure water</u>.</p><p><b>A</b>. Salty<b>B</b>. to freeze<b>C</b>. lower<b>D</b>. pure water</p><p>3. In <u>the year</u> 2050, <u>all</u> students <u>will having </u>their own computers <u>at </u>school.</p><p><b>A</b>. the year<b>B</b>. all<b>C</b>. will having<b>D</b>. at</p><p>4. He <u>will have </u>any trouble <u>at</u> his job interview <u>today</u>. He <u>feels</u> very confident!</p><p><b>A</b>. will have<b>B</b>. at<b>C</b>. today<b>D</b>. feels</p><p>5. I <u>think</u> they <u>will have </u>a romantic <u>relationship</u>. Maybe they <u>get </u>married someday!</p><p><b>A</b>. think<b>B</b>. will have<b>C</b>. relationship<b>D</b>. get</p></div>"}]}, {"title": "Reading · Đọc hiểu", "icon": "📖", "desc": "Unit 11 · Travelling in the future", "subs": [{"label": "Smart roads", "html": "<div class=\"source\"><div class=\"tablewrap\"><table><tr><td><p><b>DO YOU KNOW?</b></p><p><b>SMART ROADS</b></p><p>Over a million people are killed in road traffic accidents every year, with tens of millions injured. The development of smart roads connected to the Internet of things can greatly help to reduce road deaths. Because road sensors can communicate with smart cars about the best ways to avoid dangers or bad road conditions. In the future, wireless battery chargers will be found underneath roads. This helps to reduce the level of air pollution and the need for fossil fuels to power cars.</p></td></tr></table></div></div>"}, {"label": "I · Future transport", "id": "r1", "kind": "fill", "items": [{"q": "Most of new technologies over the years are to reduce our___and ensure an improved life.", "a": ["daily stress"], "exp": "<p><b>Dịch nghĩa câu</b> <b>hỏi</b>: Hầu hết công nghệ mới trong những năm qua là để giảm căng thẳng_________cho</p><p>chúng ta và đảm bảo cuộc sống được cải thiện.</p><p><b>Giải thích</b>: Thông tin có ở câu: “[...] most of this development is as a result of inventing and creating new ways to reduce our daily stress and live an Improved life.”</p>"}, {"q": "New technological advancement takes place in the___as well.", "a": ["transportation industry"], "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Tiến bộ công nghệ mới cũng diễn ra trong_________.</p><p><b>Giải thích:</b> Thông tin có ở câu: “The transportation industry is one of the important areas where new technological advancement takes place.”</p>"}, {"q": "A new “hyperloop” train can run at the speed of___per hour.", "a": ["800 miles"], "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Một tàu cao tốc “hyperloop” mới có thể chạy với tốc độ__________một giờ.</p><p><b>Giải thích</b>: Thông tin có ở câu: “An amazing new “hyperloop” train that will speed 800 miles per hour.”</p>"}, {"q": "Some of these innovations have already support our___.", "a": ["transporting"], "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Một số trong những thay đổi này đã phục vụ_________của chúng.</p><p><b>Giải thích</b>: Thông tin có ở câu: “All these innovations are not just a form of illusion, they are set to happen within the next coming years or have already started transporting us.”</p>"}, {"q": "The level of vehicle transport companies and car shipping carriers has been___.", "a": ["increased"], "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Trình độ của các công ty vận tải bằng xe và hãng giao hàng bằng ô tô đã được_________.</p><p><b>Giải thích:</b> Thông tin có ở câu: “This has increased the level of some industries like vehicle transport companies and car shipping carriers.”</p>"}], "before": "<div class=\"source\"><p><b>I- Read the passage and complete the following sentences with ONE or TWO words. </b></p><p>The re-occurrence of new technology over the years has helped us change the way we live and do daily activities. Most of this development is as a result of inventing and creating new ways to reduce our daily stress and live an improved life. The transportation industry is one of the important areas where new technological advancement takes place. We now see cars that drive themselves along predetermined routes. Trains that will use new magnetic rail systems. An amazing new “hyperloop” train that will speed 800 miles per hour. All these innovations are not just a form of illusion, they are set to happen within the next coming years or have already started transporting us. This has increased the level of some industries like vehicle transport companies and car shipping carriers. It has also made truck production company, and fleet management more efficient.</p></div><details class=\"tr\"><summary>Bản dịch</summary><div class=\"source\"><p>Sự xuất hiện trở lại của công nghệ mới trong những năm qua đã giúp thay đổi lối sống và hoạt động hàng ngày của chúng ta. Sự thay đổi này chủ yếu xuất phát từ việc phát minh và tạo ra những phương pháp mới để giảm căng thẳng hàng ngày và sống một cuộc sống tốt đẹp hơn. Ngành giao thông vận tải là một trong những lĩnh vực quan trọng đã chứng kiến nhiều tiền bộ công nghệ mới. Giờ đây chúng ta có thể thấy những chiếc xe tự lái dọc theo các tuyến đường đã được định trước. Xe lửa sẽ sử dụng hệ thống đường sắt từ tính mới. Tàu cao tốc “hyperloop” tuyệt vời và mới mẻ sẽ chạy với tốc độ 800 dặm một giờ. Tất cả những phương tiện mới này không phải là ảo tưởng, chúng được dự kiến hoạt động trong những năm tới hoặc là đã bắt đầu hoạt động. Điều này giúp nâng cao trình độ của một số ngành công nghiệp như các công ty vận tải và hãng giao hàng bằng ô tô. Nó cũng làm cho các công ty sản xuất xe tải và việc quản lý đội tàu trở nên hiệu quả hơn.</p></div></details>"}, {"label": "II · Flying cars", "id": "r2", "kind": "quiz", "items": [{"q": "The Transition has room for four passengers.", "opts": ["True", "False"], "a": 1, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Chiếc xe ô tô bay Transition có chỗ cho bốn hành khách.</p><p><b>Giải thích</b>: Thông tin ở sau: “The vehicle has <u>two seats</u>, four wheels and wings that fold up, so it can be driven like a car.”</p>"}, {"q": "Terrafugia has worked on the Transition since 2006.", "opts": ["True", "False"], "a": 0, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Hãng Terrafugia đã sản xuất chiếc xe Transition từ năm 2006.</p><p><b>Giải thích</b>: Thông tin ở sau: “Terrafugia first began to work on the Transition in 2006</p>"}, {"q": "The flying car uses special tires and glass.", "opts": ["True", "False"], "a": 0, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Chiếc xe ô tô bay sử dụng lốp và kính đặc biệt.</p><p><b>Giải thích</b>: Thông tin ở sau: “The company uses special tires and glass that are lighter than normal automotive ones, which makes it easier for the vehicle to fly.”</p>"}, {"q": "All drivers of the Transition will only have to pass a test to get a license.", "opts": ["True", "False"], "a": 1, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Tất cả những người lái chiếc xe Transition sẽ chỉ phải vượt qua bài kiểm tra để lấy giấy phép. </p><p><b>Giải thích</b>: Thông tin ở sau: “An owner needs to <u>pass a test</u> and <u>complete 20 hours of flying time</u> to be able to fly the Transition.”</p>"}, {"q": "The Transition will go faster in the air than on the road.", "opts": ["True", "False"], "a": 0, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Chiếc xe Transition sẽ bay trên không nhanh hơn so với đi trên đường bộ.</p><p><b>Giải thích</b>: Thông tin ở sau: “The Transition can reach around 70 miles per hour (mph) on the road and 115 mph in the air.”</p>"}], "before": "<div class=\"source\"><p><b>II - Read the passage and decide whether the statements are TRUE (T) or FALSE (F).</b></p><p>Flying cars aren’t just science fiction anymore. Terrafugia, based in the United States, is developing a readable aircraft called the Transition. The vehicle has two seats, four wheels and wings that fold up, so it can be driven like a car. Terrafugia first began to work on the Transition in 2006 and has come closer than anyone to making the flying car a reality. The company uses special tires and glass that are lighter than normal automotive ones, which makes it easier for the vehicle to fly. An owner needs to pass a test and complete 20 hours of flying time to be able to fly the Transition. The Transition can reach around 70 miles per hour (mph) on the road and 115 mph in the air. On the ground, it gets 35 miles per gallon.</p></div><details class=\"tr\"><summary>Bản dịch</summary><div class=\"source\"><p>Ô tô bay không còn là khoa học viễn tưởng nữa. Terrafugia, có trụ sở tại Hoa Kỳ, đang phát triển một chiếc máy bay có thể chạy trên đường bộ lẫn cất cánh trên không gọi là Transition. Chiếc xe có hai chỗ ngồi, bốn bánh xe và đôi cánh gấp lại để có thể lái như một chiếc xe hơi. Hãng Terrafugia bắt đầu sản xuất chiếc xe Transition vào năm 2006 và đã đến gần hơn bất kỳ hãng nào trong việc biến chiếc xe ô tô bay thành hiện thực. Công ty sử dụng lốp và kính đặc biệt nhẹ hơn so với ô tô bình thường, giúp xe dễ bay hơn. Chủ sở hữu cần phải vượt qua một bài kiểm tra và hoàn thành 20 giờ bay để có thể lái chiếc xe Transition. Chiếc xe ô tô bay Transition có thể đạt khoảng 70 dặm một giờ (mph) trên đường bộ và 115 dặm một giờ trong không khí. Trên mặt đất, nó chạy được 35 dặm cho mỗi gallon.</p></div></details>"}]}, {"title": "Listening · Nghe", "icon": "🔊", "desc": "Unit 11 · Travelling in the future", "subs": [{"label": "Space holiday", "id": "l1", "kind": "quiz", "items": [{"q": "Dennis Tito was the first “space tourist” by paying 20 million us dollars.", "opts": ["True", "False"], "a": 0, "exp": "<p><b>Dịch nghĩa câu hỏi:</b> Dennis Tito là “khách du lịch vũ trụ” đầu tiên trên thế giới bằng cách trả 20 triệu đô la Mỹ. </p><p><b>Giải thích</b>: Thông tin có ở câu: “Italian-American engineering tycoon Dennis Tito became the first “space tourist” by paying a reported US$20 million [...]”</p>"}, {"q": "Virgin Galactic is one of many companies which offer travellers the chance to be space tourists.", "opts": ["True", "False"], "a": 0, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Virgin Galactic là một trong nhiều công ty mang đến cơ hội trở thành khách du lịch vũ trụ. </p><p><b>Giải thích</b>: Thông tin có ở câu: “Now, companies like Virgin Galactic, XCOR Aerospace and Space Adventures offer the chance for other wannabe space tourists too.”</p>"}, {"q": "Travelers can fly along a sub-orbital route this year.", "opts": ["True", "False"], "a": 1, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Du khách có thể bay dọc theo một tuyến đường quỹ đạo phụ trong năm nay.</p><p><b>Giải thích:</b> Thông tin có ở câu: “They are already accepting reservations to fly travelers along a sub-orbital route as early as next year.”</p>"}, {"q": "5,000 people worldwide have signed up for space visits.", "opts": ["True", "False"], "a": 1, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: 5.000 người trên toàn thế giới đã đăng ký tham quan không gian.</p><p><b>Giải thích</b>: Thông tin có ở câu: “So far, 500 people worldwide have signed up for space Visits, according to Hong Kong’s accredited space travel agent, Miramar Travel.”</p>"}, {"q": "Space will become a future holiday destination for only a few.", "opts": ["True", "False"], "a": 0, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Du lịch vũ trụ sẽ trở thành một điểm đến của những kỳ nghỉ trong tương lai nhưng chỉ cho một số ít.</p><p><b>Giải thích</b>: Thông tin có ở câu: “It’s believed that space tourism will become a future holiday destination, but “only for a few.””</p>"}], "before": "<div class=\"note\">Giọng đọc tổng hợp từ lời thoại trong tài liệu.</div><button class=\"btn solid\" onclick=\"say(LISTEN)\">▶ Nghe bài</button> <button class=\"btn\" onclick=\"speechSynthesis.cancel()\">■ Dừng</button>"}, {"label": "Lời thoại & bản dịch", "html": "<div class=\"source\"><p>Audio script:</p><div class=\"tablewrap\"><table><tr><td><p>For the wealthy, a trip to space is already possible. Italian-American engineering tycoon Dennis Tito became the first “space tourist” by reportedly paying US$20 million to tag along with a Russian mission to the International Space station in 2001.</p><p>Now, companies like Virgin Galactic, XCOR Aerospace and Space Adventures offer the chance for other wanna be space tourists too. They are already accepting reservations to fly travelers along a sub-orbital route as early as next year.</p><p>So far, 500 people worldwide have signed up for space visits, according to Hong Kong’s accredited space travel agent, Miramar Travel. It costs US$200,000 for a seat on Vigin Galactic’s spaceship. It’s believed that space tourism will become a future holiday destination, but “only for a few.”</p></td><td><p>Đối với những người giàu có, một chuyến đi vào vũ trụ giờ có thể thực hiện được, ông trùm kỹ thuật người Mỹ gốc Ý, Dennis Tito, trở thành “du khách không gian” đầu tiên được cho là đã trả 20 triệu đô la Mỹ để đi cùng với một nhiệm vụ của Nga đến Trạm vũ trụ quốc tế vào năm 2001.</p><p>Giờ đây, các công ty như Virgin Galactic, XCOR Aerospace và Space Adventures cũng mang đến cơ hội cho những khách du lịch không gian khác. Họ đã nhận đặt chỗ đưa khách du lịch bay dọc theo quỹ đạo phụ sớm nhất là vào năm tới.</p><p>Theo công ty lữ hành vũ trụ được công nhận của Hồng Kông, Miramar Travel, hiện nay, 500 người trên toàn thế giới đã đăng ký tham quan không gian. Nó có giá 200.000 đô la Mỹ cho một chỗ ngòi trên tàu vũ trụ của Vigin Galactic. Người ta tin rằng du lịch vũ trụ sẽ trở thành một điểm đến trong tương lai, nhưng chỉ dành cho một số ít.</p></td></tr></table></div></div>"}]}, {"title": "Speaking · Nói", "icon": "💬", "desc": "Unit 11 · Travelling in the future", "subs": [{"label": "Đề bài & gợi ý", "html": "<div class=\"source\"><p><b>Talk about the benefits of self-driving cars.</b></p><p>You can use the following questions as cues:</p><p>•What are the benefits of self-driving cars?</p><p>•Which benefits are you most interested in? Why?</p><p><b>Useful languages:</b></p><div class=\"tablewrap\"><table><tr><td><p><b>Useful vocabulary</b></p></td><td><p><b>Useful structures</b></p></td></tr><tr><td><p>• fewer accidents</p><p>• reducing traffic congestion and pollution</p><p>• saving space</p><p>• saving fuel</p><p>• better life</p><p>•saving time</p><p>•saving money</p><p>•convenient</p></td><td><p>• Self-driving cars have many benefits. First,... Second, …..</p><p>• Self-driving cars can help ...</p><p>• ... is the benefit that I&#x27;m most interested in because</p><p>• These benefits can improve our life like ...</p></td></tr></table></div><p><b>Complete the notes:</b></p><div class=\"tablewrap\"><table><tr><td><p><b>Structures of the talk</b></p></td><td><p><b>Your notes</b></p></td></tr><tr><td><p>What are the benefits of self-driving cars?</p></td><td><p>__________________________________________</p><p>__________________________________________</p><p>__________________________________________</p></td></tr><tr><td><p>Which benefits are you most interested in? Why?</p></td><td><p>__________________________________________</p><p>__________________________________________</p><p>__________________________________________</p></td></tr><tr><td><p>How can these benefits improve human’s life?</p></td><td><p>__________________________________________</p><p>__________________________________________</p><p>__________________________________________</p></td></tr></table></div><p><b>Now you try!</b></p><p><b>Give your answer using the following cues. You should speak for 1-2 minutes.</b></p><p>1. Self-driving cars can help ...</p><p>2. ... is the benefit that I&#x27;m most interested in because ...</p><p>3. These benefits can improve our life like ...</p><p><b>Now you tick!</b></p><p><b>Did you ...</b></p><p> answer all the questions in the task?</p><p> give some details to each main point?</p><p> speak slowly and fluently with only some hesitation?</p><p> use vocabulary wide enough to talk about the topic?</p><p> use various sentence structures (simple, compound, complex) accurately?</p><p> pronounce correctly (vowels, consonants, stress, intonation)?</p><p><b> </b><b>Let’s compare!</b></p><p>Finally, compare with the sample answer on page 199.</p></div>"}, {"label": "Ghi chú của bạn", "kind": "notes"}, {"label": "Gợi ý & bài mẫu", "html": "<div class=\"source\"><p><b>Talk about the benefits of self-driving cars.</b></p><p><b>Dịch nghĩa câu hỏi:</b></p><p>Hãy nói về lợi ích của xe tự lái.</p><p>Em có thể sử dụng các câu hỏi sau đây như gợi ý:</p><p>• Những lợi ích của xe tự lái là gì?</p><p>• Em quan tâm nhất đến lợi ích nào?</p><p>• Những lợi ích này cải thiện cuộc sống của con người như thế nào?</p><p><b>Gợi ý trả lời:</b></p><p><b>MAIN IDEAS (Ý chính)</b></p><p><b>Benefits (Lợi ích)</b></p><p>- fewer accidents (<i>n. phr</i>.) (ít tai nạn hơn)</p><p>- saving space (<i>n. phr</i>.) (tiết kiệm không gian)</p><p>- fewer traffic jams (<i>n. phr</i>.) (ít tắc đường hơn)</p><p>- saving fuels (<i>n. phr</i>.) (tiết kiệm nhiên liệu)</p><p><b>Improvement (Cải thiện)</b></p><p>- better life (<i>n. phr</i>.) (cuộc sống tốt hơn)</p><p>- more efficient (<i>adj. phr.)</i> (hiệu quả hơn)</p><p>- saving time (<i>n. phr</i>.) (tiết kiệm thời gian)</p><p>- saving money (<i>n. phr</i>.) (tiết kiệm tiền)</p><p>Bài mẫu:</p><div class=\"tablewrap\"><table><tr><td><p>With the advancement of science and technology, humans have invented many modem means of transport, and one of them is self-driving cars. Self¬driving cars will help reduce traffic accidents thanks to the intelligence and precision of techonology. Humans will have to pay less to solve problems caused by traffic accidents. Artificial intelligence can identify the status of roads and streets, so it will choose the suitable route to avoid traffic jams. Therefore, travellers can save time and minimize tiredness on the way. I hope modern self-driving cars will be popular in the near future.</p></td><td><p>Với sự tiến bộ của khoa học và công nghệ, con người đã phát minh ra những phương tiện giao thông hiện đại và một trong số đó là ô tô tự lái. Ô tô tự lái sẽ giúp giảm số vụ tai nạn giao thông nhờ sự thông minh và tính chính xác của công nghệ. Con người sẽ phải chi ít tiền hơn để khắc phục hậu quả của những vụ tai nạn giao thông. Trí thông minh nhân tạo có thể xác định trình trạng đường xá, từ đó tìm ra lộ trình phù hợp để tránh kẹt xe. Do đó, giúp người ngồi trên xe tiết kiệm thời gian và giảm sự mệt mỏi khi đi trên đường. Em rất hi vọng những chiếc xe tự lái hiện đại sẽ phổ biến trong tương lai gần</p></td></tr></table></div></div>"}]}, {"title": "Writing · Viết", "icon": "✍️", "desc": "Unit 11 · Travelling in the future", "subs": [{"label": "I · Viết câu", "id": "w1", "kind": "write", "items": [{"c": "Modern/ means of transport/ be/ very strange/ me.", "a": "Modern means of transport are very strange to me.", "vi": "  Dịch nghĩa : Tôi chưa quen với các phương tiện giao thông hiện đại. "}, {"c": "I/ be/ most interested/ hyperloop/ skytrain.", "a": "I am most interested in hyperloops and skytrains.", "vi": "  Dịch nghĩa : Tôi quan tâm nhất đến tàu cao tốc và tàu trên cao. "}, {"c": "It/ be/ wonderful/ travel/ such/ modern/ means of transport.", "a": "It is wonderful to travel in such modern means of transport.", "vi": "  Dịch nghĩa : Thật tuyệt vời khi di chuyển trên các phương tiện giao thông hiện đại như vậy. "}, {"c": "These/ modern/ means of transport/ help/ save/ much time/ travelling.", "a": "These modern means of transport help save much time of travelling.", "vi": "  Dịch nghĩa : Những phương tiện giao thông hiện đại này giúp tiết kiệm nhiều thời gian đi lại. "}, {"c": "It/ be/ fantastic/ if/ these/ means of transport/ be/ available/ future.", "a": "It will be fantastic if these means of transport are available in the future.", "vi": "  Dịch nghĩa : Sẽ thật tuyệt vời nếu những phương tiện giao thông này có sẵn trong tương lai. "}]}, {"label": "II · Đoạn văn 60–80 từ", "kind": "writing", "html": "<div class=\"source\"><p><b>II- Write a short paragraph (about 60-80 words) about means of transport of the future you are most interested in.</b></p><p>You can answer some of the following questions:</p><p>• What is that means of transport?</p><p>• Why are you most interested in it?</p><p>• What are the benefits of that means of transport?</p></div>"}, {"label": "Gợi ý & bài mẫu", "html": "<div class=\"source\"><p><b>II - Write a shod paragraph (60-80 words) about means of transport of the future you are most interested in. </b></p><p><b>Dịch nghĩa câu hỏi:</b></p><p>Viết một đoạn văn ngắn (60-80 từ) về phương tiện giao thông trong tương lai mà bạn quan tâm nhất. </p><p>Bạn có thể trả lời một số câu hỏi sau:</p><p>• Phương tiện giao thông đó là gì?</p><p>• Tại sao em quan tâm nhất đến nó?</p><p>• Những lợi ích của phương tiện giao thông đó là gì?</p><p><b>Gợi ý trả lời:</b></p><p><b>MAIN IDEAS (Ý chính)</b></p><p><b>Means (Phương tiện)</b></p><p>- flying cars (<i>n</i>.) (ô tô bay)</p><p>- hoverbikes (<i>n</i>.) (xe mô tô bay)</p><p>- windowless plane (<i>n</i>.) (máy bay không cửa sổ)</p><p>- hyperloop (<i>n</i>.) (tàu cao tốc)</p><p><b>Reasons (Lý do)</b></p><p>- convenient (<i>adj</i>.) (tiện lợi)</p><p>- beautiful (<i>adj</i>.) (đẹp)</p><p>- wonderful (<i>adj.)</i> (tuyệt vời)</p><p>- breakthrough <i>(adj</i>.) (đột phá)</p><p><b>Benefits (Lợi ích)</b></p><p>- time-saving <i>(adj</i>.) (tiết kiệm thời gian)</p><p>- better entertainment (<i>n. phr</i>.) (giải trí tốt hơn)</p><p>- no traffic jam (<i>n. phr</i>.) (không tắc đường)</p><p>- money-saving (<i>adj.</i>) (tiết kiệm tiền)</p><p>Bài mẫu:</p><div class=\"tablewrap\"><table><tr><td><p>Modern means of transport for the future are very impressive to me, and I am most interested in flying cars. It is so fantastic to drive such a wonderful vehicle because it can move like a normal one, but fly in the air when there are traffic jams or bad roads. It is also extremely convenient to drive the flying car to anywhere though there are no roads to that place. Flying cars help save time of travelling, and the traffic jam is no longer a big problem. It will be wonderful if flying cars are widely used in the coming decades.</p></td><td><p>Em rất ấn tượng với những phương tiện giao thông hiện đại của tương lai và phương tiện mà em thích nhất là ô tô bay. Sẽ thật tuyệt vời khi được điều khiển một phương tiện có thể di chuyển như ô tô thường nhưng cũng có thể bay lên khi kẹt xe hoặc đường xá có vấn đề. Thật tiện lợi khi có thể điều khiển ô tô bay đến bất cứ địa điểm nào kể cả khi chưa có đường đến đó. Ô tô bay giúp tiết kiệm thời gian di chuyển trên đường và kẹt xe sẽ không còn là vấn đề lớn nữa. Sẽ thật tuyệt nếu ô tô bay được sử dụng rộng rãi trong những thập kỷ tới.</p></td></tr></table></div><p>Giaoandethitienganh.info sưu tầm</p></div>"}]}, {"title": "Objectives · Mục tiêu", "icon": "🎯", "desc": "Unit 11 · Travelling in the future", "subs": [{"label": "Mục tiêu theo tài liệu", "html": "<div class=\"source\"><p><b>UNIT </b><b>11</b><b> </b></p><p><b>TRAVELLING IN THE FUTURE</b></p><p>Đi lại trong tương lai</p><p><b>MỤC TIÊU – Objectives</b></p><p>* <b>TỪ VỰNG</b> – Vocabulary</p><p>sử dụng từ vựng liên quan đến các phương tiện giao thông trong tương lai</p><p>* <b>NGỮ ÂM</b> – Pronunciation</p><p>xác định giọng điệu lên hoặc xuống đối với câu hỏi</p><p>* <b>NGỮ PHÁP</b> – Grammar</p><p>biết cách sử dụng “<b>will</b>” để dự đoán về tương lai</p><p>tự tin sử dụng đại từ sở hữu</p><p><b>* KỸ NĂNG ĐỌC</b> – Reading skills</p><p>đọc tìm thông tin cụ thể về các phát minh về phương tiện giao thông trong tương lai </p><p>* <b>KỸ NĂNG NÓI</b> – Speaking skills</p><p>thuyết trình về một loại phương tiện</p><p>* <b>KỸ NĂNG NGHE</b> – Listening Skills</p><p>nghe lấy thông tin cụ thể về các phương tiện giao thông trong tương lai</p><p>* <b>KỸ NĂNG VIẾT</b> – Writing skills</p><p>viết một đoạn văn nói về các phương tiện giao thông trong tương lai</p></div>"}]}];
+const V12=[{"w": "automated", "p": "/ˈɔːtəmeɪtɪd/", "pos": "adj.", "vi": "tự động", "ex": "Automated driving systems can reduce fuel use and carbon emissions. (Hệ thống lái xe tự động có thể giảm việc sử dụng nhiên liệu và lượng khí thải các-bon)"}, {"w": "crash", "p": "/kræʃ/", "pos": "v.", "vi": "va chạm", "ex": "A truck crashed into the back of a bus. (Một chiếc xe tải đã đâm vào phía sau xe buýt)"}, {"w": "driverless", "p": "/ˈdraɪvələs/", "pos": "adj.", "vi": "không người lái (tự động)", "ex": "Driverless cars may help ease traffic congestion and lower pollution. (Ô tô không người lái có thể giúp giảm bớt tắc nghẽn giao thông và ô nhiễm môi trường)"}, {"w": "environmentally- friendly", "p": "/ɪnˌvaɪrənmentəli ˈfrendli/", "pos": "adj.", "vi": "thân thiện với môi trường", "ex": "Environmentally- friendly cars use less toxic fuels. (Ô tô thân thiện với môi trường sử dụng ít nhiên liệu độc hại hơn)"}, {"w": "eco-friendly", "p": "/ˌiːkəʊ ˈfrendli/", "pos": "adj.", "vi": "thân thiện với hệ sinh thái/ thân thiện với môi trường", "ex": "Eco-friendly transport helps reduce harmful effects on the environment. (Các phương tiện giao thông thân thiện với môi trường giúp giảm tác hại đối với môi trường)"}, {"w": "float", "p": "/fləʊt/", "pos": "v.", "vi": "nổi", "ex": "This car can float on water. (Chiếc xe này có thể nổi trên mặt nước)"}, {"w": "flop", "p": "/flɒp/", "pos": "v.", "vi": "thất bại", "ex": "Although his transport invention was unique, it flopped. (Mặc dù phát minh phương tiện của ông ấy độc đáo nhưng nó vẫn thất bại)"}, {"w": "flying car", "p": "/ˌflaɪɪŋ kɑː(r)/", "pos": "n.", "vi": "một loại xe kết hợp giữa ô tô và máy bay/ xe ô tô bay", "ex": "Will flying cars ease traffic congestion? (Ô tô bay sẽ làm giảm bớt tắc nghẽn giao thông phải không?)"}, {"w": "gridlocked", "p": "/ˈɡrɪdlɒkt/", "pos": "adj.", "vi": "(giao thông) tắc nghẽn", "ex": "Traffic in Ha Noi was gridlocked this morning. (Giao thông ở Hà Nội đã bị tắc nghẽn vào sáng nay)"}, {"w": "high –speed", "p": "/ˌhaɪ ˈspiːd/", "pos": "adj.", "vi": "tốc độ cao, siêu tốc", "ex": "There are many different types of high-speed trains in the world. (Có nhiều loại tàu cao tốc khác nhau trên thế giới)"}, {"w": "hover scooter", "p": "/ˈhɒvə(r) ˈskuːtə(r) /", "pos": "n.", "vi": "xe trượt thăng bằng", "ex": "My son really likes his new hover scooter (Con trai tôi thực sự thích chiếc xe trượt thăng bằng mới của mình)"}, {"w": "jet pack", "p": "/ˈdʒetpæk/", "pos": "n.", "vi": "thiết bị bay cá nhân (đeo trên vai) dùng động cơ phản lực", "ex": "I love using a jet pack to fly in the sky (Tôi thích sử dụng thiết bị dùng động cơ phản lực để bay trên bầu trời)"}, {"w": "metro", "p": "/ˈmetrəʊ/", "pos": "n.", "vi": "tàu ngầm (trong thành phố)", "ex": "There is a modern metro system in my city. (Có một hệ thống tàu điện ngầm hiện đại trong thành phố của tôi)"}, {"w": "monowheel", "p": "/ˈmɒnəʊ wiːl/", "pos": "n.", "vi": "một loại xe đạp có một bánh", "ex": "This is the first time I have ridden a monowheel (Đây là lần đầu tiên tôi lái chiếc xe đạp có một bánh)"}, {"w": "pedal", "p": "/ˈpedl/", "pos": "v., n", "vi": "bàn đạp", "ex": "I couldn’t reach the pedals on her bike (Tôi không thể với tới bàn đạp của chiếc xe đạp của cô ấy)"}, {"w": "segway", "p": "/ˈseɡweɪ/", "pos": "n.", "vi": "phương tiện di chuyển bằng cách đẩy chân để chạy bánh xe trên mặt đất", "ex": "The Segway is very easy to control by moving the handlebars forward or backward. (Xe Segway rất dễ điều khiển bằng cách di chuyển tay lái về phía trước hoặc phía sau)"}, {"w": "skycycling tube", "p": "/skaɪ ˈsaɪklɪŋ tjuːb/", "pos": "n.", "vi": "khoang của loại tàu skycycling", "ex": "I think skycycling tubes will be environmentally-friendly. (Tôi nghĩ khoang của loại tàu skycycling sẽ thân thiện; với môi trường)"}, {"w": "skytrain", "p": "/skaɪtreɪn/", "pos": "n.", "vi": "tàu trên không (trong thành phố)", "ex": "Most big cities have a metro system or skytrain (Hầu hết các thành phố lớn đều có hệ thống tàu điện ngầm hoặc tàu trên không)"}, {"w": "solar – powered", "p": "/ˌsəʊlə ˈpaʊə(r)d/", "pos": "adj.", "vi": "dùng năng lượng mặt trời", "ex": "We believe that trains will be solar-powered in the near future. (Chúng tôi tin rằng tàu hỏa sẽ dùng năng lượng mặt trời trong tương lai gần)"}, {"w": "supersonic", "p": "/ˌsuːpəˈsɒnɪk/", "pos": "adj.", "vi": "tốc độ siêu thanh", "ex": "These planes travel at supersonic speeds. (Những chiếc máy bay này di chuyển với tốc độ siêu thanh)"}, {"w": "teleporter", "p": "/ˈtelɪpɔːtər/", "pos": "n.", "vi": "hình thức dịch chuyển tức thời", "ex": "Teleporters may be the best method of transportation in the future. (Hình thức dịch chuyển tức thời có thể là phương thức đi lại tốt nhất trong tương lai)"}];
+const LISTEN="For the wealthy, a trip to space is already possible. Italian-American engineering tycoon Dennis Tito became the first “space tourist” by reportedly paying US$20 million to tag along with a Russian mission to the International Space station in 2001. Now, companies like Virgin Galactic, XCOR Aerospace and Space Adventures offer the chance for other wanna be space tourists too. They are already accepting reservations to fly travelers along a sub-orbital route as early as next year. So far, 500 people worldwide have signed up for space visits, according to Hong Kong’s accredited space travel agent, Miramar Travel. It costs US$200,000 for a seat on Vigin Galactic’s spaceship. It’s believed that space tourism will become a future holiday destination, but “only for a few.” ";
+const OBJECTIVES=[{i:'🚀',t:'Unit 11 · Travelling in the future',d:'Phương tiện tương lai; ngữ điệu; will; đại từ sở hữu; giới từ giao thông; đọc, nghe, nói và viết.'}];
+const drafts={notes:'',writing:''};
+function vocab12(filter=''){return V12.filter(v=>(v.w+' '+v.vi).toLowerCase().includes(filter.toLowerCase())).map(v=>`<div class="vrow"><div><div class="vw">${esc(v.w)} ${spk(v.w)}</div><div class="vp">${esc(v.p)} · ${esc(v.pos)}</div></div><div class="vm">${esc(v.vi)}</div><div class="ven">${esc(v.ex)}</div></div>`).join('')}
+function draw12(s){
+ if(s.kind==='vocab')return `<div class="tools"><input class="search" placeholder="Tìm từ tiếng Anh hoặc nghĩa tiếng Việt…" oninput="document.getElementById('words12').innerHTML=vocab12(this.value)"></div><div id="words12">${vocab12()}</div>`;
+ if(s.kind==='notes')return `<div class="card"><h3>Benefits of self-driving cars</h3><p>Ghi ý chính, sau đó luyện nói trong 1–2 phút.</p><textarea class="studytextarea" oninput="drafts.notes=this.value">${esc(drafts.notes)}</textarea></div>`;
+ if(s.kind==='writing')return s.html+`<textarea class="studytextarea" placeholder="Write your paragraph here…" oninput="drafts.writing=this.value;document.getElementById('count12').textContent=this.value.trim().split(/\s+/).filter(Boolean).length+' / 60–80 từ'">${esc(drafts.writing)}</textarea><p id="count12">${drafts.writing.trim().split(/\s+/).filter(Boolean).length} / 60–80 từ</p>`;
+ if(!s.id)return s.html;
+ const cfg={title:s.label,items:s.items,labels:s.items[0].opts?s.items[0].opts.map((_,i)=>String.fromCharCode(65+i)):undefined};
+ return (s.before||'')+(s.kind==='quiz'?quiz(s.id,cfg):s.kind==='fill'?fill(s.id,cfg):writeSent(s.id,s.items));
+}
+const SECTIONS=DATA.map(s=>({...s,ex:s.subs.filter(x=>x.id).map(x=>x.id),subs:s.subs.map(x=>({...x,ex:x.id?[x.id]:undefined,render:()=>draw12(x)}))}));
+document.title='Unit 11 - Travelling in the future';
+$('.logo .lg').textContent='🚀';
+show(0,0);
+</script></body></html>

@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 10</title>
+<style>*{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#1e1b4b;--mut:#6b7280;--p:#4f46e5;--p2:#7c3aed;--pk:#db2777;--ok:#059669;--okbg:#ecfdf5;--bad:#dc2626;--badbg:#fef2f2;--am:#b45309;--ambg:#fffbeb;--line:#e4e6f7;--bg:#f3f4ff;--ph:"Doulos SIL","Charis SIL","Lucida Sans Unicode","Segoe UI",Arial,sans-serif}
+html,body{height:469px;overflow:hidden;background:var(--bg);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+button,input,textarea{font-family:inherit}
+::-webkit-scrollbar{width:7px;height:7px}::-webkit-scrollbar-thumb{background:#c7d2fe;border-radius:8px}::-webkit-scrollbar-track{background:transparent}
+.app{display:flex;height:469px;max-width:1128px;margin:0 auto;background:var(--bg)}
+
+/* sidebar */
+.side{width:206px;flex:none;background:linear-gradient(175deg,#2e2a86 0%,#4f46e5 58%,#7c3aed 100%);color:#fff;display:flex;flex-direction:column;padding:12px 10px 10px;position:relative;overflow:hidden}
+.side:before{content:"";position:absolute;right:-50px;top:-50px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.07)}
+.logo{display:flex;align-items:center;gap:9px;padding:0 4px 9px;cursor:pointer;position:relative}
+.logo .lg{width:36px;height:36px;border-radius:11px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:20px}
+.logo b{display:block;font-size:14px;letter-spacing:.05em}
+.logo small{font-size:11px;opacity:.85}
+.nav{flex:1;display:flex;flex-direction:column;gap:2px;min-height:0;position:relative}
+.ni{display:flex;align-items:center;gap:8px;height:28px;padding:0 8px;border:none;background:none;color:#e0e7ff;border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;text-align:left;width:100%;transition:.15s}
+.ni:hover{background:rgba(255,255,255,.13)}
+.ni .n{width:18px;height:18px;flex:none;border-radius:50%;background:rgba(255,255,255,.2);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.ni .t{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ni.on{background:#fff;color:#3730a3;box-shadow:0 4px 12px rgba(0,0,0,.18)}
+.ni.on .n{background:var(--p);color:#fff}
+.ni.done .n{background:#34d399;color:#064e3b}
+.ni.soon{opacity:.62}
+.prog{padding:8px 4px 0;position:relative}
+.pbar{height:7px;background:rgba(255,255,255,.22);border-radius:8px;overflow:hidden}
+.pbar i{display:block;height:100%;background:linear-gradient(90deg,#fde68a,#34d399);border-radius:8px;transition:width .4s}
+.prog small{display:flex;justify-content:space-between;font-size:10.5px;margin-top:4px;opacity:.9}
+
+/* main */
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.head{display:flex;align-items:center;gap:11px;padding:11px 18px 2px}
+.head .hi{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#6366f1,#c026d3);display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 5px 14px rgba(99,102,241,.35);flex:none}
+.head h1{font-size:18px;line-height:1.15;color:#312e81}
+.head p{font-size:12px;color:var(--mut);margin-top:1px}
+.subnav{display:flex;gap:6px;padding:8px 18px 7px;overflow-x:auto;flex:none}
+.stab{flex:none;border:1px solid #d6dafc;background:#fff;color:#4338ca;border-radius:999px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;transition:.15s}
+.stab:hover{background:#eef2ff;transform:translateY(-1px)}
+.stab.on{background:linear-gradient(90deg,#4f46e5,#7c3aed);border-color:transparent;color:#fff;box-shadow:0 4px 12px rgba(79,70,229,.3)}
+.stab i{font-style:normal;margin-left:5px;font-size:10px;background:#34d399;color:#064e3b;border-radius:999px;padding:0 5px}
+.body{flex:1;overflow:auto;padding:2px 18px 16px;min-height:0;animation:fade .25s}
+.body.split{overflow:hidden;padding-bottom:12px}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+/* generic */
+.btn{border:1px solid #c7d2fe;background:#fff;color:#4338ca;padding:6px 12px;border-radius:9px;cursor:pointer;font-size:12px;font-weight:700;transition:.15s}
+.btn:hover{background:#eef2ff;transform:translateY(-1px)}
+.btn.solid{background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff;border-color:transparent;box-shadow:0 4px 10px rgba(79,70,229,.28)}
+.btn.solid:hover{filter:brightness(1.07)}
+.btn.sm{padding:3px 9px;font-size:11px}
+.btn:disabled{opacity:.45;cursor:default;transform:none}
+.chip-s{display:inline-flex;align-items:center;gap:3px;background:#e0e7ff;color:#3730a3;border-radius:999px;padding:2px 10px;font-size:11.5px;font-weight:800}
+.chip-s.ok{background:#d1fae5;color:#065f46}
+.chip{display:inline-block;background:#eef2ff;color:#4338ca;border:1px solid #c7d2fe;border-radius:999px;padding:2px 11px;font-size:12px;font-weight:700}
+.muted{color:var(--mut);font-size:12px}
+.note{font-size:12.5px;background:#f5f3ff;border-left:3px solid #8b5cf6;border-radius:8px;padding:6px 10px;margin:6px 0;line-height:1.5}
+.note.am{background:var(--ambg);border-color:#f59e0b}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:0 3px 12px rgba(67,56,202,.06)}
+.card h3{font-size:14px;color:#312e81;margin-bottom:6px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+mark{background:#fde68a;color:#78350f;border-radius:4px;padding:0 3px;font-weight:800;box-shadow:inset 0 -2px 0 #f59e0b}
+u{text-decoration-thickness:2px;text-underline-offset:2px;text-decoration-color:#e11d48}
+.spk{border:none;background:#eef2ff;border-radius:7px;cursor:pointer;font-size:11px;padding:2px 6px;vertical-align:middle}
+.spk:hover{background:#c7d2fe}
+.ph{font-family:var(--ph)}
+details.tr{margin-top:8px;background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:12.5px;line-height:1.6}
+details.tr summary{cursor:pointer;color:var(--p);font-weight:700}
+details.tr p{margin-top:5px;color:#374151}
+.kw{background:linear-gradient(transparent 55%,#fde68a 55%);font-weight:700;cursor:help}
+.passage{font-size:13.5px;line-height:1.75;background:#fffdf5;border:1px solid #fde68a;border-radius:12px;padding:11px 14px;color:#1f2937}
+.colh{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#7c3aed;margin:2px 0 6px}
+.split>div{overflow:auto;height:100%;padding:0 2px 6px 0}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+/* coming soon */
+.soonbox{height:100%;min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px;color:var(--mut)}
+.soonbox .big{font-size:54px;animation:float 3s ease-in-out infinite}
+.soonbox b{font-size:18px;color:#312e81}
+.soonbox span{font-size:13px;max-width:380px;line-height:1.5}
+@keyframes float{50%{transform:translateY(-8px)}}
+
+/* vocabulary */
+.tools{display:flex;gap:8px;align-items:center;margin-bottom:9px}
+.search{flex:1;border:1.5px solid #d6dafc;border-radius:10px;padding:7px 12px;font-size:12.5px;outline:none;background:#fff}
+.search:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.vrow{display:grid;grid-template-columns:42px 34% 1fr;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:8px 12px;margin-bottom:7px;transition:.15s}
+.vrow:hover{border-color:#a5b4fc;box-shadow:0 5px 16px rgba(99,102,241,.14);transform:translateX(2px)}
+.vem{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#eef2ff,#faf5ff);display:flex;align-items:center;justify-content:center;font-size:22px}
+.vw{font-size:16px;font-weight:800;color:#312e81;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.pos{font-size:10.5px;font-style:italic;font-weight:800;border-radius:999px;padding:1px 8px}
+.pos-n{background:#dbeafe;color:#1d4ed8}.pos-v{background:#dcfce7;color:#15803d}.pos-adj{background:#ffedd5;color:#c2410c}.pos-idiom{background:#f3e8ff;color:#7e22ce}.pos-phr{background:#e0f2fe;color:#0369a1}
+.vp{font-family:var(--ph);font-size:12.5px;color:var(--mut);margin-top:2px}
+.vm{font-size:14px;font-weight:800;color:var(--ok)}
+.ven{font-size:12.8px;line-height:1.5;margin-top:2px}
+.vvi{font-size:12px;color:var(--mut);font-style:italic}
+.hide-mean .vm:not(.rev),.hide-mean .vvi:not(.rev){filter:blur(6px);cursor:pointer;user-select:none}
+.fcwrap{max-width:620px;margin:0 auto}
+.fcnav{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
+.fcdots{display:flex;gap:3px;flex-wrap:wrap;justify-content:center;margin-bottom:8px}
+.fcdots i{width:9px;height:9px;border-radius:50%;background:#e0e7ff}
+.fcdots i.k{background:#34d399}.fcdots i.cur{background:#6366f1;transform:scale(1.35)}
+.fcard{min-height:176px;border-radius:20px;background:linear-gradient(135deg,#eef2ff,#faf5ff);border:2px solid #c7d2fe;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px 24px;cursor:pointer;gap:6px;transition:.2s;box-shadow:0 10px 26px rgba(99,102,241,.14)}
+.fcard.back{background:linear-gradient(135deg,#ecfdf5,#f0fdfa);border-color:#6ee7b7}
+.fcard:hover{transform:translateY(-2px)}
+.fc-em{font-size:34px}.fc-w{font-size:30px;font-weight:900;color:#312e81}
+.fc-p{font-family:var(--ph);font-size:16px;color:var(--mut)}
+.fc-hint{font-size:11px;color:#9ca3af;margin-top:4px}
+.fc-m{font-size:24px;font-weight:900;color:var(--ok)}
+.fc-e{font-size:14px;line-height:1.5}.fc-v{font-size:12.5px;color:var(--mut);font-style:italic}
+.fcbtns{display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+
+/* match game */
+.mg-top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:8px 28px}
+.mc{border:2px solid #d6dafc;background:#fff;border-radius:12px;padding:9px 12px;font-size:13.5px;font-weight:700;cursor:pointer;text-align:left;transition:.15s;min-height:40px;color:#312e81}
+.mc:hover:not(.lock){border-color:#6366f1;background:#eef2ff;transform:scale(1.015)}
+.mc.sel{border-color:#4f46e5;background:#e0e7ff;box-shadow:0 0 0 3px rgba(79,70,229,.2)}
+.mc.lock{background:var(--okbg);border-color:#6ee7b7;color:#065f46;cursor:default;animation:pop .35s}
+.mc.err{border-color:#f87171;background:var(--badbg);animation:shake .4s}
+.mc.vi{font-weight:600;color:#374151}
+@keyframes pop{50%{transform:scale(1.05)}}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* quiz */
+.qz-top{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.qz-title{font-size:13.5px;font-weight:800;color:#312e81;flex:1}
+.qz-bar{height:6px;background:#e0e7ff;border-radius:8px;overflow:hidden;margin-bottom:10px}
+.qz-bar i{display:block;height:100%;background:linear-gradient(90deg,#6366f1,#c026d3);border-radius:8px;transition:width .4s}
+.qz-main{display:grid;grid-template-columns:1.08fr 1fr;gap:14px;align-items:start}
+.qz-q{font-size:15px;line-height:1.55;font-weight:600;margin-bottom:10px;color:#1f2937}
+.blank{display:inline-block;min-width:70px;border-bottom:3px dotted #6366f1;margin:0 2px}
+.fillw{display:inline-block;background:#d1fae5;color:#065f46;border-radius:6px;padding:0 7px;font-weight:800}
+.bigw{font-size:30px;font-weight:900;color:#312e81;letter-spacing:.02em;margin:2px 0}
+.qz-opts{display:flex;flex-direction:column;gap:7px}
+.qz-opts.tf{flex-direction:row}.qz-opts.tf .qo{flex:1;justify-content:center}
+.qo{display:flex;align-items:center;gap:10px;text-align:left;border:2px solid #d6dafc;background:#fff;border-radius:12px;padding:8px 12px;font-size:13.5px;cursor:pointer;transition:.15s;color:#1f2937}
+.qo b{width:24px;height:24px;border-radius:8px;background:#e0e7ff;color:#3730a3;display:flex;align-items:center;justify-content:center;font-size:12px;flex:none}
+.qo:hover:not(.lock){border-color:#6366f1;background:#f5f6ff;transform:translateX(3px)}
+.qo.lock{cursor:default}
+.qo.ok{border-color:#34d399;background:var(--okbg);color:#064e3b;font-weight:700;animation:pop .35s}
+.qo.ok b{background:#10b981;color:#fff}
+.qo.bad{border-color:#f87171;background:var(--badbg);color:#7f1d1d;animation:shake .4s}
+.qo.bad b{background:#ef4444;color:#fff}
+.fb{border-radius:14px;padding:10px 12px;font-size:12.8px;line-height:1.55;max-height:270px;overflow:auto;position:sticky;top:0}
+.fb.idle{background:#f8faff;border:2px dashed #c7d2fe;text-align:center;color:var(--mut);padding:26px 14px}
+.fb.idle .idle-i{font-size:30px}
+.fb.ok{background:var(--okbg);border:1.5px solid #6ee7b7}
+.fb.bad{background:var(--badbg);border:1.5px solid #fca5a5}
+.fb-h{font-weight:900;font-size:14px;margin-bottom:5px}
+.fb.ok .fb-h{color:#047857}.fb.bad .fb-h{color:#b91c1c}
+.fb-h small{display:block;font-size:12px;font-weight:600;color:#374151;margin-top:1px}
+.fb-b{color:#1f2937}
+.fb-tr{margin-top:6px;background:rgba(255,255,255,.7);border-radius:8px;padding:5px 8px;color:#374151}
+.fb-note{margin-top:5px;color:#4338ca;font-weight:600}
+.fb-n{margin-top:9px;width:100%}
+table.mt{width:100%;border-collapse:collapse;font-size:12.3px;margin-top:3px}
+table.mt td{padding:2px 5px;border-bottom:1px dashed rgba(0,0,0,.1);vertical-align:top}
+table.mt tr.hit td{background:rgba(16,185,129,.16);font-weight:700}
+.qz-res{text-align:center;padding:6px 0}
+.ring{width:96px;height:96px;border-radius:50%;margin:4px auto 8px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;color:#312e81;background:conic-gradient(#10b981 var(--pct),#e0e7ff 0);position:relative}
+.ring:before{content:"";position:absolute;inset:9px;background:#fff;border-radius:50%}
+.ring span{position:relative}
+.qz-res h3{font-size:18px;color:#312e81}
+.qz-res .acts{display:flex;gap:8px;justify-content:center;margin:10px 0}
+.wl{text-align:left;margin-top:6px}
+.wl details{background:#fff;border:1px solid #fecaca;border-radius:10px;padding:5px 10px;margin-bottom:5px;font-size:12.5px}
+.wl summary{cursor:pointer;font-weight:700;color:#991b1b}
+.wl .fb-b{margin-top:5px}
+.confetti{position:fixed;top:-12px;font-size:18px;z-index:99;pointer-events:none;animation:fall 1.8s ease-in forwards}
+@keyframes fall{to{transform:translateY(500px) rotate(540deg);opacity:0}}
+
+/* fill */
+.fl-top{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.fl-top .t{font-size:13.5px;font-weight:800;color:#312e81;flex:1;min-width:200px}
+.bank{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0;padding:8px 10px;background:#fff;border:2px dashed #c7d2fe;border-radius:12px}
+.bk{border:none;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border-radius:999px;padding:5px 14px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 3px 8px rgba(99,102,241,.3);transition:.15s}
+.bk:hover:not(.used){transform:translateY(-2px)}
+.bk.used{background:#e5e7eb;color:#9ca3af;box-shadow:none;cursor:default;text-decoration:line-through}
+.fx{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px;padding:7px 4px;border-bottom:1px dashed var(--line);font-size:14px;line-height:2}
+.fx .n{width:22px;height:22px;border-radius:50%;background:#e0e7ff;color:#3730a3;font-size:11px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.fi{width:104px;border:none;border-bottom:2.5px dotted #6366f1;background:#f5f6ff;padding:1px 6px;font-size:14px;text-align:center;outline:none;border-radius:6px 6px 0 0;color:#1e1b4b;font-weight:700}
+.fi:focus{background:#e0e7ff;border-bottom-style:solid}
+.fi.good,.slot.good{border-bottom:2.5px solid #10b981;background:var(--okbg);color:#065f46}
+.fi.bad,.slot.bad{border-bottom:2.5px solid #ef4444;background:var(--badbg);color:#991b1b}
+.slot{min-width:104px;border:none;border-bottom:2.5px dotted #6366f1;background:#f5f6ff;padding:1px 8px;font-size:14px;font-weight:800;cursor:pointer;border-radius:6px 6px 0 0;color:#4338ca;height:26px}
+.slot.act{background:#e0e7ff;border-bottom-style:solid;box-shadow:0 0 0 3px rgba(99,102,241,.25)}
+.fxfb{flex-basis:100%;font-size:12.5px;line-height:1.55;border-radius:10px;padding:5px 10px;margin:0 0 2px 28px}
+.fxfb.ok{background:var(--okbg);border-left:3px solid #10b981;color:#064e3b}
+.fxfb.bad{background:var(--badbg);border-left:3px solid #ef4444;color:#7f1d1d}
+.fxfb .tr{display:block;color:#4b5563;font-style:italic}
+
+/* sentence builder */
+.bd-line{min-height:56px;border:2px dashed #a5b4fc;border-radius:14px;background:#fff;padding:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0}
+.bd-line.ok{border-color:#34d399;background:var(--okbg);border-style:solid}
+.bd-line.bad{border-color:#f87171;background:var(--badbg);border-style:solid}
+.bd-pool{display:flex;flex-wrap:wrap;gap:7px;min-height:44px;padding:4px}
+.wd{border:none;background:#fff;border:2px solid #c7d2fe;color:#3730a3;border-radius:10px;padding:5px 12px;font-size:14px;font-weight:700;cursor:pointer;transition:.15s;box-shadow:0 2px 0 #c7d2fe}
+.wd:hover{transform:translateY(-2px);border-color:#6366f1}
+.wd.in{background:#eef2ff}
+.bd-hint{color:#9ca3af;font-size:12.5px}
+
+/* signals */
+.sg{display:flex;flex-wrap:wrap;gap:2px 1px;align-items:center;padding:8px 6px;border-bottom:1px dashed var(--line);font-size:14.5px;line-height:1.9}
+.sg .n{width:22px;height:22px;border-radius:50%;background:#e0e7ff;color:#3730a3;font-size:11px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-right:3px}
+.tok{padding:0 4px;border-radius:7px;cursor:pointer;transition:.12s}
+.tok:hover{background:#e0e7ff}
+.tok.sig{background:#fde68a;color:#78350f;font-weight:800;box-shadow:inset 0 -3px 0 #f59e0b;cursor:default}
+.tok.err{background:#fee2e2;animation:shake .35s}
+.sgnote{margin-left:6px;font-size:11.5px;background:#ede9fe;color:#5b21b6;border-radius:999px;padding:1px 9px;font-weight:700}
+
+/* grammar theory */
+.gc{border-radius:14px;padding:10px 13px;background:#fff;border:1px solid var(--line);border-top:5px solid #6366f1}
+.gc.t2{border-top-color:#db2777}.gc.t3{border-top-color:#0d9488}
+.gc .ic{font-size:24px}.gc h3{font-size:14px;margin:2px 0 4px;color:#312e81}
+.gc p{font-size:12.8px;line-height:1.55}
+.gex{margin-top:6px;background:#f5f3ff;border-radius:9px;padding:6px 9px;font-size:13px;line-height:1.5}
+.gex i{display:block;color:#6b7280;font-size:12px}
+.scale{display:flex;gap:6px;align-items:stretch;margin:6px 0}
+.sc{flex:1;border-radius:11px;padding:7px 4px;text-align:center;color:#fff;font-size:12.5px;font-weight:800;line-height:1.3}
+.sc small{display:block;font-weight:600;font-size:10.5px;opacity:.92}
+.sc.a{background:#4f46e5}.sc.b{background:#6366f1}.sc.c{background:#8b5cf6}.sc.d{background:#a78bfa}.sc.e{background:#c4b5fd;color:#4c1d95}
+.fm{display:inline-block;font-weight:800;color:#3730a3;background:#e0e7ff;border-radius:8px;padding:1px 9px;margin-bottom:3px}
+table.t{width:100%;border-collapse:separate;border-spacing:0;font-size:12.8px;line-height:1.5;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+table.t th{background:linear-gradient(90deg,#eef2ff,#faf5ff);color:#312e81;padding:7px 10px;text-align:left}
+table.t td{padding:7px 10px;border-top:1px solid var(--line);vertical-align:top}
+table.t i{color:#6b7280;display:block;font-size:12px}
+
+/* pronunciation */
+.pcard{border-radius:16px;overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:0 4px 14px rgba(67,56,202,.08)}
+.pcard .ph2{display:flex;align-items:center;gap:10px;padding:9px 13px;color:#fff}
+.pcard.c1 .ph2{background:linear-gradient(90deg,#4f46e5,#7c3aed)}.pcard.c2 .ph2{background:linear-gradient(90deg,#db2777,#f59e0b)}
+.pcard .sym{font-family:var(--ph);font-size:27px;font-weight:700;background:rgba(255,255,255,.22);border-radius:11px;padding:0 11px}
+.pcard .ph2 b{display:block;font-size:13px}.pcard .ph2 small{font-size:11.5px;opacity:.92}
+.pbody{padding:9px 13px 11px}
+.pbody figure{border:1px solid var(--line);border-radius:12px;padding:5px;text-align:center;background:#fff;margin-bottom:8px}
+.pbody figure img{width:100%;height:108px;object-fit:contain}
+.pbody figcaption{font-size:11.5px;color:var(--mut)}
+.how{font-size:12.5px;line-height:1.55;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:6px 10px;margin-bottom:7px}
+.plist{list-style:none}
+.plist li{font-size:13.3px;padding:4px 0;border-bottom:1px dashed var(--line)}
+.plist li:last-child{border:none}
+.pw{font-weight:800;color:#312e81}.pp{font-family:var(--ph);color:var(--mut);font-size:12.5px}
+.pw u,.pp u{color:#be123c}
+.plist i{font-size:11px;color:#7c3aed}
+.pics{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
+.pic{position:relative;border:2px solid var(--line);border-radius:14px;padding:8px 7px 7px;text-align:center;background:#fff;display:flex;flex-direction:column;align-items:center;gap:5px;transition:.2s}
+.pic img{height:64px;max-width:100%;object-fit:contain}
+.pic .pn{position:absolute;top:5px;left:6px;font-size:10.5px;font-weight:900;background:#e0e7ff;color:#3730a3;border-radius:999px;padding:0 7px}
+.pic input{width:100%;padding:4px 6px;border:1.5px solid #c7d2fe;border-radius:8px;font-size:12.5px;text-align:center;outline:none}
+.pic input:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.pic input.good{border-color:#10b981;background:var(--okbg)}.pic input.bad{border-color:#ef4444;background:var(--badbg)}
+.cols{display:flex;gap:5px}
+.cb{font-family:var(--ph);border:1.5px solid #c7d2fe;background:#fff;border-radius:8px;padding:2px 11px;font-size:13px;cursor:pointer;color:#4338ca;font-weight:700}
+.cb.sel{background:#4f46e5;color:#fff;border-color:#4f46e5}
+.pic.okc{background:var(--okbg);border-color:#6ee7b7}
+.pic.egp{background:#f5f3ff;border-color:#c4b5fd}
+.pmsg{font-size:11px;color:var(--mut);min-height:28px;line-height:1.35}
+.pic.okc .pmsg{color:#065f46}
+.tchip{display:inline-block;margin:2px;background:#e0e7ff;color:#3730a3;border-radius:999px;padding:1px 10px;font-size:12px;font-weight:800;animation:pop .35s}
+
+/* speaking / writing */
+.pickrow{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 8px}
+.pk{border:2px solid #d6dafc;background:#fff;border-radius:999px;padding:5px 13px;font-size:12.5px;font-weight:700;cursor:pointer;color:#3730a3;transition:.15s}
+.pk:hover{border-color:#6366f1}.pk.on{background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff;border-color:transparent;box-shadow:0 3px 9px rgba(79,70,229,.3)}
+.out{background:linear-gradient(135deg,#fffbeb,#fef3c7);border:1px solid #fcd34d;border-radius:14px;padding:11px 14px;font-size:14px;line-height:1.7;color:#1f2937}
+.cue{display:flex;gap:8px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 11px;font-size:13px}
+.cue b{color:#7c3aed}
+.ck{display:flex;gap:9px;align-items:center;padding:7px 10px;border:1.5px solid var(--line);border-radius:11px;margin-bottom:6px;background:#fff;cursor:pointer;font-size:13px;transition:.15s}
+.ck:hover{border-color:#a5b4fc}.ck.on{background:var(--okbg);border-color:#6ee7b7}
+.ck .bx{width:20px;height:20px;border-radius:6px;border:2px solid #c7d2fe;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;flex:none}
+.ck.on .bx{background:#10b981;border-color:#10b981}
+.wr{display:flex;flex-wrap:wrap;gap:6px;align-items:flex-start;padding:7px 4px;border-bottom:1px dashed var(--line)}
+.wr .cues{flex-basis:100%;font-size:13px;color:#4338ca;font-weight:700;padding-left:28px}
+.wr input{flex:1;min-width:260px;border:1.5px solid #c7d2fe;border-radius:10px;padding:6px 10px;font-size:13.5px;outline:none}
+.wr input:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.wr input.good{border-color:#10b981;background:var(--okbg)}.wr input.near{border-color:#f59e0b;background:var(--ambg)}
+.wr .n{width:22px;height:22px;border-radius:50%;background:#e0e7ff;color:#3730a3;font-size:11px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-top:5px}
+textarea.ta{width:100%;min-height:110px;border:2px solid #c7d2fe;border-radius:14px;padding:10px 12px;font-size:14px;line-height:1.6;outline:none;resize:vertical}
+textarea.ta:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.wc{display:flex;align-items:center;gap:8px;margin:6px 0}
+.wcbar{flex:1;height:8px;background:#e5e7eb;border-radius:8px;overflow:hidden;position:relative}
+.wcbar i{display:block;height:100%;background:#f59e0b;border-radius:8px;transition:width .2s,background .2s}
+.wcn{font-weight:900;font-size:13px;min-width:92px;text-align:right}
+
+/* listening */
+.player{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#eef2ff,#faf5ff);border:1px solid #c7d2fe;border-radius:16px;padding:12px 14px;margin-bottom:8px}
+.play{width:50px;height:50px;border-radius:50%;border:none;background:linear-gradient(135deg,#4f46e5,#c026d3);color:#fff;font-size:20px;cursor:pointer;box-shadow:0 6px 16px rgba(79,70,229,.4);flex:none}
+.play:hover{transform:scale(1.07)}
+.ss{padding:1px 2px;border-radius:5px;transition:.2s}.ss.now{background:#fde68a}
+.eq{display:flex;gap:3px;align-items:flex-end;height:22px}
+.eq i{width:4px;background:#6366f1;border-radius:3px;height:6px}
+.eq.on i{animation:eq .8s ease-in-out infinite}.eq.on i:nth-child(2){animation-delay:.15s}.eq.on i:nth-child(3){animation-delay:.3s}.eq.on i:nth-child(4){animation-delay:.45s}
+@keyframes eq{50%{height:22px}}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(30,27,75,.55);display:flex;align-items:center;justify-content:center;z-index:50;animation:fade .2s}
+.mbox{width:min(560px,92%);max-height:430px;overflow:auto;background:#fff;border-radius:20px;padding:18px 22px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.mbox h2{color:#312e81;font-size:19px}.mbox .sub{color:var(--mut);font-size:12.5px;margin-bottom:8px}
+.obj{display:flex;gap:10px;align-items:flex-start;padding:6px 0;border-bottom:1px dashed var(--line);font-size:13px;line-height:1.5}
+.obj .oi{font-size:19px}.obj b{color:#4338ca}
+
+@media (max-width:760px){
+  .app{flex-direction:column}.side{width:100%;flex-direction:row;align-items:center;padding:6px 8px;gap:6px;overflow-x:auto}
+  .logo,.prog{display:none}.nav{flex-direction:row;flex:none}.ni{width:auto;flex:none}
+  .grid2,.grid3,.split,.qz-main,.mg{grid-template-columns:1fr}.pics{grid-template-columns:repeat(2,1fr)}.vrow{grid-template-columns:40px 1fr}.vrow .vright{grid-column:1/-1}
+  .body.split{overflow:auto}.split>div{height:auto;overflow:visible}
+}
+
+/* ---- extra styles for Unit 2 / Unit 3 ---- */
+.so-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+.so-col{border:2px dashed #c7d2fe;border-radius:16px;background:#fff;min-height:128px;cursor:pointer;transition:.15s;overflow:hidden}
+.so-col:hover{border-color:#6366f1;background:#f8f9ff}
+.so-h{font-size:19px;font-weight:800;text-align:center;padding:6px;background:linear-gradient(90deg,#eef2ff,#faf5ff);color:#4338ca;border-bottom:1px solid var(--line)}
+.so-b{padding:8px;display:flex;flex-wrap:wrap;gap:6px;min-height:70px}
+.wd.selw{background:#4f46e5;color:#fff;border-color:#4f46e5;box-shadow:0 0 0 3px rgba(79,70,229,.25)}
+.wd.okw{background:#ecfdf5;border-color:#34d399;color:#065f46;box-shadow:0 2px 0 #34d399}
+.wd.badw{background:#fef2f2;border-color:#f87171;color:#991b1b;box-shadow:0 2px 0 #f87171}
+.tg{padding:1px 5px;border-radius:7px}
+.tg.tg0{background:#dbeafe;color:#1e3a8a;font-weight:800;box-shadow:inset 0 -3px 0 #3b82f6}
+.tg.tg1{background:#fce7f3;color:#831843;font-weight:800;box-shadow:0 0 0 2px #ec4899}
+.tg.tgok{outline:2px solid #34d399;outline-offset:1px}
+.tg.tgbad{background:#fee2e2;color:#991b1b;outline:2px dashed #ef4444;outline-offset:1px}
+.tg sup{font-size:9.5px;font-weight:800;margin-left:2px;color:#b91c1c}
+.tgleg{margin-left:6px}.tgleg .tok{cursor:default;margin-right:4px}
+.sg .fxfb{margin-left:0;flex-basis:100%}
+.formula{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;margin:8px 0}
+.formula .fm{margin:0}.formula .cj{background:linear-gradient(90deg,#4f46e5,#c026d3);color:#fff}
+.cj-card{border-radius:14px;padding:9px 13px;background:#fff;border:1px solid var(--line);border-left:6px solid #6366f1;font-size:12.8px;line-height:1.5}
+.cj-card b{font-size:18px;color:#312e81;letter-spacing:.03em}.cj-card small{color:#6b7280;font-weight:700;margin-left:4px}
+.cj-card p{font-weight:700;color:#4338ca;margin:2px 0}.cj-card i{display:block;color:#374151}
+.cj-card.b{border-left-color:#ec4899}.cj-card.c{border-left-color:#10b981}.cj-card.d{border-left-color:#f59e0b}
+.cj-card u{text-decoration-color:#e11d48;font-weight:800}
+.howl{margin:0 0 8px 18px;font-size:12.5px;line-height:1.55;color:#1f2937}
+.figs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
+.figs figure{border:1px solid var(--line);border-radius:10px;padding:3px;background:#fff}.figs img{width:100%;height:78px;object-fit:contain}
+.txt2{font-size:13.5px;line-height:1.7;margin-top:6px;color:#1f2937}
+.gc h3 small{font-size:11px;font-weight:600;margin-left:3px}
+.mc.vi{font-size:12.5px;line-height:1.35}
+
+.gl{list-style:none;font-size:12.8px}
+.gl li{padding:4px 0 4px 12px;border-left:3px solid #c7d2fe;margin:5px 0;line-height:1.45}
+.gl li span{color:#6b7280;font-size:12px}
+
+.fi{width:150px}
+
+.seg{display:inline-block;border-bottom:3px solid #6366f1;border-radius:3px;padding:0 3px;margin:0 1px;background:#eef2ff;position:relative}
+.seg sup{font-size:10px;font-weight:900;color:#fff;background:#4f46e5;border-radius:999px;padding:0 5px;margin-right:3px}
+.dl{display:flex;gap:10px;align-items:flex-start;margin-bottom:7px}
+.dl b{flex:none;min-width:48px;text-align:center;border-radius:999px;background:#e0e7ff;color:#3730a3;padding:2px 8px;font-size:11.5px}
+.dl div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px 10px;font-size:13px;line-height:1.5}
+.dl div i{display:block;color:var(--mut);font-size:12px}
+.dl.r{flex-direction:row-reverse}.dl.r b{background:#fce7f3;color:#9d174d}.dl.r div{background:#fffafc}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px}
+.step{display:flex;gap:8px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px;font-size:12.5px;line-height:1.4}
+.step b{flex:none;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#4f46e5,#c026d3);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px}
+.poll{display:grid;grid-template-columns:1fr auto 26px auto 90px 36px;gap:6px;align-items:center;margin-bottom:6px;font-size:12.5px}
+.pl{font-weight:700;color:#312e81}.pn2{text-align:center}.pbar2{height:10px;background:#e5e7eb;border-radius:8px;overflow:hidden}.pbar2 i{display:block;height:100%;background:linear-gradient(90deg,#6366f1,#c026d3);transition:width .3s}.pp2{font-size:11.5px;color:var(--mut)}
+@media (max-width:760px){.steps{grid-template-columns:1fr 1fr}.poll{grid-template-columns:1fr auto 26px auto}.pbar2,.pp2{display:none}}
+
+.nf{margin-bottom:8px}.nf label{display:block;font-size:12.5px;font-weight:800;color:#312e81;margin-bottom:3px}
+textarea.nta{min-height:0;font-size:13.5px;padding:7px 10px;border-radius:10px}
+.stt{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:4px}
+.mycard{background:linear-gradient(135deg,#fffbeb,#fdf2f8);border:2px solid #fcd34d;border-radius:16px;padding:12px 16px;font-size:13.5px;line-height:1.6;box-shadow:0 8px 20px rgba(217,119,6,.12);transform:rotate(-.4deg)}
+.mycard p{margin:4px 0}.cardh{font-weight:900;font-size:15px;color:#9d174d;margin-bottom:4px}
+.mycard table.t th{width:36%;text-align:left}
+.rt{display:flex;align-items:center;gap:10px;justify-content:space-between;background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px 12px;margin-bottom:6px;flex-wrap:wrap}
+.rtq{font-size:13px;flex:1;min-width:220px}.rtb{display:flex;gap:4px}
+.face{border:2px solid transparent;background:#f3f4ff;border-radius:50%;width:38px;height:38px;font-size:21px;cursor:pointer;transition:.15s;filter:grayscale(.7)}
+.face:hover{transform:scale(1.15);filter:none}.face.on{border-color:#6366f1;background:#e0e7ff;filter:none;transform:scale(1.12)}
+.drawcard{min-height:130px;border-radius:20px;background:linear-gradient(135deg,#eef2ff,#faf5ff);border:2px dashed #a5b4fc;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px 20px;gap:6px;transition:.2s}
+.drawcard.spin{background:linear-gradient(135deg,#fef3c7,#fce7f3);border-style:solid;animation:pop .2s infinite}
+.dc-t{font-size:20px;font-weight:900;color:#312e81;line-height:1.35}.dc-s{font-size:13px;color:#6b7280}
+.timerbox{background:#fff;border:2px solid #c7d2fe;border-radius:18px;padding:12px;text-align:center}
+.tm-l{font-size:12px;font-weight:800;color:#6b7280;text-transform:uppercase;letter-spacing:.06em}.tm-t{font-size:44px;font-weight:900;color:#4338ca;font-variant-numeric:tabular-nums;margin:2px 0 8px}
+.stepsv div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px 10px;margin-bottom:5px;font-size:13px}
+.so-cols .so-h{font-size:14px}
+@media (max-width:760px){.rtq{min-width:100%}}
+
+.shop{display:grid;grid-template-columns:repeat(3,1fr);gap:4px 12px}.shopg{min-width:0}
+.shopi{display:flex;justify-content:space-between;align-items:center;width:100%;gap:6px;border:2px solid #d6dafc;background:#fff;border-radius:10px;padding:4px 9px;margin-bottom:4px;font-size:12.5px;cursor:pointer;text-align:left;transition:.15s;color:#1f2937}
+.shopi b{color:#6b7280;font-size:12px;white-space:nowrap}.shopi:hover:not(.dis):not(:disabled){border-color:#6366f1;background:#f5f6ff}
+.shopi.on{background:#ecfdf5;border-color:#34d399}.shopi.on b{color:#047857}.shopi.dis{opacity:.4;cursor:not-allowed}
+.mrr{display:flex;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 12px;margin-bottom:6px;font-size:13px}
+.mrp{width:48px;height:48px;border-radius:50%;color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;flex:none}
+.bpr{display:flex;gap:8px;align-items:center;margin-bottom:5px}.bpr>span{min-width:96px;font-size:12.5px;font-weight:700;color:#312e81}.bpr .search{max-width:170px}
+@media (max-width:760px){.shop{grid-template-columns:1fr}}
+
+.hintc{display:flex;gap:10px;align-items:center;background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:8px 12px;margin-bottom:6px;font-size:13px;line-height:1.5}
+.hintc b{flex:none;background:#f59e0b;color:#fff;border-radius:999px;padding:1px 9px;font-size:12px}
+.hintc.lock{background:#f3f4f6;border-color:#e5e7eb;color:#9ca3af}.hintc.lock b{background:#9ca3af}
+.poster{text-align:center;padding:10px 4px}.poster .pt{font-size:19px;font-weight:900;color:#065f46;margin:6px 0;line-height:1.4}.poster .pt2{font-size:15px;color:#047857;font-weight:700}.poster .ps{font-size:12px;color:#6b7280;margin-top:6px}
+
+</style>
+<style>.source{background:white;border:1px solid var(--line);border-radius:12px;padding:16px;margin:8px 0;line-height:1.7;font-size:14px}.source p{margin:6px 0}.source table{border-collapse:collapse;width:100%;min-width:480px}.source td{border:1px solid #d6dafc;padding:8px;vertical-align:top}.tablewrap{overflow:auto}.nav{overflow:auto}.side small{display:block;font-size:10px}.studytextarea{width:100%;min-height:160px;padding:14px;border:1px solid #c7d2fe;border-radius:10px;margin:10px 0;font-size:14px}@media(max-width:650px){.side{width:100%}.head,.body{padding-left:10px;padding-right:10px}.qz-main,.grid2{grid-template-columns:1fr}.source{padding:10px}.vrow{grid-template-columns:1fr}.head h1{font-size:16px}}.main{min-height:0}.vrow{grid-template-columns:minmax(0,30%) minmax(0,24%) minmax(0,1fr)}.vrow>div{min-width:0;overflow-wrap:anywhere}@media(max-width:760px){.side{width:100%}.vrow{grid-template-columns:1fr}.nav{overflow:visible}}.source td p{overflow-wrap:anywhere}</style></head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="logo" onclick="showObjectives()" title="Xem mục tiêu bài học">
+      <div class="lg">🎯</div><div><b>UNIT 10</b><small>Sources of Energy</small></div>
+    </div>
+    <nav class="nav" id="nav"></nav>
+    <div class="prog"><div class="pbar"><i id="pbar"></i></div><small id="ptxt"></small></div>
+  </aside>
+  <main class="main">
+    <header class="head"><div class="hi" id="hi"></div><div><h1 id="ttl"></h1><p id="dsc"></p></div></header>
+    <div class="subnav" id="subnav"></div>
+    <div class="body" id="body"></div>
+  </main>
+</div>
+<script>/* ================= utilities ================= */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const normA = s => s.toLowerCase().replace(/[’‘`]/g, "'").replace(/[.,!?;:"“”]/g, '').replace(/\s+/g, ' ').trim();
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const hl = s => s.replace(/\{\{(.+?)\}\}/g, '<mark>$1</mark>');
+const plain = s => s.replace(/\{\{|\}\}/g, '').replace(/<[^>]+>/g, '');
+function say(t, rate) { try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-GB'; u.rate = rate || .9; speechSynthesis.speak(u); } catch (e) {} }
+function sayEl(el) { say(el.dataset.w); }
+const spk = w => `<button class="spk" data-w="${esc(plain(w))}" onclick="sayEl(this)" title="Nghe">🔊</button>`;
+function confetti() {
+  const em = ['🎉', '✨', '⭐', '🎊', '💜', '🌟'];
+  for (let i = 0; i < 22; i++) {
+    const s = document.createElement('span'); s.className = 'confetti'; s.textContent = em[i % em.length];
+    s.style.left = (10 + Math.random() * 80) + '%'; s.style.animationDelay = (Math.random() * .5) + 's'; s.style.fontSize = (14 + Math.random() * 14) + 'px';
+    document.body.appendChild(s); setTimeout(() => s.remove(), 2400);
+  }
+}
+
+/* ================= component registry & progress ================= */
+const COMP = {}, DONE = {};
+function markDone(id, s, t) { DONE[id] = { s, t }; navRender(); }
+function hydrate() { document.querySelectorAll('.comp').forEach(el => { const c = COMP[el.dataset.id]; if (c) c.render(el); }); }
+function rerender(id) { const el = document.querySelector(`.comp[data-id="${id}"]`); if (el) COMP[id].render(el); }
+const slot = id => `<div class="comp" data-id="${id}"></div>`;
+
+/* ================= QUIZ (one question at a time, explanation panel) ================= */
+function fillQ(q, txt) {
+  const parts = txt.split(' - '); let k = 0;
+  return q.replace(/_{3,}/g, () => `<span class="fillw">${parts[Math.min(k++, parts.length - 1)]}</span>`);
+}
+function quiz(id, cfg) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { i: 0, score: 0, sel: null, res: [], fin: false };
+  if (prev) cfg.items = prev.cfg.items; else if (cfg.regen) cfg.items = cfg.regen();
+  COMP[id] = { st, cfg, render: el => qzRender(id, el) };
+  return slot(id);
+}
+function qzRender(id, el) {
+  const { st, cfg } = COMP[id], items = cfg.items, n = items.length;
+  if (st.fin) { el.innerHTML = qzResult(id); return; }
+  const it = items[st.i], L = cfg.labels || ['A', 'B', 'C', 'D'], ans = st.sel !== null, ok = ans && st.sel === it.a;
+  const opts = it.opts.map((o, j) => {
+    let c = 'qo'; if (ans) { c += ' lock'; if (j === it.a) c += ' ok'; else if (j === st.sel) c += ' bad'; }
+    return `<button class="${c}" onclick="qzPick('${id}',${j})"><b>${L[j]}</b><span>${o}</span></button>`;
+  }).join('');
+  const q = ans ? fillQ(it.q, it.opts[it.a]) : it.q.replace(/_{3,}/g, '<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>');
+  const fb = ans
+    ? `<div class="fb ${ok ? 'ok' : 'bad'}"><div class="fb-h">${ok ? '🎉 Chính xác!' : '❌ Chưa đúng'}<small>Đáp án đúng: <b>${L[it.a]}. ${it.opts[it.a]}</b></small></div><div class="fb-b">${it.exp || ''}</div></div>
+       <button class="btn solid fb-n" onclick="qzNext('${id}')">${st.i === n - 1 ? 'Xem kết quả →' : 'Câu tiếp theo →'}</button>`
+    : `<div class="fb idle"><div class="idle-i">💡</div><p>Chọn một đáp án.<br>Giải thích và nghĩa sẽ hiện ở đây.</p></div>`;
+  el.innerHTML = `<div class="qz">
+    <div class="qz-top"><span class="qz-title">${cfg.title}</span><span class="chip-s">Câu ${st.i + 1}/${n}</span><span class="chip-s ok">★ ${st.score}</span></div>
+    <div class="qz-bar"><i style="width:${(st.i + (ans ? 1 : 0)) / n * 100}%"></i></div>
+    ${cfg.note ? `<div class="note">${cfg.note}</div>` : ''}
+    <div class="qz-main"><div><div class="qz-q">${q}</div><div class="qz-opts ${cfg.tf ? 'tf' : ''}">${opts}</div></div><div>${fb}</div></div></div>`;
+}
+function qzPick(id, j) {
+  const { st, cfg } = COMP[id]; if (st.sel !== null) return;
+  st.sel = j; st.res[st.i] = j; if (j === cfg.items[st.i].a) st.score++;
+  rerender(id);
+}
+function qzNext(id) {
+  const { st, cfg } = COMP[id]; st.sel = null; st.i++;
+  if (st.i >= cfg.items.length) { st.fin = true; markDone(id, st.score, cfg.items.length); if (st.score === cfg.items.length) confetti(); }
+  rerender(id);
+}
+function qzRestart(id) {
+  const c = COMP[id]; Object.assign(c.st, { i: 0, score: 0, sel: null, res: [], fin: false });
+  if (c.cfg.regen) c.cfg.items = c.cfg.regen();
+  rerender(id);
+}
+function qzResult(id) {
+  const { st, cfg } = COMP[id], n = cfg.items.length, pct = Math.round(st.score / n * 100), L = cfg.labels || ['A', 'B', 'C', 'D'];
+  const msg = pct === 100 ? 'Xuất sắc! 🏆' : pct >= 80 ? 'Rất tốt! 👏' : pct >= 50 ? 'Khá ổn, cố thêm chút nữa! 💪' : 'Đừng nản, thử lại nhé! 🌱';
+  const wrong = cfg.items.map((it, i) => ({ it, i })).filter(x => st.res[x.i] !== x.it.a);
+  return `<div class="qz-res"><div class="ring" style="--pct:${pct}%"><span>${st.score}/${n}</span></div><h3>${msg}</h3>
+    <p class="muted">${esc(plain(cfg.title))}</p>
+    <div class="acts"><button class="btn solid" onclick="qzRestart('${id}')">↺ Làm lại</button></div>
+    ${wrong.length ? `<div class="wl"><div class="colh">Các câu cần xem lại (${wrong.length})</div>${wrong.map(({ it, i }) => `<details><summary>Câu ${i + 1}: ${fillQ(it.q, it.opts[it.a])}</summary><div class="fb-b">Bạn chọn: <b>${L[st.res[i]]}. ${it.opts[st.res[i]]}</b> · Đáp án: <b>${L[it.a]}. ${it.opts[it.a]}</b><br>${it.exp || ''}</div></details>`).join('')}</div>` : '<p class="muted">Bạn đã trả lời đúng tất cả các câu 🎯</p>'}</div>`;
+}
+document.addEventListener('keydown', e => {
+  if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+  const m = document.querySelector('.comp .qz-main'); if (!m) return;
+  const id = m.closest('.comp').dataset.id, { st, cfg } = COMP[id], k = e.key.toLowerCase();
+  if (st.sel === null) {
+    const labs = (cfg.labels || ['A', 'B', 'C', 'D']).map(x => x.toLowerCase());
+    let j = labs.indexOf(k); if (j < 0) j = ['1', '2', '3', '4'].indexOf(k);
+    if (j >= 0 && j < cfg.items[st.i].opts.length) qzPick(id, j);
+  } else if (['enter', 'arrowright', ' '].includes(k)) { e.preventDefault(); qzNext(id); }
+});
+function meanExp(opts, mean, a, tr, note) {
+  return `<table class="mt">${opts.map((o, j) => `<tr class="${j === a ? 'hit' : ''}"><td>${'ABCD'[j]}. <b>${o}</b></td><td>${mean[j]}</td></tr>`).join('')}</table>${note ? `<p class="fb-note">${note}</p>` : ''}${tr ? `<p class="fb-tr">🇻🇳 ${tr}</p>` : ''}`;
+}
+const ruleExp = (rule, tr) => `<p>${rule}</p>${tr ? `<p class="fb-tr">🇻🇳 ${tr}</p>` : ''}`;
+
+/* ================= FILL (typing or tap-to-fill word bank) ================= */
+function fill(id, cfg) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { vals: {}, checked: false, res: [], active: null, score: 0 };
+  COMP[id] = { st, cfg, render: el => flRender(id, el) };
+  return slot(id);
+}
+function flRender(id, el) {
+  const { st, cfg } = COMP[id], bank = cfg.bank, items = cfg.items;
+  const used = Object.values(st.vals);
+  const rows = items.map((it, i) => {
+    let k = 0;
+    const q = it.q.replace(/___/g, () => {
+      const key = i + '-' + k, v = st.vals[key] || '', kk = k++;
+      const cls = st.checked ? (st.res[i] && st.res[i][kk] ? ' good' : ' bad') : '';
+      if (bank) return `<button class="slot${st.active === key ? ' act' : ''}${cls}" onclick="flSlot('${id}','${key}')">${v || '&nbsp;'}</button>`;
+      return `<input class="fi${cls}" data-key="${key}" value="${esc(v)}" autocomplete="off" spellcheck="false" oninput="COMP['${id}'].st.vals['${key}']=this.value" onkeydown="flKey(event,'${id}')">`;
+    });
+    let fb = '';
+    if (st.checked) {
+      const ok = st.res[i] && st.res[i].every(Boolean);
+      fb = `<div class="fxfb ${ok ? 'ok' : 'bad'}">${ok ? '✓ Đúng.' : '✗ Đáp án: <b>' + it.a.map(x => x.split('/')[0]).join(' … ') + '</b>.'} ${it.exp || ''}${it.tr ? `<span class="tr">🇻🇳 ${it.tr}</span>` : ''}</div>`;
+    }
+    return `<div class="fx"><span class="n">${i + 1}</span><span>${q}</span>${fb}</div>`;
+  }).join('');
+  el.innerHTML = `<div class="fl-top"><span class="t">${cfg.title}</span>
+      <span class="chip-s ok" ${st.checked ? '' : 'style="display:none"'}>★ ${st.score}/${items.length}</span>
+      <button class="btn solid" onclick="flCheck('${id}')">✔ Kiểm tra</button><button class="btn" onclick="flReveal('${id}')">💡 Xem đáp án</button><button class="btn" onclick="flReset('${id}')">↺ Làm lại</button></div>
+    ${cfg.note ? `<div class="note">${cfg.note}</div>` : ''}
+    ${bank ? `<div class="bank">${bank.map(w => `<button class="bk${used.includes(w) ? ' used' : ''}" onclick="flPut('${id}',this.dataset.w)" data-w="${esc(w)}">${w}</button>`).join('')}</div>` : ''}
+    ${rows}`;
+}
+function flKey(e, id) {
+  if (e.key !== 'Enter') return;
+  const ins = [...document.querySelectorAll(`.comp[data-id="${id}"] input.fi`)], i = ins.indexOf(e.target);
+  if (i < ins.length - 1) ins[i + 1].focus(); else flCheck(id);
+}
+function flSlot(id, key) {
+  const { st } = COMP[id]; if (st.checked) return;
+  if (st.vals[key]) { delete st.vals[key]; st.active = key; } else st.active = st.active === key ? null : key;
+  rerender(id);
+}
+function flPut(id, w) {
+  const { st, cfg } = COMP[id]; if (st.checked || Object.values(st.vals).includes(w)) return;
+  let key = st.active;
+  if (!key || st.vals[key]) { key = null; cfg.items.forEach((it, i) => it.a.forEach((_, k) => { const kk = i + '-' + k; if (!key && !st.vals[kk]) key = kk; })); }
+  if (!key) return;
+  st.vals[key] = w; st.active = null;
+  let nx = null; cfg.items.forEach((it, i) => it.a.forEach((_, k) => { const kk = i + '-' + k; if (!nx && !st.vals[kk]) nx = kk; }));
+  st.active = nx; rerender(id);
+}
+function flCheck(id) {
+  const { st, cfg } = COMP[id]; let s = 0;
+  st.res = cfg.items.map((it, i) => it.a.map((a, k) => a.split('/').map(normA).includes(normA(st.vals[i + '-' + k] || ''))));
+  cfg.items.forEach((it, i) => { if (st.res[i].every(Boolean)) s++; });
+  st.score = s; st.checked = true; st.active = null; markDone(id, s, cfg.items.length);
+  if (s === cfg.items.length) confetti(); rerender(id);
+}
+function flReveal(id) {
+  const { st, cfg } = COMP[id];
+  cfg.items.forEach((it, i) => it.a.forEach((a, k) => { st.vals[i + '-' + k] = a.split('/')[0]; })); flCheck(id);
+}
+function flReset(id) { const { st } = COMP[id]; Object.assign(st, { vals: {}, checked: false, res: [], active: null, score: 0 }); rerender(id); }
+
+/* ================= SENTENCE BUILDER ================= */
+function builder(id, cfg) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { i: 0, score: 0, fin: false, checked: false, ok: false, placed: [], pool: null };
+  if (!st.pool) st.pool = bdShuffle(cfg.items[0].w);
+  COMP[id] = { st, cfg, render: el => bdRender(id, el) };
+  return slot(id);
+}
+function bdShuffle(w) { let p, tries = 0; do { p = shuffle(w.map((x, i) => i)); tries++; } while (p.join() === w.map((x, i) => i).join() && tries < 9); return p; }
+function bdRender(id, el) {
+  const { st, cfg } = COMP[id], items = cfg.items, n = items.length;
+  if (st.fin) { el.innerHTML = `<div class="qz-res"><div class="ring" style="--pct:${Math.round(st.score / n * 100)}%"><span>${st.score}/${n}</span></div><h3>${st.score === n ? 'Hoàn hảo! 🏆' : 'Hoàn thành! 👏'}</h3><p class="muted">${esc(cfg.title)}</p><div class="acts"><button class="btn solid" onclick="bdRestart('${id}')">↺ Làm lại</button></div></div>`; return; }
+  const it = items[st.i], words = it.w;
+  const pool = st.pool.filter(x => !st.placed.includes(x));
+  el.innerHTML = `<div class="qz-top"><span class="qz-title">${cfg.title}</span><span class="chip-s">Câu ${st.i + 1}/${n}</span><span class="chip-s ok">★ ${st.score}</span></div>
+    <div class="qz-bar"><i style="width:${(st.i + (st.checked ? 1 : 0)) / n * 100}%"></i></div>
+    <div class="muted">Bấm các từ theo thứ tự để ghép thành câu hoàn chỉnh. Gợi ý nghĩa: <b>${it.vi}</b></div>
+    <div class="bd-line ${st.checked ? (st.ok ? 'ok' : 'bad') : ''}">${st.placed.length ? st.placed.map(x => `<button class="wd in" onclick="bdBack('${id}',${x})">${words[x]}</button>`).join('') : '<span class="bd-hint">Câu của bạn sẽ hiện ở đây…</span>'}</div>
+    <div class="bd-pool">${pool.map(x => `<button class="wd" onclick="bdAdd('${id}',${x})">${words[x]}</button>`).join('')}</div>
+    <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+      ${st.checked ? `<button class="btn solid" onclick="bdNext('${id}')">${st.i === n - 1 ? 'Xem kết quả →' : 'Câu tiếp theo →'}</button>`
+        : `<button class="btn solid" onclick="bdCheck('${id}')" ${st.placed.length ? '' : 'disabled'}>✔ Kiểm tra</button><button class="btn" onclick="bdClear('${id}')">Xóa hết</button>`}
+    </div>
+    ${st.checked ? `<div class="fb ${st.ok ? 'ok' : 'bad'}" style="margin-top:8px;position:static"><div class="fb-h">${st.ok ? '🎉 Chính xác!' : '❌ Chưa đúng'}<small>Câu đúng: <b>${words.join(' ')}</b></small></div><div class="fb-b">${it.exp || ''}<p class="fb-tr">🇻🇳 ${it.vi}</p></div></div>` : ''}`;
+}
+function bdAdd(id, x) { const { st } = COMP[id]; if (st.checked) return; st.placed.push(x); rerender(id); }
+function bdBack(id, x) { const { st } = COMP[id]; if (st.checked) return; st.placed = st.placed.filter(y => y !== x); rerender(id); }
+function bdClear(id) { COMP[id].st.placed = []; rerender(id); }
+function bdCheck(id) {
+  const { st, cfg } = COMP[id], w = cfg.items[st.i].w;
+  st.ok = normA(st.placed.map(x => w[x]).join(' ')) === normA(w.join(' '));
+  if (st.ok) st.score++; st.checked = true; rerender(id);
+}
+function bdNext(id) {
+  const { st, cfg } = COMP[id]; st.i++; st.checked = false; st.placed = [];
+  if (st.i >= cfg.items.length) { st.fin = true; markDone(id, st.score, cfg.items.length); if (st.score === cfg.items.length) confetti(); }
+  else st.pool = bdShuffle(cfg.items[st.i].w);
+  rerender(id);
+}
+function bdRestart(id) { const { st, cfg } = COMP[id]; Object.assign(st, { i: 0, score: 0, fin: false, checked: false, placed: [], pool: bdShuffle(cfg.items[0].w) }); rerender(id); }
+
+/* ================= MATCH GAME ================= */
+function matchGame(id, pool) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { round: null, sel: null, done: [], moves: 0, err: null, rounds: 0 };
+  if (!st.round) matchNew(st, pool);
+  COMP[id] = { st, pool, render: el => mgRender(id, el) };
+  return slot(id);
+}
+function matchNew(st, pool) { const r = shuffle(pool).slice(0, 6); st.round = { L: r, R: shuffle(r) }; st.sel = null; st.done = []; st.moves = 0; st.err = null; }
+function mgRender(id, el) {
+  const { st } = COMP[id], { L, R } = st.round, fin = st.done.length === L.length;
+  const left = L.map((v, i) => `<button class="mc ${st.done.includes(v.w) ? 'lock' : ''} ${st.sel && st.sel.side === 'L' && st.sel.w === v.w ? 'sel' : ''} ${st.err && st.err.includes('L:' + v.w) ? 'err' : ''}" onclick="mgPick('${id}','L',this.dataset.w)" data-w="${esc(v.w)}">${v.em || ''} ${v.w}</button>`);
+  const right = R.map(v => `<button class="mc vi ${st.done.includes(v.w) ? 'lock' : ''} ${st.sel && st.sel.side === 'R' && st.sel.w === v.w ? 'sel' : ''} ${st.err && st.err.includes('R:' + v.w) ? 'err' : ''}" onclick="mgPick('${id}','R',this.dataset.w)" data-w="${esc(v.w)}">${v.vi}</button>`);
+  el.innerHTML = `<div class="mg-top"><b style="color:#312e81;font-size:13.5px;flex:1">Ghép mỗi từ tiếng Anh với nghĩa tiếng Việt đúng</b><span class="chip-s">Ghép đúng ${st.done.length}/${L.length}</span><span class="chip-s">Lượt: ${st.moves}</span><button class="btn" onclick="mgNew('${id}')">🔀 Vòng mới</button></div>
+    <div class="mg">${L.map((_, i) => left[i] + right[i]).join('')}</div>
+    ${fin ? `<div class="note" style="margin-top:10px;background:#ecfdf5;border-color:#10b981">🎉 Hoàn thành sau <b>${st.moves}</b> lượt! Bấm “Vòng mới” để chơi với 6 từ khác.</div>` : ''}`;
+}
+function mgPick(id, side, w) {
+  const { st } = COMP[id]; if (st.done.includes(w) || st.err) return;
+  if (!st.sel || st.sel.side === side) { st.sel = { side, w }; rerender(id); return; }
+  st.moves++; const a = st.sel; st.sel = null;
+  if (a.w === w) { st.done.push(w); if (st.done.length === st.round.L.length) { markDone(id, st.round.L.length, st.moves); confetti(); } rerender(id); }
+  else { st.err = [`${a.side}:${a.w}`, `${side}:${w}`]; rerender(id); setTimeout(() => { st.err = null; rerender(id); }, 520); }
+}
+function mgNew(id) { const c = COMP[id]; matchNew(c.st, c.pool); rerender(id); }
+
+/* ================= SIGNAL FINDER (grammar) ================= */
+function signals(id, items) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { found: {}, wrong: {}, err: null };
+  COMP[id] = { st, items, render: el => sgRender(id, el) };
+  return slot(id);
+}
+function sgIdx(it) {
+  const toks = it.w.split(' '), ph = it.t.split(' ').map(normA), cl = toks.map(normA);
+  for (let i = 0; i < toks.length; i++) { if (ph.every((p, k) => cl[i + k] === p)) return [i, i + ph.length - 1]; }
+  return [0, 0];
+}
+function sgRender(id, el) {
+  const { st, items } = COMP[id], n = items.length, nf = Object.keys(st.found).length;
+  el.innerHTML = `<div class="fl-top"><span class="t">Tìm dấu hiệu nhận biết thì hiện tại đơn trong mỗi câu</span><span class="chip-s ok">Đã tìm ${nf}/${n}</span><button class="btn" onclick="sgReset('${id}')">↺ Làm lại</button></div>
+    ${items.map((it, i) => {
+      const [a, b] = sgIdx(it), found = st.found[i];
+      return `<div class="sg"><span class="n">${i + 1}</span>${it.w.split(' ').map((t, k) => `<span class="tok ${found && k >= a && k <= b ? 'sig' : ''} ${st.err === i + '-' + k ? 'err' : ''}" onclick="sgPick('${id}',${i},${k})">${t}</span>`).join('')}${found ? `<span class="sgnote">✓ ${it.note}</span>` : ''}</div>`;
+    }).join('')}
+    ${nf === n ? `<div class="note" style="background:#ecfdf5;border-color:#10b981">🎉 Bạn đã tìm đủ! Số câu tìm đúng ngay lần đầu: <b>${n - Object.keys(st.wrong).length}/${n}</b></div>` : ''}`;
+}
+function sgPick(id, i, k) {
+  const { st, items } = COMP[id]; if (st.found[i]) return;
+  const [a, b] = sgIdx(items[i]);
+  if (k >= a && k <= b) { st.found[i] = true; if (Object.keys(st.found).length === items.length) { markDone(id, items.length - Object.keys(st.wrong).length, items.length); confetti(); } rerender(id); }
+  else { st.wrong[i] = true; st.err = i + '-' + k; rerender(id); setTimeout(() => { st.err = null; rerender(id); }, 400); }
+}
+function sgReset(id) { Object.assign(COMP[id].st, { found: {}, wrong: {}, err: null }); rerender(id); }
+
+/* ================= PICTURES (pronunciation, exercise 1) ================= */
+function pics(id, items, example) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { v: [], c: [], ok: [], msg: [] };
+  COMP[id] = { st, items, example, render: el => pcRender(id, el) };
+  return slot(id);
+}
+function pcRender(id, el) {
+  const { st, items, example } = COMP[id], nOk = st.ok.filter(Boolean).length;
+  const col = c => items.map((p, i) => st.ok[i] && p.c === c ? `<span class="tchip">${p.w}</span>` : '').join('');
+  el.innerHTML = `<div class="fl-top"><span class="t">Viết từ dưới mỗi hình, rồi chọn cột âm đúng</span><span class="chip-s ok">★ ${nOk}/${items.length}</span>
+      <button class="btn solid" onclick="pcCheckAll('${id}')">✔ Kiểm tra tất cả</button><button class="btn" onclick="pcReveal('${id}')">💡 Đáp án</button><button class="btn" onclick="pcReset('${id}')">↺ Làm lại</button></div>
+    <div class="pics"><div class="pic egp"><span class="pn">Ví dụ</span><img src="${example.img}" alt=""><b style="color:#6d28d9;font-size:13px">${example.w}</b><span class="ph" style="font-size:13px">/ə/ ✓</span></div>
+    ${items.map((p, i) => `<div class="pic ${st.ok[i] ? 'okc' : ''}"><span class="pn">${i + 1}</span><img src="${p.img}" alt="">
+      <input class="${st.ok[i] ? 'good' : (st.msg[i] && st.msg[i][0] === '✗' && st.msg[i].includes('từ') ? 'bad' : '')}" value="${esc(st.v[i] || '')}" placeholder="Gõ từ…" autocomplete="off" spellcheck="false" ${st.ok[i] ? 'readonly' : ''} oninput="COMP['${id}'].st.v[${i}]=this.value" onkeydown="if(event.key==='Enter')pcCheck('${id}',${i},true)">
+      <div class="cols"><button class="cb ${st.c[i] === 'a' ? 'sel' : ''}" onclick="pcCol('${id}',${i},'a')">/ə/</button><button class="cb ${st.c[i] === '3' ? 'sel' : ''}" onclick="pcCol('${id}',${i},'3')">/ɜː/</button></div>
+      <div class="pmsg">${st.ok[i] ? `✓ <b>${p.w}</b> <span class="ph">${p.p}</span><br>${p.vi}` : (st.msg[i] || '')}</div></div>`).join('')}</div>
+    <table class="t" style="margin-top:10px"><tr><th style="width:50%" class="ph">/ə/</th><th class="ph">/ɜː/</th></tr><tr><td><span class="tchip">${example.w}</span>${col('a')}</td><td>${col('3')}</td></tr></table>`;
+}
+function pcCol(id, i, c) { const { st } = COMP[id]; if (st.ok[i]) return; st.c[i] = c; rerender(id); }
+function pcSave(id) { document.querySelectorAll(`.comp[data-id="${id}"] .pic input`).forEach((inp, i) => { COMP[id].st.v[i] = inp.value; }); }
+function pcCheck(id, i, rr) {
+  const { st, items } = COMP[id], p = items[i]; if (st.ok[i]) return;
+  const wOk = normA(st.v[i] || '') === p.w, cOk = st.c[i] === p.c;
+  if (wOk && cOk) { st.ok[i] = true; st.msg[i] = ''; } else st.msg[i] = !(st.v[i] || '').trim() && !st.c[i] ? 'Chưa điền' : !wOk ? '✗ Chưa đúng từ' : !st.c[i] ? 'Hãy chọn cột âm' : '✗ Sai cột âm';
+  if (rr) rerender(id); if (st.ok.filter(Boolean).length === items.length) { markDone(id, items.length, items.length); confetti(); }
+}
+function pcCheckAll(id) { COMP[id].items.forEach((_, i) => pcCheck(id, i)); rerender(id); }
+function pcReveal(id) { const { st, items } = COMP[id]; items.forEach((p, i) => { st.v[i] = p.w; st.c[i] = p.c; }); pcCheckAll(id); }
+function pcReset(id) { Object.assign(COMP[id].st, { v: [], c: [], ok: [], msg: [] }); rerender(id); }
+
+/* ================= WRITING I (cue → sentence) ================= */
+function writeSent(id, items) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { v: [], res: [], checked: false };
+  COMP[id] = { st, items, render: el => wsRender(id, el) };
+  return slot(id);
+}
+function wsRender(id, el) {
+  const { st, items } = COMP[id], good = st.res.filter(r => r === 'good').length;
+  el.innerHTML = `<div class="fl-top"><span class="t">Viết câu hoàn chỉnh từ các từ gợi ý (có thể thêm từ)</span><span class="chip-s ok" ${st.checked ? '' : 'style="display:none"'}>★ ${good}/${items.length}</span>
+      <button class="btn solid" onclick="wsCheck('${id}')">✔ Đối chiếu</button><button class="btn" onclick="wsReveal('${id}')">💡 Xem đáp án mẫu</button><button class="btn" onclick="wsReset('${id}')">↺ Làm lại</button></div>
+    ${items.map((it, i) => `<div class="wr"><span class="n">${i + 1}</span><input class="${st.checked ? st.res[i] : ''}" value="${esc(st.v[i] || '')}" placeholder="Viết câu của bạn…" spellcheck="false" oninput="COMP['${id}'].st.v[${i}]=this.value">
+      <div class="cues">${it.c}</div>
+      ${st.checked ? `<div class="fxfb ${st.res[i] === 'good' ? 'ok' : 'bad'}" style="flex-basis:100%;${st.res[i] === 'near' ? 'background:#fffbeb;border-color:#f59e0b;color:#78350f' : ''}">${st.res[i] === 'good' ? '✓ Khớp đáp án mẫu: <b>' + it.a + '</b>' : '↔ Chưa khớp hoàn toàn — nhiều cách viết đều có thể đúng, hãy đối chiếu. Đáp án mẫu: <b>' + it.a + '</b>'}<span class="tr">🇻🇳 ${it.vi}</span></div>` : ''}</div>`).join('')}`;
+}
+function wsCheck(id) {
+  const { st, items } = COMP[id];
+  st.res = items.map((it, i) => normA(st.v[i] || '') === normA(it.a) ? 'good' : 'near'); st.checked = true;
+  markDone(id, st.res.filter(r => r === 'good').length, items.length); rerender(id);
+}
+function wsReveal(id) { const { st, items } = COMP[id]; items.forEach((it, i) => { st.v[i] = it.a; }); wsCheck(id); }
+function wsReset(id) { Object.assign(COMP[id].st, { v: [], res: [], checked: false }); rerender(id); }
+
+/* ================= WRITING II (paragraph with live word counter) ================= */
+const WR2 = { text: '', sample: false };
+function wcUpdate() {
+  const t = document.getElementById('wr2t'); if (!t) return; WR2.text = t.value;
+  const n = (t.value.trim().match(/\S+/g) || []).length, bar = document.getElementById('wcb'), lab = document.getElementById('wcn');
+  const pct = Math.min(100, n / 80 * 100); bar.style.width = pct + '%';
+  const ok = n >= 60 && n <= 80; bar.style.background = ok ? '#10b981' : n > 80 ? '#ef4444' : '#f59e0b';
+  lab.textContent = n + ' từ' + (ok ? ' ✓' : n > 80 ? ' (quá dài)' : n >= 60 ? '' : ' (cần ≥ 60)'); lab.style.color = ok ? '#047857' : n > 80 ? '#b91c1c' : '#b45309';
+  if (ok && !DONE.wr2) markDone('wr2', n, n);
+}
+function wcAdd(txt) { const t = document.getElementById('wr2t'); t.value += (t.value && !/\s$/.test(t.value) ? ' ' : '') + txt; t.focus(); wcUpdate(); }
+
+/* ================= LISTENING PLAYER (browser text-to-speech) ================= */
+const LS = { sents: [], idx: 0, playing: false, rate: 1 };
+function lsPlay(script) {
+  try { speechSynthesis.cancel(); } catch (e) { return; }
+  LS.sents = script.match(/[^.!?]+[.!?]+/g) || [script]; LS.playing = true; lsUi();
+  LS.sents.forEach((s, i) => {
+    const u = new SpeechSynthesisUtterance(s.trim()); u.lang = 'en-GB'; u.rate = LS.rate;
+    u.onstart = () => { LS.idx = i; document.querySelectorAll('.ss').forEach((e, k) => e.classList.toggle('now', k === i)); };
+    if (i === LS.sents.length - 1) u.onend = () => { LS.playing = false; lsUi(); document.querySelectorAll('.ss').forEach(e => e.classList.remove('now')); };
+    speechSynthesis.speak(u);
+  });
+}
+function lsStop() { try { speechSynthesis.cancel(); } catch (e) {} LS.playing = false; lsUi(); document.querySelectorAll('.ss').forEach(e => e.classList.remove('now')); }
+function lsUi() { const b = document.getElementById('lsbtn'), q = document.getElementById('lseq'); if (b) b.textContent = LS.playing ? '⏹' : '▶'; if (q) q.classList.toggle('on', LS.playing); }
+
+/* ================= SHELL: navigation, sections ================= */
+let cur = { s: 0, t: 0 };
+function allEx() { return SECTIONS.flatMap(s => s.ex || []); }
+function navRender() {
+  const total = allEx().length, done = allEx().filter(id => DONE[id]).length;
+  $('#nav').innerHTML = SECTIONS.map((s, i) => {
+    const all = (s.ex || []).length && s.ex.every(id => DONE[id]);
+    return `<button class="ni ${i === cur.s ? 'on' : ''} ${all ? 'done' : ''} ${s.soon ? 'soon' : ''}" onclick="show(${i},0)"><span class="n">${all ? '✓' : i + 1}</span><span class="t">${s.nav || s.title}</span></button>`;
+  }).join('');
+  $('#pbar').style.width = (total ? done / total * 100 : 0) + '%';
+  $('#ptxt').innerHTML = `<span>Hoàn thành</span><b>${done}/${total} bài tập</b>`;
+  const sec = SECTIONS[cur.s]; const tabs = document.querySelectorAll('.stab');
+  sec.subs.forEach((sb, k) => { if (sb.ex && tabs[k]) { const d = sb.ex.every(i => DONE[i]); const old = tabs[k].querySelector('i'); if (d && !old) tabs[k].insertAdjacentHTML('beforeend', '<i>✓</i>'); } });
+}
+function show(s, t) {
+  cur = { s, t: t || 0 };
+  const sec = SECTIONS[s], sub = sec.subs[cur.t];
+  $('#hi').textContent = sec.icon; $('#ttl').textContent = sec.title + (sec.vi ? ' · ' + sec.vi : ''); $('#dsc').textContent = sec.desc;
+  $('#subnav').innerHTML = sec.subs.length > 1 ? sec.subs.map((x, k) => `<button class="stab ${k === cur.t ? 'on' : ''}" onclick="show(${s},${k})">${x.label}${x.ex && x.ex.every(i => DONE[i]) ? '<i>✓</i>' : ''}</button>`).join('') : '';
+  $('#subnav').style.display = sec.subs.length > 1 ? '' : 'none';
+  const b = $('#body'); b.className = 'body' + (sub.split ? ' split' : ''); b.innerHTML = sub.render(); b.scrollTop = 0;
+  hydrate(); if (sub.after) sub.after(); navRender(); try { speechSynthesis.cancel(); } catch (e) {} LS.playing = false;
+}
+function showObjectives() {
+  const o = OBJECTIVES.map(x => `<div class="obj"><span class="oi">${x.i}</span><div><b>${x.t}</b><br>${x.d}</div></div>`).join('');
+  document.body.insertAdjacentHTML('beforeend', `<div class="modal" onclick="if(event.target===this)this.remove()"><div class="mbox"><h2>🎯 Mục tiêu bài học</h2><div class="sub">Unit 10 · Sources of Energy — Sources of Energy</div>${o}<div style="text-align:right;margin-top:12px"><button class="btn solid" onclick="this.closest('.modal').remove()">Bắt đầu học →</button></div></div></div>`);
+}
+
+
+const DATA=[{"title": "Vocabulary · Từ vựng", "icon": "📚", "desc": "Unit 10 · Sources of Energy", "subs": [{"label": "25 từ vựng", "kind": "vocab"}]}, {"title": "Vocabulary practice", "icon": "✏️", "desc": "Unit 10 · Sources of Energy", "subs": [{"id": "v1", "label": "I · Chọn đáp án", "kind": "quiz", "items": [{"q": "Fossil fuel___has increased dramatically in the past few years. ", "opts": ["creation", "consumption", "application", "identification"], "a": 1, "exp": "<p><b>Giải thích</b>:</p><p><b>A</b>. creation <i>(n</i>.): sự tạo ra<b>B</b>. consumption (<i>n</i>.): sự tiêu thụ</p><p><b>C</b>. application (<i>n</i>.): ứng dụng<b>D</b>. identification (<i>n</i>.): sự nhận dạng</p><p>Xét về nghĩa, phương án B phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Fossil fuel consumption has increased dramatically In the past few years. (<i>Sự tiêu thụ nhiên liệu hóa thạch đã gia tăng đáng kể trong vài năm qua.)</i></p>"}, {"q": "We will have to face energy___if we don’t focus on saving it now. ", "opts": ["advantage", "dosage", "leakage", "shortage"], "a": 3, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. advantage (n.): lợi thế<b>B</b>. dosage (n.): liều lượng</p><p><b>C</b>. leakage (n.): sự rò rỉ<b>D</b>. shortage (n.): sự thiếu hụt</p><p>Xét về nghĩa, phương án D phù hợp nhất.</p><p><b>Dịch nghĩa</b>: We will have to face energy shortage If we don’t focus on saving it now. <i>(Chúng ta sẽ phải đối mặt với tình trạng thiếu năng lượng nếu chúng ta không tập trung vào việc tiết kiệm năng lượng ngay bây giờ.)</i></p>"}, {"q": "Scientists have worked hard to find___energy instead of depending too much on fossil fuels. ", "opts": ["alternative", "expensive", "dangerous", "limiting"], "a": 0, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. alternative (adj.): thay thế<b>B</b>. expensive (adj.): đắt đỏ</p><p><b>C</b>. dangerous (adj.): nguy hiểm<b>D</b>. limiting (adj.): hạn chế</p><p>Xét về nghĩa, phương án A phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Scientists have worked hard to find alternative energy instead of depending too much on fossil fuels. (<i>Các nhà khoa học đã làm việc chăm chỉ để tìm ra năng lượng thay thế thay vì quá phụ thuộc vào nhiên liệu hóa thạch.)</i></p>"}, {"q": "More and more money has been___to research on clean energy for the future. ", "opts": ["devoted", "received", "invested", "supplied"], "a": 2, "exp": "<p><b>Giải thích</b>:</p><p><b>A</b>. devoted (v.): cống hiến<b>B</b>. received (v.): nhận</p><p><b>C</b>. invested (v.): đầu tư<b>D</b>. supplied (v):cung cấp</p><p>Xét về nghĩa, phương án c phù hợp nhất.</p><p><b>Dịch nghĩa</b>: More and more money has been invested to research on clean energy for the future. (<i>Ngày càng có nhiều tiền được đầu tư vào nghiên cứu về năng lượng sạch cho tương lai.)</i></p>"}, {"q": "Solar enegry is very clean and considered___and unlimited. ", "opts": ["beautiful", "plentiful", "colourful", "careful"], "a": 1, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. beautiful (<i>adj</i>.): đẹp <b>B</b>. plentiful (<i>adj.</i>): nhiều</p><p><b>C</b>. colourful (<i>adj.</i>): sặc sỡ <b>D</b>. careful (<i>adj.</i>): cẩn thận</p><p>Xét về nghĩa, phương án B phù hợp nhất.</p><p><b>Dịch nghĩa: </b>Solar enegry is very clean and considered plentiful and unlimited. (<i>Năng lượng mặt trời rất sạch và được coi là dồi dào và vô hạn.)</i></p>"}, {"q": "___can be produced right in every household using agricultural waste. ", "opts": ["Coal", "Electricity", "Biogas", "Petroleum"], "a": 2, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. Coal (<i>n</i>.): than đá <b>B</b>. Electricity (<i>n</i>.): điện năng</p><p><b>C</b>. Biogas (<i>n.</i>): khí sinh học <b>D</b>. Petroleum (<i>n</i>.): xăng dầu</p><p>Xét về nghĩa, phương án c phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Biogas can be produced right in every household using agricultural waste. (<i>Khí sinh học có thể được sản xuất ngay trong mỗi hộ gia đình sử dụng chất thải nông nghiệp.)</i></p>"}, {"q": "___is cheap and popular, but burning it emits a lot of co and dust. ", "opts": ["Nuclear power", "Biogas", "Wood", "Coal"], "a": 3, "exp": "<p><b>Giải thích</b>:</p><p><b>A</b>. Nuclear power (<i>n</i>.): năng lượng hạt nhân <b>B</b>. Biogas (<i>n</i>.): khí sinh học</p><p><b>C</b>. Wood (<i>n</i>.): gỗ <b>D</b>. Coal (<i>n</i>.): than đá</p><p>Xét về nghĩa, phương án D phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Coal is cheap and popular, but burning it emits a lot of CO and dust. (<i>Than đá thì rẻ và phổ biến nhưng đốt than thải ra rất nhiều khí CO và bụi.)</i></p>"}, {"q": "Nuclear power is plentiful, but it’s___to use because of radioactive problems. ", "opts": ["simple", "safe", "dangerous", "easy"], "a": 2, "exp": "<p><b>Giải thích</b>:</p><p><b>A</b>. simple (<i>adj</i>.): đơn giản <b>B</b>. safe (<i>adj</i>.): an toàn</p><p><b>C</b>. dangerous (<i>adj</i>.): nguy hiểm <b>D</b>. easy (<i>adj</i>.): dễ dàng</p><p>Xét về nghĩa, phương án c phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Nuclear power is plentiful, but it’s dangerous to use because of radioactive problems. (<i>Năng lượng hạt nhân rất dồi dào, nhưng nó nguy hiểm khi sử dụng do các vấn đề về phóng xạ.)</i></p>"}, {"q": "Wind power is natural and clean. However, its___factor is the expensive investment. ", "opts": ["weak", "limiting", "short", "low"], "a": 1, "exp": "<p><b>Giải thích</b>:</p><p><b>A</b>. weak (<i>adj</i>.): yếu <b>B</b>. limiting (<i>adj.</i>): hạn chế</p><p><b>C</b>. short (<i>adj.</i>): ngắn <b>D</b>. low (<i>adj.</i>): thấp</p><p>Xét về nghĩa, phương án B phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Wind power is natural and clean. However, its limiting factor is the expensive investment. <i>(Năng lượng gió là tự nhiên và sạch. Tuy nhiên, yếu tố hạn chế của nó là đầu tư đắt đỏ.)</i></p>"}, {"q": "What will___fossil fuel when we run out of it one day in the future? ", "opts": ["replace", "consider", "return", "perform"], "a": 0, "exp": "<p><b>Giải thích:</b></p><p><b></b></p><p><b>A</b>. replace (<i>v</i>.): thay thế <b>B</b>. consider (<i>v</i>.): coi như</p><p><b>C</b>. return (<i>v</i>.): trả lại <b>D</b>. perform (<i>v</i>.): trình diễn</p><p>Xét về nghĩa, phương án A phù hợp nhất.</p><p><b>Dịch nghĩa</b>: What will replace fossil fuel when we run out of it one day in the future? (<i>Cái gì sẽ thay thế nhiên liệu hóa thạch khi chúng ta dùng hết nó một ngày nào đó trong tương lai?)</i></p>"}], "before": "<div class=\"note\">I – Choose the best option to complete each of the following sentences.</div>"}, {"id": "v2", "label": "II · Dạng từ", "kind": "fill", "items": [{"q": "___power sources must be controlled strictly. (DANGER)", "a": ["Dangerous"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ “power” nên ta cần một tính từ.</p><p>Tính từ được phái sinh từ danh từ “danger” (sự nguy hiểm) phù hợp với nội dung của câu là “dangerous” (nguy hiểm).</p><p><b>Dịch nghĩa</b>: Dangerous power sources must be controlled strictly. (<i>Nguồn năng lượng nguy hiểm phải được kiểm soát chặt chẽ.)</i></p>"}, {"q": "In general, power___must be controlled to save our environment. (CONSUME)", "a": ["consumption"], "exp": "<p><b>Giải thích</b>: Ta có danh từ ghép: “power consumption”: việc tiêu thụ năng lượng</p><p><b>Dịch nghĩa</b>: In general, power consumption must be controlled to save our environment. <i>(Nói Chung, việc tiêu thụ năng lượng phải được kiểm soát để bảo vệ môi trường của chúng ta.)</i></p>"}, {"q": "Energy exploited from___environment will soon be exhausted. (NATURE)", "a": ["natural"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ “environment” nên ta cần một tính từ.</p><p>Tính từ được phái sinh từ danh từ “nature” (tự nhiên) phù hợp với nội dung của câu là “natural” (thuộc về tự nhiên).</p><p><b>Dịch nghĩa</b>: Energy exploited from natural environment will soon be exhausted. (<i>Năng lượng khai thác từ môi trường tự nhiên sẽ sớm cạn kiệt.)</i></p>"}, {"q": "Earth Hour event is held every year to remind everyone of___saving. (ELECTRIC)", "a": ["electricity"], "exp": "<p><b>Giải thích</b>: Ta có danh từ ghép: “electricity saving”: việc tiết kiệm điện</p><p><b>Dịch nghĩa</b>: Earth Hour event is held every year to remind everyone of electricity saving. (<i>Sự kiện Giờ Trái Đất được tổ chức hàng năm để nhắc nhở mọi người tiết kiệm điện.)</i></p>"}, {"q": "Tidal power is___and totally clean, but is’s difficult to exploit. (PLENTY)", "a": ["plentiful"], "exp": "<p><b>Giải thích</b>: Trước vị trí cần điền là động từ to be “is” nên ta cần một tính từ.</p><p>Tính từ được phái sinh từ danh từ “plenty” (sự phong phú) phù hợp với nội dung của câu là “plentiful” (dồi dào). </p><p><b>Dịch nghĩa</b>: Tidal power is plentiful and totally clean, but is’s difficult to exploit. (<i>Năng lượng thủy triều rất dồi dào và hoàn toàn sạch, nhưng lại rất khó khai thác.)</i></p>"}], "before": "<div class=\"note\">II - Give the correct form of the word in the bracket to complete each of the following sentences.</div>"}, {"id": "v3", "label": "III · Điền từ", "kind": "fill", "items": [{"q": "Some examples of clean___of energy are tidal energy, wave energy and solar enegry.", "a": ["sources"], "exp": "<p><b>Giải thích</b>: Trước vị trí cần điền là tính từ “clean” nên ta cần một danh từ. Dựa vào nghĩa của câu, danh từ “sources” (nguồn) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Some examples of clean sources of energy are tidal energy, wave energy and solar enegry. <i>(Một số ví dụ về các nguồn năng lượng sạch là năng lượng thủy triều, năng lượng sóng và năng lượng mặt trời.)</i></p>"}, {"q": "___panels are often installed on the roof of a house to have solar power.", "a": ["Solar"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ “panels” nên ta cần một tính từ để bổ nghĩa cho danh từ đó. Dựa vào nghĩa của câu, tính từ “solar” (thuộc mặt trời) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Solar panels are often installed on the roof of a house to have solar power. (<i>Các tấm pin mặt trời thường được lắp đặt trên mái nhà để có năng lượng mặt trời.)</i></p>"}, {"q": "___has been used for ages to provide heat for thermoelectricity.", "a": ["Coal"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là động từ được chia ở thì hiện tại hoàn thành dạng bị động “has been used” nên ta cần một danh từ đứng làm chủ ngữ. Dựa vào nghĩa của câu, danh từ “coal” (than đá) là phù hợp nhất. </p><p><b>Dịch nghĩa</b>: Coal has been used for ages to provide heat for thermoelectricity. (<i>Than đá đã được sử dụng từ lâu để cung cấp nhiệt cho nhiệt điện.)</i></p>"}, {"q": "A huge amount of money will be___in building a new hydropower plant.", "a": ["invested"], "exp": "<p><b>Giải thích</b>: Câu bắt đầu bằng chủ ngữ “A huge amount of money” (Một số tiền lớn) và trước vị trí cần điền là động từ to be “will be” nên đây là câu bị động. Do đó, động từ ở dạng quá khứ phân từ “invested” (đầu tư) là phù hợp.</p><p><b>Dịch nghĩa</b>: A huge amount of money will be invested in building a new hydropower plant. (<i>Một số tiền khổng lồ sẽ được đầu tư để xây dựng một nhà máy thủy điện mới.)</i></p>"}, {"q": "A thin thread of metal inside a___produces light when an electric current goes through it.", "a": ["bulb"], "exp": "<p><b>Giải thích</b>: Trước vị trí cần điền là mạo từ “A” nên ta cần một danh từ. Dựa vào nghĩa của câu danh từ “bulb” (bóng đèn) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: A thin thread of metal inside a bulb produces light when an electric current goes through it. <i>(Một sợi kim loại mỏng bên trong bóng đèn tạo ra ánh sáng khi có dòng điện chạy qua nó.)</i></p>"}], "before": "<div class=\"note\">III - Complete the following sentences using the given weirds in the box.</div><div class=\"source\"><p>III - Complete the following sentences using the given weirds in the box.</p><div class=\"tablewrap\"><table><tr><td><p>invested</p></td><td><p>sources</p></td><td><p>coal</p></td></tr><tr><td><p>bulb</p></td><td><p>solar</p></td><td><p>limiting</p></td></tr></table></div><p><i>Eg.: Lack of coal to operate is the__limiting__matter of that thermopower plant.</i></p></div>"}]}, {"title": "Pronunciation · Ngữ âm", "icon": "🎧", "desc": "Unit 10 · Sources of Energy", "subs": [{"label": "Lý thuyết", "html": "<div class=\"source\"><p><b>NGỮ ÂM</b></p><p>Pronunciation</p><p>Đối với các từ có hai âm tiết, dấu (ˈ) được đánh vào trước âm tiết được nhấn trọng âm.</p><div class=\"tablewrap\"><table><tr><td><p><b>TỪ LOẠI</b></p></td><td><p><b>QUY TẮC CHUNG</b></p></td><td><p><b>NGOẠI LỆ</b></p></td></tr><tr><td><p><b>Phần lớn danh từ và tính từ</b></p></td><td><p>Nếu âm tiết thứ hai có chứa âm /ə/, /ɪ/ hoặc /i/ thì trọng âm rơi vào âm tiết thứ nhất.</p></td><td><p>PARadise /ˈpær<u>ə</u>daɪs/ (<i>n</i>.): thiên đường</p><p>PLENtiful /ˈplent<u>ɪ</u>fl/ (<i>adj</i>.): phong phú</p></td></tr><tr><td><p><b></b></p></td><td><p>Nếu âm tiết thứ hai có chứa nguyên âm dài hoặc nguyên âm đôi và âm tiết thứ ba chứa một nguyên âm ngắn thì trọng âm rơi vào âm tiết thứ hai.</p></td><td><p>disAster /dɪˈz<u>ɑː</u>stə(r)/ (<i>n</i>.): thảm hoạ</p><p>aNNOYing /əˈn<u>ɔɪɪ</u>ŋ/ (<i>ad</i>j.): gây khó chịu</p></td></tr><tr><td><p><b>Phần lớn động từ</b></p></td><td><p>Nếu âm tiết thứ ba là nguyên âm dài hoặc nguyên âm đôi, hoặc kết thúc bằng 2 phụ âm trở lên thì trọng âm rơi vào âm tiết thứ nhất.</p></td><td><p>ORganise /ˈɔːɡən<u>aɪ</u>z/ (<i>v</i>.): tổ chức</p><p>Activate /ˈæktɪv<u>eɪ</u>t/ (<i>v</i>.): kích hoạt</p></td></tr><tr><td><p><b></b></p></td><td><p>Nếu âm tiết thứ ba có nguyên âm ngắn và kết thúc bằng 1 phụ âm thì trọng âm rơi vào âm tiết thứ hai.</p></td><td><p>deTERmine /dɪˈtɜːm<u>ɪn</u>/ (<i>v</i>.): xác định</p><p>enCOUNter /ɪnˈkaʊnt<u>ə(r)/</u> <i>(v</i>.): gặp phải</p></td></tr></table></div><p><b></b></p></div>"}, {"id": "p1", "label": "I · Phân loại trọng âm", "kind": "quiz", "items": [{"q": "character", "opts": ["Âm tiết 1", "Âm tiết 2", "Âm tiết 3"], "a": 0, "exp": "Đáp án: Âm tiết 1"}, {"q": "biogas", "opts": ["Âm tiết 1", "Âm tiết 2", "Âm tiết 3"], "a": 0, "exp": "Đáp án: Âm tiết 1"}, {"q": "energy", "opts": ["Âm tiết 1", "Âm tiết 2", "Âm tiết 3"], "a": 0, "exp": "Đáp án: Âm tiết 1"}, {"q": "limiting", "opts": ["Âm tiết 1", "Âm tiết 2", "Âm tiết 3"], "a": 0, "exp": "Đáp án: Âm tiết 1"}, {"q": "plentiful", "opts": ["Âm tiết 1", "Âm tiết 2", "Âm tiết 3"], "a": 0, "exp": "Đáp án: Âm tiết 1"}, {"q": "abundant", "opts": ["Âm tiết 1", "Âm tiết 2", "Âm tiết 3"], "a": 1, "exp": "Đáp án: Âm tiết 2"}, {"q": "consumption", "opts": ["Âm tiết 1", "Âm tiết 2", "Âm tiết 3"], "a": 1, "exp": "Đáp án: Âm tiết 2"}, {"q": "exhausted", "opts": ["Âm tiết 1", "Âm tiết 2", "Âm tiết 3"], "a": 1, "exp": "Đáp án: Âm tiết 2"}, {"q": "performance", "opts": ["Âm tiết 1", "Âm tiết 2", "Âm tiết 3"], "a": 1, "exp": "Đáp án: Âm tiết 2"}, {"q": "disaster", "opts": ["Âm tiết 1", "Âm tiết 2", "Âm tiết 3"], "a": 1, "exp": "Đáp án: Âm tiết 2"}, {"q": "recommend", "opts": ["Âm tiết 1", "Âm tiết 2", "Âm tiết 3"], "a": 2, "exp": "Đáp án: Âm tiết 3"}, {"q": "volunteer", "opts": ["Âm tiết 1", "Âm tiết 2", "Âm tiết 3"], "a": 2, "exp": "Đáp án: Âm tiết 3"}, {"q": "understand", "opts": ["Âm tiết 1", "Âm tiết 2", "Âm tiết 3"], "a": 2, "exp": "Đáp án: Âm tiết 3"}, {"q": "referee", "opts": ["Âm tiết 1", "Âm tiết 2", "Âm tiết 3"], "a": 2, "exp": "Đáp án: Âm tiết 3"}, {"q": "Halloween", "opts": ["Âm tiết 1", "Âm tiết 2", "Âm tiết 3"], "a": 2, "exp": "Đáp án: Âm tiết 3"}], "before": "<div class=\"note\">I - Put the given words in the box to the correct column according to their stress pattern.</div>"}, {"id": "p2", "label": "II · Khác trọng âm", "kind": "quiz", "items": [{"q": "Choose the word with a different stress pattern.", "opts": ["atmosphere", "melody", "carnival", "recommend"], "a": 3, "exp": "<p><b>Giải thích</b>: recommend /ˌrekəˈmend/ có trọng âm nhấn vào âm tiết thứ ba, các phương án còn lại có trọng âm nhấn vào âm tiết thứ nhất.</p><p><b>A</b>.atmosphere /ˈætməsfɪə(r)/ <b>B</b>. melody /ˈmelədi/<b>C</b>. carnival /ˈkɑːnɪvl/</p>"}, {"q": "Choose the word with a different stress pattern.", "opts": ["allergy", "depression", "unusual", "performer"], "a": 0, "exp": "<p><b>Giải thích</b>: allergy /ˈælədʒi/ có trọng âm nhấn vào âm tiết thứ nhất, các phương án còn lại có trọng âm nhấn vào âm tiết thứ hai.</p><p><b>B</b>.depression /dɪˈpreʃn/<b>C.</b> unusual /ʌnˈjuːʒuəl/<b>D</b>. performer /pəˈfɔːmə(r)/</p>"}, {"q": "Choose the word with a different stress pattern.", "opts": ["recipe", "abundant", "celebrate", "limiting"], "a": 1, "exp": "<p><b>Giải thích</b>: abundant /əˈbʌndənt/ có trọng âm nhấn vào âm tiết thứ hai, các phương án còn lại có trọng âm nhấn vào âm tiết thứ nhất.</p><p><b>A</b>. recipe /ˈresəpi/<b>C</b>. celebrate /ˈselɪbreɪt/ <b>D.</b> limiting /ˈlɪmɪtɪŋ/</p>"}, {"q": "Choose the word with a different stress pattern.", "opts": ["reporter", "fantastic", "natural", "delicious"], "a": 2, "exp": "<p><b>Giải thích</b>: natural /ˈnætʃrəl/ có trọng âm nhấn vào âm tiết thứ nhất, các phương án còn lại có trọng âm nhấn vào âm tiết thứ hai.</p><p><b>A</b>. reporter /rɪˈpɔːtə(r)/<b>B</b>. fantastic /fænˈtæstɪk/<b>D</b>. delicious /dɪˈlɪʃəs/</p>"}, {"q": "Choose the word with a different stress pattern.", "opts": ["essential", "memorial", "historic", "volunteer"], "a": 3, "exp": "<p><b>Giải thích</b>: volunteer /ˌvɒlənˈtɪə(r)/ có trọng âm nhấn vào âm tiết thứ ba, các phương án còn lại có trọng âm nhấn vào âm tiết thứ hai.</p><p><b>A</b>. essential /ɪˈsenʃl/<b>B</b>. memorial /məˈmɔːriəl/<b>C</b>. historic /hɪˈstɒrɪk/</p>"}, {"q": "Choose the word with a different stress pattern.", "opts": ["cultural", "exhausted", "seasonal", "dangerous"], "a": 1, "exp": "<p><b>Giải thích</b>: exhausted /ɪɡˈzɔːstɪd/ có trọng âm nhấn vào âm tiết thứ hai, các phương án còn lại có trọng âm nhấn vào âm tiết thứ nhất.</p><p><b>A.</b> cultural /ˈkʌltʃərəl/<b>C</b>. seasonal /ˈsiːzənl/<b>D.</b> dangerous /ˈdeɪndʒərəs/</p>"}, {"q": "Choose the word with a different stress pattern.", "opts": ["recognise", "vehicle", "energy", "consumption"], "a": 3, "exp": "<p><b>Giải thích</b>: consumption /kənˈsʌmpʃn/ có trọng âm nhấn vào âm tiết thứ hai, các phương án còn lại có trọng âm nhấn vào âm tiết thứ nhất.</p><p><b>A</b>.recognise /ˈrekəɡnaɪz/<b>B</b>. vehicle /ˈviːəkl/<b>C</b>. energy /ˈenədʒi/ </p>"}, {"q": "Choose the word with a different stress pattern.", "opts": ["religious", "dangerous", "violent", "triangle"], "a": 0, "exp": "<p><b>Giải thích</b>: religious /rɪˈlɪdʒəs/ có trọng âm nhấn vào âm tiết thứ hai, các phương án còn lại có trọng âm nhấn vào âm tiết thứ nhất.</p><p><b>B</b>.dangerous /ˈdeɪndʒərəs/ <b>C</b>. violent /ˈvaɪələnt/<b>D</b>. triangle /ˈtraɪæŋɡl/</p>"}, {"q": "Choose the word with a different stress pattern.", "opts": ["tricycle", "serious", "abundant", "biogas"], "a": 2, "exp": "<p><b>Giải thích</b>: abundant /əˈbʌndənt/ có trọng âm nhấn vào âm tiết thứ hai, các phương án còn lại có trọng âm nhấn vào âm tiết thứ nhất.</p><p><b>A</b>. tricycle /ˈtraɪsɪkl/<b>B</b>. serious /ˈsɪəriəs/<b>D</b>. biogas /ˈbaɪəʊɡæs/</p>"}, {"q": "Choose the word with a different stress pattern.", "opts": ["illegal", "pagoda", "disaster", "referee"], "a": 3, "exp": "<p><b>Giải thích</b>: referee /ˌrefəˈriː/ có trọng âm nhấn vào âm tiết thứ ba, các phương án còn lại có trọng âm nhấn vào âm tiết thứ hai.</p><p><b>A.</b> illegal /ɪˈliːɡl/<b>B</b>. pagoda /pəˈɡəʊdə/<b>C</b>. disaster /dɪˈzɑːstə(r)/</p>"}, {"q": "Choose the word with a different stress pattern.", "opts": ["exciting", "determine", "gallery", "cathedral"], "a": 2, "exp": "<p><b>Giải thích</b>: gallery /ˈɡæləri/ có trọng âm nhấn vào âm tiết thứ nhất, các phương án còn lại có trọng âm nhấn vào âm tiết thứ hai.</p><p><b>A</b>.exciting /ɪkˈsaɪtɪŋ/  <b>B</b>. determine /dɪˈtɜːmɪn/<b>D</b>. cathedral /kəˈθiːdrəl/ </p>"}, {"q": "Choose the word with a different stress pattern.", "opts": ["adventure", "interview", "firefighter", "barbecue"], "a": 0, "exp": "<p><b>Giải thích</b>: adventure /ədˈventʃə(r)/ có trọng âm nhấn vào âm tiết thứ hai, các phương án còn lại có trọng âm nhấn vào âm tiết thứ nhất.</p><p><b>B</b>.interview /ˈɪntəvjuː/<b>C</b>. firefighter /ˈfaɪəfaɪtə(r)/<b>D</b>. barbecue /ˈbɑːbɪkjuː/</p>"}, {"q": "Choose the word with a different stress pattern.", "opts": ["decorate", "exciting", "apricot", "windsurfing"], "a": 1, "exp": "<p><b>Giải thích</b>: exciting /ɪkˈsaɪtɪŋ/ có trọng âm nhấn vào âm tiết thứ hai, các phương án còn lại có trọng âm nhấn vào âm tiết thứ nhất.</p><p><b>A</b>. decorate /ˈdekəreɪt/<b>C</b>. apricot /ˈeɪprɪkɒt/<b>D</b>. windsurfing /ˈwɪndsɜːfɪŋ/</p>"}, {"q": "Choose the word with a different stress pattern.", "opts": ["graffiti", "department", "entertain", "reporter"], "a": 2, "exp": "<p><b>Giải thích</b>: entertain /ˌentəˈteɪn/ có trọng âm nhấn vào âm tiết thứ ba, các phương án còn lại có trọng âm nhấn vào âm tiết thứ hai.</p><p><b>A</b>. graffiti /ɡrəˈfiːti/<b>B</b>. department /dɪˈpɑːtmənt/ <b>D</b>. reporter /rɪˈpɔːtə(r)/</p>"}, {"q": "Choose the word with a different stress pattern.", "opts": ["limiting", "dishwasher", "microwave", "understand"], "a": 3, "exp": "<p><b>Giải thích</b>: understand /ˌʌndəˈstænd/ có trọng âm nhấn vào âm tiết thứ ba, các phương án còn lại có trọng âm nhấn vào âm tiết thứ nhất.</p><p><b>A</b>. limiting /ˈlɪmɪtɪŋ/<b>B</b>. dishwasher /ˈdɪʃwɒʃə(r)/<b>C</b>. microwave /ˈmaɪkrəweɪv/ </p>"}], "before": "<div class=\"note\">II - Choose the word with a different stress pattern.</div>"}]}, {"title": "Grammar · Ngữ pháp", "icon": "🧩", "desc": "Unit 10 · Sources of Energy", "subs": [{"label": "Lý thuyết", "html": "<div class=\"source\"><p><b>NGỮ PHÁP</b></p><p>Grammar</p><p><b>1. THÌ TƯƠNG LAI TIẾP DIỄN </b>(THE FUTURE CONTINUOUS)</p><p><b>a. Cách dùng</b></p><div class=\"tablewrap\"><table><tr><td><p>Thì tương lai tiếp diễn diễn tả hành động sẽ đang xảy ra tại một thời điểm xác định trong tương lai.</p></td><td><p><b>Ví dụ:</b></p><p>She <b>will be running</b> a marathon at 8 a.m. tomorrow.</p><p>(<i>Cô ấy sẽ đang chạy ma-ra-tông vào 8 giờ sáng mai.)</i></p></td></tr></table></div><p>b. Cấu trúc</p><div class=\"tablewrap\"><table><tr><td><p><b>Dạng khẳng định</b></p><p>(Affirmative form)</p></td><td><p><b>S + will + be + V-ing</b></p></td><td><p>At this time next month, I <b>will be travelling</b> to Paris. <i>(Tôi sẽ đang đi du lịch Paris vào thời điểm này của tháng tới.)</i></p></td></tr><tr><td><p><b>Dạng phủ định </b>(Negative form)</p></td><td><p><b>S + will not + be + V-ing</b></p><p>will not = won’t</p></td><td><p>We <b>won’t be studying</b> English at 4 p.m. this afternoon.</p><p>(<i>Chúng tôi sẽ đang không học tiếng Anh vào 4 giờ chiều nay.)</i></p></td></tr><tr><td><p><b>Dạng nghi vấn</b></p><p>(Interrogative form)</p></td><td><p><b>Will + S + be + V-ing?</b></p></td><td><p><b>Will you be eating</b> with Jane at 7 p.m. tomorrow? (<i>Cậu sẽ đang ăn tối cùng Jane vào lúc 7 giờ tối mai phải không?)</i></p></td></tr><tr><td><p><b>Trả lời câu hỏi </b></p><p><b>Có/ Không</b></p><p>(Yes/ No response)</p></td><td><p><b>Yes, S + will. </b></p><p><b>No, S + won’t</b></p></td><td><p>Yes, I will (<i>Ừ, đúng rồi.)</i></p><p>No, I won’t. (<i>Không phải</i>.)</p></td></tr></table></div><p><b>c. Dấu hiệu nhận biết</b></p><div class=\"tablewrap\"><table><tr><td><div class=\"tablewrap\"><table><tr><td><p><i><b>at</b></i></p></td><td><p><i><b>this time</b></i></p></td><td><p>Mốc thời gian cụ thể trong tương lai</p></td></tr></table></div></td><td><p><b>Ví dụ:</b></p><p>at this time tomorrow/ next week/ next month <i>(vào thời điểm này của ngày mai/ của tuần sau/ tháng sau)</i></p></td></tr><tr><td><div class=\"tablewrap\"><table><tr><td><p><b>at</b></p></td><td><p>giờ</p></td><td><p>Mốc thời gian cụ thể trong tương lai</p></td></tr></table></div></td><td><p><b>Ví dụ:</b></p><p>at 8 p.m. tomorrow, at 5 p.m. this afternoon <i>(vào lúc 8 giờ tối ngày mai, vào lúc 5 giờ chiều nay)</i></p></td></tr></table></div><p><b>d. Phân biệt Tương lai đơn và Tương lai tiếp diễn</b></p><div class=\"tablewrap\"><table><tr><td></td><td><p><b>Thì tương lai đơn</b></p></td><td><p><b>Thì tương lai tiếp diễn</b></p></td></tr><tr><td><p>Dấu hiệu</p></td><td><p>mốc thời gian <b>chung chung</b> trong tương lai</p><p>E.g.: tomorrow, next month</p><p>(ngày mai, tháng sau)</p></td><td><p>mốc thời gian <b>cụ thể</b> trong tương lai</p><p>E.g.: at 8 a.m. tomorrow, at this time next month (vào 8 giờ sáng mai, vào thời điểm này của tháng sau)</p></td></tr><tr><td><p>Ví dụ</p></td><td><p>I <u>will go</u> to hospital <u>tomorrow.</u></p><p>(Tôi sẽ đến bệnh viện vào ngày mai.)</p></td><td><p>I <b>will be going</b> to hospital <u>at 9 a.m. tomorrow.</u> (Tôi sẽ đang đi đến bệnh viện vào lúc 9 giờ sáng mai.)</p></td></tr></table></div><p><b>2. CÂU BỊ ĐỘNG Ở THÌ TƯƠNG LAI ĐƠN</b> (THE FUTURE SIMPLE PASSIVE)</p><p><b>a.Cách dùng</b></p><div class=\"tablewrap\"><table><tr><td><p>Câu bị động được dùng khi chủ thể gây ra hành động đã quá rõ ràng, hiển nhiên</p></td><td><p>Ví dụ:</p><p>Dinner <b>will be served</b> in ten minutes.</p><p>(<i>Bữa tối sẽ được phục vụ sau mười phút nữa.)</i></p></td></tr><tr><td><p>Câu bị động được dùng khi chủ thể gây ra hành động không rõ</p></td><td><p>The girl <b>win be trained</b> to become a doctor. <i>(Cô gái ấy sẽ được đào tạo để trở thành một bác sĩ.)</i></p></td></tr><tr><td><p><b>Chú ý:</b> Nếu chủ thể gây ra hành động vẫn quan trọng, chúng ta có thể thêm “by” + tân ngữ.</p></td><td><p>The room <b>will be cleaned</b> <u>by Mary</u>.</p><p>(<i>Căn phòng ấy sẽ được Mary dọn dẹp.)</i></p></td></tr></table></div><p><b>b. Cấu trúc</b></p><div class=\"tablewrap\"><table><tr><td><p><b>Dạng khẳng định</b></p><p>(Affirmative form)</p></td><td><p><b>S + will + be + p.p</b></p></td><td><p>A new supermarket <b>will be built</b> next month. (<i>Một siêu thị mới sẽ được xây dựng vào tháng sau.)</i></p></td></tr><tr><td><p><b>Dạng phủ định </b>(Negative form)</p></td><td><p><b>S + will not + be + p.p</b></p><p>will not = won’t</p></td><td><p>A new supermarket <b>will not be built</b> next month. (<i>Một siêu thị mới sẽ không được xây dựng vào tháng sau.)</i></p></td></tr><tr><td><p><b>Dạng nghi vấn</b></p><p>(Interrogative form)</p></td><td><p><b>Will + S + be + p.p?</b></p></td><td><p><b>Will</b> a new supermarket <b>be built</b> next month?</p><p>(<i>Một siêu thị mới sẽ được xây dựngvào tháng sau phải không?)</i></p></td></tr><tr><td><p><b>Trả lời câu hỏi </b></p><p><b>Có/ Không</b></p><p>(Yes/ No response)</p></td><td><p><b>Yes, S + will. </b></p><p><b>No, S + won’t</b></p></td><td><p>Yes, it will (<i>Ừ, đúng rồi.)</i></p><p>No, it won’t. (<i>Không phải</i>.)</p></td></tr></table></div><p>c. Cách biến đổi câu chủ động thành bị động thì tương lai đơn</p><div class=\"tablewrap\"><table><tr><td><p><b>CÁC BƯỚC LÀM</b></p></td><td><p><b>VÍ DỤ</b></p><p><b>Câu chủ động</b>: My father will buy a new dishwasher tomorrow. <i>(Bố tôi sẽ mua một máy rửa bát dĩa mới vào ngày mai.)</i></p></td></tr><tr><td><p>1. Xác định các thành phần trong câu: chủ ngữ, động từ, tân ngữ, ...</p></td><td><p><u>My father</u> <u>will buy</u> <u>a new dishwasher</u> <u>tomorrow</u>.</p><p><b>(S)(V)(O)(adv)</b></p></td></tr><tr><td><p>2. Chuyển tân ngữ của câu chủ động về làm chủ ngữ mới trong câu bị động.</p></td><td><p><b>A new dishwasher...</b></p><p>(S - câu bị động)</p></td></tr><tr><td><p>3. Chọn động từ to be tương ứng với thì tương lai đơn là “will be”</p></td><td><p>A new dishwasher <u><b>will be</b></u> ...</p><p>(to be)</p></td></tr><tr><td><p>4. Biến đổi động từ về dạng quá khứ phân từ.</p></td><td><p>A new dishwasher will be <u><b>bought</b></u>...</p><p>(buybought)</p></td></tr><tr><td><p>5. Thêm “by + tân ngữ”, trạng từ chỉ thời gian, địa điểm (nếu cần thiết).</p></td><td><p>A new dishwasher will be bought <u><b>by my father</b></u> <u><b>tomorrow</b></u>.                                           (by + O)</p><p>    (adv)</p><p><b>Câu bị động:</b></p><p>A new dishwasher will be bought <b>by my father tomorrow.</b> (<i>Một máy rửa bát dĩa mới sẽ được bố tôi mua vào ngày mai.)</i></p></td></tr></table></div><p><b></b></p></div>"}]}, {"title": "Grammar practice", "icon": "📝", "desc": "Unit 10 · Sources of Energy", "subs": [{"id": "g1", "label": "I · Chia động từ", "kind": "fill", "items": [{"q": "A new plan___to boost the company’s turnover.", "a": ["will be prepared"], "exp": "<p><b>Giải thích</b>: Câu có chủ ngữ là “A new plan” (kế hoạch mới) nên đây là câu bị động. Dựa vào nghĩa của câu, động từ “prepare” (chuẩn bị) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: A new plan will be prepared to boost the company’s turnover. (<i>Một kế hoạch mới sẽ được chuẩn bị để thúc đẩy doanh thu của công ty.)</i></p>"}, {"q": "Huy___football with friends at 6 p.m. tomorrow afternoon.", "a": ["will be playing"], "exp": "<p><b>Giải thích</b>: Câu có trạng ngữ chỉ thời gian “at 6 p.m. tomorrow afternoon” (vào lúc 6 giờ chiều mai) diễn tả hành động đang xảy ra tạị một thời điểm trong tương lai nên động từ chia ở thì tương lai tiếp diễn. Dựa vào nghĩa của câu, động từ “play” (chơi) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Huy will be playing football with friends at 6 p.m. tomorrow afternoon. (<i>Huy sẽ đang chơi bóng đá với bạn bè lúc 6 giờ chiều mai.)</i></p>"}, {"q": "My mother___dinner when I come home this evening", "a": ["will be cooking"], "exp": "<p><b>Giải thích</b>: Câu có mệnh đề trạng ngữ “when I come home this evening” (khi tôi về nhà tối nay) diễn tả hành động đang xảy ra tại một thời điểm trong tương lai nên động từ chia ở thì tương lai tiếp diễn. Dựa vào nghĩa của câu, động từ “cook” (nấu ăn) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: My mother will be cooking dinner when I come home this evening. (<i>Mẹ tôi sẽ đang nấu bữa tối khi tôi về nhà tối nay.)</i></p>"}, {"q": "The road___to make it safe for vehicles and passengers.", "a": ["will be repaired"], "exp": "<p><b>Giải thích</b>: Câu có chủ ngữ là vật “The road” (Con đường) nên đây là câu bị động. Dựa vào nghĩa của câu, động từ “repair” (sửa chữa) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: The road will be repaired to make it safe for vehicles and passengers. (<i>Con đường sẽ được sửa chữa để đảm bảo an toàn cho phương tiện và hành khách.)</i></p>"}, {"q": "His family___to London at this time tomorrow.", "a": ["will be travelling"], "exp": "<p><b>Giải thích</b>: Câu có trạng ngữ chỉ thời gian “at this time tomorrow” (vào giờ này ngày mai) diễn tả hành động đang xảy ra tại một thời điểm trong tương lai nên động từ chia ở thì tương lai tiếp diễn. Dựa vào nghĩa của câu, động từ “travel” (di chuyển) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: His family will be travelling to London at this time tomorrow<i>. (Gia đình anh ấy sẽ đang trên đường đến Luân Đôn du lịch vào thời điểm này ngày mai.)</i></p>"}, {"q": "He___and fined by the police if he violates traffic rules.", "a": ["will be caught"], "exp": "<p><b>Giải thích</b>: Câu có cụm giới từ “by the police” (bởi cảnh sát) nên đây là câu bị động. Dựa vào nghĩa của câu, động từ “catch” (bắt) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: He will be caught and fined by the police if he violates traffic rules. (<i>Anh ta sẽ bị cảnh sát bắt và phạt nếu vi phạm luật giao thông.)</i></p>"}, {"q": "They___beer together at 5 p.m. tomorrow.", "a": ["will be drinking"], "exp": "<p><b>Giải thích</b>: Câu có trạng ngữ chỉ thời gian “at 5 p.m. tomorrow” (vào 5 giờ chiều ngày mai) diễn tả hành động đang xảy ra tại một thời điểm trong tương lai nên động từ chia ở thì tương lai tiếp diễn. Dựa vào nghĩa của câu, động từ “drink” (uống) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: They will be drinking beer together at 5 p.m. tomorrow. (<i>Họ sẽ đang uống bia cùng nhau lúc 5 giờ chiều ngày mai.)</i></p>"}, {"q": "The castle___to welcome the arrival of the Queen.", "a": ["will be decorated"], "exp": "<p><b>Giải thích</b>: Câu có chủ ngữ là “The castle” (lâu đài) nên đây là câu bị động. Dựa vào nghĩa của câu, động từ “decorate” (trang trí) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: The castle will be decorated to welcome the arrival of the Queen. <i>(Lâu đài sẽ được trang trí để chào đón sự xuất hiện của Nữ hoàng.)</i></p>"}], "before": "<div class=\"note\">I - Complete the following sentences using the verbs given in the box in Future Continuous or Future Simple Passive.</div><div class=\"source\"><p><b>I - Complete the following sentences using the verbs given in the box in Future Continuous or Future Simple Passive.</b></p><div class=\"tablewrap\"><table><tr><td><p>cook</p></td><td><p>drink</p></td><td><p>prepare</p></td><td><p>travel</p></td><td><p>make</p></td></tr><tr><td><p>play</p></td><td><p>decorate</p></td><td><p>repaire</p></td><td><p>catch</p></td><td><p>do</p></td></tr></table></div><p><i>Eg.: All preparation__will be done__to have a successful party.</i></p><p><i>My mother __will be making__a cake at 9 a.m. yesterday.</i></p></div>"}, {"id": "g2", "label": "II · Chọn dạng động từ", "kind": "quiz", "items": [{"q": "The car ___ immediately when you reach the garage.", "opts": ["will repair", "will be repaired"], "a": 1, "exp": "<p><b>Giải thích</b>: Sự vật “The car” (ô tô) chịu tác động của hành động “repair” (sửa) nên động từ được chia ở thể bị động (will be repaired).</p><p><b>Dịch nghĩa</b>: The car will be repaired immediately when you reach the garage. (<i>Chiếc xe sẽ được sửa chữa ngay lập tức khi bạn đến ga-ra.)</i></p>"}, {"q": "The authority ___ the ticket price of the park next month.", "opts": ["will increase", "will be increased"], "a": 0, "exp": "<p><b>Giải thích</b>: “The authority” (Chính quyền) là đối tượng thực hiện hành động “increase” (tăng) nên động từ được chia ở thể chủ động (will increase).</p><p><b>Dịch nghĩa</b>: The authority will increase the ticket price of the park next month. (<i>Chính quyền sẽ tăng giá vé vào công viên vào tháng sau.)</i></p>"}, {"q": "He ___ if his performance is too poor to accept.", "opts": ["will be sacked", "will sack"], "a": 0, "exp": "<p><b>Giải thích</b>: “He” (Anh ấy) là đối tượng chịu tác động của hành động “sack” (sa thải) nên động từ được chia ở thể bị động (will be sacked).</p><p><b>Dịch nghĩa</b>: He will be sacked if his performance is too poor to accept. (<i>Anh ấy sẽ bị sa thải nếu hiệu suất công việc kém đến mức không thể chấp nhận được.)</i></p>"}, {"q": "They ___ about the second World War very attentively.", "opts": ["will be read", "will read"], "a": 1, "exp": "<p><b>Giải thích</b>: “They” (Họ) là đối tượng thực hiện hành động “read” (đọc) nên động từ được chia ở thể chủ động (will read).</p><p><b>Dịch nghĩa</b>: They will read about the second World War very attentively. <i>(Họ sẽ đọc về Thế chiến thứ hai một cách rất chăm chú.)</i></p>"}, {"q": "My old fridge ___ soon to give space to a new and modern one.", "opts": ["will be removed", "will remove"], "a": 0, "exp": "<p><b>Giải thích</b>: Sự vật “My old fridge” (tủ lạnh cũ của tôi) chịu tác động của hành động “remove” (di rời) nên động từ được chia ở thể bị động (will be removed).</p><p><b>Dịch nghĩa</b>: My old fridge will be removed soon to give space to a new and modern one. (<i>Tủ lạnh cũ của tôi sẽ được dí rời sớm để nhường chỗ cho một cái tủ mới và hiện đại.)</i></p>"}, {"q": "I think my son ___ early tonight.", "opts": ["will sleep", "will be slept"], "a": 0, "exp": "<p><b>Giải thích</b>: “My son” (con trai tôi) là đối tượng thực hiện hành động “sleep” (ngủ) nên động từ được chia ở thể chủ động (will sleep).</p><p><b>Dịch nghĩa</b>: I think my son will sleep early tonight. (<i>Tôi nghĩ con trai tôi sẽ đi ngủ sớm tối nay.)</i></p>"}, {"q": "She ___ her homework before going to bed this evening.", "opts": ["will do", "will be done"], "a": 0, "exp": "<p><b>Giải thích</b>: “She” (Cô ấy) là đối tượng thực hiện hành động “do” (làm) nên động từ được chia ở thể chủ động (will do).</p><p><b>Dịch nghĩa:</b> She will do her homework before going to bed this evening. (<i>Cô ấy sẽ làm bài tập về nhà trước khi đi ngủ tối nay.)</i></p>"}, {"q": "Water tank ___ again when there is about 100 litres left.", "opts": ["will be refilled", "will refill"], "a": 0, "exp": "<p><b>Giải thích</b>: Sự vật “Water tank” (Bể nước) chịu tác động của hành động “fill” (làm đầy) nên động từ được chia ở thể bị động (will be refilled).</p><p><b>Dịch nghĩa</b>: Water tank will be refilled again when there is about 100 litres left. (<i>Bể chứa nước sẽ được đổ đầy lại khi còn khoảng 100 lít.)</i></p>"}, {"q": "I think I ___ in Hanoi on Sunday.", "opts": ["will be arrived", "will arrive"], "a": 1, "exp": "<p><b>Giải thích</b>: “I” (Tôi) là đối tượng thực hiện hành động “arrive” (đến) nên động từ được chia ở thể chủ động (will arrive).</p><p><b>Dịch nghĩa</b>: I think I will arrive in Hanoi on Sunday. <i>(Tôi nghĩ tôi sẽ đến Hà Nội vào Chủ nhật.)</i></p>"}, {"q": "Some employees ___ to have many new skills for the job.", "opts": ["will be trained", "will train"], "a": 0, "exp": "<p><b>Giải thích</b>: “Some employees ” (Một số nhân công) chịu tác động của hành động “train” (đào tạo) nên động từ được chia ở thể bị động (will be trained).</p><p><b>Dịch nghĩa</b>: Some employees will be trained to have many new skills for the job. (<i>Một số nhân viên sẽ được đào tạo để có nhiều kỹ năng mới cho công việc.)</i></p>"}], "before": "<div class=\"note\">II - Underline the correct form of the verb m the following sentences.</div>"}, {"id": "g3", "label": "III · Chọn đáp án", "kind": "quiz", "items": [{"q": "I___my lessons when she calls me tomorrow morning. ", "opts": ["revise", "will be revising", "am revising", "will be revised"], "a": 1, "exp": "<p><b>Giải thích</b>: Hành động “tôi ôn bài” đang diễn ra vào thời điểm xác định trong tương lai “when she calls me tomorrow morning” (khi cô ấy gọi cho tôi vào sáng mai) nên động từ “revise” (ôn bài) được chia ở thì tương lai tiếp diễn (will be revising).</p><p><b>Dịch nghĩa</b>: I will be revising my lessons when she calls me tomorrow morning. (<i>Tôi sẽ đang ôn bài lúc cô ấy gọi cho tôi vào sáng mai.)</i></p>"}, {"q": "Another aircraft___to Ciprus to take workers home. ", "opts": ["sent", "has sent", "will be sending", "will be sent"], "a": 3, "exp": "<p><b>Giải thích</b>: Sự vật “Another aircraft” (Máy bay khác) chịu tác động của hành động “send” (gửi) nên động từ phải được chia ở thể bị động. Như vậy chỉ có phương án D là phù hợp nhất với động từ ở thì tương lai đơn thể bị động.</p><p><b>Dịch nghĩa</b>: Another aircraft will be sent to Ciprus to take workers home. <i>(Một chiếc máy bay khác sẽ được gửi đến Síp để đưa công nhân về nhà.)</i></p>"}, {"q": "All the tickets___out this evening. ", "opts": ["will be sold", "will send", "will be sending", "are sending"], "a": 0, "exp": "<p><b>Giải thích</b>: Sự vật “All the tickets” (Tất cả vé) chịu tác động của hành động “sell” (bán) nên động từ được chia ở thể bị động. Như vậy chỉ có phương án A là phù hợp nhất với động từ ở thì tương lai đơn thể bị động.</p><p><b>Dịch nghĩa</b>: All the tickets will be sold out this evening. (<i>Tất cả vé sẽ được bán hết vào tối nay.)</i></p>"}, {"q": "They___in the cinema at 8 p.m. this evening. ", "opts": ["have sat", "sit", "will be sitting", "will be sat"], "a": 2, "exp": "<p><b>Giải thích</b>: Hành động “họ ngồi trong rạp chiếu phim” đang diễn ra vào một thời điểm xác định trong tương lai “at 8 p.m. this evening” (vào 8 giờ tối nay) nên động từ “sít” (ngồi) được chia ở thì tương lai tiếp diễn (will be sitting).</p><p><b>Dịch nghĩa</b>: They will be sitting in the cinema at 8 p.m. this evening. <i>(Họ sẽ đang ngồi trong rạp chiếu phim lúc 8 giờ tối nay.)</i></p>"}, {"q": "The alarm___by him to avoid oversleeping. ", "opts": ["was set", "set", "will set", "will be set"], "a": 3, "exp": "<p><b>Giải thích</b>: Sự vật “The alarm” (Đồng hồ báo thức) chịu tác động của hành động “set” (cài đặt) nên động từ được chia ở thể bị động. Như vậy chỉ có phương án D là phù hợp nhất với động từ ở thì tương lai đơn thể bị động.</p><p><b>Dịch nghĩa</b>: The alarm will be set by him to avoid oversleeping. <i>(Báo thức sẽ được cậu ấy đặt để tránh ngủ quên.)</i></p>"}, {"q": "Mark___a house at this time tomorrow. ", "opts": ["will be drawing", "has been drawing", "will be drawn", "has been drawn"], "a": 0, "exp": "<p><b>Giải thích</b>: Hành động “Mark vẽ một ngôi nhà” đang diễn ra vào một thời điểm xác định trong tương lai “ at this time tomorrow” (vào giờ này ngày mai) nên động từ “draw” (vẽ) được chia ở thì tương lai tiếp diễn (will be drawing).</p><p><b>Dịch nghĩa</b>: Mark will be drawing a house at this time tomorrow. (<i>Mark sẽ đang vẽ một ngôi nhà vào giờ này ngày mai.)</i></p>"}, {"q": "My family___to Warsaw at this time next month. ", "opts": ["flies", "has flown", "will be flying", "will fly"], "a": 2, "exp": "<p><b>Giải thích</b>: Hành động “gia đình tôi bay đến Vác-sa-va” đang diễn ra vào một thời điểm trong tương lai (giờ này tháng sau) nên động từ “fly” (bay) được chia ở thì tương lai tiếp diễn (will be flying)</p><p><b>Dịch nghĩa:</b> My family will be flying to Warsaw at this time next month. (<i>Gia đình tôi sẽ bay đến Vac-xa-va vào giờ này tháng sau.)</i></p>"}, {"q": "Your son___very good environment by a qualified coach. ", "opts": ["trained", "will be trained", "is training", "will be training"], "a": 1, "exp": "<p><b>Giải thích:</b> Dựa vào nghĩa của câu, hơn nữa cuối câu có cụm giới từ “by a qualified coach” (bởi một huấn luyện viên có trình độ) nên đây là câu bị động. Như vậy phương án B là phù hợp nhất với động từ ở thì tương lai đơn thể bị động.</p><p><b>Dịch nghĩa</b>: Your son will be trained in a very good environment by a qualified coach. (<i>Con trai của bạn sẽ được huấn luyện trong một môi trường rất tốt bởi một huấn luyện viên có trình độ.)</i></p>"}, {"q": "All the information___before use. ", "opts": ["will be verifying", "will be verified", "verifies", "is verifying"], "a": 1, "exp": "<p><b>Giải thích</b>: Sự vật “All the information” (Tất cả thông tin) chịu sự tác động của hành động “verify” (xác minh) nên động từ được chia ở thể bị động. Như vậy phương án B là phù hợp nhất với động từ ở thì tương lai đơn thể bị động.</p><p><b>Dịch nghĩa</b>: All the information will be verified before use. (<i>Tất cả các thông tin sẽ được xác minh trước khi sử dụng.)</i></p>"}, {"q": "My class___ Maths when the principal comes next week. ", "opts": ["was studied", "studied", "will be studies", "will be studying"], "a": 3, "exp": "<p><b>Giải thích</b>: Hành động “lớp tôi học môn Toán” đang diễn ra vào một thời điểm xác định trong tương lai “when the principal comes next week” (khi hiệu trưởng đến vào tuần tới) nên động từ “study” (học) được chia ở thì tương lai tiếp diễn (will be studying).</p><p><b>Dịch nghĩa</b>: My class will be studying Maths when the principal comes next week. <i>(Lớp tôi sẽ đang học môn Toán khi hiệu trưởng đến vào tuần tới.)</i></p>"}, {"q": "By the time we reach home, the baby___. ", "opts": ["is sleeping", "will be slept", "slept", "will be sleeping"], "a": 3, "exp": "<p><b>Giải thích:</b> Hành động “em bé ngủ” đang diễn ra vào thời điểm xác định trong tương lai “By the time we reach home” (Vào lúc chúng ta về đến nhà) nên động từ “sleep” (ngủ) được chia ở thì tương lai tiếp diễn (will be sleeping).</p><p><b>Dịch nghĩa</b>: By the time we reach home, the baby will be sleeping. (<i>Khi chúng ta về đến nhà, em bé sẽ đang ngủ.)</i></p>"}, {"q": "The dinner___by her mother. ", "opts": ["will be prepared", "will be preparing", "prepared", "prepares"], "a": 0, "exp": "<p><b>Giải thích</b>: Sự vật “The dinner” (bữa tối) chịu tác động của hành động “prepare” (chuẩn bị) nên động từ được chia ở thể bị động. Như vậy chỉ có phương án A là phù hợp nhất với động từ ở thì tương lai đơn thể bị động.</p><p><b>Dịch nghĩa</b>: The dinner will be prepared by her mother. <i>(Bữa tối sẽ do mẹ cô ấy chuẩn bị.)</i></p>"}, {"q": "The boy___his exercises at 9 o’clock tonight. ", "opts": ["will be done", "has done", "will be doing", "is doing"], "a": 2, "exp": "<p><b>Giải thích</b>: Hành động “cậu bé làm bài tập” đang diễn ra vào một thời điểm xác định trong tương lai “at 9 o’clock tonight” (9 giờ tối nay) nên động từ “do” (làm) được chia ở thì tương lai tiếp diễn (will be doing).</p><p><b>Dịch nghĩa</b>: The boy will be doing his exercises at 9 o’clock tonight. (<i>Cậu bé sẽ đang làm bài tập vào lúc 9 giờ tối nay.)</i></p>"}, {"q": "A nice birthday gift___to you this Sunday evening. ", "opts": ["has given", "will be given", "is giving", "will be giving"], "a": 1, "exp": "<p><b>Giải thích</b>: Sự vật “A nice birthday gift” (Một món quà sinh nhật đẹp) chịu tác động của hành động “give” (tặng) nên động từ phải được chia ở thể bị động. Như vậy chỉ có phương án B là phù hợp nhất với động từ ở thì tương lai đơn thể bị động.</p><p><b>Dịch nghĩa</b>: A nice birthday gift will be given to you this Sunday evening. <i>(Một món quà sinh nhật đẹp sẽ được trao cho bạn vào tối Chủ nhật này.)</i></p>"}, {"q": "Don’t disturb the boss at 3 p.m. He___a meeting then. ", "opts": ["will be attending", "will be attended", "has attended", "attends"], "a": 0, "exp": "<p><b>Giải thích</b>: Hành động “ông ấy tham dự một cuộc họp” đang diễn ra vào một thời điểm xác định trong tương lai “at 3 p.m.” (3 giờ chiều) nên động từ “attend” (tham dự) được chia ở thì tương lai tiếp diễn (will be attending).</p><p><b>Dịch nghĩa</b>: Don’t disturb the boss at 3 p.m. He will be attending a meeting then. (<i>Đừng làm phiền sếp vào 3 giờ chiều. Ông ấy sẽ đang tham dự một cuộc họp vào lúc đó.)</i></p>"}, {"q": "The dishes___later by Tom. ", "opts": ["wash", "will be washed", "have washed", "will be washing"], "a": 1, "exp": "<p><b>Giải thích</b>: Sự vật “The dishes” (Bát đĩa) chịu tác động của hành động “wash” (rửa) nên động từ phải được chia ở thể bị động. Như vậy chỉ có phương án B là phù hợp nhất với động từ ở thì tương lai đơn thể bị động. </p><p><b>Dịch nghĩa: </b>The dishes will be washed later by Tom. (<i>Bát đĩa sẽ được Tom rửa sau</i>.)</p>"}, {"q": "Mary___her homework at 8 p.m. tomorrow. ", "opts": ["does", "will be done", "did", "will be doing"], "a": 3, "exp": "<p><b>Giải thích</b>: Hành động “Mary làm bài tập về nhà” đang diễn ra vào một thời điểm xác định trong tương lai “at 8 p.m. tomorrow” (8 giờ tối mai) nên động từ “do” (làm) được chia ở thì tương lai tiếp diễn (will be doing).</p><p><b>Dịch nghĩa</b>: Mary will be doing her homework at 8 p.m. tomorrow. (<i>Mary sẽ đang làm bài tập về nhà lúc 8 giờ tối mai.)</i></p>"}, {"q": "The goods___to you if you can’t come to collect it. ", "opts": ["is delivered", "has been delivered", "will be delivered", "will be delivering"], "a": 2, "exp": "<p><b>Giải thích</b>: Sự vật “The goods” (Hàng hóa) chịu tác động của hành động “delivered” (giao phát) nên động từ phải được chia ở thể bị động. Như vậy chỉ có phương án C là phù hợp nhất với động từ ở thì tương lai đơn thể bị động.</p><p><b>Dịch nghĩa</b>: The goods will be delivered to you if you can’t come to collect it. (<i>Hàng hóa sẽ được giao cho bạn nếu bạn không thể đến lấy.)</i></p>"}, {"q": "He___football when I come this weekend. ", "opts": ["is played", "will be playing", "played", "will be played"], "a": 1, "exp": "<p><b>Giải thích</b>: Hành động “Anh ấy chơi bóng đá” đang diễn ra vào một thời điểm xác định trong tương lai trong tương lai “when I come this weekend” (khi tôi đến vào cuối tuần này) nên động từ “play” (chơi) được chia ở thì tương lai tiếp diễn (will be playing).</p><p><b>Dịch nghĩa:</b> He will be playing football when I come this weekend. (<i>Anh ấy sẽ đang chơi bóng đá khi tôi đến vào cuối tuần này.)</i></p>"}, {"q": "Trees along this road___down tomorrow afternoon. ", "opts": ["has cut", "has been cut", "will be cutting", "will be cut"], "a": 3, "exp": "<p><b>Giải thích</b>: Sự vật “Trees” (Cây CỐI) chịu tác động của hành động “cut down” (đốn hạ) nên động từ phải được chia ở thể bị động. Như vậy chỉ có phương án D là phù hợp nhất với động từ ở thì tương lai đơn thể bị động. </p><p><b>Dịch nghĩa</b>: Trees along this road will be cut down tomorrow afternoon. (<i>Cây cối dọc con đường này sẽ bị đốn hạ vào chiều mai.)</i></p>"}], "before": "<div class=\"note\">III - Choose the best option to complete each of the following sentences.</div>"}, {"id": "g4", "label": "IV · Câu bị động", "kind": "write", "items": [{"c": "Scientists will find out a new source of energy in the future.", "a": "A new source of energy will be found out by scientists in the future.", "vi": "  Giải thích : Scientists will find out a new source of energy in the future. (Các nhà khoa học sẽ tìm ra một nguồn năng lượng mới trong tương lai.)   Dịch nghĩa : Một nguồn năng lượng mới sẽ được các nhà khoa học tìm ra trong tương lai. "}, {"c": "Solar power will produce much electricity.", "a": "Much electricity will be produced by solar power.", "vi": "  Giải thích : Solar power will produce much electricity. (Năng lượng mặt trời sẽ tạo ra nhiều điện.)   Dịch nghĩa : Nhiều điện sẽ được sản xuất từ năng lượng mặt trời. "}, {"c": "People will use more wind power in the future.", "a": "Wind power will be used more in the future.", "vi": "  Giải thích : People will use more wind power In the future. (Người ta sẽ sử dụng nhiều năng lượng gió hơn trong tương lai.)   Dịch nghĩa : Năng lượng gió sẽ được sử dụng nhiều hơn trong tương lai. "}, {"c": "Some new alternative sources of power will replace fossil fuel.", "a": "Fossil fuel will be replaced by some new alternative sources of power.", "vi": "  Giải thích : Some new alternative sources of power will replace fossil fuel. (Một số nguồn năng lượng thay thế mới sẽ thay thế nhiên liệu hóa thạch.)   Dịch nghĩa : Nhiên liệu hóa thạch sẽ được thay thế bằng một số nguồn năng lượng thay thế mới. "}, {"c": "Some countries will reduce the dependence on nuclear power.", "a": "The dependence on nuclear power will be reduced by some countries.", "vi": "  Giải thích : Some countries will reduce the dependence on nuclear power. (Một số quốc gia sẽ giảm sự phụ thuộc vào năng lượng hạt nhân.)   Dịch nghĩa : Sự phụ thuộc vào năng lượng hạt nhân sẽ được một số quốc gia giảm bớt. "}], "before": "<div class=\"note\">IV - Turn the following sentences into passive voice.</div>"}]}, {"title": "Reading · Đọc hiểu", "icon": "📖", "desc": "Unit 10 · Sources of Energy", "subs": [{"label": "Do you know?", "html": "<div class=\"source\"><div class=\"tablewrap\"><table><tr><td><p><b>DO YOU KNOW?</b></p><p><b>RENEWABLE ENERGY</b></p><p>Renewable energy is often called green energy because it is natural, available and does not have to be formed like non-renewable energy. The green energy is always there. For example, the Sun consistently shines, water is abundant, and the winds blow throughout the year. The five types include solar, energy from the Sun; geothermal, energy from heat within the Earth; hydroelectric, energy from moving water; biomass, energy from dead plants and finally, energy from the wind.</p></td></tr></table></div></div>"}, {"id": "r1", "label": "I · Wind power", "kind": "quiz", "items": [{"q": "What is the reason for the existence of wind? ", "opts": ["atmosphere heated unevenly", "wind flow", "motion energy", "wind turbines"], "a": 0, "exp": "<p><b>Dịch nghĩa câu hỏi:</b> Lý do cho sự tồn tại của gió là gì?</p><p><b>A</b>. khí quyển nóng không đều<b>B</b>. luồng gió</p><p><b>C</b>. năng lượng chuyển động<b>D</b>. tua-bin gió</p><p><b>Giải thích</b>: Thông tin có ở câu: “Winds are caused by the uneven heating of the atmosphere by the sun.”</p>"}, {"q": "Which of the following is NOT mentioned as a factor affecting the wind direction? ", "opts": ["earth’s terrain", "bodies of water", "vegetative cover", "the Sun"], "a": 3, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Yếu tố nào sau đây KHÔNG được đề cập đến như là một yếu tố ảnh hưởng đến hướng gió?</p><p><b>A</b>. địa hình của trái đất<b>B</b>. các vùng nước</p><p><b>C.</b> lớp phủ thực vật<b>D</b>. Mặt Trời</p><p><b>Giải thích:</b> Thông tin có ở câu: “Wind flow patterns are modified by the earth’s terrain, bodies of water, and vegetative cover.”</p>"}, {"q": "The word “variety” is closest in meaning with___. ", "opts": ["capacity", "popularity", "diversity", "minority"], "a": 2, "exp": "<p><b>Dịch nghĩa câu hỏi:</b> Từ “variety” gần nghĩa nhất với_________.</p><p><b>Giải thích:</b></p><p><b>A.</b> capacity (<i>n</i>.): năng lực<b>B</b>. popularity (<i>n</i>.): tính phổ biến</p><p><b>C</b>. diversity (<i>n</i>.). sự đa dạng<b>D</b>. minority (<i>n</i>.). thiểu số</p><p>Xét về nghĩa, phương án C phù hợp nhất.</p>"}, {"q": "What is the height of the largest wind turbines? ", "opts": ["as tall as a 20 story building", "between 8 and 25 feet", "30 feet", "50 feet"], "a": 0, "exp": "<p><b>Dịch nghĩa câu hỏi:</b> Chiều cao của tua-bin gió lớn nhất là bao nhiêu?</p><p><b>A</b>. cao bằng tòa nhà 20 tầng<b>B</b>. từ 8 đến 25 feet</p><p><b>C</b>. 30 feet<b>D</b>. 50 feet</p><p><b>Giải thích</b>: Thông tin có ở câu: “The largest machine has blades that span more than the length of a football field, stands 20 building stories high, [...]”</p>"}, {"q": "A small home-sized wind machine can produce enough power for___. ", "opts": ["20 buildings", "a small business", "400 homes", "a football field"], "a": 1, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Một cỗ máy điện gió kích thước bằng ngôi nhà nhỏ có thể tạo ra đủ năng lượng cho________</p><p><b>A</b>. 20 tòa nhà<b>B</b>. một doanh nghiệp nhỏ</p><p><b>C</b>. 400 ngôi nhà<b>D</b>. một sân bóng</p><p><b>Giải thích</b>: Thông tin có ở câu: “A small home-sized wind machine [...] can supply the power needs of an all electric home or small business.”</p>"}, {"q": "How much power do single small turbines generate? ", "opts": ["about 30 kilowatts", "more than 50 kilowatts", "about 750 kilowatts", "less than 50 kilowatts"], "a": 3, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Công suất của tua-bin nhỏ đơn là bao nhiêu?</p><p><b>A.</b> khoảng 30 kilowatt <b>B</b>. hơn 50 kilowatt <b>C</b>. khoảng 750 kilowatt <b>D</b>. dưới 50 kilowatt</p><p><b>Giải thích</b>: Thông tin có ở câu: “Single small turbines, below 50 kilowatts, are used for homes, telecommunications dishes, or water pumping.” (Tua-bin nhỏ dưới 50 kilowat được sử dụng cho hộ gia đình, các thiết bị thu phát sóng Viễn thông hoặc máy bơm nước.)</p>"}], "before": "<div class=\"source\"><p><b>I - Read the passage and choose the best option to answer each of the following questions.</b></p><p>Wind is a form of solar energy. Winds are caused by the uneven heating of the atmosphere by the sun. Wind flow patterns are changed by the earth’s terrain, bodies of water, and vegetative cover. This wind flow, or motion energy, when “harvested” by modern wind turbines, can be used to generate electricity.</p><p>Wind turbines are available in a <b>variety</b> of sizes, and therefore power ratings. The largest machine has blades that span more than the length of a football field, stands 20 building stories high, and produces enough electricity to power 1,400 homes. A small home-sized wind machine has rotors between 8 and 25 feet in diameter and stands upwards of 30 feet, and can supply the power needs of an all-electric home or small business, utilityscale turbines range in size from 50 to 750 kilowatts. Single small turbines, below 50 kilowatts, are used for homes, telecommunications dishes, or water pumping.</p></div><details class=\"tr\"><summary>🇻🇳 Bản dịch bài đọc</summary><div class=\"source\"><p>Gió là một dạng năng lượng mặt trời. Gió được tạo ra bởi sự nóng lên không đồng đều của bầu khí quyển do ánh nắng mặt trời. Hướng di chuyển của gió bị ảnh hưởng bởi địa hình trái đất, các vùng nước và lớp phủ thực vật. Luồng gió hay năng lượng chuyển động này, khi thu lại được bằng các tua-bin gió hiện đại, có thể được sử dụng để tạo ra điện.</p><p>Tua-bin gió có rất nhiều kích cỡ và do đó mức năng lượng thu về cũng vậy. cỗ máy lớn nhất có cánh quạt dài hơn chiều dài của một sân bóng đá, cao 20 tầng và sản xuất đủ điện để cung cấp cho 1.400 ngôi nhà. Một cỗ máy điện gió kích thước bằng ngôi nhà nhỏ có rô-to có đường kính từ 8 đến 25 feet và cao hơn 30 feet và có thể đáp ứng nhu cầu về năng lượng của một ngôi nhà sử dụng điện hoàn toàn hoặc một doanh nghiệp nhỏ. Tua-bin quy mô tiện ích có công suất từ 50 đến 750 kilowat. Tua-bin nhỏ dưới 50 kilowat được sử dụng cho hộ gia đình, các thiết bị thu phát sóng viễn thông hoặc máy bơm nước.</p></div></details>"}, {"id": "r2", "label": "II · Energy", "kind": "write", "items": [{"c": "What is energy?", "a": "(It is) the ability to cause change.", "vi": "  Dịch nghĩa câu hỏi:  Năng lượng là gì?   Giải thích : Thông tin ở câu 2 đoạn 1: “Energy Is the ability to cause change.” "}, {"c": "What kind of energy is based on an object's position?", "a": "potential energy", "vi": "  Dịch nghĩa câu hỏi : Năng lượng dựa trên vị trí của một đối tượng được gọi là?   Giải thích : Thông tin ở câu sau đoạn 2: “Potential energy is based on the position of the object.” "}, {"c": "What is another name for energy of motion?", "a": "kinetic energy", "vi": "  Dịch nghĩa câu hỏi : Tên gọi khác của năng lượng có được từ chuyển động là gì?   Giải thích : Thông tin ở câu đầu tiên của đoạn 3: “Energy of motion is also called kinetic energy.” "}, {"c": "What is another way to say “changes into”?", "a": "converts", "vi": "  Dịch nghĩa câu hỏi : Một cách khác để nói “change into (thay đổi thành)” là gì?   Giải thích : Thông tin ở câu 2 đoạn 3: “Potential energy converts, or changes into, kinetic energy when the thing or person begins to move.” "}, {"c": "Does energy often change forms?", "a": "Yes, it does.", "vi": "  Dịch nghĩa câu hỏi : Năng lượng thường xuyên thay đổi từ hình thức này sang hình thức khác phải không?    Giải thích : Thông tin ở câu sau đoạn 3: “Energy often changes forms.” "}], "before": "<div class=\"source\"><p><b>II - Read the passage and answer the following questions.</b></p><p>You use energy every day. Energy is the ability to cause change. When you ride a bike, you use energy from your body to make the bike move. Your parents use heat energy to change the food from raw to cooked.</p><p>Not all energy is used as soon as you get it. Sometimes energy is stored to be used later, stored energy can be chemical energy stored in a battery or in your body. It can also be potential energy. Potential energy is based on the position of the object. A soccer player standing ready to kick a ball has potential energy.</p><p>Energy of motion is also called kinetic energy. Potential energy converts, or changes into, kinetic energy when the thing or person begins to move. When the soccer player kicks the ball, kinetic energy is at work. Energy often changes forms. When you switch on the light, electricity converts into light. When you eat, chemical energy from your food converts into thermal and mechanical energy that allows you to move and work.</p></div><details class=\"tr\"><summary>🇻🇳 Bản dịch bài đọc</summary><div class=\"source\"><p>Bạn sử dụng năng lượng mỗi ngày. Năng lượng là khả năng gây ra sự thay đổi. Khi bạn đi xe đạp, bạn sử dụng năng lượng từ cơ thể để làm cho chiếc xe đạp di chuyển. Bố mẹ bạn sử dụng năng lượng nhiệt để nấu thức ăn từ sống thành chín.</p><p>Không phải tất cả năng lượng đều được sử dụng ngay khi bạn có nó. Đôi khi năng lượng được lưu trữ để sử dụng sau này. Năng lượng được lưu trữ có thể là năng lượng hóa học được lưu trữ trong pin hoặc trong cơ thể bạn. Nó cũng có thể là thế năng. Thế năng dựa trên vị trí của đối tượng. Một cầu thủ bóng đá đứng ở tư thế sẵn sàng đá một quả bóng có thế năng.</p><p>Năng lượng có được từ chuyển động còn được gọi là động năng. Thế năng chuyển đổi, hoặc thay đổi thành động năng khi vật hoặc người bắt đầu di chuyển. Khi cầu thủ đá quả bóng, động năng hoạt động. Năng lượng thường xuyên thay đổi từ hình thức này sang hình thức khác. Khi bạn bật đèn, điện chuyển thành ánh sáng. Khi bạn ăn, năng lượng hóa học từ thực phẩm của bạn chuyển đổi thành nhiệt năng và cơ năng cho phép bạn di chuyển và làm việc.</p></div></details>"}]}, {"title": "Listening · Nghe", "icon": "🔊", "desc": "Unit 10 · Sources of Energy", "subs": [{"id": "l1", "label": "Nghe & làm bài", "kind": "quiz", "items": [{"q": "People have relied on hydropower for the past 100 years.", "opts": ["True", "False"], "a": 0, "exp": "<p><b>Dịch nghĩa câu hỏi:</b> Mọi người đã dựa vào thủy điện trong 100 năm qua.</p><p><b>Giải thích</b>: Thông tin có ở câu: “What many people are not aware of is that most of the cities and towns in the world rely on hydropower, and have for the past century.”</p>"}, {"q": "Electricity is produced thanks to the power of water to turn generators.", "opts": ["True", "False"], "a": 0, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Điện được sản xuất nhờ năng lượng của nước làm chạy máy phát điện.</p><p><b>Giải thích</b>: Thông tin có ở câu: “The power of the water is used to turn generators to produce the electricity [...]”</p>"}, {"q": "Hydropower is a superior source of power because of old dams.", "opts": ["True", "False"], "a": 1, "exp": "<p><b>Dịch nghĩa câu hỏi:</b> Thủy điện là một nguồn năng lượng vượt trội vì có các con đập cũ.</p><p><b>Giải thích:</b> Thông tin có ở câu: “The problems faced with hydropower right now have to do with the aging of the dams.”</p>"}, {"q": "Many dams need restoring to function safely.", "opts": ["True", "False"], "a": 0, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Nhiều con đập cần duy tu để hoạt động an toàn.</p><p><b>Giải thích</b>: Thông tin có ở câu: “Many of them need major restoration work to remain functional and safe [...]”</p>"}, {"q": "Drinking water can be used to generate hydropower.", "opts": ["True", "False"], "a": 1, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Nước uống có thể được sử dụng để tạo ra thủy điện.</p><p><b>Giải thích:</b> Thông tin có ở câu: “The drain on the world’s drinkable water supply is also causing issues as townships may wind up needing to consume the water that provides them power too.”</p>"}], "before": "<div class=\"note\">Giọng đọc tổng hợp từ lời thoại trong tài liệu.</div><button class=\"btn solid\" onclick=\"say(LISTEN)\">▶ Nghe</button> <button class=\"btn\" onclick=\"speechSynthesis.cancel()\">■ Dừng</button>"}, {"label": "Lời thoại & bản dịch", "html": "<div class=\"source\"><div class=\"tablewrap\"><table><tr><td><p>What many people are not aware of is that most of the cities and towns in the world rely on hydropower, and have for the past century. Every time you see a major dam, it is providing hydropower to an electrical station somewhere. The power of the water is used to turn generators to produce the electricity that is then used. The problems faced with hydropower right now have to do with the aging of the dams. Many of them need major restoration work to remain functional and safe, and that costs enormous sums of money. The drain on the world’s drinkable water supply is also causing issues as townships may wind up needing to consume the water that provides them power too.</p></td><td><p>Điều mà nhiều người không biết là hầu hết các thành phố và thị trấn trên thế giới đều dựa vào thủy điện trong suốt một thế kỷ qua. Mỗi khi bạn nhìn thấy một con đập lớn, nó đang cung cấp thủy điện cho một trạm điện ở đâu đó. Sức mạnh của nước được sử dụng để chạy máy phát, sản xuất ra điện để sau đó sử dụng. Các vấn đề mà thủy điện hiện tại đang đối mặt là sự cũ kĩ của các con đập. Nhiều con đập trong số đó cần được duy tu để duy trì chức năng và sự an toàn, và điều đó tiêu tốn một khoản tiền khổng lồ. Đường ống cung cấp nước uống trên thế giới cũng đang gây ra vấn đề vì các thị trấn có thể sẽ cần phải tiêu thụ nhiều nước hơn, đáng lẽ ra được dùng để cung cấp năng lượng cho họ.</p></td></tr></table></div></div>"}]}, {"title": "Speaking · Nói", "icon": "💬", "desc": "Unit 10 · Sources of Energy", "subs": [{"label": "Đề bài & hướng dẫn", "html": "<div class=\"source\"><p><b>Talk about how to save electricity.</b></p><p>You can use the following questions as cues:</p><p>•What are the ways to save electricity?</p><p>•How to apply them?</p><p>•What are the benefits?</p><p>•What have you done to save electricity?</p><p><b>Useful languages:</b></p><div class=\"tablewrap\"><table><tr><td><p><b>Useful vocabulary</b></p></td><td><p><b>Useful structures</b></p></td></tr><tr><td><p>•switching off the lights</p><p>•using natural light</p><p>•using low energy light bulbs</p><p>•using on/off sensors</p><p>•financial benefit</p><p>•environmental benefit</p><p>•health benefit</p><p>•using fewer fans</p><p>•turning off the lights before going to bed</p><p>•using fewer air-conditioners</p></td><td><p>•There are many ways to save electricity like ...</p><p>•Saving electricity brings many benefits, such as ...</p><p>•Saving electricity helps ...</p><p>•I have done some activities to save electricity. For example, ...</p></td></tr></table></div><p><b>Complete the notes:</b></p><div class=\"tablewrap\"><table><tr><td><p><b>Structures of the talk</b></p></td><td><p><b>Your notes</b></p></td></tr><tr><td><p>What are the ways to save electricity?</p></td><td><p>__________________________________________</p><p>__________________________________________</p><p>__________________________________________</p></td></tr><tr><td><p>How to apply them?</p></td><td><p>__________________________________________</p><p>__________________________________________</p><p>__________________________________________</p></td></tr><tr><td><p>What are the benefits?</p></td><td><p>__________________________________________</p><p>__________________________________________</p><p>__________________________________________</p></td></tr><tr><td><p>What have you done to save electricity?</p></td><td><p>__________________________________________</p><p>__________________________________________</p><p>__________________________________________</p></td></tr></table></div><p><b>Now you try!</b></p><p><b>Give your answer using the following cues. You should speak for 1-2 minutes.</b></p><p>1. There are many ways to save electricity like ...</p><p>2. Saving electricity helps ...</p><p>3. I have done some activities to save electricity. For example, ...</p><p><b>Now you tick!</b></p><p><b>Did you ...</b></p><p> answer all the questions in the task?</p><p> give some details to each main point?</p><p> speak slowly and fluently with only some hesitation?</p><p> use vocabulary wide enough to talk about the topic?</p><p> use various sentence structures (simple, compound, complex) accurately?</p><p> pronounce correctly (vowels, consonants, stress, intonation)?</p><p><b> </b><b>Let’s compare!</b></p><p>Finally, compare with the sample answer on page 185.</p></div>"}, {"label": "Ghi chú luyện nói", "kind": "notes"}, {"label": "Gợi ý & bài mẫu", "html": "<div class=\"source\"><p><b>Talk about how to save electricity.</b></p><p><b>Dịch nghĩa câu hỏi:</b></p><p>Nói về cách tiết kiệm điện.</p><p>Em có thể sử dụng các câu hỏi sau đây như gợi ý:</p><p>• Những cách để tiết kiệm điện là gì?</p><p>• Làm thế nào để áp dụng chúng?</p><p>• Những lợi ích là gì?</p><p>• Bạn đã làm gì để tiết kiệm điện?</p><p><b>Gợi ý trả lời:</b></p><p><b>MAIN IDEAS (Ý chính)</b></p><p><b>Ways to save energy (Cách tiết kiệm)</b></p><p>- swifch off the lights (<i>v.phr</i>) (tắt đèn)</p><p>- use natural light (<i>v.phr</i>.) (dùng ánh sáng tự nhiên)</p><p>- use LED bulbs (<i>v.phr.)</i> (dùng đèn Leds)</p><p>- use on/off sensors (<i>v.phr)</i> (dùng cảm biến)</p><p><b>How to apply (Thực hiện)</b></p><p>- switch off if not use (<i>v. phr</i>.) (tắt khi không dùng)</p><p>- open windows (<i>v. phr</i>.) (mở cửa sổ)</p><p>- install LED bulbs (<i>v. phr</i>.) (lắp đèn Led)</p><p>- install on/off sensors , (<i>v.phr</i>.) (lắp cảm biến)</p><p><b>Benefits (Lợi ích)</b></p><p>- financial benefit (<i>n. phr</i>.) (lợi ích tài chính)</p><p>- environmental benefit (<i>n. phr</i>.) (lợi ích môi trường)</p><p>- health benefit (<i>n. phr.)</i> (lợi ích sức khỏe)</p><p>- beauty benefit <i>(n. phr</i>.) (lợi ích vẻ đẹp)</p><p><b>What you have done (Bạn đã làm gì)</b></p><p>- use fewer fans (<i>v. phr</i>.) (dùng quạt ít hơn)</p><p>- use less light (<i>v. phr</i>.) (dùng đèn ít hơn)</p><p>- use less hot water (<i>v. phr</i>.) (dùng ít nước nóng)</p><p>- use fewer air – conditioners (<i>v.phr</i>.) (dùng ít điều hòa)</p><p>Bài mẫu:</p><div class=\"tablewrap\"><table><tr><td><p>Energy in general or electricity in particular is not easy to get, and it is relatively expensive. Therefore, we should save It. There are many ways to save it like switching off the lights when not using, opening doors and windows to get natural sunlight, using energysaving Leds instead of traditional ones, or installing sensors to switch on/off the light automatically. Saving electricity lowers electricity bills less, helps saving the environment, brings about health and beauty benefits. </p></td><td><p>Năng lượng nói chung và điện năng nói riêng không dễ có được và khá đắt đỏ. Do đó, chúng ta cần tiết kiệm điện. Có nhiều cách để tiết kiệm điện như tắt điện khi không sử dụng, mở cửa và cửa sổ để tận dụng ánh sáng tự nhiên, dùng bóng đèn Led tiết kiệm điện hoặc lắp đặt cảm biến tự động bật/tắt điện. Tiết kiệm lượng điện sử dụng giúp hóa đơn tiền điện ít hơn, giúp bảo vệ môi trường, mang lại lợi ích về sức khỏe và vẻ đẹp.</p></td></tr></table></div></div>"}]}, {"title": "Writing · Viết", "icon": "✍️", "desc": "Unit 10 · Sources of Energy", "subs": [{"id": "w1", "label": "I · Viết câu", "kind": "write", "items": [{"c": "Like/ any/ other type/ power,/ solar energy/ have/ own/ disadvantage.", "a": "Like any other type of power, solar energy has its own disadvantages.", "vi": "  Dịch nghĩa : Giống như bất kỳ loại năng lượng nào khác, năng lượng mặt trời có những nhược điểm riêng. "}, {"c": "Solar power/ depend/ weather condition/ operation.", "a": "Solar power depends on weather condition during operation.", "vi": "  Dịch nghĩa:  Năng lượng mặt trời phụ thuộc vào điều kiện thời tiết trong quá trình hoạt động. "}, {"c": "If/ people/ build/ solar power/ plant,/ space/ must/ very huge.", "a": "If people build a solar power plant, the space must be very huge.", "vi": "  Dịch nghĩa : Nếu mọi người xây dựng một nhà máy năng lượng mặt trời thì không gian phải rất lớn. "}, {"c": "A lot/ money/ require/ build/ solar power plant.", "a": "A lot of money is required to build a solar power plant.", "vi": "  Dịch nghĩa : Cần rất nhiều tiền để xây dựng một nhà máy điện mặt trời. "}, {"c": "Humans/ should/ exploit/ solar power/ more/ have safe/ clean energy.", "a": "Human should exploit solar power more to have safe and clean energy.", "vi": "  Dịch nghĩa : Con người nên khai thác năng lượng mặt trời nhiều hơn để có năng lượng an toàn và sạch. "}], "before": ""}, {"label": "II · Viết đoạn văn", "kind": "writing", "html": "<div class=\"source\"><p><b>II - Write a short paragraph (60-80 words) about disadvantages of nuclear power.</b></p><p>You can answer some of the following questions:</p><p>• What are the disadvantages of nuclear power?</p><p>• What are the solutions for them?</p><p>__________________________________________________________________</p></div>"}, {"label": "Gợi ý & bài mẫu", "html": "<div class=\"source\"><p><b>II - Write a short paragraph (60 - 80 words) about disadvantages of nuclear power. </b></p><p><b>Dịch nghĩa câu hỏi:</b></p><p>Viết một đoạn văn ngắn (60-80 từ) về những bất lợi của năng lượng hạt nhân.</p><p>Bạn có thể trả lời một số câu hỏi sau:</p><p>• Nhà máy điện hạt nhân có an toàn và rẻ không?</p><p>• Cái gì được sử dụng để tạo ra năng lượng?</p><p>• Những bất lợi của năng lượng hạt nhân là gì?</p><p>• Các giải pháp cho chúng là gì?</p><p><b>Gợi ý trả lời:</b></p><p><b>MAIN IDEAS (Ý chính)</b></p><p><b>Disadvantages (Bất lợi)</b></p><p>- radioactive waste (<i>n. phr</i>.) (chất thải phóng xạ)</p><p>- limited uranium (<i>n. phr</i>.) (lượng uranium có hạn)</p><p>- high risks (<i>n. phr.)</i> (rủi ro cao)</p><p>- long building time (<i>n. phr.)</i> (thời gian xây dựng dài)</p><p><b>Solutions (Giải pháp)</b></p><p>- being cautious (<i>v. phr</i>.) (thận trọng)</p><p>- using other material (<i>v. phr</i>.) (dùng vật liệu khác)</p><p>- controlling strictly (<i>v. phr</i>.) (kiểm soát chặt)</p><p>- using other energy (<i>v. phr</i>.) (dùng loại năng lượng khác)</p><p>Bài mẫu:</p><div class=\"tablewrap\"><table><tr><td><p>Like any other type of power, nuclear power has its own disadvantages. Nuclear power plants discharge radioactive waste during operation. If a nuclear explosion happens, the aftermath will be very serious. The radioactive substance will absorb into water and land in a large area. It takes a long time and a lot of money to build a nuclear power plant, and it also takes a long time. In my opinion, human should exploit safe types of power like solar power, wind power and tidal power to avoid dependence on this dangerous type of power.</p></td><td><p>Giống như bất kỳ loại năng lượng nào khác, năng lượng hạt nhân có nhược điểm riêng. Các nhà máy điện hạt nhân xả chất thải phóng xạ trong quá trình hoạt động. Nếu một vụ nổ hạt nhân xảy ra thì hậu quả sẽ rất nghiêm trọng. Chất phóng xạ sẽ hấp thụ vào nước và đất trong một khu vực rộng lớn. cần rất nhiều tiền và mất một thời gian dài để xây dựng một nhà máy điện hạt nhân. Theo em, con người nên khai thác các loại năng lượng an toàn như năng lượng mặt trời, năng lượng gió và năng lượng thủy triều để tránh phụ thuộc vào loại năng lượng nguy hiểm này.</p></td></tr></table></div><p>Giaoandethitienganh.info sưu tầm</p></div>"}]}, {"title": "Objectives · Mục tiêu", "icon": "🎯", "desc": "Unit 10 · Sources of Energy", "subs": [{"label": "Mục tiêu", "html": "<div class=\"source\"><p><b>UNIT </b><b>10</b><b> </b></p><p><b>SOURCES OF ENERGY</b></p><p>Các nguồn năng lượng</p><p><b>MỤC TIÊU – Objectives</b></p><p>* <b>TỪ VỰNG</b> – Vocabulary</p><p>sử dụng từ vựng liên quan đến các nguồn năng lượng</p><p>* <b>NGỮ ÂM</b> – Pronunciation</p><p>phát âm chính xác các từ có ba âm tiết</p><p>* <b>NGỮ PHÁP</b> – Grammar</p><p>tự tin sử dụng thì tương lai tiếp diễn </p><p>sử dụng thành thạo câu bị động ở thì tương lai đơn</p><p><b>* KỸ NĂNG ĐỌC</b> – Reading skills</p><p>đọc đoạn văn về năng lượng tái tạo và không tái tạo</p><p>* <b>KỸ NĂNG NÓI</b> – Speaking skills</p><p>nói về những ưu điểm và nhược điểm của các nguồn năng lượng khác nhau</p><p>* <b>KỸ NĂNG NGHE</b> – Listening Skills</p><p>nghe về một nguồn năng lượng mới</p><p>* <b>KỸ NĂNG VIẾT</b> – Writing skills</p><p>viết một đoạn văn ngắn về cách tiết kiệm năng lượng</p><p><b>A – NGÔN NGỮ</b></p></div>"}]}];
+const V12=[{"w": "abundant", "p": "/əˈbʌndənt/", "pos": "adj.", "vi": "nhiều, phong phú", "ex": "Wind power is one of the most abundant energy resources. (Năng lượng gió là một trong những nguồn năng lượng dồi dào nhất)"}, {"w": "alternative", "p": "/ɔːlˈtɜːnətɪv/", "pos": "adj.", "vi": "thay thế", "ex": "I believe that alternative energy sources don’t pollute the Earth. (Tôi tin rằng các nguồn năng lượng thay thế không gây ô nhiễm cho Trái Đất)"}, {"w": "available", "p": "/əˈveɪləbl/", "pos": "adj.", "vi": "có thể dùng được, sẵn có", "ex": "Reneable energy sources may not always be available. (Các nguồn năng lượng tái tạo không phải lúc nào cũng có sẵn)"}, {"w": "biogas", "p": "/ˈbaɪəʊɡæs/", "pos": "n.", "vi": "khí sinh học", "ex": "The technology used to produce biogas is quite cheap. (Công nghệ được sử dụng để sản xuất khí sinh học khá rẻ)"}, {"w": "bulb", "p": "/bʌlb/", "pos": "n.", "vi": "bóng đèn", "ex": "You should use low energy light bulbs to reduce the carbon. (Bạn nên sử dụng bóng đèn tiêu thụ năng lượng thấp để giảm lượng thấp để giảm lượng khí thải các-bon)"}, {"w": "coal", "p": "/kəʊl/", "pos": "n.", "vi": "than đá", "ex": "Coal is a non-renewable energy source because it takes millions of years to form. (Than đá là nguồn năng lượng không thể tái tạo vì phải mất hàng triệu năm để hình thành)"}, {"w": "consumption", "p": "/kənˈsʌmpʃn/", "pos": "n.", "vi": "sự tiêu dùng", "ex": "Reducing energy consumption can help protect the environment (Giảm sự tiêu thụ năng lượng có thể giúp bảo vệ môi trường)"}, {"w": "dangerous", "p": "/ˈdeɪndʒərəs/", "pos": "adj.", "vi": "nguy hiểm", "ex": "Nuclear power can guarantee adequate supplies of energy for the world, but it is dangerous. (Năng lượng hạt nhân có thể đảm bảo cung cấp đủ năng lượng cho cả thế giới, nhưng nó rất nguy hiểm)"}, {"w": "electricity", "p": "/ɪˌlekˈtrɪsəti/", "pos": "n.", "vi": "điện năng", "ex": "Generating electricity with solar panels produces no greenhouse gases. (Việc sử dụng các tấm pin mặt trời để tạo ra điện năng không thải ra khí nhà kính)"}, {"w": "energy", "p": "/ˈenədʒi/", "pos": "n.", "vi": "năng lượng", "ex": "Plutonium is a fuel used to produce nuclear energy. (Plutoni là nhiên liệu được sử dụng để sản xuất năng lượng hạt nhân)"}, {"w": "exhausted", "p": "/ɪɡˈzɔːstɪd/", "pos": "adj.", "vi": "cạn kiệt", "ex": "Are there any sources of energy that can never be exhausted? (Có nguồn năng lượng nào không bao giờ cạn kiệt không?)"}, {"w": "fossil", "p": "/ˈfɒsl/", "pos": "n.", "vi": "hóa thạch", "ex": "Gas is the only fossil fuel without environmental problems. (Ga là nhiên liệu hóa thạch duy nhất không gây hại cho môi trường)"}, {"w": "hydro", "p": "/ˈhaɪdrəʊ/", "pos": "n.", "vi": "thuộc về nước", "ex": "Hydro power is a clean and safe source of energy. (Thủy điện là nguồn năng lượng sạch và an toàn)"}, {"w": "invest", "p": "/ɪnˈvest/", "pos": "v.", "vi": "đầu tư", "ex": "We must invest more in renewable energy sources. (Chúng ta phải đầu tư nhiều hơn vào các nguồn năng lượng tái tạo)"}, {"w": "limited", "p": "/ˈlɪmɪtɪd/", "pos": "adj.", "vi": "hạn chế, giới hạn", "ex": "Fossil fuels are limited in supply and will one day be exhausted. (Nhiên liệu hóa thạch có nguồn cung hạn chế và một ngày nào đó sẽ cạn kiệt)"}, {"w": "natural", "p": "/ˈnætʃrəl/", "pos": "adj.", "vi": "thuộc tự nhiên", "ex": "Coal, oil, and natural gas are different kinds of fuel. (Than, dầu, và khí tự nhiên là những loại nhiên liệu khác nhau)"}, {"w": "nuclear", "p": "/ˈnjuːkliə(r)/", "pos": "adj.", "vi": "thuộc về hạt nhân", "ex": "Nuclear power produces around 1% of the world’s energy needs. (Năng lượng hạt nhân đáp ứng khoảng 11% nhu cầu năng lượng của thế giới)"}, {"w": "panel", "p": "/ˈpænl/", "pos": "n.", "vi": "tấm ghép", "ex": "Solar panels are used to power satellites. (Các tấm pin mặt trời được sử dụng để cung cấp năng lượng cho các vệ tinh)"}, {"w": "plentiful", "p": "/ˈplentɪfl/", "pos": "adj.", "vi": "phong phú, dồi dào", "ex": "Biogas is plentiful and is available from different sources. (Khí sinh học rất dồi dào và có sẵn từ nhiều nguồn khác nhau)"}, {"w": "renewable", "p": "/rɪˈnjuːəbl/", "pos": "adj.", "vi": "phục hồi, làm mới lại", "ex": "The government should develop renewable sources of energy. (Chính phủ nên phát triển các nguồn năng lượng tái tạo)"}, {"w": "replace", "p": "/rɪˈpleɪs/", "pos": "v.", "vi": "thay thế", "ex": "Solar and wind power will replace fossil fuels. (Năng lượng mặt trời và năng lượng gió sẽ thay thế nhiên liệu hóa thạch)"}, {"w": "shortage", "p": "/ˈʃɔːtɪdʒ/", "pos": "n.", "vi": "sự thiếu hụt, sự thiếu thốn", "ex": "How can we solve the problem of energy shortage? (Làm thế nào chúng ta có thể giải quyết vấn đề thiếu hụt năng lượng)"}, {"w": "slogan", "p": "/ˈsləʊɡən/", "pos": "n.", "vi": "khẩu hiệu", "ex": "The message in slogans can stick to people’s minds for a long time. (Thông điệp trong các khẩu hiệu có thể khắc sâu vào tâm trí mọi người trong một thời gian dài)"}, {"w": "solar", "p": "/ˈsəʊlə(r)/", "pos": "adj.", "vi": "thuộc hệ mặt trời", "ex": "Solar energy is used worldwide to generate electricity or heating. (Năng lượng mặt trời được sử dụng trên toàn thế giới để tạo ra điện hoặc sưởi ấm)"}, {"w": "source", "p": "/sɔːs/", "pos": "n.", "vi": "nguồn", "ex": "Oranges are a good source of vitamin C. (Cam là nguồn cung cấp vitamin C dồi dào)"}];
+const LISTEN="What many people are not aware of is that most of the cities and towns in the world rely on hydropower, and have for the past century. Every time you see a major dam, it is providing hydropower to an electrical station somewhere. The power of the water is used to turn generators to produce the electricity that is then used. The problems faced with hydropower right now have to do with the aging of the dams. Many of them need major restoration work to remain functional and safe, and that costs enormous sums of money. The drain on the world’s drinkable water supply is also causing issues as townships may wind up needing to consume the water that provides them power too. ";
+const OBJECTIVES=[{i:'🚀',t:'Unit 10 · Sources of Energy',d:'Từ vựng, ngữ âm, ngữ pháp và các kỹ năng theo tài liệu Unit 10.'}];
+const drafts={notes:'',writing:''};
+function vocab12(filter=''){return V12.filter(v=>(v.w+' '+v.vi).toLowerCase().includes(filter.toLowerCase())).map(v=>`<div class="vrow"><div><div class="vw">${esc(v.w)} ${spk(v.w)}</div><div class="vp">${esc(v.p)} · ${esc(v.pos)}</div></div><div class="vm">${esc(v.vi)}</div><div class="ven">${esc(v.ex)}</div></div>`).join('')}
+function draw12(s){
+ if(s.kind==='vocab')return `<div class="tools"><input class="search" placeholder="Tìm từ tiếng Anh hoặc nghĩa tiếng Việt…" oninput="document.getElementById('words12').innerHTML=vocab12(this.value)"></div><div id="words12">${vocab12()}</div>`;
+ if(s.kind==='notes')return `<div class="card"><h3>Talk about how to save electricity.</h3><p>Ghi ý chính, sau đó luyện nói trong 1–2 phút.</p><textarea class="studytextarea" oninput="drafts.notes=this.value">${esc(drafts.notes)}</textarea></div>`;
+ if(s.kind==='writing')return s.html+`<textarea class="studytextarea" placeholder="Write your paragraph here…" oninput="drafts.writing=this.value;document.getElementById('count12').textContent=this.value.trim().split(/\s+/).filter(Boolean).length+' / 60–80 từ'">${esc(drafts.writing)}</textarea><p id="count12">${drafts.writing.trim().split(/\s+/).filter(Boolean).length} / 60–80 từ</p>`;
+ if(!s.id)return s.html;
+ const cfg={title:s.label,items:s.items,labels:s.items[0].opts?s.items[0].opts.map((_,i)=>String.fromCharCode(65+i)):undefined};
+ return (s.before||'')+(s.kind==='quiz'?quiz(s.id,cfg):s.kind==='fill'?fill(s.id,cfg):writeSent(s.id,s.items));
+}
+const SECTIONS=DATA.map(s=>({...s,ex:s.subs.filter(x=>x.id).map(x=>x.id),subs:s.subs.map(x=>({...x,ex:x.id?[x.id]:undefined,render:()=>draw12(x)}))}));
+document.title='Unit 10 - Sources of Energy';
+$('.logo .lg').textContent='🚀';
+show(0,0);
+</script></body></html>

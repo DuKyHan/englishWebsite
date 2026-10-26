@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 7</title>
+<style>*{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#1e1b4b;--mut:#6b7280;--p:#4f46e5;--p2:#7c3aed;--pk:#db2777;--ok:#059669;--okbg:#ecfdf5;--bad:#dc2626;--badbg:#fef2f2;--am:#b45309;--ambg:#fffbeb;--line:#e4e6f7;--bg:#f3f4ff;--ph:"Doulos SIL","Charis SIL","Lucida Sans Unicode","Segoe UI",Arial,sans-serif}
+html,body{height:469px;overflow:hidden;background:var(--bg);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+button,input,textarea{font-family:inherit}
+::-webkit-scrollbar{width:7px;height:7px}::-webkit-scrollbar-thumb{background:#c7d2fe;border-radius:8px}::-webkit-scrollbar-track{background:transparent}
+.app{display:flex;height:469px;max-width:1128px;margin:0 auto;background:var(--bg)}
+
+/* sidebar */
+.side{width:206px;flex:none;background:linear-gradient(175deg,#2e2a86 0%,#4f46e5 58%,#7c3aed 100%);color:#fff;display:flex;flex-direction:column;padding:12px 10px 10px;position:relative;overflow:hidden}
+.side:before{content:"";position:absolute;right:-50px;top:-50px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.07)}
+.logo{display:flex;align-items:center;gap:9px;padding:0 4px 9px;cursor:pointer;position:relative}
+.logo .lg{width:36px;height:36px;border-radius:11px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:20px}
+.logo b{display:block;font-size:14px;letter-spacing:.05em}
+.logo small{font-size:11px;opacity:.85}
+.nav{flex:1;display:flex;flex-direction:column;gap:2px;min-height:0;position:relative}
+.ni{display:flex;align-items:center;gap:8px;height:28px;padding:0 8px;border:none;background:none;color:#e0e7ff;border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;text-align:left;width:100%;transition:.15s}
+.ni:hover{background:rgba(255,255,255,.13)}
+.ni .n{width:18px;height:18px;flex:none;border-radius:50%;background:rgba(255,255,255,.2);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.ni .t{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ni.on{background:#fff;color:#3730a3;box-shadow:0 4px 12px rgba(0,0,0,.18)}
+.ni.on .n{background:var(--p);color:#fff}
+.ni.done .n{background:#34d399;color:#064e3b}
+.ni.soon{opacity:.62}
+.prog{padding:8px 4px 0;position:relative}
+.pbar{height:7px;background:rgba(255,255,255,.22);border-radius:8px;overflow:hidden}
+.pbar i{display:block;height:100%;background:linear-gradient(90deg,#fde68a,#34d399);border-radius:8px;transition:width .4s}
+.prog small{display:flex;justify-content:space-between;font-size:10.5px;margin-top:4px;opacity:.9}
+
+/* main */
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.head{display:flex;align-items:center;gap:11px;padding:11px 18px 2px}
+.head .hi{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#6366f1,#c026d3);display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 5px 14px rgba(99,102,241,.35);flex:none}
+.head h1{font-size:18px;line-height:1.15;color:#312e81}
+.head p{font-size:12px;color:var(--mut);margin-top:1px}
+.subnav{display:flex;gap:6px;padding:8px 18px 7px;overflow-x:auto;flex:none}
+.stab{flex:none;border:1px solid #d6dafc;background:#fff;color:#4338ca;border-radius:999px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;transition:.15s}
+.stab:hover{background:#eef2ff;transform:translateY(-1px)}
+.stab.on{background:linear-gradient(90deg,#4f46e5,#7c3aed);border-color:transparent;color:#fff;box-shadow:0 4px 12px rgba(79,70,229,.3)}
+.stab i{font-style:normal;margin-left:5px;font-size:10px;background:#34d399;color:#064e3b;border-radius:999px;padding:0 5px}
+.body{flex:1;overflow:auto;padding:2px 18px 16px;min-height:0;animation:fade .25s}
+.body.split{overflow:hidden;padding-bottom:12px}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+/* generic */
+.btn{border:1px solid #c7d2fe;background:#fff;color:#4338ca;padding:6px 12px;border-radius:9px;cursor:pointer;font-size:12px;font-weight:700;transition:.15s}
+.btn:hover{background:#eef2ff;transform:translateY(-1px)}
+.btn.solid{background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff;border-color:transparent;box-shadow:0 4px 10px rgba(79,70,229,.28)}
+.btn.solid:hover{filter:brightness(1.07)}
+.btn.sm{padding:3px 9px;font-size:11px}
+.btn:disabled{opacity:.45;cursor:default;transform:none}
+.chip-s{display:inline-flex;align-items:center;gap:3px;background:#e0e7ff;color:#3730a3;border-radius:999px;padding:2px 10px;font-size:11.5px;font-weight:800}
+.chip-s.ok{background:#d1fae5;color:#065f46}
+.chip{display:inline-block;background:#eef2ff;color:#4338ca;border:1px solid #c7d2fe;border-radius:999px;padding:2px 11px;font-size:12px;font-weight:700}
+.muted{color:var(--mut);font-size:12px}
+.note{font-size:12.5px;background:#f5f3ff;border-left:3px solid #8b5cf6;border-radius:8px;padding:6px 10px;margin:6px 0;line-height:1.5}
+.note.am{background:var(--ambg);border-color:#f59e0b}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:0 3px 12px rgba(67,56,202,.06)}
+.card h3{font-size:14px;color:#312e81;margin-bottom:6px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+mark{background:#fde68a;color:#78350f;border-radius:4px;padding:0 3px;font-weight:800;box-shadow:inset 0 -2px 0 #f59e0b}
+u{text-decoration-thickness:2px;text-underline-offset:2px;text-decoration-color:#e11d48}
+.spk{border:none;background:#eef2ff;border-radius:7px;cursor:pointer;font-size:11px;padding:2px 6px;vertical-align:middle}
+.spk:hover{background:#c7d2fe}
+.ph{font-family:var(--ph)}
+details.tr{margin-top:8px;background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:12.5px;line-height:1.6}
+details.tr summary{cursor:pointer;color:var(--p);font-weight:700}
+details.tr p{margin-top:5px;color:#374151}
+.kw{background:linear-gradient(transparent 55%,#fde68a 55%);font-weight:700;cursor:help}
+.passage{font-size:13.5px;line-height:1.75;background:#fffdf5;border:1px solid #fde68a;border-radius:12px;padding:11px 14px;color:#1f2937}
+.colh{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#7c3aed;margin:2px 0 6px}
+.split>div{overflow:auto;height:100%;padding:0 2px 6px 0}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+/* coming soon */
+.soonbox{height:100%;min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px;color:var(--mut)}
+.soonbox .big{font-size:54px;animation:float 3s ease-in-out infinite}
+.soonbox b{font-size:18px;color:#312e81}
+.soonbox span{font-size:13px;max-width:380px;line-height:1.5}
+@keyframes float{50%{transform:translateY(-8px)}}
+
+/* vocabulary */
+.tools{display:flex;gap:8px;align-items:center;margin-bottom:9px}
+.search{flex:1;border:1.5px solid #d6dafc;border-radius:10px;padding:7px 12px;font-size:12.5px;outline:none;background:#fff}
+.search:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.vrow{display:grid;grid-template-columns:42px 34% 1fr;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:8px 12px;margin-bottom:7px;transition:.15s}
+.vrow:hover{border-color:#a5b4fc;box-shadow:0 5px 16px rgba(99,102,241,.14);transform:translateX(2px)}
+.vem{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#eef2ff,#faf5ff);display:flex;align-items:center;justify-content:center;font-size:22px}
+.vw{font-size:16px;font-weight:800;color:#312e81;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.pos{font-size:10.5px;font-style:italic;font-weight:800;border-radius:999px;padding:1px 8px}
+.pos-n{background:#dbeafe;color:#1d4ed8}.pos-v{background:#dcfce7;color:#15803d}.pos-adj{background:#ffedd5;color:#c2410c}.pos-idiom{background:#f3e8ff;color:#7e22ce}.pos-phr{background:#e0f2fe;color:#0369a1}
+.vp{font-family:var(--ph);font-size:12.5px;color:var(--mut);margin-top:2px}
+.vm{font-size:14px;font-weight:800;color:var(--ok)}
+.ven{font-size:12.8px;line-height:1.5;margin-top:2px}
+.vvi{font-size:12px;color:var(--mut);font-style:italic}
+.hide-mean .vm:not(.rev),.hide-mean .vvi:not(.rev){filter:blur(6px);cursor:pointer;user-select:none}
+.fcwrap{max-width:620px;margin:0 auto}
+.fcnav{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
+.fcdots{display:flex;gap:3px;flex-wrap:wrap;justify-content:center;margin-bottom:8px}
+.fcdots i{width:9px;height:9px;border-radius:50%;background:#e0e7ff}
+.fcdots i.k{background:#34d399}.fcdots i.cur{background:#6366f1;transform:scale(1.35)}
+.fcard{min-height:176px;border-radius:20px;background:linear-gradient(135deg,#eef2ff,#faf5ff);border:2px solid #c7d2fe;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px 24px;cursor:pointer;gap:6px;transition:.2s;box-shadow:0 10px 26px rgba(99,102,241,.14)}
+.fcard.back{background:linear-gradient(135deg,#ecfdf5,#f0fdfa);border-color:#6ee7b7}
+.fcard:hover{transform:translateY(-2px)}
+.fc-em{font-size:34px}.fc-w{font-size:30px;font-weight:900;color:#312e81}
+.fc-p{font-family:var(--ph);font-size:16px;color:var(--mut)}
+.fc-hint{font-size:11px;color:#9ca3af;margin-top:4px}
+.fc-m{font-size:24px;font-weight:900;color:var(--ok)}
+.fc-e{font-size:14px;line-height:1.5}.fc-v{font-size:12.5px;color:var(--mut);font-style:italic}
+.fcbtns{display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+
+/* match game */
+.mg-top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:8px 28px}
+.mc{border:2px solid #d6dafc;background:#fff;border-radius:12px;padding:9px 12px;font-size:13.5px;font-weight:700;cursor:pointer;text-align:left;transition:.15s;min-height:40px;color:#312e81}
+.mc:hover:not(.lock){border-color:#6366f1;background:#eef2ff;transform:scale(1.015)}
+.mc.sel{border-color:#4f46e5;background:#e0e7ff;box-shadow:0 0 0 3px rgba(79,70,229,.2)}
+.mc.lock{background:var(--okbg);border-color:#6ee7b7;color:#065f46;cursor:default;animation:pop .35s}
+.mc.err{border-color:#f87171;background:var(--badbg);animation:shake .4s}
+.mc.vi{font-weight:600;color:#374151}
+@keyframes pop{50%{transform:scale(1.05)}}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* quiz */
+.qz-top{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.qz-title{font-size:13.5px;font-weight:800;color:#312e81;flex:1}
+.qz-bar{height:6px;background:#e0e7ff;border-radius:8px;overflow:hidden;margin-bottom:10px}
+.qz-bar i{display:block;height:100%;background:linear-gradient(90deg,#6366f1,#c026d3);border-radius:8px;transition:width .4s}
+.qz-main{display:grid;grid-template-columns:1.08fr 1fr;gap:14px;align-items:start}
+.qz-q{font-size:15px;line-height:1.55;font-weight:600;margin-bottom:10px;color:#1f2937}
+.blank{display:inline-block;min-width:70px;border-bottom:3px dotted #6366f1;margin:0 2px}
+.fillw{display:inline-block;background:#d1fae5;color:#065f46;border-radius:6px;padding:0 7px;font-weight:800}
+.bigw{font-size:30px;font-weight:900;color:#312e81;letter-spacing:.02em;margin:2px 0}
+.qz-opts{display:flex;flex-direction:column;gap:7px}
+.qz-opts.tf{flex-direction:row}.qz-opts.tf .qo{flex:1;justify-content:center}
+.qo{display:flex;align-items:center;gap:10px;text-align:left;border:2px solid #d6dafc;background:#fff;border-radius:12px;padding:8px 12px;font-size:13.5px;cursor:pointer;transition:.15s;color:#1f2937}
+.qo b{width:24px;height:24px;border-radius:8px;background:#e0e7ff;color:#3730a3;display:flex;align-items:center;justify-content:center;font-size:12px;flex:none}
+.qo:hover:not(.lock){border-color:#6366f1;background:#f5f6ff;transform:translateX(3px)}
+.qo.lock{cursor:default}
+.qo.ok{border-color:#34d399;background:var(--okbg);color:#064e3b;font-weight:700;animation:pop .35s}
+.qo.ok b{background:#10b981;color:#fff}
+.qo.bad{border-color:#f87171;background:var(--badbg);color:#7f1d1d;animation:shake .4s}
+.qo.bad b{background:#ef4444;color:#fff}
+.fb{border-radius:14px;padding:10px 12px;font-size:12.8px;line-height:1.55;max-height:270px;overflow:auto;position:sticky;top:0}
+.fb.idle{background:#f8faff;border:2px dashed #c7d2fe;text-align:center;color:var(--mut);padding:26px 14px}
+.fb.idle .idle-i{font-size:30px}
+.fb.ok{background:var(--okbg);border:1.5px solid #6ee7b7}
+.fb.bad{background:var(--badbg);border:1.5px solid #fca5a5}
+.fb-h{font-weight:900;font-size:14px;margin-bottom:5px}
+.fb.ok .fb-h{color:#047857}.fb.bad .fb-h{color:#b91c1c}
+.fb-h small{display:block;font-size:12px;font-weight:600;color:#374151;margin-top:1px}
+.fb-b{color:#1f2937}
+.fb-tr{margin-top:6px;background:rgba(255,255,255,.7);border-radius:8px;padding:5px 8px;color:#374151}
+.fb-note{margin-top:5px;color:#4338ca;font-weight:600}
+.fb-n{margin-top:9px;width:100%}
+table.mt{width:100%;border-collapse:collapse;font-size:12.3px;margin-top:3px}
+table.mt td{padding:2px 5px;border-bottom:1px dashed rgba(0,0,0,.1);vertical-align:top}
+table.mt tr.hit td{background:rgba(16,185,129,.16);font-weight:700}
+.qz-res{text-align:center;padding:6px 0}
+.ring{width:96px;height:96px;border-radius:50%;margin:4px auto 8px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;color:#312e81;background:conic-gradient(#10b981 var(--pct),#e0e7ff 0);position:relative}
+.ring:before{content:"";position:absolute;inset:9px;background:#fff;border-radius:50%}
+.ring span{position:relative}
+.qz-res h3{font-size:18px;color:#312e81}
+.qz-res .acts{display:flex;gap:8px;justify-content:center;margin:10px 0}
+.wl{text-align:left;margin-top:6px}
+.wl details{background:#fff;border:1px solid #fecaca;border-radius:10px;padding:5px 10px;margin-bottom:5px;font-size:12.5px}
+.wl summary{cursor:pointer;font-weight:700;color:#991b1b}
+.wl .fb-b{margin-top:5px}
+.confetti{position:fixed;top:-12px;font-size:18px;z-index:99;pointer-events:none;animation:fall 1.8s ease-in forwards}
+@keyframes fall{to{transform:translateY(500px) rotate(540deg);opacity:0}}
+
+/* fill */
+.fl-top{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.fl-top .t{font-size:13.5px;font-weight:800;color:#312e81;flex:1;min-width:200px}
+.bank{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0;padding:8px 10px;background:#fff;border:2px dashed #c7d2fe;border-radius:12px}
+.bk{border:none;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border-radius:999px;padding:5px 14px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 3px 8px rgba(99,102,241,.3);transition:.15s}
+.bk:hover:not(.used){transform:translateY(-2px)}
+.bk.used{background:#e5e7eb;color:#9ca3af;box-shadow:none;cursor:default;text-decoration:line-through}
+.fx{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px;padding:7px 4px;border-bottom:1px dashed var(--line);font-size:14px;line-height:2}
+.fx .n{width:22px;height:22px;border-radius:50%;background:#e0e7ff;color:#3730a3;font-size:11px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.fi{width:104px;border:none;border-bottom:2.5px dotted #6366f1;background:#f5f6ff;padding:1px 6px;font-size:14px;text-align:center;outline:none;border-radius:6px 6px 0 0;color:#1e1b4b;font-weight:700}
+.fi:focus{background:#e0e7ff;border-bottom-style:solid}
+.fi.good,.slot.good{border-bottom:2.5px solid #10b981;background:var(--okbg);color:#065f46}
+.fi.bad,.slot.bad{border-bottom:2.5px solid #ef4444;background:var(--badbg);color:#991b1b}
+.slot{min-width:104px;border:none;border-bottom:2.5px dotted #6366f1;background:#f5f6ff;padding:1px 8px;font-size:14px;font-weight:800;cursor:pointer;border-radius:6px 6px 0 0;color:#4338ca;height:26px}
+.slot.act{background:#e0e7ff;border-bottom-style:solid;box-shadow:0 0 0 3px rgba(99,102,241,.25)}
+.fxfb{flex-basis:100%;font-size:12.5px;line-height:1.55;border-radius:10px;padding:5px 10px;margin:0 0 2px 28px}
+.fxfb.ok{background:var(--okbg);border-left:3px solid #10b981;color:#064e3b}
+.fxfb.bad{background:var(--badbg);border-left:3px solid #ef4444;color:#7f1d1d}
+.fxfb .tr{display:block;color:#4b5563;font-style:italic}
+
+/* sentence builder */
+.bd-line{min-height:56px;border:2px dashed #a5b4fc;border-radius:14px;background:#fff;padding:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0}
+.bd-line.ok{border-color:#34d399;background:var(--okbg);border-style:solid}
+.bd-line.bad{border-color:#f87171;background:var(--badbg);border-style:solid}
+.bd-pool{display:flex;flex-wrap:wrap;gap:7px;min-height:44px;padding:4px}
+.wd{border:none;background:#fff;border:2px solid #c7d2fe;color:#3730a3;border-radius:10px;padding:5px 12px;font-size:14px;font-weight:700;cursor:pointer;transition:.15s;box-shadow:0 2px 0 #c7d2fe}
+.wd:hover{transform:translateY(-2px);border-color:#6366f1}
+.wd.in{background:#eef2ff}
+.bd-hint{color:#9ca3af;font-size:12.5px}
+
+/* signals */
+.sg{display:flex;flex-wrap:wrap;gap:2px 1px;align-items:center;padding:8px 6px;border-bottom:1px dashed var(--line);font-size:14.5px;line-height:1.9}
+.sg .n{width:22px;height:22px;border-radius:50%;background:#e0e7ff;color:#3730a3;font-size:11px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-right:3px}
+.tok{padding:0 4px;border-radius:7px;cursor:pointer;transition:.12s}
+.tok:hover{background:#e0e7ff}
+.tok.sig{background:#fde68a;color:#78350f;font-weight:800;box-shadow:inset 0 -3px 0 #f59e0b;cursor:default}
+.tok.err{background:#fee2e2;animation:shake .35s}
+.sgnote{margin-left:6px;font-size:11.5px;background:#ede9fe;color:#5b21b6;border-radius:999px;padding:1px 9px;font-weight:700}
+
+/* grammar theory */
+.gc{border-radius:14px;padding:10px 13px;background:#fff;border:1px solid var(--line);border-top:5px solid #6366f1}
+.gc.t2{border-top-color:#db2777}.gc.t3{border-top-color:#0d9488}
+.gc .ic{font-size:24px}.gc h3{font-size:14px;margin:2px 0 4px;color:#312e81}
+.gc p{font-size:12.8px;line-height:1.55}
+.gex{margin-top:6px;background:#f5f3ff;border-radius:9px;padding:6px 9px;font-size:13px;line-height:1.5}
+.gex i{display:block;color:#6b7280;font-size:12px}
+.scale{display:flex;gap:6px;align-items:stretch;margin:6px 0}
+.sc{flex:1;border-radius:11px;padding:7px 4px;text-align:center;color:#fff;font-size:12.5px;font-weight:800;line-height:1.3}
+.sc small{display:block;font-weight:600;font-size:10.5px;opacity:.92}
+.sc.a{background:#4f46e5}.sc.b{background:#6366f1}.sc.c{background:#8b5cf6}.sc.d{background:#a78bfa}.sc.e{background:#c4b5fd;color:#4c1d95}
+.fm{display:inline-block;font-weight:800;color:#3730a3;background:#e0e7ff;border-radius:8px;padding:1px 9px;margin-bottom:3px}
+table.t{width:100%;border-collapse:separate;border-spacing:0;font-size:12.8px;line-height:1.5;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+table.t th{background:linear-gradient(90deg,#eef2ff,#faf5ff);color:#312e81;padding:7px 10px;text-align:left}
+table.t td{padding:7px 10px;border-top:1px solid var(--line);vertical-align:top}
+table.t i{color:#6b7280;display:block;font-size:12px}
+
+/* pronunciation */
+.pcard{border-radius:16px;overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:0 4px 14px rgba(67,56,202,.08)}
+.pcard .ph2{display:flex;align-items:center;gap:10px;padding:9px 13px;color:#fff}
+.pcard.c1 .ph2{background:linear-gradient(90deg,#4f46e5,#7c3aed)}.pcard.c2 .ph2{background:linear-gradient(90deg,#db2777,#f59e0b)}
+.pcard .sym{font-family:var(--ph);font-size:27px;font-weight:700;background:rgba(255,255,255,.22);border-radius:11px;padding:0 11px}
+.pcard .ph2 b{display:block;font-size:13px}.pcard .ph2 small{font-size:11.5px;opacity:.92}
+.pbody{padding:9px 13px 11px}
+.pbody figure{border:1px solid var(--line);border-radius:12px;padding:5px;text-align:center;background:#fff;margin-bottom:8px}
+.pbody figure img{width:100%;height:108px;object-fit:contain}
+.pbody figcaption{font-size:11.5px;color:var(--mut)}
+.how{font-size:12.5px;line-height:1.55;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:6px 10px;margin-bottom:7px}
+.plist{list-style:none}
+.plist li{font-size:13.3px;padding:4px 0;border-bottom:1px dashed var(--line)}
+.plist li:last-child{border:none}
+.pw{font-weight:800;color:#312e81}.pp{font-family:var(--ph);color:var(--mut);font-size:12.5px}
+.pw u,.pp u{color:#be123c}
+.plist i{font-size:11px;color:#7c3aed}
+.pics{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
+.pic{position:relative;border:2px solid var(--line);border-radius:14px;padding:8px 7px 7px;text-align:center;background:#fff;display:flex;flex-direction:column;align-items:center;gap:5px;transition:.2s}
+.pic img{height:64px;max-width:100%;object-fit:contain}
+.pic .pn{position:absolute;top:5px;left:6px;font-size:10.5px;font-weight:900;background:#e0e7ff;color:#3730a3;border-radius:999px;padding:0 7px}
+.pic input{width:100%;padding:4px 6px;border:1.5px solid #c7d2fe;border-radius:8px;font-size:12.5px;text-align:center;outline:none}
+.pic input:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.pic input.good{border-color:#10b981;background:var(--okbg)}.pic input.bad{border-color:#ef4444;background:var(--badbg)}
+.cols{display:flex;gap:5px}
+.cb{font-family:var(--ph);border:1.5px solid #c7d2fe;background:#fff;border-radius:8px;padding:2px 11px;font-size:13px;cursor:pointer;color:#4338ca;font-weight:700}
+.cb.sel{background:#4f46e5;color:#fff;border-color:#4f46e5}
+.pic.okc{background:var(--okbg);border-color:#6ee7b7}
+.pic.egp{background:#f5f3ff;border-color:#c4b5fd}
+.pmsg{font-size:11px;color:var(--mut);min-height:28px;line-height:1.35}
+.pic.okc .pmsg{color:#065f46}
+.tchip{display:inline-block;margin:2px;background:#e0e7ff;color:#3730a3;border-radius:999px;padding:1px 10px;font-size:12px;font-weight:800;animation:pop .35s}
+
+/* speaking / writing */
+.pickrow{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 8px}
+.pk{border:2px solid #d6dafc;background:#fff;border-radius:999px;padding:5px 13px;font-size:12.5px;font-weight:700;cursor:pointer;color:#3730a3;transition:.15s}
+.pk:hover{border-color:#6366f1}.pk.on{background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff;border-color:transparent;box-shadow:0 3px 9px rgba(79,70,229,.3)}
+.out{background:linear-gradient(135deg,#fffbeb,#fef3c7);border:1px solid #fcd34d;border-radius:14px;padding:11px 14px;font-size:14px;line-height:1.7;color:#1f2937}
+.cue{display:flex;gap:8px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 11px;font-size:13px}
+.cue b{color:#7c3aed}
+.ck{display:flex;gap:9px;align-items:center;padding:7px 10px;border:1.5px solid var(--line);border-radius:11px;margin-bottom:6px;background:#fff;cursor:pointer;font-size:13px;transition:.15s}
+.ck:hover{border-color:#a5b4fc}.ck.on{background:var(--okbg);border-color:#6ee7b7}
+.ck .bx{width:20px;height:20px;border-radius:6px;border:2px solid #c7d2fe;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;flex:none}
+.ck.on .bx{background:#10b981;border-color:#10b981}
+.wr{display:flex;flex-wrap:wrap;gap:6px;align-items:flex-start;padding:7px 4px;border-bottom:1px dashed var(--line)}
+.wr .cues{flex-basis:100%;font-size:13px;color:#4338ca;font-weight:700;padding-left:28px}
+.wr input{flex:1;min-width:260px;border:1.5px solid #c7d2fe;border-radius:10px;padding:6px 10px;font-size:13.5px;outline:none}
+.wr input:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.wr input.good{border-color:#10b981;background:var(--okbg)}.wr input.near{border-color:#f59e0b;background:var(--ambg)}
+.wr .n{width:22px;height:22px;border-radius:50%;background:#e0e7ff;color:#3730a3;font-size:11px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-top:5px}
+textarea.ta{width:100%;min-height:110px;border:2px solid #c7d2fe;border-radius:14px;padding:10px 12px;font-size:14px;line-height:1.6;outline:none;resize:vertical}
+textarea.ta:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.wc{display:flex;align-items:center;gap:8px;margin:6px 0}
+.wcbar{flex:1;height:8px;background:#e5e7eb;border-radius:8px;overflow:hidden;position:relative}
+.wcbar i{display:block;height:100%;background:#f59e0b;border-radius:8px;transition:width .2s,background .2s}
+.wcn{font-weight:900;font-size:13px;min-width:92px;text-align:right}
+
+/* listening */
+.player{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#eef2ff,#faf5ff);border:1px solid #c7d2fe;border-radius:16px;padding:12px 14px;margin-bottom:8px}
+.play{width:50px;height:50px;border-radius:50%;border:none;background:linear-gradient(135deg,#4f46e5,#c026d3);color:#fff;font-size:20px;cursor:pointer;box-shadow:0 6px 16px rgba(79,70,229,.4);flex:none}
+.play:hover{transform:scale(1.07)}
+.ss{padding:1px 2px;border-radius:5px;transition:.2s}.ss.now{background:#fde68a}
+.eq{display:flex;gap:3px;align-items:flex-end;height:22px}
+.eq i{width:4px;background:#6366f1;border-radius:3px;height:6px}
+.eq.on i{animation:eq .8s ease-in-out infinite}.eq.on i:nth-child(2){animation-delay:.15s}.eq.on i:nth-child(3){animation-delay:.3s}.eq.on i:nth-child(4){animation-delay:.45s}
+@keyframes eq{50%{height:22px}}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(30,27,75,.55);display:flex;align-items:center;justify-content:center;z-index:50;animation:fade .2s}
+.mbox{width:min(560px,92%);max-height:430px;overflow:auto;background:#fff;border-radius:20px;padding:18px 22px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.mbox h2{color:#312e81;font-size:19px}.mbox .sub{color:var(--mut);font-size:12.5px;margin-bottom:8px}
+.obj{display:flex;gap:10px;align-items:flex-start;padding:6px 0;border-bottom:1px dashed var(--line);font-size:13px;line-height:1.5}
+.obj .oi{font-size:19px}.obj b{color:#4338ca}
+
+@media (max-width:760px){
+  .app{flex-direction:column}.side{width:100%;flex-direction:row;align-items:center;padding:6px 8px;gap:6px;overflow-x:auto}
+  .logo,.prog{display:none}.nav{flex-direction:row;flex:none}.ni{width:auto;flex:none}
+  .grid2,.grid3,.split,.qz-main,.mg{grid-template-columns:1fr}.pics{grid-template-columns:repeat(2,1fr)}.vrow{grid-template-columns:40px 1fr}.vrow .vright{grid-column:1/-1}
+  .body.split{overflow:auto}.split>div{height:auto;overflow:visible}
+}
+
+/* ---- extra styles for Unit 2 / Unit 3 ---- */
+.so-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+.so-col{border:2px dashed #c7d2fe;border-radius:16px;background:#fff;min-height:128px;cursor:pointer;transition:.15s;overflow:hidden}
+.so-col:hover{border-color:#6366f1;background:#f8f9ff}
+.so-h{font-size:19px;font-weight:800;text-align:center;padding:6px;background:linear-gradient(90deg,#eef2ff,#faf5ff);color:#4338ca;border-bottom:1px solid var(--line)}
+.so-b{padding:8px;display:flex;flex-wrap:wrap;gap:6px;min-height:70px}
+.wd.selw{background:#4f46e5;color:#fff;border-color:#4f46e5;box-shadow:0 0 0 3px rgba(79,70,229,.25)}
+.wd.okw{background:#ecfdf5;border-color:#34d399;color:#065f46;box-shadow:0 2px 0 #34d399}
+.wd.badw{background:#fef2f2;border-color:#f87171;color:#991b1b;box-shadow:0 2px 0 #f87171}
+.tg{padding:1px 5px;border-radius:7px}
+.tg.tg0{background:#dbeafe;color:#1e3a8a;font-weight:800;box-shadow:inset 0 -3px 0 #3b82f6}
+.tg.tg1{background:#fce7f3;color:#831843;font-weight:800;box-shadow:0 0 0 2px #ec4899}
+.tg.tgok{outline:2px solid #34d399;outline-offset:1px}
+.tg.tgbad{background:#fee2e2;color:#991b1b;outline:2px dashed #ef4444;outline-offset:1px}
+.tg sup{font-size:9.5px;font-weight:800;margin-left:2px;color:#b91c1c}
+.tgleg{margin-left:6px}.tgleg .tok{cursor:default;margin-right:4px}
+.sg .fxfb{margin-left:0;flex-basis:100%}
+.formula{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;margin:8px 0}
+.formula .fm{margin:0}.formula .cj{background:linear-gradient(90deg,#4f46e5,#c026d3);color:#fff}
+.cj-card{border-radius:14px;padding:9px 13px;background:#fff;border:1px solid var(--line);border-left:6px solid #6366f1;font-size:12.8px;line-height:1.5}
+.cj-card b{font-size:18px;color:#312e81;letter-spacing:.03em}.cj-card small{color:#6b7280;font-weight:700;margin-left:4px}
+.cj-card p{font-weight:700;color:#4338ca;margin:2px 0}.cj-card i{display:block;color:#374151}
+.cj-card.b{border-left-color:#ec4899}.cj-card.c{border-left-color:#10b981}.cj-card.d{border-left-color:#f59e0b}
+.cj-card u{text-decoration-color:#e11d48;font-weight:800}
+.howl{margin:0 0 8px 18px;font-size:12.5px;line-height:1.55;color:#1f2937}
+.figs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
+.figs figure{border:1px solid var(--line);border-radius:10px;padding:3px;background:#fff}.figs img{width:100%;height:78px;object-fit:contain}
+.txt2{font-size:13.5px;line-height:1.7;margin-top:6px;color:#1f2937}
+.gc h3 small{font-size:11px;font-weight:600;margin-left:3px}
+.mc.vi{font-size:12.5px;line-height:1.35}
+
+.gl{list-style:none;font-size:12.8px}
+.gl li{padding:4px 0 4px 12px;border-left:3px solid #c7d2fe;margin:5px 0;line-height:1.45}
+.gl li span{color:#6b7280;font-size:12px}
+
+.fi{width:150px}
+
+.seg{display:inline-block;border-bottom:3px solid #6366f1;border-radius:3px;padding:0 3px;margin:0 1px;background:#eef2ff;position:relative}
+.seg sup{font-size:10px;font-weight:900;color:#fff;background:#4f46e5;border-radius:999px;padding:0 5px;margin-right:3px}
+.dl{display:flex;gap:10px;align-items:flex-start;margin-bottom:7px}
+.dl b{flex:none;min-width:48px;text-align:center;border-radius:999px;background:#e0e7ff;color:#3730a3;padding:2px 8px;font-size:11.5px}
+.dl div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px 10px;font-size:13px;line-height:1.5}
+.dl div i{display:block;color:var(--mut);font-size:12px}
+.dl.r{flex-direction:row-reverse}.dl.r b{background:#fce7f3;color:#9d174d}.dl.r div{background:#fffafc}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px}
+.step{display:flex;gap:8px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px;font-size:12.5px;line-height:1.4}
+.step b{flex:none;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#4f46e5,#c026d3);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px}
+.poll{display:grid;grid-template-columns:1fr auto 26px auto 90px 36px;gap:6px;align-items:center;margin-bottom:6px;font-size:12.5px}
+.pl{font-weight:700;color:#312e81}.pn2{text-align:center}.pbar2{height:10px;background:#e5e7eb;border-radius:8px;overflow:hidden}.pbar2 i{display:block;height:100%;background:linear-gradient(90deg,#6366f1,#c026d3);transition:width .3s}.pp2{font-size:11.5px;color:var(--mut)}
+@media (max-width:760px){.steps{grid-template-columns:1fr 1fr}.poll{grid-template-columns:1fr auto 26px auto}.pbar2,.pp2{display:none}}
+
+.nf{margin-bottom:8px}.nf label{display:block;font-size:12.5px;font-weight:800;color:#312e81;margin-bottom:3px}
+textarea.nta{min-height:0;font-size:13.5px;padding:7px 10px;border-radius:10px}
+.stt{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:4px}
+.mycard{background:linear-gradient(135deg,#fffbeb,#fdf2f8);border:2px solid #fcd34d;border-radius:16px;padding:12px 16px;font-size:13.5px;line-height:1.6;box-shadow:0 8px 20px rgba(217,119,6,.12);transform:rotate(-.4deg)}
+.mycard p{margin:4px 0}.cardh{font-weight:900;font-size:15px;color:#9d174d;margin-bottom:4px}
+.mycard table.t th{width:36%;text-align:left}
+.rt{display:flex;align-items:center;gap:10px;justify-content:space-between;background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px 12px;margin-bottom:6px;flex-wrap:wrap}
+.rtq{font-size:13px;flex:1;min-width:220px}.rtb{display:flex;gap:4px}
+.face{border:2px solid transparent;background:#f3f4ff;border-radius:50%;width:38px;height:38px;font-size:21px;cursor:pointer;transition:.15s;filter:grayscale(.7)}
+.face:hover{transform:scale(1.15);filter:none}.face.on{border-color:#6366f1;background:#e0e7ff;filter:none;transform:scale(1.12)}
+.drawcard{min-height:130px;border-radius:20px;background:linear-gradient(135deg,#eef2ff,#faf5ff);border:2px dashed #a5b4fc;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px 20px;gap:6px;transition:.2s}
+.drawcard.spin{background:linear-gradient(135deg,#fef3c7,#fce7f3);border-style:solid;animation:pop .2s infinite}
+.dc-t{font-size:20px;font-weight:900;color:#312e81;line-height:1.35}.dc-s{font-size:13px;color:#6b7280}
+.timerbox{background:#fff;border:2px solid #c7d2fe;border-radius:18px;padding:12px;text-align:center}
+.tm-l{font-size:12px;font-weight:800;color:#6b7280;text-transform:uppercase;letter-spacing:.06em}.tm-t{font-size:44px;font-weight:900;color:#4338ca;font-variant-numeric:tabular-nums;margin:2px 0 8px}
+.stepsv div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px 10px;margin-bottom:5px;font-size:13px}
+.so-cols .so-h{font-size:14px}
+@media (max-width:760px){.rtq{min-width:100%}}
+
+.shop{display:grid;grid-template-columns:repeat(3,1fr);gap:4px 12px}.shopg{min-width:0}
+.shopi{display:flex;justify-content:space-between;align-items:center;width:100%;gap:6px;border:2px solid #d6dafc;background:#fff;border-radius:10px;padding:4px 9px;margin-bottom:4px;font-size:12.5px;cursor:pointer;text-align:left;transition:.15s;color:#1f2937}
+.shopi b{color:#6b7280;font-size:12px;white-space:nowrap}.shopi:hover:not(.dis):not(:disabled){border-color:#6366f1;background:#f5f6ff}
+.shopi.on{background:#ecfdf5;border-color:#34d399}.shopi.on b{color:#047857}.shopi.dis{opacity:.4;cursor:not-allowed}
+.mrr{display:flex;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 12px;margin-bottom:6px;font-size:13px}
+.mrp{width:48px;height:48px;border-radius:50%;color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;flex:none}
+.bpr{display:flex;gap:8px;align-items:center;margin-bottom:5px}.bpr>span{min-width:96px;font-size:12.5px;font-weight:700;color:#312e81}.bpr .search{max-width:170px}
+@media (max-width:760px){.shop{grid-template-columns:1fr}}
+
+.hintc{display:flex;gap:10px;align-items:center;background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:8px 12px;margin-bottom:6px;font-size:13px;line-height:1.5}
+.hintc b{flex:none;background:#f59e0b;color:#fff;border-radius:999px;padding:1px 9px;font-size:12px}
+.hintc.lock{background:#f3f4f6;border-color:#e5e7eb;color:#9ca3af}.hintc.lock b{background:#9ca3af}
+.poster{text-align:center;padding:10px 4px}.poster .pt{font-size:19px;font-weight:900;color:#065f46;margin:6px 0;line-height:1.4}.poster .pt2{font-size:15px;color:#047857;font-weight:700}.poster .ps{font-size:12px;color:#6b7280;margin-top:6px}
+
+</style>
+<style>.source{background:white;border:1px solid var(--line);border-radius:12px;padding:16px;margin:8px 0;line-height:1.7;font-size:14px}.source p{margin:6px 0}.source table{border-collapse:collapse;width:100%;min-width:480px}.source td{border:1px solid #d6dafc;padding:8px;vertical-align:top}.tablewrap{overflow:auto}.nav{overflow:auto}.side small{display:block;font-size:10px}.studytextarea{width:100%;min-height:160px;padding:14px;border:1px solid #c7d2fe;border-radius:10px;margin:10px 0;font-size:14px}@media(max-width:650px){.side{width:100%}.head,.body{padding-left:10px;padding-right:10px}.qz-main,.grid2{grid-template-columns:1fr}.source{padding:10px}.vrow{grid-template-columns:1fr}.head h1{font-size:16px}}.main{min-height:0}.vrow{grid-template-columns:minmax(0,30%) minmax(0,24%) minmax(0,1fr)}.vrow>div{min-width:0;overflow-wrap:anywhere}@media(max-width:760px){.side{width:100%}.vrow{grid-template-columns:1fr}.nav{overflow:visible}}.source td p{overflow-wrap:anywhere}</style></head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="logo" onclick="showObjectives()" title="Xem mục tiêu bài học">
+      <div class="lg">🎯</div><div><b>UNIT 7</b><small>Traffic</small></div>
+    </div>
+    <nav class="nav" id="nav"></nav>
+    <div class="prog"><div class="pbar"><i id="pbar"></i></div><small id="ptxt"></small></div>
+  </aside>
+  <main class="main">
+    <header class="head"><div class="hi" id="hi"></div><div><h1 id="ttl"></h1><p id="dsc"></p></div></header>
+    <div class="subnav" id="subnav"></div>
+    <div class="body" id="body"></div>
+  </main>
+</div>
+<script>/* ================= utilities ================= */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const normA = s => s.toLowerCase().replace(/[’‘`]/g, "'").replace(/[.,!?;:"“”]/g, '').replace(/\s+/g, ' ').trim();
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const hl = s => s.replace(/\{\{(.+?)\}\}/g, '<mark>$1</mark>');
+const plain = s => s.replace(/\{\{|\}\}/g, '').replace(/<[^>]+>/g, '');
+function say(t, rate) { try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-GB'; u.rate = rate || .9; speechSynthesis.speak(u); } catch (e) {} }
+function sayEl(el) { say(el.dataset.w); }
+const spk = w => `<button class="spk" data-w="${esc(plain(w))}" onclick="sayEl(this)" title="Nghe">🔊</button>`;
+function confetti() {
+  const em = ['🎉', '✨', '⭐', '🎊', '💜', '🌟'];
+  for (let i = 0; i < 22; i++) {
+    const s = document.createElement('span'); s.className = 'confetti'; s.textContent = em[i % em.length];
+    s.style.left = (10 + Math.random() * 80) + '%'; s.style.animationDelay = (Math.random() * .5) + 's'; s.style.fontSize = (14 + Math.random() * 14) + 'px';
+    document.body.appendChild(s); setTimeout(() => s.remove(), 2400);
+  }
+}
+
+/* ================= component registry & progress ================= */
+const COMP = {}, DONE = {};
+function markDone(id, s, t) { DONE[id] = { s, t }; navRender(); }
+function hydrate() { document.querySelectorAll('.comp').forEach(el => { const c = COMP[el.dataset.id]; if (c) c.render(el); }); }
+function rerender(id) { const el = document.querySelector(`.comp[data-id="${id}"]`); if (el) COMP[id].render(el); }
+const slot = id => `<div class="comp" data-id="${id}"></div>`;
+
+/* ================= QUIZ (one question at a time, explanation panel) ================= */
+function fillQ(q, txt) {
+  const parts = txt.split(' - '); let k = 0;
+  return q.replace(/_{3,}/g, () => `<span class="fillw">${parts[Math.min(k++, parts.length - 1)]}</span>`);
+}
+function quiz(id, cfg) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { i: 0, score: 0, sel: null, res: [], fin: false };
+  if (prev) cfg.items = prev.cfg.items; else if (cfg.regen) cfg.items = cfg.regen();
+  COMP[id] = { st, cfg, render: el => qzRender(id, el) };
+  return slot(id);
+}
+function qzRender(id, el) {
+  const { st, cfg } = COMP[id], items = cfg.items, n = items.length;
+  if (st.fin) { el.innerHTML = qzResult(id); return; }
+  const it = items[st.i], L = cfg.labels || ['A', 'B', 'C', 'D'], ans = st.sel !== null, ok = ans && st.sel === it.a;
+  const opts = it.opts.map((o, j) => {
+    let c = 'qo'; if (ans) { c += ' lock'; if (j === it.a) c += ' ok'; else if (j === st.sel) c += ' bad'; }
+    return `<button class="${c}" onclick="qzPick('${id}',${j})"><b>${L[j]}</b><span>${o}</span></button>`;
+  }).join('');
+  const q = ans ? fillQ(it.q, it.opts[it.a]) : it.q.replace(/_{3,}/g, '<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>');
+  const fb = ans
+    ? `<div class="fb ${ok ? 'ok' : 'bad'}"><div class="fb-h">${ok ? '🎉 Chính xác!' : '❌ Chưa đúng'}<small>Đáp án đúng: <b>${L[it.a]}. ${it.opts[it.a]}</b></small></div><div class="fb-b">${it.exp || ''}</div></div>
+       <button class="btn solid fb-n" onclick="qzNext('${id}')">${st.i === n - 1 ? 'Xem kết quả →' : 'Câu tiếp theo →'}</button>`
+    : `<div class="fb idle"><div class="idle-i">💡</div><p>Chọn một đáp án.<br>Giải thích và nghĩa sẽ hiện ở đây.</p></div>`;
+  el.innerHTML = `<div class="qz">
+    <div class="qz-top"><span class="qz-title">${cfg.title}</span><span class="chip-s">Câu ${st.i + 1}/${n}</span><span class="chip-s ok">★ ${st.score}</span></div>
+    <div class="qz-bar"><i style="width:${(st.i + (ans ? 1 : 0)) / n * 100}%"></i></div>
+    ${cfg.note ? `<div class="note">${cfg.note}</div>` : ''}
+    <div class="qz-main"><div><div class="qz-q">${q}</div><div class="qz-opts ${cfg.tf ? 'tf' : ''}">${opts}</div></div><div>${fb}</div></div></div>`;
+}
+function qzPick(id, j) {
+  const { st, cfg } = COMP[id]; if (st.sel !== null) return;
+  st.sel = j; st.res[st.i] = j; if (j === cfg.items[st.i].a) st.score++;
+  rerender(id);
+}
+function qzNext(id) {
+  const { st, cfg } = COMP[id]; st.sel = null; st.i++;
+  if (st.i >= cfg.items.length) { st.fin = true; markDone(id, st.score, cfg.items.length); if (st.score === cfg.items.length) confetti(); }
+  rerender(id);
+}
+function qzRestart(id) {
+  const c = COMP[id]; Object.assign(c.st, { i: 0, score: 0, sel: null, res: [], fin: false });
+  if (c.cfg.regen) c.cfg.items = c.cfg.regen();
+  rerender(id);
+}
+function qzResult(id) {
+  const { st, cfg } = COMP[id], n = cfg.items.length, pct = Math.round(st.score / n * 100), L = cfg.labels || ['A', 'B', 'C', 'D'];
+  const msg = pct === 100 ? 'Xuất sắc! 🏆' : pct >= 80 ? 'Rất tốt! 👏' : pct >= 50 ? 'Khá ổn, cố thêm chút nữa! 💪' : 'Đừng nản, thử lại nhé! 🌱';
+  const wrong = cfg.items.map((it, i) => ({ it, i })).filter(x => st.res[x.i] !== x.it.a);
+  return `<div class="qz-res"><div class="ring" style="--pct:${pct}%"><span>${st.score}/${n}</span></div><h3>${msg}</h3>
+    <p class="muted">${esc(plain(cfg.title))}</p>
+    <div class="acts"><button class="btn solid" onclick="qzRestart('${id}')">↺ Làm lại</button></div>
+    ${wrong.length ? `<div class="wl"><div class="colh">Các câu cần xem lại (${wrong.length})</div>${wrong.map(({ it, i }) => `<details><summary>Câu ${i + 1}: ${fillQ(it.q, it.opts[it.a])}</summary><div class="fb-b">Bạn chọn: <b>${L[st.res[i]]}. ${it.opts[st.res[i]]}</b> · Đáp án: <b>${L[it.a]}. ${it.opts[it.a]}</b><br>${it.exp || ''}</div></details>`).join('')}</div>` : '<p class="muted">Bạn đã trả lời đúng tất cả các câu 🎯</p>'}</div>`;
+}
+document.addEventListener('keydown', e => {
+  if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+  const m = document.querySelector('.comp .qz-main'); if (!m) return;
+  const id = m.closest('.comp').dataset.id, { st, cfg } = COMP[id], k = e.key.toLowerCase();
+  if (st.sel === null) {
+    const labs = (cfg.labels || ['A', 'B', 'C', 'D']).map(x => x.toLowerCase());
+    let j = labs.indexOf(k); if (j < 0) j = ['1', '2', '3', '4'].indexOf(k);
+    if (j >= 0 && j < cfg.items[st.i].opts.length) qzPick(id, j);
+  } else if (['enter', 'arrowright', ' '].includes(k)) { e.preventDefault(); qzNext(id); }
+});
+function meanExp(opts, mean, a, tr, note) {
+  return `<table class="mt">${opts.map((o, j) => `<tr class="${j === a ? 'hit' : ''}"><td>${'ABCD'[j]}. <b>${o}</b></td><td>${mean[j]}</td></tr>`).join('')}</table>${note ? `<p class="fb-note">${note}</p>` : ''}${tr ? `<p class="fb-tr">🇻🇳 ${tr}</p>` : ''}`;
+}
+const ruleExp = (rule, tr) => `<p>${rule}</p>${tr ? `<p class="fb-tr">🇻🇳 ${tr}</p>` : ''}`;
+
+/* ================= FILL (typing or tap-to-fill word bank) ================= */
+function fill(id, cfg) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { vals: {}, checked: false, res: [], active: null, score: 0 };
+  COMP[id] = { st, cfg, render: el => flRender(id, el) };
+  return slot(id);
+}
+function flRender(id, el) {
+  const { st, cfg } = COMP[id], bank = cfg.bank, items = cfg.items;
+  const used = Object.values(st.vals);
+  const rows = items.map((it, i) => {
+    let k = 0;
+    const q = it.q.replace(/___/g, () => {
+      const key = i + '-' + k, v = st.vals[key] || '', kk = k++;
+      const cls = st.checked ? (st.res[i] && st.res[i][kk] ? ' good' : ' bad') : '';
+      if (bank) return `<button class="slot${st.active === key ? ' act' : ''}${cls}" onclick="flSlot('${id}','${key}')">${v || '&nbsp;'}</button>`;
+      return `<input class="fi${cls}" data-key="${key}" value="${esc(v)}" autocomplete="off" spellcheck="false" oninput="COMP['${id}'].st.vals['${key}']=this.value" onkeydown="flKey(event,'${id}')">`;
+    });
+    let fb = '';
+    if (st.checked) {
+      const ok = st.res[i] && st.res[i].every(Boolean);
+      fb = `<div class="fxfb ${ok ? 'ok' : 'bad'}">${ok ? '✓ Đúng.' : '✗ Đáp án: <b>' + it.a.map(x => x.split('/')[0]).join(' … ') + '</b>.'} ${it.exp || ''}${it.tr ? `<span class="tr">🇻🇳 ${it.tr}</span>` : ''}</div>`;
+    }
+    return `<div class="fx"><span class="n">${i + 1}</span><span>${q}</span>${fb}</div>`;
+  }).join('');
+  el.innerHTML = `<div class="fl-top"><span class="t">${cfg.title}</span>
+      <span class="chip-s ok" ${st.checked ? '' : 'style="display:none"'}>★ ${st.score}/${items.length}</span>
+      <button class="btn solid" onclick="flCheck('${id}')">✔ Kiểm tra</button><button class="btn" onclick="flReveal('${id}')">💡 Xem đáp án</button><button class="btn" onclick="flReset('${id}')">↺ Làm lại</button></div>
+    ${cfg.note ? `<div class="note">${cfg.note}</div>` : ''}
+    ${bank ? `<div class="bank">${bank.map(w => `<button class="bk${used.includes(w) ? ' used' : ''}" onclick="flPut('${id}',this.dataset.w)" data-w="${esc(w)}">${w}</button>`).join('')}</div>` : ''}
+    ${rows}`;
+}
+function flKey(e, id) {
+  if (e.key !== 'Enter') return;
+  const ins = [...document.querySelectorAll(`.comp[data-id="${id}"] input.fi`)], i = ins.indexOf(e.target);
+  if (i < ins.length - 1) ins[i + 1].focus(); else flCheck(id);
+}
+function flSlot(id, key) {
+  const { st } = COMP[id]; if (st.checked) return;
+  if (st.vals[key]) { delete st.vals[key]; st.active = key; } else st.active = st.active === key ? null : key;
+  rerender(id);
+}
+function flPut(id, w) {
+  const { st, cfg } = COMP[id]; if (st.checked || Object.values(st.vals).includes(w)) return;
+  let key = st.active;
+  if (!key || st.vals[key]) { key = null; cfg.items.forEach((it, i) => it.a.forEach((_, k) => { const kk = i + '-' + k; if (!key && !st.vals[kk]) key = kk; })); }
+  if (!key) return;
+  st.vals[key] = w; st.active = null;
+  let nx = null; cfg.items.forEach((it, i) => it.a.forEach((_, k) => { const kk = i + '-' + k; if (!nx && !st.vals[kk]) nx = kk; }));
+  st.active = nx; rerender(id);
+}
+function flCheck(id) {
+  const { st, cfg } = COMP[id]; let s = 0;
+  st.res = cfg.items.map((it, i) => it.a.map((a, k) => a.split('/').map(normA).includes(normA(st.vals[i + '-' + k] || ''))));
+  cfg.items.forEach((it, i) => { if (st.res[i].every(Boolean)) s++; });
+  st.score = s; st.checked = true; st.active = null; markDone(id, s, cfg.items.length);
+  if (s === cfg.items.length) confetti(); rerender(id);
+}
+function flReveal(id) {
+  const { st, cfg } = COMP[id];
+  cfg.items.forEach((it, i) => it.a.forEach((a, k) => { st.vals[i + '-' + k] = a.split('/')[0]; })); flCheck(id);
+}
+function flReset(id) { const { st } = COMP[id]; Object.assign(st, { vals: {}, checked: false, res: [], active: null, score: 0 }); rerender(id); }
+
+/* ================= SENTENCE BUILDER ================= */
+function builder(id, cfg) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { i: 0, score: 0, fin: false, checked: false, ok: false, placed: [], pool: null };
+  if (!st.pool) st.pool = bdShuffle(cfg.items[0].w);
+  COMP[id] = { st, cfg, render: el => bdRender(id, el) };
+  return slot(id);
+}
+function bdShuffle(w) { let p, tries = 0; do { p = shuffle(w.map((x, i) => i)); tries++; } while (p.join() === w.map((x, i) => i).join() && tries < 9); return p; }
+function bdRender(id, el) {
+  const { st, cfg } = COMP[id], items = cfg.items, n = items.length;
+  if (st.fin) { el.innerHTML = `<div class="qz-res"><div class="ring" style="--pct:${Math.round(st.score / n * 100)}%"><span>${st.score}/${n}</span></div><h3>${st.score === n ? 'Hoàn hảo! 🏆' : 'Hoàn thành! 👏'}</h3><p class="muted">${esc(cfg.title)}</p><div class="acts"><button class="btn solid" onclick="bdRestart('${id}')">↺ Làm lại</button></div></div>`; return; }
+  const it = items[st.i], words = it.w;
+  const pool = st.pool.filter(x => !st.placed.includes(x));
+  el.innerHTML = `<div class="qz-top"><span class="qz-title">${cfg.title}</span><span class="chip-s">Câu ${st.i + 1}/${n}</span><span class="chip-s ok">★ ${st.score}</span></div>
+    <div class="qz-bar"><i style="width:${(st.i + (st.checked ? 1 : 0)) / n * 100}%"></i></div>
+    <div class="muted">Bấm các từ theo thứ tự để ghép thành câu hoàn chỉnh. Gợi ý nghĩa: <b>${it.vi}</b></div>
+    <div class="bd-line ${st.checked ? (st.ok ? 'ok' : 'bad') : ''}">${st.placed.length ? st.placed.map(x => `<button class="wd in" onclick="bdBack('${id}',${x})">${words[x]}</button>`).join('') : '<span class="bd-hint">Câu của bạn sẽ hiện ở đây…</span>'}</div>
+    <div class="bd-pool">${pool.map(x => `<button class="wd" onclick="bdAdd('${id}',${x})">${words[x]}</button>`).join('')}</div>
+    <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+      ${st.checked ? `<button class="btn solid" onclick="bdNext('${id}')">${st.i === n - 1 ? 'Xem kết quả →' : 'Câu tiếp theo →'}</button>`
+        : `<button class="btn solid" onclick="bdCheck('${id}')" ${st.placed.length ? '' : 'disabled'}>✔ Kiểm tra</button><button class="btn" onclick="bdClear('${id}')">Xóa hết</button>`}
+    </div>
+    ${st.checked ? `<div class="fb ${st.ok ? 'ok' : 'bad'}" style="margin-top:8px;position:static"><div class="fb-h">${st.ok ? '🎉 Chính xác!' : '❌ Chưa đúng'}<small>Câu đúng: <b>${words.join(' ')}</b></small></div><div class="fb-b">${it.exp || ''}<p class="fb-tr">🇻🇳 ${it.vi}</p></div></div>` : ''}`;
+}
+function bdAdd(id, x) { const { st } = COMP[id]; if (st.checked) return; st.placed.push(x); rerender(id); }
+function bdBack(id, x) { const { st } = COMP[id]; if (st.checked) return; st.placed = st.placed.filter(y => y !== x); rerender(id); }
+function bdClear(id) { COMP[id].st.placed = []; rerender(id); }
+function bdCheck(id) {
+  const { st, cfg } = COMP[id], w = cfg.items[st.i].w;
+  st.ok = normA(st.placed.map(x => w[x]).join(' ')) === normA(w.join(' '));
+  if (st.ok) st.score++; st.checked = true; rerender(id);
+}
+function bdNext(id) {
+  const { st, cfg } = COMP[id]; st.i++; st.checked = false; st.placed = [];
+  if (st.i >= cfg.items.length) { st.fin = true; markDone(id, st.score, cfg.items.length); if (st.score === cfg.items.length) confetti(); }
+  else st.pool = bdShuffle(cfg.items[st.i].w);
+  rerender(id);
+}
+function bdRestart(id) { const { st, cfg } = COMP[id]; Object.assign(st, { i: 0, score: 0, fin: false, checked: false, placed: [], pool: bdShuffle(cfg.items[0].w) }); rerender(id); }
+
+/* ================= MATCH GAME ================= */
+function matchGame(id, pool) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { round: null, sel: null, done: [], moves: 0, err: null, rounds: 0 };
+  if (!st.round) matchNew(st, pool);
+  COMP[id] = { st, pool, render: el => mgRender(id, el) };
+  return slot(id);
+}
+function matchNew(st, pool) { const r = shuffle(pool).slice(0, 6); st.round = { L: r, R: shuffle(r) }; st.sel = null; st.done = []; st.moves = 0; st.err = null; }
+function mgRender(id, el) {
+  const { st } = COMP[id], { L, R } = st.round, fin = st.done.length === L.length;
+  const left = L.map((v, i) => `<button class="mc ${st.done.includes(v.w) ? 'lock' : ''} ${st.sel && st.sel.side === 'L' && st.sel.w === v.w ? 'sel' : ''} ${st.err && st.err.includes('L:' + v.w) ? 'err' : ''}" onclick="mgPick('${id}','L',this.dataset.w)" data-w="${esc(v.w)}">${v.em || ''} ${v.w}</button>`);
+  const right = R.map(v => `<button class="mc vi ${st.done.includes(v.w) ? 'lock' : ''} ${st.sel && st.sel.side === 'R' && st.sel.w === v.w ? 'sel' : ''} ${st.err && st.err.includes('R:' + v.w) ? 'err' : ''}" onclick="mgPick('${id}','R',this.dataset.w)" data-w="${esc(v.w)}">${v.vi}</button>`);
+  el.innerHTML = `<div class="mg-top"><b style="color:#312e81;font-size:13.5px;flex:1">Ghép mỗi từ tiếng Anh với nghĩa tiếng Việt đúng</b><span class="chip-s">Ghép đúng ${st.done.length}/${L.length}</span><span class="chip-s">Lượt: ${st.moves}</span><button class="btn" onclick="mgNew('${id}')">🔀 Vòng mới</button></div>
+    <div class="mg">${L.map((_, i) => left[i] + right[i]).join('')}</div>
+    ${fin ? `<div class="note" style="margin-top:10px;background:#ecfdf5;border-color:#10b981">🎉 Hoàn thành sau <b>${st.moves}</b> lượt! Bấm “Vòng mới” để chơi với 6 từ khác.</div>` : ''}`;
+}
+function mgPick(id, side, w) {
+  const { st } = COMP[id]; if (st.done.includes(w) || st.err) return;
+  if (!st.sel || st.sel.side === side) { st.sel = { side, w }; rerender(id); return; }
+  st.moves++; const a = st.sel; st.sel = null;
+  if (a.w === w) { st.done.push(w); if (st.done.length === st.round.L.length) { markDone(id, st.round.L.length, st.moves); confetti(); } rerender(id); }
+  else { st.err = [`${a.side}:${a.w}`, `${side}:${w}`]; rerender(id); setTimeout(() => { st.err = null; rerender(id); }, 520); }
+}
+function mgNew(id) { const c = COMP[id]; matchNew(c.st, c.pool); rerender(id); }
+
+/* ================= SIGNAL FINDER (grammar) ================= */
+function signals(id, items) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { found: {}, wrong: {}, err: null };
+  COMP[id] = { st, items, render: el => sgRender(id, el) };
+  return slot(id);
+}
+function sgIdx(it) {
+  const toks = it.w.split(' '), ph = it.t.split(' ').map(normA), cl = toks.map(normA);
+  for (let i = 0; i < toks.length; i++) { if (ph.every((p, k) => cl[i + k] === p)) return [i, i + ph.length - 1]; }
+  return [0, 0];
+}
+function sgRender(id, el) {
+  const { st, items } = COMP[id], n = items.length, nf = Object.keys(st.found).length;
+  el.innerHTML = `<div class="fl-top"><span class="t">Tìm dấu hiệu nhận biết thì hiện tại đơn trong mỗi câu</span><span class="chip-s ok">Đã tìm ${nf}/${n}</span><button class="btn" onclick="sgReset('${id}')">↺ Làm lại</button></div>
+    ${items.map((it, i) => {
+      const [a, b] = sgIdx(it), found = st.found[i];
+      return `<div class="sg"><span class="n">${i + 1}</span>${it.w.split(' ').map((t, k) => `<span class="tok ${found && k >= a && k <= b ? 'sig' : ''} ${st.err === i + '-' + k ? 'err' : ''}" onclick="sgPick('${id}',${i},${k})">${t}</span>`).join('')}${found ? `<span class="sgnote">✓ ${it.note}</span>` : ''}</div>`;
+    }).join('')}
+    ${nf === n ? `<div class="note" style="background:#ecfdf5;border-color:#10b981">🎉 Bạn đã tìm đủ! Số câu tìm đúng ngay lần đầu: <b>${n - Object.keys(st.wrong).length}/${n}</b></div>` : ''}`;
+}
+function sgPick(id, i, k) {
+  const { st, items } = COMP[id]; if (st.found[i]) return;
+  const [a, b] = sgIdx(items[i]);
+  if (k >= a && k <= b) { st.found[i] = true; if (Object.keys(st.found).length === items.length) { markDone(id, items.length - Object.keys(st.wrong).length, items.length); confetti(); } rerender(id); }
+  else { st.wrong[i] = true; st.err = i + '-' + k; rerender(id); setTimeout(() => { st.err = null; rerender(id); }, 400); }
+}
+function sgReset(id) { Object.assign(COMP[id].st, { found: {}, wrong: {}, err: null }); rerender(id); }
+
+/* ================= PICTURES (pronunciation, exercise 1) ================= */
+function pics(id, items, example) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { v: [], c: [], ok: [], msg: [] };
+  COMP[id] = { st, items, example, render: el => pcRender(id, el) };
+  return slot(id);
+}
+function pcRender(id, el) {
+  const { st, items, example } = COMP[id], nOk = st.ok.filter(Boolean).length;
+  const col = c => items.map((p, i) => st.ok[i] && p.c === c ? `<span class="tchip">${p.w}</span>` : '').join('');
+  el.innerHTML = `<div class="fl-top"><span class="t">Viết từ dưới mỗi hình, rồi chọn cột âm đúng</span><span class="chip-s ok">★ ${nOk}/${items.length}</span>
+      <button class="btn solid" onclick="pcCheckAll('${id}')">✔ Kiểm tra tất cả</button><button class="btn" onclick="pcReveal('${id}')">💡 Đáp án</button><button class="btn" onclick="pcReset('${id}')">↺ Làm lại</button></div>
+    <div class="pics"><div class="pic egp"><span class="pn">Ví dụ</span><img src="${example.img}" alt=""><b style="color:#6d28d9;font-size:13px">${example.w}</b><span class="ph" style="font-size:13px">/ə/ ✓</span></div>
+    ${items.map((p, i) => `<div class="pic ${st.ok[i] ? 'okc' : ''}"><span class="pn">${i + 1}</span><img src="${p.img}" alt="">
+      <input class="${st.ok[i] ? 'good' : (st.msg[i] && st.msg[i][0] === '✗' && st.msg[i].includes('từ') ? 'bad' : '')}" value="${esc(st.v[i] || '')}" placeholder="Gõ từ…" autocomplete="off" spellcheck="false" ${st.ok[i] ? 'readonly' : ''} oninput="COMP['${id}'].st.v[${i}]=this.value" onkeydown="if(event.key==='Enter')pcCheck('${id}',${i},true)">
+      <div class="cols"><button class="cb ${st.c[i] === 'a' ? 'sel' : ''}" onclick="pcCol('${id}',${i},'a')">/ə/</button><button class="cb ${st.c[i] === '3' ? 'sel' : ''}" onclick="pcCol('${id}',${i},'3')">/ɜː/</button></div>
+      <div class="pmsg">${st.ok[i] ? `✓ <b>${p.w}</b> <span class="ph">${p.p}</span><br>${p.vi}` : (st.msg[i] || '')}</div></div>`).join('')}</div>
+    <table class="t" style="margin-top:10px"><tr><th style="width:50%" class="ph">/ə/</th><th class="ph">/ɜː/</th></tr><tr><td><span class="tchip">${example.w}</span>${col('a')}</td><td>${col('3')}</td></tr></table>`;
+}
+function pcCol(id, i, c) { const { st } = COMP[id]; if (st.ok[i]) return; st.c[i] = c; rerender(id); }
+function pcSave(id) { document.querySelectorAll(`.comp[data-id="${id}"] .pic input`).forEach((inp, i) => { COMP[id].st.v[i] = inp.value; }); }
+function pcCheck(id, i, rr) {
+  const { st, items } = COMP[id], p = items[i]; if (st.ok[i]) return;
+  const wOk = normA(st.v[i] || '') === p.w, cOk = st.c[i] === p.c;
+  if (wOk && cOk) { st.ok[i] = true; st.msg[i] = ''; } else st.msg[i] = !(st.v[i] || '').trim() && !st.c[i] ? 'Chưa điền' : !wOk ? '✗ Chưa đúng từ' : !st.c[i] ? 'Hãy chọn cột âm' : '✗ Sai cột âm';
+  if (rr) rerender(id); if (st.ok.filter(Boolean).length === items.length) { markDone(id, items.length, items.length); confetti(); }
+}
+function pcCheckAll(id) { COMP[id].items.forEach((_, i) => pcCheck(id, i)); rerender(id); }
+function pcReveal(id) { const { st, items } = COMP[id]; items.forEach((p, i) => { st.v[i] = p.w; st.c[i] = p.c; }); pcCheckAll(id); }
+function pcReset(id) { Object.assign(COMP[id].st, { v: [], c: [], ok: [], msg: [] }); rerender(id); }
+
+/* ================= WRITING I (cue → sentence) ================= */
+function writeSent(id, items) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { v: [], res: [], checked: false };
+  COMP[id] = { st, items, render: el => wsRender(id, el) };
+  return slot(id);
+}
+function wsRender(id, el) {
+  const { st, items } = COMP[id], good = st.res.filter(r => r === 'good').length;
+  el.innerHTML = `<div class="fl-top"><span class="t">Viết câu hoàn chỉnh từ các từ gợi ý (có thể thêm từ)</span><span class="chip-s ok" ${st.checked ? '' : 'style="display:none"'}>★ ${good}/${items.length}</span>
+      <button class="btn solid" onclick="wsCheck('${id}')">✔ Đối chiếu</button><button class="btn" onclick="wsReveal('${id}')">💡 Xem đáp án mẫu</button><button class="btn" onclick="wsReset('${id}')">↺ Làm lại</button></div>
+    ${items.map((it, i) => `<div class="wr"><span class="n">${i + 1}</span><input class="${st.checked ? st.res[i] : ''}" value="${esc(st.v[i] || '')}" placeholder="Viết câu của bạn…" spellcheck="false" oninput="COMP['${id}'].st.v[${i}]=this.value">
+      <div class="cues">${it.c}</div>
+      ${st.checked ? `<div class="fxfb ${st.res[i] === 'good' ? 'ok' : 'bad'}" style="flex-basis:100%;${st.res[i] === 'near' ? 'background:#fffbeb;border-color:#f59e0b;color:#78350f' : ''}">${st.res[i] === 'good' ? '✓ Khớp đáp án mẫu: <b>' + it.a + '</b>' : '↔ Chưa khớp hoàn toàn — nhiều cách viết đều có thể đúng, hãy đối chiếu. Đáp án mẫu: <b>' + it.a + '</b>'}<span class="tr">🇻🇳 ${it.vi}</span></div>` : ''}</div>`).join('')}`;
+}
+function wsCheck(id) {
+  const { st, items } = COMP[id];
+  st.res = items.map((it, i) => normA(st.v[i] || '') === normA(it.a) ? 'good' : 'near'); st.checked = true;
+  markDone(id, st.res.filter(r => r === 'good').length, items.length); rerender(id);
+}
+function wsReveal(id) { const { st, items } = COMP[id]; items.forEach((it, i) => { st.v[i] = it.a; }); wsCheck(id); }
+function wsReset(id) { Object.assign(COMP[id].st, { v: [], res: [], checked: false }); rerender(id); }
+
+/* ================= WRITING II (paragraph with live word counter) ================= */
+const WR2 = { text: '', sample: false };
+function wcUpdate() {
+  const t = document.getElementById('wr2t'); if (!t) return; WR2.text = t.value;
+  const n = (t.value.trim().match(/\S+/g) || []).length, bar = document.getElementById('wcb'), lab = document.getElementById('wcn');
+  const pct = Math.min(100, n / 80 * 100); bar.style.width = pct + '%';
+  const ok = n >= 60 && n <= 80; bar.style.background = ok ? '#10b981' : n > 80 ? '#ef4444' : '#f59e0b';
+  lab.textContent = n + ' từ' + (ok ? ' ✓' : n > 80 ? ' (quá dài)' : n >= 60 ? '' : ' (cần ≥ 60)'); lab.style.color = ok ? '#047857' : n > 80 ? '#b91c1c' : '#b45309';
+  if (ok && !DONE.wr2) markDone('wr2', n, n);
+}
+function wcAdd(txt) { const t = document.getElementById('wr2t'); t.value += (t.value && !/\s$/.test(t.value) ? ' ' : '') + txt; t.focus(); wcUpdate(); }
+
+/* ================= LISTENING PLAYER (browser text-to-speech) ================= */
+const LS = { sents: [], idx: 0, playing: false, rate: 1 };
+function lsPlay(script) {
+  try { speechSynthesis.cancel(); } catch (e) { return; }
+  LS.sents = script.match(/[^.!?]+[.!?]+/g) || [script]; LS.playing = true; lsUi();
+  LS.sents.forEach((s, i) => {
+    const u = new SpeechSynthesisUtterance(s.trim()); u.lang = 'en-GB'; u.rate = LS.rate;
+    u.onstart = () => { LS.idx = i; document.querySelectorAll('.ss').forEach((e, k) => e.classList.toggle('now', k === i)); };
+    if (i === LS.sents.length - 1) u.onend = () => { LS.playing = false; lsUi(); document.querySelectorAll('.ss').forEach(e => e.classList.remove('now')); };
+    speechSynthesis.speak(u);
+  });
+}
+function lsStop() { try { speechSynthesis.cancel(); } catch (e) {} LS.playing = false; lsUi(); document.querySelectorAll('.ss').forEach(e => e.classList.remove('now')); }
+function lsUi() { const b = document.getElementById('lsbtn'), q = document.getElementById('lseq'); if (b) b.textContent = LS.playing ? '⏹' : '▶'; if (q) q.classList.toggle('on', LS.playing); }
+
+/* ================= SHELL: navigation, sections ================= */
+let cur = { s: 0, t: 0 };
+function allEx() { return SECTIONS.flatMap(s => s.ex || []); }
+function navRender() {
+  const total = allEx().length, done = allEx().filter(id => DONE[id]).length;
+  $('#nav').innerHTML = SECTIONS.map((s, i) => {
+    const all = (s.ex || []).length && s.ex.every(id => DONE[id]);
+    return `<button class="ni ${i === cur.s ? 'on' : ''} ${all ? 'done' : ''} ${s.soon ? 'soon' : ''}" onclick="show(${i},0)"><span class="n">${all ? '✓' : i + 1}</span><span class="t">${s.nav || s.title}</span></button>`;
+  }).join('');
+  $('#pbar').style.width = (total ? done / total * 100 : 0) + '%';
+  $('#ptxt').innerHTML = `<span>Hoàn thành</span><b>${done}/${total} bài tập</b>`;
+  const sec = SECTIONS[cur.s]; const tabs = document.querySelectorAll('.stab');
+  sec.subs.forEach((sb, k) => { if (sb.ex && tabs[k]) { const d = sb.ex.every(i => DONE[i]); const old = tabs[k].querySelector('i'); if (d && !old) tabs[k].insertAdjacentHTML('beforeend', '<i>✓</i>'); } });
+}
+function show(s, t) {
+  cur = { s, t: t || 0 };
+  const sec = SECTIONS[s], sub = sec.subs[cur.t];
+  $('#hi').textContent = sec.icon; $('#ttl').textContent = sec.title + (sec.vi ? ' · ' + sec.vi : ''); $('#dsc').textContent = sec.desc;
+  $('#subnav').innerHTML = sec.subs.length > 1 ? sec.subs.map((x, k) => `<button class="stab ${k === cur.t ? 'on' : ''}" onclick="show(${s},${k})">${x.label}${x.ex && x.ex.every(i => DONE[i]) ? '<i>✓</i>' : ''}</button>`).join('') : '';
+  $('#subnav').style.display = sec.subs.length > 1 ? '' : 'none';
+  const b = $('#body'); b.className = 'body' + (sub.split ? ' split' : ''); b.innerHTML = sub.render(); b.scrollTop = 0;
+  hydrate(); if (sub.after) sub.after(); navRender(); try { speechSynthesis.cancel(); } catch (e) {} LS.playing = false;
+}
+function showObjectives() {
+  const o = OBJECTIVES.map(x => `<div class="obj"><span class="oi">${x.i}</span><div><b>${x.t}</b><br>${x.d}</div></div>`).join('');
+  document.body.insertAdjacentHTML('beforeend', `<div class="modal" onclick="if(event.target===this)this.remove()"><div class="mbox"><h2>🎯 Mục tiêu bài học</h2><div class="sub">Unit 7 · Traffic — Traffic</div>${o}<div style="text-align:right;margin-top:12px"><button class="btn solid" onclick="this.closest('.modal').remove()">Bắt đầu học →</button></div></div></div>`);
+}
+
+
+const DATA=[{"title": "Vocabulary · Từ vựng", "icon": "📚", "desc": "Unit 7 · Traffic", "subs": [{"label": "23 từ vựng", "kind": "vocab"}]}, {"title": "Vocabulary practice", "icon": "✏️", "desc": "Unit 7 · Traffic", "subs": [{"id": "v1", "label": "I · Chọn đáp án", "kind": "quiz", "items": [{"q": "Don’t worry if you are stuck in a___in the morning. ", "opts": ["pavement", "traffic jam", "traffic light", "train"], "a": 1, "exp": "<p><b>Giải thích</b>:</p><p><b>A</b>. pavement (<i>n</i>.): vỉa hè<b>B</b>. traffic jam <i>(n</i>.): ùn tắc giao thông</p><p><b>C</b>. traffic light (<i>n</i>.): đèn giao thông<b>D</b>. train (<i>n</i>.): tàu</p><p>Xét về nghĩa, phương án B phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Don’t worry if you are stuck in a traffic jam in the morning. <i>(Đừng lo lắng nếu bạn bị tắc đường vào buổi sáng.)</i></p>"}, {"q": "Many foreign tourists love riding a___in Hoi An countryside. ", "opts": ["tricycle", "buffalo", "helicopter", "motorbike"], "a": 1, "exp": "<p><b>Giải thích</b>:</p><p><b>A</b>. tricycle (<i>n</i>): xe ba bánh<b>B</b>. buffalo (<i>n</i>.). trâu</p><p><b>C</b>. helicopter (<i>n</i>.): trực thăng<b>D</b>. motorbike (<i>n</i>.): xe máy</p><p>Xét về nghĩa, phương án B phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Many foreign tourists love riding a buffalo in Hoi An countryside. (<i>Nhiều du khách nước ngoài thích cưỡi trâu ở vùng làng quê Hội An.)</i></p>"}, {"q": "Denny woke up late and missed the___to the school this morning. ", "opts": ["vehicle", "seat", "station", "bus"], "a": 3, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. vehicle (n.). phương tiện<b>B</b>. seat (n.): ghế ngồi</p><p><b>C</b>. station (n): bến<b>D</b>. bus (n): xe buýt</p><p>Xét về nghĩa, phương án D phù hợp nhất.</p><p><b>Dịch nghĩa:</b> Denny woke up late and missed the bus to the school this morning. <i>(Sáng nay Denny dậy muộn và bị lỡ xe buýt đến trường.)</i></p>"}, {"q": "They are sailing a___to the coast of Portugal. ", "opts": ["helicopter", "plane", "boat", "truck"], "a": 2, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. helicopter (n): trực thăng<b>B</b>. plane (n): máy bay</p><p><b>C</b>. boat (n): thuyền<b>D</b>. truck (n): xe tải</p><p>Xét về nghĩa, phương án C phù hợp nhất.</p><p><b>Dịch nghĩa</b>: They are sailing a boat to the coast of Portugal. <i>(Họ đang chèo thuyền đến bờ biển Bồ Đào Nha.)</i></p>"}, {"q": "When travelling on the road, we must obey all___. ", "opts": ["traffic rules", "traffic jams", "policemen", "police station"], "a": 0, "exp": "<p><b>Giải thích:</b></p><p><b>A.</b> traffic rules (<i>n</i>): luật giao thông<b>B</b>. traffic jams (<i>n</i>): ùn tắc giao thông</p><p><b>C</b>. policemen (<i>n</i>): cảnh sát<b>D</b>. police station (<i>n</i>): đồn cảnh sát</p><p>Xét về nghĩa, phương án A phù hợp nhất.</p><p><b>Dịch nghĩa:</b> When travelling on the road, we must obey all traffic rules. (<i>Khi đi trên đường, chúng ta phải tuân thủ tất cả luật giao thông.)</i></p>"}, {"q": "There is a notification of fastening your___before the flight takes off. ", "opts": ["phone", "luggage", "seatbelt", "helmet"], "a": 2, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. phone (<i>n</i>.): điện thoại<b>B</b>. luggage (<i>n</i>.): hành lí</p><p><b>C</b>. seatbelt (<i>n</i>.): dây an toàn<b>D</b>. helmet (<i>n</i>.): mũ bảo hiểm</p><p>Xét về nghĩa, phương án C phù hợp nhất.</p><p><b>Dịch nghĩa</b>: There is a notification of fastening your seatbelt before the flight takes off. (<i>Có một thông báo về việc thắt dây an toàn trước khi máy bay cất cánh.)</i></p>"}, {"q": "I think cycle___should be made available in our country. ", "opts": ["lanes", "roads", "areas", "parts"], "a": 0, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. lanes (<i>n</i>.): làn đường<b>B</b>. roads (<i>n</i>.): đường</p><p><b>C</b>. areas (<i>n</i>.): khu vực<b>D</b>. parts (<i>n</i>.): phần</p><p>Xét về nghĩa, phương án A phù hợp nhất.</p><p><b>Dịch nghĩa</b>: I think cycle lanes should be made available in our country. (<i>Tôi nghĩ rằng nước mình nên có các làn đường dành cho người đi xe đạp.)</i></p>"}, {"q": "___riding is a free-pollution mode of transportation. ", "opts": ["Helicopter", "Bike", "Truck", "bus"], "a": 1, "exp": "<p><b>Giải thích</b>:</p><p><b>A</b>. Helicopter (<i>n</i>.): trực thăng<b>B</b>. Bike (<i>n</i>.): xe đạp</p><p><b>C</b>. Truck (<i>n</i>.) xe tải<b>D</b>. Bus (<i>n</i>.): xe buýt</p><p>Xét về nghĩa, phương án B phù hợp nhất.</p><p><b>Dịch nghĩa: </b>Bike riding is a free-pollution mode of transportation. (<i>Đạp xe là phương thức di chuyển không gây ô nhiễm môi trường.)</i></p>"}, {"q": "You shouldn’t ride your motorbike on the___. It’s dangerous for walkers. ", "opts": ["bus stop", "railway station", "roof", "pavement"], "a": 3, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. bus stop (<i>n</i>.). trạm xe buýt<b>B</b>. railway station (<i>n</i>.): ga tàu</p><p><b>C</b>. roof (<i>n</i>.) mái nhà<b>D</b>. pavement (<i>n</i>.): vỉa hè</p><p>Xét về nghĩa, phương án D phù hợp nhất.</p><p><b>Dịch nghĩa</b>: You shouldn’t ride your motorbike on the pavement. It’s dangerous for walkers. (<i>Bạn không nên đi xe máy trên vỉa hè. Nó rất nguy hiểm cho người đi bộ.)</i></p>"}, {"q": "In Vietnam, the most basic___is to move on the right side of the road. ", "opts": ["traffic sign", "traffic rule", "safety", "traffic jam"], "a": 1, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. traffic sign (<i>n</i>.): biển báo giao thông<b>B</b>. traffic rule (<i>n</i>.): luật giao thông</p><p><b>C</b>. safety (<i>n</i>.) sự an toàn<b>D</b>. traffic jam <i>(n</i>.): sự tắc đường</p><p>Xét về nghĩa, phương án B phù hợp nhất.</p><p><b>Dịch nghĩa:</b> In Vietnam, the most basic traffic rule is to move on the right side of the road <i>(ở Việt Nam, luật giao thông cơ bản nhất là đi bên phải.)</i></p>"}, {"q": "The drunk taxi driver___ in the middle of the small road, other vehicles couldn’t go through. ", "opts": ["parked", "flew", "obeyed", "reversed"], "a": 0, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. parked (<i>v</i>.): đỗ xe<b>B</b>. flew (<i>v</i>.): bay</p><p><b>C</b>. obeyed (<i>v</i>.): tuân thủ<b>D</b>. reversed (<i>v</i>.): quay đầu xe</p><p>Xét về nghĩa, phương án A phù hợp nhất</p><p><b>Dịch nghĩa</b>: The drunk taxi driver parked in the middle of the small road, other vehicles couldn’t go through. (<i>Người tài xế taxi say rượu đỗ xe ở giữa con đường nhỏ. Những phương tiện khác không thể đi qua được. )</i></p>"}, {"q": "Travellers often pay more to be sure of travelling___. ", "opts": ["importantly", "quietly", "safely", "illegally"], "a": 2, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. importantly (<i>adv</i>.): quan trọng<b>B.</b> quietly (<i>adv</i>.): yên tĩnh</p><p><b>C</b>. safely (<i>adv</i>.): an toàn<b>D</b>. illegally (<i>adv.</i>): bất hợp pháp</p><p>Xét về nghĩa, phương án C phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Travellers often pay more to be sure of travelling safely. (<i>Hành khách thường chi trả nhiều tiền hơn để đảm bảo việc đi lại an toàn.)</i></p>"}, {"q": "A___has one wheel at the front and two wheels at the back. ", "opts": ["tricycle", "bike", "ship", "boat"], "a": 0, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. tricycle (<i>n</i>.): xe ba bánh<b>B</b>. bike (<i>n</i>.): xe đạp</p><p><b>C</b>. ship (<i>n</i>.): tàu thủy<b>D</b>. boat (<i>n.</i>): thuyền</p><p>Xét về nghĩa, phương án A phù hợp nhất.</p><p><b>Dịch nghĩa</b>: A tricycle has one wheel at the front and two wheels at the back. <i>(Xe ba bánh có một bánh phía trước và hai bánh phía sau.)</i></p>"}, {"q": "You can find trains to almost every domestic destination at your local ___ ", "opts": ["pavement", "railway station", "traffic sign", "cycle lane"], "a": 1, "exp": "<p><b>Giải thích</b>:</p><p><b>A</b>. pavement (<i>n</i>.) vỉa hè<b>B</b>. railway station (<i>n</i>.): ga tàu</p><p><b>C</b>. traffic sign (<i>n</i>.): biển báo giao thông<b>D</b>. cycle lane (<i>n</i>.): làn đường dành cho xe đạp</p><p>Xét về nghĩa, phương án B phù hợp nhất.</p><p><b>Dịch nghĩa</b>: You can find train to almost every domestic destination at your local railway station. <i>(Bạn có thể tìm thấy các chuyến tàu đi hầu hết các địa điểm nội địa ở ga tàu địa phương.)</i></p>"}, {"q": "Are you sure that the triangle___over there means “school ahead”? ", "opts": ["traffic sign", "traffic rule", "traffic light", "traffic jam"], "a": 2, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. traffic sign (<i>n</i>.): biển báo giao thông<b>B</b>. traffic rule (<i>n</i>.): luật giao thông</p><p><b>C</b>. traffic light (<i>n</i>.) đèn giao thông<b>D</b>. traffic jam (<i>n</i>.): sự tắc đường</p><p>Xét về nghĩa, phương án A phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Are you sure that the triangle traffic sign over there means “school ahead”? (<i>Bạn có chắc rằng biển báo giao thông hình tam giác đằng kia có nghĩa là trường học ở phía trước không?)</i></p>"}, {"q": "I think there should be a___that new drivers must be accompanied by a tutor within their first week driving on the road. ", "opts": ["vehicle", "safety", "traffic law", "traffic sign"], "a": 2, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. vehicle (<i>n</i>.). phương tiện<b>B</b>. safety (<i>n.</i>): sự an toàn</p><p><b>C</b>. traffic law (<i>n</i>.): luật giao thông<b>D</b>. traffic sign (<i>n.</i>): biển báo giao thông</p><p>Xét về nghĩa, phương án c phù hợp nhất.</p><p><b>Dịch nghĩa</b>: I think there should be a traffic law that new drivers must be accompanied by a tutor within their first week driving on the road. (<i>Tôi nghĩ nên có một luật lệ giao thông là các tài xế mới phải có người hướng dẫn đi kèm trong tuần đầu tiên họ lái xe trên đường)</i></p>"}, {"q": "It is___to turn on your headlight while moving inside the city center at night. You may be fined for that. ", "opts": ["important", "necessary", "safe", "prohibitive"], "a": 3, "exp": "<p><b>Giải thích:</b></p><p><b>A</b>. important (<i>adj.</i>): quan trọng<b>B</b>. necessary (<i>adj</i>. ): thiết yếu</p><p><b>C</b>. safe (<i>adj</i>. ): an toàn<b>D</b>. prohibitive (<i>adj</i>.) bị cấm</p><p>Xét về nghĩa, phương án D phù hợp nhất.</p><p><b>Dịch nghĩa</b>: It is prohibitive to turn on your headlight while moving inside the city center at night. You may be fined for that. <i>(Bật đèn pha khi di chuyển trong trung tâm thành phố vào buổi tối là bị cấm. Bạn có thể bị phạt vì điều đó.)</i></p>"}], "before": "<div class=\"note\">I – Choose the best option to complete each of the following sentences.</div>"}, {"id": "v2", "label": "II · Điền từ", "kind": "fill", "items": [{"q": "Driving a car which is not registered and insured is___.", "a": ["illegal"], "exp": "<p><b>Giải thích</b>: Vì sau động từ “to be” là một tính từ và xét về nghĩa, tính từ “illegal” là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Driving a car which is not registered and insured is illegal. (<i>Lái một chiếc ô tô chưa được đăng kí và mua bảo hiểm là bất hợp pháp.)</i></p>"}, {"q": "I was stuck in a___for nearly an hour on the way home from work.", "a": ["traffic jam"], "exp": "<p><b>Giải thích:</b> Sau mạo từ “a” là một danh từ và xét về nghĩa, danh từ “traffic jam” là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: I was stuck in a traffic jam for nearly an hour on the way home from work. (<i>Tôi đã bị tắc đường gần một tiếng đồng hồ trên đường từ chỗ làm về nhà.)</i></p>"}, {"q": "Don’t worry! There is a seat and a___for every child in our rental vehicles.", "a": ["seatbelt"], "exp": "<p><b>Giải thích</b>: Sau mạo từ “a” là một danh từ và xét về nghĩa, danh từ “seatbelt” là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Don’t worry! There is a seat and a seatbelt for every child in our rental vehicles. (<i>Đừng lo! Có ghế ngồi và dây an toàn cho mỗi bạn nhỏ trong các phương tiện cho thuê của chúng tôi.)</i></p>"}, {"q": "My friends called to let me know that they arrived___.", "a": ["safely"], "exp": "<p><b>Giải thích</b>: Vì sau động từ “arrive” phải là một trạng từ nên điền “safely” là phù hợp nhất.</p><p><b>Dịch nghĩa:</b> My friends called to let me know that they arrived safely. (<i>Những người bạn của tôi đã gọi để báo cho tôi biết là họ đã đến nơi một cách an toàn.)</i></p>"}, {"q": "They caught a taxi to the___and waited for the train to Manchester Airport.", "a": ["railway station"], "exp": "<p><b>Giải thích</b>: Vì sau mạo từ “the” là một danh từ và xét về nghĩa, ta cần điền một danh từ chỉ nơi chốn, vì vậy “railway station” là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: They caught a taxi to the railway station and waited for the train to Manchester Airport. <i>(Họ đã bắt một chiếc taxi ra ga tàu và đợi lên tàu đến sân bay Manchester.)</i></p>"}, {"q": "Her parents were extremely worried for her___when she came home late last night.", "a": ["safety"], "exp": "<p><b>Giải thích</b>: Vì sau tính từ sở hữu “her” là danh từ và xét về nghĩa, danh từ “safety” là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Her parents were extremely worried for her safety when she came home late last night. <i>(Bố mẹ của cô ấy đã vô cùng lo lắng cho sự an toàn của cô ấy khi cô ấy về nhà muộn tối qua.)</i></p>"}, {"q": "Do you think that ___are the same in every country around the world?", "a": ["traffic signs"], "exp": "<p><b>Giải thích</b>: Vì vị trí cần điền thiếu một danh từ làm chủ ngữ và xét về mặt nghĩa, danh từ “traffic signs” là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Do you think that traffic signs are the same In every country around the world<i>? (Bạn có nghĩ rằng biển báo giao thông giống nhau ở mọi nước trên thế giới không?)</i></p>"}, {"q": "The first___was designed by Igor Sikorsky and took flight at Stratford in 1939.", "a": ["helicopter"], "exp": "<p><b>Giải thích</b>: Vì sau từ hạn định “the first” phải là một danh từ và xét về nghĩa, danh từ “helicopter” là phù hợp nhất. </p><p><b>Dịch nghĩa</b>: The first helicopter was designed by Igor Sikorsky and took flight at Stratford in 1939. <i>(Chiếc trực thăng đầu tiên được thiết kế bởiIgor Sikorsky và cất cánh ở Stratford vào năm 1939.)</i></p>"}, {"q": "Electric___are usually energy-saving and friendly to the environment.", "a": ["vehicles"], "exp": "<p><b>Giải thích</b>: Vì sau tính từ “electric” phải là một danh từ và xét về nghĩa, danh từ “vehicles” là phù hợp nhất. </p><p><b>Dịch nghĩa</b>: Electric vehicles are usually energy-saving and friendly to the environment. (<i>Các phương tiện sử dụng điện thường tiết kiệm năng lượng và thân thiện với môi trường.)</i></p>"}, {"q": "My little brother hopes to be given a___on his birthday.", "a": ["tricycle"], "exp": "<p><b>Giải thích</b>: Vì sau mạo từ “a” phải là một danh từ và xét về nghĩa, danh từ “tricyle” là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: My little brother hopes to be given a tricycle on his birthday. (<i>Em trai bé bỏng của tôi hi vọng được tặng một chiếc xe ba bánh vào ngày sinh nhật của em ấy.)</i></p>"}], "before": "<div class=\"note\">II - Complete the following sentences using the given words in the box. There is ONE extra word or phrase.</div><div class=\"source\"><p><b>II - Complete the following sentences using the given words in the box. There is ONE extra word or phrase.</b></p><div class=\"tablewrap\"><table><tr><td><p>reverse</p></td><td><p>seatbelt</p></td><td><p>illegal</p></td><td><p>traffic jam</p></td><td><p>helicopter</p></td><td><p>safely</p></td></tr><tr><td><p>boat</p></td><td><p>tricycle</p></td><td><p>railway station</p></td><td><p>vehicles</p></td><td><p>traffic signs</p></td><td><p>safety</p></td></tr></table></div><p><i>E.g.: Are you travelling by__boat__or by air?</i></p></div>"}]}, {"title": "Pronunciation · Ngữ âm", "icon": "🎧", "desc": "Unit 7 · Traffic", "subs": [{"label": "Lý thuyết", "html": "<div class=\"source\"><p><b>NGỮ ÂM</b></p><p>Pronunciation</p><p><b>1. NGUYÊN ÂM ĐƠN /e/</b></p><div class=\"tablewrap\"><table><tr><td><p><b>CÁCH PHÁT ÂM</b></p></td><td><p><b>CÁC DẠNG CHÍNH TẢ PHỔ BIẾN</b></p></td><td><p><b>VÍ DỤ</b></p></td></tr><tr><td><p>Cuống họng xuống một chút</p></td><td><p><b>e</b></p></td><td><p>• project /ˈprɒdʒekt/ (<i>n</i>.): dự án</p><p>• check /tʃek/ (<i>v</i>.): kiểm tra</p></td></tr><tr><td></td><td><p><b>ea</b></p></td><td><p>• head /hed/ (<i>n</i>.): cái đầu</p><p>• bread /bred/ (<i>n</i>.): bánh mì</p></td></tr><tr><td><p>Gần giống như phát âm /ɪ/, nhưng khoảng cách môi trên-dưới mở rộng hơn, vị trí lưỡi thấp hơn.</p></td><td><p><b>a</b></p></td><td><p>• any /ˈeni/ (<i>adj.</i>): bất kỳ</p><p>• many /ˈmeni/ (<i>adj.</i>): nhiều</p></td></tr></table></div><p><b>2. NGUYÊN ÂM ĐÔI /eɪ/</b></p><div class=\"tablewrap\"><table><tr><td><p><b>CÁCH PHÁT ÂM</b></p></td><td><p><b>CÁC DẠNG CHÍNH TẢ PHỔ BIẾN</b></p></td><td><p><b>VÍ DỤ</b></p></td></tr><tr><td><p>Cuống họng xuống một chút</p><p>Phát âm hơi kéo dài từ /e/ dần dần chuyển đến và kết thúc tại /ɪ/. Âm /ɪ/ phát âm rất ngắn và nhanh.</p></td><td><p><b>ea</b></p></td><td><p>* great /ɡreɪt/ (<i>adj.</i>): tuyệt vời</p><p>* break /breɪk/ (<i>v</i>.): làm vỡ</p></td></tr><tr><td></td><td><p><b>ai</b></p></td><td><p>* train /treɪn/ (<i>n</i>.): tàu hỏa</p><p>* rain /reɪn/ (<i>v</i>.): mưa</p></td></tr><tr><td></td><td><p><b>ay</b></p></td><td><p>* play /pleɪ/ (<i>v</i>.): chơi</p><p>* way /weɪ/ (<i>n</i>.) con đường</p></td></tr><tr><td></td><td><p><b>ei</b></p></td><td><p>* eight /eɪt/: số 8</p><p>* neighbour /ˈneɪbə(r)/ (<i>n</i>.) người hàng xóm</p></td></tr><tr><td></td><td><p><b>ey</b></p></td><td><p>* obey /əˈbeɪ/ (<i>v</i>.): tuân theo</p><p>* they /ðeɪ/ (<i>pro.</i>): họ, chúng</p></td></tr></table></div><p><b></b></p></div>"}, {"id": "p1", "label": "I · Chọn âm khác", "kind": "quiz", "items": [{"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["g<u>a</u>te", "n<u>a</u>tion", "am<u>a</u>zing", "m<u>a</u>ny"], "a": 3, "exp": "<p><b>Giải thích</b>: m<u>a</u>ny /ˈmeni/ có “a” được phát âm là /e/, các phương án còn lại có “a” phát âm là /eɪ/.</p><p><b>A</b>. g<u>a</u>te /ɡeɪt/<b>B</b>. n<u>a</u>tion /ˈneɪʃn/<b>C</b>. am<u>a</u>zing /əˈmeɪzɪŋ/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["d<u>e</u>licious", "r<u>e</u>gard", "t<u>e</u>mple", "blank<u>e</u>t"], "a": 2, "exp": "<p><b>Giải thích</b>: t<u>e</u>mple /ˈtempl/ có “e” được phát âm là /e/, các phương án còn lại có “e” phát âm là /ɪ/.</p><p><b>A</b>.d<u>e</u>licious /dɪˈlɪʃəs/<b>B</b>. r<u>e</u>gard /rɪˈɡɑːd/<b>D</b>. blanket /ˈblæŋk<u>ɪ</u>t/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["<u>a</u>nyone", "<u>a</u>lien", "Asian", "t<u>a</u>ke"], "a": 0, "exp": "<p><b>Giải thích</b>: <u>a</u>nyone /ˈeniwʌn/ có “a” phát âm là /e/, các phương án khác có “a” phát âm là /eɪ/.</p><p><b>B</b>.<u>a</u>lien /ˈeɪliən/<b>C</b>. <u>A</u>sian /ˈeɪʒn/<b>D</b>. t<u>a</u>ke /teɪk/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["b<u>e</u>tween", "d<u>e</u>partment", "<u>e</u>xciting", "m<u>e</u>ssy"], "a": 3, "exp": "<p><b>Giải thích</b>: m<u>e</u>ssy /ˈmesi/ có “e” phát âm là /e/, các phương án khác có “e” phát âm là /ɪ/.</p><p><b>A</b>. b<u>e</u>tween /bɪˈtwiːn/ <b>B</b>. d<u>e</u>partment /dɪˈpɑːtmənt/<b>C</b>. <u>e</u>xciting /ɪkˈsaɪtɪŋ/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["br<u>ea</u>k", "gr<u>ea</u>t", "d<u>ea</u>d", "st<u>ea</u>k"], "a": 2, "exp": "<p><b>Giải thích</b>: d<u>ea</u>d /ded/ có có “ea” phát âm là /e/, các phương án khác có “ea” phát âm là /eɪ/.</p><p><b>A.</b> br<u>ea</u>k /breɪk/<b>B.</b> gr<u>ea</u>t /greɪt/<b>D</b>. st<u>ea</u>k /steɪk/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["p<u>a</u>vement", "s<u>a</u>fety", "pl<u>a</u>ne", "<u>a</u>ny"], "a": 3, "exp": "<p><b>Giải thích</b>: <u>a</u>ny /ˈeni/ có “a” được phát âm là /e/, các phương án còn lại có “a” phát âm là /eɪ/.</p><p><b>A</b>.p<u>a</u>vement /ˈpeɪvmənt/<b>B</b>. s<u>a</u>fety /ˈseɪfti/<b>C.</b> pl<u>a</u>ne /pleɪn/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["<u>e</u>xpert", "depr<u>e</u>ssion", "v<u>e</u>hicle", "seatb<u>e</u>lt"], "a": 2, "exp": "<p><b>Giải thích</b>: v<u>e</u>hicle /ˈviːəkl/ có “e” được phát âm là /i:/, các phương án còn lại có “e” phát âm là /e/.</p><p><b>A</b>. <u>e</u>xpert /ˈekspɜːt/ / <b>B</b>. depr<u>e</u>ssion /dɪˈpreʃn/<b>D</b>. seatb<u>e</u>lt /ˈsiːt belt/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["s<u>ai</u>d", "p<u>ai</u>nkiller", "m<u>ai</u>n", "Sp<u>ai</u>n"], "a": 0, "exp": "<p><b>Giải thích</b>: s<u>ai</u>d /sed/ có “ai” phát âm là /e/, các phương án khác có “ai” phát âm là /eɪ/.</p><p><b>B</b>.p<u>ai</u>nkiller /ˈpeɪnkɪlə(r)/ <b>C</b>. m<u>ai</u>n /meɪn/<b>D</b>. Sp<u>ai</u>n /speɪn/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["l<u>e</u>tter", "pr<u>e</u>serve", "m<u>e</u>lody", "<u>e</u>ggshell"], "a": 1, "exp": "<p><b>Giải thích</b>: pr<u>e</u>serve /prɪˈzɜːv/ có “e” phát âm là /ɪ/, các phương án khác có “e” phát âm là /e/.</p><p><b>A</b>. l<u>e</u>tter /ˈletə(r)/<b>C</b>. m<u>el</u>ody /ˈmelədi/ <b>D</b>. <u>e</u>ggshell /ˈeɡʃel/ </p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["eng<u>a</u>ge", "<u>a</u>ge", "herit<u>a</u>ge", "p<u>a</u>ge"], "a": 2, "exp": "<p><b>Giải thích</b>: herit<u>a</u>ge /ˈherɪtɪdʒ/ có “a” phát âm là /ɪ/, các phương án khác có “a” phát âm là /eɪ/.</p><p><b>A</b>. eng<u>a</u>ge /ɪnˈɡeɪdʒ/  <b>B</b>. <u>a</u>ge /eɪdʒ/<b>D</b>. p<u>a</u>ge /peɪdʒ/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["surv<u>ey</u>", "th<u>ey</u>", "mon<u>ey</u>", "ob<u>ey</u>"], "a": 2, "exp": "<p><b>Giải thích</b>: mon<u>ey</u> /ˈmʌni/ có “ey” được phát âm là /i/, các phương án còn lại có “ey” phát âm là /eɪ/.</p><p><b>A</b>. surv<u>ey</u> /ˈsɜːveɪ/<b>B</b>. th<u>ey</u> /ðeɪ/<b>D</b>. ob<u>ey</u> /əˈbeɪ/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["st<u>ay</u>s", "pl<u>ay</u>s", "s<u>ay</u>s", "pr<u>ay</u>s"], "a": 2, "exp": "<p><b>Giải thích</b>: s<u>ay</u>s /sez/ có “ay” được phát âm là /e/, các phương án còn lại có “ay” phát âm là /eɪ/.</p><p><b>A</b>. st<u>ay</u>s /steɪz/<b>B</b>. pl<u>ay</u>s /pleɪz/<b>D</b>. pr<u>ay</u>s /preɪz/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["journ<u>ey</u>", "gr<u>ey</u>", "hon<u>ey</u>", "monk<u>ey</u>"], "a": 1, "exp": "<p><b>Giải thích</b>: gr<u>ey</u> /greɪ/ có “ey” phát âm là/eɪ/, các phương án khác có “ey” phát âm là /i/.</p><p><b>A</b>. journ<u>ey</u> /ˈdʒɜːni/ <b>C</b>. hon<u>ey</u> /ˈhʌni/<b>D</b>. monk<u>ey</u> /ˈmʌŋki/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["gr<u>ea</u>t", "h<u>ea</u>lth", "d<u>ea</u>th", "spr<u>ea</u>d"], "a": 0, "exp": "<p><b>Giải thích</b>: gr<u>ea</u>t /ɡreɪt/ có “ea” phát âm là /eɪ/, các phương án khác có “ea” phát âm là /e/.</p><p><b>B</b>. h<u>ea</u>lth /helθ/<b>C</b>. d<u>ea</u>th /deθ/<b>D.</b> spr<u>ea</u>d /spred/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["sh<u>a</u>pe", "p<u>a</u>per", "<u>a</u>ny", "shoel<u>a</u>ce"], "a": 2, "exp": "<p><b>Giải thích</b>: <u>a</u>ny /ˈeni/ có “a” phát âm là /e/, các phương án khác có “a” phát âm là /eɪ/.</p><p><b>A</b>. sh<u>a</u>pe /ʃeɪp/<b>B.</b> p<u>a</u>per /ˈpeɪpə(r)/ <b>D</b>. shoel<u>a</u>ce /ˈʃuːleɪs/ </p>"}], "before": "<div class=\"note\">I- Choose the word that has the underlined part pronounced differently.</div>"}, {"id": "p2", "label": "II · Phân loại âm", "kind": "quiz", "items": [{"q": "spend", "opts": ["/e/", "/eɪ/"], "a": 0, "exp": "Đáp án: /e/"}, {"q": "better", "opts": ["/e/", "/eɪ/"], "a": 0, "exp": "Đáp án: /e/"}, {"q": "get", "opts": ["/e/", "/eɪ/"], "a": 0, "exp": "Đáp án: /e/"}, {"q": "temples", "opts": ["/e/", "/eɪ/"], "a": 0, "exp": "Đáp án: /e/"}, {"q": "express", "opts": ["/e/", "/eɪ/"], "a": 0, "exp": "Đáp án: /e/"}, {"q": "take", "opts": ["/e/", "/eɪ/"], "a": 1, "exp": "Đáp án: /eɪ/"}, {"q": "ways", "opts": ["/e/", "/eɪ/"], "a": 1, "exp": "Đáp án: /eɪ/"}, {"q": "longtail", "opts": ["/e/", "/eɪ/"], "a": 1, "exp": "Đáp án: /eɪ/"}, {"q": "Skytrain", "opts": ["/e/", "/eɪ/"], "a": 1, "exp": "Đáp án: /eɪ/"}, {"q": "way", "opts": ["/e/", "/eɪ/"], "a": 1, "exp": "Đáp án: /eɪ/"}, {"q": "famous", "opts": ["/e/", "/eɪ/"], "a": 1, "exp": "Đáp án: /eɪ/"}], "before": "<div class=\"note\">II - Find all the words with /e/ and /eɪ/ sounds in the passage to complete the table below.</div><div class=\"source\"><p><b>II - Find all the words with /e/ and /eɪ/ sounds in the passage to complete the table below.</b></p><p>Bangkok’s traffic can be a nightmare. Sure, you can easily take a taxi - if you want to spend hours stuck in traffic jams - but there are two much better ways to get around the city. To explore the temples and historical sites, catch an express boat river taxi or a longtail boat along the Chao Phraya river and the canals. For the modern part of the city, the Skytrain is a fast, cheap way to travel from the river to the shopping malls and nightlife of Sukhumvit, and the famous Chatuchak street market.</p></div>"}]}, {"title": "Grammar · Ngữ pháp", "icon": "🧩", "desc": "Unit 7 · Traffic", "subs": [{"label": "Lý thuyết", "html": "<div class=\"source\"><p><b>NGỮ PHÁP</b></p><p>Grammar</p><p><b>1. “IT” CHỈ KHOẢNG CÁCH. </b>(&quot;IT&quot; INDICATING DISTANCE)</p><p>Chúng ta thường dùng chủ ngữ “<b>it</b>” để nói về khoảng cách.</p><div class=\"tablewrap\"><table><tr><td><p><b>Cấu trúc</b></p></td><td><p><b>Ví dụ</b></p></td></tr><tr><td><p>• How far is <b>it</b> from A to B?</p><p>• <b>It </b>is (about) + number + kilometre(s)/ metre(s)/ mile(s).</p></td><td><p>• How far is <b>it</b> from the bus stop to your school? <i>(Khoảng cách từ trạm xe buýt đến trường bạn là bao xa?)</i></p><p>• <b>It</b> is about three kilometres. (<i>Khoảng ba cây số.)</i></p></td></tr><tr><td><p><b>It</b> is (about) + number + kilometre(s)/ metre(s)/ mile(s) + from A to B.</p></td><td><p><b>It</b> is about 500 metres from my house to the museum. (<i>Khoảng cách từ nhà tôi đến bảo tàng là khoảng 500 mét.)</i></p></td></tr></table></div><p><b>2. “USED TO” NÓI VỀ THÓI QUEN HOẶC TÌNH TRẠNG TRONG QUÁ KHỨ </b>(&quot;USED TO FOR PAST HABITS OR STATES)</p><p><b>a. Cách dùng</b></p><div class=\"tablewrap\"><table><tr><td><p>“Used to” được sử dụng khi nói về một thói quen hoặc tình trạng trong quá khứ mà đến nay không còn nữa.</p></td><td><p><b>Ví dụ:</b></p><p>When I was a child, I <b>used to eat</b> a lot of candies.</p><p>(<i>Khi tôi còn là một đứa trẻ, tôi đã từng ăn rất nhiều kẹo.)</i></p></td></tr></table></div><p><b>b. Cấu trúc</b></p><div class=\"tablewrap\"><table><tr><td><p><b>Dạng khẳng định</b></p><p>(Affirmative form)</p></td><td><p><b>S + used to + bare-V</b></p></td><td><p>I <b>used to live</b> in Ho Chi Minh city.</p><p>(<i>Tôi đã từng sống ở Thành phố Hồ Chí</i> <i>Minh.)</i></p></td></tr><tr><td><p><b>Dạng phủ định</b></p><p>(Negative form)</p></td><td><p><b>S + did not + use to + bare-V</b></p><p>did not = didn’t</p></td><td><p>My brother <b>didn’t use to drink</b> coffee. <i>(Trước đây anh trai tôi không uống cà phê.)</i></p></td></tr><tr><td><p><b>Dạng nghi vấn</b></p><p>(Interrogative form)</p></td><td><p><b>Did + S + use to + bare-V?</b></p></td><td><p><b>Did they use to go</b> to that restaurant every weekend?</p><p>(<i>Có phải trước đây họ đã từng đến nhà hàng này vào mỗi cuối tuần không?)</i></p></td></tr><tr><td><p><b>Trả lời câu hỏi Có/</b></p><p><b>Không</b></p><p>(Yes/ No response)</p></td><td><p><b>Yes, S + did. </b></p><p><b>No, S + didn’t.</b></p></td><td><p>Yes, they did. (<i>Vâng, đúng vậy.)</i></p><p>No, they didn’t. (<i>Không, không phải vậy.)</i></p></td></tr></table></div><p><b></b></p></div>"}]}, {"title": "Grammar practice", "icon": "📝", "desc": "Unit 7 · Traffic", "subs": [{"id": "g1", "label": "I · Chọn đáp án", "kind": "quiz", "items": [{"q": "How___is it from Hanoi to Tokyo? - It’s about 3,700 kilometres. ", "opts": ["much", "long", "far", "old"], "a": 2, "exp": "<p><b>Giải thích</b>: Câu hỏi về khoảng cách bắt đầu bằng “How far”.</p><p><b>Dịch nghĩa</b>: How far is it from Hanoi to Tokyo? - It’s about 3,700 kilometres. (<i>Khoảng cách từ Hà Nội đến Tokyo là bao xa? - Khoảng 3,700km.)</i></p>"}, {"q": "Minh___a smart phone, but his father has just bought him a brand-new one this morning. ", "opts": ["used to have", "didn’t use to have c. use to have", "didn’t used to have"], "a": 1, "exp": "<p><b>Giải thích</b>: Dạng phủ định của cấu trúc diễn tả một thói quen hoặc trạng thái trong quá khứ là “S + didn’t use to + V (infinitive)”.</p><p><b>Dịch nghĩa</b>: Minh didn’t use to have a smart phone, but his father has just bought him a brand-new one this morning. (<i>Minh đã từng không dùng điện thoại thông minh nhưng bố của anh ấy mới mua cho anh ấy một chiếc mới toanh sáng nay.)</i></p>"}, {"q": "It’s only 3 kilometers___the company___my house. ", "opts": ["between - and", "of - and", "to – from", "from - to"], "a": 3, "exp": "<p><b>Giải thích:</b> Trong câu hỏi về khoảng cách, ta dùng giới từ “from... to ...” (từ... đến ...) trước hai địa điểm.</p><p><b>Dịch nghĩa</b>: It’s only 3 kilometres from the company to my house. <i>(Khoảng cách từ công ty đến nhà tôi chỉ có 3km.)</i></p>"}, {"q": "Did you___talk to Hung when he sat next to you in the class? ", "opts": ["use to", "used to", "use", "used to be"], "a": 0, "exp": "<p><b>Giải thích</b>: Dạng nghi vấn của cấu trúc diễn tả một thói quen hoặc trạng thái trong quá khứ là “Did + S + use to + V(infinitive)?”.</p><p><b>Dịch nghĩa</b>: Did you use to talk to Hung when he sat next to you in the class? (<i>Bạn có từng nói chuyện với Hùng khi cậu ấy ngồi cạnh bạn trong lớp không?)</i></p>"}, {"q": "When I was a child, I___afraid of ghosts. ", "opts": ["used to be", "used to", "use to be", "use to"], "a": 0, "exp": "<p><b>Giải thích</b>: Dạng khẳng định của cấu trúc diễn tả một thói quen hoặc trạng thái trong quá khứ là “S + used to + V (infinitive)”. Vì “afraid” là tính từ nên phải dùng “used to be”.</p><p><b>Dịch nghĩa</b>: When I was a child, I used to be afraid of ghosts. (<i>Khi tôi còn là một đứa trẻ, tôi đã từng sợ ma.)</i></p>"}, {"q": "My brother didn’t___ yoga before the doctor advised him to do so. ", "opts": ["used to do", "use to do", "used to. used to doing"], "a": 1, "exp": "<p><b>Giải thích</b>: Dạng phủ định của cấu trúc diễn tả một thói quen hoặc trạng thái trong quá khứ là “S + didn’t use to + V (infinitive)”.</p><p><b>Dịch nghĩa</b>: My brother didn’t use to do yoga before the doctor advised him to do so. (<i>Anh trai của tôi đã từng không tập yoga trước khi bác sĩ khuyên anh ấy làm như vậy.)</i></p>"}, {"q": "I___as a doctor in that hospital a couple of years ago, but I don’t work there now. ", "opts": ["am working", "will work", "work", "used to work"], "a": 3, "exp": "<p><b>Giải thích</b>: Dạng khẳng định của cấu trúc diễn tả một thói quen hoặc trạng thái trong quá khứ là “S + used to + V (infinitive)”.</p><p><b>Dịch nghĩa</b>: I used to work as a a doctor in that hospital a couple of years ago, but I don’t work there now. (<i>Tôi đã từng làm bác sĩ ở bệnh viện đó vài năm trước, nhưng bây giờ tôi không làm việc ở đó nữa.)</i></p>"}, {"q": "Did they___with their parents before they moved to this city? ", "opts": ["used to live", "used to lived", "use to live", "use to lived"], "a": 2, "exp": "<p><b>Giải thích</b>: Dạng nghỉ vấn của cấu trúc diễn tả một thói quen hoặc trạng thái trong quá khứ là “Did + S + use to + V (infinitive)?”.</p><p><b>Dịch nghĩa</b>: Did they use to live with their parents before they moved to this city? (<i>Họ có từng sống với bố mẹ trước khi chuyển đến thành phố này không?)</i></p>"}], "before": "<div class=\"note\">I - Choose the best option to complete each of the following sentences.</div>"}, {"id": "g2", "label": "II · Tìm lỗi sai", "kind": "quiz", "items": [{"q": "I <u>think</u> it is not very <u>far</u> <u>from</u> your house <u>and</u> Noi Bai International Airport. ", "opts": ["think", "far", "from", "and"], "a": 3, "exp": "<p><b>Giải thích</b>: Trong cấu trúc nói về khoảng cách, dùng cụm giới từ “from ... to” để diễn tả khoảng cách từ địa điểm này đến địa điểm kia.</p><p><b>Dịch nghĩa</b>: I think it is not far from your house to Noi Bai International Airport. <i>(Tôi nghĩ rằng từ nhà bạn đến Sân bay Quốc tế Nội Bài không xa lắm.)</i></p>"}, {"q": "How <u>long</u> is it <u>from</u> the bus stop <u>to</u> My Dinh stadium? - It’s <u>over</u> three kilometers. ", "opts": ["long", "from", "to", "over"], "a": 0, "exp": "<p><b>Giải thích</b>: Câu hỏi về khoảng cách bắt đầu bằng “How far”.</p><p><b>Dịch nghĩa</b>: How far is it from the bus stop to My Dinh stadium? - It’s over three kilometnes. (<i>Hơn 3 km.) (Từ bến xe buýt đến sân vận động Mỹ Đình là bao xa?)</i></p>"}, {"q": "Is it <u>far</u> <u>between</u> Keangnam Landmark Tower <u>to</u> Dong Xuan market? - It’s <u>over</u> 10 kilometres. ", "opts": ["far", "between", "to", "over"], "a": 1, "exp": "<p><b>Giải thích</b>: Trong cấu trúc nói về khoảng cách, dùng cụm giới từ “from ... to” để diễn tả khoảng cách từ địa điểm này đến địa điểm kia.</p><p><b>Dịch nghĩa</b>: Is it far from Keangnam Landmark Tower to Dong Xuan market? - I think it’s over 10 kilometres. (<i>Từ tòa nhà Keangnam Landmark đến chợ Đồng Xuân có xa không? - Tôi nghĩ là khoảng hơn 10km.)</i></p>"}, {"q": "It’s <u>about</u> 6 kilometers <u>from</u> my house <u>and</u> the railway station. I often go there <u>by</u> taxi. ", "opts": ["about", "from", "and", "by"], "a": 2, "exp": "<p><b>Giải thích</b>: Trong cấu trúc nói về khoảng cách, dùng cụm giới từ “from ... to” để diễn tả khoảng cách từ địa điểm này đến địa điểm kia.</p><p><b>Dịch nghĩa</b>: It’s about 6 kilometres from my house to the railway station. I often go there by taxi. (<i>Từ nhà tôi đến ga tàu là khoảng 6km. Tôi thường đi đến đó bằng taxi.)</i></p>"}, {"q": "How <u>far</u> <u>it is</u> <u>from</u> the outskirts of Hanoi <u>to</u> the shopping mall in the city centre? ", "opts": ["far", "it is", "from", "to"], "a": 1, "exp": "<p><b>Giải thích</b>: cấu trúc câu hỏi khoảng cách là “How far is it from ... to ...?”</p><p><b>Dịch nghĩa</b>: How far is it from the outskirts of Hanoi to the shopping mall in the city centre? (<i>Khoảng cách từ ngoại thành Hà Nội đến trung tâm mua sắm ở trung tâm thành phố là bao xa?)</i></p>"}, {"q": "<u>Let’s</u> take a walk. I’m <u>sure</u> that it’s not too <u>long</u> from the restaurant <u>to</u> the cinema. ", "opts": ["Let’s", "sure", "long", "to"], "a": 2, "exp": "<p><b>Giải thích</b>: Xét về nghĩa, khi đề cập đến khoảng cách từ đâu tới đâu, ta dùng từ “far”.</p><p><b>Dịch nghĩa</b>: Let’s take a walk. I’m sure that it’s not too far from the restaurant to the cinema. (<i>Chúng ta hãy đi bộ đi. Tớ chắc chắn đi từ nhà hàng đến rạp chiếu phim không quá xa.)</i></p>"}], "before": "<div class=\"note\">II - Choose the underlined part which needs correction.</div>"}, {"id": "g3", "label": "III · Viết câu", "kind": "write", "items": [{"c": "not very far/ aquarium/ night market.", "a": "It is not very far from the aquarium to the night market.", "vi": "  Giải thích : Khi nói về khoảng cách giữa 2 địa điểm ta dùng cấu trúc “It is (about)... from ... to ...”    Dịch nghĩa : Khoảng cách từ viện hải dương học đến chợ đêm là không quá xa. "}, {"c": "2 kilometers/ my house/ Ha Long Park.", "a": "It is 2 kilometres from my house to Ha Long Park.", "vi": "  Giải thích : Khi nói về khoảng cách giữa 2 địa điểm ta dùng cấu trúc “It is (about)... from ... to ...”   Dịch nghĩa: Khoảng cách từ nhà tôi đến Công viên Hạ Long là khoảng 2km. "}, {"c": "How far/Trang Tien Bridge/Thien Mu Pagoda?", "a": "How far is it from Trang Tien Bridge to Thien Mu Pagoda?", "vi": "  Giải thích : Khi hỏi về khoảng cách ta dùng cấu trúc “How far is it from ... to ...?”.   Dịch nghĩa : Khoảng cách từ cầu Tràng Tiền đến Chùa Thiên Mụ là bao xa? "}, {"c": "How far/ pet shop/ amusement park?", "a": "How far is it from the pet shop to the amusement park?", "vi": "  Giải thích : Khi hỏi về khoảng cách ta dùng cấu trúc “How far is it from ... to ...?”.    Dịch nghĩa : Khoảng cách từ cửa hàng thú cưng đến công viên giải trí là bao xa? "}, {"c": "17 kilometres/ your place/ city centre.", "a": "It’s 17 kilometres from your place to the city centre.", "vi": "  Giải thích : Khi nói về khoảng cách giữa 2 địa điểm ta dùng cấu trúc “It Is (about)... from ... to ...”    Dịch nghĩa : Từ chỗ của bạn đến trung tâm thành phố là 17km. "}, {"c": "140 thousand miles/ Earth/ Mars.", "a": "It is 140 thousand miles from the Earth to Mars?", "vi": "  Giải thích : Khi nói về khoảng cách giữa 2 địa điểm ta dùng cấu trúc “It is (about)... from ... to ...”    Dịch nghĩa : Khoảng cách từ Trái Đất đến Sao Hỏa là khoảng 140 nghìn dặm. "}, {"c": "How far/ cable car station/ Fansipan Summit?", "a": "How far is It from the cable car station to Fansipan Summit?", "vi": "  Giải thích : Khi hỏi về khoảng cách ta dùng cấu trúc “How far is it from ... to ...?”.   Dịch nghĩa : Khoảng cách từ trạm xe cáp treo đến đỉnh Fan-xi-păng là bao xa? "}, {"c": "300 metres/ super market/ railway station.", "a": "It is 300 metres from the super market to the railway station.", "vi": "  Giải thích : Khi nói về khoảng cách giữa 2 địa điểm ta dùng cấu trúc “It is (about)... from ... to ...”    Dịch nghĩa : Khoảng cách từ siêu thị đến ga tàu là 300m. "}], "before": "<div class=\"note\">III - Comptete each of the following sentences using the cues given. You can change the cues and use other words in addition to the cues to complete the sentences.</div>"}, {"id": "g4", "label": "IV · Khoảng cách", "kind": "write", "items": [{"c": "What is the distance between Ha Noi and Sa Pa?", "a": "How far is it from Hanoi to Sa Pa?", "vi": "  Giải thích : Khi hỏi về khoảng cách ta dùng cấu trúc “How far is it from ... to ...?”   Dịch nghĩa : Khoảng cách từ Hà Nội đến Sa Pa là bao xa? "}, {"c": "What is the distance between the toy store and the local market?", "a": "How far is it from the toy store to the local market?", "vi": "  Giải thích : Khi hỏi về khoảng cách ta dùng cấu trúc “How far is it from ... to ...?”    Dịch nghĩa : Từ cửa hàng đồ chơi đến chợ địa phương là bao xa? "}, {"c": "The distance between the cinema and the zoo is about 700 metres.", "a": "It is about 700 metres from the cinema to the zoo.", "vi": "  Giải thích : Khi nói về khoảng cách giữa 2 địa điểm ta dùng cấu trúc “It is (about)... from ... to ...”    Dịch nghĩa : Khoảng cách từ rạp chiếu phim đến sở thú là 700m. "}, {"c": "The distance between Paris and London is about 470 kilometres.", "a": "It is 470 kilometres from Paris to London.", "vi": "  Giải thích : Khi nói về khoảng cách giữa 2 địa điểm ta dùng cấu trúc “It is (about)... from ... to ...”   Dịch nghĩa : Từ Paris đến London là khoảng 470km. "}, {"c": "What is the distance between the National Conference Center and the hotel?", "a": "How far is it from National Conference Center to the hotel?", "vi": "  Giải thích : Khi hỏi về khoảng cách ta dùng cấu trúc “How far is it from ... to ...?”    Dịch nghĩa : Từ trung tâm hội nghị Quốc gia đến khách sạn là bao xa? "}, {"c": "What is the distance between the festival location and the car park?", "a": "How far is it from the festival location to the car park?", "vi": "  Giải thích:  Khi hỏi về khoảng cách ta dùng cấu trúc “How far is it from ... to ...?”.   Dịch nghĩa : Khoảng cách từ địa điểm lễ hội đến bãi gửi xe là bao xa? "}, {"c": "What is the distance between the bank and the post office?", "a": "How far is st from the bank to the post office?", "vi": "  Giải thích : Khi hỏi về khoảng cách ta dùng cấu trúc “How far is it from ... to ...?”.   Dịch nghĩa : Khoảng cách từ ngân hàng đồ chơi đến bưu điện là bao xa? "}, {"c": "The distance between my office and the hospital is not very far.", "a": "It is not very far from my office to the hospital.", "vi": "  Giải thích : Khi nói về khoảng cách giữa hai địa điểm ta dùng cấu trúc “It is (about)... from ... to ....”.   Dịch nghĩa : Khoảng cách từ văn phòng của tôi đến hiệu thuốc không xa lắm. "}, {"c": "The distance between my house and Hoan Kiem Lake is over 10 kilometres.", "a": "It is over 10 kilometres from my house to Hoan Kiem Lake.", "vi": "  Giải thích : Khi nói về khoảng cách giữa hai địa điểm ta dùng cấu trúc “It is (about)... from ... to ....”.   Dịch nghĩa : Khoảng cách từ nhà tôi đến Hồ Hoàn Kiếm là hơn 10km. "}, {"c": "The distance between Barcelona and Madrid is about 500 kilometres.", "a": "It’s about 500 kilometres from Barcelona to Madrid.", "vi": "  Giải thích : Khi nói về khoảng cách giữa hai địa điểm ta dùng cấu trúc “It is (about)... from ... to ....”.  Dịch nghĩa:  Khoảng cách từ Barcelona đến Madrid là khoảng 500km. "}], "before": "<div class=\"note\">IV - Rewrite the following sentences, using “it” to indicate distance.</div>"}, {"id": "g5", "label": "V · Used to", "kind": "write", "items": [{"c": "My father started smoking last year.", "a": "My father didn’t use to smoke.", "vi": "  Giải thích : cấu trúc “S + didn’t use to + V (infinitive)” dùng để diễn tả hành động đã không xảy ra trong quá khứ.    Dịch nghĩa : Bố tôi đã từng không hút thuốc. "}, {"c": "My sister stopped playing badminton after she had a traffic accident.", "a": "My sister used to play badminton before she had a traffic accident.", "vi": "  Giải thích : cấu trúc “S + used to + V (infinitive)” dùng để diễn tả thói quen, trạng thái trong quá khứ.   Dịch nghĩa:  Chị của tôi đã từng chơ! cầu lông trước khi chị ấy bị tai nạn giao thông. "}, {"c": "They started to go to the fitness centre after they gained weight.", "a": "They didn’t used to go to the fitness centre before they gained weight.", "vi": "  Giải thích : cấu trúc “S + didn’t use to + V (infinitive)” dùng để diễn tả hành động đã không xảy ra trong quá khứ.   Dịch nghĩa:  Họ đã từng không đến trung tâm thể hình trước khi họ tăng cân. "}, {"c": "When I was young, I believed in magic.", "a": "When I was young, I used to believe in magic.", "vi": "  Giải thích : cấu trúc “S + used to + V (infinitive)” dùng để diễn tả thói quen, trạng thái trong quá khứ.   Dịch nghĩa : Khi tôi còn nhỏ, tôi đã từng tin vào phép thuật. "}, {"c": "Did you walk to school when you lived with your grandparents?", "a": "Did you use to walk to school when you lived with your grandparents?", "vi": "  Giải thích : cấu trúc “Did + S + use to + V (infinitive)?” dùng để hỏi về một hành động có từng xảy ra trong quá khứ hay không.   Dịch nghĩa : Bạn có từng đi bộ đến trường khi bạn sống với ông bà không? "}, {"c": "She was very nervous before every geography exam.", "a": "She used to be very nervous before every geography exam.", "vi": "  Giải thích : cấu trúc “S + used to + V (infinitive)” dùng để diễn tả thói quen, trạng thái trong quá khứ.  Dịch nghĩa : Cô ấy đã từng rất lo lắng trước mọi bài thi môn Địa lý. "}, {"c": "When he was a little boy, he dreamed of being a superman.", "a": "When he was a little boy, he used to dream of being a superman.", "vi": "  Giải thích : cấu trúc “S + used to + V (infinitive)” dùng để diễn tả thói quen, trạng thái trong quá khứ.   Dịch nghĩa : Khi anh ấy còn nhỏ, anh ấy từng mơ làm siêu nhân. "}, {"c": "She is not able to dance as well as she did in the past.", "a": "She used to dance very well.", "vi": "  Giải thích : cấu trúc “S + used to + V (infinitive)” dùng để diễn tả thói quen, trạng thái trong quá khứ.   Dịch nghĩa : Cô ấy đã từng nhảy rất giỏi. "}, {"c": "Did you go to the English for Kids Club when you were at primary school?", "a": "Did you use to go to the English for Kids Club when you were at primary school?", "vi": "  Giải thích : cấu trúc “Did + S + use to + V (infinitive)?” dùng để hỏi về một hành động có từng xảy ra trong quá khứ hay không.   Dịch nghĩa : Bạn có từng đến Câu lạc bộ Tiếng anh Trẻ em khi bạn học tiểu học không? "}, {"c": "My sister did not have long hair when she was a teenager.", "a": "My sister didn’t use to have long hair when she was a teenager.", "vi": "  Giải thích:  cấu trúc “S + didn’t use to + V (infinitive)” dùng để diễn tả hành động đã không xảy ra trong quá khứ.   Dịch nghĩa : Chị gái của tôi không để tóc dài khi chị ấy còn niên thiếu. "}], "before": "<div class=\"note\">V - Rewrite each sentence using ‘used to’ so that the new sentence has a similar meaning to the orig inal one.</div>"}]}, {"title": "Reading · Đọc hiểu", "icon": "📖", "desc": "Unit 7 · Traffic", "subs": [{"label": "Do you know?", "html": "<div class=\"source\"><div class=\"tablewrap\"><table><tr><td><p><b>DO YOU KNOW?</b></p><p><b>STRANGE TRAFFIC LAWS FROM AROUND THE WORLD</b></p><p>•It’s illegal to eat or drink while driving in Cyprus.</p><p>•In South Africa, animals have the same right to the roads as motorists do. Drivers face heavy fines of up to $500 if they do not slow or stop for passing livestock.</p><p>•Road safety officials in Denmark have made it a legal requirement for drivers to check for children hiding beneath the vehicle before starting the engine.</p><p>•In Moscow, it’s all about cleanliness - police impose fines on anyone with a dirty car.</p><p>•In Jasper Gates, Canada, a dumb law forbids drivers from going faster than a horse or carriage</p></td></tr></table></div></div>"}, {"id": "r1", "label": "I · Bus journeys", "kind": "quiz", "items": [{"q": "What is the main idea of the passage? ", "opts": ["Buses in the UK are very convenient.", "Bus journeys are different in the UK and in Latin America.", "Bus journeys in the UK are boring.", "Films are shown on long-distance buses in Latin America."], "a": 1, "exp": "<p><b>Dịch nghĩa</b>: Ý chính của cả bài văn là gì?</p><p><b>A</b>.Xe bus ở Vương quốc Anh rất tiện lợi.</p><p><b>B</b>.Những chuyến đi bằng xe buýt khác nhau ở Vương quốc Anh và Mỹ Latinh.</p><p><b>C</b>. Hành trình xe buýt ở Vương quốc Anh rất tẻ nhạt.</p><p><b>D</b>. Phim được chiếu trên xe buýt đường dài ở Mỹ Latinh.</p><p><b>Giải thích</b>: Các đoạn văn trong bài làm rõ sự khác biệt giữa việc đi xe buýt ở Vương quốc Anh và Mỹ Latin. Các phương án khác chỉ là những ý nhỏ trong bài.</p>"}, {"q": "Public transport in the UK is convenient because you can avoid___. ", "opts": ["traffic accidents", "policemen", "traffic jams", "bus lanes"], "a": 2, "exp": "<p><b>Dịch nghĩa</b>: Phương tiện di chuyển công cộng ở Vương quốc Anh thuận tiện vì bạn có thể tránh được________.</p><p><b>A</b>. tai nạn giao thông <b>B</b>. cảnh sát<b>C</b>. tắc đường<b>D</b>. làn đường cho xe buýt</p><p><b>Giải thích</b>: Thông tin tìm thấy ở dòng thứ 2-3 “[...] as you can avoid traffic jams by moving very quickly in the bus lanes [...]”</p>"}, {"q": "The word “tedious” in line 3 means___. ", "opts": ["not interesting", "exciting", "wonderful", "important"], "a": 0, "exp": "<p><b>Dịch nghĩa</b>: Từ “tedious” ở dòng thứ 3 có nghĩa là:</p><p><b>A</b>. không thú vị<b>B</b>. hào hứng<b>C.</b> tuyệt vời<b>D</b>. quan trọng</p><p><b>Giải thích</b>: Dựa vào ngữ cảnh trong đoạn văn thứ nhất và thông tin ở dòng 4-5 “[...] taking the bus is just a necessary and tedious part of life: you board the bus, pay the driver and sit down or find a place to stand. Very boring.” thì đáp án A phù hợp nhất về mặt nghĩa.</p>"}, {"q": "The phrasal verb “put on” in the first sentence of the second paragraph can be replaced with “___”. ", "opts": ["close", "wear", "play", "open"], "a": 2, "exp": "<p>Dịch nghĩa: Cụm động từ “put on” ở dòng đầu tiên trong đoạn văn thứ hai có thể được thay thế bằng “_________”.</p><p><b>A</b>. đóng<b>B</b>. mặc<b>C.</b> chơi<b>D</b>. mở</p><p><b>Giải thích</b>: Xét về mặt nghĩa, đáp án C phù hợp nhất.</p>"}, {"q": "Which of the following statements is NOT MENTIONED about bus journeys in Latin America? ", "opts": ["Passengers can entertain during their trip by watching films.", "Drivers play new styles of music on the radio.", "They are more exciting than bus trips in the UK.", "They are more expensive than bus trips in the UK."], "a": 3, "exp": "<p><b>Dịch nghĩa</b>: Khẳng định nào sau đây KHÔNG ĐƯỢC ĐỀ CẬP ĐẾN về các chuyến đi bằng xe buýt ở Mỹ Latinh?</p><p><b>A</b>.Hành khách có thể giải trí trong hành trình của họ bằng việc xem phim.</p><p><b>B</b>.Những người tài xế bật các bài hát có phong cách nhạc mới trên đài phát thanh.</p><p><b>C</b>. Chúng thú vị hơn những chuyến xe bus ở Vương quốc Anh.</p><p><b>D</b>. Chúng đắt hơn những chuyến xe bus ở Vương quốc Anh.</p><p><b>Giải thích</b>: Đáp án A tìm thấy ở dòng thứ 5-6 “[...] you have entertainment for at least some of the journey, đáp án B tìm thấy ở dòng thứ 7-8 “[...] but drivers usually switch on the radio and that can be a great way to hear new songs and new styles of music. “, đáp án c tìm thấy ở dòng thứ 9 “[...] it is much more exciting than any UK bus journey. “, chỉ có đáp án D là không có trong bài.</p>"}], "before": "<div class=\"source\"><p><b>I- Read the passage and choose the best option to answer each of the following questions.</b></p><p>In the UK, bus journeys are just boring and simply a necessity. This public means of transportation is often convenient when you live or work in the city centre, as you can avoid traffic jams by moving very quickly in the bus lanes, and do not have to pay to park the car. After all, though, taking the bus is just a necessary and <b>tedious</b> part of life: you board the bus, pay the driver and sit down or find a place to stand. Very boring.</p><p>In Latin America, however, bus trips can be very lively. For a start, long-distance buses <b>put on</b> films so that you have entertainment for at least some of the journey. Naturally, local transport does not show films but drivers usually switch on the radio and that can be a great way to hear new songs and new styles of music. Therefore, taking the bus doesn’t sound like fun but it is much more exciting than any UK bus journey.</p><p><i>(British Council) </i></p></div><details class=\"tr\"><summary>🇻🇳 Bản dịch bài đọc</summary><div class=\"source\"><p>Ở Anh, những chuyến đi bằng xe buýt nhàm chán và đơn giản chỉ ỉà một nhu cầu thiết yếu. Phương tiện di chuyển công cộng này thường thuận tiện khi bạn sống hoặc làm việc trong trung tâm thành phố, vì bạn có thể tránh ùn tắc giao thông bằng cách di chuyển rất nhanh trong làn đường dành riêng cho xe buýt và không phải trả tiền để đỗ xe. Tuy nhiên, cuối cùng thì đi xe buýt chỉ là một phần cần thiết và tẻ nhạt của cuộc sống: bạn lên xe buýt, trả tiền cho tài xế và ngồi xuống hoặc tìm một chỗ đứng. Rất nhàm chán.</p><p>Tuy nhiên, ở Mỹ Latinh, các chuyến xe buýt có thể rất sống động. Khi bắt đầu, xe buýt đường dài phát các bộ phim để bạn ít nhất có thể giải trí phần nào đó trong suốt hành trình. Đương nhiên, xe buýt địa phương không chiếu phim nhưng tài xế thường bật đài và đó có thể là một cách tuyệt vời để nghe các bài hát mới và phong cách âm nhạc mới. Do đó, đi xe buýt tuy không hẳn là vui nhưng nó thú vị hơn nhiều so với bất kỳ hành trình xe buýt nào ở Anh.</p></div></details>"}, {"id": "r2", "label": "II · Traffic jams", "kind": "quiz", "items": [{"q": "What is the passage mainly about? ", "opts": ["the causes of traffic jams in Viet Nam", "the effects of traffic jams in Viet Nam", "the reality of traffic jams in Viet Nam", "the solutions to reduce traffic jams in Viet Nam"], "a": 2, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Bài văn chủ yếu nói về điều gì?</p><p><b>A</b>.nguyên nhân gây ùn tắc giao thông ở Việt Nam</p><p><b>B</b>.ảnh hưởng của ùn tắc giao thông ở Việt Nam</p><p><b>C</b>. thực trạng ùn tắc giao thông ở Việt Nam</p><p><b>D</b>. các giải pháp giảm ùn tắc giao thông ở Việt Nam</p><p><b>Giải thích</b>: Các đoạn văn trong bài nói về thực trạng ùn tắc giao thông ở Việt Nam, bao gồm địa điểm, thời điểm thường xảy ra ùn tắc giao thông và cách mọi người phản ứng với nó.</p>"}, {"q": "When is traffic congestion in Viet Nam the worst? ", "opts": ["when everyone goes to work", "between 9 a.m. to 10 a.m.", "between 3 p.m. to 4 p.m.", "at the weekend"], "a": 0, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Giao thông ở Việt Nam tắc nghẽn nhất khi nào?</p><p><b>A</b>. khi mọi người đi làm<b>B</b>. từ 9 giờ sáng đến 10 giờ sáng</p><p><b>C</b>. từ 3 giờ chiều đến 4 giờ chiều<b>D</b>. vào cuối tuần</p><p><b>Giải thích</b>: Thông tin ở câu 2 đoạn 2: “But it is worst during the rush hour when everyone is in a hurry to get to work or come back home.”</p>"}, {"q": "It’s difficult to catch a___during the downpour. ", "opts": ["bus", "taxi", "train", "motorbike"], "a": 1, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Rất khó để bắt__________khi trời đang mưa như trút.</p><p><b>A</b>. xe buýt<b>B</b>. xe tắc xi<b>C</b>. tàu<b>D</b>. xe máy</p><p><b>Giải thích</b>: Thông tin ở câu cuối đoạn 2: “Taxis are extremely hard to catch or wave during the downpour.”</p>"}], "before": "<div class=\"source\"><p><b>II - Read the passage and do the tasks below.</b></p><p>Traffic jams in Viet Nam frequently take place in big cities, such as Ha Noi and Ho Chi Minh City.</p><p>There is no fixed rule for the time a traffic jam to happen. But It is worst during the rush hour when everyone is in a hurry to get to work or come back home. Apart from peak hours, the time between 9 a.m. to 10 a.m. and between 3 p.m. to 4 p.m. also witnesses long lines of vehicles, mainly motorbikes. When it rains, the traffic jam gets more terrible. Taxis are extremely hard to catch or wave during the downpour.</p><p>However, the most annoying thing about the traffic jam is the way people react to it. Most road users ride their motorbikes on the pavement rather than waiting calmly. Moreover, they constantly use their horns to hasten riders in the front, even shouting at them from time to time.</p><p><b>Part 1: Choose the best answer to each of the following questions.</b></p></div><details class=\"tr\"><summary>🇻🇳 Bản dịch bài đọc</summary><div class=\"source\"><p>Ở Việt Nam, ùn tắc giao thông thường xảy ra ở các thành phố lớn, như Hà Nội và Thành phố Hồ Chí Minh.</p><p>Không có quy tắc cố định nào về thời gian xảy ra ùn tắc giao thông. Nhưng tắc nhất là vào giờ cao điểm khi mọi người đang vội vã đi làm hoặc trở về nhà. Ngoài giờ cao điểm, thời gian từ 9 giờ sáng đến 10 giờ sáng và từ 3 giờ chiều đến 4 giờ chiều cũng chứng kiến những hàng dài xe cộ, chủ yếu là xe máy. Khi trời mưa, tắc đường trở nên khủng khiếp hơn. Thật khó để bắt hoặc vẫy xe tắc xi trong khi trời đang mưa như trút nước.</p><p>Tuy nhiên, điều khó chịu nhất về ùn tắc giao thông là cách mọi người phản ứng lại với nó. Hầu hết những người điều khiển xe máy đều đi xe lên vỉa hè thay vì bình tĩnh chờ đợi. Hơn nữa, họ liên tục bấm còi xe để giục những người ở phía trước mình đi nhanh lên, thậm chí đôi khi còn hét vào mặt họ.</p></div></details>"}, {"id": "r3", "label": "II · Đúng / sai", "kind": "quiz", "items": [{"q": "There is a certain time for traffic congestion in Viet Nam.", "opts": ["True", "False"], "a": 1, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Có thời gian cố định xảy ra tắc nghẽn giao thông ở Việt Nam.</p><p><b>Giải thích</b>: Thông tin ở câu đầu đoạn 2: “There is no fixed rule for the time a traffic jam to happen.”</p>"}, {"q": "The traffic jam becomes more serious when it rains.", "opts": ["True", "False"], "a": 0, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Sự ùn tắc giao thông trở nên nghiêm trọng hơn khi trời mưa.</p><p><b>Giải thích</b>: Thông tin ở câu 4 đoạn 2: “When it rains, the traffic jam gets more terrible.”</p>"}, {"q": "To get through a traffic jam, road users usually break traffic rules.", "opts": ["True", "False"], "a": 0, "exp": "<p><b>Dịch nghĩa câu hỏi:</b> Để thoát ra khỏi điểm tắc nghẽn, người tham gia giao thông thường vi phạm luật lệ giao thông.</p><p><b>Giải thích</b>: Thông tin ở câu 2 đoạn 3: “Most road users ride their motorbikes on the pavement rather than waiting calmly.” Việc những người điều khiển xe máy đi xe lên vỉa hè khi tắc đường là vi phạm luật giao thông. </p>"}], "before": "<div class=\"source\"><p>Traffic jams in Viet Nam frequently take place in big cities, such as Ha Noi and Ho Chi Minh City.</p><p>There is no fixed rule for the time a traffic jam to happen. But It is worst during the rush hour when everyone is in a hurry to get to work or come back home. Apart from peak hours, the time between 9 a.m. to 10 a.m. and between 3 p.m. to 4 p.m. also witnesses long lines of vehicles, mainly motorbikes. When it rains, the traffic jam gets more terrible. Taxis are extremely hard to catch or wave during the downpour.</p><p>However, the most annoying thing about the traffic jam is the way people react to it. Most road users ride their motorbikes on the pavement rather than waiting calmly. Moreover, they constantly use their horns to hasten riders in the front, even shouting at them from time to time.</p></div><details class=\"tr\"><summary>🇻🇳 Bản dịch bài đọc</summary><div class=\"source\"><p>Ở Việt Nam, ùn tắc giao thông thường xảy ra ở các thành phố lớn, như Hà Nội và Thành phố Hồ Chí Minh.</p><p>Không có quy tắc cố định nào về thời gian xảy ra ùn tắc giao thông. Nhưng tắc nhất là vào giờ cao điểm khi mọi người đang vội vã đi làm hoặc trở về nhà. Ngoài giờ cao điểm, thời gian từ 9 giờ sáng đến 10 giờ sáng và từ 3 giờ chiều đến 4 giờ chiều cũng chứng kiến những hàng dài xe cộ, chủ yếu là xe máy. Khi trời mưa, tắc đường trở nên khủng khiếp hơn. Thật khó để bắt hoặc vẫy xe tắc xi trong khi trời đang mưa như trút nước.</p><p>Tuy nhiên, điều khó chịu nhất về ùn tắc giao thông là cách mọi người phản ứng lại với nó. Hầu hết những người điều khiển xe máy đều đi xe lên vỉa hè thay vì bình tĩnh chờ đợi. Hơn nữa, họ liên tục bấm còi xe để giục những người ở phía trước mình đi nhanh lên, thậm chí đôi khi còn hét vào mặt họ.</p></div></details>"}]}, {"title": "Listening · Nghe", "icon": "🔊", "desc": "Unit 7 · Traffic", "subs": [{"id": "l1", "label": "Nghe & làm bài", "kind": "quiz", "items": [{"q": "Transportation has changed a lot in the past 100 years.", "opts": ["True", "False"], "a": 1, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Giao thông vận tải đã thay đổi nhiều trong 100 năm qua.</p><p><b>Giải thích</b>: Thông tin tìm thấy ở câu đầu tiên “Transportation hasn’t really changed a lot in the past 100 years.</p>"}, {"q": "Airplanes are now faster than in the past.", "opts": ["True", "False"], "a": 0, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Máy bay bây giờ nhanh hơn trong quá khứ.</p><p><b>Giải thích</b>: Thông tin tìm thấy ở câu thứ 3 “OK, cars, trains and airplanes are faster, but they’re not so different than they were 50 years ago.”</p>"}, {"q": "Air travel has got worse.", "opts": ["True", "False"], "a": 0, "exp": "<p><b>Dịch nghĩa câu</b> hỏi: Di chuyển bằng đường hàng không đã trở nên tệ hơn.</p><p><b>Giải thích</b>: Thông tin tìm thấy ở câu thứ 5 ì think air travel has got worse.”</p>"}, {"q": "The cars from fifty years ago looked uglier than today’s ones.", "opts": ["True", "False"], "a": 1, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Xe ô tô từ 50 năm trước xấu hơn xe ô tô bây giờ.</p><p><b>Giải thích</b>: Thông tin tìm thấy ở câu thứ 8 “The cars from fifty years ago look nicer than today’s ones.”</p>"}, {"q": "Cars in the past also used petrol.", "opts": ["True", "False"], "a": 0, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Xe ô tô trong quá khứ cũng sử dụng xăng.</p><p><b>Giải thích</b>: Thông tin tìm thấy ở câu thứ 9 “They still had four wheels, used petrol and had a steering wheel”. </p>"}], "before": "<div class=\"note\">Giọng đọc tổng hợp từ lời thoại trong tài liệu.</div><button class=\"btn solid\" onclick=\"say(LISTEN)\">▶ Nghe</button> <button class=\"btn\" onclick=\"speechSynthesis.cancel()\">■ Dừng</button>"}, {"label": "Lời thoại & bản dịch", "html": "<div class=\"source\"><div class=\"tablewrap\"><table><tr><td><p>Transportation hasn&#x27;t really changed a lot in the past 100 years. When you think about changes in other areas of our life, transportation is pretty much the same as it was years ago.</p><p>OK, cars, trains and airplanes are fast, but they&#x27;re not so different than they were 50 years ago. Take airplanes, for example. I think air travel has got worse. Fifty years ago, people flew and were given great service.</p><p>Today, you are like sardines in a can. And look at cars. The cars from fifty years ago looked nicer than today&#x27;s ones. They still had four wheels, used petrol and had a steering wheel. I think transportation will really only change when it becomes more personal. I&#x27;m waiting for my own mini copter.</p></td><td><p>Giao thông vận tải không thực sự thay đổi nhiều trong 100 năm qua. Khi bạn nghĩ về những thay đổi ở các lĩnh vực khác trong cuộc sống của chúng ta, giao thông vận tải vẫn gần giống như những năm trước đây.</p><p>Tốt thôi, ô tô, xe lửa và máy bay nhanh hơn, nhưng chúng không quá khác biệt so với 50 năm trước. Ví dụ như đi máy bay. Tôi nghĩ du lịch hàng không đã trở nên tệ hơn. Năm mươi năm trước, mọi người đã bay và được cung cấp dịch vụ tuyệt vời.</p><p>Giờ đây, bạn giống như cá mòi trong một cái hộp. Và hãy nhìn vào xe ô tô. Những chiếc xe từ năm mươi năm trước trông đẹp hơn những chiếc xe ngày nay. Chúng vẫn có bốn bánh, sử dụng xăng và có tay lái. Tôi nghĩ rằng giao thông vận tải sẽ thực sự thay đổi khi nó mang tính cá nhân hơn. Tôi đang chờ đợi bộ máy bay phản lực mini của riêng mình</p></td></tr></table></div></div>"}]}, {"title": "Speaking · Nói", "icon": "💬", "desc": "Unit 7 · Traffic", "subs": [{"label": "Đề bài & hướng dẫn", "html": "<div class=\"source\"><p><b>Talk about your favorite means of transportation</b></p><p>You can use the following questions as cues:</p><p>• What is your favourite means of transportation?</p><p>• How often do you use it?</p><p>• Where do you usually go?</p><p>• Why do you like it?</p><p><b>Useful languages:</b></p><div class=\"tablewrap\"><table><tr><td><p><b>Useful vocabulary</b></p></td><td><p><b>Useful structures</b></p></td></tr><tr><td><p>•bicycle</p><p>• car</p><p>• helicopter</p><p>•boat</p><p>•convenient</p><p>•cheap</p><p>•safe</p><p>•environmentally friendly</p><p>•healthy</p></td><td><p>•My favourite means of transportation is ...</p><p>• ... is my favourite means of transportation.</p><p>• I ride a bike/ sail on a boat/ fly every day/  every weekend ...</p><p>• I ride a bike/ sail on a boat/ fly to ...</p><p>• I really like this vehicle because ....</p><p>•I love this vehicle because of its + N</p></td></tr></table></div><p><b>Complete the notes:</b></p><div class=\"tablewrap\"><table><tr><td><p><b>Structures of the talk</b></p></td><td><p><b>Your notes</b></p></td></tr><tr><td><p>What is your favourite means of transportation?</p></td><td><p>__________________________________________</p><p>__________________________________________</p><p>__________________________________________</p></td></tr><tr><td><p>How often do you use it?</p></td><td><p>__________________________________________</p><p>__________________________________________</p><p>__________________________________________</p></td></tr><tr><td><p>Where do you usually go?</p></td><td><p>__________________________________________</p><p>__________________________________________</p><p>__________________________________________</p></td></tr><tr><td><p>Why do you like it?</p></td><td><p>__________________________________________</p><p>__________________________________________</p><p>__________________________________________</p></td></tr></table></div><p><b>Now you try!</b></p><p><b>Give your answer using the following cues. You should speak for 1-2 minutes.</b></p><p>1. My favourite means of transportation is ...</p><p>2. I ride a bike/ sail on a boat/ fly by plane ...</p><p>3. I ride a bike/ sail on a boat/ fly by plane to ...</p><p>4. I really like this vehicle because ....</p><p><b>Now you tick!</b></p><p><b>Did you ...</b></p><p> answer all the questions in the task?</p><p> give some details to each main point?</p><p> speak slowly and fluently with only some hesitation?</p><p> use vocabulary wide enough to talk about the topic?</p><p> use various sentence structures (simple, compound, complex) accurately?</p><p> pronounce correctly (vowels, consonants, stress, intonation)?</p><p><b> </b><b>Let’s compare!</b></p><p>Finally, compare with the sample answer on page 138.</p></div>"}, {"label": "Ghi chú luyện nói", "kind": "notes"}, {"label": "Gợi ý & bài mẫu", "html": "<div class=\"source\"><p><b>Talk about your favorite means of transportation. </b></p><p><b>Dịch nghĩa câu hỏi:</b></p><p>Nói về phương tiện đi lại yêu thích của bạn.</p><p>Bạn có thể sử dụng các câu hỏi sau đây làm gợi ý:</p><p>• Phương tiện đi lại yêu thích của bạn là gì?</p><p>• Bạn sử dụng nó thường xuyên như thế nào?</p><p>• Bạn sử dụng nó để đi những nơi nào?</p><p>• Tại sao bạn thích nó?</p><p><b>Gợi ý trả lời:</b></p><p><b>MAIN IDEAS (Ý chính)</b></p><p><b>Vehicle (Phương tiện)</b></p><p>- bicycle (<i>n</i>.) (xe đạp)</p><p>- car (<i>n</i>.) (ô tô)</p><p>- plane (<i>n</i>.) (máy bay)</p><p>- train (<i>n</i>.) (tàu)</p><p><b>Frequency (Tần suất)</b></p><p>- almost everyday <i>(adv.</i>) (mỗi ngày)</p><p>- twice a week (<i>adv</i>.) (hai lần một tuần)</p><p>- quite often (<i>adv.)</i> (khá thường xuyên)</p><p>- sometimes (<i>adv.</i>) (thỉnh thoảng)</p><p><b>Purposes (Mục đích)</b></p><p>- go to school (<i>v. phr</i>.) (đi học)</p><p>- travel (<i>v. phr</i>.) (đi du lịch)</p><p>- go out (<i>v. phr</i>.) (đi chơi)</p><p>- visit friends (<i>v. phr.)</i> (thăm bạn)</p><p><b>Reasons (Lí do)</b></p><p>- cheap and convenient (<i>adj. phr</i>.) (rẻ và thuận tiện)</p><p>- environmentally friendly (<i>adj. phr</i>.) (thân thiện với môi trường)</p><p>- good for health <i>(adj.phr</i>.) (tốt cho sức khỏe)</p><p>- fast and safe (<i>adj. phr</i>.) (nhanh và an toàn)</p><p>Bài mẫu:</p><div class=\"tablewrap\"><table><tr><td><p>A bicycle is my favourite means of transportation. It is not too far from my house to my school, so I ride my bicycle almost every day to go there. Sometimes, I also ride my bike to visit my friends at weekends.</p><p>I like the bicycle for several reasons. It helps me avoid crowded buses in the morning. Besides, riding a bike is good for health because it’s like doing physical exercise. And finally, I think a bicycle is the most environmentally friendly means of transportation.</p></td><td><p>Xe đạp là phương tiện đi lại yêu thích của tôi. Khoảng cách từ nhà tôi đến trường học không xa lắm, vì vậy tôi đạp xe đến trường hầu như mỗi ngày. Thỉnh thoảng tôi còn đi xe đạp để đến thăm bạn tôi vào cuối tuần.</p><p>Tôi thích xe đạp vì một vài lí do. Nó giúp tôi tránh được những chiếc xe buýt đông đúc vào buổi sáng. Bên cạnh đó, đạp xe tốt cho sức khỏe bởi vì nó giống như những bài tập thể dục. Và cuối cùng, tôi nghĩ rằng xe đạp là phương tiện thân thiện với môi trường nhất.</p></td></tr></table></div></div>"}]}, {"title": "Writing · Viết", "icon": "✍️", "desc": "Unit 7 · Traffic", "subs": [{"id": "w1", "label": "I · Viết câu", "kind": "write", "items": [{"c": "have/ trip/ hometown/ brother/ two days ago.", "a": "I had a trip to my hometown with my brother two days ago.", "vi": "  Dịch nghĩa : Tôi đã có một chuyến đi về quê cùng với em trai của tôi hai ngày trước. "}, {"c": "15 kilometres/ my place/ my hometown.", "a": "It is 15 kilometres from my place to my hometown.", "vi": "  Dịch nghĩa : Khoảng cách từ nơi tôi ở đến quê hương tôi là 15km. "}, {"c": "go/ there/ train/ and/ it/ comfortable.", "a": "We went there by train and it was very comfortable.", "vi": "  Dịch nghĩa:  Chúng tôi đã đi đến đó bằng tàu và nó rất thoải mái. "}, {"c": "there/ a lot of/ vehicles/ road.", "a": "There were a lot of vehicles on the road.", "vi": "  Dịch nghĩa : Đã có rất nhiều phương tiện giao thông trên đường. "}, {"c": "trip/ exciting/ meaningful.", "a": "The trip was very exciting and meaningful.", "vi": "  Dịch nghĩa:  Chuyến đi đó rất là thú vị và ý nghĩa. "}], "before": ""}, {"label": "II · Viết đoạn văn", "kind": "writing", "html": "<div class=\"source\"><p><b>II- Write a short paragraph (60-80 words) describing a trip to your hometown</b>.</p><p>You can answer some of the following questions:</p><p>• Where is your hometown?</p><p>• How did you get there?</p><p>• Who did you go with?</p><p>• How was the traffic?</p></div>"}, {"label": "Gợi ý & bài mẫu", "html": "<div class=\"source\"><p><b>II - Write a short paragraph (60-80 words) describing a trip to your hometown.</b></p><p>Viết một đoạn văn ngắn (60-80 từ) miêu tả một chuyến đi về quê của bạn.</p><p>Bạn có thể sử dụng các câu hỏi sau đây làm gợi ý:</p><p>• Quê hương bạn ở đâu?</p><p>• Bạn đã đến đó bằng phương tiện gì?</p><p>• Ai đã đi cùng bạn?</p><p>• Tình hình giao thông ở đó thế nào?</p><p>• Bạn có thích chuyến đi đó không?</p><p><b>Gợi ý trả lời:</b></p><p><b>MAIN IDEAS (Ý chính)</b></p><p><b>Vehicle (Phương tiện)</b></p><p>- coach (<i>n</i>.) (xe khách đường dài)</p><p>- car (<i>n</i>.) (xe ô tô)</p><p>- train (<i>n</i>.) (tàu)</p><p>- plane (<i>n</i>.) (máy bay)</p><p><b>Location (Địa điểm)</b></p><p>- in the countryside (<i>prep. phr</i>.) (ở vùng nông thôn)</p><p>- in the mountainous area (<i>prep. phr</i>.) (ở vùng núi)</p><p>- near the beach <i>(prep. Phr</i>.) (gần biển)</p><p>- in the island (<i>prep. Phr</i>.) (ở đảo)</p><p><b>People (Người)</b></p><p>- parents (<i>n</i>.) (bố mẹ)</p><p>- alone (<i>n</i>.) (một mình)</p><p>- siblings (<i>n</i>.) (anh chị em)</p><p>- family (<i>n</i>.) (gia đình)</p><p><b>Traffic (Giao thông)</b></p><p>- a lot of vehicles (<i>n. phr</i>.) (rất nhiều phương tiện)</p><p>- traffic jams (<i>n. phr</i>.) (ùn tắc giao thông)</p><p>- few vehicles <i>(n. phr</i>.) (ít phương tiện)</p><p>- accidents (<i>n. phr</i>.) (tai nạn)</p><p>Bài mẫu:</p><div class=\"tablewrap\"><table><tr><td><p>Last month, I had a trip to my hometown with my family. My hometown is in Ha Long, a beautiful city near the beach. It is about 200 kilometres from Hanoi to my hometown. We went there by car. We set off very early in the morning; therefore, we were not stuck in a traffic jam. We talked to each other a lot and looked forward to seeing our grandparents. It was such a happy and exciting trip of my family.</p></td><td><p>Tháng trước, tôi đã có một chuyến về thăm quê hương cùng với gia đình thôi. Quê hương tôi ở Hạ Long, một thành phố xinh đẹp ở gần biển. Từ Hà Nội đến quê tôi là khoảng 200km. Chúng tôi đi bằng xe của gia đình. Chúng tôi bắt đầu đi từ sáng sớm nên không bị tắc đường. Chúng tôi nói chuyện với nhau rất nhiều trên chuyến đi và rất háo hức mong gặp lại ông bà. Đó thực sự là một chuyến đi vui vẻ của gia đình tôi.</p></td></tr></table></div></div>"}]}, {"title": "Objectives · Mục tiêu", "icon": "🎯", "desc": "Unit 7 · Traffic", "subs": [{"label": "Mục tiêu", "html": "<div class=\"source\"><p><b></b></p><p><b>UNIT </b><b>7</b><b> </b></p><p><b>TRAFFIC</b></p><p>Giao thông</p><p><b>MỤC TIÊU – Objectives</b></p><p>* <b>TỪ VỰNG</b> – Vocabulary</p><p>sử dụng từ vựng liên quan đến phương tiện giao thông và luật giao thông</p><p>* <b>NGỮ ÂM</b> – Pronunciation</p><p>phát âm chính xác nguyên âm đơn /<b>e</b>/ và nguyên âm đôi /<b>eɪ</b>/</p><p>* <b>NGỮ PHÁP</b> – Grammar</p><p>chủ ngữ “<b>i</b><b>t</b>” chỉ khoảng cách</p><p>sử dụng “<b>used </b><b>to</b>” để nói về thói quen hoặc tình trạng trong quá khứ</p><p><b>* KỸ NĂNG ĐỌC</b> – Reading skills</p><p>đọc tìm thông tin cụ thể về luật giao thông</p><p>* <b>KỸ NĂNG NÓI</b> – Speaking skills</p><p>thảo luận về việc chấp hành luật lệ giao thông và cách bảo vệ an toàn khi tham gia giao thông</p><p>* <b>KỸ NĂNG NGHE</b> – Listening Skills</p><p>nghe để lấy thông tin về các vấn đề giao thông ở những thành phố lớn</p><p>* <b>KỸ NĂNG VIẾT</b> – Writing skills</p><p>viết một đoạn văn để cung cấp thông tin về các vấn đề giao thông trong một thành phố hay khu vực </p><p><b>A – NGÔN NGỮ</b></p></div>"}]}];
+const V12=[{"w": "boat", "p": "/bəʊt/", "pos": "n.", "vi": "con thuyền", "ex": "The fishing boats go out to the sea early in the morning. (Đoàn thuyền đánh cá ra khơi lúc sáng sớm)"}, {"w": "circle", "p": "/ˈsɜːkl/", "pos": "n.", "vi": "vòng tròn", "ex": "Anna is drawing circles with her crayons. (Anna đang vẽ những hình tròn bằng sáp màu của em ấy)"}, {"w": "fly", "p": "/flaɪ/", "pos": "v.", "vi": "lái máy bay, đi trên máy bay", "ex": "Her brother is going to fly to London to attend her graduation. (Anh trai cô ấy sẽ bay đến Luân Đôn để tham dự lễ tốt nghiệp của cô ấy)"}, {"w": "helicopter", "p": "/ˈhelɪkɒptə(r)/", "pos": "n.", "vi": "máy bay trực thăng", "ex": "Suddenly, we heard the sound of a helicopter overhead. (Đột nhiên, chúng tôi đã nghe thấy âm thanh của một chiếc trực thăng trên đầu)"}, {"w": "illegal", "p": "/ɪˈliːɡl/", "pos": "adj.", "vi": "bất hợp pháp", "ex": "In Vietnam, driving on the left is illegal. (Ở Việt Nam, lái xe ở bên trái là bất hợp pháp)"}, {"w": "park", "p": "/pɑːk/", "pos": "v.", "vi": "đỗ xe", "ex": "We decided to go home because we couldn’t find a place to park. (Chúng tôi đã quyết định về nhà vì không thể tìm được chỗ đỗ xe)"}, {"w": "pavement", "p": "/ˈpeɪvmənt/", "pos": "n.", "vi": "vỉa hè (cho người đi bộ)", "ex": "Walking on the pavement can help you avoid traffic accidents. (Đi bộ trên vỉa hè có thể giúp bạn tránh được tai nạn giao thông)"}, {"w": "prohibitive", "p": "/prəˈhɪbətɪv/", "pos": "adj.", "vi": "cấm", "ex": "Motorbikes are prohibitive in highways. (Xe máy bị cấm trên đường cao tốc)"}, {"w": "railway station", "p": "/ˈreɪlweɪ ˈsteɪʃn/", "pos": "n.", "vi": "nhà ga xe lửa", "ex": "She is waiting for me at the railway station (Cô ấy đang đợi tôi ở ga tàu)"}, {"w": "reverse", "p": "/rɪˈvɜːs/", "pos": "v.", "vi": "quay đầu xe", "ex": "She reversed the car into the parking space. (Cô ấy quay đầu xe vào nơi đỗ xe)"}, {"w": "road sign/ traffic sign", "p": "/ˈrəʊd saɪn// /ˈtræfɪk saɪn/", "pos": "n.", "vi": "biển báo giao thông", "ex": "He was stopped by the police because he did not follow the road sign/ traffic sign. (Anh ta bị cảnh sát chặn lại vì không tuân thủ biển báo giao thông)"}, {"w": "roof", "p": "/ruːf/", "pos": "n.", "vi": "nóc xe, mái nhà", "ex": "There is a bird on the roof of my car. (Có một con chim trên nóc xe của tôi)"}, {"w": "seatbelt", "p": "/ˈsiːt belt/", "pos": "n.", "vi": "dây an toàn", "ex": "Don’t forget to fasten your seatbelt! (Đừng quên thắt dây an toàn nhé!)"}, {"w": "safely", "p": "/ˈseɪfli/", "pos": "adv.", "vi": "an toàn", "ex": "The plane landed safely in the storm. (Máy bay đã hạ cánh an toàn trong cơn bão)"}, {"w": "safety", "p": "/ˈseɪfti/", "pos": "n.", "vi": "sự an toàn", "ex": "Fasstening your seatbelt will ensure your safety. (Thắt dây an toàn sẽ đảm bảo sự an toàn của bạn)"}, {"w": "ship", "p": "/ʃɪp/", "pos": "n.", "vi": "tàu thủy", "ex": "Mary is on the ship to Australia. (Mary đang trên tàu đến Úc)"}, {"w": "traffic rule/ law", "p": "/ˈtræfɪk ruːl// lɔː/", "pos": "n.", "vi": "luật giao thông", "ex": "England is one of the countries where the traffic rule/law is to keep to the left. (Nước Anh là một trong những nước có luật giao thông quy định đi bên trái)"}, {"w": "traffic jam", "p": "/ˈtræfɪk dʒæm/", "pos": "n.", "vi": "tắc đường", "ex": "The snow storm caused traffic jams all over the city. (Cơn bão tuyết đã gây ra tắc đường khắp thành phố)"}, {"w": "obey", "p": "/əˈbeɪ/", "pos": "v.", "vi": "tuân theo", "ex": "Every citizen should obey the traffic rule/ traffic law (Mọi công dân nên tuân thủ luật lệ giao thông)"}, {"w": "train", "p": "/treɪn/", "pos": "n.", "vi": "tàu hỏa", "ex": "She missed the train to the airport. (Cô ấy đã lỡ chuyến tàu đến sân bay)"}, {"w": "triangle", "p": "/ˈtraɪæŋɡl/", "pos": "n.", "vi": "tam giác", "ex": "A triangle is a shape with three sides. (Tam giác là hình có ba cạnh)"}, {"w": "tricycle", "p": "/ˈtraɪsɪkl/", "pos": "n.", "vi": "xe đạp ba bánh", "ex": "She bought her four – year – old son a new tricycle. (Cô ấy đã mau cho cậu con trai bốn tuổi của mình một chiếc xe ba bánh)"}, {"w": "vehicle", "p": "/ˈviːəkl/", "pos": "n.", "vi": "xe cộ, phương tiện giao thông", "ex": "There are a lot of vehicles on my way to school every moring. (Có rất nhiều phương tiện giao thông trên đường tôi đến trường vào mỗi buổi sáng)"}];
+const LISTEN="Transportation hasn't really changed a lot in the past 100 years. When you think about changes in other areas of our life, transportation is pretty much the same as it was years ago. OK, cars, trains and airplanes are fast, but they're not so different than they were 50 years ago. Take airplanes, for example. I think air travel has got worse. Fifty years ago, people flew and were given great service. Today, you are like sardines in a can. And look at cars. The cars from fifty years ago looked nicer than today's ones. They still had four wheels, used petrol and had a steering wheel. I think transportation will really only change when it becomes more personal. I'm waiting for my own mini copter. ";
+const OBJECTIVES=[{i:'🚀',t:'Unit 7 · Traffic',d:'Từ vựng, ngữ âm, ngữ pháp và các kỹ năng theo tài liệu Unit 7.'}];
+const drafts={notes:'',writing:''};
+function vocab12(filter=''){return V12.filter(v=>(v.w+' '+v.vi).toLowerCase().includes(filter.toLowerCase())).map(v=>`<div class="vrow"><div><div class="vw">${esc(v.w)} ${spk(v.w)}</div><div class="vp">${esc(v.p)} · ${esc(v.pos)}</div></div><div class="vm">${esc(v.vi)}</div><div class="ven">${esc(v.ex)}</div></div>`).join('')}
+function draw12(s){
+ if(s.kind==='vocab')return `<div class="tools"><input class="search" placeholder="Tìm từ tiếng Anh hoặc nghĩa tiếng Việt…" oninput="document.getElementById('words12').innerHTML=vocab12(this.value)"></div><div id="words12">${vocab12()}</div>`;
+ if(s.kind==='notes')return `<div class="card"><h3>Talk about your favorite means of transportation</h3><p>Ghi ý chính, sau đó luyện nói trong 1–2 phút.</p><textarea class="studytextarea" oninput="drafts.notes=this.value">${esc(drafts.notes)}</textarea></div>`;
+ if(s.kind==='writing')return s.html+`<textarea class="studytextarea" placeholder="Write your paragraph here…" oninput="drafts.writing=this.value;document.getElementById('count12').textContent=this.value.trim().split(/\s+/).filter(Boolean).length+' / 60–80 từ'">${esc(drafts.writing)}</textarea><p id="count12">${drafts.writing.trim().split(/\s+/).filter(Boolean).length} / 60–80 từ</p>`;
+ if(!s.id)return s.html;
+ const cfg={title:s.label,items:s.items,labels:s.items[0].opts?s.items[0].opts.map((_,i)=>String.fromCharCode(65+i)):undefined};
+ return (s.before||'')+(s.kind==='quiz'?quiz(s.id,cfg):s.kind==='fill'?fill(s.id,cfg):writeSent(s.id,s.items));
+}
+const SECTIONS=DATA.map(s=>({...s,ex:s.subs.filter(x=>x.id).map(x=>x.id),subs:s.subs.map(x=>({...x,ex:x.id?[x.id]:undefined,render:()=>draw12(x)}))}));
+document.title='Unit 7 - Traffic';
+$('.logo .lg').textContent='🚀';
+show(0,0);
+</script></body></html>

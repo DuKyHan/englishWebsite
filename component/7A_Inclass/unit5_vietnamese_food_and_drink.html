@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 5</title>
+<style>*{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#1e1b4b;--mut:#6b7280;--p:#4f46e5;--p2:#7c3aed;--pk:#db2777;--ok:#059669;--okbg:#ecfdf5;--bad:#dc2626;--badbg:#fef2f2;--am:#b45309;--ambg:#fffbeb;--line:#e4e6f7;--bg:#f3f4ff;--ph:"Doulos SIL","Charis SIL","Lucida Sans Unicode","Segoe UI",Arial,sans-serif}
+html,body{height:469px;overflow:hidden;background:var(--bg);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+button,input,textarea{font-family:inherit}
+::-webkit-scrollbar{width:7px;height:7px}::-webkit-scrollbar-thumb{background:#c7d2fe;border-radius:8px}::-webkit-scrollbar-track{background:transparent}
+.app{display:flex;height:469px;max-width:1128px;margin:0 auto;background:var(--bg)}
+
+/* sidebar */
+.side{width:206px;flex:none;background:linear-gradient(175deg,#2e2a86 0%,#4f46e5 58%,#7c3aed 100%);color:#fff;display:flex;flex-direction:column;padding:12px 10px 10px;position:relative;overflow:hidden}
+.side:before{content:"";position:absolute;right:-50px;top:-50px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.07)}
+.logo{display:flex;align-items:center;gap:9px;padding:0 4px 9px;cursor:pointer;position:relative}
+.logo .lg{width:36px;height:36px;border-radius:11px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:20px}
+.logo b{display:block;font-size:14px;letter-spacing:.05em}
+.logo small{font-size:11px;opacity:.85}
+.nav{flex:1;display:flex;flex-direction:column;gap:2px;min-height:0;position:relative}
+.ni{display:flex;align-items:center;gap:8px;height:28px;padding:0 8px;border:none;background:none;color:#e0e7ff;border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;text-align:left;width:100%;transition:.15s}
+.ni:hover{background:rgba(255,255,255,.13)}
+.ni .n{width:18px;height:18px;flex:none;border-radius:50%;background:rgba(255,255,255,.2);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.ni .t{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ni.on{background:#fff;color:#3730a3;box-shadow:0 4px 12px rgba(0,0,0,.18)}
+.ni.on .n{background:var(--p);color:#fff}
+.ni.done .n{background:#34d399;color:#064e3b}
+.ni.soon{opacity:.62}
+.prog{padding:8px 4px 0;position:relative}
+.pbar{height:7px;background:rgba(255,255,255,.22);border-radius:8px;overflow:hidden}
+.pbar i{display:block;height:100%;background:linear-gradient(90deg,#fde68a,#34d399);border-radius:8px;transition:width .4s}
+.prog small{display:flex;justify-content:space-between;font-size:10.5px;margin-top:4px;opacity:.9}
+
+/* main */
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.head{display:flex;align-items:center;gap:11px;padding:11px 18px 2px}
+.head .hi{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#6366f1,#c026d3);display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 5px 14px rgba(99,102,241,.35);flex:none}
+.head h1{font-size:18px;line-height:1.15;color:#312e81}
+.head p{font-size:12px;color:var(--mut);margin-top:1px}
+.subnav{display:flex;gap:6px;padding:8px 18px 7px;overflow-x:auto;flex:none}
+.stab{flex:none;border:1px solid #d6dafc;background:#fff;color:#4338ca;border-radius:999px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;transition:.15s}
+.stab:hover{background:#eef2ff;transform:translateY(-1px)}
+.stab.on{background:linear-gradient(90deg,#4f46e5,#7c3aed);border-color:transparent;color:#fff;box-shadow:0 4px 12px rgba(79,70,229,.3)}
+.stab i{font-style:normal;margin-left:5px;font-size:10px;background:#34d399;color:#064e3b;border-radius:999px;padding:0 5px}
+.body{flex:1;overflow:auto;padding:2px 18px 16px;min-height:0;animation:fade .25s}
+.body.split{overflow:hidden;padding-bottom:12px}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+/* generic */
+.btn{border:1px solid #c7d2fe;background:#fff;color:#4338ca;padding:6px 12px;border-radius:9px;cursor:pointer;font-size:12px;font-weight:700;transition:.15s}
+.btn:hover{background:#eef2ff;transform:translateY(-1px)}
+.btn.solid{background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff;border-color:transparent;box-shadow:0 4px 10px rgba(79,70,229,.28)}
+.btn.solid:hover{filter:brightness(1.07)}
+.btn.sm{padding:3px 9px;font-size:11px}
+.btn:disabled{opacity:.45;cursor:default;transform:none}
+.chip-s{display:inline-flex;align-items:center;gap:3px;background:#e0e7ff;color:#3730a3;border-radius:999px;padding:2px 10px;font-size:11.5px;font-weight:800}
+.chip-s.ok{background:#d1fae5;color:#065f46}
+.chip{display:inline-block;background:#eef2ff;color:#4338ca;border:1px solid #c7d2fe;border-radius:999px;padding:2px 11px;font-size:12px;font-weight:700}
+.muted{color:var(--mut);font-size:12px}
+.note{font-size:12.5px;background:#f5f3ff;border-left:3px solid #8b5cf6;border-radius:8px;padding:6px 10px;margin:6px 0;line-height:1.5}
+.note.am{background:var(--ambg);border-color:#f59e0b}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:0 3px 12px rgba(67,56,202,.06)}
+.card h3{font-size:14px;color:#312e81;margin-bottom:6px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+mark{background:#fde68a;color:#78350f;border-radius:4px;padding:0 3px;font-weight:800;box-shadow:inset 0 -2px 0 #f59e0b}
+u{text-decoration-thickness:2px;text-underline-offset:2px;text-decoration-color:#e11d48}
+.spk{border:none;background:#eef2ff;border-radius:7px;cursor:pointer;font-size:11px;padding:2px 6px;vertical-align:middle}
+.spk:hover{background:#c7d2fe}
+.ph{font-family:var(--ph)}
+details.tr{margin-top:8px;background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:12.5px;line-height:1.6}
+details.tr summary{cursor:pointer;color:var(--p);font-weight:700}
+details.tr p{margin-top:5px;color:#374151}
+.kw{background:linear-gradient(transparent 55%,#fde68a 55%);font-weight:700;cursor:help}
+.passage{font-size:13.5px;line-height:1.75;background:#fffdf5;border:1px solid #fde68a;border-radius:12px;padding:11px 14px;color:#1f2937}
+.colh{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#7c3aed;margin:2px 0 6px}
+.split>div{overflow:auto;height:100%;padding:0 2px 6px 0}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+/* coming soon */
+.soonbox{height:100%;min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px;color:var(--mut)}
+.soonbox .big{font-size:54px;animation:float 3s ease-in-out infinite}
+.soonbox b{font-size:18px;color:#312e81}
+.soonbox span{font-size:13px;max-width:380px;line-height:1.5}
+@keyframes float{50%{transform:translateY(-8px)}}
+
+/* vocabulary */
+.tools{display:flex;gap:8px;align-items:center;margin-bottom:9px}
+.search{flex:1;border:1.5px solid #d6dafc;border-radius:10px;padding:7px 12px;font-size:12.5px;outline:none;background:#fff}
+.search:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.vrow{display:grid;grid-template-columns:42px 34% 1fr;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:8px 12px;margin-bottom:7px;transition:.15s}
+.vrow:hover{border-color:#a5b4fc;box-shadow:0 5px 16px rgba(99,102,241,.14);transform:translateX(2px)}
+.vem{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#eef2ff,#faf5ff);display:flex;align-items:center;justify-content:center;font-size:22px}
+.vw{font-size:16px;font-weight:800;color:#312e81;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.pos{font-size:10.5px;font-style:italic;font-weight:800;border-radius:999px;padding:1px 8px}
+.pos-n{background:#dbeafe;color:#1d4ed8}.pos-v{background:#dcfce7;color:#15803d}.pos-adj{background:#ffedd5;color:#c2410c}.pos-idiom{background:#f3e8ff;color:#7e22ce}.pos-phr{background:#e0f2fe;color:#0369a1}
+.vp{font-family:var(--ph);font-size:12.5px;color:var(--mut);margin-top:2px}
+.vm{font-size:14px;font-weight:800;color:var(--ok)}
+.ven{font-size:12.8px;line-height:1.5;margin-top:2px}
+.vvi{font-size:12px;color:var(--mut);font-style:italic}
+.hide-mean .vm:not(.rev),.hide-mean .vvi:not(.rev){filter:blur(6px);cursor:pointer;user-select:none}
+.fcwrap{max-width:620px;margin:0 auto}
+.fcnav{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
+.fcdots{display:flex;gap:3px;flex-wrap:wrap;justify-content:center;margin-bottom:8px}
+.fcdots i{width:9px;height:9px;border-radius:50%;background:#e0e7ff}
+.fcdots i.k{background:#34d399}.fcdots i.cur{background:#6366f1;transform:scale(1.35)}
+.fcard{min-height:176px;border-radius:20px;background:linear-gradient(135deg,#eef2ff,#faf5ff);border:2px solid #c7d2fe;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px 24px;cursor:pointer;gap:6px;transition:.2s;box-shadow:0 10px 26px rgba(99,102,241,.14)}
+.fcard.back{background:linear-gradient(135deg,#ecfdf5,#f0fdfa);border-color:#6ee7b7}
+.fcard:hover{transform:translateY(-2px)}
+.fc-em{font-size:34px}.fc-w{font-size:30px;font-weight:900;color:#312e81}
+.fc-p{font-family:var(--ph);font-size:16px;color:var(--mut)}
+.fc-hint{font-size:11px;color:#9ca3af;margin-top:4px}
+.fc-m{font-size:24px;font-weight:900;color:var(--ok)}
+.fc-e{font-size:14px;line-height:1.5}.fc-v{font-size:12.5px;color:var(--mut);font-style:italic}
+.fcbtns{display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+
+/* match game */
+.mg-top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:8px 28px}
+.mc{border:2px solid #d6dafc;background:#fff;border-radius:12px;padding:9px 12px;font-size:13.5px;font-weight:700;cursor:pointer;text-align:left;transition:.15s;min-height:40px;color:#312e81}
+.mc:hover:not(.lock){border-color:#6366f1;background:#eef2ff;transform:scale(1.015)}
+.mc.sel{border-color:#4f46e5;background:#e0e7ff;box-shadow:0 0 0 3px rgba(79,70,229,.2)}
+.mc.lock{background:var(--okbg);border-color:#6ee7b7;color:#065f46;cursor:default;animation:pop .35s}
+.mc.err{border-color:#f87171;background:var(--badbg);animation:shake .4s}
+.mc.vi{font-weight:600;color:#374151}
+@keyframes pop{50%{transform:scale(1.05)}}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* quiz */
+.qz-top{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.qz-title{font-size:13.5px;font-weight:800;color:#312e81;flex:1}
+.qz-bar{height:6px;background:#e0e7ff;border-radius:8px;overflow:hidden;margin-bottom:10px}
+.qz-bar i{display:block;height:100%;background:linear-gradient(90deg,#6366f1,#c026d3);border-radius:8px;transition:width .4s}
+.qz-main{display:grid;grid-template-columns:1.08fr 1fr;gap:14px;align-items:start}
+.qz-q{font-size:15px;line-height:1.55;font-weight:600;margin-bottom:10px;color:#1f2937}
+.blank{display:inline-block;min-width:70px;border-bottom:3px dotted #6366f1;margin:0 2px}
+.fillw{display:inline-block;background:#d1fae5;color:#065f46;border-radius:6px;padding:0 7px;font-weight:800}
+.bigw{font-size:30px;font-weight:900;color:#312e81;letter-spacing:.02em;margin:2px 0}
+.qz-opts{display:flex;flex-direction:column;gap:7px}
+.qz-opts.tf{flex-direction:row}.qz-opts.tf .qo{flex:1;justify-content:center}
+.qo{display:flex;align-items:center;gap:10px;text-align:left;border:2px solid #d6dafc;background:#fff;border-radius:12px;padding:8px 12px;font-size:13.5px;cursor:pointer;transition:.15s;color:#1f2937}
+.qo b{width:24px;height:24px;border-radius:8px;background:#e0e7ff;color:#3730a3;display:flex;align-items:center;justify-content:center;font-size:12px;flex:none}
+.qo:hover:not(.lock){border-color:#6366f1;background:#f5f6ff;transform:translateX(3px)}
+.qo.lock{cursor:default}
+.qo.ok{border-color:#34d399;background:var(--okbg);color:#064e3b;font-weight:700;animation:pop .35s}
+.qo.ok b{background:#10b981;color:#fff}
+.qo.bad{border-color:#f87171;background:var(--badbg);color:#7f1d1d;animation:shake .4s}
+.qo.bad b{background:#ef4444;color:#fff}
+.fb{border-radius:14px;padding:10px 12px;font-size:12.8px;line-height:1.55;max-height:270px;overflow:auto;position:sticky;top:0}
+.fb.idle{background:#f8faff;border:2px dashed #c7d2fe;text-align:center;color:var(--mut);padding:26px 14px}
+.fb.idle .idle-i{font-size:30px}
+.fb.ok{background:var(--okbg);border:1.5px solid #6ee7b7}
+.fb.bad{background:var(--badbg);border:1.5px solid #fca5a5}
+.fb-h{font-weight:900;font-size:14px;margin-bottom:5px}
+.fb.ok .fb-h{color:#047857}.fb.bad .fb-h{color:#b91c1c}
+.fb-h small{display:block;font-size:12px;font-weight:600;color:#374151;margin-top:1px}
+.fb-b{color:#1f2937}
+.fb-tr{margin-top:6px;background:rgba(255,255,255,.7);border-radius:8px;padding:5px 8px;color:#374151}
+.fb-note{margin-top:5px;color:#4338ca;font-weight:600}
+.fb-n{margin-top:9px;width:100%}
+table.mt{width:100%;border-collapse:collapse;font-size:12.3px;margin-top:3px}
+table.mt td{padding:2px 5px;border-bottom:1px dashed rgba(0,0,0,.1);vertical-align:top}
+table.mt tr.hit td{background:rgba(16,185,129,.16);font-weight:700}
+.qz-res{text-align:center;padding:6px 0}
+.ring{width:96px;height:96px;border-radius:50%;margin:4px auto 8px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;color:#312e81;background:conic-gradient(#10b981 var(--pct),#e0e7ff 0);position:relative}
+.ring:before{content:"";position:absolute;inset:9px;background:#fff;border-radius:50%}
+.ring span{position:relative}
+.qz-res h3{font-size:18px;color:#312e81}
+.qz-res .acts{display:flex;gap:8px;justify-content:center;margin:10px 0}
+.wl{text-align:left;margin-top:6px}
+.wl details{background:#fff;border:1px solid #fecaca;border-radius:10px;padding:5px 10px;margin-bottom:5px;font-size:12.5px}
+.wl summary{cursor:pointer;font-weight:700;color:#991b1b}
+.wl .fb-b{margin-top:5px}
+.confetti{position:fixed;top:-12px;font-size:18px;z-index:99;pointer-events:none;animation:fall 1.8s ease-in forwards}
+@keyframes fall{to{transform:translateY(500px) rotate(540deg);opacity:0}}
+
+/* fill */
+.fl-top{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.fl-top .t{font-size:13.5px;font-weight:800;color:#312e81;flex:1;min-width:200px}
+.bank{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0;padding:8px 10px;background:#fff;border:2px dashed #c7d2fe;border-radius:12px}
+.bk{border:none;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border-radius:999px;padding:5px 14px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 3px 8px rgba(99,102,241,.3);transition:.15s}
+.bk:hover:not(.used){transform:translateY(-2px)}
+.bk.used{background:#e5e7eb;color:#9ca3af;box-shadow:none;cursor:default;text-decoration:line-through}
+.fx{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px;padding:7px 4px;border-bottom:1px dashed var(--line);font-size:14px;line-height:2}
+.fx .n{width:22px;height:22px;border-radius:50%;background:#e0e7ff;color:#3730a3;font-size:11px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.fi{width:104px;border:none;border-bottom:2.5px dotted #6366f1;background:#f5f6ff;padding:1px 6px;font-size:14px;text-align:center;outline:none;border-radius:6px 6px 0 0;color:#1e1b4b;font-weight:700}
+.fi:focus{background:#e0e7ff;border-bottom-style:solid}
+.fi.good,.slot.good{border-bottom:2.5px solid #10b981;background:var(--okbg);color:#065f46}
+.fi.bad,.slot.bad{border-bottom:2.5px solid #ef4444;background:var(--badbg);color:#991b1b}
+.slot{min-width:104px;border:none;border-bottom:2.5px dotted #6366f1;background:#f5f6ff;padding:1px 8px;font-size:14px;font-weight:800;cursor:pointer;border-radius:6px 6px 0 0;color:#4338ca;height:26px}
+.slot.act{background:#e0e7ff;border-bottom-style:solid;box-shadow:0 0 0 3px rgba(99,102,241,.25)}
+.fxfb{flex-basis:100%;font-size:12.5px;line-height:1.55;border-radius:10px;padding:5px 10px;margin:0 0 2px 28px}
+.fxfb.ok{background:var(--okbg);border-left:3px solid #10b981;color:#064e3b}
+.fxfb.bad{background:var(--badbg);border-left:3px solid #ef4444;color:#7f1d1d}
+.fxfb .tr{display:block;color:#4b5563;font-style:italic}
+
+/* sentence builder */
+.bd-line{min-height:56px;border:2px dashed #a5b4fc;border-radius:14px;background:#fff;padding:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0}
+.bd-line.ok{border-color:#34d399;background:var(--okbg);border-style:solid}
+.bd-line.bad{border-color:#f87171;background:var(--badbg);border-style:solid}
+.bd-pool{display:flex;flex-wrap:wrap;gap:7px;min-height:44px;padding:4px}
+.wd{border:none;background:#fff;border:2px solid #c7d2fe;color:#3730a3;border-radius:10px;padding:5px 12px;font-size:14px;font-weight:700;cursor:pointer;transition:.15s;box-shadow:0 2px 0 #c7d2fe}
+.wd:hover{transform:translateY(-2px);border-color:#6366f1}
+.wd.in{background:#eef2ff}
+.bd-hint{color:#9ca3af;font-size:12.5px}
+
+/* signals */
+.sg{display:flex;flex-wrap:wrap;gap:2px 1px;align-items:center;padding:8px 6px;border-bottom:1px dashed var(--line);font-size:14.5px;line-height:1.9}
+.sg .n{width:22px;height:22px;border-radius:50%;background:#e0e7ff;color:#3730a3;font-size:11px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-right:3px}
+.tok{padding:0 4px;border-radius:7px;cursor:pointer;transition:.12s}
+.tok:hover{background:#e0e7ff}
+.tok.sig{background:#fde68a;color:#78350f;font-weight:800;box-shadow:inset 0 -3px 0 #f59e0b;cursor:default}
+.tok.err{background:#fee2e2;animation:shake .35s}
+.sgnote{margin-left:6px;font-size:11.5px;background:#ede9fe;color:#5b21b6;border-radius:999px;padding:1px 9px;font-weight:700}
+
+/* grammar theory */
+.gc{border-radius:14px;padding:10px 13px;background:#fff;border:1px solid var(--line);border-top:5px solid #6366f1}
+.gc.t2{border-top-color:#db2777}.gc.t3{border-top-color:#0d9488}
+.gc .ic{font-size:24px}.gc h3{font-size:14px;margin:2px 0 4px;color:#312e81}
+.gc p{font-size:12.8px;line-height:1.55}
+.gex{margin-top:6px;background:#f5f3ff;border-radius:9px;padding:6px 9px;font-size:13px;line-height:1.5}
+.gex i{display:block;color:#6b7280;font-size:12px}
+.scale{display:flex;gap:6px;align-items:stretch;margin:6px 0}
+.sc{flex:1;border-radius:11px;padding:7px 4px;text-align:center;color:#fff;font-size:12.5px;font-weight:800;line-height:1.3}
+.sc small{display:block;font-weight:600;font-size:10.5px;opacity:.92}
+.sc.a{background:#4f46e5}.sc.b{background:#6366f1}.sc.c{background:#8b5cf6}.sc.d{background:#a78bfa}.sc.e{background:#c4b5fd;color:#4c1d95}
+.fm{display:inline-block;font-weight:800;color:#3730a3;background:#e0e7ff;border-radius:8px;padding:1px 9px;margin-bottom:3px}
+table.t{width:100%;border-collapse:separate;border-spacing:0;font-size:12.8px;line-height:1.5;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+table.t th{background:linear-gradient(90deg,#eef2ff,#faf5ff);color:#312e81;padding:7px 10px;text-align:left}
+table.t td{padding:7px 10px;border-top:1px solid var(--line);vertical-align:top}
+table.t i{color:#6b7280;display:block;font-size:12px}
+
+/* pronunciation */
+.pcard{border-radius:16px;overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:0 4px 14px rgba(67,56,202,.08)}
+.pcard .ph2{display:flex;align-items:center;gap:10px;padding:9px 13px;color:#fff}
+.pcard.c1 .ph2{background:linear-gradient(90deg,#4f46e5,#7c3aed)}.pcard.c2 .ph2{background:linear-gradient(90deg,#db2777,#f59e0b)}
+.pcard .sym{font-family:var(--ph);font-size:27px;font-weight:700;background:rgba(255,255,255,.22);border-radius:11px;padding:0 11px}
+.pcard .ph2 b{display:block;font-size:13px}.pcard .ph2 small{font-size:11.5px;opacity:.92}
+.pbody{padding:9px 13px 11px}
+.pbody figure{border:1px solid var(--line);border-radius:12px;padding:5px;text-align:center;background:#fff;margin-bottom:8px}
+.pbody figure img{width:100%;height:108px;object-fit:contain}
+.pbody figcaption{font-size:11.5px;color:var(--mut)}
+.how{font-size:12.5px;line-height:1.55;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:6px 10px;margin-bottom:7px}
+.plist{list-style:none}
+.plist li{font-size:13.3px;padding:4px 0;border-bottom:1px dashed var(--line)}
+.plist li:last-child{border:none}
+.pw{font-weight:800;color:#312e81}.pp{font-family:var(--ph);color:var(--mut);font-size:12.5px}
+.pw u,.pp u{color:#be123c}
+.plist i{font-size:11px;color:#7c3aed}
+.pics{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
+.pic{position:relative;border:2px solid var(--line);border-radius:14px;padding:8px 7px 7px;text-align:center;background:#fff;display:flex;flex-direction:column;align-items:center;gap:5px;transition:.2s}
+.pic img{height:64px;max-width:100%;object-fit:contain}
+.pic .pn{position:absolute;top:5px;left:6px;font-size:10.5px;font-weight:900;background:#e0e7ff;color:#3730a3;border-radius:999px;padding:0 7px}
+.pic input{width:100%;padding:4px 6px;border:1.5px solid #c7d2fe;border-radius:8px;font-size:12.5px;text-align:center;outline:none}
+.pic input:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.pic input.good{border-color:#10b981;background:var(--okbg)}.pic input.bad{border-color:#ef4444;background:var(--badbg)}
+.cols{display:flex;gap:5px}
+.cb{font-family:var(--ph);border:1.5px solid #c7d2fe;background:#fff;border-radius:8px;padding:2px 11px;font-size:13px;cursor:pointer;color:#4338ca;font-weight:700}
+.cb.sel{background:#4f46e5;color:#fff;border-color:#4f46e5}
+.pic.okc{background:var(--okbg);border-color:#6ee7b7}
+.pic.egp{background:#f5f3ff;border-color:#c4b5fd}
+.pmsg{font-size:11px;color:var(--mut);min-height:28px;line-height:1.35}
+.pic.okc .pmsg{color:#065f46}
+.tchip{display:inline-block;margin:2px;background:#e0e7ff;color:#3730a3;border-radius:999px;padding:1px 10px;font-size:12px;font-weight:800;animation:pop .35s}
+
+/* speaking / writing */
+.pickrow{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 8px}
+.pk{border:2px solid #d6dafc;background:#fff;border-radius:999px;padding:5px 13px;font-size:12.5px;font-weight:700;cursor:pointer;color:#3730a3;transition:.15s}
+.pk:hover{border-color:#6366f1}.pk.on{background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff;border-color:transparent;box-shadow:0 3px 9px rgba(79,70,229,.3)}
+.out{background:linear-gradient(135deg,#fffbeb,#fef3c7);border:1px solid #fcd34d;border-radius:14px;padding:11px 14px;font-size:14px;line-height:1.7;color:#1f2937}
+.cue{display:flex;gap:8px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 11px;font-size:13px}
+.cue b{color:#7c3aed}
+.ck{display:flex;gap:9px;align-items:center;padding:7px 10px;border:1.5px solid var(--line);border-radius:11px;margin-bottom:6px;background:#fff;cursor:pointer;font-size:13px;transition:.15s}
+.ck:hover{border-color:#a5b4fc}.ck.on{background:var(--okbg);border-color:#6ee7b7}
+.ck .bx{width:20px;height:20px;border-radius:6px;border:2px solid #c7d2fe;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;flex:none}
+.ck.on .bx{background:#10b981;border-color:#10b981}
+.wr{display:flex;flex-wrap:wrap;gap:6px;align-items:flex-start;padding:7px 4px;border-bottom:1px dashed var(--line)}
+.wr .cues{flex-basis:100%;font-size:13px;color:#4338ca;font-weight:700;padding-left:28px}
+.wr input{flex:1;min-width:260px;border:1.5px solid #c7d2fe;border-radius:10px;padding:6px 10px;font-size:13.5px;outline:none}
+.wr input:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.wr input.good{border-color:#10b981;background:var(--okbg)}.wr input.near{border-color:#f59e0b;background:var(--ambg)}
+.wr .n{width:22px;height:22px;border-radius:50%;background:#e0e7ff;color:#3730a3;font-size:11px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-top:5px}
+textarea.ta{width:100%;min-height:110px;border:2px solid #c7d2fe;border-radius:14px;padding:10px 12px;font-size:14px;line-height:1.6;outline:none;resize:vertical}
+textarea.ta:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.wc{display:flex;align-items:center;gap:8px;margin:6px 0}
+.wcbar{flex:1;height:8px;background:#e5e7eb;border-radius:8px;overflow:hidden;position:relative}
+.wcbar i{display:block;height:100%;background:#f59e0b;border-radius:8px;transition:width .2s,background .2s}
+.wcn{font-weight:900;font-size:13px;min-width:92px;text-align:right}
+
+/* listening */
+.player{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#eef2ff,#faf5ff);border:1px solid #c7d2fe;border-radius:16px;padding:12px 14px;margin-bottom:8px}
+.play{width:50px;height:50px;border-radius:50%;border:none;background:linear-gradient(135deg,#4f46e5,#c026d3);color:#fff;font-size:20px;cursor:pointer;box-shadow:0 6px 16px rgba(79,70,229,.4);flex:none}
+.play:hover{transform:scale(1.07)}
+.ss{padding:1px 2px;border-radius:5px;transition:.2s}.ss.now{background:#fde68a}
+.eq{display:flex;gap:3px;align-items:flex-end;height:22px}
+.eq i{width:4px;background:#6366f1;border-radius:3px;height:6px}
+.eq.on i{animation:eq .8s ease-in-out infinite}.eq.on i:nth-child(2){animation-delay:.15s}.eq.on i:nth-child(3){animation-delay:.3s}.eq.on i:nth-child(4){animation-delay:.45s}
+@keyframes eq{50%{height:22px}}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(30,27,75,.55);display:flex;align-items:center;justify-content:center;z-index:50;animation:fade .2s}
+.mbox{width:min(560px,92%);max-height:430px;overflow:auto;background:#fff;border-radius:20px;padding:18px 22px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.mbox h2{color:#312e81;font-size:19px}.mbox .sub{color:var(--mut);font-size:12.5px;margin-bottom:8px}
+.obj{display:flex;gap:10px;align-items:flex-start;padding:6px 0;border-bottom:1px dashed var(--line);font-size:13px;line-height:1.5}
+.obj .oi{font-size:19px}.obj b{color:#4338ca}
+
+@media (max-width:760px){
+  .app{flex-direction:column}.side{width:100%;flex-direction:row;align-items:center;padding:6px 8px;gap:6px;overflow-x:auto}
+  .logo,.prog{display:none}.nav{flex-direction:row;flex:none}.ni{width:auto;flex:none}
+  .grid2,.grid3,.split,.qz-main,.mg{grid-template-columns:1fr}.pics{grid-template-columns:repeat(2,1fr)}.vrow{grid-template-columns:40px 1fr}.vrow .vright{grid-column:1/-1}
+  .body.split{overflow:auto}.split>div{height:auto;overflow:visible}
+}
+
+/* ---- extra styles for Unit 2 / Unit 3 ---- */
+.so-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+.so-col{border:2px dashed #c7d2fe;border-radius:16px;background:#fff;min-height:128px;cursor:pointer;transition:.15s;overflow:hidden}
+.so-col:hover{border-color:#6366f1;background:#f8f9ff}
+.so-h{font-size:19px;font-weight:800;text-align:center;padding:6px;background:linear-gradient(90deg,#eef2ff,#faf5ff);color:#4338ca;border-bottom:1px solid var(--line)}
+.so-b{padding:8px;display:flex;flex-wrap:wrap;gap:6px;min-height:70px}
+.wd.selw{background:#4f46e5;color:#fff;border-color:#4f46e5;box-shadow:0 0 0 3px rgba(79,70,229,.25)}
+.wd.okw{background:#ecfdf5;border-color:#34d399;color:#065f46;box-shadow:0 2px 0 #34d399}
+.wd.badw{background:#fef2f2;border-color:#f87171;color:#991b1b;box-shadow:0 2px 0 #f87171}
+.tg{padding:1px 5px;border-radius:7px}
+.tg.tg0{background:#dbeafe;color:#1e3a8a;font-weight:800;box-shadow:inset 0 -3px 0 #3b82f6}
+.tg.tg1{background:#fce7f3;color:#831843;font-weight:800;box-shadow:0 0 0 2px #ec4899}
+.tg.tgok{outline:2px solid #34d399;outline-offset:1px}
+.tg.tgbad{background:#fee2e2;color:#991b1b;outline:2px dashed #ef4444;outline-offset:1px}
+.tg sup{font-size:9.5px;font-weight:800;margin-left:2px;color:#b91c1c}
+.tgleg{margin-left:6px}.tgleg .tok{cursor:default;margin-right:4px}
+.sg .fxfb{margin-left:0;flex-basis:100%}
+.formula{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;margin:8px 0}
+.formula .fm{margin:0}.formula .cj{background:linear-gradient(90deg,#4f46e5,#c026d3);color:#fff}
+.cj-card{border-radius:14px;padding:9px 13px;background:#fff;border:1px solid var(--line);border-left:6px solid #6366f1;font-size:12.8px;line-height:1.5}
+.cj-card b{font-size:18px;color:#312e81;letter-spacing:.03em}.cj-card small{color:#6b7280;font-weight:700;margin-left:4px}
+.cj-card p{font-weight:700;color:#4338ca;margin:2px 0}.cj-card i{display:block;color:#374151}
+.cj-card.b{border-left-color:#ec4899}.cj-card.c{border-left-color:#10b981}.cj-card.d{border-left-color:#f59e0b}
+.cj-card u{text-decoration-color:#e11d48;font-weight:800}
+.howl{margin:0 0 8px 18px;font-size:12.5px;line-height:1.55;color:#1f2937}
+.figs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
+.figs figure{border:1px solid var(--line);border-radius:10px;padding:3px;background:#fff}.figs img{width:100%;height:78px;object-fit:contain}
+.txt2{font-size:13.5px;line-height:1.7;margin-top:6px;color:#1f2937}
+.gc h3 small{font-size:11px;font-weight:600;margin-left:3px}
+.mc.vi{font-size:12.5px;line-height:1.35}
+
+.gl{list-style:none;font-size:12.8px}
+.gl li{padding:4px 0 4px 12px;border-left:3px solid #c7d2fe;margin:5px 0;line-height:1.45}
+.gl li span{color:#6b7280;font-size:12px}
+
+.fi{width:150px}
+
+.seg{display:inline-block;border-bottom:3px solid #6366f1;border-radius:3px;padding:0 3px;margin:0 1px;background:#eef2ff;position:relative}
+.seg sup{font-size:10px;font-weight:900;color:#fff;background:#4f46e5;border-radius:999px;padding:0 5px;margin-right:3px}
+.dl{display:flex;gap:10px;align-items:flex-start;margin-bottom:7px}
+.dl b{flex:none;min-width:48px;text-align:center;border-radius:999px;background:#e0e7ff;color:#3730a3;padding:2px 8px;font-size:11.5px}
+.dl div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px 10px;font-size:13px;line-height:1.5}
+.dl div i{display:block;color:var(--mut);font-size:12px}
+.dl.r{flex-direction:row-reverse}.dl.r b{background:#fce7f3;color:#9d174d}.dl.r div{background:#fffafc}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px}
+.step{display:flex;gap:8px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px;font-size:12.5px;line-height:1.4}
+.step b{flex:none;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#4f46e5,#c026d3);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px}
+.poll{display:grid;grid-template-columns:1fr auto 26px auto 90px 36px;gap:6px;align-items:center;margin-bottom:6px;font-size:12.5px}
+.pl{font-weight:700;color:#312e81}.pn2{text-align:center}.pbar2{height:10px;background:#e5e7eb;border-radius:8px;overflow:hidden}.pbar2 i{display:block;height:100%;background:linear-gradient(90deg,#6366f1,#c026d3);transition:width .3s}.pp2{font-size:11.5px;color:var(--mut)}
+@media (max-width:760px){.steps{grid-template-columns:1fr 1fr}.poll{grid-template-columns:1fr auto 26px auto}.pbar2,.pp2{display:none}}
+
+.nf{margin-bottom:8px}.nf label{display:block;font-size:12.5px;font-weight:800;color:#312e81;margin-bottom:3px}
+textarea.nta{min-height:0;font-size:13.5px;padding:7px 10px;border-radius:10px}
+.stt{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:4px}
+.mycard{background:linear-gradient(135deg,#fffbeb,#fdf2f8);border:2px solid #fcd34d;border-radius:16px;padding:12px 16px;font-size:13.5px;line-height:1.6;box-shadow:0 8px 20px rgba(217,119,6,.12);transform:rotate(-.4deg)}
+.mycard p{margin:4px 0}.cardh{font-weight:900;font-size:15px;color:#9d174d;margin-bottom:4px}
+.mycard table.t th{width:36%;text-align:left}
+.rt{display:flex;align-items:center;gap:10px;justify-content:space-between;background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px 12px;margin-bottom:6px;flex-wrap:wrap}
+.rtq{font-size:13px;flex:1;min-width:220px}.rtb{display:flex;gap:4px}
+.face{border:2px solid transparent;background:#f3f4ff;border-radius:50%;width:38px;height:38px;font-size:21px;cursor:pointer;transition:.15s;filter:grayscale(.7)}
+.face:hover{transform:scale(1.15);filter:none}.face.on{border-color:#6366f1;background:#e0e7ff;filter:none;transform:scale(1.12)}
+.drawcard{min-height:130px;border-radius:20px;background:linear-gradient(135deg,#eef2ff,#faf5ff);border:2px dashed #a5b4fc;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px 20px;gap:6px;transition:.2s}
+.drawcard.spin{background:linear-gradient(135deg,#fef3c7,#fce7f3);border-style:solid;animation:pop .2s infinite}
+.dc-t{font-size:20px;font-weight:900;color:#312e81;line-height:1.35}.dc-s{font-size:13px;color:#6b7280}
+.timerbox{background:#fff;border:2px solid #c7d2fe;border-radius:18px;padding:12px;text-align:center}
+.tm-l{font-size:12px;font-weight:800;color:#6b7280;text-transform:uppercase;letter-spacing:.06em}.tm-t{font-size:44px;font-weight:900;color:#4338ca;font-variant-numeric:tabular-nums;margin:2px 0 8px}
+.stepsv div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px 10px;margin-bottom:5px;font-size:13px}
+.so-cols .so-h{font-size:14px}
+@media (max-width:760px){.rtq{min-width:100%}}
+
+.shop{display:grid;grid-template-columns:repeat(3,1fr);gap:4px 12px}.shopg{min-width:0}
+.shopi{display:flex;justify-content:space-between;align-items:center;width:100%;gap:6px;border:2px solid #d6dafc;background:#fff;border-radius:10px;padding:4px 9px;margin-bottom:4px;font-size:12.5px;cursor:pointer;text-align:left;transition:.15s;color:#1f2937}
+.shopi b{color:#6b7280;font-size:12px;white-space:nowrap}.shopi:hover:not(.dis):not(:disabled){border-color:#6366f1;background:#f5f6ff}
+.shopi.on{background:#ecfdf5;border-color:#34d399}.shopi.on b{color:#047857}.shopi.dis{opacity:.4;cursor:not-allowed}
+.mrr{display:flex;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 12px;margin-bottom:6px;font-size:13px}
+.mrp{width:48px;height:48px;border-radius:50%;color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;flex:none}
+.bpr{display:flex;gap:8px;align-items:center;margin-bottom:5px}.bpr>span{min-width:96px;font-size:12.5px;font-weight:700;color:#312e81}.bpr .search{max-width:170px}
+@media (max-width:760px){.shop{grid-template-columns:1fr}}
+
+.hintc{display:flex;gap:10px;align-items:center;background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:8px 12px;margin-bottom:6px;font-size:13px;line-height:1.5}
+.hintc b{flex:none;background:#f59e0b;color:#fff;border-radius:999px;padding:1px 9px;font-size:12px}
+.hintc.lock{background:#f3f4f6;border-color:#e5e7eb;color:#9ca3af}.hintc.lock b{background:#9ca3af}
+.poster{text-align:center;padding:10px 4px}.poster .pt{font-size:19px;font-weight:900;color:#065f46;margin:6px 0;line-height:1.4}.poster .pt2{font-size:15px;color:#047857;font-weight:700}.poster .ps{font-size:12px;color:#6b7280;margin-top:6px}
+
+</style>
+<style>.source{background:white;border:1px solid var(--line);border-radius:12px;padding:16px;margin:8px 0;line-height:1.7;font-size:14px}.source p{margin:6px 0}.source table{border-collapse:collapse;width:100%;min-width:480px}.source td{border:1px solid #d6dafc;padding:8px;vertical-align:top}.tablewrap{overflow:auto}.nav{overflow:auto}.side small{display:block;font-size:10px}.studytextarea{width:100%;min-height:160px;padding:14px;border:1px solid #c7d2fe;border-radius:10px;margin:10px 0;font-size:14px}@media(max-width:650px){.side{width:100%}.head,.body{padding-left:10px;padding-right:10px}.qz-main,.grid2{grid-template-columns:1fr}.source{padding:10px}.vrow{grid-template-columns:1fr}.head h1{font-size:16px}}.main{min-height:0}.vrow{grid-template-columns:minmax(0,30%) minmax(0,24%) minmax(0,1fr)}.vrow>div{min-width:0;overflow-wrap:anywhere}@media(max-width:760px){.side{width:100%}.vrow{grid-template-columns:1fr}.nav{overflow:visible}}.source td p{overflow-wrap:anywhere}</style></head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="logo" onclick="showObjectives()" title="Xem mục tiêu bài học">
+      <div class="lg">🎯</div><div><b>UNIT 5</b><small>Vietnamese Food and Drink</small></div>
+    </div>
+    <nav class="nav" id="nav"></nav>
+    <div class="prog"><div class="pbar"><i id="pbar"></i></div><small id="ptxt"></small></div>
+  </aside>
+  <main class="main">
+    <header class="head"><div class="hi" id="hi"></div><div><h1 id="ttl"></h1><p id="dsc"></p></div></header>
+    <div class="subnav" id="subnav"></div>
+    <div class="body" id="body"></div>
+  </main>
+</div>
+<script>/* ================= utilities ================= */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const normA = s => s.toLowerCase().replace(/[’‘`]/g, "'").replace(/[.,!?;:"“”]/g, '').replace(/\s+/g, ' ').trim();
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const hl = s => s.replace(/\{\{(.+?)\}\}/g, '<mark>$1</mark>');
+const plain = s => s.replace(/\{\{|\}\}/g, '').replace(/<[^>]+>/g, '');
+function say(t, rate) { try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-GB'; u.rate = rate || .9; speechSynthesis.speak(u); } catch (e) {} }
+function sayEl(el) { say(el.dataset.w); }
+const spk = w => `<button class="spk" data-w="${esc(plain(w))}" onclick="sayEl(this)" title="Nghe">🔊</button>`;
+function confetti() {
+  const em = ['🎉', '✨', '⭐', '🎊', '💜', '🌟'];
+  for (let i = 0; i < 22; i++) {
+    const s = document.createElement('span'); s.className = 'confetti'; s.textContent = em[i % em.length];
+    s.style.left = (10 + Math.random() * 80) + '%'; s.style.animationDelay = (Math.random() * .5) + 's'; s.style.fontSize = (14 + Math.random() * 14) + 'px';
+    document.body.appendChild(s); setTimeout(() => s.remove(), 2400);
+  }
+}
+
+/* ================= component registry & progress ================= */
+const COMP = {}, DONE = {};
+function markDone(id, s, t) { DONE[id] = { s, t }; navRender(); }
+function hydrate() { document.querySelectorAll('.comp').forEach(el => { const c = COMP[el.dataset.id]; if (c) c.render(el); }); }
+function rerender(id) { const el = document.querySelector(`.comp[data-id="${id}"]`); if (el) COMP[id].render(el); }
+const slot = id => `<div class="comp" data-id="${id}"></div>`;
+
+/* ================= QUIZ (one question at a time, explanation panel) ================= */
+function fillQ(q, txt) {
+  const parts = txt.split(' - '); let k = 0;
+  return q.replace(/_{3,}/g, () => `<span class="fillw">${parts[Math.min(k++, parts.length - 1)]}</span>`);
+}
+function quiz(id, cfg) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { i: 0, score: 0, sel: null, res: [], fin: false };
+  if (prev) cfg.items = prev.cfg.items; else if (cfg.regen) cfg.items = cfg.regen();
+  COMP[id] = { st, cfg, render: el => qzRender(id, el) };
+  return slot(id);
+}
+function qzRender(id, el) {
+  const { st, cfg } = COMP[id], items = cfg.items, n = items.length;
+  if (st.fin) { el.innerHTML = qzResult(id); return; }
+  const it = items[st.i], L = cfg.labels || ['A', 'B', 'C', 'D'], ans = st.sel !== null, ok = ans && st.sel === it.a;
+  const opts = it.opts.map((o, j) => {
+    let c = 'qo'; if (ans) { c += ' lock'; if (j === it.a) c += ' ok'; else if (j === st.sel) c += ' bad'; }
+    return `<button class="${c}" onclick="qzPick('${id}',${j})"><b>${L[j]}</b><span>${o}</span></button>`;
+  }).join('');
+  const q = ans ? fillQ(it.q, it.opts[it.a]) : it.q.replace(/_{3,}/g, '<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>');
+  const fb = ans
+    ? `<div class="fb ${ok ? 'ok' : 'bad'}"><div class="fb-h">${ok ? '🎉 Chính xác!' : '❌ Chưa đúng'}<small>Đáp án đúng: <b>${L[it.a]}. ${it.opts[it.a]}</b></small></div><div class="fb-b">${it.exp || ''}</div></div>
+       <button class="btn solid fb-n" onclick="qzNext('${id}')">${st.i === n - 1 ? 'Xem kết quả →' : 'Câu tiếp theo →'}</button>`
+    : `<div class="fb idle"><div class="idle-i">💡</div><p>Chọn một đáp án.<br>Giải thích và nghĩa sẽ hiện ở đây.</p></div>`;
+  el.innerHTML = `<div class="qz">
+    <div class="qz-top"><span class="qz-title">${cfg.title}</span><span class="chip-s">Câu ${st.i + 1}/${n}</span><span class="chip-s ok">★ ${st.score}</span></div>
+    <div class="qz-bar"><i style="width:${(st.i + (ans ? 1 : 0)) / n * 100}%"></i></div>
+    ${cfg.note ? `<div class="note">${cfg.note}</div>` : ''}
+    <div class="qz-main"><div><div class="qz-q">${q}</div><div class="qz-opts ${cfg.tf ? 'tf' : ''}">${opts}</div></div><div>${fb}</div></div></div>`;
+}
+function qzPick(id, j) {
+  const { st, cfg } = COMP[id]; if (st.sel !== null) return;
+  st.sel = j; st.res[st.i] = j; if (j === cfg.items[st.i].a) st.score++;
+  rerender(id);
+}
+function qzNext(id) {
+  const { st, cfg } = COMP[id]; st.sel = null; st.i++;
+  if (st.i >= cfg.items.length) { st.fin = true; markDone(id, st.score, cfg.items.length); if (st.score === cfg.items.length) confetti(); }
+  rerender(id);
+}
+function qzRestart(id) {
+  const c = COMP[id]; Object.assign(c.st, { i: 0, score: 0, sel: null, res: [], fin: false });
+  if (c.cfg.regen) c.cfg.items = c.cfg.regen();
+  rerender(id);
+}
+function qzResult(id) {
+  const { st, cfg } = COMP[id], n = cfg.items.length, pct = Math.round(st.score / n * 100), L = cfg.labels || ['A', 'B', 'C', 'D'];
+  const msg = pct === 100 ? 'Xuất sắc! 🏆' : pct >= 80 ? 'Rất tốt! 👏' : pct >= 50 ? 'Khá ổn, cố thêm chút nữa! 💪' : 'Đừng nản, thử lại nhé! 🌱';
+  const wrong = cfg.items.map((it, i) => ({ it, i })).filter(x => st.res[x.i] !== x.it.a);
+  return `<div class="qz-res"><div class="ring" style="--pct:${pct}%"><span>${st.score}/${n}</span></div><h3>${msg}</h3>
+    <p class="muted">${esc(plain(cfg.title))}</p>
+    <div class="acts"><button class="btn solid" onclick="qzRestart('${id}')">↺ Làm lại</button></div>
+    ${wrong.length ? `<div class="wl"><div class="colh">Các câu cần xem lại (${wrong.length})</div>${wrong.map(({ it, i }) => `<details><summary>Câu ${i + 1}: ${fillQ(it.q, it.opts[it.a])}</summary><div class="fb-b">Bạn chọn: <b>${L[st.res[i]]}. ${it.opts[st.res[i]]}</b> · Đáp án: <b>${L[it.a]}. ${it.opts[it.a]}</b><br>${it.exp || ''}</div></details>`).join('')}</div>` : '<p class="muted">Bạn đã trả lời đúng tất cả các câu 🎯</p>'}</div>`;
+}
+document.addEventListener('keydown', e => {
+  if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+  const m = document.querySelector('.comp .qz-main'); if (!m) return;
+  const id = m.closest('.comp').dataset.id, { st, cfg } = COMP[id], k = e.key.toLowerCase();
+  if (st.sel === null) {
+    const labs = (cfg.labels || ['A', 'B', 'C', 'D']).map(x => x.toLowerCase());
+    let j = labs.indexOf(k); if (j < 0) j = ['1', '2', '3', '4'].indexOf(k);
+    if (j >= 0 && j < cfg.items[st.i].opts.length) qzPick(id, j);
+  } else if (['enter', 'arrowright', ' '].includes(k)) { e.preventDefault(); qzNext(id); }
+});
+function meanExp(opts, mean, a, tr, note) {
+  return `<table class="mt">${opts.map((o, j) => `<tr class="${j === a ? 'hit' : ''}"><td>${'ABCD'[j]}. <b>${o}</b></td><td>${mean[j]}</td></tr>`).join('')}</table>${note ? `<p class="fb-note">${note}</p>` : ''}${tr ? `<p class="fb-tr">🇻🇳 ${tr}</p>` : ''}`;
+}
+const ruleExp = (rule, tr) => `<p>${rule}</p>${tr ? `<p class="fb-tr">🇻🇳 ${tr}</p>` : ''}`;
+
+/* ================= FILL (typing or tap-to-fill word bank) ================= */
+function fill(id, cfg) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { vals: {}, checked: false, res: [], active: null, score: 0 };
+  COMP[id] = { st, cfg, render: el => flRender(id, el) };
+  return slot(id);
+}
+function flRender(id, el) {
+  const { st, cfg } = COMP[id], bank = cfg.bank, items = cfg.items;
+  const used = Object.values(st.vals);
+  const rows = items.map((it, i) => {
+    let k = 0;
+    const q = it.q.replace(/___/g, () => {
+      const key = i + '-' + k, v = st.vals[key] || '', kk = k++;
+      const cls = st.checked ? (st.res[i] && st.res[i][kk] ? ' good' : ' bad') : '';
+      if (bank) return `<button class="slot${st.active === key ? ' act' : ''}${cls}" onclick="flSlot('${id}','${key}')">${v || '&nbsp;'}</button>`;
+      return `<input class="fi${cls}" data-key="${key}" value="${esc(v)}" autocomplete="off" spellcheck="false" oninput="COMP['${id}'].st.vals['${key}']=this.value" onkeydown="flKey(event,'${id}')">`;
+    });
+    let fb = '';
+    if (st.checked) {
+      const ok = st.res[i] && st.res[i].every(Boolean);
+      fb = `<div class="fxfb ${ok ? 'ok' : 'bad'}">${ok ? '✓ Đúng.' : '✗ Đáp án: <b>' + it.a.map(x => x.split('/')[0]).join(' … ') + '</b>.'} ${it.exp || ''}${it.tr ? `<span class="tr">🇻🇳 ${it.tr}</span>` : ''}</div>`;
+    }
+    return `<div class="fx"><span class="n">${i + 1}</span><span>${q}</span>${fb}</div>`;
+  }).join('');
+  el.innerHTML = `<div class="fl-top"><span class="t">${cfg.title}</span>
+      <span class="chip-s ok" ${st.checked ? '' : 'style="display:none"'}>★ ${st.score}/${items.length}</span>
+      <button class="btn solid" onclick="flCheck('${id}')">✔ Kiểm tra</button><button class="btn" onclick="flReveal('${id}')">💡 Xem đáp án</button><button class="btn" onclick="flReset('${id}')">↺ Làm lại</button></div>
+    ${cfg.note ? `<div class="note">${cfg.note}</div>` : ''}
+    ${bank ? `<div class="bank">${bank.map(w => `<button class="bk${used.includes(w) ? ' used' : ''}" onclick="flPut('${id}',this.dataset.w)" data-w="${esc(w)}">${w}</button>`).join('')}</div>` : ''}
+    ${rows}`;
+}
+function flKey(e, id) {
+  if (e.key !== 'Enter') return;
+  const ins = [...document.querySelectorAll(`.comp[data-id="${id}"] input.fi`)], i = ins.indexOf(e.target);
+  if (i < ins.length - 1) ins[i + 1].focus(); else flCheck(id);
+}
+function flSlot(id, key) {
+  const { st } = COMP[id]; if (st.checked) return;
+  if (st.vals[key]) { delete st.vals[key]; st.active = key; } else st.active = st.active === key ? null : key;
+  rerender(id);
+}
+function flPut(id, w) {
+  const { st, cfg } = COMP[id]; if (st.checked || Object.values(st.vals).includes(w)) return;
+  let key = st.active;
+  if (!key || st.vals[key]) { key = null; cfg.items.forEach((it, i) => it.a.forEach((_, k) => { const kk = i + '-' + k; if (!key && !st.vals[kk]) key = kk; })); }
+  if (!key) return;
+  st.vals[key] = w; st.active = null;
+  let nx = null; cfg.items.forEach((it, i) => it.a.forEach((_, k) => { const kk = i + '-' + k; if (!nx && !st.vals[kk]) nx = kk; }));
+  st.active = nx; rerender(id);
+}
+function flCheck(id) {
+  const { st, cfg } = COMP[id]; let s = 0;
+  st.res = cfg.items.map((it, i) => it.a.map((a, k) => a.split('/').map(normA).includes(normA(st.vals[i + '-' + k] || ''))));
+  cfg.items.forEach((it, i) => { if (st.res[i].every(Boolean)) s++; });
+  st.score = s; st.checked = true; st.active = null; markDone(id, s, cfg.items.length);
+  if (s === cfg.items.length) confetti(); rerender(id);
+}
+function flReveal(id) {
+  const { st, cfg } = COMP[id];
+  cfg.items.forEach((it, i) => it.a.forEach((a, k) => { st.vals[i + '-' + k] = a.split('/')[0]; })); flCheck(id);
+}
+function flReset(id) { const { st } = COMP[id]; Object.assign(st, { vals: {}, checked: false, res: [], active: null, score: 0 }); rerender(id); }
+
+/* ================= SENTENCE BUILDER ================= */
+function builder(id, cfg) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { i: 0, score: 0, fin: false, checked: false, ok: false, placed: [], pool: null };
+  if (!st.pool) st.pool = bdShuffle(cfg.items[0].w);
+  COMP[id] = { st, cfg, render: el => bdRender(id, el) };
+  return slot(id);
+}
+function bdShuffle(w) { let p, tries = 0; do { p = shuffle(w.map((x, i) => i)); tries++; } while (p.join() === w.map((x, i) => i).join() && tries < 9); return p; }
+function bdRender(id, el) {
+  const { st, cfg } = COMP[id], items = cfg.items, n = items.length;
+  if (st.fin) { el.innerHTML = `<div class="qz-res"><div class="ring" style="--pct:${Math.round(st.score / n * 100)}%"><span>${st.score}/${n}</span></div><h3>${st.score === n ? 'Hoàn hảo! 🏆' : 'Hoàn thành! 👏'}</h3><p class="muted">${esc(cfg.title)}</p><div class="acts"><button class="btn solid" onclick="bdRestart('${id}')">↺ Làm lại</button></div></div>`; return; }
+  const it = items[st.i], words = it.w;
+  const pool = st.pool.filter(x => !st.placed.includes(x));
+  el.innerHTML = `<div class="qz-top"><span class="qz-title">${cfg.title}</span><span class="chip-s">Câu ${st.i + 1}/${n}</span><span class="chip-s ok">★ ${st.score}</span></div>
+    <div class="qz-bar"><i style="width:${(st.i + (st.checked ? 1 : 0)) / n * 100}%"></i></div>
+    <div class="muted">Bấm các từ theo thứ tự để ghép thành câu hoàn chỉnh. Gợi ý nghĩa: <b>${it.vi}</b></div>
+    <div class="bd-line ${st.checked ? (st.ok ? 'ok' : 'bad') : ''}">${st.placed.length ? st.placed.map(x => `<button class="wd in" onclick="bdBack('${id}',${x})">${words[x]}</button>`).join('') : '<span class="bd-hint">Câu của bạn sẽ hiện ở đây…</span>'}</div>
+    <div class="bd-pool">${pool.map(x => `<button class="wd" onclick="bdAdd('${id}',${x})">${words[x]}</button>`).join('')}</div>
+    <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+      ${st.checked ? `<button class="btn solid" onclick="bdNext('${id}')">${st.i === n - 1 ? 'Xem kết quả →' : 'Câu tiếp theo →'}</button>`
+        : `<button class="btn solid" onclick="bdCheck('${id}')" ${st.placed.length ? '' : 'disabled'}>✔ Kiểm tra</button><button class="btn" onclick="bdClear('${id}')">Xóa hết</button>`}
+    </div>
+    ${st.checked ? `<div class="fb ${st.ok ? 'ok' : 'bad'}" style="margin-top:8px;position:static"><div class="fb-h">${st.ok ? '🎉 Chính xác!' : '❌ Chưa đúng'}<small>Câu đúng: <b>${words.join(' ')}</b></small></div><div class="fb-b">${it.exp || ''}<p class="fb-tr">🇻🇳 ${it.vi}</p></div></div>` : ''}`;
+}
+function bdAdd(id, x) { const { st } = COMP[id]; if (st.checked) return; st.placed.push(x); rerender(id); }
+function bdBack(id, x) { const { st } = COMP[id]; if (st.checked) return; st.placed = st.placed.filter(y => y !== x); rerender(id); }
+function bdClear(id) { COMP[id].st.placed = []; rerender(id); }
+function bdCheck(id) {
+  const { st, cfg } = COMP[id], w = cfg.items[st.i].w;
+  st.ok = normA(st.placed.map(x => w[x]).join(' ')) === normA(w.join(' '));
+  if (st.ok) st.score++; st.checked = true; rerender(id);
+}
+function bdNext(id) {
+  const { st, cfg } = COMP[id]; st.i++; st.checked = false; st.placed = [];
+  if (st.i >= cfg.items.length) { st.fin = true; markDone(id, st.score, cfg.items.length); if (st.score === cfg.items.length) confetti(); }
+  else st.pool = bdShuffle(cfg.items[st.i].w);
+  rerender(id);
+}
+function bdRestart(id) { const { st, cfg } = COMP[id]; Object.assign(st, { i: 0, score: 0, fin: false, checked: false, placed: [], pool: bdShuffle(cfg.items[0].w) }); rerender(id); }
+
+/* ================= MATCH GAME ================= */
+function matchGame(id, pool) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { round: null, sel: null, done: [], moves: 0, err: null, rounds: 0 };
+  if (!st.round) matchNew(st, pool);
+  COMP[id] = { st, pool, render: el => mgRender(id, el) };
+  return slot(id);
+}
+function matchNew(st, pool) { const r = shuffle(pool).slice(0, 6); st.round = { L: r, R: shuffle(r) }; st.sel = null; st.done = []; st.moves = 0; st.err = null; }
+function mgRender(id, el) {
+  const { st } = COMP[id], { L, R } = st.round, fin = st.done.length === L.length;
+  const left = L.map((v, i) => `<button class="mc ${st.done.includes(v.w) ? 'lock' : ''} ${st.sel && st.sel.side === 'L' && st.sel.w === v.w ? 'sel' : ''} ${st.err && st.err.includes('L:' + v.w) ? 'err' : ''}" onclick="mgPick('${id}','L',this.dataset.w)" data-w="${esc(v.w)}">${v.em || ''} ${v.w}</button>`);
+  const right = R.map(v => `<button class="mc vi ${st.done.includes(v.w) ? 'lock' : ''} ${st.sel && st.sel.side === 'R' && st.sel.w === v.w ? 'sel' : ''} ${st.err && st.err.includes('R:' + v.w) ? 'err' : ''}" onclick="mgPick('${id}','R',this.dataset.w)" data-w="${esc(v.w)}">${v.vi}</button>`);
+  el.innerHTML = `<div class="mg-top"><b style="color:#312e81;font-size:13.5px;flex:1">Ghép mỗi từ tiếng Anh với nghĩa tiếng Việt đúng</b><span class="chip-s">Ghép đúng ${st.done.length}/${L.length}</span><span class="chip-s">Lượt: ${st.moves}</span><button class="btn" onclick="mgNew('${id}')">🔀 Vòng mới</button></div>
+    <div class="mg">${L.map((_, i) => left[i] + right[i]).join('')}</div>
+    ${fin ? `<div class="note" style="margin-top:10px;background:#ecfdf5;border-color:#10b981">🎉 Hoàn thành sau <b>${st.moves}</b> lượt! Bấm “Vòng mới” để chơi với 6 từ khác.</div>` : ''}`;
+}
+function mgPick(id, side, w) {
+  const { st } = COMP[id]; if (st.done.includes(w) || st.err) return;
+  if (!st.sel || st.sel.side === side) { st.sel = { side, w }; rerender(id); return; }
+  st.moves++; const a = st.sel; st.sel = null;
+  if (a.w === w) { st.done.push(w); if (st.done.length === st.round.L.length) { markDone(id, st.round.L.length, st.moves); confetti(); } rerender(id); }
+  else { st.err = [`${a.side}:${a.w}`, `${side}:${w}`]; rerender(id); setTimeout(() => { st.err = null; rerender(id); }, 520); }
+}
+function mgNew(id) { const c = COMP[id]; matchNew(c.st, c.pool); rerender(id); }
+
+/* ================= SIGNAL FINDER (grammar) ================= */
+function signals(id, items) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { found: {}, wrong: {}, err: null };
+  COMP[id] = { st, items, render: el => sgRender(id, el) };
+  return slot(id);
+}
+function sgIdx(it) {
+  const toks = it.w.split(' '), ph = it.t.split(' ').map(normA), cl = toks.map(normA);
+  for (let i = 0; i < toks.length; i++) { if (ph.every((p, k) => cl[i + k] === p)) return [i, i + ph.length - 1]; }
+  return [0, 0];
+}
+function sgRender(id, el) {
+  const { st, items } = COMP[id], n = items.length, nf = Object.keys(st.found).length;
+  el.innerHTML = `<div class="fl-top"><span class="t">Tìm dấu hiệu nhận biết thì hiện tại đơn trong mỗi câu</span><span class="chip-s ok">Đã tìm ${nf}/${n}</span><button class="btn" onclick="sgReset('${id}')">↺ Làm lại</button></div>
+    ${items.map((it, i) => {
+      const [a, b] = sgIdx(it), found = st.found[i];
+      return `<div class="sg"><span class="n">${i + 1}</span>${it.w.split(' ').map((t, k) => `<span class="tok ${found && k >= a && k <= b ? 'sig' : ''} ${st.err === i + '-' + k ? 'err' : ''}" onclick="sgPick('${id}',${i},${k})">${t}</span>`).join('')}${found ? `<span class="sgnote">✓ ${it.note}</span>` : ''}</div>`;
+    }).join('')}
+    ${nf === n ? `<div class="note" style="background:#ecfdf5;border-color:#10b981">🎉 Bạn đã tìm đủ! Số câu tìm đúng ngay lần đầu: <b>${n - Object.keys(st.wrong).length}/${n}</b></div>` : ''}`;
+}
+function sgPick(id, i, k) {
+  const { st, items } = COMP[id]; if (st.found[i]) return;
+  const [a, b] = sgIdx(items[i]);
+  if (k >= a && k <= b) { st.found[i] = true; if (Object.keys(st.found).length === items.length) { markDone(id, items.length - Object.keys(st.wrong).length, items.length); confetti(); } rerender(id); }
+  else { st.wrong[i] = true; st.err = i + '-' + k; rerender(id); setTimeout(() => { st.err = null; rerender(id); }, 400); }
+}
+function sgReset(id) { Object.assign(COMP[id].st, { found: {}, wrong: {}, err: null }); rerender(id); }
+
+/* ================= PICTURES (pronunciation, exercise 1) ================= */
+function pics(id, items, example) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { v: [], c: [], ok: [], msg: [] };
+  COMP[id] = { st, items, example, render: el => pcRender(id, el) };
+  return slot(id);
+}
+function pcRender(id, el) {
+  const { st, items, example } = COMP[id], nOk = st.ok.filter(Boolean).length;
+  const col = c => items.map((p, i) => st.ok[i] && p.c === c ? `<span class="tchip">${p.w}</span>` : '').join('');
+  el.innerHTML = `<div class="fl-top"><span class="t">Viết từ dưới mỗi hình, rồi chọn cột âm đúng</span><span class="chip-s ok">★ ${nOk}/${items.length}</span>
+      <button class="btn solid" onclick="pcCheckAll('${id}')">✔ Kiểm tra tất cả</button><button class="btn" onclick="pcReveal('${id}')">💡 Đáp án</button><button class="btn" onclick="pcReset('${id}')">↺ Làm lại</button></div>
+    <div class="pics"><div class="pic egp"><span class="pn">Ví dụ</span><img src="${example.img}" alt=""><b style="color:#6d28d9;font-size:13px">${example.w}</b><span class="ph" style="font-size:13px">/ə/ ✓</span></div>
+    ${items.map((p, i) => `<div class="pic ${st.ok[i] ? 'okc' : ''}"><span class="pn">${i + 1}</span><img src="${p.img}" alt="">
+      <input class="${st.ok[i] ? 'good' : (st.msg[i] && st.msg[i][0] === '✗' && st.msg[i].includes('từ') ? 'bad' : '')}" value="${esc(st.v[i] || '')}" placeholder="Gõ từ…" autocomplete="off" spellcheck="false" ${st.ok[i] ? 'readonly' : ''} oninput="COMP['${id}'].st.v[${i}]=this.value" onkeydown="if(event.key==='Enter')pcCheck('${id}',${i},true)">
+      <div class="cols"><button class="cb ${st.c[i] === 'a' ? 'sel' : ''}" onclick="pcCol('${id}',${i},'a')">/ə/</button><button class="cb ${st.c[i] === '3' ? 'sel' : ''}" onclick="pcCol('${id}',${i},'3')">/ɜː/</button></div>
+      <div class="pmsg">${st.ok[i] ? `✓ <b>${p.w}</b> <span class="ph">${p.p}</span><br>${p.vi}` : (st.msg[i] || '')}</div></div>`).join('')}</div>
+    <table class="t" style="margin-top:10px"><tr><th style="width:50%" class="ph">/ə/</th><th class="ph">/ɜː/</th></tr><tr><td><span class="tchip">${example.w}</span>${col('a')}</td><td>${col('3')}</td></tr></table>`;
+}
+function pcCol(id, i, c) { const { st } = COMP[id]; if (st.ok[i]) return; st.c[i] = c; rerender(id); }
+function pcSave(id) { document.querySelectorAll(`.comp[data-id="${id}"] .pic input`).forEach((inp, i) => { COMP[id].st.v[i] = inp.value; }); }
+function pcCheck(id, i, rr) {
+  const { st, items } = COMP[id], p = items[i]; if (st.ok[i]) return;
+  const wOk = normA(st.v[i] || '') === p.w, cOk = st.c[i] === p.c;
+  if (wOk && cOk) { st.ok[i] = true; st.msg[i] = ''; } else st.msg[i] = !(st.v[i] || '').trim() && !st.c[i] ? 'Chưa điền' : !wOk ? '✗ Chưa đúng từ' : !st.c[i] ? 'Hãy chọn cột âm' : '✗ Sai cột âm';
+  if (rr) rerender(id); if (st.ok.filter(Boolean).length === items.length) { markDone(id, items.length, items.length); confetti(); }
+}
+function pcCheckAll(id) { COMP[id].items.forEach((_, i) => pcCheck(id, i)); rerender(id); }
+function pcReveal(id) { const { st, items } = COMP[id]; items.forEach((p, i) => { st.v[i] = p.w; st.c[i] = p.c; }); pcCheckAll(id); }
+function pcReset(id) { Object.assign(COMP[id].st, { v: [], c: [], ok: [], msg: [] }); rerender(id); }
+
+/* ================= WRITING I (cue → sentence) ================= */
+function writeSent(id, items) {
+  const prev = COMP[id];
+  const st = prev ? prev.st : { v: [], res: [], checked: false };
+  COMP[id] = { st, items, render: el => wsRender(id, el) };
+  return slot(id);
+}
+function wsRender(id, el) {
+  const { st, items } = COMP[id], good = st.res.filter(r => r === 'good').length;
+  el.innerHTML = `<div class="fl-top"><span class="t">Viết câu hoàn chỉnh từ các từ gợi ý (có thể thêm từ)</span><span class="chip-s ok" ${st.checked ? '' : 'style="display:none"'}>★ ${good}/${items.length}</span>
+      <button class="btn solid" onclick="wsCheck('${id}')">✔ Đối chiếu</button><button class="btn" onclick="wsReveal('${id}')">💡 Xem đáp án mẫu</button><button class="btn" onclick="wsReset('${id}')">↺ Làm lại</button></div>
+    ${items.map((it, i) => `<div class="wr"><span class="n">${i + 1}</span><input class="${st.checked ? st.res[i] : ''}" value="${esc(st.v[i] || '')}" placeholder="Viết câu của bạn…" spellcheck="false" oninput="COMP['${id}'].st.v[${i}]=this.value">
+      <div class="cues">${it.c}</div>
+      ${st.checked ? `<div class="fxfb ${st.res[i] === 'good' ? 'ok' : 'bad'}" style="flex-basis:100%;${st.res[i] === 'near' ? 'background:#fffbeb;border-color:#f59e0b;color:#78350f' : ''}">${st.res[i] === 'good' ? '✓ Khớp đáp án mẫu: <b>' + it.a + '</b>' : '↔ Chưa khớp hoàn toàn — nhiều cách viết đều có thể đúng, hãy đối chiếu. Đáp án mẫu: <b>' + it.a + '</b>'}<span class="tr">🇻🇳 ${it.vi}</span></div>` : ''}</div>`).join('')}`;
+}
+function wsCheck(id) {
+  const { st, items } = COMP[id];
+  st.res = items.map((it, i) => normA(st.v[i] || '') === normA(it.a) ? 'good' : 'near'); st.checked = true;
+  markDone(id, st.res.filter(r => r === 'good').length, items.length); rerender(id);
+}
+function wsReveal(id) { const { st, items } = COMP[id]; items.forEach((it, i) => { st.v[i] = it.a; }); wsCheck(id); }
+function wsReset(id) { Object.assign(COMP[id].st, { v: [], res: [], checked: false }); rerender(id); }
+
+/* ================= WRITING II (paragraph with live word counter) ================= */
+const WR2 = { text: '', sample: false };
+function wcUpdate() {
+  const t = document.getElementById('wr2t'); if (!t) return; WR2.text = t.value;
+  const n = (t.value.trim().match(/\S+/g) || []).length, bar = document.getElementById('wcb'), lab = document.getElementById('wcn');
+  const pct = Math.min(100, n / 80 * 100); bar.style.width = pct + '%';
+  const ok = n >= 60 && n <= 80; bar.style.background = ok ? '#10b981' : n > 80 ? '#ef4444' : '#f59e0b';
+  lab.textContent = n + ' từ' + (ok ? ' ✓' : n > 80 ? ' (quá dài)' : n >= 60 ? '' : ' (cần ≥ 60)'); lab.style.color = ok ? '#047857' : n > 80 ? '#b91c1c' : '#b45309';
+  if (ok && !DONE.wr2) markDone('wr2', n, n);
+}
+function wcAdd(txt) { const t = document.getElementById('wr2t'); t.value += (t.value && !/\s$/.test(t.value) ? ' ' : '') + txt; t.focus(); wcUpdate(); }
+
+/* ================= LISTENING PLAYER (browser text-to-speech) ================= */
+const LS = { sents: [], idx: 0, playing: false, rate: 1 };
+function lsPlay(script) {
+  try { speechSynthesis.cancel(); } catch (e) { return; }
+  LS.sents = script.match(/[^.!?]+[.!?]+/g) || [script]; LS.playing = true; lsUi();
+  LS.sents.forEach((s, i) => {
+    const u = new SpeechSynthesisUtterance(s.trim()); u.lang = 'en-GB'; u.rate = LS.rate;
+    u.onstart = () => { LS.idx = i; document.querySelectorAll('.ss').forEach((e, k) => e.classList.toggle('now', k === i)); };
+    if (i === LS.sents.length - 1) u.onend = () => { LS.playing = false; lsUi(); document.querySelectorAll('.ss').forEach(e => e.classList.remove('now')); };
+    speechSynthesis.speak(u);
+  });
+}
+function lsStop() { try { speechSynthesis.cancel(); } catch (e) {} LS.playing = false; lsUi(); document.querySelectorAll('.ss').forEach(e => e.classList.remove('now')); }
+function lsUi() { const b = document.getElementById('lsbtn'), q = document.getElementById('lseq'); if (b) b.textContent = LS.playing ? '⏹' : '▶'; if (q) q.classList.toggle('on', LS.playing); }
+
+/* ================= SHELL: navigation, sections ================= */
+let cur = { s: 0, t: 0 };
+function allEx() { return SECTIONS.flatMap(s => s.ex || []); }
+function navRender() {
+  const total = allEx().length, done = allEx().filter(id => DONE[id]).length;
+  $('#nav').innerHTML = SECTIONS.map((s, i) => {
+    const all = (s.ex || []).length && s.ex.every(id => DONE[id]);
+    return `<button class="ni ${i === cur.s ? 'on' : ''} ${all ? 'done' : ''} ${s.soon ? 'soon' : ''}" onclick="show(${i},0)"><span class="n">${all ? '✓' : i + 1}</span><span class="t">${s.nav || s.title}</span></button>`;
+  }).join('');
+  $('#pbar').style.width = (total ? done / total * 100 : 0) + '%';
+  $('#ptxt').innerHTML = `<span>Hoàn thành</span><b>${done}/${total} bài tập</b>`;
+  const sec = SECTIONS[cur.s]; const tabs = document.querySelectorAll('.stab');
+  sec.subs.forEach((sb, k) => { if (sb.ex && tabs[k]) { const d = sb.ex.every(i => DONE[i]); const old = tabs[k].querySelector('i'); if (d && !old) tabs[k].insertAdjacentHTML('beforeend', '<i>✓</i>'); } });
+}
+function show(s, t) {
+  cur = { s, t: t || 0 };
+  const sec = SECTIONS[s], sub = sec.subs[cur.t];
+  $('#hi').textContent = sec.icon; $('#ttl').textContent = sec.title + (sec.vi ? ' · ' + sec.vi : ''); $('#dsc').textContent = sec.desc;
+  $('#subnav').innerHTML = sec.subs.length > 1 ? sec.subs.map((x, k) => `<button class="stab ${k === cur.t ? 'on' : ''}" onclick="show(${s},${k})">${x.label}${x.ex && x.ex.every(i => DONE[i]) ? '<i>✓</i>' : ''}</button>`).join('') : '';
+  $('#subnav').style.display = sec.subs.length > 1 ? '' : 'none';
+  const b = $('#body'); b.className = 'body' + (sub.split ? ' split' : ''); b.innerHTML = sub.render(); b.scrollTop = 0;
+  hydrate(); if (sub.after) sub.after(); navRender(); try { speechSynthesis.cancel(); } catch (e) {} LS.playing = false;
+}
+function showObjectives() {
+  const o = OBJECTIVES.map(x => `<div class="obj"><span class="oi">${x.i}</span><div><b>${x.t}</b><br>${x.d}</div></div>`).join('');
+  document.body.insertAdjacentHTML('beforeend', `<div class="modal" onclick="if(event.target===this)this.remove()"><div class="mbox"><h2>🎯 Mục tiêu bài học</h2><div class="sub">Unit 5 · Vietnamese Food and Drink — Vietnamese Food and Drink</div>${o}<div style="text-align:right;margin-top:12px"><button class="btn solid" onclick="this.closest('.modal').remove()">Bắt đầu học →</button></div></div></div>`);
+}
+
+
+const DATA=[{"title": "Vocabulary · Từ vựng", "icon": "📚", "desc": "Unit 5 · Vietnamese Food and Drink", "subs": [{"label": "33 từ vựng", "kind": "vocab"}]}, {"title": "Vocabulary practice", "icon": "✏️", "desc": "Unit 5 · Vietnamese Food and Drink", "subs": [{"id": "v1", "label": "I · Điền từ", "kind": "fill", "items": [{"q": "___soup is very delicious, and I often eat this dish whenever I visit Hanoi.", "a": ["Noodle"], "exp": "<p><b>Giải thích:</b> Ta có: “Noodle soup”: phở</p><p><b>Dịch nghĩa</b>: Noodle soup is very delicious, and I often eat this dish whenever I visit Hanoi. <i>(Phở rất ngon và tôi thường ăn món này mỗi khi đến Hà Nội.)</i></p>"}, {"q": "People make the___for noolde soup by stewing pig or cow bones.", "a": ["broth"], "exp": "<p><b>Giải thích</b>: Trước vị trí cần điền là mạo từ “the” nên ta cần một danh từ. Dựa vào nghĩa của câu, danh từ “broth” (nước xuýt) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: People make the broth for noolde soup by stewing pig or cow bones. <i>(Người ta nấu nước dùng cho món phở bằng cách hầm xương lợn hoặc xương bò.)</i></p>"}, {"q": "Thai dipping sauce here isn’t___enough for me.", "a": ["spicy"], "exp": "<p><b>Giải thích</b>: Sau động từ to be isn’t” ta cần một tính từ. Dựa vào nghĩa của câu, tính từ “spicy” (cay) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Thai dipping sauce here isn’t spicy enough for me. (<i>Nước chấm Thái ở đây không đủ cay với tôi.)</i></p>"}, {"q": "The hot fried spring rolls in the kitchen have a very___smell.", "a": ["fragrant"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ “smell” nên ta cần một tính từ. Dựa vào nghĩa của câu, tính từ “fragrant” (thơm) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: The hot fried spring rolls in the kitchen have a very fragrant smell. (<i>Món nem rán nóng hổi trong bếp có mùi rất thơm.)</i></p>"}, {"q": "The man___boiling broth into the bowl containing vermicelli, meat and herbs.", "a": ["poured"], "exp": "<p><b>Giải thích</b>: Trước vị trí cần điền là danh từ “the man” giữ vai trò chủ ngữ. Hơn nữa câu đang thiếu động từ nên ta cần một động từ. Dựa vào nghĩa của câu, động từ “poured” (đổ) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: The man poured boiling broth into the bowl containing vermicelli, meat and herbs. <i>(Người đàn ông đổ nước dùng sôi vào bát có bún, thịt và rau thơm.)</i></p>"}], "before": "<div class=\"note\">I – VOCABULARY: Complete the following sentences using the given words in the box.</div><div class=\"source\"><p>I – VOCABULARY: Complete the following sentences using the given words in the box.</p><div class=\"tablewrap\"><table><tr><td><p>spicy</p></td><td><p>beat</p></td><td><p>poured</p></td><td><p>fragrant</p></td><td><p>noodle</p></td><td><p>broth</p></td></tr></table></div><p><i>E.g.: __Beat__the eggs up to a frothy consistency.</i></p></div>"}, {"id": "v2", "label": "II · Điền từ", "kind": "fill", "items": [{"q": "___is the meat from a pig. It is a very popular food in Vietnam.", "a": ["Pork"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là động từ to be nên ta cần một danh từ đứng đầu câu giữ chức năng chủ ngữ. Dựa vào nghĩa của câu, danh từ “pork” (thịt lợn) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Pork is the meat from a pig. It is a very popular food in Vietnam. (<i>Thịt lợn là thịt từ lợn. Đó là thực phẩm rất phổ biến ở Việt Nam.)</i></p>"}, {"q": "She___and tore the rice sheet to have many smaller pieces.", "a": ["folded"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là liên từ “and” và động từ “tore” nên theo cấu trúc song song ta cần một động từ. Dựa vào nghĩa của câu, động từ “folded” (gấp) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: She folded and tore the rice sheet to have many smaller pieces. <i>(Cô ấy gấp và xé bánh đa nem để có nhiều miếng nhỏ hơn.)</i></p>"}, {"q": "My son prefers salty snacks to___ones.", "a": ["sweet"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là đại từ “ones” nên ta cần một tính từ đứng trước và bổ nghĩa cho nó. Dựa vào nghĩa của câu, tính từ “sweet” (ngọt) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: My son prefers salty snacks to sweet ones. (<i>Con trai tôi thích đồ ăn vặt mặn hơn là đồ ăn vặt ngọt.)</i></p>"}, {"q": "___is a liquid food made by boiling meat and vegetables in water.", "a": ["Soup"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là động từ to be nên ta cần một danh từ đứng đầu câu giữ chức năng chủ ngữ. Dựa vào nghĩa của câu, danh từ “soup” (súp) là phù hợp nhất.</p><p><b>Dịch nghĩa: </b>Soup is a liquid food made by boiling meat and vegetables in water. <i>(Súp là một loại đồ ăn lỏng được làm bằng cách đun sôi thịt và rau trong nước.)</i></p>"}, {"q": "We can make a tasty omelette from these___and nutritious eggs.", "a": ["delicious"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là liên từ “and” và tính từ “nutritious” nên theo cấu trúc song song ta cần một tính từ. Dựa vào nghĩa của câu, tính từ “delicious” (ngon) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: We can make a tasty omelette from these delicious and nutritious eggs. (<i>Chúng ta có thể làm món trứng tráng ngon lành từ những quả trứng ngon và bổ dưỡng này.)</i></p>"}, {"q": "My mother often follows a___to know the ingredients and the way to cook a dish exactly.", "a": ["recipe"], "exp": "<p><b>Giải thích</b>: Sau mạo từ “a” ta cần một danh từ. Dựa vào nghĩa của câu, danh từ “recipe” (công thức) là phù hợp nhất.</p><p><b>Dịch nghĩa:</b> My mother often follows a recipe to know the ingredients and the way to cook a dish exactly. <i>(Mẹ tôi thường làm theo công thức nấu ăn để biết chính xác nguyên liệu và cách chế biến.)</i></p>"}, {"q": "They___a wonderful meal to more than fifty guests.", "a": ["served"], "exp": "<p><b>Giải thích</b>: Trước vị trí cần điền là đại từ nhân xưng “they”, và sau nó là cụm danh từ “a wonderful meal” nên ở đây ta cần một động từ cho câu. Dựa vào nghĩa của câu, động từ “served” (phục vụ) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: They served a wonderful meal to more than fifty guests. (<i>Họ phục vụ một bữa ăn tuyệt vời cho hơn năm mươi khách.)</i></p>"}, {"q": "___may protect your brain in old age, lowering your risk of Alzheimer’s.", "a": ["Green tea"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là động từ “protect” nên ta cần một danh từ đứng đầu câu giữ chức năng chủ ngữ. Dựa vào nghĩa của câu, danh từ “green tea” (trà xanh) là phù hợp nhất.</p><p><b>Dịch nghĩa</b>: Green tea may protect your brain in old age, lowering your risk of Alzheimer’s. <i>(Trà xanh có thể bảo vệ não của bạn khi về già, giảm nguy cơ mắc bệnh Alzheimer.)</i></p>"}], "before": "<div class=\"note\">II - Complete the following sentences using the given words in the box. There is one extra word.</div><div class=\"source\"><p><b>II - Complete the following sentences using the given words in</b> the box. There is one extra word.</p><div class=\"tablewrap\"><table><tr><td><p>poured</p></td><td><p>green tea</p></td><td><p>sweet</p></td><td><p>salty</p></td><td><p>folded</p></td></tr><tr><td><p>recipe</p></td><td><p>pork</p></td><td><p>delicious</p></td><td><p>served</p></td><td><p>soup</p></td></tr></table></div><p><i>E.g.: Eating too much__salty__food is not a healthy way of eating.</i></p></div>"}]}, {"title": "Pronunciation · Ngữ âm", "icon": "🎧", "desc": "Unit 5 · Vietnamese Food and Drink", "subs": [{"label": "Lý thuyết", "html": "<div class=\"source\"><p><b>NGỮ ÂM</b></p><p>Pronunciation</p><p><b>1. PHỤ ÂM /</b><b>ɒ</b><b>/</b></p><div class=\"tablewrap\"><table><tr><td><p><b>CÁCH PHÁT ÂM</b></p></td><td><p><b>VÍ DỤ</b></p></td></tr><tr><td></td><td><p>* <b>mop</b> /m<u><b>ɒ</b></u>p/ n. (chổi lau nhà)</p><p>* <b>hot</b> /h<u><b>ɒ</b></u>t/ adj. (nóng)</p></td></tr><tr><td><p>Hạ hàm dưới xuống, môi tròn thư giãn</p><p>Đầu lưỡi hạ xuống</p><p>Đẩy hơi ra. Dây thanh rung lên</p><p>Âm /<b>ɒ</b><b>/</b> là nguyên âm ngắn, bạn phải phát âm nhanh và gọn</p></td><td></td></tr></table></div><p><b>2. PHỤ ÂM /</b><b>ɔ:</b><b>/</b></p><div class=\"tablewrap\"><table><tr><td><p><b>CÁCH PHÁT ÂM</b></p></td><td><p><b>VÍ DỤ</b></p></td></tr><tr><td></td><td><p>* <b>fork</b> /f<u><b>ɔ</b></u>:k/ <i>n. (đĩa)</i></p><p>* <b>pork</b> /pɔːk/ <i>n. (thịt lợn)</i></p></td></tr><tr><td><p>Hạ quai hàm, môi rất tròn</p><p>Đầu lưỡi hạ xuống</p><p>Đẩy hơi ra. Dây thanh rung lên</p><p>Âm /<b>ɔ:</b><b>/ </b>là nguyên âm dài, bạn sẽ phải kéo dài âm ra</p></td><td></td></tr></table></div></div>"}, {"id": "p1", "label": "I · Chọn âm khác", "kind": "quiz", "items": [{"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["<u>o</u>besity", "br<u>o</u>th", "comp<u>o</u>se", "ph<u>o</u>to"], "a": 1, "exp": "<p><b>Giải thích</b>: br<u>o</u>th /brɒθ/ có “o” được phát âm là /ɒ/, các phương án còn lại có “o” được phát âm là /əʊ/.</p><p><b>A</b>.<u>o</u>besity /əʊˈbiːsəti/ <b>C</b>. c<u>o</u>mpose /kəmˈpəʊz/ <b>D</b>. ph<u>o</u>to /ˈfəʊtəʊ/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["r<u>o</u>bot", "sl<u>ot</u>", "c<u>o</u>ncentrate", "<u>o</u>pera"], "a": 0, "exp": "<p><b>Giải thích</b>: robot /ˈrəʊbɒt/ có “o” được phát âm là /əʊ/, các phương án còn lại có “o” được phát âm là /ɒ/.</p><p><b>B.</b>sl<u>o</u>t /slɒt/ <b>C</b>. c<u>o</u>ncentrate /ˈkɒnsntreɪt/ <b>D.</b> <u>o</u>pera /ˈɒprə/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["sl<u>au</u>ghter", "<u>au</u>dience", "h<u>au</u>nt", "<u>au</u>nt"], "a": 3, "exp": "<p><b>Giải thích</b>: <u>au</u>nt /ɑːnt/ có “au” được phát âm là /ɑ:/, các phương án còn lại có “au” được phát âm là /ɔ:/.</p><p><b>A</b>. sl<u>au</u>ghter /ˈslɔːtə(r)/<b>B</b>. <u>au</u>dience /ˈɔːdiəns/<b>C</b>. h<u>au</u>nt /hɔːnt/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["sh<u>or</u>tage", "perf<u>or</u>m", "f<u>or</u>give", "h<u>or</u>n"], "a": 2, "exp": "<p><b>Giải thích</b>: forgive /fəˈɡɪv/ có “or” được phát âm là /ə/, các phương án còn lại có “or” được phát âm là /ɔ:/.</p><p><b>A</b>.sh<u>or</u>tage /ˈʃɔːtɪdʒ/ <b>B</b>. perf<u>or</u>m /pəˈfɔːm/<b>D</b>. h<u>or</u>n /hɔːn/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["sm<u>o</u>g", "expl<u>o</u>sion", "metr<u>o</u>", "sl<u>o</u>gan"], "a": 0, "exp": "<p><b>Giải thích</b>: sm<u>o</u>g /smɒɡ/ có “o” được phát âm là /ɒ/, các phương án còn lại có “o” được phát âm là /əʊ/.</p><p><b>B.</b>expl<u>o</u>sion /ɪkˈspləʊʒn/<b>C.</b> metr<u>o</u> /ˈmetrəʊ/<b>D</b>. sl<u>o</u>gan /ˈsləʊɡən/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["sh<u>o</u>w", "<u>o</u>pen", "cl<u>o</u>thes", "cl<u>o</u>th"], "a": 3, "exp": "<p><b>Giải thích</b>: cloth /klɒθ/ có “o” được phát âm là /ɒ/, các phương án còn lại có “o” được phát âm là /əʊ/.</p><p><b>A</b>. sh<u>o</u>w /ʃəʊ/<b>B</b>. <u>o</u>pen /ˈəʊpən/<b>C</b>. cl<u>o</u>thes /kləʊðz/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["cl<u>o</u>ck", "h<u>o</u>le", "sh<u>o</u>ck", "pl<u>o</u>t"], "a": 1, "exp": "<p><b>Giải thích</b>: h<u>o</u>le /həʊl/ có “o” được phát âm là /əʊ/, các phương án còn lại có “o” được phát âm là /ɒ/.</p><p><b>A</b>.cl<u>o</u>ck /klɒk/<b>C</b>. sh<u>o</u>ck /ʃɒk/<b>D</b>. pl<u>o</u>t /plɒt/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["fl<u>o</u>ppy", "sh<u>o</u>vel", "gl<u>o</u>ve", "l<u>o</u>ve"], "a": 0, "exp": "<p><b>Giải thích</b>: fl<u>o</u>ppy /ˈflɒpi/ có “o” được phát âm là /ɒ/, các phương án còn lại có “o” được phát âm là /ʌ/.</p><p><b>B</b>.sh<u>o</u>vel /ˈʃʌvl/<b>C</b>. gl<u>o</u>ve /ɡlʌv/<b>D</b>. l<u>o</u>ve /lʌv/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["h<u>o</u>t", "h<u>o</u>bby", "sl<u>o</u>pe", "t<u>o</u>p"], "a": 2, "exp": "<p><b>Giải thích</b>: sl<u>o</u>pe /sləʊp/ có “o” được phát âm là /əʊ/, các phương án còn lại có “o” được phát âm là /ɒ/.</p><p><b>A</b>. h<u>o</u>t /hɒt/<b>B</b>. h<u>o</u>bby /ˈhɒbi/<b>D</b>. t<u>o</u>p /tɒp/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["c<u>oa</u>l", "r<u>oa</u>r", "fl<u>oa</u>t", "l<u>oa</u>d"], "a": 1, "exp": "<p><b>Giải thích</b>: r<u>oa</u>r /rɔː(r)/ có “oa” được phát âm là /ɔ:/, các phương án còn lại có “oa” được phát âm là /əʊ/.</p><p><b>A</b>. c<u>oa</u>l /kəʊl/ <b>C</b>. fl<u>oa</u>t /fləʊt/<b>D</b>. l<u>oa</u>d /ləʊd/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["v<u>o</u>lunteer", "d<u>o</u>cumentary", "hydr<u>o</u>", "fl<u>o</u>p"], "a": 2, "exp": "<p><b>Giải thách</b>: hydr<u>o</u> /ˈhaɪdrəʊ/ có “o” được phát âm là /əʊ/, các phương án còn lại có “o” được phát âm là /ɒ/. </p><p><b>A</b>. v<u>o</u>lunteer /ˌvɒlənˈtɪə(r)/<b>B</b>. d<u>o</u>cumentary /ˌdɒkjuˈmentri/ <b>D</b>. fl<u>o</u>p /flɒp/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["ph<u>o</u>ne", "can<u>o</u>n", "h<u>o</u>me", "st<u>o</u>ne"], "a": 1, "exp": "<p><b>Giải thích</b>: can<u>o</u>n /ˈkænən/ có “o” được phát âm là /ə/, cácphương án còn lại có “o” được phát âm là /əʊ/.</p><p><b>A</b>. ph<u>o</u>ne /fəʊn/<b>C</b>. h<u>o</u>me /həʊm/<b>D</b>. st<u>o</u>ne /stəʊn/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["c<u>o</u>mpass", "s<u>o</u>fa", "p<u>o</u>em", "<u>o</u>verseas"], "a": 0, "exp": "<p><b>Giải thích</b>: c<u>o</u>mpass /ˈkʌmpəs/ có “o” được phát âm là /ʌ/,các phương áncòn lại có “o” được phát âm là /əʊ/.</p><p><b>B</b>. s<u>o</u>fa /ˈsəʊfə/<b>C</b>. p<u>o</u>em /ˈpəʊɪm/<b>D</b>. <u>o</u>verseas /ˌəʊvəˈsiːz/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["c<u>o</u>medy", "apric<u>o</u>t", "w<u>o</u>rkshop", "jud<u>o</u>"], "a": 3, "exp": "<p><b>Giải thích</b>: jud<u>o</u> /ˈdʒuːdəʊ/ có “o” được phát âm là /əʊ/, các phương án còn lại có “o” được phát âm là /ɒ/.</p><p><b>A</b>.c<u>o</u>medy /ˈkɒmədi/<b>B.</b> apric<u>o</u>t /ˈeɪprɪkɒt/<b>C</b>. worksh<u>o</u>p /ˈwɜːkʃɒp/</p>"}, {"q": "Chọn từ có phần gạch chân phát âm khác.", "opts": ["m<u>o</u>ve", "c<u>o</u>nvenient", "micr<u>o</u>wave", "c<u>o</u>nditioner"], "a": 0, "exp": "<p><b>Giải thích</b>: m<u>o</u>ve /mu:v/ có “o” được phát âm là /u:/, các phương án còn lại có “o” được phát âm là /ə/.</p><p><b>B</b>.c<u>o</u>nvenient /kənˈviːniənt/<b>C</b>. micr<u>o</u>wave /ˈmaɪkrəweɪv/<b>D</b>. c<u>o</u>nditioner /kənˈdɪʃənə(r)/</p>"}], "before": "<div class=\"note\">I - Choose the word which has the underlined part pronounced differently.</div>"}, {"id": "p2", "label": "II · Phân loại âm", "kind": "quiz", "items": [{"q": "poverty", "opts": ["/ɒ/", "/ʌ/", "/ə/", "/əʊ/"], "a": 0, "exp": "Đáp án: /ɒ/"}, {"q": "flop", "opts": ["/ɒ/", "/ʌ/", "/ə/", "/əʊ/"], "a": 0, "exp": "Đáp án: /ɒ/"}, {"q": "gridlocked", "opts": ["/ɒ/", "/ʌ/", "/ə/", "/əʊ/"], "a": 0, "exp": "Đáp án: /ɒ/"}, {"q": "hover", "opts": ["/ɒ/", "/ʌ/", "/ə/", "/əʊ/"], "a": 0, "exp": "Đáp án: /ɒ/"}, {"q": "fossil", "opts": ["/ɒ/", "/ʌ/", "/ə/", "/əʊ/"], "a": 0, "exp": "Đáp án: /ɒ/"}, {"q": "love", "opts": ["/ɒ/", "/ʌ/", "/ə/", "/əʊ/"], "a": 1, "exp": "Đáp án: /ʌ/"}, {"q": "money", "opts": ["/ɒ/", "/ʌ/", "/ə/", "/əʊ/"], "a": 1, "exp": "Đáp án: /ʌ/"}, {"q": "company", "opts": ["/ɒ/", "/ʌ/", "/ə/", "/əʊ/"], "a": 1, "exp": "Đáp án: /ʌ/"}, {"q": "other", "opts": ["/ɒ/", "/ʌ/", "/ə/", "/əʊ/"], "a": 1, "exp": "Đáp án: /ʌ/"}, {"q": "become", "opts": ["/ɒ/", "/ʌ/", "/ə/", "/əʊ/"], "a": 1, "exp": "Đáp án: /ʌ/"}, {"q": "automated", "opts": ["/ɒ/", "/ʌ/", "/ə/", "/əʊ/"], "a": 2, "exp": "Đáp án: /ə/"}, {"q": "prohibitive", "opts": ["/ɒ/", "/ʌ/", "/ə/", "/əʊ/"], "a": 2, "exp": "Đáp án: /ə/"}, {"q": "consist", "opts": ["/ɒ/", "/ʌ/", "/ə/", "/əʊ/"], "a": 2, "exp": "Đáp án: /ə/"}, {"q": "recognise", "opts": ["/ɒ/", "/ʌ/", "/ə/", "/əʊ/"], "a": 2, "exp": "Đáp án: /ə/"}, {"q": "locate", "opts": ["/ɒ/", "/ʌ/", "/ə/", "/əʊ/"], "a": 3, "exp": "Đáp án: /əʊ/"}, {"q": "explosion", "opts": ["/ɒ/", "/ʌ/", "/ə/", "/əʊ/"], "a": 3, "exp": "Đáp án: /əʊ/"}, {"q": "metro", "opts": ["/ɒ/", "/ʌ/", "/ə/", "/əʊ/"], "a": 3, "exp": "Đáp án: /əʊ/"}, {"q": "slogan", "opts": ["/ɒ/", "/ʌ/", "/ə/", "/əʊ/"], "a": 3, "exp": "Đáp án: /əʊ/"}, {"q": "control", "opts": ["/ɒ/", "/ʌ/", "/ə/", "/əʊ/"], "a": 3, "exp": "Đáp án: /əʊ/"}, {"q": "hydro", "opts": ["/ɒ/", "/ʌ/", "/ə/", "/əʊ/"], "a": 3, "exp": "Đáp án: /əʊ/"}], "before": "<div class=\"note\">II - Put the words given in the box to the correct column according to the pronunciation of the underlined letter.</div><div class=\"source\"><p><b>II - Put the words given in the box to the correct column according to the pronunciation of the underlined letter.</b></p><div class=\"tablewrap\"><table><tr><td><p>l<u>o</u>cate</p></td><td><p>l<u>o</u>ve</p></td><td><p>p<u>o</u>verty</p></td><td><p>aut<u>o</u>mated</p></td><td><p>m<u>o</u>ney</p></td></tr><tr><td><p>expl<u>o</u>sion</p></td><td><p>fl<u>o</u>p</p></td><td><p>pr<u>o</u>hibitive</p></td><td><p>c<u>o</u>mpany</p></td><td><p>metr<u>o</u></p></td></tr><tr><td><p>gridl<u>o</u>cked</p></td><td><p>c<u>o</u>nsist</p></td><td><p>h<u>o</u>ver</p></td><td><p>sl<u>o</u>gan</p></td><td><p>rec<u>o</u>gnise</p></td></tr><tr><td><p><u>o</u>ther</p></td><td><p>c<u>o</u>ntrol</p></td><td><p>f<u>o</u>ssil</p></td><td><p>hydr<u>o</u></p></td><td><p>bec<u>o</u>me</p></td></tr></table></div></div>"}, {"id": "p3", "label": "III · /ɒ/ và /ɔː/", "kind": "quiz", "items": [{"q": "poverty", "opts": ["/ɒ/", "/ɔː/"], "a": 0, "exp": "Đáp án: /ɒ/"}, {"q": "block", "opts": ["/ɒ/", "/ɔː/"], "a": 0, "exp": "Đáp án: /ɒ/"}, {"q": "shock", "opts": ["/ɒ/", "/ɔː/"], "a": 0, "exp": "Đáp án: /ɒ/"}, {"q": "concentrate", "opts": ["/ɒ/", "/ɔː/"], "a": 0, "exp": "Đáp án: /ɒ/"}, {"q": "goggle", "opts": ["/ɒ/", "/ɔː/"], "a": 0, "exp": "Đáp án: /ɒ/"}, {"q": "organise", "opts": ["/ɒ/", "/ɔː/"], "a": 1, "exp": "Đáp án: /ɔː/"}, {"q": "warm", "opts": ["/ɒ/", "/ɔː/"], "a": 1, "exp": "Đáp án: /ɔː/"}, {"q": "salt", "opts": ["/ɒ/", "/ɔː/"], "a": 1, "exp": "Đáp án: /ɔː/"}, {"q": "support", "opts": ["/ɒ/", "/ɔː/"], "a": 1, "exp": "Đáp án: /ɔː/"}, {"q": "water", "opts": ["/ɒ/", "/ɔː/"], "a": 1, "exp": "Đáp án: /ɔː/"}], "before": "<div class=\"note\">III - Put the words given in the box to the correct row according to the pronunciation of the underlined letter.</div><div class=\"source\"><p><b>III - Put the words given in the box to the correct row according to the pronunciation of the underlined letter.</b></p><div class=\"tablewrap\"><table><tr><td><p><u>or</u>ganise</p></td><td><p>w<u>ar</u>m</p></td><td><p>p<u>o</u>verty</p></td><td><p>s<u>a</u>lt</p></td><td><p>bl<u>o</u>ck</p></td></tr><tr><td><p>sh<u>o</u>ck</p></td><td><p>supp<u>o</u>rt</p></td><td><p>c<u>o</u>ncentrate</p></td><td><p>g<u>o</u>ggle</p></td><td><p>w<u>at</u>er</p></td></tr></table></div></div>"}]}, {"title": "Grammar · Ngữ pháp", "icon": "🧩", "desc": "Unit 5 · Vietnamese Food and Drink", "subs": [{"label": "Lý thuyết", "html": "<div class=\"source\"><p><b>NGỮ PHÁP</b></p><p>Grammar</p><p><b>1. DANH TỪ ĐẾM ĐƯỢC VÀ KHÔNG ĐẾM ĐƯỢC </b>(COUNTABLE AND UNCOUNTABLE NOUNS)</p><div class=\"tablewrap\"><table><tr><td><p><b>Danh từ đếm được </b></p><p><b>(Countable nouns)</b></p></td><td><p><b>Danh từ không đếm được </b></p><p><b>(Uncountable nouns)</b></p></td></tr><tr><td><p>Danh từ đếm được chỉ đối tượng có thể đếm được.</p></td><td><p>Danh từ không đếm được chỉ đối tượng <b>không</b> đếm được. Đối với danh từ không đếm được, ta có thể sử dụng các lượng từ đi trước để xác định số lượng, khối lượng của chúng.</p></td></tr><tr><td><p>a baby (<i>một em bé</i>), two cars (<i>hai xe hơi</i>), three sausages (<i>ba cái xúc xích</i>), four shrimps (<i>bốn con tôm)</i></p><p><i>bánh mì)</i></p></td><td><p>a glass of water (<i>một cốc nước</i>), a piece of cake (<i>một miếng bánh</i>), a kilo of beef (<i>một cân thịt bò</i>), a loaf of bread (<i>một ổ bánh mì</i>)</p></td></tr></table></div><p><b>2. A/ AN/ SOME/ ANY (A/ AN/ SOME/ ANY)</b></p><p><b>a. Danh từ đếm được</b></p><div class=\"tablewrap\"><table><tr><td></td><td><p><b>Số ít</b></p></td><td><p><b>Số nhiều</b></p></td></tr><tr><td><p><b>Khẳng định</b></p></td><td><p><b>a</b></p></td><td><p>This is <u><b>a</b></u> cake.</p><p><i>(Đây là một cái bánh.)</i></p></td><td><p><b>some</b></p></td><td><p>I have <u><b>some</b></u> vegetables. </p><p>(<i>Tôi có một ít rau củ.)</i></p></td></tr><tr><td><p><b>Phủ định</b></p></td><td><p><b>a</b></p></td><td><p>This isn’t <u><b>a</b></u> cake.</p><p>(<i>Đây không phải là một cái bánh.)</i></p></td><td><p><b>any</b></p></td><td><p>I don’t have <u><b>any </b></u>vegetables. (<i>Tôi không có rau củ.)</i></p></td></tr><tr><td><p><b>Nghi vấn</b></p></td><td><p><b>a</b></p></td><td><p>Is this <u><b>a</b></u> cake?</p><p>(<i>Đây là một cái bánh ư?)</i></p></td><td><p><b>any</b></p></td><td><p>Do vou have <u><b>any</b></u> vegetables?</p><p>(<i>Bạn có rau củ không?)</i></p></td></tr></table></div><p><b>b. Danh từ không đếm được</b></p><div class=\"tablewrap\"><table><tr><td><p><b>Khẳng định</b></p></td><td><p><b>some</b></p></td><td><p>You need <u><b>some </b></u>fish sauce for this dish. </p><p>(<i>Bạn cần chút nước mắm cho món ăn này</i>.)</p></td></tr><tr><td><p><b>Phủ định</b></p></td><td><p><b>any</b></p></td><td><p>You don’t need <u><b>any</b></u> fish sauce for this dish. </p><p>(<i>Bạn không cần nước mắm cho món ăn này</i>.)</p></td></tr><tr><td><p><b>Nghi vấn</b></p></td><td><p><b>any</b></p></td><td><p>Do you need <u><b>any</b></u> fish sauce for this dish?</p><p>(<i>Bạn có cần nước mắm cho món ăn này không?)</i></p></td></tr></table></div><div class=\"tablewrap\"><table><tr><td><p><b>Chú ý: some</b> có thể được sử dụng trong câu yêu cầu hoặc đề nghị.</p></td><td><p><b>Ví dụ: </b></p><p>Can I take <b>some</b> sausages?</p><p>(<i>Tôi có thể lấy vài cái xúc xích được không?)</i> Would you like <b>some</b> more soup? </p><p>(<i>Bạn có muốn thêm súp không?)</i></p></td></tr></table></div><p><b>3. BAO NHIÊU?</b> (HOW MANY?/ HOW MUCH?)</p><div class=\"tablewrap\"><table><tr><td><p><b>How many</b></p></td><td><p><b>How much</b></p></td></tr><tr><td><p><b>How many?</b> được dùng để hỏi về số lượng của danh từ đếm được số nhiều.</p></td><td><p><b>How much?</b> được dùng để hỏi về số lượng của danh từ không đếm được.</p></td></tr><tr><td><p>How many eggs did you crack?</p><p>(<i>Cậu đã đập bao nhiêu quả trứng rồi?)</i></p><p>How many egg did you crack?</p><p><i>(Cậu đã đập bao nhiêu quả trứng rồi?)</i></p></td><td><p>How much green tea do you want?</p><p>(<i>Bạn cần bao nhiêu chè xanh?)</i></p><p>How many green tea leaves do you want?</p><p><i>(</i><i>Bạn muốn bao nhiêu lá chè xanh?)</i></p></td></tr></table></div></div>"}]}, {"title": "Grammar practice", "icon": "📝", "desc": "Unit 5 · Vietnamese Food and Drink", "subs": [{"id": "g1", "label": "I · How much / How many", "kind": "fill", "items": [{"q": "___sugar did you use to make this cake?", "a": ["How much"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ không đếm được “sugar” nên ta điền “How much”.</p><p><b>Dịch nghĩa</b>: How much sugar did you use to make this cake<i>? (Bạn đã dùng bao nhiêu đường để làm chiếc bánh ngọt này?)</i></p>"}, {"q": "___days did you spend in Paris last summer?", "a": ["How many"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ đếm được “days” nên ta điền “How many”.</p><p><b>Dịch nghĩa</b>: How many days did you spend in Paris last summer? <i>(Bạn đã dành bao nhiêu ngày ở Paris mùa hè năm ngoái?)</i></p>"}, {"q": "___letters are there in the English alphabet?", "a": ["How many"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ đếm được “letters” nên ta điền “How many”.</p><p><b>Dịch nghĩa</b>: How many letters are there in the English alphabet? <i>(Có bao nhiêu chữ cái trong bảng chữ cái tiếng Anh?)</i></p>"}, {"q": "___information did you get from them?", "a": ["How much"], "exp": "<p><b>Giải thích:</b> Sau vị trí cần điền là danh từ không đếm được “information” nên ta điền “How much”.</p><p><b>Dịch nghĩa</b>: How much information did you get from them? (<i>Bạn đã nhận được bao nhiêu thông tin từ họ?)</i></p>"}, {"q": "___pencils does Lan have in the box?", "a": ["How many"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ đếm được “pencils” nên ta điền “How many”.</p><p><b>Dịch nghĩa</b>: How many pencils does Lan have in the box? (<i>Lan có bao nhiêu cây bút chì trong hộp?)</i></p>"}, {"q": "___food do you feed the dog every day?", "a": ["How much"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ không đếm được “food” nên ta điền “How much”.</p><p><b>Dịch nghĩa</b>: How much food do you feed the dog every day? (<i>Bạn cho chó ăn bao nhiêu thức ăn mỗi ngày?)</i></p>"}, {"q": "___butter is there in the fridge?", "a": ["How much"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ không đếm được “butter” nên ta điền “How much”.</p><p><b>Dịch nghĩa</b>: How much butter is there in the fridge? (<i>Có bao nhiêu bơ trong tủ lạnh?)</i></p>"}, {"q": "___children do people in your country often have?", "a": ["How many"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ đếm được “children” nên ta điền “How many”.</p><p><b>Dịch nghĩa</b>: How many children do people in your country often have? (<i>Người dân nước bạn thường có mấy đứa con?)</i></p>"}, {"q": "___time have you spent doing this exercise?", "a": ["How much"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ không đếm được “time” nên ta điền “How much”.</p><p><b>Dịch nghĩa</b>: How much time have you spent doing this exercise? <i>(Bạn đã dành bao nhiêu thời gian để làm bài tập này?)</i></p>"}, {"q": "___websites did you visit to search for this information?", "a": ["How many"], "exp": "<p><b>Giải thích:</b> Sau vị trí cần điền là danh từ đếm được “websites” nên ta điền “How many”.</p><p><b>Dịch nghĩa</b>: How many websites did you visit to search for this information? (<i>Bạn đã truy cập bao nhiêu trang mạng để tìm kiếm thông tin này?)</i></p>"}, {"q": "___water does your family use every month?", "a": ["How much"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ không đếm được “water” nên ta điền “How much”.</p><p><b>Dịch nghĩa</b>: How much water does your family use every month? (<i>Gia đình bạn sử dụng bao nhiêu nước mỗi tháng?)</i></p>"}, {"q": "___people came to the party last night?", "a": ["How many"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ đếm được “people” nên ta điền “How many”.</p><p><b>Dịch nghĩa</b>: How many people came to the party last night? (<i>Có bao nhiêu người đã đến bữa tiệc tối qua?)</i></p>"}, {"q": "___mobile phones have you used so far?", "a": ["How many"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ đếm được “mobile phones” nên ta điền “How many”.</p><p><b>Dịch nghĩa</b>: How many mobile phones have you used so far? <i>(Cho đến nay bạn đã sử dụng bao nhiêu cái điện thoại di dộng rồi?)</i></p>"}, {"q": "___salt did you put into the noodle soup?", "a": ["How much"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ không đếm được “salt” nên ta điền “How much”.</p><p><b>Dịch nghĩa</b>: How much salt did you put into the noodle soup? (<i>Bạn đã cho bao nhiêu muối vào phở thế?)</i></p>"}, {"q": "___times have you visited London?", "a": ["How many"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ đếm được “times” nên ta điền “How many”.</p><p><b>Dịch nghĩa</b>: How many times have you visited London? (<i>Bạn đã đến thăm Luân Đôn bao nhiêu lần rồi?)</i></p>"}, {"q": "___computers does your school have?", "a": ["How many"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ đếm được “computers” nên ta điền “How many”.</p><p><b>Dịch nghĩa</b>: How many computers does your school have? (<i>Trường học của bạn có bao nhiêu máy tính?)</i></p>"}, {"q": "___butter do we need for this recipe?", "a": ["How much"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ không đếm được “butter” nên ta điền “How much”.</p><p><b>Dịch nghĩa:</b> How much butter do we need for this recipe? (<i>Chúng ta cần bao nhiêu bơ cho công thức này?)</i></p>"}, {"q": "___spring rolls did your sister make yesterday?", "a": ["How many"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ đếm được “spring rolls” nên ta điền “How many”.</p><p><b>Dịch nghĩa</b>: How many spring rolls did your sister make yesterday? (<i>Hôm qua chị gái bạn đã làm được bao nhiêu chiếc nem?)</i></p>"}, {"q": "___bacon is there left in the fridge?", "a": ["How much"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ không đếm được “bacon” nên ta điền “How much”.</p><p><b>Dịch nghĩa</b>: How much bacon is there left in the fridge? (<i>Còn lại bao nhiêu thịt lợn muối xông khói trong tủ lạnh vậy?)</i></p>"}, {"q": "___beef do I have to buy to make 3 bowls of noodlesoup?", "a": ["How much"], "exp": "<p><b>Giải thích:</b> Sau vị trí cần điền là danh từ không đếm được “beef’ nên ta điền “How much”.</p><p><b>Dịch nghĩa</b>: How much beef do I have to buy to make 3 bowls of noodle soup? <i>(Tôi phải mua bao nhiêu thịt bò để làm 3 bát phở?)</i></p>"}], "before": "<div class=\"note\">I - Complete the following sentences by filling in “How much” or “How many”.</div>"}, {"id": "g2", "label": "II · Tìm lỗi sai", "kind": "quiz", "items": [{"q": "There is <u>an</u> university <u>near</u> <u>my house</u> <u>in</u> this street. ", "opts": ["an", "near", "my house", "in"], "a": 0, "exp": "<p><b>Giải thích</b>: university /ˌjuːnɪˈvɜːsəti/ bắt đầu bằng âm phụ âm /j/ nên ta dùng mạo từ “a”.</p><p><b>Dịch nghĩa</b>: There is a university near my house in this street. <i>(Có một trường đại học gần nhà tôi ở con phố này.)</i></p>"}, {"q": "I’m <u>afraid</u> I <u>don’t</u> <u>have some</u> money left <u>to lend</u> you. ", "opts": ["afraid", "don’t", "have some", "to lend"], "a": 2, "exp": "<p><b>Giải thích:</b> Ta dùng “any” trong câu phủ định và câu hỏi.</p><p><b>Dịch nghĩa</b>: I’m afraid I don’t have any money left to lend you. <i>(Tôi e rằng tôi không còn tiền để cho bạn mượn.)</i></p>"}, {"q": "<u>Please</u> see Peter! He <u>has</u> <u>any</u> good news <u>to inform</u> you. ", "opts": ["Please", "has", "any", "to inform"], "a": 2, "exp": "<p><b>Giải thích</b>: Ta dùng “some” trong câu khẳng định.</p><p><b>Dịch nghĩa</b>: Please see Peter! He has some good news to inform you. <i>(Xin vui lòng gặp Peter. Anh ấy có một vài tin tốt để thông báo cho bạn.)</i></p>"}, {"q": "<u>How many</u> equipment <u>has</u> <u>the company</u> given to <u>your office</u>? ", "opts": ["How many", "has", "the company", "your office"], "a": 0, "exp": "<p><b>Giải thích</b>: “equipment” là danh từ không đếm được nên ta phải dùng “how much”.</p><p><b>Dịch nghĩa</b>: How much equipment has the company given to your office? (<i>Công ty đã cung cấp bao nhiêu thiết bị cho văn phòng của bạn?)</i></p>"}, {"q": "<u>How much</u> <u>pairs</u> of high heels <u>does</u> your mother <u>have</u>? ", "opts": ["How much", "pairs", "does", "have"], "a": 0, "exp": "<p><b>Giải thích</b>: “pairs” là danh từ đếm được nên ta phải dùng “How many”.</p><p><b>Dịch nghĩa</b>: How many pairs of high heels does your mother have? (<i>Mẹ cậu có bao nhiêu đôi giày cao gót thế?)</i></p>"}], "before": "<div class=\"note\">II - Choose the underlined part which needs correction.</div>"}, {"id": "g3", "label": "III · Chọn đáp án", "kind": "quiz", "items": [{"q": "- We don’t have___cheese in the fridge. - OK, I’ll go to the grocery to buy some ", "opts": ["a", "an", "any", "some"], "a": 2, "exp": "<p><b>Giải thích</b>: Ta dùng “any” cho câu phủ định.</p><p><b>Dịch nghĩa</b>: - We don’t have any cheese in the fridge. - OK, I’ll go to the grocery to buy some. <i>(- Chúng ta chẳng có chút pho mai nào trong tủ lạnh cả. - Được, để mình đến cửa hàng tạp hóa mua một chút.)</i></p>"}, {"q": "Would you like___more water? ", "opts": ["some", "any", "∅", "a"], "a": 0, "exp": "<p><b>Giải thích</b>: Ta dùng “some” cho câu mời mọc.</p><p><b>Dịch nghĩa</b>: Would you like some more water? (<i>Bạn có muốn uống thêm chút nước không?)</i></p>"}, {"q": "Do you have___brother or sister to share the childhood with you? ", "opts": ["a lot", "∅", "many", "any"], "a": 3, "exp": "<p><b>Giải thích:</b> Ta dùng “any” cho câu nghi vấn.</p><p><b>Dịch nghĩa:</b> Do you have any brother or sister to share the childhood with you? <i>(Bạn có anh chị em nào để chia sẻ tuổi thơ với bạn không?)</i></p>"}, {"q": "Have you bought___new notebook for me yet? ", "opts": ["a", "an", "some", "∅"], "a": 0, "exp": "<p><b>Giải thích</b>: Cụm danh từ “new notebook” bắt đầu bằng âm phụ âm “n” nên ta dùng mạo từ “a”.</p><p><b>Dịch nghĩa</b>: Have you bought a new notebook for me yet? (<i>Bạn đã mua một cuốn sổ mới cho tôi chưa?)</i></p>"}, {"q": "I didn’t get___new email from the boss today. ", "opts": ["some", "any", "all", "∅"], "a": 1, "exp": "<p><b>Giải thích</b>: Ta dùng “any” cho câu phủ định.</p><p><b>Dịch nghĩa</b>: I didn’t get any new email from the boss today. (<i>Tôi không nhận được bất kỳ thư điện tử mới nào từ ông chủ ngày hôm nay.)</i></p>"}, {"q": "He never gives her___flowers these days. ", "opts": ["a", "an", "some", "any"], "a": 3, "exp": "<p><b>Giải thích</b>: Do có từ “never” nên đây là câu phủ định. Ta dùng “any” cho câu phủ định.</p><p><b>Dịch nghĩa:</b> He never gives her any flowers these days. (<i>Gần đây anh ấy không bao giờ tặng hoa cho cô ấy.)</i></p>"}, {"q": "Did your borrow___umbrella from her last week? ", "opts": ["any", "an", "some", "a"], "a": 1, "exp": "<p><b>Giải thích</b>: Danh từ “umbrella” bắt đầu bằng nguyên âm “u” được phát âm là /ʌ/ nên ta dùng mạo từ “an”. </p><p><b>Dịch nghĩa</b>: Did your borrow an umbrella from her last week? (<i>Bạn đã mượn cô ấy một chiếc ô tuần trước phải không?)</i></p>"}, {"q": "There___boxes of ice-cream in the fridge. ", "opts": ["are some", "is some", "are any", "is any"], "a": 0, "exp": "<p><b>Giải thích</b>: Sau chỗ trống là danh từ số nhiều “boxes” nên động từ to be là “are”. Đây là câu khẳng định nên ta dùng “some”.</p><p><b>Dịch nghĩa</b>: There are some boxes of ice-cream in the fridge. (<i>Có một vài hộp kem trong tủ lạnh</i>.)</p>"}, {"q": "I ate___loaf of bread for breakfast this morning. ", "opts": ["∅", "some", "a", "an"], "a": 2, "exp": "<p><b>Giải thích</b>: Danh từ “loaf bắt đầu bằng phụ âm nên ta dùng mạo từ “a”.</p><p><b>Dịch nghĩa:</b> I ate a loaf of bread for breakfast this morning. (<i>Tôi đã ăn một ổ bánh mì cho bữa sáng nay</i>.)</p>"}, {"q": "They have___information for you. ", "opts": ["a", "any", "a lot", "some"], "a": 3, "exp": "<p><b>Giải thích</b>: Đây là câu khẳng định và sau chỗ trống là danh từ không đếm được nên ta dùng “some”. Ta không dùng được “a lot” vì cần phải có giới từ “of’ ở phía sau.</p><p><b>Dịch nghĩa</b>: They have some information for you. (<i>Họ có một vài tin tức cho bạn.)</i></p>"}, {"q": "Did you buy___bottle of milk for me yesterday? ", "opts": ["a", "an", "some", "∅"], "a": 0, "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là một danh từ đếm được số ít “bottle” bắt đầu bằng phụ âm “b” nên ta điền mạo từ “a”.</p><p><b>Dịch nghĩa</b>: Did you buy a bottle of milk for me yesterday? (<i>Hôm qua bạn đã mua cho tôi một chai sữa phải không?)</i></p>"}, {"q": "There___milk left in the fridge. ", "opts": ["aren’t any", "aren’t some", "isn’t any", "isn’t s"], "a": 2, "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là một danh từ không đếm được “milk” nên động từ to be là “is”. Đây là câu phủ định nên ta dùng với “any”.</p><p><b>Dịch nghĩa</b>: There isn’t any milk left in the fridge. (<i>Không có tý sữa nào còn lại trong tủ lạnh.)</i></p>"}, {"q": "She drinks___cup of coffee every morning. ", "opts": ["a", "an", "any", "a lot"], "a": 0, "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là một danh từ đếm được số ít “cup” bắt đầu bằng phụ âm “c” nên ta điền mạo từ “a”.</p><p><b>Dịch nghĩa</b>: She drinks a cup of coffee every morning. (<i>Cô ấy uống một tách cà phê mỗi sáng.)</i></p>"}, {"q": "___supermarket near your house? ", "opts": ["Are there some", "Are there any", "Is there some", "Is there a"], "a": 3, "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là một danh từ đếm được, ở dạng số ít “supermarket” nên động từ to be là “is”. </p><p><b>Dịch nghĩa:</b> Is there a supermarket near your house? (<i>Có siêu thị nào gần nhà bạn không?)</i></p>"}, {"q": "___photos did you take with your classmates last summer? ", "opts": ["How much", "How many", "How long", "How far"], "a": 1, "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là một danh từ đếm được số nhiều “photos” nên ta điền “How many” (bao nhiêu). “How much” dùng với danh từ không đếm được. Các phương án còn lại không hợp nghĩa và không được theo sau bởi một danh từ.</p><p><b>Dịch nghĩa</b>: How many photos did you take with your classmates last summer? (<i>Cậu đã chụp bao nhiêu bức ảnh với bạn cùng lớp vào hè năm ngoái vậy?)</i></p>"}, {"q": "I have___apples for you in the fridge. ", "opts": ["some", "any", "a lot", "∅"], "a": 0, "exp": "<p><b>Giải thích</b>: Đây là câu khẳng định nên ta dùng “some”. Các phương án khác không phù hợp về nghĩa.</p><p><b>Dịch nghĩa</b>: I have some apples for you in the fridge. (<i>Tôi có một vài quả táo cho bạn trong tủ lạnh.)</i></p>"}, {"q": "There___cheese left for me. ", "opts": ["isn’t some", "isn’t any", "aren’t some", "aren’t any"], "a": 1, "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ không đếm được “cheese” nên động từ to be ở thể phủ định phải là “isn’t”. Đây là câu phủ định nên ta dùng “any”.</p><p><b>Dịch nghĩa</b>: There isn’t any cheese left for me. <i>(Không còn ít pho mát nào sót lại cho tôi.)</i></p>"}, {"q": "You should drink___glass of water before each meal to lose weight. ", "opts": ["a", "an", "some", "any"], "a": 0, "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ số ít, bắt đầu bằng phụ âm “glass” nên ta dùng mạo từ “a”.</p><p><b>Dịch nghĩa</b>: You should drink a glass of water before each meal to lose weight. (<i>Bạn nên uống một cốc nước trước mỗi bữa ăn để giảm cân.)</i></p>"}, {"q": "I need___avocado to make a smoothie for my little daughter. ", "opts": ["a", "an", "all", "a lot"], "a": 1, "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ số ít “avocado” bắt đầu bằng nguyên âm “a” nên ta dùng mạo từ “an”.</p><p><b>Dịch nghĩa:</b> I need an avocado to make a smoothie for my little daughter. <i>(Tôi cần một quả bơ để làm sinh tố cho đứa con gái bé bỏng của tôi.)</i></p>"}, {"q": "Do you need___help to finish that work in time? ", "opts": ["a", "an", "some", "any"], "a": 3, "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ không đếm được “help” nên không dùng mạo từ “a/an”. Đây là câu nghi vấn nên ta dùng “any”.</p><p><b>Dịch nghĩa</b>: Do you need any help to finish that work in time? <i>(Bạn có cần giúp đỡ để hoàn thành công việc đó đúng hạn không?)</i></p>"}], "before": "<div class=\"note\">III - Choose the best optton to complete each of the following sentences.</div>"}, {"id": "g4", "label": "IV · a / an / some / any", "kind": "fill", "items": [{"q": "My sister will make___spring rolls for dinner this evening.", "a": ["some"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ số nhiều “spring rolls” nên ta không dùng mạo từ “a/ an”. Đây là câu khẳng định nên ta dùng “some”.</p><p><b>Dịch nghĩa</b>: My sister will make some spring rolls for dinner this evening. (<i>Chị tôi sẽ làm vài chiếc nem cho bữa tối này.)</i></p>"}, {"q": "There isn’t___vermicelli and cooking oil left in the kitchen.", "a": ["any"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ không đếm được “vemicelli” và “cooking oil” nên ta không dùng mạo từ “a/an”. Đây là câu phủ định nên ta dùng “any”.</p><p><b>Dịch nghĩa</b>: There isn’t any vermicelli and cooking oil left in the kitchen. (<i>Không còn ít miến và dầu ăn nào trong bếp.)</i></p>"}, {"q": "She went to the supermarket to buy some vermicelli and___bottle of cooking oil.", "a": ["a"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ số ít “bottle” bắt đầu bằng phụ âm “b” nên ta dùng mạo từ “a”.</p><p><b>Dịch nghĩa</b>: She went to the supermarket to buy some vermicelli and a bottle of cooking oil. (<i>Cô ấy đi siêu thị mua một ít miến và một chai dầu ăn.)</i></p>"}, {"q": "My mother came home from work and gave me___apple yesterday evening.", "a": ["an"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ số ít “apple” bắt đầu bằng nguyên âm “a” nên ta dùng mạo từ “an”. </p><p><b>Dịch nghĩa</b>: My mother came home from work and gave me an apple yesterday evening. <i>(Mẹ tôi đi làm về và đưa cho tôi một quả táo vào tối hôm qua.)</i></p>"}, {"q": "There weren’t___interesting programmes on TV during lunch yesterday.", "a": ["any"], "exp": "<p><b>Giải thích</b>: Sau vị trí cần điền là danh từ số nhiều “interesting programmes” nên ta không dùng mạo từ “a/ an”. Đây là câu phủ định nên ta dùng “any”.</p><p><b>Dịch nghĩa</b>: There weren’t any interesting programmes on TV during lunch yesterday. <i>(Không có bất kỳ chương trình thú vị nào trên TV trong suốt bữa trưa ngày hôm qua.)</i></p>"}], "before": "<div class=\"note\">IV- Complete the following sentences by filling in the blank with a, an, some or any.</div>"}]}, {"title": "Reading · Đọc hiểu", "icon": "📖", "desc": "Unit 5 · Vietnamese Food and Drink", "subs": [{"label": "Do you know?", "html": "<div class=\"source\"><div class=\"tablewrap\"><table><tr><td><p><b>DO YOU KNOW?</b></p><p><b>BUN CHA</b></p><p>• Pho might be Vietnam’s most famous dish, but bun cha is the top choice when it comes to lunchtime in the capital.</p><p>• Just look for the clouds of meaty smoke after 11 a.m. when street-side restaurants start grilling up small balls of seasoned pork and slices of marinated pork belly over a charcoal fire.</p><p>• Once they’re charred and crispy the pieces of pork are served with a large bowl of a fish sauce-heavy broth, a basket of herbs and a helping of rice noodles.</p></td></tr></table></div></div>"}, {"id": "r1", "label": "I · Bun cha", "kind": "quiz", "items": [{"q": "Bun cha has become more well-known since President Barack Obama’s visit.", "opts": ["True", "False"], "a": 0, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Bún chả trở nên nổi tiếng hơn sau chuyến thăm của Tổng thống Barack Obama.</p><p><b>Giải thích</b>: Thông tin có ở câu: “Bun cha became an international attention overnight after US President Barack Obama and [...]”</p>"}, {"q": "Bun cha has been a specialty of Hanoi for years.", "opts": ["True", "False"], "a": 0, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Bún chả đã là một đặc sản của Hà Nội trong nhiều năm qua.</p><p><b>Giải thích</b>: Thông tin có ở câu: “Their choice of this dish [...] has been one of the city’s signature dishes for hundreds of years.”</p>"}, {"q": "Minced pork shouldn’t be marinated in advance to keep it fresh.", "opts": ["True", "False"], "a": 1, "exp": "<p><b>Dịch nghĩa câu hỏi:</b> Thịt lợn băm không nên được ướp trước để giữ tươi</p><p><b>Giải thích</b>: Thông tin có ở câu: “minced pork must be marinated overnight to fully absorb the flavor of herbs and shaped into balls [...]”</p>"}, {"q": "The sauce is an important thing to make Bun cha more special.", "opts": ["True", "False"], "a": 0, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Nước chấm là một thứ quan trọng để làm cho Bún chả trở nên đặc biệt hơn.</p><p><b>Giải thích</b>: Thông tin có ở câu: “The sauce is what makes the dish spectacular; a good sauce will give a balance between the sweetness of the meat and the saltiness of the fish sauce.”</p>"}, {"q": "Tourists can always find a place which serves this traditional dish at any time in a day.", "opts": ["True", "False"], "a": 1, "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Bạn có thể tìm được món ăn truyền thống này để ăn bất cứ lúc nào trong ngày.</p><p><b>Giải thích</b>: Thông tin có ở câu: “The Hanoi traditional dish is served only at lunchtime [...]” (Món ăn truyền thống này của Hà Nội chỉ được phục vụ vào giờ ăn trưa</p>"}], "before": "<div class=\"source\"><p><b>I</b> <b>- Read the passage and decide whether the statements are True (T) or False (F).</b></p><p><i>Bun cha</i> became an international attention overnight after US President Barack Obama and celebrity chef Anthony Bourdain were pictured eating the dish together in Hanoi. Their choice of this dish is now surprise as bun cha originated from the Old Quarter in Hanoi and has been one of the city’s signature dishes for hundreds of years. What makes this dish special is the intense preparation involved in making it; minced pork must be marinated overnight to fully absorb the flavor of herbs and shaped into balls, keeping attention to make sure the meat is tender and juicy. The sauce is what makes the dish spectacular; a good sauce will give a balance between the sweetness of the meat and the saltiness of the fish sauce. The Hanoi traditional dish is served only at lunchtime and comes with rice vermicelli, fresh vegies and herbs such as basils, coriander.</p></div><details class=\"tr\"><summary>🇻🇳 Bản dịch bài đọc</summary><div class=\"source\"><p>Bún chả trở thành món ăn gây sự chú ý của quốc tế chỉ sau một đêm sau khi Tổng thống Mỹ Barack Obama và đầu bếp nổi tiếng Anthony Bourdain chụp ảnh đang cùng nhau ăn món này tại Hà Nội. Việc lựa chọn món ăn này của họ hiện tại thật đáng ngạc nhiên khi bún chả bắt nguồn từ khu Phố cổ ở Hà Nội và là một trong những món ăn đặc trưng của thành phố trong hàng trăm năm qua. Điều làm cho món ăn này trở nên đặc biệt là cho việc chế biến rất nghiêm ngặt; thịt lợn băm phải được ướp qua đêm để ngấm hoàn toàn hương vị của các loại gia vị và được nặn thành viên, chú ý đảm bảo thịt mềm và ngon ngọt. Nước chấm là thứ làm cho món ăn này trở nên tuyệt vời; nước chấm chuẩn sẽ có sự cân bằng giữa độ ngọt của thịt và độ mặn của nước mắm. Món ăn truyền thống này của Hà Nội chỉ được phục vụ vào giờ ăn trưa và ăn kèm với bún, rau tươi và các loại rau thơm như húng quế, rau mùi.</p></div></details>"}, {"id": "r2", "label": "II · Egg coffee", "kind": "write", "items": [{"c": "Who invented egg coffee?", "a": "It was invented by Nguyen Giang in 1946.", "vi": "  Dịch nghĩa câu hỏi:  Ai đã phát minh ra cà phê trứng?   Giải thích : Thông tin có ở câu: “Egg coffee, called Cà Phê Trứng in Vietnamese, was first invented by Nguyen Giang in 1946.” "}, {"c": "Why did Nguyen Giang add whisked eggs to his coffee?", "a": "Because there was a shortage of milk in Hanoi due to the French War.", "vi": "  Dịch nghĩa câu hỏi : Tại sao Nguyễn Giang lại thêm trứng đánh vào cà phê của mình?   Dịch nghĩa câu hỏi : Thông tin có ở câu: There was a shortage of milk in Hanoi due to the French War. Mr. Giang got creative and began adding whisked eggs to his coffee instead.” "}, {"c": "What is the recipe to make egg coffee nowadays?", "a": "No one knows the recipe for sure since it’s a secret recipe.", "vi": "  Dịch nghĩa câu hỏi : Công thức để làm cà phê trứng ngày nay là gì?   Giải thích : Thông tin có ở câu: “No one knows the recipe for sure since it’s a secret recipe.” "}, {"c": "What does egg coffee taste like?", "a": "It’s incredibly thick and rich and creamy.", "vi": "  Dịch nghĩa câu hỏi : Cà phê trứng có vị như thế nào?   Giải thích : Thông tin có ở câu: “Well it’s incredibly thick and rich and creamy. Closer to a dessert than a beverage.” "}, {"c": "Where can we buy this type of coffee? ", "a": "We can buy it at Nguyen Giang café or coffee shops all over Hanoi.", "vi": "  Dịch nghĩa câu hỏi : Chúng ta có thể mua loại cà phê này ở đâu?   Giải thích : Thông tin có ở câu: “Nguyen Giang still has a café where you can try his famous recipe, or you can grab a cup of Egg Coffee at dozens of coffee shops all over Hanoi.” "}], "before": "<div class=\"source\"><p><b>II - Read the passage and answer the following questions.</b></p><p>Egg coffee, called <i>Cà Phê Trứng</i> in Vietnamese, was first invented by Nguyen Giang in 1946. There was a shortage of milk in Hanoi due to the French War. Mr. Nguyen creatively began adding whisked eggs to his coffee instead.</p><p>The original version was a bit, well, eggy. But over time the recipe was modified with the addition of sugar, condensed milk, and even Laughing Cow cheese. No one knows the recipe for sure since it’s a secret recipe. These days Egg Coffee is a staple of Hanoi coffee culture and a must-try while in Hanoi!</p><p>What does it taste like? Well it’s incredibly thick and rich and creamy. Closer to a dessert than a beverage. Liquid tiramisu is the most accurate description we’ve heard.</p><p>Nguyen Giang still has a café where you can try his famous recipe, or you can grab a cup of Egg Coffee at dozens of coffee shops all over Hanoi.</p></div><details class=\"tr\"><summary>🇻🇳 Bản dịch bài đọc</summary><div class=\"source\"><p>Cà phê trứng, được gọi là Cà Phê Trứng trong tiếng việt, được Nguyễn Giảng phát minh lần đầu tiên vào năm 1946. Ở Hà Nội, thiếu sữa do Chiến tranh với Pháp. Thay vào đó, ông Giảng đã sáng tạo và bắt đầu thêm trứng đánh vào cà phê.</p><p>Phiên bản gốc hơi nhiều vị trứng. Nhưng theo thời gian, công thức đã được sửa đổi với việc bổ sung đường, sữa đặc và thậm chí cả phô mai bò cười. Không ai biết công thức chắc chắn vì nó là điều bí mật. Ngày nay, Cà phê trứng là một nét chính của văn hóa cà phê Hà Nội và nhất định phải thử khi ở Hà Nội!</p><p>Vị nó như thế nào? Vâng, nó cực kỳ đặc, nhiều chất và giống kem. Gần giống một món tráng miệng hơn là một đồ uống. Tiramisu lỏng là mô tả chính xác nhất mà chúng tôi nghe thấy.</p><p>Nguyễn Giảng vẫn có một quán cà phê, nơi bạn có thể thử công thức nổi tiếng của ông, hoặc bạn có thể mua một tách Cà phê trứng tại hàng chục quán cà phê trên khắp Hà Nội.</p></div></details>"}]}, {"title": "Listening · Nghe", "icon": "🔊", "desc": "Unit 5 · Vietnamese Food and Drink", "subs": [{"id": "l1", "label": "Nghe & làm bài", "kind": "fill", "items": [{"q": "The___simple banh my is more popular than any thing early In the morning in Vietnam.", "a": ["fantastically"], "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Bánh mỳ đơn giản_________phổ biến hơn bất kỳ thứ gì vào sáng sớm ở Việt Nam.</p><p><b>Giải thích: </b>Thông tin có ở câu: “Driving through the streets in Vietnam early in the morning, there is one dish you will see more than anything - the fantastically simple banh my.”</p>"}, {"q": "Even the roots of the name can be___to French colonial period.", "a": ["traced back"], "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Ngay cả nguồn gốc của cái tên cũng được_________thời Pháp thuộc.</p><p><b>Giải thích:</b> Thông tin có ở câu: “This sandwich can also be traced back to the French colonial period, even through the roots of the name; [...]”</p>"}, {"q": "Firstly, this kind of bread was only available in___.", "a": ["expensive bakeries"], "exp": "<p><b>Dịch nghĩa câu hỏi:</b> Ban đầu loại bánh mì này chỉ có sẵn trong các_________.</p><p><b>Giải thích</b>: Thông tin có ở câu: “Initially this dish was imported and only sold by expensive bakeries [...]”</p>"}, {"q": "The___of the dish were changed, so that it became more accessible.", "a": ["ingredients"], "exp": "<p><b>Dịch nghĩa câu hỏi</b>:_________của món ăn đã được thay đổi, để nó trở nên dễ tiếp cận hơn.</p><p><b>Giải thích</b>: Thông tin có ở câu: “[...] however it began to spread to the masses when the Vietnamese working class discovered ways to change the ingredients and make it more accessible.”</p>"}, {"q": "Banh my is a favourite meal of many people because of its fusion of Vietnamese and French___.", "a": ["flavours"], "exp": "<p><b>Dịch nghĩa câu hỏi</b>: Bánh mỳ là bữa ăn yêu thích của nhiều người do sự hợp nhất của__________Việt Nam và Pháp.</p><p><b>Giải thích</b>: Thông tin có ở câu: “The fusion of flavours between the Vietnamese fillings and French baguette makes this delicious meal a favourite of many.”</p>"}], "before": "<div class=\"note\">Giọng đọc tổng hợp từ lời thoại trong tài liệu.</div><button class=\"btn solid\" onclick=\"say(LISTEN)\">▶ Nghe</button> <button class=\"btn\" onclick=\"speechSynthesis.cancel()\">■ Dừng</button>"}, {"label": "Lời thoại & bản dịch", "html": "<div class=\"source\"><div class=\"tablewrap\"><table><tr><td><p>Driving through the streets in Vietnam early in the morning, there is one dish you will see more than anything - the fantastically simple banh my. This sandwich can also be traced back to the French colonial period, even through the roots of the name; banh is pronounced similarly to the French word for bread (pain) and literally translates into “bread made from wheat.” Initially this dish was imported and only sold by expensive bakeries; however it began to spread to the masses when the Vietnamese working class discovered ways to change the ingredients and make it more accessible. Today the typical Vietnamese banh my consists of mayonnaise, pâté, sliced ham and pork, pickled vegetables, coriander, and hot sauce. The fusion of flavours between the Vietnamese fillings and French baguette makes this delicious meal a favourite of many.</p></td><td><p>Lái xe qua đường phố ở Việt Nam vào sáng sớm, có một món mà bạn sẽ thấy nhiều hơn bất cứ thứ gì - món bánh mỳ đơn giản đến tuyệt vời. Loại bánh này cũng có thể được bắt nguồn từ thời Pháp thuộc, thậm chí thông qua nguồn gốc cái tên của nó; “Bánh” được phát âm tương tự như từ chỉ bánh mỳ trong tiếng Pháp (pain) và dịch theo nghĩa đen là “bánh làm từ lúa mì”. Ban đầu món ăn này được nhập khẩu và chỉ được bán bởi các tiệm bánh đắt tiền, tuy nhiên nó bắt đầu lan rộng ra toàn dân khi tầng lớp lao động Việt Nam phát hiện ra cách để thay đổi các thành phần và làm cho nó dễ tiếp cận hơn. Ngày nay, món bánh mỳ đặc trưng của Việt Nam bao gồm sốt ma-don-ne, pa- tê, giăm bông và thịt lợn, rau muối, rau mùi và nước sốt nóng. Sự hợp nhất của các hương vị giữa các chất phụ gia của Việt Nam và bánh mỳ Pháp khiến nó trở thành món ăn ngon của nhiều người.</p></td></tr></table></div></div>"}]}, {"title": "Speaking · Nói", "icon": "💬", "desc": "Unit 5 · Vietnamese Food and Drink", "subs": [{"label": "Đề bài & hướng dẫn", "html": "<div class=\"source\"><p><b>Talk about the your favourite Vietnamese food.</b></p><p>You can use the following questions as cues:</p><p>•What is that Vietnamese food?</p><p>•What are the ingredients?</p><p>•When do people eat this food?</p><p><b>Useful languages:</b></p><div class=\"tablewrap\"><table><tr><td><p><b>Useful vocabulary</b></p></td><td><p><b>Useful structures</b></p></td></tr><tr><td><p>• noodle soup, steamed rice cake, Chung cake, spring rolls</p><p>• beef, rice powder, pork, vermicelli</p><p>• breakfast, any occasion, Tet holiday, family reunion</p></td><td><p>• Vietnam has so many...and my favourite one is...</p><p>•People can eat...at..., but...</p><p>• We can eat this food at/in...</p><p>•Its ingredients include...</p><p>•...is made from...</p><p>•can be made with...</p><p>•... is prepared by...</p><p>•... makes the food...</p><p>• ...give the taste of...</p><p>•I like...very much, and I often eat it...</p></td></tr></table></div><p><b>Complete the notes:</b></p><div class=\"tablewrap\"><table><tr><td><p><b>Structures of the talk</b></p></td><td><p><b>Your notes</b></p></td></tr><tr><td><p>What is that Vietnamese food?</p></td><td><p>__________________________________________</p><p>__________________________________________</p><p>__________________________________________</p></td></tr><tr><td><p>What are the ingredients?</p></td><td><p>__________________________________________</p><p>__________________________________________</p><p>__________________________________________</p></td></tr><tr><td><p>When do people eat this food?</p></td><td><p>__________________________________________</p><p>__________________________________________</p><p>__________________________________________</p></td></tr></table></div><p><b>Now you try!</b></p><p><b>Give your answer using the following cues. You should speak for 1-2 minutes.</b></p><p>1. Vietnam has so many...and my favourite one is...</p><p>2. People can eat...at..., but...</p><p>3. Its ingredients include...</p><p>4. ...is made from...</p><p>5. ... is prepared by...</p><p>6. ... makes the food...</p><p>7. I like...very much, and I often eat it...</p><p><b>Now you tick!</b></p><p><b>Did you ...</b></p><p> answer all the questions in the task?</p><p> give some details to each main point?</p><p> speak slowly and fluently with only some hesitation?</p><p> use vocabulary wide enough to talk about the topic?</p><p> use various sentence structures (simple, compound, complex) accurately?</p><p> pronounce correctly (vowels, consonants, stress, intonation)?</p><p><b> </b><b>Let’s compare!</b></p><p>Finally, compare with the sample answer on page 193.</p></div>"}, {"label": "Ghi chú luyện nói", "kind": "notes"}, {"label": "Gợi ý & bài mẫu", "html": "<div class=\"source\"><p><b>Talk about the your favourite Vietnamese food.</b></p><p><b>Dịch nghĩa câu hỏi:</b></p><p>Nói về món ăn Việt Nam yêu thích của bạn.</p><p>Bạn có thể sử dụng các câu hỏi sau đây như gợi ý:</p><p>• Món ăn Việt Nam đó là gì?</p><p>• Các thành phần là gì?</p><p>• Khi nào mọi người ăn thực phẩm này?</p><p><b>Gợi ý trả lời:</b></p><p><b>MAIN IDEAS (Ý chính)</b></p><p><b>Foods (Đồ ăn)</b></p><p>- noodle soup <i>(n.phr</i>.) (phở)</p><p>- steamed rice cake <i>(n.phr</i>.) (bánh cuốn)</p><p>- Chung cake (<i>n.phr</i>.) (bánh Chưng)</p><p>- spring rolls (<i>n.phr</i>.) (nem rán)</p><p><b>Ingredients (Nguyên liệu)</b></p><p>- beef (<i>n</i>.) (thịt bò)</p><p>- rice powder (<i>n.phr</i>.) (bột gạo)</p><p>- pork (<i>n</i>.) (thịt lợn)</p><p>- vermicelli <i>(n</i>.) (miến)</p><p><b>When to eat (Ăn khi nào)</b></p><p>- for breakfast (<i>prep. phr.</i>) (ăn sáng)</p><p>- on any occasion (<i>prep. phr</i>.) (bất cứ dịp nào)</p><p>- for family reunion (<i>prep. phr</i>.) (sum họp gia đình)</p><p>- on Tet holiday (<i>prep. phr</i>.)(Tết)</p><p>Bài mẫu:</p><div class=\"tablewrap\"><table><tr><td><p>Vietnam has so many delicious foods, and my favourite one is &quot;Pho&quot;. People can eat noodle soup at any time, but it’s most popular in the morning. Sts ingredients include rice noodle, pig bones, pork or chicken and herbs. Rice noodle, made from rice powder, is soft and white. The broth is prepared in advance by stewing pig bones. The fusion of sweet flavour of meat and soup makes the food unforgettably tasty. I like &quot;Pho&quot; very much, and I often eat this food in the morning before going to school.</p></td><td><p>Việt Nam có rất nhiều món ăn ngon và món ăn Việt mà em yêu thích là phở. Người ta có thể ăn phở vào bất cứ thời gian nào trong ngày nhưng phổ biến nhất là vào buổi sáng. Nguyên liệu bao gồm bánh phở, xương lợn, thịt lợn hoặc thịt gà và các loại rau thơm. Bánh phở làm từ bột gạo, mềm và trắng. Nước dùng được chuẩn bị trước bằng cách ninh xương lợn. Vị ngọt của thịt hòa quyện với hương thơm nước dùng khiến món án càng thêm đậm đà, khó quên. Em rất thích phở và thường ăn mỗi sáng trước trước khi đi học.</p></td></tr></table></div></div>"}]}, {"title": "Writing · Viết", "icon": "✍️", "desc": "Unit 5 · Vietnamese Food and Drink", "subs": [{"id": "w1", "label": "I · Viết câu", "kind": "write", "items": [{"c": "There/ be/ many/ tasty drink/ Vietnam/ like/ fresh coconut/ sugar cane juice.", "a": "There are many tasty drinks in Vietnam like fresh coconut and sugar cane juice.", "vi": "  Dịch nghĩa : Có nhiều đồ uống ngon ở Việt Nam như dừa tươi và nước mía. "}, {"c": "These drinks/ be/ cool/ it/ be/ good/ drink/ hot days.", "a": "These drinks are cool and it is good to drink on hot days.", "vi": "  Dịch nghĩa : Những đồ uống này rất mát và rất tốt để uống trong những ngày nóng. "}, {"c": "It/ be/ also easy/ make/ these drinks/ coconut/ sugar cane.", "a": "It is also easy to make these drinks with coconut and sugar cane.", "vi": "  Dịch nghĩa : Cũng dễ dàng để làm những đò uống này từ dừa và mía. "}, {"c": "cool/ tasty flavour/ make/ drinkers/ refresh quickly.", "a": "The cool and tasty flavour make drinkers refresh quickly.", "vi": "  Dịch nghĩa:  Hương vị mát và ngon làm cho người uống tỉnh táo nhanh chóng. "}, {"c": "Many people/ drink/ coconut/ sugar cane juice/ regularly.", "a": "Many people drink coconut and sugar cane juice regularly.", "vi": "  Dịch nghĩa : Nhiều người uống nước dừa và nước mía thường xuyên. "}], "before": ""}, {"label": "II · Viết 60–80 từ", "kind": "writing", "html": "<div class=\"source\"><p><b>II - Write a short paragraph (60 - 80 words) about your favourite Vietnamese drink. You can use the following questions as cues:</b></p><p><b>• </b>What is your favourite drink?</p><p>• What are the ingredients?</p><p>• When do you drink it?</p><p>__________________________________________________________________</p><p>__________________________________________________________________</p></div>"}, {"label": "Gợi ý & bài mẫu", "html": "<div class=\"source\"><p><b>II - Write a short paragraph (60-80 words) about your favourite Vietnamese drink.</b></p><p><b>Dịch nghĩa câu hỏi:</b></p><p>Viết một đoạn văn ngắn (60-80 từ) về đồ uống Việt Nam yêu thích của em.</p><p>Em có thể trả lời một số câu hỏi sau:</p><p>• Thức uống yêu thích của em là gì?</p><p>• Các thành phần của nó là gì?</p><p>• Khi nào nên uống?</p><p><b>Gợi ý trả lời:</b></p><p><b>MAIN IDEAS (Ý chính)</b></p><p><b>Drinks (Đồ uống)</b></p><p>- lemonade (<i>n</i>.) (nước chanh)</p><p>- sugar cane juice (<i>n. phr</i>.) (nước mía)</p><p>- beer (<i>n.</i>) (bia)</p><p>- freshcoconut (<i>n.phr.)</i> (nước dừa)</p><p><b>Ingredients (Nguyên liệu)</b></p><p>- water (<i>n</i>.) (nước)</p><p>- lemon (<i>n</i>.) (chanh)</p><p>- sugar (<i>n</i>.) (đường)</p><p>- sugar cane (<i>n. phr</i>.) (mía)</p><p><b>When (Khi nào)</b></p><p>- after breakfast (<i>pre. phr</i>.) (sau bữa sáng)</p><p>- after school (<i>pre. phr</i>.) (sau giờ học)</p><p>- after doing sports (<i>pre. phr</i>.) (sau khi tập thể thao)</p><p>- before bedtime (<i>pre. phr</i>.) (trước khi đi ngủ)</p><p>Bài mẫu:</p><div class=\"tablewrap\"><table><tr><td><p>There are many tasty and nutrient drinks in Vietnam, and I like lemonade the best. This is a cool and cheap drink. This drink is good to cool your body, so it is very suitable to drink it on hot days of summer. The way to make it is also very simple with water, sugar, lemon and ice. What we have to do is to dissolve sugar in water, squeeze lemon into the solution and add some ice. Cool taste, flavour of lemon and cool ice make drinkers refresh immerdiately. I often drink lemonade after doing sports, and I think this is the best drink for me.</p></td><td><p>Có nhiều đồ uống ngon và bổ dưỡng nhưng đồ uống mà em yêu thích nhất là nước chanh. Đây là loại nước giải khát mát và rẻ. Đồ uống này có tác dụng giải nhiệt tốt nên rất thích hợp uống vào những ngày hè nóng nực. Cách pha cũng hết sức đơn giản với các nguyên liệu như nước, đường, chanh và đá. Chỉ cần hòa đường với nước, sau đó vắt chanh vào và thêm đá. Vị thanh mát và hương thơm của chanh cùng với cảm giác mát lạnh của đá khiến người uống như tỉnh táo trở lại ngay lập tức. Em thường uống nước chanh mỗi khi chơi thể thao xong và cảm thấy đây là thức uống tuyệt vời nhất với em.</p></td></tr></table></div></div>"}]}, {"title": "Objectives · Mục tiêu", "icon": "🎯", "desc": "Unit 5 · Vietnamese Food and Drink", "subs": [{"label": "Mục tiêu", "html": "<div class=\"source\"><p><b>UNIT </b><b>5</b><b> </b></p><p><b>VIETNAMESE FOOD AND DRINK</b></p><p>Đồ ăn và thức uống Việt Nam</p><p><b>MỤC TIÊU – Objectives</b></p><p>* <b>TỪ VỰNG</b> – Vocabulary</p><p>Sử dụng các từ vựng liên quan đến chủ đề “Đồ ăn và thức uống Việt Nam”</p><p>* <b>NGỮ ÂM</b> – Pronunciation</p><p>Phát âm chính xác các âm nguyên âm /<b>ɒ</b>/ và /<b>ɔ:</b>/ đứng riêng lẻ và trong ngữ cảnh</p><p>* <b>NGỮ PHÁP</b> – Grammar</p><p>Phân biệt danh từ đếm được và danh từ không đếm được</p><p>Sử dụng <i><b>a/an, some/any</b></i> và <i><b>How much</b></i> và <i><b>How many</b></i> để hỏi và nói về số lượng.</p><p><b>* KỸ NĂNG ĐỌC</b> – Reading skills</p><p>Đọc để biết thông tin cụ thể về thực phẩm và đồ uống truyền thống điển hình</p><p>* <b>KỸ NĂNG NÓI</b> – Speaking skills</p><p>Nói về cách làm một loại thức ăn / đồ uống</p><p>* <b>KỸ NĂNG NGHE</b> – Listening Skills</p><p>Nghe thông tin cụ thể về các loại thực phẩm và đồ uống truyền thống</p><p>* <b>KỸ NĂNG VIẾT</b> – Writing skills</p><p>Viết một lá thư mô tả một người nào đó thức ăn / thức uống địa phương</p><p><b>A – NGÔN NGỮ</b></p></div>"}]}];
+const V12=[{"w": "beat", "p": "/biːt/", "pos": "v.", "vi": "khuấy trộn, đánh trộn", "ex": "To make an omelette, you first beat the eggs. (Để làm món trứng tráng, trước hết bạn hãy đánh trứng)"}, {"w": "beef", "p": "/biːf/", "pos": "n.", "vi": "thịt bò", "ex": "I’m wondering whether to have the first or the beef. (Tôi đang suy nghĩ không biết nên ăn cá hay thịt bò)"}, {"w": "bitter", "p": "/ˈbɪtə(r)/", "pos": "adj.", "vi": "đắng", "ex": "Bitter melon is bitter because it has quinine. (Mướp đắng có vị đắng vì nó có chứa chất Quinin)"}, {"w": "broth", "p": "/brɒθ/", "pos": "n.", "vi": "nước xuýt", "ex": "The broth is the most important element of Vietnamese “pho”. (Nước xuýt là thành phần quan trọng nhất trong món phở Việt Nam)"}, {"w": "delicious", "p": "/dɪˈlɪʃəs/", "pos": "adj.", "vi": "ngon, thơm ngon", "ex": "I’ve had such a delicous meal. (Tôi đã có một bữa ăn tuyệt ngon)"}, {"w": "eel", "p": "/iːl/", "pos": "n.", "vi": "con lươn", "ex": "Eel soup is good for your health as it’s rich in vitamins. (Súp lươn tốt cho sức khỏe của bạn vì nó giàu vi-ta-min)"}, {"w": "flour", "p": "/ˈflaʊə(r)/", "pos": "n.", "vi": "bột", "ex": "I need three more cups of flour. (Tôi cần thêm ba chén bột nữa)"}, {"w": "fold", "p": "/fəʊld/", "pos": "v.", "vi": "gấp, gập", "ex": "I know how to fold clothes quickly. (Tôi biết cách gấp quần áo nhanh)"}, {"w": "fragrant", "p": "/ˈfreɪɡrənt/", "pos": "adj.", "vi": "thơm, thơm phức", "ex": "The dish is fragrant and elegant. (Món ăn này thơm và tinh tế)"}, {"w": "green tea", "p": "/ˌɡriːn ˈtiː/", "pos": "n.", "vi": "chè xanh", "ex": "Many people in Japan drink five cups of green tea a day. (Nhiều người ở Nhật Bản uống 5 cốc chè xanh mỗi ngày)"}, {"w": "ham", "p": "/hæm/", "pos": "n.", "vi": "giăm bông", "ex": "Would you like another slice of ham? (Bạn có muốn một lát giăm bông nữa không?)"}, {"w": "noodles", "p": "/ˈnuːdl/", "pos": "n.", "vi": "mì, mì sợi", "ex": "You shouln’t eat instant noodles regularly. (Bạn không nên ăn mì ăn liền thường xuyên)"}, {"w": "omelette", "p": "/ˈɒmlət/", "pos": "n.", "vi": "trứng tráng", "ex": "Mum made me an omelette for breakfast. (Mẹ đã làm cho tôi món trứng tráng cho bữa sáng)"}, {"w": "pancake", "p": "/ˈpænkeɪk/", "pos": "n.", "vi": "bánh kếp", "ex": "He poured some syrup on his stack of pancakes. (Anh rưới chút xi-ro lên chồng bánh kếp)"}, {"w": "pepper", "p": "/ˈpepə(r)/", "pos": "n.", "vi": "hạt tiêu", "ex": "The waiter ground a little black pepper over my pizza. (Người phục vụ nghiền một ít hạt tiêu đen lên trên bánh pizza của tôi)"}, {"w": "pork", "p": "/pɔːk/", "pos": "n.", "vi": "thịt lợn", "ex": "We can make various dishes out of pork. (Ta có thể làm nhiều món ăn từ thịt lợn)"}, {"w": "pour", "p": "/pɔː(r)/", "pos": "v.", "vi": "rót, đồ", "ex": "Pour 500ml of warm water into the bowl. (Hãy rót 500ml nước ấm vào bát)"}, {"w": "recipe", "p": "/ˈresəpi/", "pos": "n.", "vi": "công thức làm món ăn", "ex": "He never reveals his recipe to other people. (Anh ta không bao giờ tiết lộ công thức nấu ăn của mình cho người khác)"}, {"w": "salt", "p": "/sɔːlt/", "pos": "n.", "vi": "muối", "ex": "You need to add more salt to this salad. (Bạn cần thêm muối vào món sa-lát này)"}, {"w": "salty", "p": "/ˈsɔːlti/", "pos": "adj.", "vi": "mặn, có nhiều muối", "ex": "It’s surprising this drink is salty. (Thật ngạc nhiên là đồ uống này lại mặn)"}, {"w": "sandwich", "p": "/ˈsænwɪtʃ/", "pos": "n.", "vi": "bánh xăng-đuých", "ex": "What would you like in your sandwich? (Bạn muốn cho gì vào bánh xăng-đuých của bạn?)"}, {"w": "sauce", "p": "/sɔːs/", "pos": "n.", "vi": "nước xốt", "ex": "Don’t forget to add some tomato sauce to your spaghette! (Đừng quên thêm nước xốt cà chua vào món mỳ Ý nhé!)"}, {"w": "sausage", "p": "/ˈsɒsɪdʒ/", "pos": "n.", "vi": "xúc xích", "ex": "He loves to eat sausages with rice and beans. (Anh ấy thích ăn xúc xích với món cơm đậu)"}, {"w": "serve", "p": "/sɜːv/", "pos": "v.", "vi": "múc/ xới/ gắp ra để ăn", "ex": "I’ll serve the broth for you. (Tôi sẽ múc nước xuýt cho bạn)"}, {"w": "shrimp", "p": "/ʃrɪmp/", "pos": "n.", "vi": "con tôm", "ex": "Cook the shrimps until they turn bright pink (Nấu tôm cho tới khi chúng chuyển sang màu hồng sáng)"}, {"w": "slice", "p": "/slaɪs/", "pos": "n.", "vi": "miếng mỏng, lát mỏng", "ex": "She cut the cucumber into slices. (Cô ấy cắt quả dưa chuột thành các lát mỏng)"}, {"w": "soup", "p": "/suːp/", "pos": "n.", "vi": "xúp, canh, cháo", "ex": "You’ll feel better with this bowl of hot soup. (Bạn sẽ cảm thấy khỏe hơn sau khi ăn bát canh nóng này)"}, {"w": "sour", "p": "/ˈsaʊə(r)/", "pos": "adj.", "vi": "chua", "ex": "I love the sour flavour of this cake. (Tôi thích vị chua của chiếc bánh này)"}, {"w": "spicy", "p": "/ˈspaɪsi/", "pos": "adj.", "vi": "cay, nồng", "ex": "My parents cannot eat spicy food. (Bố mẹ tôi không ăn được đồ cay)"}, {"w": "spring rolls", "p": "/ˌsprɪŋ ˈrəʊlz/", "pos": "n.", "vi": "nem rán", "ex": "Many foreign tourists are into Vietnamese spring rolls. (Nhiều du khách nước ngoài thích mê nem rán của Việt Nam)"}, {"w": "sweet", "p": "/swiːt/", "pos": "adj.", "vi": "ngọt", "ex": "These candies are too sweet for me. (Những cái kẹo này quá ngọt đối với tôi)"}, {"w": "sweet soup", "p": "/swiːt suːp/", "pos": "n.", "vi": "chè", "ex": "Sweet soup is our favourite food in the summer. (Chè là món ăn yêu thích của chúng tôi vào mùa hạ)"}, {"w": "tasty", "p": "/ˈteɪsti/", "pos": "adj.", "vi": "đầy hương vị, ngon", "ex": "Her food is always tasty! (Đồ ăn của cô ấy luôn rất ngon)"}];
+const LISTEN="Driving through the streets in Vietnam early in the morning, there is one dish you will see more than anything - the fantastically simple banh my. This sandwich can also be traced back to the French colonial period, even through the roots of the name; banh is pronounced similarly to the French word for bread (pain) and literally translates into “bread made from wheat.” Initially this dish was imported and only sold by expensive bakeries; however it began to spread to the masses when the Vietnamese working class discovered ways to change the ingredients and make it more accessible. Today the typical Vietnamese banh my consists of mayonnaise, pâté, sliced ham and pork, pickled vegetables, coriander, and hot sauce. The fusion of flavours between the Vietnamese fillings and French baguette makes this delicious meal a favourite of many. ";
+const OBJECTIVES=[{i:'🚀',t:'Unit 5 · Vietnamese Food and Drink',d:'Từ vựng, ngữ âm, ngữ pháp và các kỹ năng theo tài liệu Unit 5.'}];
+const drafts={notes:'',writing:''};
+function vocab12(filter=''){return V12.filter(v=>(v.w+' '+v.vi).toLowerCase().includes(filter.toLowerCase())).map(v=>`<div class="vrow"><div><div class="vw">${esc(v.w)} ${spk(v.w)}</div><div class="vp">${esc(v.p)} · ${esc(v.pos)}</div></div><div class="vm">${esc(v.vi)}</div><div class="ven">${esc(v.ex)}</div></div>`).join('')}
+function draw12(s){
+ if(s.kind==='vocab')return `<div class="tools"><input class="search" placeholder="Tìm từ tiếng Anh hoặc nghĩa tiếng Việt…" oninput="document.getElementById('words12').innerHTML=vocab12(this.value)"></div><div id="words12">${vocab12()}</div>`;
+ if(s.kind==='notes')return `<div class="card"><h3>Talk about the your favourite Vietnamese food.</h3><p>Ghi ý chính, sau đó luyện nói trong 1–2 phút.</p><textarea class="studytextarea" oninput="drafts.notes=this.value">${esc(drafts.notes)}</textarea></div>`;
+ if(s.kind==='writing')return s.html+`<textarea class="studytextarea" placeholder="Write your paragraph here…" oninput="drafts.writing=this.value;document.getElementById('count12').textContent=this.value.trim().split(/\s+/).filter(Boolean).length+' / 60–80 từ'">${esc(drafts.writing)}</textarea><p id="count12">${drafts.writing.trim().split(/\s+/).filter(Boolean).length} / 60–80 từ</p>`;
+ if(!s.id)return s.html;
+ const cfg={title:s.label,items:s.items,labels:s.items[0].opts?s.items[0].opts.map((_,i)=>String.fromCharCode(65+i)):undefined};
+ return (s.before||'')+(s.kind==='quiz'?quiz(s.id,cfg):s.kind==='fill'?fill(s.id,cfg):writeSent(s.id,s.items));
+}
+const SECTIONS=DATA.map(s=>({...s,ex:s.subs.filter(x=>x.id).map(x=>x.id),subs:s.subs.map(x=>({...x,ex:x.id?[x.id]:undefined,render:()=>draw12(x)}))}));
+document.title='Unit 5 - Vietnamese Food and Drink';
+$('.logo .lg').textContent='🚀';
+show(0,0);
+</script></body></html>
