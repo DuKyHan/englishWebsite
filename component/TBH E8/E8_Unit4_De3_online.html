@@ -1,0 +1,151 @@
+<title>Ôn tập Unit 4 – Đề 3</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+/* Layout: one long answer sheet; sticky score/timer bar; sections as ruled bands; result card appears at the top after submit. */
+:root{--bg:#F4F6FA;--card:#FFFFFF;--ink:#1B2233;--muted:#5E6A80;--line:#DCE2EC;--accent:#1F3864;--accent-ink:#FFFFFF;--soft:#E6ECF7;--good:#1B7A47;--good-bg:#E3F4EA;--bad:#C0302C;--bad-bg:#FCE8E6;--warn:#8A5A00;--warn-bg:#FFF1D1;--font:'Nunito','Segoe UI',Arial,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10151F;--card:#1A2130;--ink:#E8EDF7;--muted:#9AA7BF;--line:#2C364A;--accent:#8FB1F0;--accent-ink:#10151F;--soft:#222C42;--good:#6BD39A;--good-bg:#17382A;--bad:#FF8F88;--bad-bg:#432122;--warn:#F2C46B;--warn-bg:#3A2E10;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#10151F;--card:#1A2130;--ink:#E8EDF7;--muted:#9AA7BF;--line:#2C364A;--accent:#8FB1F0;--accent-ink:#10151F;--soft:#222C42;--good:#6BD39A;--good-bg:#17382A;--bad:#FF8F88;--bad-bg:#432122;--warn:#F2C46B;--warn-bg:#3A2E10;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.55;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--accent)}
+.wrap{max-width:820px;margin:0 auto;padding-block:0 64px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--accent);color:var(--accent-ink);margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:10px max(16px,env(safe-area-inset-left,0px));display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.bar .ttl{font-weight:800;font-size:17px;flex:1;min-width:150px}
+.bar .stat{font-variant-numeric:tabular-nums;font-weight:700;font-size:15px;opacity:.95}
+.prog{height:5px;background:rgba(255,255,255,.25);margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)))}
+.prog i{display:block;height:100%;width:0;background:#fff;transition:width .2s}
+h1{font-size:26px;line-height:1.25;margin:26px 0 6px;color:var(--accent);text-wrap:balance}
+.lead{color:var(--muted);margin:0 0 14px}
+.who{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.who label{display:flex;flex-direction:column;font-size:13px;font-weight:700;color:var(--muted);flex:1;min-width:150px}
+input[type=text]{font:inherit;color:var(--ink);background:var(--card);border:2px solid var(--line);border-radius:10px;padding:8px 12px;min-width:0}
+input[type=text]:focus{outline:3px solid var(--accent);outline-offset:1px;border-color:transparent}
+.sec{margin-top:26px}
+.sec h2{font-size:15px;letter-spacing:.06em;margin:0;padding:8px 12px;background:var(--soft);color:var(--accent);border-radius:8px 8px 0 0;border-bottom:2px solid var(--accent)}
+.sec .note{color:var(--muted);font-size:14px;margin:8px 2px 0;font-style:italic}
+.sub{font-weight:700;margin:16px 2px 4px;font-size:15px}
+.passage{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:8px 0 10px;text-align:justify;hyphens:auto}
+.passage p{margin:0 0 8px}.passage p:last-child{margin:0}
+.blank{color:var(--accent);padding:0 2px}
+.dbox{background:var(--card);border:2px solid var(--line);border-radius:10px;padding:12px 16px;margin:10px 0}
+.dbox h3{margin:0 0 6px;color:var(--accent);font-size:19px}.dbox p{margin:2px 0;font-size:15.5px}
+.q{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:12px 14px;margin:10px 0;position:relative}
+.q.ok{border-color:var(--good);background:linear-gradient(0deg,var(--good-bg),var(--good-bg)) }
+.q.no{border-color:var(--bad);background:linear-gradient(0deg,var(--bad-bg),var(--bad-bg))}
+.qn{font-weight:800;color:var(--accent);margin-right:6px}
+.qrow{display:flex;gap:14px;align-items:flex-start}.qrow img{width:104px;flex:none;border-radius:8px;border:1px solid var(--line)}.qrow>div{min-width:0;flex:1}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;margin-top:8px}
+.opt{display:flex;gap:10px;align-items:center;text-align:left;font:inherit;color:var(--ink);background:var(--bg);border:2px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;min-height:44px}
+.opt b{flex:none;width:26px;height:26px;border-radius:50%;background:var(--soft);color:var(--accent);display:grid;place-items:center;font-size:14px}
+.opt:hover{border-color:var(--accent)}.opt:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.opt.sel{border-color:var(--accent);background:var(--soft)}.opt.sel b{background:var(--accent);color:var(--accent-ink)}
+.opt.right{border-color:var(--good);background:var(--good-bg)}.opt.right b{background:var(--good);color:var(--bad-bg)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg)}.opt.wrong b{background:var(--bad);color:var(--good-bg)}
+.opt[disabled]{cursor:default}
+.tx{margin-top:8px;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.tx input{flex:1;min-width:200px}
+.fb{margin-top:8px;font-size:15px;display:none;font-weight:700}
+.done .fb{display:block}.q.ok .fb{color:var(--good)}.q.no .fb{color:var(--bad)}
+.fb button{font:inherit;font-size:13px;margin-left:8px;padding:3px 10px;border-radius:8px;border:2px solid var(--bad);background:transparent;color:var(--bad);cursor:pointer;font-weight:700}
+.act{margin-top:28px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{font:inherit;font-weight:800;border:0;border-radius:12px;padding:12px 24px;background:var(--accent);color:var(--accent-ink);cursor:pointer;font-size:17px}
+.btn.alt{background:transparent;color:var(--accent);border:2px solid var(--accent)}
+.btn:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.warn{background:var(--warn-bg);color:var(--warn);border-radius:10px;padding:10px 14px;font-weight:700;display:none;flex:1 1 100%}
+.res{display:none;background:var(--card);border:2px solid var(--accent);border-radius:14px;padding:18px 20px;margin:22px 0 0}
+.res.on{display:block}
+.res .big{font-size:56px;font-weight:800;line-height:1;color:var(--accent);font-variant-numeric:tabular-nums}.res .big small{font-size:24px;color:var(--muted)}
+.res .row{display:flex;gap:18px;flex-wrap:wrap;align-items:flex-end}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.chip{padding:4px 12px;border-radius:99px;font-weight:700;font-size:14px;background:var(--soft);color:var(--accent)}
+.chip.g{background:var(--good-bg);color:var(--good)}.chip.b{background:var(--bad-bg);color:var(--bad)}
+.hidden-ok .q.ok{display:none}
+@media (max-width:520px){.qrow{flex-direction:column}.qrow img{width:130px}.res .big{font-size:46px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<div class="wrap">
+ <div class="bar"><span class="ttl">English 8 · Unit 4 · Đề 3</span><span class="stat" id="st-done">0/40 câu</span><span class="stat" id="st-time">00:00</span></div>
+ <div class="prog"><i id="prog"></i></div>
+ <h1>Ethnic groups of Viet Nam – Đề 3</h1>
+ <p class="lead">40 câu, mỗi câu 0,25 điểm, tổng 10 điểm. Làm hết rồi bấm “Nộp bài” để xem điểm và đáp án.</p>
+ <div class="who"><label for="nm">Họ và tên<input type="text" id="nm" autocomplete="name"></label><label for="cl">Lớp<input type="text" id="cl" autocomplete="off"></label></div>
+ <div class="res" id="res" aria-live="polite"></div>
+ <div id="sheet"></div>
+ <div class="act"><div class="warn" id="warn"></div><button class="btn" id="submit">Nộp bài</button><button class="btn alt" id="again" hidden>Làm lại</button><button class="btn alt" id="onlywrong" hidden>Chỉ xem câu sai</button></div>
+</div>
+<script>
+var EXAM={"no":3,"secs":[{"title":"I. PRONUNCIATION & STRESS","note":"","blocks":[{"k":"sub","text":"Choose the word whose underlined part is pronounced differently from the others."},{"k":"q","q":{"t":"mc","n":1,"stem":"","opts":["flu\u003cu>t\u003c/u>e","fea\u003cu>t\u003c/u>ure","cos\u003cu>t\u003c/u>ume","lives\u003cu>t\u003c/u>ock"],"a":1}},{"k":"q","q":{"t":"mc","n":2,"stem":"","opts":["b\u003cu>oo\u003c/u>k","f\u003cu>oo\u003c/u>t","m\u003cu>oo\u003c/u>n","g\u003cu>oo\u003c/u>d"],"a":2}},{"k":"q","q":{"t":"mc","n":3,"stem":"","opts":["h\u003cu>ea\u003c/u>r","d\u003cu>ea\u003c/u>r","h\u003cu>ea\u003c/u>rt","n\u003cu>ea\u003c/u>r"],"a":2}},{"k":"q","q":{"t":"mc","n":4,"stem":"","opts":["liv\u003cu>ed\u003c/u>","play\u003cu>ed\u003c/u>","promis\u003cu>ed\u003c/u>","clean\u003cu>ed\u003c/u>"],"a":2}},{"k":"sub","text":"Choose the word whose stress pattern is different from the others."},{"k":"q","q":{"t":"mc","n":5,"stem":"","opts":["custom","invite","greeting","manner"],"a":1}},{"k":"q","q":{"t":"mc","n":6,"stem":"","opts":["woman","detest","balloon","police"],"a":0}},{"k":"q","q":{"t":"mc","n":7,"stem":"","opts":["refuse","enter","deny","delay"],"a":1}}]},{"title":"II. MULTIPLE CHOICE","note":"Choose the best option A, B, C or D.","blocks":[{"k":"q","q":{"t":"mc","n":8,"stem":"______ hat is this? – It’s my brother’s.","opts":["Which","Whose","What","How"],"a":1}},{"k":"q","q":{"t":"mc","n":9,"stem":"______ do you like your tea? – I like it with cream and sugar.","opts":["Which","Who","What","How"],"a":3}},{"k":"q","q":{"t":"mc","n":10,"stem":"______ picture do you prefer, this one or that one?","opts":["Which","Who","What","How"],"a":0}},{"k":"q","q":{"t":"mc","n":11,"stem":"______ is that woman? – I think she is a teacher.","opts":["Which","Who","When","How"],"a":1}},{"k":"q","q":{"t":"mc","n":12,"stem":"Do you know ______ language is spoken in Kenya?","opts":["which","who","whose","how"],"a":0}},{"k":"q","q":{"t":"mc","n":13,"stem":"The Lunar New Year festival is important ______ the Kinh.","opts":["to","with","for","of"],"a":0}},{"k":"q","q":{"t":"mc","n":14,"stem":"Sa Pa is famous for the ______ located in the mountainous area.","opts":["stilt houses","heritage site","terraced fields","wooden statue"],"a":2}},{"k":"q","q":{"t":"mc","n":15,"stem":"Lahu, Mang and Brau are ______ minorities in Viet Nam.","opts":["traditional","ethnic","awesome","natural"],"a":1}},{"k":"q","q":{"t":"mc","n":16,"stem":"The goods in the open-air market are ______. You can find almost everything there.","opts":["diverse","similar","unlike","like"],"a":0}},{"k":"q","q":{"t":"mc","n":17,"stem":"Most ethnic minority peoples are good ______ farming techniques.","opts":["at","for","to","on"],"a":0}}]},{"title":"III. WORD FORM","note":"Write the correct form of the word in capitals.","blocks":[{"k":"q","q":{"t":"tx","n":18,"pre":"The Cham people once boasted a ","post":" culture early in history. (FLOURISH)","acc":["flourishing"],"show":"flourishing"}},{"k":"q","q":{"t":"tx","n":19,"pre":"A number of ethnic minorities have ","post":" mastered farming techniques. (SUCCESS)","acc":["successfully"],"show":"successfully"}},{"k":"q","q":{"t":"tx","n":20,"pre":"The exhibition of traditional costumes was ","post":" beautiful. (IMPRESS)","acc":["impressively"],"show":"impressively"}}]},{"title":"IV. READING","note":"","blocks":[{"k":"sub","text":"Read the passage and choose the best option for each numbered blank."},{"k":"passage","text":"Living in the mountains can be very hard. First, there is not enough \u003cb class=\"blank\">(1)\u003c/b> to grow crops or raise livestock. Building houses is also \u003cb class=\"blank\">(2)\u003c/b> because the land is not flat. The air in the mountains is another problem. The higher we get, the \u003cb class=\"blank\">(3)\u003c/b> the air becomes. This means there is less oxygen, which makes breathing harder.\nDespite these challenges, people around the world have lived and worked in mountainous areas for \u003cb class=\"blank\">(4)\u003c/b>. There are many health benefits of living in the mountains. Being on the mountaintops allows you to live far from \u003cb class=\"blank\">(5)\u003c/b>. The air you breathe is fresher. There are places where you cannot drive a car or a motorbike, so you have to walk. Travelling up and down hills and mountains on foot helps keep you \u003cb class=\"blank\">(6)\u003c/b>. Finally, mountain people are quite simple and friendly. They live a peaceful life."},{"k":"q","q":{"t":"mc","n":21,"stem":"(1) ______","opts":["land","air","oxygen","pollution"],"a":0}},{"k":"q","q":{"t":"mc","n":22,"stem":"(2) ______","opts":["easy","difficult","cheap","quick"],"a":1}},{"k":"q","q":{"t":"mc","n":23,"stem":"(3) ______","opts":["thick","thicker","thinner","thin"],"a":2}},{"k":"q","q":{"t":"mc","n":24,"stem":"(4) ______","opts":["centuries","century","a century","centurys"],"a":0}},{"k":"q","q":{"t":"mc","n":25,"stem":"(5) ______","opts":["pollution","oxygen","benefits","crops"],"a":0}},{"k":"q","q":{"t":"mc","n":26,"stem":"(6) ______","opts":["active","activity","actively","act"],"a":0}},{"k":"sub","text":"Read the passage. Choose True or False, then answer the questions."},{"k":"passage","text":"Viet Nam is a multi-ethnic country with 54 ethnic groups. The Viet (Kinh) people account for 87% of the country’s population and mainly inhabit the Red River Delta, the central coastal delta, the Mekong Delta and major cities. The other 53 ethnic minority groups, totalling over 8 million people, are scattered over mountain areas spreading from the North to the South.\nAmong ethnic minorities, the most populated are the Tay, Thai, Muong, Hoa, Khmer and Nung, with a population of around 1 million each. Meanwhile, the least populated are the Brau, Roman and Odu, with several hundred people each.\nThe main economic activity of most ethnic peoples is wet rice cultivation. Some ethnic minorities have mastered farming techniques, growing rice plants in flooded paddy fields and carrying out irrigation. Others go hunting, fishing and collecting, and live a semi-nomadic life. Each group has its own diverse and special culture. Beliefs and religions among Viet Nam’s ethnic minority groups are also different from one another."},{"k":"q","q":{"t":"mc","n":27,"stem":"The other 53 ethnic minority groups have over 8 million people in total.","opts":["True","False"],"a":0,"tf":1}},{"k":"q","q":{"t":"mc","n":28,"stem":"The Hoa, the Khmer and the Nung each have a population of around 1 million.","opts":["True","False"],"a":0,"tf":1}},{"k":"q","q":{"t":"mc","n":29,"stem":"The Brau, the Roman and the Odu are the most populated groups.","opts":["True","False"],"a":1,"tf":1}},{"k":"q","q":{"t":"mc","n":30,"stem":"Which is the main economic activity of most ethnic peoples?","opts":["Hunting","Wet rice cultivation","Fishing","Collecting"],"a":1}},{"k":"q","q":{"t":"mc","n":31,"stem":"The word “scattered” in paragraph 1 is closest in meaning to ______.","opts":["gathered","hidden","spread","crowded"],"a":2}}]},{"title":"V. DICTIONARY","note":"Use the dictionary entry to complete each sentence.","blocks":[{"k":"box","head":"minority /maɪˈnɒrəti/ noun","lines":["\u003cb>1. the smaller part of a group; less than half of a total number\u003c/b>","• Only \u003cb>a small minority\u003c/b> of students voted against the new school uniform.","• Local residents are \u003cb>in the minority\u003c/b> regarding the decision to build a new mall.","\u003cb>2. a group of people who are different from the larger group in a country, because of their race, religion, etc.\u003c/b>","• The government is working to protect the rights of \u003cb>ethnic minorities\u003c/b>.","• She belongs to \u003cb>a religious minority\u003c/b> in her hometown."]},{"k":"q","q":{"t":"tx","n":32,"pre":"Viet Nam has 53 ethnic ","post":" besides the Kinh.","acc":["ethnic minorities","minorities","ethnic minority"],"show":"ethnic minorities"}},{"k":"q","q":{"t":"tx","n":33,"pre":"Only ","post":" of the villagers disagreed with the plan.","acc":["a small minority","a minority","small minority","minority"],"show":"a small minority"}}]},{"title":"VI. SENTENCE TRANSFORMATION","note":"Complete the second sentence so that it has the same meaning as the first.","blocks":[{"k":"q","q":{"t":"tx","n":34,"stem":"The thing that I hate most is motor racing, and I will never do it in my life.","pre":"→ I detest ","post":".","acc":["motor racing, and I will never do it in my life","motor racing"],"show":"motor racing, and I will never do it in my life"}},{"k":"q","q":{"t":"tx","n":35,"stem":"It is really interesting for him to talk with his music teacher about jazz.","pre":"→ He fancies ","post":".","acc":["talking with his music teacher about jazz"],"show":"talking with his music teacher about jazz"}},{"k":"q","q":{"t":"tx","n":36,"stem":"We usually visit museums when we have leisure time.","pre":"→ We enjoy ","post":".","acc":["visiting museums when we have leisure time"],"show":"visiting museums when we have leisure time"}},{"k":"q","q":{"t":"tx","n":37,"stem":"I don’t like to get up early and prepare breakfast on cold winter days.","pre":"→ I hate ","post":".","acc":["getting up early and preparing breakfast on cold winter days","getting up early and preparing breakfast in the cold winter days"],"show":"getting up early and preparing breakfast on cold winter days"}},{"k":"q","q":{"t":"tx","n":38,"stem":"It took Tom one hour to travel to his hometown last week.","pre":"→ Tom spent ","post":".","acc":["one hour travelling to his hometown last week"],"show":"one hour travelling to his hometown last week"}},{"k":"q","q":{"t":"tx","n":39,"stem":"It took him 30 minutes to watch the play.","pre":"→ He spent ","post":".","acc":["30 minutes watching the play"],"show":"30 minutes watching the play"}},{"k":"q","q":{"t":"tx","n":40,"stem":"It took her nearly an hour to do the crossword.","pre":"→ She spent ","post":".","acc":["nearly an hour doing the crossword"],"show":"nearly an hour doing the crossword"}}]}]};
+var $=function(s,r){return (r||document).querySelector(s)};
+var ans={},items=[],t0=Date.now(),timer=null,submitted=false;
+function norm(s){return String(s).toLowerCase().replace(/[’‘`]/g,"'").replace(/[.,;:!?()"]/g,' ').replace(/\s+/g,' ').trim()}
+function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
+function build(){
+ var sheet=$('#sheet');sheet.innerHTML='';items=[];
+ EXAM.secs.forEach(function(sec){
+  var s=el('section','sec');s.appendChild(el('h2',null,sec.title));if(sec.note)s.appendChild(el('p','note',sec.note));
+  sec.blocks.forEach(function(b){
+   if(b.k==='sub')s.appendChild(el('p','sub',b.text));
+   else if(b.k==='passage'){var p=el('div','passage');b.text.split('\n').forEach(function(x){p.appendChild(el('p',null,x))});s.appendChild(p)}
+   else if(b.k==='box'){var d=el('div','dbox');d.appendChild(el('h3',null,b.head));b.lines.forEach(function(l){d.appendChild(el('p',null,l))});s.appendChild(d)}
+   else{s.appendChild(mkQ(b.q))}
+  });
+  sheet.appendChild(s);
+ });
+}
+function mkQ(q){
+ var box=el('div','q');box.id='q'+q.n;var it={q:q,box:box,ok:null,forced:false};items.push(it);
+ var head=q.t==='mc'?(q.stem?'<span class="qn">'+q.n+'.</span>'+q.stem:'<span class="qn">'+q.n+'.</span>'):'<span class="qn">'+q.n+'.</span>'+(q.stem||'');
+ var inner=el('div');
+ if(q.t==='mc'){
+  inner.appendChild(el('div',null,head));
+  var o=el('div','opts');
+  q.opts.forEach(function(t,i){var b=el('button','opt','<b>'+'ABCD'[i]+'</b><span>'+t+'</span>');b.type='button';b.setAttribute('aria-pressed','false');
+   b.onclick=function(){if(submitted)return;ans[q.n]=i;[].forEach.call(o.children,function(c,j){c.classList.toggle('sel',j===i);c.setAttribute('aria-pressed',j===i)});upd()};o.appendChild(b)});
+  inner.appendChild(o);it.opts=o;
+ }else{
+  if(q.stem)inner.appendChild(el('div',null,head));
+  var r=el('div','tx');var lead=(q.stem?'':head)+(q.pre||'');if(lead)r.appendChild(el('span',null,lead));
+  var inp=el('input');inp.type='text';inp.id='a'+q.n;inp.autocomplete='off';inp.spellcheck=false;inp.setAttribute('aria-label','Câu '+q.n);
+  inp.oninput=function(){if(submitted)return;ans[q.n]=inp.value;upd()};var long=!!(q.stem&&q.pre);if(long){r.style.display='block';inp.style.cssText='width:100%;margin-top:6px'}r.appendChild(inp);if(q.post&&!(long&&/^[.\s]*$/.test(q.post)))r.appendChild(el('span',null,q.post));inner.appendChild(r);it.inp=inp;
+ }
+ var fb=el('div','fb');inner.appendChild(fb);it.fb=fb;
+ if(q.img){var row=el('div','qrow');var im=new Image();im.src='data:image/jpeg;base64,'+q.img;im.alt='Biển báo';row.appendChild(im);row.appendChild(inner);box.appendChild(row)}else box.appendChild(inner);
+ return box;
+}
+function answered(){return items.filter(function(it){var v=ans[it.q.n];return v!==undefined&&String(v).trim()!==''}).length}
+function upd(){var a=answered();$('#st-done').textContent=a+'/40 câu';$('#prog').style.width=(a/40*100)+'%';$('#warn').style.display='none'}
+function tick(){var s=Math.floor((Date.now()-t0)/1000);$('#st-time').textContent=('0'+Math.floor(s/60)).slice(-2)+':'+('0'+s%60).slice(-2)}
+function grade(it){
+ var q=it.q,v=ans[q.n];
+ if(q.t==='mc')return v===q.a;
+ if(v===undefined)return false;var n=norm(v);return q.acc.some(function(a){return norm(a)===n});
+}
+function showAns(it){
+ var q=it.q;it.box.classList.add('done');it.box.classList.toggle('ok',it.ok);it.box.classList.toggle('no',!it.ok);
+ if(q.t==='mc'){[].forEach.call(it.opts.children,function(c,i){c.disabled=true;c.classList.remove('sel');if(i===q.a)c.classList.add('right');else if(i===ans[q.n])c.classList.add('wrong')});
+  it.fb.textContent=it.ok?'✓ Đúng':'✗ Đáp án đúng: '+'ABCD'[q.a]+'. '+q.opts[q.a].replace(/<[^>]+>/g,'')}
+ else{it.inp.readOnly=true;
+  it.fb.innerHTML=it.ok?'✓ Đúng':'✗ Đáp án: '+q.show.replace(/</g,'&lt;');
+  if(!it.ok){var b=el('button',null,'Tính đúng');b.type='button';b.title='Dùng khi em viết đúng nghĩa nhưng khác cách viết';b.onclick=function(){it.forced=true;it.ok=true;showAns(it);score()};it.fb.appendChild(b)}}
+}
+function score(){
+ var right=items.filter(function(i){return i.ok}).length,pt=right*0.25;
+ var rank=pt>=8?'Giỏi':pt>=6.5?'Khá':pt>=5?'Trung bình':'Cần cố gắng hơn';
+ var secs=[];EXAM.secs.forEach(function(s){var qs=s.blocks.filter(function(b){return b.k==='q'}).map(function(b){return b.q.n});var r=items.filter(function(i){return qs.indexOf(i.q.n)>-1&&i.ok}).length;secs.push('<span class="chip">'+s.title.split('.')[0]+': '+r+'/'+qs.length+'</span>')});
+ var nm=$('#nm').value.trim(),cl=$('#cl').value.trim();
+ var r=$('#res');r.className='res on';
+ r.innerHTML='<div class="row"><div class="big">'+String(pt).replace('.',',')+'<small> / 10</small></div><div><b>'+(nm?nm.replace(/</g,'&lt;')+(cl?' – '+cl.replace(/</g,'&lt;'):''):'Kết quả')+'</b><br>Xếp loại: <b>'+rank+'</b><br>Thời gian: '+$('#st-time').textContent+'</div></div><div class="chips"><span class="chip g">Đúng '+right+'</span><span class="chip b">Sai '+(40-right)+'</span>'+secs.join('')+'</div>';
+}
+function submit(force){
+ var left=40-answered();
+ if(left>0&&!force){var w=$('#warn');w.style.display='block';w.innerHTML='Còn '+left+' câu chưa làm. ';var y=el('button','btn alt','Nộp luôn');y.type='button';y.style.cssText='padding:4px 14px;font-size:15px;margin:0 6px';y.onclick=function(){submit(true)};var n=el('button','btn alt','Làm tiếp');n.type='button';n.style.cssText='padding:4px 14px;font-size:15px';n.onclick=function(){w.style.display='none'};w.appendChild(y);w.appendChild(n);return}
+ submitted=true;clearInterval(timer);
+ items.forEach(function(it){it.ok=grade(it);showAns(it)});
+ score();$('#submit').hidden=true;$('#again').hidden=false;$('#onlywrong').hidden=false;$('#warn').style.display='none';
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+$('#submit').onclick=function(){submit(false)};
+$('#again').onclick=function(){ans={};submitted=false;t0=Date.now();clearInterval(timer);timer=setInterval(tick,1000);document.body.classList.remove('hidden-ok');build();$('#res').className='res';$('#submit').hidden=false;$('#again').hidden=true;$('#onlywrong').hidden=true;upd();tick();window.scrollTo({top:0})};
+$('#onlywrong').onclick=function(){var on=document.body.classList.toggle('hidden-ok');this.textContent=on?'Xem tất cả câu':'Chỉ xem câu sai'};
+build();upd();tick();timer=setInterval(tick,1000);
+</script>
