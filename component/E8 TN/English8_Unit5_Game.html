@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>English 8 – Unit 5 Review Game</title>
+<style>
+:root{--g:#58cc02;--gd:#46a302;--b:#1cb0f6;--bd:#1899d6;--r:#ff4b4b;--rl:#ffdfe0;--gl:#d7ffb8;--y:#ffc800;--bg:#f4f7f2;--tx:#3c3c3c;--mut:#777;--line:#e5e5e5}
+*{box-sizing:border-box}body{margin:0;font-family:"Nunito","Segoe UI",system-ui,Arial,sans-serif;background:var(--bg);color:var(--tx);font-size:17px}
+header{display:flex;align-items:center;gap:10px;padding:10px 16px;background:#fff;border-bottom:2px solid var(--line);position:sticky;top:0;z-index:5}
+header .logo{font-weight:900;color:var(--gd);font-size:20px;cursor:pointer}header .sp{flex:1}
+.pill{background:#fff;border:2px solid var(--line);border-radius:20px;padding:4px 12px;font-weight:800}
+button{font:inherit;cursor:pointer}
+.btn{border:0;border-bottom:4px solid var(--gd);background:var(--g);color:#fff;font-weight:900;border-radius:14px;padding:10px 18px;text-transform:uppercase;letter-spacing:.5px}
+.btn:active{transform:translateY(2px);border-bottom-width:2px}.btn.b{background:var(--b);border-color:var(--bd)}.btn.w{background:#fff;color:var(--tx);border:2px solid var(--line);border-bottom-width:4px}.btn.r{background:var(--r);border-color:#d33}.btn.s{padding:6px 12px;font-size:14px}
+main{max-width:1100px;margin:0 auto;padding:16px}
+.hero{display:flex;gap:18px;align-items:center;background:#fff;border:2px solid var(--line);border-radius:20px;padding:18px;margin-bottom:16px}
+.mascot{font-size:70px;animation:bob 2.4s ease-in-out infinite}@keyframes bob{50%{transform:translateY(-8px)}}
+.modes{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}.modes .btn{opacity:.55}.modes .btn.on{opacity:1}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.lv{background:#fff;border:2px solid var(--line);border-bottom-width:5px;border-radius:18px;padding:14px;cursor:pointer;text-align:left}.lv:hover{border-color:var(--b)}
+.lv .ic{font-size:34px}.lv h3{margin:4px 0}.lv small{color:var(--mut)}.lv .bd{float:right;font-size:26px}
+.bar{display:flex;align-items:center;gap:12px;margin-bottom:14px}.x{border:0;background:none;font-size:26px;color:var(--mut)}
+.pg{flex:1;height:16px;background:var(--line);border-radius:10px;overflow:hidden}.pg i{display:block;height:100%;background:var(--g);transition:width .3s}
+.card{background:#fff;border:2px solid var(--line);border-radius:18px;padding:18px;margin-bottom:12px}
+.q{font-size:clamp(22px,2.6vw,30px);font-weight:800;line-height:1.35;margin:4px 0 14px}.num{color:var(--b);margin-right:8px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:700px){.opts{grid-template-columns:1fr}}
+.opt{display:flex;align-items:center;gap:10px;text-align:left;background:#fff;border:2px solid var(--line);border-bottom-width:5px;border-radius:16px;padding:12px 14px;font-weight:700;font-size:clamp(18px,2vw,24px)}
+.opt .l{border:2px solid var(--line);border-radius:8px;width:34px;height:34px;display:grid;place-items:center;flex:none;font-weight:900;color:var(--mut)}
+.opt .t{flex:1}.opt.sel{border-color:var(--b);background:#e3f4ff}.opt.ok{border-color:var(--g);background:var(--gl)}.opt.no{border-color:var(--r);background:var(--rl)}.opt.dim{opacity:.6;background:#fdf1f1}
+.spk{border:0;background:#e3f4ff;border-radius:50%;width:34px;height:34px;flex:none}.spk:hover{background:#c8e9ff}
+u.ul{text-decoration:none;background:#fff3a0;border-bottom:3px solid #e6a800;border-radius:3px;padding:0 1px;font-weight:900}
+.st{color:#d9480f;font-weight:900;text-decoration:underline}.ipa{color:var(--mut);font-weight:600;font-size:.8em}
+.pass{line-height:1.7}.pass p{margin:.4em 0}.bl{background:#eee;border-radius:6px;padding:0 6px;color:var(--mut);font-weight:700}.bl.cur{background:#fff3a0;color:#000}.hl{background:var(--gl);border:2px solid var(--g);border-radius:6px;padding:0 6px;font-weight:900}
+mark{background:#fff3a0;padding:1px 2px;border-radius:3px}details summary{cursor:pointer;font-weight:800;color:var(--bd)}
+.panel{border-left:6px solid var(--g);background:#f1ffe6}.panel.tr{border-color:var(--b);background:#eaf6ff}.panel.ex{border-color:var(--y);background:#fffbe6}.panel h4{margin:0 0 6px}
+.flag{background:#fff0d6;border:2px dashed #f0a000;border-radius:10px;padding:8px 10px;margin-top:8px}
+input.in{width:100%;font:inherit;font-size:clamp(18px,2vw,26px);padding:12px;border:2px solid var(--line);border-radius:14px}
+.fb{border-radius:14px;padding:12px 16px;margin:10px 0;font-weight:800}.fb.ok{background:var(--gl);color:#2b6a00}.fb.no{background:var(--rl);color:#a01414}
+.tbar{position:sticky;bottom:0;background:#fff;border-top:2px solid var(--line);padding:10px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;z-index:4}
+.sg{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:200px;min-height:140px;padding:14px;border-radius:14px;font-weight:900;text-align:center;border:5px solid #222}
+.sg.yw{background:#ffd23f}.sg.bl{background:#1b6fd6;color:#fff;border-radius:50%;width:170px;height:170px;min-width:0}.sg.rd{background:#fff;border:10px solid #d62828;border-radius:50%;width:170px;height:170px;min-width:0;font-size:30px}.sg.dg{background:#fff;border-color:#d62828;color:#d62828}
+table{border-collapse:collapse;width:100%;margin:8px 0}td,th{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}th{background:#f0f7ff}
+.say{cursor:pointer;border-bottom:2px dotted var(--b)}
+
+.toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:#333;color:#fff;padding:10px 18px;border-radius:12px;z-index:20}
+.stat{display:flex;gap:12px;flex-wrap:wrap}.stat div{flex:1;min-width:120px;background:#fff;border:2px solid var(--line);border-radius:14px;padding:12px;text-align:center;font-weight:900;font-size:22px}
+.qa{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.nb h3{margin:18px 0 6px;color:var(--gd)}.nb h4{margin:12px 0 4px;color:var(--bd)}.nb td.c{text-align:center;color:var(--mut);width:40px}.nb td.w{font-weight:800;white-space:nowrap}.nb td.p{color:var(--mut);white-space:nowrap}.nb ul{margin:4px 0 8px;padding-left:22px}.nb li{margin:3px 0}.nb .f{font-weight:800;color:#1b4f9c}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+@media print{header,.tbar,.noprint{display:none!important}body{background:#fff;font-size:12pt}main{max-width:none;padding:0}.card{border:0;padding:0;margin:0 0 8px}tr{page-break-inside:avoid}.say{border:0}}
+</style></head><body>
+<header><span class="logo" onclick="home()">🦉 Unit 5 Festivals</span><span class="sp"></span></header>
+<main id="app"></main>
+<script>
+/* ============ DỮ LIỆU (chỉnh sửa tại đây) ============ */
+// Vocabulary: word|loại từ|IPA|nghĩa|ví dụ (nếu tài liệu có)
+const VOC=`custom|n|/ˈkʌstəm/|phong tục|It is the custom for children to wear new clothes.
+tradition|n|/trəˈdɪʃn/|truyền thống|We have a tradition of making Chung cakes.
+decoration|n|/ˌdekəˈreɪʃn/|sự trang trí, đồ trang trí|buy some decorations for the house
+decorate|v|/ˈdekəreɪt/|trang trí|
+decorative|adj|/ˈdekərətɪv/|mang tính trang trí|
+decorative items|n|/ˈdekərətɪv ˈaɪtəmz/|các món đồ trang trí|
+kumquat|n|/ˈkʌmkwɒt/|quả quất|
+kumquat tree|n|/ˈkʌmkwɒt triː/|cây quất|
+peach|n|/piːtʃ/|quả đào|
+peach blossoms|n|/piːtʃ ˈblɒsəmz/|hoa đào|
+pole|n|/pəʊl/|cây sào, cây cột|
+bamboo pole|n|/ˌbæmˈbuː pəʊl/|cây tre, cây nêu|
+ornamental tree|n|/ˌɔːnəˈmentl triː/|cây cảnh|
+bell|n|/bel/|cái chuông|
+lantern|n|/ˈlæntən/|đèn lồng|
+carp|n|/kɑːp/|cá chép|release carps for Ong Cong Ong Tao
+offering|n|/ˈɒfərɪŋ/|lễ vật, vật cúng|
+admire|v|/ədˈmaɪə(r)/|chiêm ngưỡng, ngưỡng mộ|
+chase|v|/tʃeɪs/|đuổi theo|
+chase away|phr.v|/tʃeɪs əˈweɪ/|xua đuổi|
+pray|v|/preɪ/|cầu nguyện, khấn vái|
+place|v|/pleɪs/|đặt, để|place presents under the Christmas tree
+hang|v|/hæŋ/|treo|
+release|v|/rɪˈliːs/|thả, phóng thích|release carps for Ong Cong Ong Tao
+lucky|adj|/ˈlʌki/|may mắn|
+luck|n|/lʌk/|sự may mắn, vận may|
+bad luck|n|/ˌbæd ˈlʌk/|điều xui xẻo, vận rủi|
+bad spirit|n|/ˌbæd ˈspɪrɪt/|tà ma, linh hồn xấu|
+longevity|n|/lɒnˈdʒevəti/|tuổi thọ, sự trường thọ|
+ceremony|n|/ˈserəməni/|nghi lễ|
+bonding|n|/ˈbɒndɪŋ/|sự gắn kết|
+family bonding|n|/ˈfæməli ˈbɒndɪŋ/|sự gắn kết gia đình|
+reunion|n|/riːˈjuːniən/|sự đoàn tụ, sum họp|a family reunion on New Year's Day
+festival|n|/ˈfestɪvl/|lễ hội|
+festival goer|n|/ˈfestɪvl ˈɡəʊə(r)/|người đi lễ hội|
+monk|n|/mʌŋk/|nhà sư|
+martial arts|n|/ˌmɑːʃl ˈɑːts/|võ thuật|my favourite martial arts (Kung Fu, Karate)
+manner|n|/ˈmænə(r)/|cách cư xử, thái độ|
+table manners|n|/ˈteɪbl ˈmænəz/|phép tắc ăn uống|
+flower village|n|/ˈflaʊə(r) ˈvɪlɪdʒ/|làng hoa|visit flower villages to take pictures
+Sa Dec flower village|n|/sɑː ˈdek ˈflaʊə ˈvɪlɪdʒ/|làng hoa Sa Đéc|
+worship|v, n|/ˈwɜːʃɪp/|thờ cúng, sự thờ cúng|
+maintain|v|/meɪnˈteɪn/|duy trì|
+maintain tradition|phr|/meɪnˈteɪn trəˈdɪʃn/|duy trì truyền thống|We can maintain our traditions by organising the festivals.
+lion dance|n|/ˈlaɪən dɑːns/|múa lân (múa sư tử)|perform the lion dance
+unicorn dance|n|/ˈjuːnɪkɔːn dɑːns/|múa kì lân|
+ancestor|n|/ˈænsestə(r)/|tổ tiên|
+generation|n|/ˌdʒenəˈreɪʃn/|thế hệ|
+pagoda|n|/pəˈɡəʊdə/|ngôi chùa|
+chopsticks|n|/ˈtʃɒpstɪks/|đôi đũa|
+cutlery|n|/ˈkʌtləri/|bộ dao, dĩa, thìa|
+atmosphere|n|/ˈætməsfɪə(r)/|bầu không khí|
+contestant|n|/kənˈtestənt/|thí sinh|
+Lunar calendar|n|/ˈluːnə ˈkælɪndə(r)/|âm lịch|
+sticky rice|n|/ˈstɪki raɪs/|xôi, gạo nếp|
+Mid-Autumn Festival|n|/ˌmɪd ˈɔːtəm ˈfestɪvl/|Tết Trung thu|
+take place|v|/teɪk pleɪs/|diễn ra|Tet takes place in the first lunar month
+hold|v|/həʊld/|tổ chức (lễ hội)|hold the Spring Festival
+celebrate|v|/ˈselɪbreɪt/|kỷ niệm, ăn mừng|celebrate Tet
+celebration|n|/ˌselɪˈbreɪʃn/|lễ kỷ niệm, sự ăn mừng|Tet's celebration
+greeting|n|/ˈɡriːtɪŋ/|lời chào, sự chào hỏi|
+customary|adj|/ˈkʌstəməri/|theo phong tục|In Maori culture, it's customary for people to press their noses when greeting.`;
+// Từ bổ sung trong bài đọc: word|loại từ|IPA|nghĩa
+const VOC2=`spice|n|/spaɪs/|gia vị
+wrap|v|/ræp/|gói, bọc
+humid|adj|/ˈhjuːmɪd/|ẩm ướt
+significant|adj|/sɪɡˈnɪfɪkənt/|quan trọng, đáng kể
+supplier|n|/səˈplaɪə(r)/|nhà cung cấp
+preparation|n|/ˌprepəˈreɪʃn/|sự chuẩn bị
+serve|v|/sɜːv/|dọn ra (món ăn)
+two-handled cup|n|/ˌtuː ˈhændld kʌp/|cốc hai quai
+denote|v|/dɪˈnəʊt/|biểu thị
+togetherness|n|/təˈɡeðənəs/|sự gắn bó
+bride|n|/braɪd/|cô dâu
+groom|n|/ɡruːm/|chú rể
+candle|n|/ˈkændl/|cây nến
+drink a toast|phr|/drɪŋk ə təʊst/|nâng ly chúc mừng
+sprinkle|v|/ˈsprɪŋkl/|rắc
+petal|n|/ˈpetl/|cánh hoa
+vow|n|/vaʊ/|lời thề
+saying|n|/ˈseɪɪŋ/|câu nói, tục ngữ
+borrow|v|/ˈbɒrəʊ/|mượn
+bridal veil|n|/ˈbraɪdl veɪl/|khăn voan cô dâu
+handkerchief|n|/ˈhæŋkətʃɪf/|khăn tay
+garter|n|/ˈɡɑːtə(r)/|nịt tất
+single|adj|/ˈsɪŋɡl/|độc thân
+trust and faith|n|/trʌst ənd feɪθ/|sự tin tưởng, chung thủy
+remind sb of|phr|/rɪˈmaɪnd … əv/|gợi nhớ ai về
+interpersonal|adj|/ˌɪntəˈpɜːsənl/|giữa người với người
+corruption|n|/kəˈrʌpʃn/|tham nhũng
+bribery|n|/ˈbraɪbəri/|hối lộ
+gratitude|n|/ˈɡrætɪtjuːd/|lòng biết ơn
+occasion|n|/əˈkeɪʒn/|dịp
+funeral|n|/ˈfjuːnərəl/|đám tang
+symbolise|v|/ˈsɪmbəlaɪz/|tượng trưng
+defer to sb|phr.v|/dɪˈfɜː(r) tə/|nghe theo ai
+profuse thanks|n|/prəˈfjuːs θæŋks/|lời cảm ơn rối rít`;
+const V=VOC.split('\n').map(l=>{const[a,b,c,d,e]=l.split('|');return{w:a,pos:b,ipa:c,vi:d,ex:e||''}}).concat(VOC2.split('\n').map(l=>{const[a,b,c,d]=l.split('|');return{w:a,pos:b,ipa:c,vi:d,ex:'',extra:1}}));
+const IPA={};V.forEach(w=>{if(w.ipa)IPA[w.w.toLowerCase()]=w.ipa});IPA['chopstick']=undefined;
+
+const M=(q,o,a,vi,ex,x={})=>({k:'mcq',q,o,a,vi,ex,...x});
+const TF=['True','False'];
+/* ---- Passages ---- */
+const PASS={
+A:{title:'Tet Food',bl:1,t:`Tet is the biggest festival in Viet Nam. To {1} Tet, Vietnamese people make many tasty {2} foods. The most important food includes Chung cakes, sausages, boiled chicken, spring rolls, and sticky rice. Chung cake is made of sticky rice, pork, green beans, and other spices, wrapped in green leaves; {3}, this cake needs a lot of preparation. This cake can be kept for a long time, even though the weather is often humid during Tet. Other significant foods that cannot be missed to worship the ancestors are sausages, spring rolls, and sticky rice. Because sausages are difficult {4}, people often buy them from famous suppliers. However, sticky rice and spring rolls are easier to prepare and must be {5} immediately after they are cooked, so they are often made {6} home.`},
+B:{title:'Wedding Traditions around the World',bl:1,t:`A lovely custom from France comes in the form of a two-handled cup called the “coupe de mariage”. The cup was saved to be used from one {1} to another. Of course, {2} custom has long been established of drinking a toast to one another, but the two-handled cup adds a special touch to the weddings of today. Until recently, these cups {3} very difficult to find. Drinking from the same cup denotes “togetherness”.
+At a wedding in Germany, the bride and groom hold candles trimmed with flowers and ribbons. This beautiful old {4} could be included in a wedding of today, with the couple placing candles they have carried to the altar beside their unity candle. These candles could then be used {5} the unity candle at the end of the ceremony.
+Flowers have always played a very {6} part in Indian weddings. A lasting tradition passed along from generation to generation is that of the brother of the groom sprinkling flower petals over the heads of the couple following the wedding vows and at the end of the ceremony.`},
+C:{title:'Something Old, Something New',t:`Although there are various wedding styles in America, most weddings still follow certain traditions. One of those is an old saying that dates back to 19th century England about what a bride should wear or carry: “Something old, something new, something borrowed, something blue.”
+A bride wears something old to remind her of her family and the past. Some brides wear their mother's wedding dress or a piece of her jewellery. Something new means good luck and hope for a happy future with her new husband. Again, this item may be the dress, but often it is a pair of new shoes. Something borrowed, such as a friend's handkerchief or a married friend's bridal veil, means the bride has friends and family who are willing to help her. Something blue is a symbol of trust and faith between the couple. These days, some brides are creative with this item by painting their fingernails a light blue colour or wearing a garter on their leg. Another tradition says that the groom should take the garter after the ceremony and throw it to the single men. The man who catches it will be the next one to get married.`},
+D:{title:'Gift-giving Customs in Viet Nam',t:`Gift-giving is important in Viet Nam because of the significance of interpersonal relationships in Vietnamese culture.
+First and foremost, do not encourage corruption. There is a clear cut between gift-giving and bribery. Nevertheless, it is common in Viet Nam to exchange small gifts on certain occasions such as anniversaries, Tet holidays… to express respect, love, appreciation, or gratitude.
+Gift-giving customs depend on the context. If it is a private gift for one Vietnamese partner, you should give the gift on a private occasion. If you have a gift for the whole office or company, you should give it after the business meeting with all the office employees.
+Do not wrap a gift in black paper because this colour is unlucky and associated with funerals in Viet Nam. Gifts that symbolise cutting such as scissors, knives, and other sharp objects should be avoided because they mean the cutting of the relationship.
+Vietnamese may or may not open these gifts when they are received; leave the option to them. You will also receive gifts and should defer to your host as to whether you should open them when receiving or not. Regardless of when it is opened or what it is, profuse thanks are always appropriate.`}};
+const DICT={
+custom:`<b>custom</b> /ˈkʌstəm/ <i>noun</i> — an accepted way of behaving or of doing things in a society or a community.<br>▸ <b>follow the custom of</b> + V-ing: They still follow the custom of pinning money to the bride's dress.<br>▸ <b>It is the custom (here) (for sb) to</b> + V: It is the custom here to put flowers on the graves at Easter.<br>▸ <b>the custom of</b> + V-ing · <b>S + have the custom of</b> + V-ing · <b>There is a custom of</b> + V-ing<br>▸ <b>customary (adj)</b>: In Maori culture, it's customary for people to press their noses when greeting.`,
+tradition:`<b>tradition</b> /trəˈdɪʃn/ <i>noun</i> — a belief, custom or way of doing something that has existed for a long time among a particular group of people.<br>▸ <b>be steeped in tradition</b>: This region is steeped in tradition.<br>▸ <b>carry on the (family) tradition of</b> + V-ing: He is carrying on the family tradition of public service.<br>▸ <b>break with tradition (by + V-ing)</b>: They broke with tradition and got married quietly.<br>▸ <b>follow / maintain / keep (up) a tradition</b> · <b>have a tradition of</b> + V-ing · <b>according to tradition / traditionally</b>`};
+const SIGNS=[
+`<div class="sg yw"><span style="font-size:34px">⚠️</span><span>CAUTION</span><span>WET FLOOR</span></div>`,
+`<div class="sg bl"><span style="font-size:60px">🔄</span><small>TRAFFIC CIRCLE</small></div>`,
+`<div class="sg dg"><span style="font-size:44px">🐕</span><span>DANGER</span><span>BEWARE OF DOG</span></div>`,
+`<div class="sg bl"><span style="font-size:60px">🧤</span><small>WEAR GLOVES</small></div>`,
+`<div class="sg rd">🔪✈️<small style="font-size:14px;color:#d62828">NO SHARP OBJECTS</small></div>`];
+
+function buildItems(){
+const I={};
+/* L2 Grammar pages */
+const g=(t,h)=>({k:'page',title:t,html:h});
+const S=(s)=>`<span class="say" data-s="${s}">${s}</span>`;
+I.gram=[
+g('1. Indefinite articles: a / an',`<p>Dùng <b>a / an</b> trước <b>danh từ số ít đếm được</b>, khi nhắc đến <b>lần đầu</b> hoặc mang nghĩa “một”. Chọn a hay an theo <b>ÂM ĐẦU</b>, không theo chữ cái viết.</p><table><tr><th>a</th><td>trước <b>phụ âm</b>, hoặc nguyên âm đọc là /j/ (u trong uniform), /w/ (one)<br>${S('a cat')}, ${S('a house')}, ${S('a uniform')}, ${S('a university')}, ${S('a one-dollar bill')}</td></tr><tr><th>an</th><td>trước <b>nguyên âm</b> (a, e, i, o, u) hoặc <b>h câm</b><br>${S('an elephant')}, ${S('an idea')}, ${S('an orange')}, ${S('an hour')}, an MD /em-diː/</td></tr><tr><th>Đặc biệt</th><td>Nghề nghiệp: He is a doctor. · Cảm thán: What a lovely day! · Giá/tốc độ/tần suất: 50 miles an hour, twice a week</td></tr></table><div class="card panel ex"><b>Lưu ý (theo tài liệu):</b> a uniform /j/ – an umbrella /ʌ/ · a house – an hour (h câm) · a used razor /j/ · an MD /em/.</div>`),
+g('2. Definite article: the',`<table><tr><th>Dùng “the” khi</th><th>Ví dụ</th></tr><tr><td>Vật duy nhất</td><td>the Sun, the Moon, the President of Viet Nam</td></tr><tr><td>Đã được nhắc đến trước đó</td><td>I bought a book. <b>The</b> book is about history.</td></tr><tr><td>So sánh nhất, số thứ tự (first, second, only, last)</td><td>the best student, the only way, the third house</td></tr><tr><td>Một loài / một nhóm chung; the + adj chỉ nhóm người</td><td>the whale, the poor, the old</td></tr><tr><td>Sông, biển, đại dương, dãy núi, quần đảo, sa mạc</td><td>the Mekong River, the Pacific Ocean, the Himalayas</td></tr><tr><td>Tên nước số nhiều / có Republic, Kingdom, States</td><td>the United States, the Netherlands</td></tr><tr><td>Nhạc cụ (khi chơi)</td><td>play the piano, play the violin</td></tr></table>`),
+g('3. Zero article: Ø',`<table><tr><th>Không dùng mạo từ khi</th><th>Ví dụ</th></tr><tr><td>N số nhiều / không đếm được dùng nghĩa chung</td><td>Ø Water is necessary for life. Ø Cats are popular pets.</td></tr><tr><td>Tên riêng (người, nước, châu lục, thành phố, hồ, núi, đường, công viên)</td><td>Ø Paris is beautiful. Ø Mount Everest is high.</td></tr><tr><td>Bữa ăn (nói chung)</td><td>We have Ø breakfast at 7. (Nhưng: <b>a</b> big breakfast)</td></tr><tr><td>by + phương tiện</td><td>go Ø by bus, communicate Ø by email</td></tr><tr><td>Địa điểm công cộng dùng đúng mục đích chính</td><td>go to Ø school (đi học) ≠ go to <b>the</b> school (đến thăm trường)</td></tr><tr><td>Mùa, tháng, ngày; môn học; watch TV</td><td>Ø Summer is my favourite season. major in Ø English</td></tr></table><div class="card panel ex"><b>Tóm lại:</b> lần đầu nhắc → a / an; nhắc lại / đã xác định → the; nói chung chung → Ø. Có tính từ trước bữa ăn → a (a big dinner).</div>`),
+g('4. Custom / Tradition',`<table><tr><th>Cấu trúc</th><th>Ví dụ</th></tr><tr><td>S + have / has <b>a tradition of</b> + V-ing</td><td>${S('We have a tradition of making Chung cakes.')}</td></tr><tr><td>S + <b>follow / carry on the tradition of</b> + V-ing</td><td>Nam is carrying on the family tradition of growing kumquats.</td></tr><tr><td>S + <b>break with tradition</b> (by + V-ing)</td><td>They broke with tradition by going abroad at Tet.</td></tr><tr><td><b>It is the custom</b> (for sb) <b>to</b> V</td><td>It is the custom for children to wear new clothes.</td></tr><tr><td>S + have <b>the / a custom of</b> + V-ing · <b>There is a custom of</b> + V-ing</td><td>${S('In Viet Nam there is a custom of worshipping ancestors.')}</td></tr><tr><td><b>Traditionally,</b> + S + V</td><td>Traditionally, women take care of the family.</td></tr></table><div class="card panel ex"><b>Lưu ý:</b> tradition <b>of</b> / custom <b>of</b> / <b>by</b> + V-ing · It is the custom <b>for</b> sb <b>to</b> V.</div>`),
+g('5. Should / Shouldn\'t / Had better',`<table><tr><th>Cấu trúc</th><th>Nghĩa & ví dụ</th></tr><tr><td>S + <b>should</b> + V</td><td>nên (lời khuyên nhẹ): We should hand bowls with both hands.</td></tr><tr><td>S + <b>shouldn't</b> + V</td><td>không nên: We shouldn't sweep the floor on the first three days of Tet.</td></tr><tr><td>S + <b>had better</b> + V</td><td>tốt hơn hết là nên (khuyên mạnh): We had better wait for the host to start eating.</td></tr><tr><td>S + <b>had better not</b> + V</td><td>tốt hơn hết là đừng (cảnh báo mạnh): We had better not use bad words.</td></tr></table><div class="card panel ex"><b>Lưu ý:</b> should / had better + <b>V nguyên mẫu (không to)</b>.</div>`),
+g('6. Take place → People hold / organize / celebrate',`<p>${S('The Ok Om Bok Festival takes place in October.')}<br>→ ${S('People organize the Ok Om Bok Festival in October.')}</p><p>Chuyển chủ ngữ sang <b>People</b> + <b>hold / organize / celebrate</b> + lễ hội + thời gian.</p><div class="card panel ex"><b>Lưu ý:</b> <b>take place</b> = diễn ra, <b>không chia bị động</b>. hold = tổ chức; take place = diễn ra.</div>`)];
+/* L3 Pronunciation */
+const PR=[
+[['c{ar}p','{ar}ticle','p{ar}ty','tr{a}dition'],3,['ɑː','ɑː','ɑː','ə'],'ar trong âm tiết nhấn đọc /ɑː/; a trong âm tiết không nhấn thường đọc /ə/.','tradition: a đọc /ə/. Còn lại đọc /ɑː/.'],
+[['{c}onnect','{c}ook','dan{c}e','{c}ontrol'],2,['k','k','s','k'],'c trước e, i, y đọc /s/; còn lại đọc /k/.','dance: c đọc /s/ (c đứng trước e). Còn lại đọc /k/.'],
+[['p{a}ss','p{a}lm','sh{ar}p','m{a}n'],3,['ɑː','ɑː','ɑː','æ'],'ar trong âm tiết nhấn đọc /ɑː/; a đọc /æ/ trong man.','man: a đọc /æ/. Còn lại đọc /ɑː/.'],
+[['cust{o}m','c{o}rrect','cl{o}ckwise','{o}pinion'],2,['ə','ə','ɒ','ə'],'o trong âm tiết nhấn thường /ɒ/; không nhấn thường /ə/.','clockwise: o đọc /ɒ/ (âm tiết nhấn). Còn lại o ở âm tiết không nhấn đọc /ə/.'],
+[['kiddi{ng}','{g}enerate','spon{g}e','obli{g}e'],0,['ŋ','dʒ','dʒ','dʒ'],'g trước e, i, y và đuôi -ge thường đọc /dʒ/; ng ở cuối từ (đuôi -ing) đọc /ŋ/.','kidding: đuôi -ing, ng đọc /ŋ/ (g không đọc thành /dʒ/). Còn lại g đọc /dʒ/.'],
+[['de{s}ign','pre{s}erve','ba{s}ic','phy{s}ical'],2,['z','z','s','z'],'s giữa hai nguyên âm thường đọc /z/.','basic: s đọc /s/. Còn lại đọc /z/.'],
+[['cousi{n}','i{n}teresting','li{n}k','fo{n}d'],2,['n','n','ŋ','n'],'n đứng trước k, g đọc /ŋ/.','link: n đọc /ŋ/. Còn lại đọc /n/.'],
+[['la{n}tern','importa{n}t','mo{n}ey','tha{n}k'],3,['n','n','n','ŋ'],'n đứng trước k, g đọc /ŋ/.','thank: n đọc /ŋ/. Còn lại đọc /n/.'],
+[['m{a}ny','t{a}ke','pl{a}ce','w{a}ke'],0,['e','eɪ','eɪ','eɪ'],'a + phụ âm + e đọc /eɪ/.','many: a đọc /e/. Còn lại đọc /eɪ/.'],
+[['occup{a}tion','occ{a}sion','sh{a}ke','mir{a}culous'],3,['eɪ','eɪ','eɪ','æ'],'-ation, -asion, a + phụ âm + e đọc /eɪ/.','miraculous: a đọc /æ/. Còn lại đọc /eɪ/.']];
+I.pron=PR.map((p,i)=>({k:'mcq',fmt:'pron',q:`Find the word which has a different sound in the part underlined.`,o:p[0],a:p[1],snd:p[2],ex:p[4]+'<br>Quy tắc: '+p[3],tip:'Đọc to cả 4 từ, chỉ chú ý phần gạch chân. Xét theo ÂM, không theo chữ.',flag:p[5]}));
+/* L4 Stress */
+const ST=[
+[['HOL-i-day','DEC-o-rate','OF-fer-ing','ad-DI-tion'],3,'addition: -tion nhấn âm ngay trước đuôi → ad-DI-tion (âm 2). Còn lại nhấn âm 1 (decorate: động từ 3 âm tiết đuôi -ate nhấn âm 1).'],
+[['LAUGH-ter','pre-PARE','CHOP-stick','HEA-ven'],1,'prepare là động từ 2 âm tiết → nhấn âm 2 (pre-PARE). Các danh từ 2 âm tiết còn lại nhấn âm 1.'],
+[['RES-i-dent','CUT-le-ry','AN-ces-tor','per-MIS-sion'],3,'permission: -sion nhấn âm ngay trước đuôi → per-MIS-sion (âm 2). Còn lại nhấn âm 1.'],
+[['gen-e-RA-tion','pres-en-TA-tion','ne-CES-si-ty','ob-li-GA-tion'],2,'necessity: -ity nhấn âm ngay trước đuôi → ne-CES-si-ty (âm 2). Còn lại đuôi -tion nhấn âm 3.'],
+[['FES-ti-val','con-TES-tant','AT-mos-phere','FAM-i-ly'],1,'contestant: học thuộc, nhấn âm 2 (con-TES-tant). Còn lại nhấn âm 1.'],
+[['VIL-lage','bam-BOO','a-WAY','o-BEY'],0,'village là danh từ 2 âm tiết → nhấn âm 1. Còn lại nhấn âm 2 (bam-BOO, a-WAY là học thuộc; o-BEY động từ).'],
+[['CUS-tom','WOR-ship','main-TAIN','MID-night'],2,'maintain là động từ 2 âm tiết → main-TAIN (âm 2). Còn lại nhấn âm 1.'],
+[['re-SPECT','MEN-tion','EX-pert','WOR-ship'],0,'respect: nhấn âm 2 (re-SPECT). Còn lại nhấn âm 1.'],
+[['pa-GO-da','COM-ple-ment','so-CI-e-ty','tra-DI-tion'],1,'complement: nhấn âm 1 (COM-ple-ment). Còn lại nhấn âm 2 (pa-GO-da học thuộc; -ety, -tion nhấn âm trước đuôi).'],
+[['CUS-tom','ex-PLAIN','CHOP-stick','MAN-ner'],1,'explain là động từ 2 âm tiết → ex-PLAIN (âm 2). Còn lại nhấn âm 1.']];
+I.stress=ST.map(s=>({k:'mcq',fmt:'stress',q:'Choose the word whose stress is not the same as that of the others.',o:s[0],a:s[1],ex:s[2],tip:'Đọc to từng từ, đánh dấu âm tiết được nhấn; xác định loại từ và đuôi (-tion, -sion, -ity).'}));
+/* L5 Reading */
+const RA=[['A','celebrate',['celebrate','join','take part in','participate'],0,'To celebrate Tet = để đón Tết. celebrate + N (celebrate Tet) là collocation tự nhiên; join / participate / take part in không dùng tự nhiên với “To ___ Tet” trong ngữ cảnh này.','Để đón Tết, người Việt làm nhiều món ăn truyền thống ngon.'],
+['A','',['delicious','traditional','spicy','tradition'],1,'tasty <b>traditional</b> foods: adj + N (foods). tradition là danh từ nên sai từ loại; delicious lặp nghĩa với “tasty”; spicy (cay) không hợp ngữ cảnh chung.','các món ăn truyền thống ngon'],
+['A','',['because','while','therefore','however'],2,'Vế sau là KẾT QUẢ của vế trước (gói nhiều lớp → cần nhiều công chuẩn bị) → <b>therefore</b> (vì vậy). however = tuy nhiên (đối lập); because/while sai quan hệ.','…; vì vậy, bánh cần nhiều công chuẩn bị.'],
+['A','',['to make','making','make','makes'],0,'difficult + <b>to V</b> → difficult to make.','Vì giò chả khó làm nên người ta thường mua từ nhà cung cấp nổi tiếng.'],
+['A','',['touched','smelled','looked','served'],3,'must be <b>served</b> immediately: bị động của serve (dọn món ăn ra). touched/smelled/looked không hợp nghĩa.','phải được dọn ra ngay sau khi nấu.'],
+['A','',['to','for','at','in'],2,'<b>at</b> home (cụm cố định).','nên thường được làm ở nhà.'],
+['B','',['generation','ancestor','ceremony','worshiper'],0,'from one <b>generation</b> to another = từ thế hệ này sang thế hệ khác.','Chiếc cốc được giữ để dùng từ thế hệ này sang thế hệ khác.'],
+['B','',['some','the','a','an'],1,'<b>the</b> custom (of drinking a toast…) đã được xác định bằng cụm “of drinking a toast to one another”; some/a/an không dùng.','Tất nhiên, phong tục nâng ly chúc nhau đã có từ lâu.'],
+['B','',['have been','were','had been','are'],1,'Until recently (cho đến gần đây) → quá khứ đơn <b>were</b>.','Cho đến gần đây, những chiếc cốc này rất khó tìm.'],
+['B','',['reunion','festival','tradition','worship'],2,'This beautiful old <b>tradition</b> = truyền thống cổ xưa đẹp đẽ (nói về việc cô dâu chú rể cầm nến).','Truyền thống cổ xưa đẹp đẽ này có thể được đưa vào đám cưới ngày nay.'],
+['B','',['to light','lighting','light','lighted'],0,'be used <b>to V</b> = được dùng để làm gì → to light.','Những cây nến này có thể được dùng để thắp nến đoàn kết.'],
+['B','',['import','important','importance','importantly'],1,'very + adj + N (part): play a very <b>important</b> part = đóng vai trò rất quan trọng.','Hoa luôn đóng vai trò rất quan trọng trong đám cưới Ấn Độ.']];
+I.read=[];
+RA.forEach((r,i)=>{const n=i%6+1;I.read.push({k:'mcq',ctx:r[0],blank:n,q:`Blank (${n}) – ${PASS[r[0]].title}`,o:r[2],a:r[3],ex:r[4],vi:r[5],tip:'Đọc lướt cả đoạn → nhìn từ TRƯỚC và SAU chỗ trống.',part:r[0]})});
+const RC=(c,q,o,a,vi,ex,ev,x={})=>({k:'mcq',ctx:c,q,o,a,vi,ex,ev:ev||[],part:c,...x});
+const EVC=['dates back to 19th century England about what a bride should wear or carry'];
+I.read.push(
+RC('C','1. The saying “something old, something new, something borrowed, something blue” dates back to 19th century England.',TF,0,'Câu nói “something old…” có từ nước Anh thế kỷ 19.','Bài viết: <i>dates back to 19th century England</i> → khớp → <b>True</b>.',EVC),
+RC('C','2. A bride wears something new to remind her of her family and the past.',TF,1,'Cô dâu mặc/mang đồ mới để nhớ về gia đình và quá khứ.','Bài: something <b>old</b> mới gợi nhớ gia đình và quá khứ; something <b>new</b> nghĩa là may mắn và hy vọng. Đề đổi old ↔ new → <b>False</b>.',['A bride wears something old to remind her of her family and the past.','Something new means good luck and hope for a happy future with her new husband.']),
+RC('C','3. Something borrowed shows that the bride has friends and family who are willing to help her.',TF,0,'Đồ mượn cho thấy cô dâu có bạn bè và gia đình sẵn lòng giúp đỡ.','Bài nói đúng như vậy → <b>True</b>.',['means the bride has friends and family who are willing to help her']),
+RC('C','4. The man who catches the garter will be the last person to get married.',TF,1,'Người đàn ông bắt được nịt tất sẽ là người cuối cùng kết hôn.','Bài: <i>the next one</i> to get married (người TIẾP THEO), không phải <i>the last</i> (cuối cùng) → <b>False</b>. Chú ý cặp next ↔ last.',['The man who catches it will be the next one to get married.']),
+RC('C','5. Which of the following is a good title for the text?',['Various types of weddings.','A wedding tradition and its meaning.','What should be worn on your wedding day.','How to plan a traditional wedding.'],1,'Đâu là tiêu đề phù hợp cho bài đọc?','Chọn ý bao quát cả bài: bài giải thích câu nói “something old, new, borrowed, blue” và ý nghĩa từng món → B. A quá rộng (bài chỉ nói một truyền thống); C chỉ là một chi tiết; D bài không hướng dẫn cách tổ chức.',[],{tip:'Tiêu đề / ý chính: chọn ý bao quát cả bài, không chọn chi tiết nhỏ.'}),
+RC('C','6. Why do some brides wear a blue garter on their leg?',['Because too many brides paint their fingernails a light blue colour.','Because it is a symbol of trust and faith between the bride and the groom.','To show how the couple can be lucky in their marriage.','To show how popular something blue is in a wedding.'],1,'Vì sao một số cô dâu đeo nịt tất xanh ở chân?','Bài: <i>Something blue is a symbol of trust and faith between the couple</i> → B. (Sơn móng tay xanh là một cách khác; “lucky” thuộc về something new.)',['Something blue is a symbol of trust and faith between the couple.']),
+RC('D','1. Personal relationships play an important role in gift-giving customs in Viet Nam.',TF,0,'Các mối quan hệ cá nhân đóng vai trò quan trọng trong phong tục tặng quà ở Việt Nam.','Câu đầu bài: gift-giving quan trọng vì <i>interpersonal relationships</i> quan trọng → <b>True</b>.',['Gift-giving is important in Viet Nam because of the significance of interpersonal relationships in Vietnamese culture.']),
+RC('D','2. It is acceptable to wrap a gift in black paper in Viet Nam.',TF,1,'Có thể gói quà bằng giấy đen ở Việt Nam.','Bài: <i>Do not wrap a gift in black paper</i> vì màu đen xui xẻo (unlucky), gắn với đám tang → <b>False</b>.',['Do not wrap a gift in black paper because this colour is unlucky and associated with funerals in Viet Nam.']),
+RC('D','3. Sharp objects such as scissors or knives should be avoided as gifts because they symbolise cutting the relationship.',TF,0,'Không nên tặng vật sắc nhọn như kéo, dao vì chúng tượng trưng cho việc cắt đứt quan hệ.','Bài nói đúng như vậy → <b>True</b>.',['Gifts that symbolise cutting such as scissors, knives, and other sharp objects should be avoided because they mean the cutting of the relationship.']),
+RC('D','4. Vietnamese people are always required to open a gift immediately in front of the giver.',TF,1,'Người Việt luôn bắt buộc phải mở quà ngay trước mặt người tặng.','Bài: <i>may or may not open</i>; <i>leave the option to them</i> → không bắt buộc. “always required” sai → <b>False</b>. Cẩn thận từ always.',['Vietnamese may or may not open these gifts when they are received; leave the option to them.']),
+RC('D','5. According to the passage, why is gift-giving important in Viet Nam?',['Because it helps to establish a friendship.','Because it\'s common in Vietnamese culture.','Because it\'s the best way to build up a stable relationship.','Because personal relationships play a vital role in Vietnamese culture.'],3,'Theo bài đọc, vì sao tặng quà quan trọng ở Việt Nam?','Câu đầu bài nêu lý do: because of the significance of interpersonal relationships → D. A, B, C không được bài nêu là lý do.',['Gift-giving is important in Viet Nam because of the significance of interpersonal relationships in Vietnamese culture.']),
+RC('D','6. Which of the following is NOT true about gift-giving customs in Viet Nam?',['Gift-giving is a good way of strengthening relationships.','Gifts for your partners should be given on private occasions.','You should avoid giving anything sharp.','It is considered rude not to open the gift in front of the giver.'],3,'Điều nào KHÔNG đúng về phong tục tặng quà ở Việt Nam?','Đối chiếu từng phương án: B (private occasion) và C (sharp objects) có trong bài; A phù hợp ý bài. D trái với bài: <i>may or may not open… leave the option to them</i> → chọn D.',['Vietnamese may or may not open these gifts when they are received; leave the option to them.'],{tip:'Câu NOT true: phương án nào bài nói ngược lại là đáp án.'}));
+/* L6 Word form */
+const WF=[['Wearing new clothes on Tet is a long-standing {} in Viet Nam.','TRADITIONAL','tradition','danh từ','a + adj (long-standing) + <b>N</b>','traditional (adj) → tradition (n): bỏ đuôi -al.','Mặc quần áo mới ngày Tết là một truyền thống lâu đời ở Việt Nam.'],
+['The whole town was full of {} and happiness during the New Year.','FESTIVE','festivity','danh từ','full of + <b>N</b>','festive (adj) → festivity (n): -ive → -ity.','Cả thị trấn tràn ngập không khí lễ hội và niềm vui dịp năm mới.'],
+['It\'s important to {} the beautiful customs of our ancestors.','MAINTENANCE','maintain','động từ','to + <b>V</b>','maintenance (n) → maintain (v). Đề cho sẵn danh từ, phải đổi về động từ.','Điều quan trọng là duy trì những phong tục đẹp của tổ tiên.'],
+['Children should talk {} to their grandparents and elders.','RESPECT','respectfully','trạng từ','V (talk) + <b>adv</b>','respect (v, n) → respectful (adj) → respectfully (adv): + -ful + -ly.','Trẻ em nên nói chuyện lễ phép với ông bà và người lớn tuổi.'],
+['They were willing to show their {} of the new rules.','ACCEPT','acceptance','danh từ','their + <b>N</b>','accept (v) → acceptance (n): + -ance.','Họ sẵn lòng thể hiện sự chấp nhận các quy định mới.'],
+['The children looked at the folk artists with great {}.','ADMIRE','admiration','danh từ','great + <b>N</b> (sau giới từ with)','admire (v) → admiration (n): + -ation.','Bọn trẻ nhìn các nghệ nhân dân gian với sự ngưỡng mộ lớn.'],
+['Whether a custom is good or bad is always {}.','CONTEST','contestable','tính từ','be (is) + <b>adj</b>','contest (n, v) → contestable (adj) = có thể tranh cãi: + -able.','Một phong tục tốt hay xấu thì luôn có thể tranh cãi.'],
+['The lanterns were hung {} across the street for the Mid-Autumn Festival.','DECORATION','decoratively','trạng từ','V (were hung) + <b>adv</b>','decoration (n) → decorate (v) → decoratively (adv) = để trang trí.','Những chiếc đèn lồng được treo trang trí dọc con phố cho Tết Trung thu.'],
+['I felt {} to help my neighbour prepare the Tet feast.','OBLIGATION','obliged','tính từ','feel + <b>adj</b>','obligation (n) → oblige (v) → obliged (adj) = cảm thấy có bổn phận.','Tôi cảm thấy có bổn phận giúp hàng xóm chuẩn bị mâm cỗ Tết.'],
+['The best way to learn about other cultures is to {} with local people.','SOCIAL','socialize','động từ','to + <b>V</b>','social (adj) → socialize (v): + -ize.','Cách tốt nhất để tìm hiểu văn hóa khác là giao lưu với người dân địa phương.']];
+const WALT={festivity:['festivities'],contestable:['contested'],obliged:['obligated'],socialize:['socialise']};
+I.wf=WF.map(w=>({k:'in',q:w[0].replace('{}','____________')+` (<b>${w[1]}</b>)`,ans:[w[2],...(WALT[w[2]]||[])],hint:`Gợi ý: chỗ trống cần <b>${w[3]}</b> (${w[4]}).`,ex:`Vị trí: ${w[4]} → cần ${w[3]}.<br>${w[5]}`,vi:w[6],full:w[0].replace('{}',w[2]),tip:'Đề cho sẵn một dạng từ – phải đổi sang dạng khác, không chép lại.'}));
+const FAM=[['tradition (n)','traditional (adj) · traditionally (adv)'],['admire (v)','admiration (n) · admirable (adj) · admirably (adv)'],['festival (n)','festive (adj) · festivity (n) không khí lễ hội'],['contest (n, v)','contestant (n) thí sinh · contestable (adj) có thể tranh cãi'],['maintain (v)','maintenance (n) · maintainable (adj)'],['decorate (v)','decoration (n) · decorator (n) · decorative (adj) · decoratively (adv)'],['respect (v, n)','respectful (adj) · respectfully (adv) · respectable (adj) · respective (adj)'],['oblige (v)','obligation (n) · obligatory (adj) · obliged (adj)'],['accept (v)','acceptance (n) · acceptable (adj) · acceptably (adv) · unacceptable (adj)'],['society (n)','social (adj) · socially (adv) · socialize (v)']];
+I.wf.push({k:'page',title:'Word Family (bấm vào từ để nghe)',html:'<table><tr><th>Từ gốc</th><th>Họ từ</th></tr>'+FAM.map(f=>`<tr><td><span class="say" data-s="${f[0].replace(/ \(.*/,'')}"><b>${f[0]}</b></span></td><td>${f[1].split(' · ').map(x=>`<span class="say" data-s="${x.replace(/ \(.*/,'')}">${x}</span>`).join(' · ')}</td></tr>`).join('')+'</table>'});
+/* L7 MCQ */
+const A=[
+['Kung Fu and Karate are my favourite ________.',['lion dance','table manners','martial arts','flower village'],2,'Kung Fu và Karate là môn võ thuật yêu thích của tôi.','martial arts = võ thuật. Loại: lion dance = múa lân; table manners = phép tắc ăn uống; flower village = làng hoa.'],
+['The Vietnamese New Year ________ from the first day of the first month of the Lunar calendar for at least three days.',['takes after','takes off','takes up','takes place'],3,'Tết Nguyên đán diễn ra từ mùng 1 tháng Giêng âm lịch, kéo dài ít nhất ba ngày.','take place = diễn ra (sự kiện); chủ ngữ số ít (The Vietnamese New Year) → <b>takes place</b>. take after = giống (ai); take off = cất cánh/cởi ra; take up = bắt đầu (sở thích).'],
+['Taking care of the family is ________ considered women\'s duty in many Eastern countries.',['traditional','traditionally','tradition','traditionalism'],1,'Ở nhiều nước phương Đông, chăm sóc gia đình theo truyền thống được coi là bổn phận của phụ nữ.','Cần trạng từ bổ nghĩa cho “considered”: adv + V3 → traditionally.'],
+['It\'s considered good manners ________ younger generations in the family to invite elders to eat before starting a meal.',['at','up','on','for'],3,'Mời người lớn ăn trước khi bắt đầu bữa ăn được coi là phép lịch sự đối với thế hệ trẻ trong gia đình.','good manners <b>for</b> sb to V.'],
+['We have a ________ every New Year\'s Day.',['martial arts','table manners','chase away','family reunion'],3,'Chúng tôi có buổi sum họp gia đình vào mỗi ngày đầu năm mới.','a family reunion = buổi sum họp gia đình. Loại: martial arts = võ thuật; table manners = phép tắc ăn uống; chase away = xua đuổi.'],
+['It\'s the ________ in that country for women to get married in white.',['habit','custom','costume','hobby'],1,'Ở nước đó, phụ nữ mặc đồ trắng khi kết hôn là phong tục.','It\'s the <b>custom</b> (for sb) to V. habit = thói quen, costume = trang phục, hobby = sở thích.'],
+['They ________ presents under the Christmas trees on Christmas Day.',['maintain','place','release','pray'],1,'Họ đặt quà dưới cây thông Giáng sinh vào ngày Giáng sinh.','place (v) = đặt, để. maintain = duy trì; release = thả; pray = cầu nguyện.'],
+['People in Ha Noi ________ to give Ong Cong Ong Tao a ride to Heaven.',['release carps','unicorn dance','release lanterns','bad spirit'],0,'Người Hà Nội thả cá chép để tiễn ông Công ông Táo lên trời.','release carps (thả cá chép) for Ong Cong Ong Tao. unicorn dance = múa lân; bad spirit = tà ma.'],
+['Shaking hands is the most popular way ________ greeting in Britain.',['at','of','against','to'],1,'Bắt tay là cách chào hỏi phổ biến nhất ở Anh.','way <b>of</b> + V-ing / N.'],
+['How many people were there at the family ________ last weekend?',['reunion','union','unit','united'],0,'Có bao nhiêu người ở buổi sum họp gia đình cuối tuần trước?','family <b>reunion</b> = sum họp gia đình.'],
+['We should buy some ________ for the house before Tet.',['decoratively','decorate','decorations','decorative'],2,'Chúng ta nên mua đồ trang trí cho nhà trước Tết.','some + N số nhiều → decorations. decorate (v), decorative (adj), decoratively (adv) sai từ loại.'],
+['In Maori culture, it\'s ________ for people to press their noses when it comes to greeting.',['customer','customize','customary','custom'],2,'Trong văn hóa Maori, theo phong tục, người ta chạm mũi khi chào hỏi.','Sau it\'s (không có “the”) cần tính từ: it\'s <b>customary</b> (for sb) to V. Nếu có “the” thì mới dùng danh từ: it\'s the custom (for sb) to V. customer = khách hàng; customize = tùy chỉnh.'],
+['Many young people don\'t ________ the tradition of living with their parents when they are eighteen.',['try','follow','obey','take'],1,'Nhiều bạn trẻ không theo truyền thống sống cùng bố mẹ khi 18 tuổi.','<b>follow</b> the tradition (of). obey = vâng lời.'],
+['In Japan, take ________ your shoes at the entrance to all homes, and most businesses and hotels.',['off','at','in','to'],0,'Ở Nhật, hãy cởi giày ở lối vào nhà, hầu hết cửa hàng và khách sạn.','take <b>off</b> = cởi ra.'],
+['Many people visit ________ to take pictures with the blooming flowers.',['flower villages','Buddhist temples','ornamental tree','kumquat tree'],0,'Nhiều người đến thăm các làng hoa để chụp ảnh với hoa đang nở.','visit <b>flower villages</b> (làng hoa) – nơi có hoa đang nở để chụp ảnh. Buddhist temples = chùa; ornamental tree, kumquat tree là danh từ số ít đếm được, đứng một mình sau visit phải có mạo từ, và cũng không hợp nghĩa “blooming flowers”.'],
+['We ________ the Spring Festival on the 15th of January in the lunar calendar.',['occur','hold','happen','take place'],1,'Chúng tôi tổ chức Lễ hội mùa xuân vào ngày 15 tháng Giêng âm lịch.','<b>hold</b> = tổ chức (chủ ngữ là người, có tân ngữ); take place = diễn ra, không có tân ngữ.'],
+['Festivals are important because they keep some village traditions ________.',['alive','lively','living','live'],0,'Lễ hội quan trọng vì giữ cho một số truyền thống làng quê còn tồn tại.','keep sth <b>alive</b>.'],
+['The Japanese perform ________ during New Year celebrations.',['bamboo dance','flower village','lion dance','festival goer'],2,'Người Nhật biểu diễn múa lân trong dịp đón năm mới.','perform the <b>lion dance</b>. flower village = làng hoa; festival goer = người đi lễ hội.'],
+['Linda fell in love with Peter without knowing about his real ________ status.',['social','socialability','society','socialable'],0,'Linda yêu Peter mà không biết địa vị xã hội thật sự của anh ấy.','<b>social</b> (adj) + N (status).'],
+['Tet\'s ________ is the longest holiday which may last up to seven to nine days.',['celebration','celebratory','celebrated','celebrate'],0,'Lễ đón Tết là kỳ nghỉ dài nhất, có thể kéo dài 7–9 ngày.','Tet\'s + N → <b>celebration</b>.']];
+const B=[
+['Thank you. That was ________ very nice lunch.',['the','a','an','Ø'],1,'Cảm ơn. Đó là bữa trưa rất ngon.','a + adj + bữa ăn. “very” bắt đầu bằng phụ âm → <b>a</b>.','a very nice lunch'],
+['He majors in ________ English.',['a','Ø','the','an'],1,'Anh ấy học chuyên ngành tiếng Anh.','Môn học, ngôn ngữ → <b>Ø</b>.','major in Ø English'],
+['We often watch ________ television.',['a','an','the','Ø'],3,'Chúng tôi thường xem tivi.','watch television (nghĩa chung) → <b>Ø</b>.','watch Ø television'],
+['My aunt has ________ interesting novel.',['an','Ø','the','a'],0,'Dì tôi có một cuốn tiểu thuyết hay.','interesting bắt đầu bằng ÂM nguyên âm → <b>an</b>; nhắc lần đầu nên không dùng the.','an interesting'],
+['________ used razor blade is useless.',['The','A','Ø','An'],1,'Lưỡi dao cạo đã dùng thì vô dụng.','used đọc /juːzd/, bắt đầu bằng âm /j/ (phụ âm) → <b>A</b>.','A used razor blade'],
+['We had ________ meal in a restaurant.',['the','an','Ø','a'],3,'Chúng tôi đã ăn một bữa ở nhà hàng.','a meal (đếm được, nhắc lần đầu; meal bắt đầu bằng phụ âm) → <b>a</b>.','a meal'],
+['Can you turn off ________ television, please?',['the','a','an','Ø'],0,'Bạn tắt cái tivi đi được không?','Cái tivi cụ thể, cả hai người đều biết → <b>the</b>.','the television'],
+['He tried to park his car but ________ space wasn\'t big enough.',['the','Ø','a','an'],0,'Anh ấy cố đỗ xe nhưng chỗ trống không đủ rộng.','Chỗ trống đã xác định trong ngữ cảnh → <b>the</b>.','the space'],
+['We live at ________ third house from the church.',['Ø','an','a','the'],3,'Chúng tôi sống ở ngôi nhà thứ ba tính từ nhà thờ.','the + số thứ tự → <b>the</b>.','the third house'],
+['Where can ________ people buy everything they need?',['Ø','a','an','the'],0,'Người ta có thể mua mọi thứ cần thiết ở đâu?','N số nhiều nói chung → <b>Ø</b>.','Ø people']];
+I.mc=A.map((x,i)=>M(x[0],x[1],x[2],x[3],x[4],{part:'A',n:i+1,flag:x[5]})).concat(B.map((x,i)=>M(x[0],x[1],x[2],x[3],x[4],{part:'B',n:21+i,f:'Chọn theo ÂM đầu và ngữ cảnh: a (phụ âm) · an (nguyên âm) · the (đã xác định, số thứ tự) · Ø (nói chung, môn học, watch TV).',tip:'Cụm ghi nhớ: '+x[5]})));
+I.mc.forEach((m,i)=>{if(m.n)m.q=m.n+'. '+m.q});
+/* L8 Transformation */
+const TR=[
+['There\'s a tradition that English people drink a lot of tea.','English people follow the tradition of ','drinking a lot of tea','S + follow the tradition of + V-ing = theo truyền thống làm gì (vẫn làm theo cái có từ lâu đời).','Người Anh theo truyền thống uống nhiều trà.'],
+['Last year we went to Thailand on Tet holiday.','Last year we broke with tradition by ','going to Thailand on Tet holiday','S + broke with tradition by + V-ing = phá lệ / làm khác truyền thống bằng cách làm gì.','Năm ngoái chúng tôi phá lệ đi Thái Lan dịp Tết.'],
+['The Vietnamese have the custom of worshipping ancestors.','In Viet Nam there is a custom of ','worshipping ancestors','There is a custom of + V-ing (In + nơi chốn) = có một phong tục là… (ở nơi nào đó).','Ở Việt Nam có phong tục thờ cúng tổ tiên.'],
+['It\'s the custom for Vietnamese parents to celebrate their baby\'s first month.','Vietnamese parents have the custom of ','celebrating their baby\'s first month','sb + have the custom of + V-ing = ai đó có phong tục làm gì.','Cha mẹ Việt Nam có phong tục làm lễ đầy tháng cho con.'],
+['According to tradition, Vietnamese people celebrate the Mid-Autumn Festival every year.','Vietnamese people have a tradition of ','celebrating the Mid-Autumn Festival every year','S + have / has a tradition of + V-ing = có truyền thống làm gì.','Người Việt có truyền thống đón Tết Trung thu hằng năm.'],
+['The Ok Om Bok Festival takes place in October.','People organize ','the Ok Om Bok Festival in October','People + organize / hold + S + thời gian: take place (diễn ra) → người ta tổ chức.','Người ta tổ chức lễ Ok Om Bok vào tháng 10.'],
+['It\'s a good idea to hand bowls with both hands.','We should ','hand bowls with both hands','S + should + V = nên làm gì (lời khuyên nhẹ).','Chúng ta nên đưa bát bằng hai tay.'],
+['We should wait for the host to start eating.','We had better ','wait for the host to start eating','S + had better + V = tốt hơn hết là nên (lời khuyên mạnh).','Tốt hơn hết là nên chờ chủ nhà bắt đầu ăn.'],
+['Don\'t sweep the floor on the first three days of Tet.','We shouldn\'t ','sweep the floor on the first three days of Tet','S + shouldn\'t + V = không nên làm gì.','Chúng ta không nên quét nhà ba ngày đầu Tết.'],
+['Never use bad words in conversations with others, especially with older people.','We had better not ','use bad words in conversations with others, especially with older people','S + had better not + V = tốt hơn hết là đừng (cảnh báo mạnh).','Tốt hơn hết là đừng nói tục, nhất là với người lớn tuổi.'],
+['Taking care of the family is traditionally considered women\'s duty in many Eastern countries.','Traditionally, ','taking care of the family is considered women\'s duty in many Eastern countries','Traditionally, + S + be + V3 = theo truyền thống, … (đưa trạng từ lên đầu câu).','Theo truyền thống, chăm sóc gia đình là bổn phận của phụ nữ ở nhiều nước phương Đông.'],
+['Organising the festivals is one way for us to maintain our traditions.','We can maintain our traditions by ','organising the festivals','S + can + V + by + V-ing = có thể làm gì bằng cách làm gì (maintain traditions by + V-ing).','Chúng ta có thể duy trì truyền thống bằng cách tổ chức các lễ hội.']];
+I.tr=TR.map((t,i)=>({k:'in',q:`${i+1}. ${t[0]}`,pre:t[1],ans:[t[2],...(t[2].includes('organising')?['organizing the festivals']:[]),...(t[2].includes('worshipping')?['worshiping ancestors']:[])],hint:'Gạch chân cụm chính; of / by → V-ing; should / had better → V nguyên mẫu.',f:t[3],ex:`Công thức: ${t[3]}<br>Hai câu cùng nghĩa vì chỉ đổi cấu trúc, giữ nguyên thông tin.`,vi:`${t[4]} (Câu gốc: ${t[0]})`,hl:1}));
+/* L9 Signs */
+const SG=[
+['What does the notice say?',['The floor is wet, so you should walk carefully.','You are responsible for cleaning this floor.','You are not allowed to use this floor for walking.','It is safe to run fast in this area.'],0,'Sàn ướt, nên đi cẩn thận.','WET FLOOR – walk carefully. B, C, D thêm thông tin không có trên biển.'],
+['What does the sign say?',['All vehicles must drive through the centre of the circle.','You must drive straight ahead at the intersection.','Vehicles must travel on top of the traffic circle.','Drivers are required to move around the traffic circle.'],3,'Tài xế phải đi vòng quanh vòng xuyến.','Biển tròn xanh = bắt buộc; move around = đi vòng quanh. A, B, C sai hướng đi.'],
+['What does the notice say?',['You need to walk the dog in this area.','You should be cautious because there is a dog here.','Do not provide food for the animal.','It\'s safe to interact with the dog.'],1,'Hãy cẩn thận vì ở đây có chó.','be cautious – there is a dog here (BEWARE OF DOG). “Safe” là ý ngược lại.'],
+['What does the notice say?',['It\'s a good idea to wear gloves in this place.','Hand protection is mandatory before entering this place.','Remember to bring your own gloves to this zone.','You don\'t have to wear gloves in this place.'],1,'Bắt buộc bảo vệ tay (đeo găng) trước khi vào.','mandatory = bắt buộc (biển xanh = bắt buộc). A chỉ là lời khuyên; D ngược nghĩa.'],
+['What does the sign say?',['You can\'t buy sharp objects like scissors or knives during the flight.','Using both scissors and knives at the same time is prohibited on the plane.','You can\'t bring any sharp objects on the plane.','You can\'t use scissors or knives because they are sharp.'],2,'Không được mang vật sắc nhọn lên máy bay.','Dao bị gạch chéo = cấm mang (bring) lên máy bay. Loại đáp án thêm thông tin không có trên biển.']];
+I.sign=SG.map((s,i)=>M(`${i+1}. ${s[0]}`,s[1],s[2],s[3],s[4],{sign:SIGNS[i],note:'Hình biển báo được vẽ mô phỏng theo mô tả trong tài liệu.',tip:'Biển tròn xanh = bắt buộc · tròn đỏ gạch chéo = cấm · tam giác / vàng = cảnh báo.'}));
+/* L10 Dictionary */
+I.dict=[
+{k:'in',ctx2:'custom',q:'1. Every Tet, Vietnamese people ______________ visiting their relatives and giving lucky money to children.',ans:['follow the custom of'],hint:'Gợi ý: sau chủ ngữ cần động từ + of + V-ing.',f:'follow the custom of + V-ing',ex:'Chủ ngữ là người + <b>follow the custom of</b> + V-ing = giữ phong tục làm gì.',vi:'Mỗi dịp Tết, người Việt theo phong tục đi thăm họ hàng và lì xì cho trẻ em.',full:'Every Tet, Vietnamese people follow the custom of visiting their relatives and giving lucky money to children.'},
+{k:'in',ctx2:'custom',q:'2. ______________ here for the bride to wear a red ao dai on her wedding day.',ans:['It is the custom',"It's the custom"],hint:'Gợi ý: câu bắt đầu bằng It, phía sau có for sb to V.',f:'It is the custom (here) (for sb) to V',ex:'Câu mở đầu bằng It + for sb to V → <b>It is the custom</b>.',vi:'Ở đây có phong tục cô dâu mặc áo dài đỏ trong ngày cưới.',full:'It is the custom here for the bride to wear a red ao dai on her wedding day.'},
+{k:'in',ctx2:'tradition',q:'3. Nam is ______________ of making Chung cakes every Tet.',ans:['carrying on the family tradition','carrying on the tradition'],hint:'Gợi ý: sau is cần V-ing; sau chỗ trống có of.',f:'carry on the (family) tradition of + V-ing',ex:'is + <b>carrying on the family tradition</b> of + V-ing = đang tiếp nối truyền thống gia đình làm gì. Phân biệt: follow / maintain / keep (up) a tradition = làm theo / duy trì / giữ gìn.',vi:'Nam đang tiếp nối truyền thống gia đình gói bánh chưng mỗi dịp Tết.',full:'Nam is carrying on the family tradition of making Chung cakes every Tet.'},
+{k:'in',ctx2:'tradition',q:'4. This year, our class decided to ______________ and celebrate Christmas at the beach instead of at school.',ans:['break with tradition'],hint:'Gợi ý: sau decided to cần V nguyên mẫu.',f:'break with tradition (by + V-ing)',ex:'decided to + V → <b>break with tradition</b> = phá lệ, làm khác truyền thống.',vi:'Năm nay lớp em quyết định phá lệ và đón Giáng sinh ở bãi biển thay vì ở trường.',full:'This year, our class decided to break with tradition and celebrate Christmas at the beach instead of at school.'}];
+return I;}
+const ITEMS=buildItems();
+const LV=[{id:'vocab',t:'Vocabulary',d:'Từ vựng Unit 5',ic:'📚'},{id:'gram',t:'Grammar',d:'6 chủ đề ngữ pháp',ic:'📝'},{id:'pron',t:'Pronunciation',d:'10 câu phát âm',ic:'🗣️'},{id:'stress',t:'Word Stress',d:'10 câu trọng âm',ic:'🎯'},{id:'read',t:'Reading',d:'4 bài đọc (A–D)',ic:'📖'},{id:'wf',t:'Word Form',d:'10 câu + Word Family',ic:'🧩'},{id:'mc',t:'Multiple Choice',d:'30 câu (20 từ vựng + 10 mạo từ)',ic:'✅'},{id:'tr',t:'Transformation',d:'12 câu viết lại',ic:'🔁'},{id:'sign',t:'Signs & Notices',d:'5 biển báo',ic:'🚧'},{id:'dict',t:'Dictionary',d:'4 câu custom & tradition',ic:'🔎'}];
+
+/* ============ TIỆN ÍCH ============ */
+const $=s=>document.querySelector(s);const L='ABCD';
+const strip=h=>String(h).replace(/<[^>]+>/g,'').replace(/\{(.+?)\}/g,'$1').replace(/&nbsp;/g,' ');
+const nz=s=>s.toLowerCase().replace(/[’‘]/g,"'").replace(/[.!?]+$/,'').replace(/\s+/g,' ').trim();
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+let P={xp:0,best:0,badge:{},wr:{}};try{P=Object.assign(P,JSON.parse(localStorage.getItem('e8u5')||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem('e8u5',JSON.stringify(P))}catch(e){}};
+let S={lv:null,items:[],i:0,res:{},rv:{},tr:{},ex:{},sel:{},bad:{},val:{},streak:0,mute:false};
+function toast(m){const d=document.createElement('div');d.className='toast';d.textContent=m;document.body.appendChild(d);setTimeout(()=>d.remove(),2600)}
+/* Âm thanh */
+let AC;function beep(ok){if(S.mute)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.connect(g);g.connect(AC.destination);o.type='sine';const t=AC.currentTime;if(ok){o.frequency.setValueAtTime(660,t);o.frequency.setValueAtTime(880,t+.1)}else{o.frequency.setValueAtTime(220,t);o.frequency.setValueAtTime(160,t+.12)}g.gain.setValueAtTime(.15,t);g.gain.exponentialRampToValueAtTime(.001,t+.3);o.start(t);o.stop(t+.3)}catch(e){}}
+
+/* Đọc tiếng Anh (Web Speech API) */
+let VO=[];function loadV(){try{VO=speechSynthesis.getVoices()}catch(e){}}
+if('speechSynthesis' in window){loadV();speechSynthesis.onvoiceschanged=loadV}
+function say(t,rate){if(!('speechSynthesis' in window)){toast('Trình duyệt này không hỗ trợ đọc tiếng Anh. Hãy dùng Chrome / Edge / Safari.');return}
+t=String(t).replace(/_{2,}/g,' blank ').replace(/Ø/g,'no article').replace(/\s+/g,' ').trim();if(!t)return;
+loadV();const u=new SpeechSynthesisUtterance(t);const v=VO.find(x=>/^en-GB/i.test(x.lang))||VO.find(x=>/^en-US/i.test(x.lang))||VO.find(x=>/^en/i.test(x.lang));
+if(v){u.voice=v;u.lang=v.lang}else{u.lang='en-GB';if(VO.length)toast('Máy chưa có giọng tiếng Anh – đang dùng giọng mặc định.')}
+u.rate=rate||0.95;speechSynthesis.cancel();speechSynthesis.speak(u)}
+document.addEventListener('click',e=>{const s=e.target.closest('.say');if(s)say(s.dataset.s||s.textContent)});
+function fs(){try{if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen()}catch(e){toast('Không bật được toàn màn hình')}}
+function hdr(){document.body.classList.remove('t')}
+/* ============ MÀN HÌNH ============ */
+/* ============ GHI VỞ ============ */
+const POSV={n:'danh từ',v:'động từ',adj:'tính từ',adv:'trạng từ','phr.v':'cụm động từ',phr:'cụm từ','v, n':'động từ, danh từ'};
+const sw=w=>`<span class="say" data-s="${w.replace(/…/g,'').replace(/"/g,'')}">${w}</span>`;
+function vocTable(list,start){return `<table><tr><th>STT</th><th>Từ vựng</th><th>Loại từ</th><th>Phiên âm</th><th>Nghĩa</th><th>Ví dụ / cụm từ</th></tr>`+list.map((w,i)=>`<tr><td class="c">${start+i}</td><td class="w">${sw(w.w)}</td><td class="p">(${w.pos})</td><td class="p">${w.ipa}</td><td>${w.vi}</td><td>${w.ex?sw(w.ex):''}</td></tr>`).join('')+`</table>`}
+function notesVocab(){const a=V.filter(w=>!w.extra),b=V.filter(w=>w.extra);
+return `<h2 style="margin-top:0">📒 BẢNG TỪ VỰNG – UNIT 5: FESTIVALS IN VIET NAM</h2>
+<p style="color:var(--mut)">Viết tắt: (n) danh từ · (v) động từ · (adj) tính từ · (adv) trạng từ · (phr.v) cụm động từ · (phr) cụm từ. Bấm vào từ để nghe phát âm.</p>
+<h3>A. Từ vựng chính (${a.length} từ)</h3>${vocTable(a,1)}
+<h3>B. Từ vựng trong bài đọc (${b.length} từ)</h3>${vocTable(b,a.length+1)}
+<h3>C. Họ từ (Word Family)</h3><table><tr><th>STT</th><th>Từ gốc</th><th>Các dạng từ</th></tr>${FAMN.map((f,i)=>`<tr><td class="c">${i+1}</td><td class="w">${f[0]}</td><td>${f[1]}</td></tr>`).join('')}</table>
+<h3>D. Cụm từ cố định (Collocations)</h3><table><tr><th>Cụm từ</th><th>Nghĩa</th></tr>${COLL.map(c=>`<tr><td class="w">${sw(c[0])}</td><td>${c[1]}</td></tr>`).join('')}</table>`}
+const FAMN=[['tradition (n) truyền thống','traditional (adj) thuộc về truyền thống · traditionally (adv) theo truyền thống'],['custom (n) phong tục','customary (adj) theo phong tục · customer (n) khách hàng · customize (v) tùy chỉnh'],['festival (n) lễ hội','festive (adj) mang không khí lễ hội · festivity (n) không khí lễ hội'],['celebrate (v) ăn mừng','celebration (n) lễ kỷ niệm · celebratory (adj) mang tính ăn mừng · celebrated (adj) nổi tiếng'],['decorate (v) trang trí','decoration (n) đồ trang trí · decorator (n) người trang trí · decorative (adj) mang tính trang trí · decoratively (adv)'],['admire (v) ngưỡng mộ','admiration (n) sự ngưỡng mộ · admirable (adj) đáng ngưỡng mộ · admirably (adv)'],['contest (n, v) cuộc thi; tranh cãi','contestant (n) thí sinh · contestable (adj) có thể tranh cãi'],['maintain (v) duy trì','maintenance (n) sự duy trì, bảo trì · maintainable (adj)'],['respect (v, n) tôn trọng','respectful (adj) lễ phép · respectfully (adv) một cách lễ phép · respectable (adj) đáng kính · respective (adj) tương ứng'],['oblige (v) bắt buộc','obligation (n) bổn phận · obligatory (adj) bắt buộc · obliged (adj) cảm thấy có bổn phận'],['accept (v) chấp nhận','acceptance (n) sự chấp nhận · acceptable (adj) chấp nhận được · unacceptable (adj) không chấp nhận được'],['society (n) xã hội','social (adj) thuộc xã hội · socially (adv) · socialize (v) giao lưu'],['luck (n) vận may','lucky (adj) may mắn · luckily (adv) may thay · unlucky (adj) xui xẻo'],['greet (v) chào','greeting (n) lời chào']];
+const COLL=[['celebrate Tet','đón Tết'],['have a family reunion','sum họp gia đình'],['release carps','thả cá chép'],['perform the lion dance','biểu diễn múa lân'],['worship the ancestors','thờ cúng tổ tiên'],['visit flower villages','thăm làng hoa'],['admire peach blossoms','ngắm hoa đào'],['chase away bad spirits / bad luck','xua đuổi tà ma / vận rủi'],['pray for good luck','cầu may mắn'],['hang lanterns','treo đèn lồng'],['take off (shoes)','cởi (giày)'],['keep traditions alive','giữ truyền thống tồn tại'],['from one generation to another','từ thế hệ này sang thế hệ khác'],['play an important part / role in','đóng vai trò quan trọng trong'],['drink a toast to sb','nâng ly chúc mừng ai'],['good table manners','phép tắc ăn uống tốt']];
+const NOTES_F=`<h2 style="margin-top:0">📐 CÔNG THỨC CẦN NHỚ – UNIT 5</h2>
+<h3>I. Mạo từ (Articles)</h3>
+<table><tr><th>Mạo từ</th><th>Cách dùng</th><th>Ví dụ</th></tr>
+<tr><td class="f">a</td><td>Trước N số ít đếm được, nhắc lần đầu, bắt đầu bằng <b>ÂM phụ âm</b> (kể cả u đọc /j/, o đọc /w/)</td><td>a cat, a uniform, a university, a used razor, a one-dollar bill</td></tr>
+<tr><td class="f">an</td><td>Trước N số ít đếm được bắt đầu bằng <b>ÂM nguyên âm</b> (a, e, i, o, u, h câm)</td><td>an idea, an umbrella, an hour, an MD</td></tr>
+<tr><td class="f">the</td><td>Vật duy nhất · đã nhắc / đã xác định · so sánh nhất · số thứ tự, only, last · sông, biển, dãy núi · nước số nhiều/có Republic, Kingdom, States · nhạc cụ · the + adj (nhóm người)</td><td>the Sun, the third house, the best, the Mekong River, the United States, play the piano, the poor</td></tr>
+<tr><td class="f">Ø</td><td>N số nhiều / không đếm được nói chung · tên riêng · bữa ăn · by + phương tiện · môn học, ngôn ngữ · watch TV · go to school (đúng mục đích)</td><td>Ø people, have Ø breakfast, by Ø bus, major in Ø English, watch Ø television</td></tr></table>
+<p>👉 Bữa ăn có tính từ đứng trước → dùng <b>a</b>: a very nice lunch, a big dinner.<br>👉 Tóm lại: <b>lần đầu → a/an</b> · <b>đã xác định → the</b> · <b>nói chung → Ø</b>.</p>
+<h3>II. Custom / Tradition</h3>
+<ul>
+<li><span class="f">S + have / has a tradition of + V-ing</span> — có truyền thống làm gì</li>
+<li><span class="f">S + follow / keep (up) / maintain the tradition of + V-ing</span> — theo / giữ / duy trì truyền thống</li>
+<li><span class="f">S + carry on the (family) tradition of + V-ing</span> — tiếp nối truyền thống (gia đình)</li>
+<li><span class="f">S + break with tradition (by + V-ing)</span> — phá lệ, làm khác truyền thống</li>
+<li><span class="f">S + be steeped in tradition</span> — đậm chất truyền thống</li>
+<li><span class="f">According to tradition, … = Traditionally, + S + V</span> — theo truyền thống</li>
+<li><span class="f">It is the custom (here) (for sb) to + V</span> — có phong tục (ai) làm gì</li>
+<li><span class="f">It is customary (for sb) to + V</span> — theo phong tục (customary là tính từ, không có “the”)</li>
+<li><span class="f">S + have the / a custom of + V-ing</span> · <span class="f">There is a custom of + V-ing</span> · <span class="f">S + follow the custom of + V-ing</span></li>
+</ul>
+<p>Ví dụ: There's a tradition that English people drink a lot of tea. → English people <b>follow the tradition of drinking</b> a lot of tea.</p>
+<h3>III. Lời khuyên: should / had better</h3>
+<ul>
+<li><span class="f">S + should + V(nguyên mẫu)</span> — nên (khuyên nhẹ) · <span class="f">S + shouldn't + V</span> — không nên</li>
+<li><span class="f">S + had better + V(nguyên mẫu)</span> — tốt hơn hết là nên (khuyên mạnh)</li>
+<li><span class="f">S + had better not + V</span> — tốt hơn hết là đừng</li>
+<li>It's a good idea to + V → S + should + V · Don't + V → S + shouldn't + V · Never + V → S + had better not + V</li>
+</ul>
+<p>⚠ should / had better + V <b>không có “to”</b>. Phủ định của had better là <b>had better not</b> (không viết hadn't better).</p>
+<h3>IV. Take place / hold / organize / celebrate</h3>
+<ul>
+<li><span class="f">S (lễ hội) + take(s) place + thời gian / nơi chốn</span> — diễn ra (không có tân ngữ, không dùng bị động)</li>
+<li><span class="f">People + hold / organize / celebrate + lễ hội + thời gian</span> — tổ chức / ăn mừng</li>
+<li>The Ok Om Bok Festival takes place in October. → People organize the Ok Om Bok Festival in October.</li>
+</ul>
+<h3>V. Cấu trúc khác trong bài</h3>
+<ul>
+<li><span class="f">S + can + V + by + V-ing</span> — có thể làm gì bằng cách… (maintain our traditions by organising festivals)</li>
+<li><span class="f">It's (good) manners for sb to + V</span> — là phép lịch sự đối với ai khi làm gì</li>
+<li><span class="f">the way of + V-ing / N</span> — cách làm gì (the most popular way of greeting)</li>
+<li><span class="f">keep + sth + alive</span> — giữ cho cái gì tồn tại</li>
+<li><span class="f">adj (difficult / easy) + to V</span> — khó / dễ làm gì</li>
+<li><span class="f">be used + to V</span> — được dùng để làm gì</li>
+<li><span class="f">must be + V3</span> — phải được làm (bị động): must be served</li>
+<li><span class="f">Until recently + quá khứ đơn</span> — cho đến gần đây</li>
+<li><span class="f">remind sb of sth</span> — gợi ai nhớ về cái gì</li>
+</ul>
+<h3>VI. Từ loại (Word Form) – xác định vị trí</h3>
+<table><tr><th>Vị trí</th><th>Cần</th><th>Ví dụ</th></tr>
+<tr><td>a / an / the / my / his / their / some + ___</td><td>danh từ (N)</td><td>their acceptance, some decorations</td></tr>
+<tr><td>a / very / great + adj + ___</td><td>danh từ</td><td>a long-standing tradition, great admiration</td></tr>
+<tr><td>giới từ (of, with, in…) + ___</td><td>N / V-ing</td><td>full of festivity, with admiration</td></tr>
+<tr><td>___ + N</td><td>tính từ (adj)</td><td>social status, traditional foods</td></tr>
+<tr><td>be / feel / look / become + ___</td><td>tính từ</td><td>is contestable, felt obliged</td></tr>
+<tr><td>V (thường) + ___ / ___ + V3</td><td>trạng từ (adv)</td><td>talk respectfully, traditionally considered</td></tr>
+<tr><td>to / should / can / will + ___</td><td>động từ nguyên mẫu</td><td>to maintain, to socialize</td></tr></table>
+<p>Đuôi thường gặp: <b>N</b>: -tion, -sion, -ance, -ence, -ity, -ment, -ness, -er/-or, -ant · <b>Adj</b>: -al, -ful, -ive, -able, -ous, -ic, -ary · <b>Adv</b>: adj + -ly · <b>V</b>: -ize/-ise, -ate, -en.</p>
+<h3>VII. Phát âm (Pronunciation)</h3>
+<ul>
+<li><b>c</b> trước e, i, y → /s/ (dance); còn lại → /k/ (cook, connect)</li>
+<li><b>g</b> trước e, i, y và đuôi -ge → /dʒ/ (generate, sponge, oblige); <b>ng</b> cuối từ → /ŋ/ (kidding)</li>
+<li><b>n</b> trước k, g → /ŋ/ (link, thank); còn lại → /n/</li>
+<li><b>s</b> giữa hai nguyên âm thường → /z/ (design, preserve, physical); basic → /s/</li>
+<li><b>a</b> + phụ âm + e, đuôi -ation / -asion → /eɪ/ (take, place, occupation, occasion); many → /e/; man, miraculous → /æ/</li>
+<li><b>ar</b> trong âm tiết nhấn → /ɑː/ (carp, party, article); a ở âm tiết không nhấn → /ə/ (tradition)</li>
+<li><b>o</b> ở âm tiết nhấn → /ɒ/ (clockwise); không nhấn → /ə/ (custom, correct, opinion)</li>
+</ul>
+<h3>VIII. Trọng âm (Word Stress)</h3>
+<ul>
+<li>Danh từ, tính từ 2 âm tiết → thường nhấn <b>âm 1</b>: CUS-tom, VIL-lage, MAN-ner</li>
+<li>Động từ 2 âm tiết → thường nhấn <b>âm 2</b>: pre-PARE, main-TAIN, ex-PLAIN, o-BEY</li>
+<li>Đuôi <b>-tion, -sion, -ic, -ity, -ety, -ian</b> → nhấn âm <b>ngay trước</b> đuôi: tra-DI-tion, per-MIS-sion, ne-CES-si-ty, so-CI-e-ty</li>
+<li>Động từ 3 âm tiết đuôi -ate → nhấn âm 1: DEC-o-rate</li>
+<li>Học thuộc: bam-BOO, a-WAY, pa-GO-da, con-TES-tant, re-SPECT, COM-ple-ment</li>
+</ul>
+<h3>IX. Biển báo (Signs)</h3>
+<ul><li>Tròn xanh = <b>bắt buộc</b> (must / be required to / mandatory)</li><li>Tròn đỏ gạch chéo = <b>cấm</b> (can't / not allowed / prohibited)</li><li>Tam giác / nền vàng = <b>cảnh báo</b> (be careful / be cautious / watch out)</li></ul>
+<p>👉 Chọn đáp án nói đúng nội dung biển, loại đáp án thêm thông tin không có trên biển.</p>`;
+function notes(tab){S.play=0;S.lv=null;hdr();tab=tab||'v';
+$('#app').innerHTML=`<div class="bar noprint"><button class="x" onclick="home()">✕</button><h2 style="margin:0">📒 Ghi vở</h2></div>
+<div class="tabs noprint"><button class="btn ${tab==='v'?'':'w'}" onclick="notes('v')">📚 Bảng từ vựng</button><button class="btn ${tab==='f'?'':'w'}" onclick="notes('f')">📐 Công thức</button><span style="flex:1"></span><button class="btn b" onclick="window.print()">🖨️ In / Lưu PDF</button></div>
+<div class="card nb">${tab==='v'?notesVocab():NOTES_F}</div>`;window.scrollTo(0,0)}
+function home(){S.lv=null;S.play=0;hdr();
+$('#app').innerHTML=`<div class="hero"><div class="mascot">🦉</div><div><h2 style="margin:0">English 8 – Unit 5: Festivals in Viet Nam</h2><div style="color:var(--mut)">Game ôn tập – Chọn nội dung để bắt đầu. Chọn đáp án để xem đúng/sai và lời giải ngay.</div></div></div>
+<div class="grid" style="margin-bottom:14px"><button class="lv" style="border-color:var(--y);background:#fffbe6" onclick="notes('v')"><div class="ic">📒</div><h3>Ghi vở – Bảng từ vựng</h3><small>${V.length} từ: loại từ, phiên âm, nghĩa, ví dụ + họ từ, cụm từ</small></button><button class="lv" style="border-color:var(--y);background:#fffbe6" onclick="notes('f')"><div class="ic">📐</div><h3>Ghi vở – Công thức</h3><small>Mạo từ · custom/tradition · should/had better · từ loại · phát âm · trọng âm</small></button></div>
+<div class="grid">${LV.map((l,i)=>`<button class="lv" onclick="startLevel('${l.id}')"><span class="bd">${P.badge[l.id]?'🏅':''}</span><div class="ic">${l.ic}</div><h3>Level ${i+1} – ${l.t}</h3><small>${l.d}</small></button>`).join('')}</div>`}
+function startLevel(id){S.lv=id;S.play=0;if(id==='vocab'){hdr();$('#app').innerHTML=`<div class="bar"><button class="x" onclick="home()">✕</button><h2 style="margin:0">Level 1 – Vocabulary</h2></div><div class="grid">${[['envi','🇬🇧→🇻🇳 English → Vietnamese'],['vien','🇻🇳→🇬🇧 Vietnamese → English'],['listen','🎧 Listen and choose'],['cards','🃏 Flashcards (từ + IPA + nghe)']].map(m=>`<button class="lv" onclick="vocabGo('${m[0]}')"><h3>${m[1]}</h3><small>${m[0]==='cards'?'Tất cả '+V.length+' từ':'15 câu ngẫu nhiên mỗi lượt'}</small></button>`).join('')}</div>`;return}
+begin(ITEMS[id])}
+function vocabGo(m){if(m==='cards')return begin(V.map(w=>({k:'card',w})));
+const pool=shuf(m==='listen'?V.filter(w=>w.ipa):V).slice(0,15);
+/* Loại phương án nhiễu trùng / gần trùng nghĩa hoặc cùng gốc từ (vd: luck – lucky, kumquat – kumquat tree) */
+const parts=s=>s.toLowerCase().replace(/\(.*?\)/g,'').split(/[,;]/).map(x=>x.trim()).filter(Boolean);
+const clash=(x,w)=>{const a=x.w.toLowerCase(),b=w.w.toLowerCase();if(a.includes(b)||b.includes(a))return true;const p=parts(x.vi),q=parts(w.vi);return p.some(s=>q.some(t=>s.includes(t)||t.includes(s)))};
+begin(pool.map(w=>{const others=shuf(V.filter(x=>x.w!==w.w&&!clash(x,w))).slice(0,3);const opts=shuf([w,...others]);const a=opts.indexOf(w);
+const info=`<b>${w.w}</b> ${w.pos?'('+w.pos+')':''} ${w.ipa}<br>= ${w.vi}${w.ex?'<br>Ví dụ: '+w.ex:''}`;
+if(m==='envi')return M(`What does “<b>${w.w}</b>” mean? <span class="ipa">${w.ipa}</span>`,opts.map(x=>x.vi),a,w.vi,info,{sp:w.w,speakOpt:0});
+if(m==='vien')return M(`Chọn từ tiếng Anh có nghĩa: <b>${w.vi}</b>`,opts.map(x=>x.w),a,w.vi,info,{sp:w.w});
+return M('🎧 Nghe phát âm và chọn từ bạn nghe được.',opts.map(x=>x.w),a,w.vi,info,{sp:w.w,hideQ:1})}))}
+function startWeak(){const arr=[];Object.keys(P.wr).forEach(k=>{const[id,i]=k.split(':');const it=ITEMS[id]&&ITEMS[id][+i];if(it&&it.k!=='page')arr.push(Object.assign({},it,{wk:k}))});if(!arr.length){P.wr={};save();return home()}S.lv='weak';begin(arr)}
+function begin(items){S.play=1;S.items=items;S.i=0;S.res={};S.rv={};S.tr={};S.ex={};S.sel={};S.bad={};S.val={};hdr();render()}
+/* ============ RENDER ============ */
+const pass=(it,rv)=>{const p=PASS[it.ctx];let t=p.t;
+if(p.bl)t=t.replace(/\{(\d)\}/g,(m,n)=>{n=+n;if(n===it.blank)return rv?`<span class="hl">${it.o[it.a]}</span>`:`<span class="bl cur">(${n}) ______</span>`;return `<span class="bl">(${n}) ______</span>`});
+else if(rv)(it.ev||[]).forEach(e=>{t=t.replace(e,`<mark>${e}</mark>`)});
+return `<details open><summary>📄 ${p.title}</summary><div class="pass" style="overflow:auto">${t.split('\n').map(x=>`<p>${x}</p>`).join('')}</div><button class="btn w s" onclick="sayPass()">🔊 Đọc cả bài</button></details>`};
+function sayPass(){const it=S.items[S.i],p=PASS[it.ctx];say(p.t.replace(/\{\d\}/g,' blank '),.9)}
+function optTxt(it,j,rv){const o=it.o[j];if(it.fmt==='pron')return o.replace(/\{(.+?)\}/g,'<u class="ul">$1</u>')+(rv?` <span class="ipa">/${it.snd[j]}/</span>`:'');
+if(it.fmt==='stress'){const pl=o.split('-').join('').toLowerCase();const ip=rv&&IPA[pl]?` <span class="ipa">${IPA[pl]}</span>`:'';return (rv?o.split('-').map(s=>/[A-Z]/.test(s)&&s===s.toUpperCase()?`<span class="st">${s}</span>`:s.toLowerCase()).join('·'):pl)+ip}
+if(it.fmt==='pron')return o;return o}
+const plainOpt=(it,j)=>it.fmt==='stress'?it.o[j].split('-').join('').toLowerCase():strip(it.o[j]);
+function ansText(it){if(it.k==='mcq')return `${L[it.a]}. ${it.fmt==='stress'?it.o[it.a].split('-').map(s=>/[A-Z]/.test(s)&&s===s.toUpperCase()?s:s.toLowerCase()).join('-'):strip(it.o[it.a])}`;if(it.k==='in')return (it.pre||'')+it.ans[0];return ''}
+function fullText(it){if(it.k==='in')return it.full||((it.pre||'')+it.ans[0]);if(it.k==='mcq'){if(it.fmt)return it.o.map((_,j)=>plainOpt(it,j)).join(', ');const a=plainOpt(it,it.a);if(/_{3,}/.test(it.q))return strip(it.q).replace(/_{3,}/,a==='Ø'?'':a);return strip(it.q)+' '+a}return ''}
+function sayQ(r){const it=S.items[S.i];say(it.sp||(it.k==='mcq'&&it.fmt?it.o.map((_,j)=>plainOpt(it,j)).join(', '):strip(it.q)+(it.pre?' '+it.pre:'')),r)}
+function sayFull(){const it=S.items[S.i];say(S.rv[S.i]?fullText(it):strip(it.q),.95)}
+function sayOpt(j,e){e&&e.stopPropagation();const it=S.items[S.i];say(plainOpt(it,j))}
+function render(){const T=false,n=S.items.length;if(S.i>=n)return summary();
+const it=S.items[S.i],i=S.i,rv=!!S.rv[i];let h=`<div class="bar"><button class="x" onclick="home()">✕</button><div class="pg"><i style="width:${i/n*100}%"></i></div><b>${i+1}/${n}</b></div>`;
+if(it.k==='page'){h+=`<div class="card"><h2>${it.title}</h2>${it.html}</div>`}
+else if(it.k==='card'){const w=it.w;h+=`<div class="card" style="text-align:center"><div class="q" style="font-size:clamp(40px,7vw,90px)">${w.w}</div><div class="ipa" style="font-size:clamp(20px,3vw,36px)">${w.ipa||''} ${w.pos?'· '+w.pos:''}</div><div class="q" style="color:var(--gd);margin-top:14px">${w.vi}</div>${w.ex?`<div class="panel card ex">Ví dụ: <span class="say" data-s="${w.ex.replace(/"/g,'')}">${w.ex}</span></div>`:''}<p><button class="btn b" onclick="say('${w.w.replace(/'/g,"\\'")}')">🔊 Nghe</button> <button class="btn w" onclick="say('${w.w.replace(/'/g,"\\'")}',.55)">🐢 Chậm</button></p></div>`}
+else{ if(it.ctx)h+=`<div class="card">${pass(it,rv)}</div>`; if(it.ctx2)h+=`<div class="card"><details open><summary>📘 Dictionary</summary>${DICT[it.ctx2]}</details></div>`; if(it.sign)h+=`<div class="card" style="text-align:center">${it.sign}<div style="color:var(--mut);font-size:13px">${it.note}</div></div>`;
+h+=`<div class="card">`+(it.hideQ?`<div class="q">${it.q}</div>`:`<div class="q"><span class="num">${it.part&&it.n?'':''}</span>${it.q}${it.pre?`<br><span style="color:var(--bd)">→ ${it.pre}</span>${rv?`<mark>${it.ans[0]}</mark>`:'<span class="bl">__________</span>'}`:''}</div>`);
+
+if(it.k==='mcq'){h+=`<div class="opts" style="margin-top:14px">`+it.o.map((o,j)=>{let c='opt';if(rv)c+=j===it.a?' ok':(T?' dim':'');if(!rv&&T&&S.sel[i]===j)c+=' sel';if(!T&&(S.bad[i]||[]).includes(j))c+=' no';if(rv&&T&&S.sel[i]===j&&j!==it.a)c+=' no';
+return `<button class="${c}" onclick="pick(${j})"><span class="l">${L[j]}</span><span class="t">${optTxt(it,j,rv)}</span></button>`}).join('')+`</div>`}
+else if(it.k==='in'&&!T){h+=`<div style="margin-top:14px"><input class="in" id="inp" autocomplete="off" autocapitalize="off" placeholder="Nhập đáp án…" value="${(S.val[i]||'').replace(/"/g,'&quot;')}" ${rv?'disabled':''} onkeydown="if(event.key==='Enter')check()"></div>`}
+h+=`<div class="qa">${it.sp||it.fmt?`<button class="btn b s" onclick="sayQ()">🔊 Nghe</button><button class="btn w s" onclick="sayQ(.6)">🐢 Chậm</button>`:(!it.sign&&!it.blank?`<button class="btn w s" onclick="sayFull()">🔊 ${rv?'Nghe câu đầy đủ':'Nghe câu hỏi'}</button>`:'')}</div>`;
+h+=`</div>`;
+if(S.fb&&S.fb.i===i&&!T)h+=`<div class="fb ${S.fb.ok?'ok':'no'}">${S.fb.m}</div>`;
+if(!T&&it.k==='in'&&!rv&&it.hint)h+=`<div class="card panel ex">${it.hint}</div>`}
+/* Khu vực đáp án */
+if(rv&&it.k!=='card'&&it.k!=='page'){h+=`<div class="card panel"><h4>✅ Đáp án: <span style="color:var(--gd)">${it.k==='in'?(it.pre||'')+it.ans[0]:ansText(it)}</span></h4>${it.f?`<div>📐 ${it.f}</div>`:''}${it.vi&&!it.sp?`<div>🇻🇳 ${it.vi}</div>`:''}${it.k==='in'&&it.full?`<div><span class="say" data-s="${it.full.replace(/"/g,'')}">🔊 ${it.full}</span></div>`:''}</div>`}
+
+if(S.ex[i]&&rv&&it.ex&&it.k!=='card')h+=`<div class="card panel ex"><h4>💡 Giải thích chi tiết</h4>${it.ex}${it.tip?`<div style="margin-top:6px">🎒 <b>Mẹo:</b> ${it.tip}</div>`:''}${it.flag?`<div class="flag">${it.flag}</div>`:''}</div>`;
+/* Điều hướng tối giản */
+if(it.k==='page'||it.k==='card'){h+=`<div class="tbar"><button class="btn" onclick="go(1)">Tiếp tục ▶</button></div>`}
+else{h+=`<div class="tbar">${it.k==='in'&&!rv?`<button class="btn" onclick="check()">Kiểm tra</button>`:''}<button class="btn" onclick="go(-1)" ${i===0?'disabled':''}>◀ Trước</button><button class="btn" onclick="go(1)">Tiếp theo ▶</button></div>`}
+$('#app').innerHTML=h;hdr();const inp=$('#inp');if(inp&&!rv)inp.focus();
+if(it.hideQ&&!rv)setTimeout(()=>sayQ(),250)}
+/* ============ TƯƠNG TÁC ============ */
+function mark(ok){const i=S.i,it=S.items[i];if(S.res[i])return;S.res[i]=ok?'ok':'bad';const k=it.wk||(S.lv&&ITEMS[S.lv]?S.lv+':'+ITEMS[S.lv].indexOf(it):null);
+if(ok){P.xp+=10;S.streak++;if(S.streak>P.best)P.best=S.streak;if(k&&P.wr[k]&&it.wk)delete P.wr[k]}else{S.streak=0;if(k&&!k.endsWith(':-1'))P.wr[k]=(P.wr[k]||0)+1}save()}
+function pick(j){const i=S.i,it=S.items[i];
+if(S.rv[i])return;
+if(j===it.a){mark(true);S.fb={i,ok:1,m:'🎉 Chính xác!'};beep(1)}
+else{mark(false);S.bad[i]=(S.bad[i]||[]).concat(j);S.fb={i,ok:0,m:'❌ Chưa chính xác. Đáp án đúng được đánh dấu bên dưới.'};beep(0)}
+S.rv[i]=1;S.ex[i]=1;render()}
+function check(){const i=S.i,it=S.items[i];const v=$('#inp').value;S.val[i]=v;if(!nz(v))return toast('Hãy nhập đáp án');
+const u=nz(v);const ok=it.ans.some(a=>nz(a)===u||(it.pre&&nz(it.pre+a)===u));
+if(ok){mark(true);S.fb={i,ok:1,m:'🎉 Chính xác!'};beep(1)}else{mark(false);S.fb={i,ok:0,m:'❌ Chưa chính xác. Đáp án tham khảo và giải thích ở bên dưới.'};beep(0)}S.rv[i]=1;S.ex[i]=1;render()}
+function giveUp(){mark(false);S.rv[S.i]=1;S.ex[S.i]=1;S.fb=null;render()}
+function togRv(){const i=S.i;S.rv[i]=!S.rv[i];if(!S.rv[i]){S.ex[i]=0}render()}
+function togTr(){S.tr[S.i]=!S.tr[S.i];render()}
+function togEx(){const i=S.i;if(!S.rv[i])S.rv[i]=1;S.ex[i]=!S.ex[i];render()}
+function go(d){const n=S.items.length;S.i=Math.max(0,Math.min(n,S.i+d));S.fb=null;render();window.scrollTo(0,0)}
+function summary(){const n=S.items.filter(x=>x.k==='mcq'||x.k==='in').length;
+const ok=Object.values(S.res).filter(x=>x==='ok').length,bad=Object.values(S.res).filter(x=>x==='bad').length,todo=Math.max(0,n-ok-bad);
+if(S.lv&&S.lv!=='weak'&&n)P.badge[S.lv]=1;save();
+const wrongIdx=S.items.map((x,i)=>S.res[i]==='bad'?i:-1).filter(i=>i>=0);
+$('#app').innerHTML=`<div class="card" style="text-align:center"><div class="mascot">${n?'🏅':'🦉'}</div><h2>${n?'Hoàn thành! Bạn nhận được huy hiệu 🏅':'Hoàn thành phần lý thuyết!'}</h2>${n?`<div class="stat"><div>✅ ${ok}<br><small>đúng ngay lần đầu</small></div><div>❌ ${bad}<br><small>sai</small></div><div>⏳ ${todo}<br><small>chưa làm</small></div></div>`:''}
+<p>${wrongIdx.length?'Các câu sai: '+wrongIdx.map(i=>i+1).join(', '):''}</p>${wrongIdx.length?`<button class="btn r" onclick="retryWrong()">🔁 Luyện lại câu sai</button> `:''}<button class="btn" onclick="home()">Về menu</button></div>`}
+function retryWrong(){const w=S.items.filter((x,i)=>S.res[i]==='bad');begin(w.map(x=>Object.assign({},x)))}
+document.addEventListener('keydown',e=>{if(!S.play||/INPUT|TEXTAREA/.test(e.target.tagName))return;if(e.key==='ArrowRight'){go(1)}else if(e.key==='ArrowLeft'){go(-1)}});
+if(typeof document!=='undefined'&&document.getElementById&&document.getElementById('app'))home();
+</script></body></html>
