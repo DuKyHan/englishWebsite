@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 5: Our Customs and Traditions — SGK</title>
+<style>
+:root{
+  --primary:#4f46e5; --primary-dark:#3730a3; --primary-light:#eef2ff;
+  --green:#16a34a; --green-light:#f0fdf4; --red:#dc2626; --red-light:#fef2f2;
+  --amber:#d97706; --amber-light:#fffbeb; --purple:#7c3aed; --purple-light:#f5f3ff;
+  --ink:#1f2937; --ink-soft:#6b7280; --border:#e5e7eb; --bg:#f8fafc; --card:#ffffff;
+  --radius:14px;
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);}
+a{color:inherit;}
+.app{display:flex;min-height:100vh;}
+.sidebar{width:250px;flex-shrink:0;background:linear-gradient(180deg,var(--primary),var(--primary-dark));color:#fff;padding:20px 14px;position:sticky;top:0;height:100vh;overflow-y:auto;}
+.sidebar h1{font-size:17px;margin:0 0 4px;line-height:1.3;}
+.sidebar .sub{font-size:12px;opacity:.85;margin-bottom:18px;}
+.navbtn{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:transparent;border:none;color:#fff;padding:10px 12px;border-radius:10px;font-size:14px;cursor:pointer;margin-bottom:4px;transition:.15s;}
+.navbtn:hover{background:rgba(255,255,255,.12);}
+.navbtn.active{background:#fff;color:var(--primary-dark);font-weight:600;}
+.main{flex:1;padding:24px 28px 60px;max-width:980px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;margin-bottom:16px;box-shadow:0 1px 2px rgba(0,0,0,.03);}
+.section-title{font-weight:700;font-size:16px;margin-bottom:8px;color:var(--primary-dark);}
+.section-desc{color:var(--ink-soft);font-size:13.5px;margin-bottom:10px;}
+h2.page-h{font-size:22px;margin:0 0 4px;}
+.badge{display:inline-block;background:var(--primary-light);color:var(--primary-dark);font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;margin-right:6px;}
+.btn{display:inline-flex;align-items:center;gap:6px;background:var(--primary);color:#fff;border:none;padding:9px 16px;border-radius:10px;font-size:14px;cursor:pointer;font-weight:600;transition:.15s;}
+.btn:hover{background:var(--primary-dark);}
+.btn.small{padding:5px 11px;font-size:12.5px;}
+.btn.secondary{background:#fff;color:var(--primary);border:1.5px solid var(--primary);}
+.btn.secondary:hover{background:var(--primary-light);}
+.btn.ghost{background:transparent;color:var(--ink-soft);border:1px solid var(--border);}
+.btn:disabled{opacity:.5;cursor:default;}
+.quiz-q{border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px;background:#fff;}
+.quiz-q .qtext{font-weight:600;margin-bottom:8px;line-height:1.5;}
+.opt-item{display:block;width:100%;text-align:left;background:#fff;border:1.5px solid var(--border);padding:9px 12px;border-radius:9px;margin-bottom:6px;cursor:pointer;font-size:14px;transition:.12s;}
+.opt-item:hover{border-color:var(--primary);background:var(--primary-light);}
+.opt-item.correct{background:var(--green-light);border-color:var(--green);color:#14532d;font-weight:600;}
+.opt-item.wrong{background:var(--red-light);border-color:var(--red);color:#7f1d1d;}
+.opt-item.disabled{pointer-events:none;}
+input[type=text].fillin{border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-size:14px;min-width:160px;}
+input[type=text].fillin:focus{outline:none;border-color:var(--primary);}
+.feedback{margin-top:10px;padding:10px 12px;border-radius:10px;font-size:13.5px;display:none;}
+.feedback.show{display:block;}
+.feedback.ok{background:var(--green-light);color:#14532d;border:1px solid #bbf7d0;}
+.feedback.bad{background:var(--red-light);color:#7f1d1d;border:1px solid #fecaca;}
+.explain{margin-top:8px;background:var(--amber-light);border:1px solid #fde68a;color:#78350f;padding:8px 10px;border-radius:8px;font-size:13px;}
+.vi-explain{background:var(--purple-light);border:1px solid #ddd6fe;color:#4c1d95;padding:8px 10px;border-radius:8px;font-size:13px;margin-top:6px;}
+.fill-vi-toggle{background:transparent;border:1px dashed var(--purple);color:var(--purple);font-size:12px;padding:3px 9px;border-radius:7px;cursor:pointer;margin-right:6px;}
+.tf-row{display:flex;gap:8px;margin-top:6px;}
+.tf-btn{flex:1;padding:8px;border-radius:9px;border:1.5px solid var(--border);background:#fff;cursor:pointer;font-weight:600;}
+.tf-btn:hover{border-color:var(--primary);}
+.progressbar{height:10px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin:6px 0;}
+.progressbar > div{height:100%;background:linear-gradient(90deg,var(--primary),var(--purple));}
+.vocab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;}
+.vcard{border:1px solid var(--border);border-radius:12px;padding:12px;background:#fff;}
+.vcard .w{font-weight:700;font-size:15.5px;color:var(--primary-dark);}
+.vcard .ipa{color:var(--ink-soft);font-size:12.5px;}
+.vcard .pos{display:inline-block;background:var(--purple-light);color:var(--purple);font-size:11px;padding:1px 7px;border-radius:6px;margin-left:6px;}
+.vcard .vi{margin:5px 0;font-weight:600;}
+.vcard .ex{font-size:12.5px;color:var(--ink-soft);font-style:italic;}
+.vcard .rowbtns{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+.iconbtn{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;}
+.iconbtn:hover{background:var(--primary-light);}
+.iconbtn.fav.active{background:#fef3c7;border-color:#f59e0b;}
+.flashcard{width:100%;max-width:340px;margin:0 auto;height:190px;perspective:1000px;cursor:pointer;}
+.flashcard-inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d;}
+.flashcard.flipped .flashcard-inner{transform:rotateY(180deg);}
+.flashcard-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;text-align:center;}
+.flashcard-front{background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;font-size:22px;font-weight:700;}
+.flashcard-back{background:#fff;border:2px solid var(--primary);transform:rotateY(180deg);}
+.match-wrap{display:flex;gap:24px;flex-wrap:wrap;}
+.match-col{flex:1;min-width:180px;}
+.match-item{display:block;width:100%;text-align:left;background:#fff;border:1.5px solid var(--border);padding:9px 11px;border-radius:9px;margin-bottom:7px;cursor:pointer;font-size:13.5px;}
+.match-item.picked{border-color:var(--primary);background:var(--primary-light);}
+.match-item.matched{border-color:var(--green);background:var(--green-light);pointer-events:none;opacity:.8;}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:8px 0;}
+table th,table td{border:1px solid var(--border);padding:7px 9px;text-align:left;}
+table th{background:var(--bg);}
+.note-box{background:var(--amber-light);border:1px solid #fde68a;color:#78350f;padding:9px 12px;border-radius:9px;font-size:13.5px;margin:8px 0;}
+.sentence-block{border-left:3px solid var(--primary);padding:8px 0 8px 14px;margin-bottom:10px;}
+.sentence-en{font-size:14.5px;}
+.sentence-vi{color:var(--purple);font-size:13.5px;margin-top:3px;display:none;}
+.sentence-vi.show{display:block;}
+.chip{display:inline-block;background:var(--primary-light);color:var(--primary-dark);padding:2px 9px;border-radius:8px;font-size:12px;margin:2px 4px 2px 0;}
+.dialog-row{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start;}
+.dialog-sp{font-weight:700;color:var(--primary-dark);min-width:56px;}
+.dialog-en{flex:1;}
+.tabs-mobile{display:none;}
+.topbar{display:none;}
+.mistake-card{border-left:4px solid var(--red);background:var(--red-light);border-radius:10px;padding:12px;margin-bottom:10px;}
+.tag-difficulty{font-size:11px;padding:2px 8px;border-radius:999px;font-weight:700;}
+.tag-must{background:#fee2e2;color:#991b1b;}
+.tag-should{background:#fef3c7;color:#92400e;}
+@media (max-width:820px){
+  .app{flex-direction:column;}
+  .sidebar{display:none;}
+  .topbar{display:flex;position:sticky;top:0;z-index:30;background:linear-gradient(90deg,var(--primary),var(--primary-dark));color:#fff;padding:12px 14px;align-items:center;justify-content:space-between;}
+  .topbar h1{font-size:15px;margin:0;}
+  .tabs-mobile{display:flex;overflow-x:auto;gap:6px;padding:10px 10px 4px;background:#fff;border-bottom:1px solid var(--border);position:sticky;top:48px;z-index:29;}
+  .tabs-mobile button{flex-shrink:0;padding:7px 12px;border-radius:999px;border:1px solid var(--border);background:#fff;font-size:12.5px;cursor:pointer;}
+  .tabs-mobile button.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+  .main{padding:14px;}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="sidebar" id="sidebarNav"></div>
+  <div class="topbar"><h1>Unit 5: Our Customs and Traditions — SGK</h1><span>📱</span></div>
+  <div class="tabs-mobile" id="tabsMobile"></div>
+  <div class="main" id="mainArea"></div>
+</div>
+
+<script>
+const DATA = {"id": 5, "title": "OUR CUSTOMS AND TRADITIONS", "theme": "Phong tục và truyền thống của chúng ta", "includes": {"vocabulary": "Customs and traditions (Phong tục và truyền thống)", "pronunciation": "Sounds /n/ and /ŋ/", "grammar": "Zero article (Không dùng mạo từ)", "skills": ["Reading about a local festival (Đọc về một lễ hội địa phương)", "Talking about a normal family event that you take part in (Nói về một sự kiện gia đình em tham gia)", "Listening about a festival (Nghe về một lễ hội)", "Writing an email to give advice on taking part in a festival (Viết email khuyên về việc tham gia lễ hội)"], "everydayEnglish": "Giving advice (Đưa ra lời khuyên)"}, "dialogueTitle": "Tet is coming!", "dialogue": [{"sp": "Elena", "en": "Wow, this girl looks so cute.", "vi": "Ồ, cô bé này trông dễ thương quá."}, {"sp": "Trang", "en": "Yeah ... She's my cousin. She's at Sa Dec Flower Village. Tet is coming soon, so many people visit flower villages to take pictures with the blooming flowers.", "vi": "Ừ... Đó là em họ mình. Em ấy đang ở làng hoa Sa Đéc. Tết sắp đến nên nhiều người đến các làng hoa để chụp ảnh với hoa đang nở."}, {"sp": "Elena", "en": "Oh, I'm fond of admiring the flowers. Does your family visit places like this too?", "vi": "Ồ, mình rất thích ngắm hoa. Gia đình bạn có đến những nơi như thế này không?"}, {"sp": "Trang", "en": "Yes, we do. We usually visit Nhat Tan Village to buy kumquat trees and peach blossoms.", "vi": "Có chứ. Nhà mình thường đến làng Nhật Tân để mua cây quất và hoa đào."}, {"sp": "Elena", "en": "I see flowers and ornamental trees everywhere these days. What are they for?", "vi": "Dạo này mình thấy hoa và cây cảnh ở khắp nơi. Chúng dùng để làm gì vậy?"}, {"sp": "Trang", "en": "We, Vietnamese, use plants and flowers for decorations and for offerings. They are an important part of our Tet tradition.", "vi": "Người Việt chúng mình dùng cây và hoa để trang trí và để làm lễ vật dâng cúng. Chúng là một phần quan trọng trong truyền thống ngày Tết của chúng mình."}, {"sp": "Elena", "en": "And what's that tall tree in the photo?", "vi": "Thế còn cái cây cao trong bức ảnh là gì vậy?"}, {"sp": "Trang", "en": "Well, it's actually a bamboo pole. People place it in the yard of the communal house. They hang decorative items like small bells and lanterns on it. They want to chase away bad luck and pray for a lucky new year.", "vi": "À, thật ra đó là cây nêu bằng tre. Người ta dựng nó ở sân đình. Họ treo các đồ trang trí như chuông nhỏ và đèn lồng lên đó. Họ muốn xua đuổi vận xui và cầu mong một năm mới may mắn."}, {"sp": "Elena", "en": "Interesting! I didn't know that.", "vi": "Thú vị thật! Mình không biết điều đó."}], "dialogueCheckType": "tf", "dialogueTF": [{"s": "Elena and Trang are at Sa Dec Flower Village.", "viS": "Elena và Trang đang ở làng hoa Sa Đéc.", "a": false, "exp": "Người ở làng hoa Sa Đéc là em họ của Trang (trong ảnh), không phải Elena và Trang."}, {"s": "Many people visit flower villages to take photos.", "viS": "Nhiều người đến các làng hoa để chụp ảnh.", "a": true, "exp": "Trang: '...many people visit flower villages to take pictures with the blooming flowers.'"}, {"s": "Trang's family usually buys kumquat trees and peach blossoms at Nhat Tan Village.", "viS": "Gia đình Trang thường mua cây quất và hoa đào ở làng Nhật Tân.", "a": true, "exp": "Trang: 'We usually visit Nhat Tan Village to buy kumquat trees and peach blossoms.'"}, {"s": "Flowers are not part of any Vietnamese traditions.", "viS": "Hoa không phải là một phần của bất kỳ truyền thống nào của người Việt.", "a": false, "exp": "Trang: '...use plants and flowers for decorations and for offerings. They are an important part of our Tet tradition.'"}, {"s": "People decorate bamboo poles with small bells and lanterns for New Years.", "viS": "Người ta trang trí cây nêu bằng chuông nhỏ và đèn lồng để đón năm mới.", "a": true, "exp": "Trang: 'They hang decorative items like small bells and lanterns on it... pray for a lucky new year.'"}], "dialogueMatch": {"title": "Bài 3 — Match the phrases with the correct pictures (Đáp án: 1-d, 2-a, 3-e, 4-b, 5-c)", "items": [{"en": "1. an ornamental tree", "vi": "(d) cây quất cảnh trồng trong chậu"}, {"en": "2. a bamboo pole", "vi": "(a) cây nêu cao dựng trước cổng/sân"}, {"en": "3. decorative items", "vi": "(e) đồ trang trí đỏ treo ngày Tết (câu đối, đèn lồng)"}, {"en": "4. blooming flowers", "vi": "(b) hoa đào đang nở"}, {"en": "5. a communal house", "vi": "(c) ngôi đình làng"}]}, "gettingStartedFill": {"box": ["admire", "chase", "pray", "place"], "items": [{"s": "The British decorate their Christmas trees and ___ presents under them.", "a": "place", "qVi": "Người Anh trang trí cây thông Noel và đặt quà bên dưới.", "exp": "'place' (đặt, để) — đặt quà dưới gốc cây thông."}, {"s": "Tom likes to ___ the view from the hill.", "a": "admire", "qVi": "Tom thích ngắm cảnh từ trên đồi.", "exp": "'admire' (ngắm, chiêm ngưỡng) đi với 'the view'."}, {"s": "In many cultures, knocking on wood is a way to ___ away bad spirits.", "a": "chase", "qVi": "Ở nhiều nền văn hóa, gõ vào gỗ là một cách để xua đuổi tà ma.", "exp": "Cụm 'chase away' = xua đuổi."}, {"s": "Many Asians go to Buddhist temples to ___ for good luck.", "a": "pray", "qVi": "Nhiều người châu Á đến chùa để cầu may.", "exp": "Cụm 'pray for' = cầu nguyện, cầu mong."}]}, "gsQuiz": {"title": "Bài 5 — QUIZ: New Years around the world. People around the world celebrate New Years differently. Choose the country with each tradition below.", "items": [{"q": "visiting pagodas", "qVi": "đi chùa", "opts": ["The US", "Viet Nam"], "optsVi": ["Mỹ", "Việt Nam"], "a": 1, "exp": "Đầu năm mới, người Việt thường đi chùa cầu may."}, {"q": "throwing water at each other", "qVi": "té nước vào nhau", "opts": ["Thailand", "Japan"], "optsVi": ["Thái Lan", "Nhật Bản"], "a": 0, "exp": "Lễ hội Songkran (Tết Thái Lan) có tục té nước."}, {"q": "ringing a bell 108 times", "qVi": "gióng chuông 108 lần", "opts": ["Japan", "Viet Nam"], "optsVi": ["Nhật Bản", "Việt Nam"], "a": 0, "exp": "Ở Nhật, các chùa gióng chuông 108 lần vào đêm giao thừa."}, {"q": "giving and receiving lucky money", "qVi": "mừng tuổi, lì xì", "opts": ["The US", "Viet Nam"], "optsVi": ["Mỹ", "Việt Nam"], "a": 1, "exp": "Lì xì là phong tục ngày Tết của người Việt."}, {"q": "watching a ball drop at midnight in Times Square", "qVi": "xem thả quả cầu lúc nửa đêm ở Quảng trường Thời Đại", "opts": ["Thailand", "The US"], "optsVi": ["Thái Lan", "Mỹ"], "a": 1, "exp": "Times Square ở New York, Mỹ."}]}, "closerLook1": {"picMatch": {"title": "Bài 1 — Write a phrase from the box under each picture (nối số tranh 1–6 với cụm từ)", "items": [{"en": "family reunion", "vi": "Tranh 1 — cả gia đình quây quần bên mâm cơm"}, {"en": "wedding ceremony", "vi": "Tranh 2 — cô dâu chú rể trong lễ cưới"}, {"en": "food offerings", "vi": "Tranh 3 — mâm lễ vật dâng cúng"}, {"en": "whale worship", "vi": "Tranh 4 — bàn thờ cá Ông"}, {"en": "martial arts", "vi": "Tranh 5 — mọi người tập võ"}, {"en": "festival goers", "vi": "Tranh 6 — đám đông đi dự lễ hội"}]}, "vocabMCQTitle": "Bài 2 — Complete each sentence with the correct option A, B, or C", "vocabMCQ": [{"q": "We have a tradition of holding a family ___ on the first day of Tet.", "qVi": "Chúng ta có tục lệ quây quần cả nhà vào mùng một Tết.", "opts": ["reunion", "work", "meal"], "optsVi": ["sum họp", "công việc", "bữa ăn"], "a": 0, "exp": "'family reunion' = sum họp gia đình."}, {"q": "It's a tradition for shops to have a lion dance performance at their opening ___.", "qVi": "Các cửa hàng thường mời đội múa lân biểu diễn trong lễ khai trương.", "opts": ["worship", "celebration", "ceremony"], "optsVi": ["thờ cúng", "lễ kỷ niệm", "nghi lễ"], "a": 2, "exp": "'opening ceremony' = lễ khai trương."}, {"q": "The tradition of ___ whales is popular in Vietnamese coastal villages.", "qVi": "Tục thờ cá Ông rất phổ biến ở các làng ven biển Việt Nam.", "opts": ["admiring", "worshipping", "praying"], "optsVi": ["ngắm nhìn", "thờ cúng", "cầu nguyện"], "a": 1, "exp": "'worship whales' = thờ cá Ông."}, {"q": "She broke with family tradition by not practising ___.", "qVi": "Cô ấy phá vỡ truyền thống gia đình khi không theo học võ.", "opts": ["acrobat", "martial arts", "offering"], "optsVi": ["diễn viên nhào lộn", "võ thuật", "lễ vật"], "a": 1, "exp": "'practise martial arts' = luyện võ."}, {"q": "Traditionally, the Vietnamese prepare ___ to worship their ancestors during Tet.", "qVi": "Theo lệ xưa, người Việt chuẩn bị lễ vật để cúng tổ tiên dịp Tết.", "opts": ["offerings", "decoration", "worshipping"], "optsVi": ["lễ vật", "đồ trang trí", "việc thờ cúng"], "a": 0, "exp": "'prepare offerings' = chuẩn bị lễ vật."}], "vocabFillTitle": "Bài 3 — Complete the sentences with the words from the box", "vocabFillBox": ["custom", "practise", "keep", "break", "traditionally"], "vocabFill": [{"s": "This year, we will ___ with tradition and go on holiday instead of staying at home during Tet.", "a": "break", "qVi": "Năm nay, chúng ta sẽ phá lệ bằng cách đi nghỉ thay vì ở nhà dịp Tết.", "exp": "'break with tradition' = phá vỡ truyền thống, làm khác lệ thường."}, {"s": "___, children in the US go from house to house to ask for sweets on Halloween.", "a": "Traditionally", "qVi": "Theo truyền thống, trẻ em ở Mỹ đi từng nhà xin kẹo vào lễ Halloween.", "exp": "Trạng từ 'Traditionally' (theo truyền thống) đứng đầu câu."}, {"s": "Holding a party to wish our grandparents longevity is one of the customs we ___ at Tet.", "a": "practise", "qVi": "Tổ chức tiệc mừng thọ ông bà là một trong những phong tục chúng ta thực hiện vào dịp Tết.", "exp": "'practise a custom' = thực hành, giữ một phong tục."}, {"s": "Organising a folk song club is one way for us to ___ our traditions alive.", "a": "keep", "qVi": "Lập câu lạc bộ dân ca là một cách để chúng ta gìn giữ truyền thống.", "exp": "'keep ... alive' = giữ cho ... tồn tại, gìn giữ."}, {"s": "It's becoming a ___ for young people to celebrate New Years in addition to Tet.", "a": "custom", "qVi": "Việc đón năm mới Dương lịch cùng với Tết đang dần trở thành một phong tục của người trẻ.", "exp": "'become a custom' = trở thành phong tục."}], "pronNote": "Bài 5 — Listen and practise the sentences. Underline the words with the sound /n/ and circle the words with the sound /ŋ/. Bên dưới: chọn âm đúng cho từng từ cần gạch chân/khoanh tròn trong 5 câu.", "pronSymbols": ["/n/", "/ŋ/"], "pronGroups": [{"symbol": "/n/", "words": ["night", "ornamental", "enjoyable", "longevity", "on"]}, {"symbol": "/ŋ/", "words": ["pink", "think", "thanked", "spring", "bring"]}], "pronSentences": ["Mary wore a pink dress last night.", "I think we should buy this ornamental tree.", "He thanked the host for the enjoyable party.", "My mum made the spring rolls for the longevity party.", "I will bring some food to the party on Saturday."], "pronSentencesVi": ["Tối qua, Mary đã mặc một chiếc váy màu hồng.", "Tôi nghĩ chúng ta nên mua cây cảnh này.", "Anh ấy cảm ơn chủ nhà vì bữa tiệc thật vui.", "Mẹ tôi làm chả giò cho bữa tiệc mừng thọ.", "Thứ Bảy này, tôi sẽ mang một ít đồ ăn đến bữa tiệc."], "pronTable": {"title": "Bài 4 — Listen and repeat the words. Pay attention to the sounds /n/ and /ŋ/", "cols": [{"symbol": "/n/", "words": ["thin", "land", "ceremony", "longevity", "tradition"]}, {"symbol": "/ŋ/", "words": ["thing", "thank", "single", "language", "offering"]}]}}, "grammar": {"title": "Grammar — Zero article (Không dùng mạo từ)", "rule": ["<b>📌 REMEMBER! (SGK trang 53)</b><br>Articles in English include <i>a / an, the</i>, and the <i>zero article</i>. Sometimes, we use nouns without <i>a / an</i> or <i>the</i>. We call this the <i>zero article</i>.<br>We use the <i>zero article</i>:<br>&nbsp;&nbsp;– with <b>uncountable or abstract nouns</b>. Example: <i>Sugar is not good for your teeth.</i><br>&nbsp;&nbsp;– when making <b>general statements</b>. Example: <i>Students should work hard.</i><br>&nbsp;&nbsp;– when describing <b>general forms of transport</b>. Example: <i>We went there by boat.</i><br><br><b>Dịch:</b> Mạo từ trong tiếng Anh gồm <i>a/an, the</i> và <i>mạo từ rỗng (Ø)</i>. Đôi khi ta dùng danh từ mà không có a/an hay the — gọi là mạo từ rỗng. Ta dùng mạo từ rỗng: với danh từ không đếm được hoặc danh từ trừu tượng; khi nói một nhận định chung; khi nói về phương tiện đi lại nói chung (by boat, by air...).", "<b>Ôn lại — 1. A / AN — mạo từ không xác định</b> — dùng trước danh từ <b>đếm được số ít</b>, khi nhắc đến lần đầu hoặc nói chung một người/vật bất kỳ.<br>&nbsp;&nbsp;• <b>a</b> + danh từ bắt đầu bằng <b>PHỤ ÂM</b> (xét theo âm đọc): <i>a small gift, a tradition, a university /juː/</i>.<br>&nbsp;&nbsp;• <b>an</b> + danh từ bắt đầu bằng <b>NGUYÊN ÂM</b> (xét theo âm đọc): <i>an ornamental tree, an important value, an hour /aʊə/</i>.<br>&nbsp;&nbsp;⚠️ Xét theo <b>âm</b>, không theo chữ cái: <i>an hour</i> (h câm), nhưng <i>a university</i>.", "<b>2. THE — mạo từ xác định</b> — dùng khi người nghe biết rõ ta đang nói đến người/vật nào:<br>&nbsp;&nbsp;• Vật <b>duy nhất</b>: <i>the Sun, the Moon, the Earth</i>.<br>&nbsp;&nbsp;• Vật <b>đã được nhắc đến</b> trước đó: <i>I bought a book. The book is about Tet.</i><br>&nbsp;&nbsp;• Vật được <b>xác định bởi cụm từ/mệnh đề</b> theo sau: <i>the culture of their community, the series I watch</i>.<br>&nbsp;&nbsp;• Vật cả hai người <b>cùng biết</b>: <i>Where's the book? — Could you pass me the remote?</i><br>&nbsp;&nbsp;• Trước <b>so sánh nhất, số thứ tự, only</b>: <i>the most important festival, the first day of Tet, the only way</i>.<br>&nbsp;&nbsp;• Trước tên một số <b>quốc gia</b> có từ chỉ thể chế/số nhiều: <i>the UK, the US</i>.", "<b>3. ZERO ARTICLE (Ø) — không dùng mạo từ</b>:<br>&nbsp;&nbsp;• Danh từ <b>không đếm được</b> hoặc <b>số nhiều</b> nói <b>chung chung</b>: <i>Ø customs and traditions, Ø teens, Ø emails</i>.<br>&nbsp;&nbsp;• Danh từ <b>trừu tượng</b>: <i>Ø hard work, Ø fun</i>.<br>&nbsp;&nbsp;• <b>Bữa ăn</b>: <i>have Ø breakfast / lunch / dinner</i>.<br>&nbsp;&nbsp;• <b>Tháng, thứ, ngày lễ</b>: <i>in Ø October, on Ø Sundays, on Ø New Year's Eve, on Ø Christmas Day</i>.<br>&nbsp;&nbsp;• <b>by + phương tiện</b>: <i>by Ø air, by Ø car, by Ø bus</i>.<br>&nbsp;&nbsp;• Tên riêng (người, hầu hết quốc gia, thành phố): <i>Ø Viet Nam, Ø Can Tho</i>.", "<b>4. MẸO LÀM BÀI</b>:<br>&nbsp;&nbsp;Bước 1 — danh từ đếm được hay không? số ít hay số nhiều?<br>&nbsp;&nbsp;Bước 2 — đang nói chung hay nói về một vật cụ thể, đã xác định?<br>&nbsp;&nbsp;• Số ít + chưa xác định → <b>a/an</b>. • Đã xác định / duy nhất → <b>the</b>. • Số nhiều/không đếm được + nói chung → <b>Ø</b>.<br>&nbsp;&nbsp;Khi điền bài trong ứng dụng này: gõ <b>0</b> nếu không cần mạo từ.", "<b>5. LỖI SAI HỌC SINH THƯỜNG MẮC</b>:<br>&nbsp;&nbsp;❌ <i>a hour</i> → ✅ <i>an hour</i> (âm đầu là nguyên âm).<br>&nbsp;&nbsp;❌ <i>in the October / by the air</i> → ✅ <i>in October / by air</i>.<br>&nbsp;&nbsp;❌ <i>have a breakfast</i> → ✅ <i>have breakfast</i>.<br>&nbsp;&nbsp;❌ <i>The Vietnamese people believe...</i> (khi nói chung trong bài SGK) → ✅ <i>Vietnamese people believe...</i><br>&nbsp;&nbsp;❌ <i>Ancient Egyptians worshipped Sun</i> → ✅ <i>the Sun</i> (vật duy nhất)."], "exercises": [{"type": "mcq", "title": "Bài 1 — Choose the correct option in each sentence below", "items": [{"q": "It takes more than ___ hour to drive to Can Tho.", "qVi": "Đi đến Cần Thơ mất hơn một tiếng đồng hồ.", "opts": ["a", "an"], "a": 1, "exp": "'hour' có h câm, âm đầu /aʊ/ là nguyên âm → an hour."}, {"q": "It's ___ tradition for children to wake up early on Christmas Day.", "qVi": "Trẻ em thức dậy sớm vào ngày Giáng sinh là một phong tục.", "opts": ["a", "Ø"], "a": 0, "exp": "'tradition' là danh từ đếm được số ít, chưa xác định → a tradition."}, {"q": "The Ok Om Bok Festival takes place in ___ October.", "qVi": "Lễ hội Ok Om Bok diễn ra vào tháng Mười.", "opts": ["the", "Ø"], "a": 1, "exp": "Trước tên tháng không dùng mạo từ → in October."}, {"q": "We went to Can Tho by ___ air.", "qVi": "Chúng tôi đã đi Cần Thơ bằng máy bay.", "opts": ["an", "Ø"], "a": 1, "exp": "'by + phương tiện' không dùng mạo từ → by air."}, {"q": "A: Where's ___ book? B: I thought you left it next to the TV.", "qVi": "A: Quyển sách đâu rồi? B: Mình nghĩ bạn để nó cạnh cái tivi mà.", "opts": ["a", "the"], "a": 1, "exp": "Cả hai người đều biết đang nói về quyển sách nào → the book."}]}, {"type": "mcq", "title": "Bài 2 — Which of the underlined parts in each question is incorrect? Find and correct it. Write Ø if no article is needed.", "items": [{"q": "<u>The</u><sup style='color:var(--primary);font-weight:700'>A</sup> worshipping Kitchen Gods is <u>a</u><sup style='color:var(--primary);font-weight:700'>B</sup> long-time tradition of <u>the</u><sup style='color:var(--primary);font-weight:700'>C</sup> Vietnamese.", "qVi": "Thờ cúng ông Táo là một truyền thống lâu đời của người Việt.", "opts": ["A. The", "B. a", "C. the"], "a": 0, "exp": "Đáp án: A. The → Ø. 'The worshipping Kitchen Gods' sai: danh động từ làm chủ ngữ chỉ hoạt động nói chung → không dùng mạo từ. Câu đúng: Worshipping Kitchen Gods is a long-time tradition of the Vietnamese."}, {"q": "People organise <u>the</u><sup style='color:var(--primary);font-weight:700'>A</sup> worshipping ceremony at <u>noon</u><sup style='color:var(--primary);font-weight:700'>B</sup> so that <u>a</u><sup style='color:var(--primary);font-weight:700'>C</sup> Kitchen Gods can leave for Heaven at 12 o'clock.", "qVi": "Mọi người tổ chức lễ cúng vào buổi trưa để ông Táo có thể về trời lúc 12 giờ.", "opts": ["A. the", "B. noon", "C. a"], "a": 2, "exp": "Đáp án: C. a → the. 'Kitchen Gods' là danh từ số nhiều, chỉ các vị thần cụ thể (ông Táo) mà ai cũng biết → dùng 'the'. Câu đúng: ...so that the Kitchen Gods can leave for Heaven at 12 o'clock."}, {"q": "<u>Most</u><sup style='color:var(--primary);font-weight:700'>A</sup> families in <u>the</u><sup style='color:var(--primary);font-weight:700'>B</sup> Viet Nam prepare <u>offerings</u><sup style='color:var(--primary);font-weight:700'>C</sup> for the Kitchen Gods.", "qVi": "Hầu hết các gia đình ở Việt Nam chuẩn bị đồ cúng cho ông Táo.", "opts": ["A. Most", "B. the", "C. offerings"], "a": 1, "exp": "Đáp án: B. the → Ø. Tên quốc gia 'Viet Nam' không dùng 'the'. Câu đúng: Most families in Viet Nam prepare offerings for the Kitchen Gods."}, {"q": "<u>The</u><sup style='color:var(--primary);font-weight:700'>A</sup> offerings include <u>a</u><sup style='color:var(--primary);font-weight:700'>B</sup> set of flowers and fruits, <u>a</u><sup style='color:var(--primary);font-weight:700'>C</sup> paper clothes, and three carps.", "qVi": "Đồ cúng gồm một mâm hoa quả, quần áo giấy và ba con cá chép.", "opts": ["A. The", "B. a", "C. a"], "a": 2, "exp": "Đáp án: C. a → Ø. 'paper clothes' là danh từ số nhiều → không dùng 'a'. Câu đúng: ..., paper clothes, and three carps."}, {"q": "<u>The</u><sup style='color:var(--primary);font-weight:700'>A</sup> Vietnamese people believe that <u>the</u><sup style='color:var(--primary);font-weight:700'>B</sup> Kitchen Gods go to Heaven on <u>carps</u><sup style='color:var(--primary);font-weight:700'>C</sup>.", "qVi": "Người Việt Nam tin rằng ông Táo cưỡi cá chép về trời.", "opts": ["A. The", "B. the", "C. carps"], "a": 0, "exp": "Đáp án: A. The → Ø. Nhận định chung về người Việt → không dùng mạo từ. Câu đúng: Vietnamese people believe that the Kitchen Gods go to Heaven on carps."}]}, {"type": "fill", "title": "Bài 3 — Complete the sentences with a, an, the, or Ø (zero article)", "box": ["a", "an", "the", "0 = không dùng mạo từ"], "items": [{"s": "It is a custom in my family to have ___ breakfast at home on Sundays.", "a": ["0", "zero", "ø", "x", "-", "không", "khong"], "qVi": "Trong gia đình tôi, ăn sáng ở nhà vào Chủ nhật là một thói quen.", "exp": "Trước tên bữa ăn không dùng mạo từ → have breakfast."}, {"s": "When visiting a family home in some countries, you should bring ___ small gift with you.", "a": "a", "qVi": "Khi đến thăm nhà ai đó ở một số quốc gia, bạn nên mang theo một món quà nhỏ.", "exp": "'small' bắt đầu bằng phụ âm /s/, danh từ số ít chưa xác định → a."}, {"s": "Our village festival is held on the 10th of ___ January.", "a": ["0", "zero", "ø", "x", "-", "không", "khong"], "qVi": "Lễ hội làng của chúng tôi được tổ chức vào ngày 10 tháng Giêng.", "exp": "Trước tên tháng không dùng mạo từ."}, {"s": "Ancient Egyptians worshipped ___ Sun.", "a": "the", "qVi": "Người Ai Cập cổ đại thờ thần Mặt Trời.", "exp": "Mặt Trời là vật duy nhất → the Sun."}, {"s": "Many people think that hard work is ___ important Vietnamese value.", "a": "an", "qVi": "Nhiều người cho rằng chăm chỉ là một giá trị quan trọng của người Việt.", "exp": "'important' bắt đầu bằng nguyên âm /ɪ/ → an."}]}, {"type": "fill", "title": "Bài 4 — Complete the text with the or Ø (zero article)", "box": ["the", "0 = không dùng mạo từ"], "text": "A recent study in (1) ___ UK shows that family time traditions are good for (2) ___ teens. These traditions include family members playing card games, watching their favourite TV programmes, or performing (3) ___ karaoke shows at weekends with one another. These activities often lead to lots of laughter and (4) ___ fun conversations. By taking part in such activities, teens strengthen (5) ___ bonds with their family.", "textVi": "Một nghiên cứu gần đây ở Vương quốc Anh cho thấy các truyền thống dành thời gian cho gia đình rất tốt cho thanh thiếu niên. Những truyền thống này gồm việc các thành viên chơi bài, xem chương trình TV yêu thích, hoặc cùng nhau hát karaoke vào cuối tuần. Những hoạt động này thường mang lại nhiều tiếng cười và những cuộc trò chuyện vui vẻ. Khi tham gia các hoạt động như vậy, thanh thiếu niên thắt chặt sợi dây gắn kết với gia đình.", "items": [{"s": "(1) A recent study in ___ UK...", "a": "the", "exp": "Tên nước có từ 'Kingdom' → the UK."}, {"s": "(2) ...family time traditions are good for ___ teens.", "a": ["0", "zero", "ø", "x", "-", "không", "khong"], "exp": "Danh từ số nhiều nói chung → không dùng mạo từ."}, {"s": "(3) ...or performing ___ karaoke shows at weekends...", "a": ["0", "zero", "ø", "x", "-", "không", "khong"], "exp": "Danh từ số nhiều nói chung → không dùng mạo từ."}, {"s": "(4) ...lots of laughter and ___ fun conversations.", "a": ["0", "zero", "ø", "x", "-", "không", "khong"], "exp": "Danh từ số nhiều nói chung → không dùng mạo từ."}, {"s": "(5) ...teens strengthen ___ bonds with their family.", "a": "the", "exp": "'bonds' được xác định bởi 'with their family' → the bonds."}]}], "game": {"title": "Bài 5 — GAME: Bingo! (Find and correct the article mistakes)", "instruction": "Work in groups. 1. Read the sentences that the teacher gives you. 2. Identify the mistake with article(s) in each sentence. 3. Correct the mistakes. 4. Say Bingo! as soon as your group finishes. 5. The first group to come up with all the correct answers wins.", "instructionVi": "Làm theo nhóm. 1. Đọc các câu giáo viên đưa. 2. Tìm lỗi về mạo từ trong mỗi câu. 3. Sửa lỗi. 4. Hô 'Bingo!' ngay khi nhóm làm xong. 5. Nhóm đầu tiên có tất cả đáp án đúng sẽ thắng.", "topics": [{"topic": "Câu 1", "hint": "Could you come here for <b>a</b> minute when you are available?"}, {"topic": "Câu 2", "hint": "Emma said she wants to eat vegetables in dinner, not <b>a</b> meal with meat in it."}, {"topic": "Câu 3", "hint": "Dad promised me to tell <b>an</b> interesting story before bedtime."}, {"topic": "Câu 4", "hint": "It would be better if you give me <b>an</b> ice cube for this drink."}, {"topic": "Câu 5", "hint": "Could you please pass me <b>the</b> remote? <b>The</b> series I watch will start soon."}, {"topic": "Câu 6", "hint": "I loved the book you gave me. Even though it is <b>a</b> very long story, I finished it in <b>a</b> night."}, {"topic": "Câu 7", "hint": "My mom has just cleaned <b>the</b> carpet. Please be careful with that juice."}, {"topic": "Câu 8", "hint": "Joseph adores <b>the</b> view he sees from the window of his apartment. There is no way that he will move somewhere else."}], "note": "SGK không in sẵn câu cho trò chơi (giáo viên tự chuẩn bị). Các câu trên là bộ câu tham khảo — bấm 'Xem gợi ý đáp án' để xem câu đã sửa đúng (mạo từ in đậm)."}, "bonusPractice": {"title": "🌱 Luyện tập thêm (Bonus Practice) — dành cho bạn nào cần củng cố kiến thức", "note": "Các câu trắc nghiệm ĐƠN GIẢN HƠN, làm thêm ngoài 5 bài của sách, giúp các bạn nắm chắc khi nào dùng a/an/the và khi nào dùng Ø (zero article).", "items": [{"q": "I saw ___ elephant at the festival.", "qVi": "Tôi đã thấy một con voi ở lễ hội.", "opts": ["a", "an", "the"], "optsVi": ["một (phụ âm)", "một (nguyên âm — đúng)", "(xác định)"], "a": 1, "exp": "'elephant' bắt đầu bằng nguyên âm /e/ → an."}, {"q": "She is ___ university student.", "qVi": "Cô ấy là sinh viên đại học.", "opts": ["a", "an"], "optsVi": ["đúng — 'university' đọc /juː/", "sai"], "a": 0, "exp": "'university' đọc /ˌjuːnɪˈvɜːsəti/, âm đầu /j/ là phụ âm → a."}, {"q": "___ Moon is very bright tonight.", "qVi": "Tối nay mặt trăng rất sáng.", "opts": ["A", "The", "0 (zero)"], "optsVi": ["một", "(vật duy nhất — đúng)", "không dùng"], "a": 1, "exp": "Mặt Trăng là vật duy nhất → the Moon."}, {"q": "We usually have ___ dinner at 7 p.m.", "qVi": "Chúng tôi thường ăn tối lúc 7 giờ.", "opts": ["a", "the", "0 (zero)"], "optsVi": ["một", "(xác định)", "không dùng — đúng"], "a": 2, "exp": "Trước tên bữa ăn không dùng mạo từ."}, {"q": "I bought a kumquat tree. ___ tree is very beautiful.", "qVi": "Tôi mua một cây quất. Cái cây ấy rất đẹp.", "opts": ["A", "The"], "optsVi": ["một", "(đã nhắc đến — đúng)"], "a": 1, "exp": "Cây đã được nhắc đến ở câu trước → The tree."}, {"q": "My family goes to Hue by ___ train.", "qVi": "Gia đình tôi đi Huế bằng tàu hỏa.", "opts": ["a", "the", "0 (zero)"], "optsVi": ["một", "(xác định)", "không dùng — đúng"], "a": 2, "exp": "'by + phương tiện' → by train."}, {"q": "Tet is ___ most important festival in Viet Nam.", "qVi": "Tết là lễ hội quan trọng nhất ở Việt Nam.", "opts": ["a", "the"], "optsVi": ["một", "(so sánh nhất — đúng)"], "a": 1, "exp": "Trước so sánh nhất dùng 'the'."}, {"q": "Children love ___ lucky money.", "qVi": "Trẻ em thích tiền lì xì.", "opts": ["a", "the", "0 (zero)"], "optsVi": ["một", "(xác định)", "không dùng — đúng"], "a": 2, "exp": "'money' không đếm được, nói chung → không dùng mạo từ."}]}}, "communication": {"subtitle": "Everyday English: Giving advice", "dialogues": [{"a": "Tom", "b": "My parents are taking me to their friend's house for dinner. Could you tell me a bit about Vietnamese table manners?", "c": "Mai", "d": "Well, perhaps you should wait for the host to start eating.", "vi1": "Bố mẹ mình sắp đưa mình đến nhà bạn của họ ăn tối. Bạn có thể nói cho mình biết một chút về phép lịch sự trên bàn ăn của người Việt không?", "vi2": "À, có lẽ bạn nên đợi chủ nhà bắt đầu ăn trước."}, {"a": "Tom", "b": "I will.", "c": "Mai", "d": "It's a good idea to hand bowls with both hands.", "vi1": "Mình sẽ làm vậy.", "vi2": "Bạn nên đưa bát bằng cả hai tay."}, {"a": "Tom", "b": "Sure. I'll remember that one.", "c": "Mai", "d": "And don't hit the bowl with your chopsticks. This may bring bad luck to the host family.", "vi1": "Chắc chắn rồi. Mình sẽ nhớ điều đó.", "vi2": "Và đừng gõ đũa vào bát. Điều này có thể mang lại xui xẻo cho gia chủ."}], "practiceNote": "Bài 2 — Work in pairs. Make similar conversations with the following situations. Mẫu câu (phần tô vàng trong SGK): <b>Perhaps you should...</b> / <b>It's a good idea to...</b> / <b>Don't...</b>", "practiceTopics": ["1. Student A is travelling to Sa Pa in winter. He / She doesn't know what to wear. Student B gives advice. (Gợi ý: Perhaps you should wear warm clothes like a sweater, a scarf and gloves. It's a good idea to bring a raincoat.)", "2. Student A is going to a birthday party. He / She doesn't know what kind of gift to bring. Student B gives advice. (Gợi ý: Perhaps you should bring a book. It's a good idea to buy something your friend likes. Don't forget to wrap it!)"], "reading": {"title": "Bài 3 — Read the text about the lion dance in Japan and complete the table with the information from the text", "text": "The lion dance is called shishi-mai in Japanese. People perform it during New Year celebrations. Shishi-mai groups also perform at other important occasions such as business openings and weddings. Most forms of shishi-mai have one or more people performing the dance. The performers are excellent at acrobatics. One person controls the lion's head and the other moves the lion's body. The lion dances to the sounds of flutes and drums. The drummers and flute players often follow the lion around, but they do not dance with it. The Japanese perform shishi-mai to chase away bad spirits and to bring good luck.", "textVi": "Múa sư tử trong tiếng Nhật gọi là shishi-mai. Người ta biểu diễn nó trong dịp mừng năm mới. Các đoàn shishi-mai cũng biểu diễn ở những dịp quan trọng khác như khai trương cửa hàng và đám cưới. Hầu hết các hình thức shishi-mai có một hoặc nhiều người biểu diễn. Những người biểu diễn rất giỏi nhào lộn. Một người điều khiển đầu sư tử và người kia di chuyển thân sư tử. Sư tử múa theo tiếng sáo và tiếng trống. Người đánh trống và thổi sáo thường đi theo sư tử nhưng không múa cùng. Người Nhật biểu diễn shishi-mai để xua đuổi tà ma và mang lại may mắn."}, "tableFill": [{"s": "Japanese name: (1) ___", "a": ["shishi-mai", "shishi mai"], "qVi": "Tên tiếng Nhật", "exp": "'The lion dance is called shishi-mai in Japanese.'"}, {"s": "Occasions: (2) ___; other important occasions", "a": ["New Year celebrations", "New Year celebration", "New Year"], "qVi": "Dịp: mừng năm mới; các dịp quan trọng khác", "exp": "'People perform it during New Year celebrations.'"}, {"s": "Number of performers: one or more — Skills: (3) ___", "a": ["acrobatics"], "qVi": "Kỹ năng: nhào lộn", "exp": "'The performers are excellent at acrobatics.'"}, {"s": "Dance partner: no dance partner — Musical instruments: (4) ___ and drums", "a": ["flutes", "flute"], "qVi": "Nhạc cụ: sáo và trống", "exp": "'The lion dances to the sounds of flutes and drums.'"}, {"s": "Purposes: to chase away (5) ___; to bring good luck", "a": ["bad spirits", "spirits"], "qVi": "Mục đích: xua đuổi tà ma; mang lại may mắn", "exp": "'...to chase away bad spirits and to bring good luck.'"}], "info": {"title": "Bài 4 — Work in groups. Read Mai's notes on the Vietnamese unicorn dance. Compare the Vietnamese unicorn dance with the Japanese lion dance.", "facts": ["Vietnamese name: mua lan (múa lân)", "Occasions: Mid-Autumn and New Year Festivals; business openings and weddings", "Number of performers: one or more", "Skills: martial arts and acrobatics", "Dance partner: ong Dia (ông Địa)", "Musical instrument: drum", "Purpose: to wish for luck and success"]}, "groupPrompt": "Example: The Vietnamese unicorn dance and the Japanese lion dance are both popular on New Year Festivals. (Gợi ý so sánh: Both are performed at business openings and weddings. The Vietnamese unicorn dance has a dance partner — ong Dia, but the Japanese lion dance has no dance partner. The unicorn dance uses only drums, while shishi-mai uses flutes and drums.)"}, "reading": {"title": "A Village Festival Day", "preQuestions": {"title": "Bài 1 — Work in pairs. Look at the picture and answer the following questions", "items": [{"q": "What are the men doing?", "qVi": "Những người đàn ông đang làm gì?", "a": "They are rowing a boat and cooking rice on it (in a boat race).", "aVi": "Họ đang chèo thuyền và thổi cơm trên thuyền (trong một cuộc đua thuyền)."}, {"q": "When do you think this event occurs?", "qVi": "Em nghĩ sự kiện này diễn ra khi nào?", "a": "Maybe during Tet / at a village festival at the beginning of the year.", "aVi": "Có thể vào dịp Tết / lễ hội làng đầu năm. (Câu hỏi mở, không có đáp án cố định.)"}]}, "text": "I live in a small village in northern Viet Nam. Every year, people in my village look forward to the third day of Tet. It is one of our most important festival days.\n\nIn the morning, we gather along the riverside to watch some competitions. First, there is a special boat race. Some team members cook rice on the boat while others row the boat as fast as they can. The fastest team with well-cooked rice wins the race. Then, the referee releases a duck into the middle of the river. Contestants jump into the river to catch it. The atmosphere becomes loud with the sound of drums and cheers of festival goers.\n\nAt noon, there is a village party at the communal house for the elders. Each family also holds a home party. We cook traditional dishes like sticky rice and steamed chicken. Sometimes, we include food that children love, such as bun cha or even pizzas!\n\nThe village festival helps us maintain our traditions, connect with other people, and strengthen our family bonds.", "textVi": "Tôi sống ở một ngôi làng nhỏ ở miền Bắc Việt Nam. Hằng năm, người dân làng tôi đều mong chờ ngày mùng ba Tết. Đó là một trong những ngày hội quan trọng nhất của chúng tôi.\n\nVào buổi sáng, chúng tôi tập trung dọc bờ sông để xem các cuộc thi. Đầu tiên là một cuộc đua thuyền đặc biệt. Một số thành viên trong đội thổi cơm trên thuyền trong khi những người khác chèo thuyền nhanh hết sức có thể. Đội nhanh nhất với nồi cơm chín ngon sẽ thắng cuộc đua. Sau đó, trọng tài thả một con vịt ra giữa sông. Các thí sinh nhảy xuống sông để bắt nó. Không khí trở nên náo nhiệt với tiếng trống và tiếng reo hò của người đi hội.\n\nVào buổi trưa, có một bữa tiệc làng ở đình dành cho các cụ cao tuổi. Mỗi gia đình cũng tổ chức một bữa tiệc tại nhà. Chúng tôi nấu các món truyền thống như xôi và gà luộc. Đôi khi, chúng tôi có thêm những món trẻ em thích như bún chả hay thậm chí pizza!\n\nLễ hội làng giúp chúng tôi duy trì truyền thống, kết nối với mọi người và thắt chặt tình cảm gia đình.", "textNote": "", "mcqTitle": "Bài 2 — Read the text. Choose the correct answer A, B, or C", "mcq": [{"q": "What is the text mainly about?", "qVi": "Bài đọc chủ yếu nói về điều gì?", "opts": ["A local tradition.", "A family tradition.", "A cooking contest."], "optsVi": ["một truyền thống địa phương", "một truyền thống gia đình", "một cuộc thi nấu ăn"], "a": 0, "exp": "Cả bài kể về ngày hội của làng → truyền thống địa phương."}, {"q": "To win the boat race, a team must ___.", "qVi": "Để thắng cuộc đua thuyền, một đội phải ___.", "opts": ["row the boat more quickly than the other teams", "row the boat the fastest and properly cook the rice", "cook rice properly and catch the duck"], "optsVi": ["chèo thuyền nhanh hơn các đội khác", "chèo thuyền nhanh nhất và thổi cơm chín ngon", "thổi cơm chín ngon và bắt được vịt"], "a": 1, "exp": "'The fastest team with well-cooked rice wins the race.'"}, {"q": "The phrase \"releases a duck\" in the text means ___.", "qVi": "\"releases a duck\" ở đoạn 2 nghĩa là ___.", "opts": ["gives it freedom", "catches it", "takes it home"], "optsVi": ["thả nó ra", "bắt nó", "mang nó về nhà"], "a": 0, "exp": "release = thả ra, trả tự do."}, {"q": "Why is the festival important?", "qVi": "Tại sao lễ hội quan trọng?", "opts": ["Because it is exciting.", "Because people win valuable prizes.", "Because it keeps some village traditions alive."], "optsVi": ["nó sôi động", "mọi người giành giải thưởng giá trị", "nó gìn giữ một số truyền thống của làng"], "a": 2, "exp": "'The village festival helps us maintain our traditions...'"}], "fillTitle": "Bài 3 — Read the text again. Complete the mind map about a family party (Who: family members)", "fill": [{"s": "When: on the (1) ___ of Tet", "a": ["third day", "3rd day", "the third day"], "qVi": "Khi nào: vào ngày mùng ba Tết", "exp": "'...look forward to the third day of Tet.'"}, {"s": "Where: at (2) ___", "a": ["home"], "qVi": "Ở đâu: ở nhà", "exp": "'Each family also holds a home party.' (Tiệc ở đình là tiệc làng cho các cụ, không phải tiệc gia đình.)"}, {"s": "What to eat: traditional (3) ___", "a": ["dishes", "dish"], "qVi": "Ăn gì: các món truyền thống", "exp": "'We cook traditional dishes like sticky rice and steamed chicken.'"}, {"s": "What to eat: kids' favourite (4) ___", "a": ["food"], "qVi": "Ăn gì: món trẻ em yêu thích", "exp": "'...food that children love, such as bun cha or even pizzas!'"}], "dialogueMCQTitle": "Bài 4 (Speaking) — Work in pairs. Put the questions (A–E) in the correct blanks (1–5) to make a complete dialogue. Then role-play it.", "dialogueMCQNote": "A. And what do you do at parties? · B. Lan, what family event do you often take part in? · C. Do you like these parties? · D. Where do you hold these parties? · E. Who joins you at these parties?", "dialogueMCQ": [{"q": "Nick: (1) ___ — Lan: Well, I join birthday parties of all my family members.", "qVi": "Lan: À, mình tham gia tiệc sinh nhật của tất cả các thành viên trong gia đình.", "opts": ["A. And what do you do at parties?", "B. Lan, what family event do you often take part in?", "C. Do you like these parties?", "D. Where do you hold these parties?", "E. Who joins you at these parties?"], "a": 1, "exp": "Lan trả lời về sự kiện gia đình → B."}, {"q": "Nick: (2) ___ — Lan: In a Vietnamese restaurant. But sometimes we break with tradition by going to a Western one.", "qVi": "Lan: Ở một nhà hàng Việt. Nhưng đôi khi nhà mình phá lệ bằng cách đến một nhà hàng Tây.", "opts": ["A. And what do you do at parties?", "B. Lan, what family event do you often take part in?", "C. Do you like these parties?", "D. Where do you hold these parties?", "E. Who joins you at these parties?"], "a": 3, "exp": "Trả lời về địa điểm → D (Where)."}, {"q": "Nick: (3) ___ — Lan: Everyone in my family.", "qVi": "Lan: Mọi người trong gia đình mình.", "opts": ["A. And what do you do at parties?", "B. Lan, what family event do you often take part in?", "C. Do you like these parties?", "D. Where do you hold these parties?", "E. Who joins you at these parties?"], "a": 4, "exp": "Trả lời về người → E (Who)."}, {"q": "Nick: (4) ___ — Lan: Well, the birthday person opens the gifts. And everyone has some good food.", "qVi": "Lan: À, người có sinh nhật mở quà. Và mọi người cùng ăn đồ ăn ngon.", "opts": ["A. And what do you do at parties?", "B. Lan, what family event do you often take part in?", "C. Do you like these parties?", "D. Where do you hold these parties?", "E. Who joins you at these parties?"], "a": 0, "exp": "Trả lời về hoạt động → A."}, {"q": "Nick: (5) ___ — Lan: Yes, I always look forward to them. They are a great time for family bonding.", "qVi": "Lan: Có, mình luôn mong chờ chúng. Đó là khoảng thời gian tuyệt vời để gắn kết gia đình.", "opts": ["A. And what do you do at parties?", "B. Lan, what family event do you often take part in?", "C. Do you like these parties?", "D. Where do you hold these parties?", "E. Who joins you at these parties?"], "a": 2, "exp": "'Yes, ...' → câu hỏi Yes/No: C."}], "speakingPrompt": "Bài 5 — Make notes about a normal family event that you take part in. Use the questions below as cues: – What is the event? – Where and when does it happen? – Who joins with you? – What do you often do at that event? – Do you like it or not? Why or why not? Now work in pairs. Make a dialogue asking and answering about the event. You can use your notes."}, "listening": {"preQuestions": {"title": "Bài 1 — Work in pairs. Look at the photos and answer the following questions", "items": [{"q": "What can you see in the photos?", "qVi": "Em thấy gì trong các bức ảnh?", "a": "Photo a: colourful flower lanterns floating on the water. Photo b: a boat race with many rowers.", "aVi": "Ảnh a: những chiếc đèn hoa sen nhiều màu thả trên mặt nước. Ảnh b: một cuộc đua thuyền với nhiều tay chèo."}, {"q": "In which part of Viet Nam might the festival occur?", "qVi": "Lễ hội có thể diễn ra ở vùng nào của Việt Nam?", "a": "In the South / the Mekong Delta (Soc Trang Province).", "aVi": "Ở miền Nam / đồng bằng sông Cửu Long (tỉnh Sóc Trăng). (Câu hỏi dự đoán trước khi nghe.)"}]}, "fillTitle": "Bài 2 — Listen to part of the programme \"Charming Viet Nam\". Fill in each blank with no more than TWO words (bảng: Ok Om Bok Festival)", "fill": [{"s": "Purposes: to thank the Moon God; to mark the (1) ___ of the Khmer year", "a": "end", "qVi": "Mục đích: tạ ơn Thần Mặt Trăng; đánh dấu sự kết thúc của năm theo lịch Khmer", "exp": "Đáp án: end."}, {"s": "Time: mid-October (lunar calendar) — Offerings: (2) ___ and fruits", "a": "young rice", "qVi": "Thời gian: giữa tháng Mười âm lịch — Lễ vật: cốm dẹp và hoa quả", "exp": "Đáp án: young rice."}, {"s": "Activities: singing and dancing; games and traditional (3) ___", "a": ["fashion shows", "fashion show"], "qVi": "Hoạt động: ca múa; trò chơi và trình diễn trang phục truyền thống", "exp": "Đáp án: fashion shows."}, {"s": "Activities: Ngo Boat (4) ___", "a": ["race", "racing", "races"], "qVi": "Hoạt động: đua ghe Ngo", "exp": "Đáp án: race."}], "tfTitle": "Bài 3 — Listen again and tick T (True) or F (False)", "tf": [{"s": "Ok Om Bok is the Moon Worshipping Festival.", "viS": "Ok Om Bok là Lễ Cúng Trăng.", "a": true, "exp": "Bài nghe: Ok Om Bok, hay Lễ hội Cúng Trăng."}, {"s": "On the night of the festival, the elders talk about their wishes.", "viS": "Vào đêm lễ hội, những người lớn tuổi nói về điều ước của họ.", "a": false, "exp": "Người già hỏi TRẺ EM về điều ước của các em, không phải người già nói."}, {"s": "There are lantern contests at the festival.", "viS": "Có các cuộc thi đèn lồng tại lễ hội.", "a": true, "exp": "Bài nghe: '...see flying lantern contests.'"}, {"s": "Tourists should wear informal clothes when attending the worshipping ceremony.", "viS": "Du khách nên mặc trang phục thường ngày khi dự lễ cúng.", "a": false, "exp": "Không nên mặc quần short hay áo sát nách khi dự lễ cúng → phải mặc lịch sự (formal), không phải informal."}], "script": "Welcome to Charming Viet Nam. Today we are going to Soc Trang Province in the Mekong Delta to learn about the Ok Om Bok Festival of the Khmer people.\n\nOk Om Bok is also called the Moon Worshipping Festival. It takes place in mid-October in the lunar calendar. People hold it to thank the Moon God and to mark the end of the Khmer year.\n\nOn the night of the festival, monks and elders offer young rice and fruits to the Moon God. Then the elders feed the children young rice and ask them about their wishes.\n\nThere is a lot of singing and dancing. Visitors can join games, watch traditional fashion shows, and see flying lantern contests. The most exciting activity is the Ngo Boat race. It attracts many tourists.\n\nIf you come to the festival, remember: don't wear shorts or sleeveless shirts to the worshipping ceremony, and don't litter the temple ground.", "scriptVi": "Chào mừng các bạn đến với chương trình Việt Nam quyến rũ. Hôm nay chúng ta sẽ đến tỉnh Sóc Trăng ở đồng bằng sông Cửu Long để tìm hiểu về lễ hội Ok Om Bok của người Khmer.\n\nOk Om Bok còn được gọi là Lễ hội Cúng Trăng. Lễ hội diễn ra vào giữa tháng Mười âm lịch. Người ta tổ chức lễ hội để tạ ơn Thần Mặt Trăng và đánh dấu sự kết thúc của năm theo lịch Khmer.\n\nVào đêm lễ hội, các nhà sư và người già dâng cốm dẹp và hoa quả lên Thần Mặt Trăng. Sau đó, người già đút cốm cho trẻ em và hỏi các em về điều ước.\n\nCó rất nhiều hoạt động ca múa. Du khách có thể tham gia trò chơi, xem trình diễn trang phục truyền thống và xem thi thả đèn lồng. Hoạt động sôi động nhất là đua ghe Ngo, thu hút rất nhiều du khách.\n\nNếu bạn đến lễ hội, hãy nhớ: đừng mặc quần short hay áo sát nách khi dự lễ cúng, và đừng xả rác trong khuôn viên chùa.", "scriptNote": "Đây là kịch bản bài nghe được biên soạn lại để khớp với đáp án chính thức của SGK, giúp học sinh luyện nghe (bấm 🔊) và đối chiếu bản dịch — không phải văn bản gốc của băng ghi âm."}, "writing": {"prompt": "Bài 5 — Tom sent you an email. Read part of his email. Write an email (80–100 words) to advise Tom about participating in the Ok Om Bok Festival. (To: handsometom@mymail.com — Subject: Re: Ok Om Bok Festival — Dear Tom, ... Cheers,)", "likeLabel": "✉️ Email của Tom", "like": "\"... Guess what! My dad is taking me with him to Soc Trang Province. We will be there during the Ok Om Bok Festival. What are some dos and don'ts at this festival? ...\"<br><i style='color:var(--ink-soft)'>(Đoán xem! Bố mình sẽ đưa mình đi Sóc Trăng. Bọn mình sẽ ở đó đúng dịp lễ hội Ok Om Bok. Ở lễ hội này nên và không nên làm gì?)</i>", "dislikeLabel": "💡 Gợi ý ý tưởng", "dislike": "Dùng các lời khuyên ở Bài 4 + ý của em: pack comfortable clothes and trainers (quần áo thoải mái, giày thể thao); bring water (mang nước); stay close to your dad (đi sát bố); don't wear shorts or sleeveless shirts to the ceremony (không mặc quần short, áo sát nách khi dự lễ).", "sortTitle": "Bài 4 — Work in groups. Read the following pieces of advice for tourists at the Ok Om Bok Festival. Put them in the correct column (Dos / Don'ts)", "sortMCQ": [{"q": "a. dress up for the Moon God offering ceremony", "qVi": "ăn mặc chỉnh tề khi dự lễ cúng Thần Mặt Trăng", "opts": ["✅ Dos", "❌ Don'ts"], "a": 0, "exp": "Nên ăn mặc lịch sự để tôn trọng nghi lễ."}, {"q": "b. keep quiet when the monks and the elders are talking", "qVi": "giữ im lặng khi nhà sư và người già đang nói", "opts": ["✅ Dos", "❌ Don'ts"], "a": 0, "exp": "Nên giữ trật tự, lịch sự."}, {"q": "c. climb on the animal statues in the temple ground", "qVi": "trèo lên tượng con vật trong khuôn viên chùa", "opts": ["✅ Dos", "❌ Don'ts"], "a": 1, "exp": "Không được trèo lên tượng — thiếu tôn trọng."}, {"q": "d. show respect to the monks and the elders", "qVi": "thể hiện sự tôn trọng với nhà sư và người già", "opts": ["✅ Dos", "❌ Don'ts"], "a": 0, "exp": "Nên tôn trọng nhà sư và người lớn tuổi."}, {"q": "e. refuse young rice when the elders offer it to you", "qVi": "từ chối cốm khi người già mời", "opts": ["✅ Dos", "❌ Don'ts"], "a": 1, "exp": "Không nên từ chối — người già mời cốm là để chúc phúc."}, {"q": "f. litter the temple ground", "qVi": "xả rác trong khuôn viên chùa", "opts": ["✅ Dos", "❌ Don'ts"], "a": 1, "exp": "Không được xả rác."}], "tip": "Dàn ý email: (1) Lời chào + phản hồi tin của Tom (Hi Tom, It's great to hear...) → (2) Những việc NÊN làm: You should... / It's a good idea to... / Remember to... → (3) Những việc KHÔNG NÊN làm: Don't... / You shouldn't... → (4) Lời chúc + ký tên (I hope you have a great time! — kết thư bằng <b>Cheers,</b> như mẫu SGK). Dùng từ nối: First, Second, Also, Finally.", "sampleAnswer": "Dear Tom,\nIt's great to hear that you're going to the Ok Om Bok Festival in Soc Trang! Here is some advice for you. First, you should dress up for the Moon God offering ceremony. Don't wear shorts or sleeveless shirts there. Second, show respect to the monks and the elders, and keep quiet when they are talking. If the elders offer you young rice, don't refuse it. Also, don't climb on the animal statues or litter the temple ground. Finally, stay close to your dad in the crowd. I hope you have a great time!\nCheers,\nLinh", "sampleAnswerVi": "Tom thân mến,\nThật tuyệt khi biết bạn sắp đi lễ hội Ok Om Bok ở Sóc Trăng! Đây là vài lời khuyên cho bạn. Trước hết, bạn nên ăn mặc chỉnh tề khi dự lễ cúng Thần Mặt Trăng. Đừng mặc quần short hay áo sát nách ở đó. Thứ hai, hãy tôn trọng các nhà sư và người già, và giữ im lặng khi họ nói chuyện. Nếu người già mời cốm, đừng từ chối. Ngoài ra, đừng trèo lên tượng con vật hay xả rác trong khuôn viên chùa. Cuối cùng, hãy đi sát bố giữa đám đông. Chúc bạn có khoảng thời gian thật vui!\nThân,\nLinh", "analysis": [{"en": "It's great to hear that you're going to the Ok Om Bok Festival in Soc Trang!", "vi": "Câu mở đầu: phản hồi tin của Tom một cách thân thiện.", "note": "'It's great to hear that + mệnh đề' — mẫu mở đầu email thân mật."}, {"en": "First, you should dress up for the Moon God offering ceremony.", "vi": "Lời khuyên NÊN làm (Bài 4 – a).", "note": "'should + V(nguyên thể)' = nên làm gì; 'First' mở đầu phần liệt kê."}, {"en": "Don't wear shorts or sleeveless shirts there.", "vi": "Lời khuyên KHÔNG nên làm (lấy từ bài nghe).", "note": "'Don't + V' = đừng làm gì."}, {"en": "Second, show respect to the monks and the elders, and keep quiet when they are talking.", "vi": "Lời khuyên NÊN làm (Bài 4 – b, d).", "note": "Câu mệnh lệnh khẳng định: V(nguyên thể) đứng đầu câu."}, {"en": "If the elders offer you young rice, don't refuse it.", "vi": "Lời khuyên KHÔNG nên làm (Bài 4 – e).", "note": "Câu điều kiện 'If + hiện tại đơn, mệnh lệnh'."}, {"en": "Also, don't climb on the animal statues or litter the temple ground.", "vi": "Lời khuyên KHÔNG nên làm (Bài 4 – c, f).", "note": "'Also' thêm ý; 'or' nối hai việc không nên làm."}, {"en": "Finally, stay close to your dad in the crowd. I hope you have a great time!", "vi": "Lời khuyên cuối + lời chúc kết thư.", "note": "'Finally' báo hiệu ý cuối; 'I hope + mệnh đề' để chúc."}]}, "lookingBackMCQTitle": "Bài 1 — Choose the correct option to complete each sentence", "lookingBackMCQ": [{"q": "It is becoming a ___ for many families in Viet Nam to celebrate Women's Day and Family Day.", "qVi": "Nhiều gia đình Việt Nam đang dần coi việc kỷ niệm Ngày Phụ nữ và Ngày Gia đình là một phong tục.", "opts": ["habit", "custom"], "optsVi": ["thói quen (cá nhân)", "phong tục"], "a": 1, "exp": "'custom' = phong tục của một cộng đồng/nhiều gia đình; 'habit' là thói quen cá nhân."}, {"q": "___, we hold the Spring Festival on the 15th of January in lunar calendar.", "qVi": "Theo truyền thống, chúng tôi tổ chức Lễ hội Mùa xuân vào ngày 15 tháng Giêng âm lịch.", "opts": ["Traditionally", "In the past"], "optsVi": ["Theo truyền thống", "Trong quá khứ"], "a": 0, "exp": "Động từ 'hold' ở hiện tại → việc vẫn làm theo truyền thống, không phải 'In the past'."}, {"q": "Janet is from a family of doctors, but she broke with ___ when she went to an art college.", "qVi": "Janet xuất thân từ gia đình bác sĩ, nhưng cô đã phá vỡ truyền thống khi theo học trường nghệ thuật.", "opts": ["tradition", "habit"], "optsVi": ["truyền thống", "thói quen"], "a": 0, "exp": "Cụm cố định 'break with tradition'."}, {"q": "Having dinner at my grandparents' house on Saturdays is one of the customs our family ___.", "qVi": "Ăn tối ở nhà ông bà vào thứ Bảy là một trong những phong tục gia đình tôi vẫn giữ.", "opts": ["does", "practises"], "optsVi": ["làm", "thực hành, giữ (phong tục)"], "a": 1, "exp": "Cụm 'practise a custom'."}, {"q": "Story telling is a great way to ___ the local tradition alive.", "qVi": "Kể chuyện là cách hay để gìn giữ truyền thống địa phương.", "opts": ["maintain", "keep"], "optsVi": ["duy trì", "giữ"], "a": 1, "exp": "Cụm 'keep sth alive'."}], "lookingBackVocab2": {"title": "Bài 2 — Fill in each blank with the suitable form of the word given", "items": [{"s": "Kien was so tall that no one recognised him at the family ___ last summer. (union)", "a": "reunion", "qVi": "Kiên cao đến mức không ai nhận ra cậu ấy tại buổi sum họp gia đình hè năm ngoái.", "exp": "family reunion = sum họp gia đình (re + union)."}, {"s": "My mum puts in a lot of effort to prepare ___ to worship our ancestors. (offer)", "a": "offerings", "qVi": "Mẹ tôi bỏ rất nhiều công sức chuẩn bị lễ vật để cúng tổ tiên.", "exp": "Cần danh từ: offer → offering(s) = lễ vật."}, {"s": "The festival ___ gathered on the riverside to cheer the boat racers. (go)", "a": "goers", "qVi": "Những người đi hội tụ tập bên bờ sông để cổ vũ các tay đua thuyền.", "exp": "festival goers = người đi lễ hội (danh từ số nhiều vì động từ 'gathered')."}, {"s": "Dragon-snake (Rong ran len may) is a ___ Vietnamese game for children. It is very enjoyable. (tradition)", "a": "traditional", "qVi": "Rồng rắn lên mây là trò chơi dân gian truyền thống của trẻ em Việt Nam, rất thú vị.", "exp": "Cần tính từ trước danh từ 'game' → traditional."}, {"s": "We happened to see some locals ___ animals in their village temples. (worship)", "a": ["worshipping"], "qVi": "Chúng tôi tình cờ thấy một số người dân địa phương thờ cúng các con vật ở đình/đền làng.", "exp": "Cấu trúc 'see sb doing sth' (thấy ai đang làm gì) → worshipping."}]}, "lookingBackGrammarTitle": "Bài 3 — Complete the sentences with a, an, the, or Ø (zero article)", "lookingBackGrammar": [{"s": "These days, many teenagers write ___ emails instead of letters.", "a": ["0", "zero", "ø", "x", "-", "không", "khong"], "qVi": "Ngày nay, nhiều thanh thiếu niên viết thư điện tử thay vì thư tay.", "exp": "Danh từ số nhiều nói chung → không dùng mạo từ."}, {"s": "My dad bought ___ ornamental kumquat tree for Tet.", "a": "an", "qVi": "Bố tôi mua một cây quất cảnh để đón Tết.", "exp": "'ornamental' bắt đầu bằng nguyên âm /ɔː/ → an."}, {"s": "I don't like that restaurant. ___ food there isn't very good.", "a": "the", "qVi": "Tôi không thích nhà hàng đó. Đồ ăn ở đó không ngon lắm.", "exp": "'food' được xác định bởi 'there' (ở nhà hàng đó) → The food."}, {"s": "Don't wear ___ hat when you go into a temple or a pagoda.", "a": "a", "qVi": "Đừng đội mũ khi vào đền hoặc chùa.", "exp": "Danh từ đếm được số ít, chưa xác định, bắt đầu bằng phụ âm → a hat."}, {"s": "It's becoming a custom for us to stay out very late on ___ New Year's Eve.", "a": ["0", "zero", "ø", "x", "-", "không", "khong"], "qVi": "Thức khuya đến tận đêm Giao thừa đang dần trở thành thói quen của chúng tôi.", "exp": "Trước tên ngày lễ không dùng mạo từ → on New Year's Eve."}], "lookingBackGrammar2Title": "Bài 4 — Complete the text with a, an, the, or Ø (zero article)", "lookingBackGrammar2Text": "Here are two easy ways to raise children's awareness of (1) ___ customs and traditions. First, it is (2) ___ good idea for parents to teach children to cook. By doing this, children can learn and preserve their family recipes. Second, parents can take children to (3) ___ local festivals. This helps them discover (4) ___ culture of their community and develop (5) ___ understanding of local traditions.", "lookingBackGrammar2TextNote": "", "lookingBackGrammar2": [{"s": "(1) Here are two easy ways to raise children's awareness of ___ customs and traditions.", "a": ["0", "zero", "ø", "x", "-", "không", "khong"], "qVi": "...nâng cao nhận thức của trẻ về phong tục và truyền thống.", "exp": "Danh từ số nhiều nói chung → không dùng mạo từ."}, {"s": "(2) First, it is ___ good idea for parents to teach children to cook.", "a": "a", "qVi": "Trước hết, cha mẹ nên dạy con nấu ăn.", "exp": "Cụm cố định 'It's a good idea to...'."}, {"s": "(3) Second, parents can take children to ___ local festivals.", "a": ["0", "zero", "ø", "x", "-", "không", "khong"], "qVi": "Thứ hai, cha mẹ có thể đưa con đi các lễ hội địa phương.", "exp": "Danh từ số nhiều nói chung → không dùng mạo từ."}, {"s": "(4) This helps them discover ___ culture of their community...", "a": "the", "qVi": "Điều này giúp trẻ khám phá văn hóa của cộng đồng mình...", "exp": "'culture' được xác định bởi 'of their community' → the."}, {"s": "(5) ...and develop ___ understanding of local traditions.", "a": ["an"], "qVi": "...và hiểu sâu hơn về truyền thống địa phương.", "exp": "Cụm 'develop an understanding of sth' = có được sự hiểu biết về điều gì; 'understanding' bắt đầu bằng nguyên âm /ʌ/ → an."}], "project": {"title": "LOCAL CUSTOMS AND TRADITIONS", "steps": ["Work in groups. Choose a custom or tradition practised in your home town.", "Search for information about that custom or tradition. You can ask your parents or grandparents about it.", "Report your findings to your class. You can use visual aids to illustrate your report."], "questions": ["What is the custom / tradition?", "Who practises it?", "Where and when do people practise it?", "What do people do?", "Why do people practise that custom / tradition?"], "structure": "Gợi ý bố cục bài báo cáo: Introduction (giới thiệu) → Place and time (địa điểm, thời gian) → What people do (mọi người làm gì) → Why (ý nghĩa) → Conclusion (kết luận). Ví dụ chủ đề: Hung Kings' Festival, múa lân ngày Tết, gói bánh chưng..."}, "nowICan": ["use the words related to customs and traditions (dùng từ vựng về phong tục và truyền thống)", "pronounce the sounds /n/ and /ŋ/ correctly in words and sentences (phát âm đúng /n/ và /ŋ/)", "recognise and use the zero article (nhận biết và dùng mạo từ rỗng)", "give advice (đưa ra lời khuyên)", "read about a local festival (đọc về một lễ hội địa phương)", "talk about a normal family event that I take part in (nói về một sự kiện gia đình)", "listen about a festival (nghe về một lễ hội)", "write an email to give advice on taking part in a festival (viết email khuyên về việc tham gia lễ hội)"], "remember": {"vocab": ["custom", "tradition", "traditionally", "practise", "break with tradition", "keep ... alive", "family reunion", "wedding ceremony", "food offerings", "whale worship", "martial arts", "festival goers", "ornamental tree", "bamboo pole", "communal house", "admire", "chase away", "pray for", "worship", "Moon God"], "grammar": "<b>Zero article (Ø)</b> — dùng danh từ không có a/an/the: với danh từ <b>không đếm được / trừu tượng</b> (Sugar is not good for your teeth), khi nói <b>nhận định chung</b> (Students should work hard), với <b>phương tiện đi lại nói chung</b> (by boat, by air). Ngoài ra không dùng mạo từ trước tháng (in October), bữa ăn (have breakfast), ngày lễ (on New Year's Eve), tên nước (Viet Nam). Nhắc lại: <b>a/an</b> + danh từ đếm được số ít chưa xác định; <b>the</b> + vật duy nhất / đã xác định.", "expressions": ["Well, perhaps you should wait for the host to start eating.", "It's a good idea to hand bowls with both hands.", "And don't hit the bowl with your chopsticks.", "They are an important part of our Tet tradition.", "Interesting! I didn't know that."], "readingSummary": "Bài đọc 'A Village Festival Day' kể về ngày hội mùng ba Tết ở một làng miền Bắc: buổi sáng có đua thuyền vừa chèo vừa thổi cơm và trọng tài thả vịt cho các thí sinh bắt; buổi trưa có tiệc làng ở đình cho các cụ và tiệc ở từng nhà với xôi, gà luộc, bún chả, pizza; lễ hội giúp duy trì truyền thống, kết nối mọi người và thắt chặt tình cảm gia đình.", "mistakes": ["'an hour' chứ không phải 'a hour' — xét theo ÂM đầu, không theo chữ cái.", "Không dùng mạo từ trước tháng, bữa ăn, ngày lễ và 'by + phương tiện': in October, have breakfast, on New Year's Eve, by air.", "Dùng 'the' với vật duy nhất (the Sun) và danh từ đã được xác định (the culture of their community).", "Phân biệt 'custom' (phong tục) và 'habit' (thói quen cá nhân); cụm cố định: break with tradition, keep ... alive, practise a custom."]}};
+const VOCAB = [{"w": "custom", "ipa": "/ˈkʌstəm/", "pos": "n", "vi": "phong tục", "ex": "Celebrating New Year as well as Tet is becoming a custom for young people.", "lvl": "must"}, {"w": "tradition", "ipa": "/trəˈdɪʃn/", "pos": "n", "vi": "truyền thống", "ex": "Plants and flowers are an important part of the Tet tradition.", "lvl": "must"}, {"w": "traditionally", "ipa": "/trəˈdɪʃənəli/", "pos": "adv", "vi": "theo truyền thống", "ex": "Traditionally, children in the US go from door to door for sweets on Halloween.", "lvl": "must"}, {"w": "practise", "ipa": "/ˈpræktɪs/", "pos": "v", "vi": "thực hành, giữ (phong tục)", "ex": "Having dinner at my grandparents' house is one of the customs our family practises.", "lvl": "must"}, {"w": "break with tradition", "ipa": "/breɪk wɪð trəˈdɪʃn/", "pos": "v phrase", "vi": "phá vỡ truyền thống", "ex": "Janet broke with tradition when she went to an art college.", "lvl": "must"}, {"w": "keep alive", "ipa": "/kiːp əˈlaɪv/", "pos": "v phrase", "vi": "gìn giữ", "ex": "Storytelling is a great way to keep the local tradition alive.", "lvl": "must"}, {"w": "reunion", "ipa": "/riːˈjuːniən/", "pos": "n", "vi": "sự sum họp", "ex": "It is a tradition to have a family reunion on the first day of Tet.", "lvl": "must"}, {"w": "ceremony", "ipa": "/ˈserəməni/", "pos": "n", "vi": "nghi lễ", "ex": "Shops often have a lion dance at their opening ceremony.", "lvl": "must"}, {"w": "offering", "ipa": "/ˈɒfərɪŋ/", "pos": "n", "vi": "lễ vật, đồ cúng", "ex": "Vietnamese people prepare offerings to worship their ancestors at Tet.", "lvl": "must"}, {"w": "worship", "ipa": "/ˈwɜːʃɪp/", "pos": "v, n", "vi": "thờ cúng", "ex": "Ancient Egyptians worshipped the Sun.", "lvl": "must"}, {"w": "whale worship", "ipa": "/weɪl ˈwɜːʃɪp/", "pos": "n phrase", "vi": "tục thờ cá Ông", "ex": "Whale worship is popular in coastal villages in Viet Nam.", "lvl": "important"}, {"w": "martial arts", "ipa": "/ˌmɑːʃl ˈɑːts/", "pos": "n phrase", "vi": "võ thuật", "ex": "She broke with her family tradition by not practising martial arts.", "lvl": "must"}, {"w": "festival goer", "ipa": "/ˈfestɪvl ˌɡəʊə/", "pos": "n phrase", "vi": "người đi lễ hội", "ex": "The festival goers gathered on the riverside to cheer the boat racers.", "lvl": "must"}, {"w": "ornamental tree", "ipa": "/ˌɔːnəˈmentl triː/", "pos": "n phrase", "vi": "cây cảnh", "ex": "My dad bought an ornamental kumquat tree for Tet.", "lvl": "must"}, {"w": "bamboo pole", "ipa": "/ˌbæmˈbuː pəʊl/", "pos": "n phrase", "vi": "cây nêu (cây tre)", "ex": "People place a bamboo pole in the yard of the communal house.", "lvl": "must"}, {"w": "communal house", "ipa": "/kəˈmjuːnl haʊs/", "pos": "n phrase", "vi": "đình làng", "ex": "There is a village party for the elders at the communal house.", "lvl": "must"}, {"w": "decorative", "ipa": "/ˈdekərətɪv/", "pos": "adj", "vi": "để trang trí", "ex": "Small bells and lanterns are decorative items.", "lvl": "important"}, {"w": "blooming", "ipa": "/ˈbluːmɪŋ/", "pos": "adj", "vi": "đang nở rộ", "ex": "Many people visit flower villages to admire the blooming flowers.", "lvl": "important"}, {"w": "admire", "ipa": "/ədˈmaɪə/", "pos": "v", "vi": "ngắm, chiêm ngưỡng", "ex": "Tomi likes to admire the view from the hill.", "lvl": "must"}, {"w": "chase away", "ipa": "/tʃeɪs əˈweɪ/", "pos": "v phrase", "vi": "xua đuổi", "ex": "Knocking on wood is a way to chase away bad spirits.", "lvl": "must"}, {"w": "pray", "ipa": "/preɪ/", "pos": "v", "vi": "cầu nguyện, cầu mong", "ex": "Many Asians go to Buddhist temples to pray for good luck.", "lvl": "must"}, {"w": "place", "ipa": "/pleɪs/", "pos": "v", "vi": "đặt, để", "ex": "The British place presents under their Christmas trees.", "lvl": "important"}, {"w": "kumquat", "ipa": "/ˈkʌmkwɒt/", "pos": "n", "vi": "cây quất, quả quất", "ex": "We go to Nhat Tan Village to buy kumquat trees.", "lvl": "important"}, {"w": "peach blossom", "ipa": "/piːtʃ ˈblɒsəm/", "pos": "n phrase", "vi": "hoa đào", "ex": "We buy kumquat trees and peach blossoms for Tet.", "lvl": "important"}, {"w": "acrobat", "ipa": "/ˈækrəbæt/", "pos": "n", "vi": "nghệ sĩ nhào lộn", "ex": "Lion dance performers are often skilled acrobats.", "lvl": "important"}, {"w": "spirit", "ipa": "/ˈspɪrɪt/", "pos": "n", "vi": "linh hồn, tà ma", "ex": "The lion dance can chase away bad spirits.", "lvl": "important"}, {"w": "release", "ipa": "/rɪˈliːs/", "pos": "v", "vi": "thả ra", "ex": "An old man releases a duck into the river.", "lvl": "important"}, {"w": "elder", "ipa": "/ˈeldə/", "pos": "n", "vi": "người cao tuổi", "ex": "Show respect to the monks and the elders.", "lvl": "must"}, {"w": "monk", "ipa": "/mʌŋk/", "pos": "n", "vi": "nhà sư", "ex": "Monks and elders offer young rice to the Moon God.", "lvl": "important"}, {"w": "young rice", "ipa": "/jʌŋ raɪs/", "pos": "n phrase", "vi": "cốm dẹp, lúa non", "ex": "Don't refuse young rice when the elders offer it to you.", "lvl": "extension"}, {"w": "bond", "ipa": "/bɒnd/", "pos": "n", "vi": "sự gắn kết", "ex": "Teens strengthen the bonds with their family.", "lvl": "important"}, {"w": "litter", "ipa": "/ˈlɪtə/", "pos": "v", "vi": "xả rác", "ex": "Don't litter the temple ground.", "lvl": "must"}];
+const STORAGE_KEY = "u5_sgk_progress_v1";
+const SITE_LABEL = "Tiếng Anh 8 — Unit 5 (SGK)";
+
+/* ---------- storage ---------- */
+function loadState(){
+  try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {done:{}, mistakes:{}, favs:{}}; }
+  catch(e){ return {done:{}, mistakes:{}, favs:{}}; }
+}
+function saveState(s){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); }catch(e){} }
+let STATE = loadState();
+function markDone(key, correct){
+  STATE.done[key] = STATE.done[key] || {tries:0, correct:false};
+  STATE.done[key].tries++;
+  if(correct) STATE.done[key].correct = true;
+  saveState(STATE);
+}
+function logMistake(key, data){
+  STATE.mistakes[key] = data;
+  saveState(STATE);
+}
+function clearMistake(key){
+  delete STATE.mistakes[key];
+  saveState(STATE);
+}
+function toggleFav(w){
+  STATE.favs[w] = !STATE.favs[w];
+  saveState(STATE);
+}
+
+/* ---------- TTS ---------- */
+function speak(text){
+  try{
+    if(!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US'; u.rate = 0.92;
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+/* ---------- helpers ---------- */
+function esc(s){ return (s===undefined||s===null) ? '' : String(s); }
+function normalize(s){ return String(s||'').trim().toLowerCase().replace(/[.,!?;:'"]/g,'').replace(/\s+/g,' '); }
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+/* ---------- generic widgets ---------- */
+function mountMCQBlock(holderId, items, keyPrefix){
+  const holder = document.getElementById(holderId);
+  if(!holder || !items) return;
+  window.__MCQDATA[keyPrefix] = items;
+  holder.innerHTML = items.map((q,i)=>{
+    const key = keyPrefix+'_'+i;
+    const already = STATE.done[key];
+    return `<div class="quiz-q" id="${key}_box">
+      <div class="qtext">${i+1}. ${esc(q.q)}</div>
+      ${q.opts.map((o,oi)=>`<button class="opt-item ${already&&already.correct?'disabled':''}" onclick="answerMCQ('${holderId}','${keyPrefix}',${i},${oi})" id="${key}_opt${oi}">${String.fromCharCode(65+oi)}. ${esc(o)}</button>`).join('')}
+      <div class="feedback" id="${key}_fb"></div>
+    </div>`;
+  }).join('');
+  // restore already-correct state visuals
+  items.forEach((q,i)=>{
+    const key = keyPrefix+'_'+i;
+    if(STATE.done[key] && STATE.done[key].correct){
+      const idx = q.a;
+      const el = document.getElementById(key+'_opt'+idx);
+      if(el) el.classList.add('correct');
+    }
+  });
+}
+window.__MCQDATA = {};
+function registerMCQ(keyPrefix, items){ window.__MCQDATA[keyPrefix] = items; }
+function answerMCQ(holderId, keyPrefix, i, oi){
+  const items = window.__MCQDATA[keyPrefix];
+  const q = items[i];
+  const key = keyPrefix+'_'+i;
+  const box = document.getElementById(key+'_box');
+  const fb = document.getElementById(key+'_fb');
+  const correct = oi === q.a;
+  box.querySelectorAll('.opt-item').forEach((el,idx)=>{
+    el.classList.add('disabled');
+    if(idx===q.a) el.classList.add('correct');
+    if(idx===oi && !correct) el.classList.add('wrong');
+  });
+  markDone(key, correct);
+  if(!correct){
+    logMistake(key, {q:q.q, your:q.opts[oi], correct:q.opts[q.a], exp:q.exp||'', type:'mcq'});
+  } else clearMistake(key);
+  let html = correct ? '✅ Chính xác!' : '❌ Chưa đúng. Đáp án đúng: '+String.fromCharCode(65+q.a)+'. '+esc(q.opts[q.a]);
+  if(q.exp) html += `<div class="explain">💡 ${esc(q.exp)}</div>`;
+  if(q.qVi || q.optsVi){
+    html += `<button class="fill-vi-toggle" onclick="this.nextElementSibling.classList.toggle('show')">🇻🇳 Xem nghĩa</button><div class="vi-explain">${q.qVi?esc(q.qVi)+'<br>':''}${(q.optsVi||[]).map((o,idx2)=>`${String.fromCharCode(65+idx2)}. ${esc(o)}`).join('<br>')}</div>`;
+  }
+  fb.innerHTML = html;
+  fb.className = 'feedback show '+(correct?'ok':'bad');
+  const retryBtn = document.createElement('button');
+  retryBtn.className='btn small secondary'; retryBtn.style.marginTop='8px'; retryBtn.textContent='🔄 Làm lại';
+  retryBtn.onclick = ()=>{ box.querySelectorAll('.opt-item').forEach(el=>{el.classList.remove('disabled','correct','wrong');}); fb.className='feedback'; fb.innerHTML=''; };
+  fb.appendChild(document.createElement('br'));
+  fb.appendChild(retryBtn);
+}
+
+function mountFillBlank(holderId, items, keyPrefix){
+  const holder = document.getElementById(holderId);
+  if(!holder || !items) return;
+  window.__MCQDATA[keyPrefix] = items;
+  holder.innerHTML = items.map((it,i)=>{
+    const key = keyPrefix+'_'+i;
+    const parts = String(it.s).split('___');
+    const already = STATE.done[key];
+    return `<div class="quiz-q" id="${key}_box">
+      <div class="qtext">${i+1}. ${esc(parts[0])}<input type="text" class="fillin" id="${key}_in" ${already&&already.correct?'disabled':''}>${esc(parts[1]||'')}</div>
+      ${it.qVi?`<button class="fill-vi-toggle" onclick="document.getElementById('${key}_vibox').classList.toggle('show')">🇻🇳 Dịch nghĩa</button>`:''}
+      <button class="btn small" onclick="checkFill('${keyPrefix}',${i})">Kiểm tra</button>
+      ${it.qVi?`<div class="vi-explain" id="${key}_vibox">${esc(it.qVi)}</div>`:''}
+      <div class="feedback" id="${key}_fb"></div>
+    </div>`;
+  }).join('');
+}
+function checkFill(keyPrefix, i){
+  const items = window.__MCQDATA[keyPrefix];
+  const it = items[i];
+  const key = keyPrefix+'_'+i;
+  const input = document.getElementById(key+'_in');
+  const fb = document.getElementById(key+'_fb');
+  const userVal = input.value;
+  const accepted = Array.isArray(it.a) ? it.a : [it.a];
+  const correct = accepted.some(a=>normalize(a)===normalize(userVal));
+  markDone(key, correct);
+  if(!correct) logMistake(key, {q:it.s, your:userVal, correct:accepted[0], exp:it.exp||'', type:'fill'});
+  else clearMistake(key);
+  let html = correct ? '🎉 Chính xác!' : `❌ Chưa đúng. Đáp án đúng: <b>${esc(accepted[0])}</b>`;
+  if(it.exp) html += `<div class="explain">💡 ${esc(it.exp)}</div>`;
+  fb.innerHTML = html;
+  fb.className = 'feedback show '+(correct?'ok':'bad');
+  if(correct) input.disabled = true;
+}
+
+function mountTF(holderId, items, keyPrefix){
+  const holder = document.getElementById(holderId);
+  if(!holder || !items) return;
+  window.__MCQDATA[keyPrefix] = items;
+  holder.innerHTML = items.map((it,i)=>{
+    const key = keyPrefix+'_'+i;
+    return `<div class="quiz-q" id="${key}_box">
+      <div class="qtext">${i+1}. ${esc(it.s)}</div>
+      <div class="tf-row">
+        <button class="tf-btn" onclick="answerTF('${keyPrefix}',${i},true)">✅ True / Đúng</button>
+        <button class="tf-btn" onclick="answerTF('${keyPrefix}',${i},false)">❌ False / Sai</button>
+      </div>
+      <div class="feedback" id="${key}_fb"></div>
+    </div>`;
+  }).join('');
+}
+function answerTF(keyPrefix, i, val){
+  const items = window.__MCQDATA[keyPrefix];
+  const it = items[i];
+  const key = keyPrefix+'_'+i;
+  const box = document.getElementById(key+'_box');
+  const fb = box.querySelector('.feedback');
+  const correct = val === it.a;
+  box.querySelectorAll('.tf-btn').forEach(b=>b.disabled=true);
+  markDone(key, correct);
+  if(!correct) logMistake(key, {q:it.s, your:val?'True':'False', correct:it.a?'True':'False', exp:it.exp||'', type:'tf'});
+  else clearMistake(key);
+  let html = correct ? '✅ Chính xác!' : `❌ Chưa đúng. Đáp án đúng: <b>${it.a?'True':'False'}</b>`;
+  if(it.viS) html += `<div class="vi-explain">🇻🇳 ${esc(it.viS)}</div>`;
+  if(it.exp) html += `<div class="explain">💡 ${esc(it.exp)}</div>`;
+  html += `<br><button class="btn small secondary" onclick="mountTFRetry('${holderId_of(box)}','${keyPrefix}',${i})">🔄 Làm lại</button>`;
+  fb.innerHTML = html;
+  fb.className = 'feedback show '+(correct?'ok':'bad');
+}
+function holderId_of(box){ return box.closest('[id$="Holder"]') ? box.closest('[id$="Holder"]').id : ''; }
+function mountTFRetry(holderId, keyPrefix, i){
+  if(!holderId) return;
+  const items = window.__MCQDATA[keyPrefix];
+  mountTF(holderId, items, keyPrefix);
+}
+
+function mountMatch(holderId, pairs, keyPrefix){
+  const holder = document.getElementById(holderId);
+  if(!holder || !pairs) return;
+  const left = pairs.map((p,i)=>({text:p.en||p.w, i}));
+  const right = shuffle(pairs.map((p,i)=>({text:p.vi||p.def, i})));
+  holder.innerHTML = `<div class="match-wrap">
+    <div class="match-col" id="${keyPrefix}_L">${left.map(l=>`<button class="match-item" data-i="${l.i}" onclick="matchPick(this,'${keyPrefix}','L')">${esc(l.text)}</button>`).join('')}</div>
+    <div class="match-col" id="${keyPrefix}_R">${right.map(r=>`<button class="match-item" data-i="${r.i}" onclick="matchPick(this,'${keyPrefix}','R')">${esc(r.text)}</button>`).join('')}</div>
+  </div><div class="feedback show ok" id="${keyPrefix}_score">Đã ghép đúng: 0/${pairs.length}</div>`;
+  window['__match_'+keyPrefix] = {picked:{L:null,R:null}, matchedCount:0, total:pairs.length};
+}
+function matchPick(el, keyPrefix, side){
+  const st = window['__match_'+keyPrefix];
+  if(el.classList.contains('matched')) return;
+  document.querySelectorAll(`#${keyPrefix}_${side} .match-item`).forEach(e=>e.classList.remove('picked'));
+  el.classList.add('picked');
+  st.picked[side] = el;
+  if(st.picked.L && st.picked.R){
+    const li = st.picked.L.dataset.i, ri = st.picked.R.dataset.i;
+    if(li === ri){
+      st.picked.L.classList.add('matched'); st.picked.R.classList.add('matched');
+      st.picked.L.classList.remove('picked'); st.picked.R.classList.remove('picked');
+      st.matchedCount++;
+      document.getElementById(keyPrefix+'_score').textContent = `Đã ghép đúng: ${st.matchedCount}/${st.total}`;
+    } else {
+      st.picked.L.style.background='#fef2f2'; st.picked.R.style.background='#fef2f2';
+      setTimeout(()=>{ if(st.picked.L){st.picked.L.classList.remove('picked'); st.picked.L.style.background='';} if(st.picked.R){st.picked.R.classList.remove('picked'); st.picked.R.style.background='';} },500);
+    }
+    st.picked = {L:null,R:null};
+  }
+}
+
+function renderRevealQs(block){
+  if(!block || !block.items) return '';
+  return `<div class="card"><div class="section-title">${esc(block.title||'')}</div>` + block.items.map((it,i)=>`<div class="quiz-q"><div class="qtext">${i+1}. ${esc(it.q)}</div>${it.qVi?`<div class="vi-explain">${esc(it.qVi)}</div>`:''}<button class="btn small secondary" style="margin-top:6px" onclick="this.nextElementSibling.style.display='block';this.style.display='none'">👁 Xem đáp án gợi ý</button><div class="explain" style="display:none">✅ ${esc(it.a)}${it.aVi?`<br>🇻🇳 ${esc(it.aVi)}`:''}</div></div>`).join('') + `</div>`;
+}
+function renderTextBox(text, textVi, id, note){
+  if(!text) return '';
+  return `<div class="note-box" style="background:#fff;border-color:var(--border);color:var(--ink);line-height:1.7">${note?`<div style="font-size:12px;color:var(--ink-soft);margin-bottom:6px">ℹ️ ${esc(note)}</div>`:''}${esc(text).replace(/\((\d)\) ___/g,'<b style="color:var(--primary)">($1) ___</b>')}${textVi?`<br><button class="fill-vi-toggle" style="margin-top:6px" onclick="document.getElementById('${id}').classList.toggle('show')">🇻🇳 Xem/Ẩn bản dịch</button><div class="vi-explain" id="${id}">${esc(textVi)}</div>`:''}</div>`;
+}
+/* ---------- Navigation ---------- */
+let CURRENT_TAB = null;
+function openTab(key){
+  CURRENT_TAB = key;
+  const tab = TABS.find(t=>t.key===key);
+  if(!tab) return;
+  document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active', b.dataset.key===key));
+  document.querySelectorAll('.tabs-mobile button').forEach(b=>b.classList.toggle('active', b.dataset.key===key));
+  document.getElementById('mainArea').innerHTML = tab.render();
+  if(tab.after) tab.after();
+  window.scrollTo(0,0);
+}
+window.openTab = openTab;
+
+function renderNav(){
+  const visible = TABS.filter(t=>t.show());
+  document.getElementById('sidebarNav').innerHTML = `<h1>${esc(DATA.title||'')}</h1><div class="sub">${SITE_LABEL}</div>` +
+    visible.map(t=>`<button class="navbtn" data-key="${t.key}" onclick="openTab('${t.key}')">${t.label}</button>`).join('');
+  document.getElementById('tabsMobile').innerHTML = visible.map(t=>`<button data-key="${t.key}" onclick="openTab('${t.key}')">${t.label}</button>`).join('');
+}
+</script>
+
+<script>
+/* ============ TAB DEFINITIONS ============ */
+const TABS = [
+  {key:'overview', label:'🌱 Tổng quan', show:()=>true, render:renderOverview, after:afterOverviewMount},
+  {key:'chat', label:'💬 Getting Started', show:()=>!!(DATA.dialogue&&DATA.dialogue.length), render:renderChat, after:afterChatMount},
+  {key:'vocab', label:'📚 A Closer Look 1', show:()=>!!(VOCAB&&VOCAB.length) || !!DATA.closerLook1, render:renderVocab, after:afterVocabMount},
+  {key:'grammar', label:'✏️ A Closer Look 2', show:()=>!!DATA.grammar, render:renderGrammar, after:afterGrammarMount},
+  {key:'communication', label:'🗣️ Communication', show:()=>!!DATA.communication || !!(DATA.speakingMCQ&&DATA.speakingMCQ.length), render:renderCommunication, after:afterCommMount},
+  {key:'reading', label:'📖 Skills 1', show:()=>!!DATA.reading, render:renderReading, after:afterReadingMount},
+  {key:'listening', label:'🎧 Skills 2 (Nghe)', show:()=>!!DATA.listening, render:renderListening, after:afterListeningMount},
+  {key:'writing', label:'📝 Skills 2 (Viết)', show:()=>!!DATA.writing, render:renderWriting, after:afterWritingMount},
+  {key:'lookingback', label:'🔁 Looking Back', show:()=>!!(DATA.lookingBackMCQ&&DATA.lookingBackMCQ.length) || !!DATA.lookingBackVocab1 || !!DATA.lookingBackVocab2 || !!DATA.lookingBackGrammar, render:renderLookingBack, after:afterLookingBackMount},
+  {key:'project', label:'🎨 Project', show:()=>!!DATA.project, render:renderProject},
+  {key:'remember', label:'📌 Ghi nhớ', show:()=>!!DATA.remember, render:renderRemember},
+  {key:'workbook', label:'📕 Bài tập (SBT)', show:()=>!!(DATA.workbook&&DATA.workbook.exercises&&DATA.workbook.exercises.length), render:renderWorkbook, after:afterWorkbookMount},
+  {key:'wbreading', label:'📗 Đọc hiểu (SBT)', show:()=>!!(DATA.workbook&&(DATA.workbook.readingFill||DATA.workbook.readingFill2||DATA.workbook.readingShort)), render:renderWbReading, after:afterWbReadingMount},
+  {key:'mistakes', label:'❌ Lỗi sai của tôi', show:()=>true, render:renderMistakes},
+  {key:'progress', label:'📊 Tiến độ học tập', show:()=>true, render:renderProgress},
+];
+
+/* ============ OVERVIEW ============ */
+function renderOverview(){
+  const inc = DATA.includes || {};
+  return `
+  <h2 class="page-h">UNIT ${DATA.id||''} — ${esc(DATA.title||'')}</h2>
+  <div class="section-desc">${esc(DATA.theme||'')}</div>
+  <div class="card">
+    <div class="section-title">📋 Nội dung chính của Unit</div>
+    ${inc.vocabulary?`<p><b>Từ vựng:</b> ${esc(inc.vocabulary)}</p>`:''}
+    ${inc.pronunciation?`<p><b>Phát âm:</b> ${esc(inc.pronunciation)}</p>`:''}
+    ${inc.grammar?`<p><b>Ngữ pháp:</b> ${esc(inc.grammar)}</p>`:''}
+    ${inc.everydayEnglish?`<p><b>Giao tiếp:</b> ${esc(inc.everydayEnglish)}</p>`:''}
+    ${inc.skills?`<p><b>Kỹ năng:</b></p><ul>${inc.skills.map(s=>`<li>${esc(s)}</li>`).join('')}</ul>`:''}
+  </div>
+  ${DATA.nowICan?`<div class="card"><div class="section-title">🧠 Sau khi học xong, em có thể:</div><ul>${DATA.nowICan.map(x=>`<li>✓ ${esc(x)}</li>`).join('')}</ul></div>`:''}
+  <div class="card">
+    <div class="section-title">📊 Tiến độ của em</div>
+    <div id="ovProgressHolder"></div>
+  </div>`;
+}
+
+function afterOverviewMount(){
+  const holder = document.getElementById('ovProgressHolder');
+  if(!holder) return;
+  const total = Object.keys(STATE.done||{}).length;
+  const correct = Object.values(STATE.done||{}).filter(d=>d.correct).length;
+  const pct = total ? Math.round(correct/total*100) : 0;
+  holder.innerHTML = `<div class="progressbar"><div style="width:${pct}%"></div></div><p>${correct}/${total} câu đã làm đúng (${pct}%)</p>`;
+}
+
+/* ============ GETTING STARTED / CHAT ============ */
+function renderChat(){
+  let html = `<h2 class="page-h">💬 GETTING STARTED</h2>`;
+  if(DATA.dialogueTitle) html += `<div class="section-desc">${esc(DATA.dialogueTitle)}</div>`;
+  if(DATA.dialogue && DATA.dialogue.length){
+    html += `<div class="card"><div class="section-title">Bài 1 — Listen and read</div>`;
+    html += DATA.dialogue.map(d=>`<div class="dialog-row"><div class="dialog-sp">${esc(d.sp)}:</div><div class="dialog-en"><span>${esc(d.en)}</span> <button class="iconbtn" onclick="speak(${JSON.stringify(d.en)})">🔊</button>${d.vi?`<div class="sentence-vi" id="dvi_${DATA.dialogue.indexOf(d)}">${esc(d.vi)}</div><button class="fill-vi-toggle" onclick="document.getElementById('dvi_${DATA.dialogue.indexOf(d)}').classList.toggle('show')">🇻🇳 Xem nghĩa</button>`:''}</div></div>`).join('');
+    html += `</div>`;
+  }
+  if(DATA.dialogueCheckType==='tf' && DATA.dialogueTF){
+    html += `<div class="card"><div class="section-title">Bài 2 — Read the conversation again. Tick T (True) or F (False)</div><div id="chatTFHolder"></div></div>`;
+  } else if(DATA.dialogueCheckType==='fill' && DATA.dialogueFill){
+    html += `<div class="card"><div class="section-title">Bài 2 — Điền từ</div><div id="chatFillHolder"></div></div>`;
+  } else if(DATA.dialogueMCQ && DATA.dialogueMCQ.length){
+    html += `<div class="card"><div class="section-title">Bài 2 — Kiểm tra hiểu bài (Circle the correct answers)</div><div id="chatMCQHolder"></div></div>`;
+  }
+  if(DATA.dialogueMatch && DATA.dialogueMatch.items && DATA.dialogueMatch.items.length){
+    html += `<div class="card"><div class="section-title">${esc(DATA.dialogueMatch.title||'Bài 3 — Match the pictures with the words/phrases')}</div><div id="dialogueMatchHolder"></div></div>`;
+  }
+  if(DATA.gettingStartedFill){
+    html += `<div class="card"><div class="section-title">Bài 4 — Complete the sentences with the words from the box</div>`;
+    if(DATA.gettingStartedFill.box) html += `<div class="section-desc">Chọn từ: <b>${DATA.gettingStartedFill.box.join(', ')}</b></div>`;
+    html += `<div id="gsFillHolder"></div></div>`;
+  }
+  if(DATA.dialogueGame){
+    const g = DATA.dialogueGame;
+    html += `<div class="card"><div class="section-title">${esc(g.title||'Bài 5 — GAME')}</div>
+      <p>${esc(g.instruction||'')}</p>
+      ${g.instructionVi?`<div class="vi-explain show">${esc(g.instructionVi)}</div>`:''}`;
+    html += (g.items||[]).map(it=>`
+      <div class="sentence-block"><b>${esc(it.en)}</b>
+        <button class="btn small secondary" style="margin-left:8px" onclick="this.nextElementSibling.style.display='block';this.style.display='none'">👁 Xem gợi ý</button>
+        <div class="explain" style="display:none">${esc(it.vi)}</div>
+      </div>`).join('');
+    if(g.note) html += `<div class="explain" style="margin-top:8px">💡 ${esc(g.note)}</div>`;
+    html += `</div>`;
+  }
+  if(DATA.gsQuiz && DATA.gsQuiz.items.length){
+    html += `<div class="card"><div class="section-title">${esc(DATA.gsQuiz.title)}</div><div id="gsQuizHolder"></div></div>`;
+  }
+  if(DATA.farmActivities && DATA.farmActivities.length){
+    html += `<div class="card"><div class="section-title">${esc(DATA.farmActivitiesLabel||'Ghép từ vựng thêm')}</div><div id="farmMatchHolder"></div></div>`;
+  }
+  return html;
+}
+function afterChatMount(){
+  if(DATA.dialogueCheckType==='tf' && DATA.dialogueTF) mountTF('chatTFHolder', DATA.dialogueTF, 'chatTF');
+  else if(DATA.dialogueCheckType==='fill' && DATA.dialogueFill) mountFillBlank('chatFillHolder', DATA.dialogueFill, 'chatFill');
+  else if(DATA.dialogueMCQ && DATA.dialogueMCQ.length) mountMCQBlock('chatMCQHolder', DATA.dialogueMCQ, 'chatMCQ');
+  if(DATA.dialogueMatch && DATA.dialogueMatch.items && DATA.dialogueMatch.items.length) mountMatch('dialogueMatchHolder', DATA.dialogueMatch.items, 'dialogueMatch');
+  if(DATA.gettingStartedFill) mountFillBlank('gsFillHolder', DATA.gettingStartedFill.items, 'gsFill');
+  if(DATA.gsQuiz && DATA.gsQuiz.items.length) mountMCQBlock('gsQuizHolder', DATA.gsQuiz.items, 'gsQuiz');
+  if(DATA.farmActivities && DATA.farmActivities.length) mountMatch('farmMatchHolder', DATA.farmActivities, 'farmMatch');
+}
+
+/* ============ VOCABULARY ============ */
+let VOCAB_MODE = 'list';
+function renderVocab(){
+  const cl1 = DATA.closerLook1 || {};
+  let html = `<h2 class="page-h">📚 A CLOSER LOOK 1 <span style="font-weight:400;font-size:15px">— Vocabulary &amp; Pronunciation</span></h2>`;
+  if(VOCAB && VOCAB.length){
+    html += `<div class="card"><div class="section-title">Kho từ vựng Unit 5 (${VOCAB.length} từ)</div>
+      <div style="margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn small ${VOCAB_MODE==='list'?'':'secondary'}" onclick="setVocabMode('list')">📋 Danh sách</button>
+        <button class="btn small ${VOCAB_MODE==='flash'?'':'secondary'}" onclick="setVocabMode('flash')">🎴 Flashcard</button>
+        <button class="btn small ${VOCAB_MODE==='quiz'?'':'secondary'}" onclick="setVocabMode('quiz')">❓ Trắc nghiệm</button>
+        <button class="btn small ${VOCAB_MODE==='match'?'':'secondary'}" onclick="setVocabMode('match')">🔗 Nối từ</button>
+        <button class="btn small ${VOCAB_MODE==='fill'?'':'secondary'}" onclick="setVocabMode('fill')">✏️ Điền từ</button>
+      </div>
+      <div id="vocabModeHolder"></div>
+    </div>`;
+  }
+  if(cl1.picMatch && cl1.picMatch.items.length){
+    html += `<div class="card"><div class="section-title">${esc(cl1.picMatch.title)}</div><div id="clPicMatchHolder"></div></div>`;
+  }
+  if(cl1.vocabMCQ && cl1.vocabMCQ.length){
+    html += `<div class="card"><div class="section-title">${esc(cl1.vocabMCQTitle||'Trắc nghiệm từ vựng')}</div><div id="clVocabMCQHolder"></div></div>`;
+  }
+  if(cl1.defMatch && cl1.defMatch.length){
+    html += `<div class="card"><div class="section-title">Nối từ với định nghĩa</div><div id="clDefMatchHolder"></div></div>`;
+  }
+  if(cl1.vocabFill && cl1.vocabFill.length){
+    html += `<div class="card"><div class="section-title">${esc(cl1.vocabFillTitle||'Điền từ vựng')}</div>${cl1.vocabFillBox?`<div class="section-desc">Chọn từ: <b>${cl1.vocabFillBox.join(', ')}</b></div>`:''}<div id="clVocabFillHolder"></div></div>`;
+  }
+  if(cl1.pronTable){
+    html += `<div class="card"><div class="section-title">${esc(cl1.pronTable.title)}</div><table><thead><tr>${cl1.pronTable.cols.map(c=>`<th>${esc(c.symbol)}</th>`).join('')}</tr></thead><tbody>${cl1.pronTable.cols[0].words.map((_,i)=>`<tr>${cl1.pronTable.cols.map(c=>`<td>${esc(c.words[i])} <button class="iconbtn" onclick="speak(${JSON.stringify(c.words[i])})">🔊</button></td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  }
+  if(cl1.pronGroups && cl1.pronGroups.length){
+    html += `<div class="card"><div class="section-title">🔊 Pronunciation /n/ and /ŋ/</div><div class="section-desc">${esc(cl1.pronNote||'Nghe và phân loại từ theo âm phù hợp.')}</div><div id="clPronHolder"></div></div>`;
+  }
+  if(cl1.pronSentences && cl1.pronSentences.length){
+    html += `<div class="card"><div class="section-title">Bài 5 — Listen and practise the sentences</div>${cl1.pronSentences.map((s,i)=>`<div class="sentence-block"><span class="sentence-en">${esc(s)}</span> <button class="iconbtn" onclick="speak(${JSON.stringify(s)})">🔊</button>${cl1.pronSentencesVi?`<button class="fill-vi-toggle" onclick="document.getElementById('pvi_${i}').classList.toggle('show')">🇻🇳 Xem nghĩa</button><div class="sentence-vi" id="pvi_${i}">${esc(cl1.pronSentencesVi[i]||'')}</div>`:''}</div>`).join('')}</div>`;
+  }
+  return html;
+}
+function setVocabMode(m){ VOCAB_MODE = m; renderVocabModeHolder(); }
+function renderVocabModeHolder(){
+  const holder = document.getElementById('vocabModeHolder');
+  if(!holder) return;
+  if(VOCAB_MODE==='list') holder.innerHTML = renderVocabList();
+  else if(VOCAB_MODE==='flash') { holder.innerHTML = renderVocabFlash(); mountFlash(); }
+  else if(VOCAB_MODE==='quiz') { holder.innerHTML = `<div id="vocabQuizHolder"></div>`; mountVocabQuiz(); }
+  else if(VOCAB_MODE==='match') { holder.innerHTML = `<div id="vocabMatchHolder"></div>`; mountMatch('vocabMatchHolder', VOCAB.map(v=>({en:v.w, vi:v.vi})), 'vocabMatch'); }
+  else if(VOCAB_MODE==='fill') { holder.innerHTML = `<div id="vocabFillPracticeHolder"></div>`; mountVocabFillPractice(); }
+  // re-run the button active styling
+  const btnRow = holder.parentElement.querySelector('div[style]');
+}
+function renderVocabList(){
+  return `<div class="vocab-grid">${VOCAB.map((v,i)=>`
+    <div class="vcard">
+      <div><span class="w">${esc(v.w)}</span><span class="pos">${esc(v.pos||'')}</span></div>
+      <div class="ipa">${esc(v.ipa||'')}</div>
+      <div class="vi">${esc(v.vi)}</div>
+      <div class="ex">${esc(v.ex||'')}</div>
+      <div class="rowbtns">
+        <button class="iconbtn" onclick="speak(${JSON.stringify(v.w)})">🔊 Nghe</button>
+        <button class="iconbtn fav ${STATE.favs[v.w]?'active':''}" onclick="toggleFav(${JSON.stringify(v.w)});this.classList.toggle('active')">⭐ Yêu thích</button>
+      </div>
+    </div>`).join('')}</div>`;
+}
+let FLASH_IDX = 0;
+function renderVocabFlash(){
+  FLASH_IDX = FLASH_IDX % VOCAB.length;
+  const v = VOCAB[FLASH_IDX];
+  return `<div class="flashcard" id="flashcardEl" onclick="this.classList.toggle('flipped')">
+    <div class="flashcard-inner">
+      <div class="flashcard-face flashcard-front">${esc(v.w)}</div>
+      <div class="flashcard-face flashcard-back">
+        <div class="vi" style="font-size:19px">${esc(v.vi)}</div>
+        <div class="ipa">${esc(v.ipa||'')} ${esc(v.pos?'('+v.pos+')':'')}</div>
+        <div class="ex">${esc(v.ex||'')}</div>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:14px;display:flex;gap:8px;justify-content:center">
+    <button class="btn small secondary" onclick="flashNav(-1)">⬅️ Trước</button>
+    <span style="align-self:center;color:var(--ink-soft);font-size:13px">${FLASH_IDX+1}/${VOCAB.length}</span>
+    <button class="btn small secondary" onclick="flashNav(1)">Tiếp ➡️</button>
+    <button class="btn small" onclick="speak(${JSON.stringify(v.w)})">🔊</button>
+  </div>`;
+}
+function mountFlash(){}
+function flashNav(dir){
+  FLASH_IDX = (FLASH_IDX + dir + VOCAB.length) % VOCAB.length;
+  document.getElementById('vocabModeHolder').innerHTML = renderVocabFlash();
+}
+function mountVocabQuiz(){
+  const items = VOCAB.map(v=>{
+    const distractors = shuffle(VOCAB.filter(x=>x.w!==v.w)).slice(0,3).map(x=>x.vi);
+    const opts = shuffle([v.vi, ...distractors]);
+    return {q:`"${v.w}" nghĩa là gì?`, opts, a:opts.indexOf(v.vi), exp:v.ex?`Ví dụ: ${v.ex}`:''};
+  });
+  mountMCQBlock('vocabQuizHolder', items, 'vocabQuiz');
+}
+function mountVocabFillPractice(){
+  const items = VOCAB.filter(v=>v.ex && v.ex.toLowerCase().includes(v.w.toLowerCase().split(' ')[0])).map(v=>{
+    const re = new RegExp(v.w.split(' ')[0], 'i');
+    return {s: v.ex.replace(re,'___'), a: v.w.split(' ')[0], qVi: v.vi, exp:`Từ cần điền: "${v.w}"`};
+  });
+  mountFillBlank('vocabFillPracticeHolder', items, 'vocabFillPractice');
+}
+function afterVocabMount(){
+  const cl1 = DATA.closerLook1 || {};
+  if(VOCAB && VOCAB.length) renderVocabModeHolder();
+  if(cl1.picMatch && cl1.picMatch.items.length) mountMatch('clPicMatchHolder', cl1.picMatch.items, 'clPicMatch');
+  if(cl1.vocabMCQ && cl1.vocabMCQ.length) mountMCQBlock('clVocabMCQHolder', cl1.vocabMCQ, 'clVocabMCQ');
+  if(cl1.defMatch && cl1.defMatch.length) mountMatch('clDefMatchHolder', cl1.defMatch.map(d=>({en:d.w, vi:d.vi||d.def})), 'clDefMatch');
+  if(cl1.vocabFill && cl1.vocabFill.length) mountFillBlank('clVocabFillHolder', cl1.vocabFill, 'clVocabFill');
+  if(cl1.pronGroups && cl1.pronGroups.length){
+    const items = [];
+    cl1.pronGroups.forEach(g=>g.words.forEach(w=>items.push({q:w, opts:cl1.pronSymbols||cl1.pronGroups.map(x=>x.symbol), a:(cl1.pronSymbols||cl1.pronGroups.map(x=>x.symbol)).indexOf(g.symbol), exp:`"${w}" chứa âm ${g.symbol}`})));
+    mountMCQBlock('clPronHolder', shuffle(items), 'clPron');
+  }
+}
+
+/* ============ GRAMMAR ============ */
+function renderGrammar(){
+  const g = DATA.grammar;
+  let html = `<h2 class="page-h">✏️ A CLOSER LOOK 2 <span style="font-weight:400;font-size:15px">— Grammar: Articles</span></h2>`;
+  html += `<div class="section-desc">${esc(g.title||'')}</div>`;
+  if(g.rule && g.rule.length){
+    html += `<div class="card"><div class="section-title">📘 Ghi nhớ ngữ pháp chi tiết</div>${g.rule.map(r=>`<p style="margin-bottom:12px">${r}</p>`).join('')}</div>`;
+  }
+  if(g.table){
+    html += `<div class="card"><table><thead><tr>${(g.tableHead||g.table.cols||[]).map(c=>`<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${(g.table.rows||[]).map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  }
+  (g.exercises||[]).forEach((ex,gi)=>{
+    html += `<div class="card"><div class="section-title">${esc(ex.title)}</div>`;
+    if(ex.box) html += `<div class="section-desc">Chọn từ: <b>${ex.box.join(', ')}</b></div>`;
+    if(ex.text) html += renderTextBox(ex.text, ex.textVi, 'gramTextVi'+gi);
+    html += `<div id="gramEx${gi}Holder"></div></div>`;
+  });
+  if(g.game){
+    html += `<div class="card"><div class="section-title">${esc(g.game.title)}</div>
+      <p>${esc(g.game.instruction)}</p>
+      <div class="vi-explain show">${esc(g.game.instructionVi)}</div>`;
+    html += g.game.topics.map(t=>`
+      <div class="sentence-block"><b>${esc(t.topic)}</b>
+        <button class="btn small secondary" style="margin-left:8px" onclick="this.nextElementSibling.style.display='block';this.style.display='none'">👁 Xem gợi ý đáp án</button>
+        <div class="explain" style="display:none">
+          ${t.hint ? t.hint : `<b>Đếm được (countable):</b> ${t.countable.map(esc).join(', ')}<br>
+          <b>Không đếm được (uncountable):</b> ${t.uncountable.map(esc).join(', ')}`}
+        </div>
+      </div>`).join('');
+    if(g.game.note) html += `<div class="explain" style="margin-top:8px">💡 ${esc(g.game.note)}</div>`;
+    html += `</div>`;
+  }
+  if(g.bonusPractice && g.bonusPractice.items && g.bonusPractice.items.length){
+    html += `<div class="card"><div class="section-title">${esc(g.bonusPractice.title)}</div>`;
+    if(g.bonusPractice.note) html += `<div class="section-desc">${esc(g.bonusPractice.note)}</div>`;
+    html += `<div id="gramBonusHolder"></div></div>`;
+  }
+  return html;
+}
+function afterGrammarMount(){
+  (DATA.grammar.exercises||[]).forEach((ex,gi)=>{
+    const holderId = 'gramEx'+gi+'Holder';
+    const key = 'gramEx'+gi;
+    if(ex.type==='mcq') mountMCQBlock(holderId, ex.items, key);
+    else if(ex.type==='tf') mountTF(holderId, ex.items, key);
+    else mountFillBlank(holderId, ex.items, key);
+  });
+  if(DATA.grammar.bonusPractice && DATA.grammar.bonusPractice.items && DATA.grammar.bonusPractice.items.length){
+    mountMCQBlock('gramBonusHolder', DATA.grammar.bonusPractice.items, 'gramBonus');
+  }
+}
+
+/* ============ COMMUNICATION ============ */
+function renderCommunication(){
+  const c = DATA.communication || {};
+  let html = `<h2 class="page-h">🗣️ COMMUNICATION <span style="font-weight:400;font-size:15px">— ${esc(c.subtitle||'Everyday English')}</span></h2>`;
+  if(c.dialogues && c.dialogues.length){
+    html += `<div class="card"><div class="section-title">Bài 1 — Listen and read the dialogue. Pay attention to the highlighted sentences</div>`;
+    html += c.dialogues.map((d,i)=>`
+      <div class="dialog-row"><div class="dialog-sp">${esc(d.a)}:</div><div class="dialog-en">${esc(d.b)} <button class="iconbtn" onclick="speak(${JSON.stringify(d.b)})">🔊</button>${d.vi1?`<div class="sentence-vi show" style="opacity:.8">${esc(d.vi1)}</div>`:''}</div></div>
+      <div class="dialog-row"><div class="dialog-sp">${esc(d.c)}:</div><div class="dialog-en">${esc(d.d)} <button class="iconbtn" onclick="speak(${JSON.stringify(d.d)})">🔊</button>${d.vi2?`<div class="sentence-vi show" style="opacity:.8">${esc(d.vi2)}</div>`:''}</div></div>`).join('<hr style="border:none;border-top:1px dashed var(--border);margin:10px 0">');
+    html += `</div>`;
+  }
+  if(c.practiceNote) html += `<div class="card"><div class="section-title">💡 Luyện tập</div><div class="note-box">${c.practiceNote}</div></div>`;
+  if(c.practiceTopics && c.practiceTopics.length){
+    html += `<div class="card"><ul style="margin:0;padding-left:20px">${c.practiceTopics.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></div>`;
+  }
+  if(DATA.speakingMCQ && DATA.speakingMCQ.length){
+    html += `<div class="card"><div class="section-title">Bài 3 — QUIZ: How much do you know about ethnic groups in Viet Nam?</div><div id="commMCQHolder"></div></div>`;
+  }
+  if(c.reading){
+    html += `<div class="card"><div class="section-title">${esc(c.reading.title)}</div>${renderTextBox(c.reading.text, c.reading.textVi, 'commReadVi', c.reading.note)}<button class="btn small" onclick="speak(${JSON.stringify(c.reading.text)})">🔊 Nghe đoạn đọc</button>${c.tableFill?`<div id="commFillHolder" style="margin-top:10px"></div>`:''}</div>`;
+  }
+  if(c.info){
+    html += `<div class="card"><div class="section-title">${esc(c.info.title)}</div><ul style="margin:0;padding-left:20px">${(c.info.facts||[]).map(f=>`<li style="margin-bottom:4px">${esc(f)}</li>`).join('')}</ul></div>`;
+  }
+  if(c.groupPrompt){
+    html += `<div class="note-box">🗣️ ${esc(c.groupPrompt)}</div>`;
+  }
+  return html;
+}
+function afterCommMount(){
+  if(DATA.speakingMCQ && DATA.speakingMCQ.length) mountMCQBlock('commMCQHolder', DATA.speakingMCQ, 'commMCQ');
+  const c = DATA.communication || {};
+  if(c.tableFill && c.tableFill.length) mountFillBlank('commFillHolder', c.tableFill, 'commFill');
+}
+
+/* ============ READING ============ */
+function renderReading(){
+  const r = DATA.reading;
+  let html = `<h2 class="page-h">📖 SKILLS 1 <span style="font-weight:400;font-size:15px">— Reading: ${esc(r.title||'')}</span></h2>`;
+  html += renderRevealQs(r.preQuestions);
+  if(r.text){
+    const sentences = r.text.split(/\n\n/).flatMap(p=>p.split(/(?<=[.!?])\s+/));
+    const sentencesVi = r.textVi ? r.textVi.split(/\n\n/).flatMap(p=>p.split(/(?<=[.!?])\s+/)) : [];
+    html += `<div class="card"><div class="section-title">📄 Bài đọc: ${esc(r.title||'')} (dịch từng câu)</div>${r.textNote?`<div class="explain" style="margin-bottom:8px">ℹ️ ${esc(r.textNote)}</div>`:''}`;
+    html += sentences.filter(s=>s.trim()).map((s,i)=>`
+      <div class="sentence-block">
+        <span class="sentence-en">${esc(s)}</span>
+        <button class="iconbtn" onclick="speak(${JSON.stringify(s)})">🔊</button>
+        <button class="fill-vi-toggle" onclick="document.getElementById('rvi_${i}').classList.toggle('show')">🇻🇳 Xem nghĩa</button>
+        <div class="sentence-vi" id="rvi_${i}">${esc(sentencesVi[i]||'')}</div>
+      </div>`).join('');
+    html += `</div>`;
+  }
+  if(r.vocabMatch && r.vocabMatch.length) html += `<div class="card"><div class="section-title">Bài 1 — Write the word/phrase from the box under the correct pictures</div><div id="readVocabMatchHolder"></div></div>`;
+  if(r.tf && r.tf.length) html += `<div class="card"><div class="section-title">Bài 2 — Đúng hay Sai (True/False)</div><div id="readTFHolder"></div></div>`;
+  if(r.mcq && r.mcq.length) html += `<div class="card"><div class="section-title">${esc(r.mcqTitle||'Trắc nghiệm')}</div><div id="readMCQHolder"></div></div>`;
+  if(r.fill && r.fill.length) html += `<div class="card"><div class="section-title">${esc(r.fillTitle||'Bài 3 — Fill in each blank with ONE word')}</div><div id="readFillHolder"></div></div>`;
+  if(r.dialogueMCQ && r.dialogueMCQ.length) html += `<div class="card"><div class="section-title">${esc(r.dialogueMCQTitle||'')}</div>${r.dialogueMCQNote?`<div class="note-box">${esc(r.dialogueMCQNote)}</div>`:''}<div id="readDlgHolder"></div></div>`;
+  if(r.speakingCheck && r.speakingCheck.items && r.speakingCheck.items.length){
+    html += `<div class="card"><div class="section-title">${esc(r.speakingCheck.title)}</div>`;
+    if(r.speakingCheck.note) html += `<div class="section-desc">${esc(r.speakingCheck.note)}</div>`;
+    html += `<div id="readSpeakingCheckHolder"></div></div>`;
+  }
+  if(r.speakingPrompt) html += `<div class="note-box">${esc(r.speakingPrompt)}</div>`;
+  return html;
+}
+function afterReadingMount(){
+  const r = DATA.reading;
+  if(r.tf && r.tf.length) mountTF('readTFHolder', r.tf, 'readTF');
+  if(r.mcq && r.mcq.length) mountMCQBlock('readMCQHolder', r.mcq, 'readMCQ');
+  if(r.fill && r.fill.length) mountFillBlank('readFillHolder', r.fill, 'readFill');
+  if(r.dialogueMCQ && r.dialogueMCQ.length) mountMCQBlock('readDlgHolder', r.dialogueMCQ, 'readDlg');
+  if(r.vocabMatch && r.vocabMatch.length) mountMatch('readVocabMatchHolder', r.vocabMatch.map(v=>({en:v.w,vi:v.def})), 'readVocabMatch');
+  if(r.speakingCheck && r.speakingCheck.items && r.speakingCheck.items.length) mountTF('readSpeakingCheckHolder', r.speakingCheck.items, 'readSpeakingCheck');
+}
+
+/* ============ LISTENING (static reference) ============ */
+function renderListening(){
+  const l = DATA.listening;
+  let html = `<h2 class="page-h">🎧 SKILLS 2 <span style="font-weight:400;font-size:15px">— Listening</span></h2>`;
+  if(l.note) html += `<div class="note-box">⚠️ ${l.note}</div>`;
+  html += renderRevealQs(l.preQuestions);
+  if(l.fill && l.fill.length) html += `<div class="card"><div class="section-title">${esc(l.fillTitle||'Điền từ')}</div><div id="listenFillHolder"></div></div>`;
+  if(l.tf && l.tf.length) html += `<div class="card"><div class="section-title">${esc(l.tfTitle||'True / False')}</div><div id="listenTFHolder"></div></div>`;
+  if(l.picMatch && l.picMatch.items && l.picMatch.items.length){
+    html += `<div class="card"><div class="section-title">${esc(l.picMatch.title||'Bài 1 — Match the phrases with the correct pictures')}</div><div id="listenPicMatchHolder"></div></div>`;
+  }
+  if(l.table){
+    const hasAns = l.table.cols[l.table.cols.length-1] === 'Đúng?';
+    html += `<div class="card"><div class="section-title">Bài 2 — ${esc(l.tableTitle||'')}</div><table><thead><tr>${l.table.cols.map(c=>`<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${l.table.rows.map(row=>{
+      const cells = hasAns ? row.slice(0,-1) : row;
+      const ans = hasAns ? row[row.length-1] : null;
+      return `<tr>${cells.map(c=>`<td>${esc(c)}</td>`).join('')}${hasAns?`<td>${ans?'✅':'—'}</td>`:''}</tr>`;
+    }).join('')}</tbody></table>${l.checkboxNote?`<div class="explain" style="margin-top:8px">💡 ${esc(l.checkboxNote)}</div>`:''}</div>`;
+  }
+  if(l.questions && l.questions.length){
+    html += `<div class="card"><div class="section-title">Bài 3 — Câu hỏi trắc nghiệm</div><div id="listenMCQHolder"></div></div>`;
+  }
+  if(l.script){
+    html += `<div class="card"><div class="section-title">📜 Kịch bản bài nghe (Audio script)</div>
+      ${l.scriptNote?`<div class="explain" style="margin-bottom:8px">ℹ️ ${esc(l.scriptNote)}</div>`:''}
+      <button class="btn small" onclick="speak(${JSON.stringify(l.script.replace(/\n+/g,' '))})">🔊 Nghe toàn bộ script</button>
+      <button class="fill-vi-toggle" onclick="document.getElementById('listenScriptVi').classList.toggle('show')">🇻🇳 Xem/Ẩn bản dịch</button>
+      <div style="margin-top:10px;white-space:pre-line;line-height:1.7">${esc(l.script)}</div>
+      <div class="vi-explain" id="listenScriptVi" style="white-space:pre-line">${esc(l.scriptVi||'')}</div>
+    </div>`;
+  }
+  return html;
+}
+function afterListeningMount(){
+  const l = DATA.listening;
+  if(l.picMatch && l.picMatch.items && l.picMatch.items.length) mountMatch('listenPicMatchHolder', l.picMatch.items, 'listenPicMatch');
+  if(l.questions && l.questions.length) mountMCQBlock('listenMCQHolder', l.questions, 'listenMCQ');
+  if(l.fill && l.fill.length) mountFillBlank('listenFillHolder', l.fill, 'listenFill');
+  if(l.tf && l.tf.length) mountTF('listenTFHolder', l.tf, 'listenTF');
+}
+
+/* ============ WRITING ============ */
+function renderWriting(){
+  const w = DATA.writing;
+  let html = `<h2 class="page-h">📝 SKILLS 2 <span style="font-weight:400;font-size:15px">— Writing</span></h2>`;
+  if(w.sortMCQ && w.sortMCQ.length) html += `<div class="card"><div class="section-title">${esc(w.sortTitle||'')}</div><div id="writeSortHolder"></div></div>`;
+  html += `<div class="card"><div class="section-title">✍️ Đề bài</div><p>${esc(w.prompt||'')}</p></div>`;
+  if(w.like || w.dislike){
+    html += `<div class="card"><div class="section-title">${esc(w.likeLabel||'Gợi ý 1')}</div><p>${w.like||''}</p></div>`;
+    html += `<div class="card"><div class="section-title">${esc(w.dislikeLabel||'Gợi ý 2')}</div><p>${w.dislike||''}</p></div>`;
+  }
+  if(w.tip) html += `<div class="note-box">💡 ${w.tip}</div>`;
+  html += `<div class="card"><div class="section-title">Bài viết của em</div><textarea rows="8" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:10px;font-size:14px" placeholder="Viết bài của em vào đây..." id="writingArea" oninput="saveWritingDraft()"></textarea></div>`;
+  if(w.sampleAnswer){
+    html += `<div class="card"><details><summary style="cursor:pointer;font-weight:600">👁 Xem bài mẫu + dịch nghĩa + phân tích</summary>
+      <div style="margin-top:10px">
+        <button class="btn small" onclick="speak(${JSON.stringify(w.sampleAnswer)})">🔊 Nghe bài mẫu</button>
+        <p style="margin-top:8px;white-space:pre-line">${esc(w.sampleAnswer)}</p>
+        ${w.sampleAnswerVi?`<button class="fill-vi-toggle" onclick="document.getElementById('writeSampleVi').classList.toggle('show')">🇻🇳 Xem/Ẩn bản dịch</button><div class="vi-explain" id="writeSampleVi" style="white-space:pre-line">${esc(w.sampleAnswerVi)}</div>`:''}
+        ${w.analysis&&w.analysis.length?`<div class="section-title" style="margin-top:14px">🔍 Phân tích từng câu</div>${w.analysis.map((a,i)=>`<div class="sentence-block"><b>${i+1}. ${esc(a.en)}</b><div class="vi-explain show">${esc(a.vi)}</div>${a.note?`<div class="explain">📎 ${esc(a.note)}</div>`:''}</div>`).join('')}`:''}
+      </div>
+    </details></div>`;
+  }
+  return html;
+}
+function afterWritingMount(){
+  const w = DATA.writing;
+  if(w.sortMCQ && w.sortMCQ.length) mountMCQBlock('writeSortHolder', w.sortMCQ, 'writeSort');
+  const ta = document.getElementById('writingArea');
+  if(ta && STATE.draft) ta.value = STATE.draft;
+}
+function saveWritingDraft(){
+  const ta = document.getElementById('writingArea');
+  if(!ta) return;
+  STATE.draft = ta.value; saveState(STATE);
+}
+
+/* ============ LOOKING BACK ============ */
+function renderLookingBack(){
+  let html = `<h2 class="page-h">🔁 LOOKING BACK</h2>`;
+  if(DATA.lookingBackVocab1 && DATA.lookingBackVocab1.items.length) html += `<div class="card"><div class="section-title">${esc(DATA.lookingBackVocab1.title)}</div><div id="lbVocab1Holder"></div></div>`;
+  html += '<!--LBV2-->';
+  if(DATA.lookingBackVocab2 && DATA.lookingBackVocab2.items.length){
+    html += `<div class="card"><div class="section-title">${esc(DATA.lookingBackVocab2.title)}</div>`;
+    if(DATA.lookingBackVocab2.box) html += `<div class="section-desc">Chọn từ: <b>${DATA.lookingBackVocab2.box.join(', ')}</b></div>`;
+    html += `<div id="lbVocab2Holder"></div></div>`;
+  }
+  if(DATA.lookingBackMCQ && DATA.lookingBackMCQ.length) html = html.replace('<!--LBV2-->', `<div class="card"><div class="section-title">${esc(DATA.lookingBackMCQTitle||'Trắc nghiệm ôn tập')}</div><div id="lbMCQHolder"></div></div><!--LBV2-->`);
+  if(false) html += `<div class="card"><div class="section-title">${esc(DATA.lookingBackMCQTitle||'Trắc nghiệm ôn tập')}</div><div id="lbMCQHolder"></div></div>`;
+  if(DATA.lookingBackGrammar && DATA.lookingBackGrammar.length) html += `<div class="card"><div class="section-title">${esc(DATA.lookingBackGrammarTitle||'Ngữ pháp ôn tập')}</div><div class="section-desc">Gõ <b>a</b>, <b>an</b>, <b>the</b> hoặc <b>0</b> (không dùng mạo từ).</div><div id="lbGramHolder"></div></div>`;
+  if(DATA.lookingBackGrammar2 && DATA.lookingBackGrammar2.length) html += `<div class="card"><div class="section-title">${esc(DATA.lookingBackGrammar2Title||'')}</div>${renderTextBox(DATA.lookingBackGrammar2Text, '', 'lbG2vi', DATA.lookingBackGrammar2TextNote)}<div class="section-desc">Gõ <b>a</b>, <b>an</b>, <b>the</b> hoặc <b>0</b> (không dùng mạo từ).</div><div id="lbGram2Holder"></div></div>`;
+  if(DATA.errorCorrection && DATA.errorCorrection.length){
+    html += `<div class="card"><div class="section-title">Tìm và sửa lỗi sai</div>`;
+    html += DATA.errorCorrection.map((e,i)=>`<div class="quiz-q"><div class="qtext">${i+1}. ${esc(e.s)}</div><button class="btn small secondary" onclick="this.nextElementSibling.style.display='block';this.style.display='none'">👁 Xem đáp án</button><div class="explain" style="display:none">✅ ${esc(e.a)}<br>Sửa: <s>${esc(e.wrong)}</s> → <b>${esc(e.right)}</b></div></div>`).join('');
+    html += `</div>`;
+  }
+  return html;
+}
+function afterLookingBackMount(){
+  if(DATA.lookingBackVocab1 && DATA.lookingBackVocab1.items.length) mountMatch('lbVocab1Holder', DATA.lookingBackVocab1.items, 'lbVocab1');
+  if(DATA.lookingBackVocab2 && DATA.lookingBackVocab2.items.length) mountFillBlank('lbVocab2Holder', DATA.lookingBackVocab2.items, 'lbVocab2');
+  if(DATA.lookingBackMCQ && DATA.lookingBackMCQ.length) mountMCQBlock('lbMCQHolder', DATA.lookingBackMCQ, 'lbMCQ');
+  if(DATA.lookingBackGrammar && DATA.lookingBackGrammar.length) mountFillBlank('lbGramHolder', DATA.lookingBackGrammar, 'lbGram');
+  if(DATA.lookingBackGrammar2 && DATA.lookingBackGrammar2.length) mountFillBlank('lbGram2Holder', DATA.lookingBackGrammar2, 'lbGram2');
+}
+
+/* ============ PROJECT ============ */
+function renderProject(){
+  const p = DATA.project;
+  return `<h2 class="page-h">🎨 PROJECT <span style="font-weight:400;font-size:15px">— ${esc(p.title||'')}</span></h2>
+  <div class="card"><div class="section-title">Các bước thực hiện</div><ol>${(p.steps||[]).map(s=>`<li>${esc(s)}</li>`).join('')}</ol></div>
+  ${p.questions?`<div class="card"><div class="section-title">Câu hỏi gợi ý khi tìm hiểu</div><ul>${p.questions.map(q=>`<li>${esc(q)}</li>`).join('')}</ul></div>`:''}
+  ${p.structure?`<div class="note-box">💡 ${esc(p.structure)}</div>`:''}`;
+}
+
+/* ============ REMEMBER ============ */
+function renderRemember(){
+  const r = DATA.remember;
+  let html = `<h2 class="page-h">📌 Ghi nhớ</h2>`;
+  if(r.vocab) html += `<div class="card"><div class="section-title">Từ vựng cần nhớ</div>${r.vocab.map(v=>`<span class="chip">${esc(v)}</span>`).join('')}</div>`;
+  if(r.grammar) html += `<div class="card"><div class="section-title">Ngữ pháp</div><p>${r.grammar}</p></div>`;
+  if(r.expressions) html += `<div class="card"><div class="section-title">Mẫu câu hay dùng</div><ul>${r.expressions.map(e=>`<li>${esc(e)}</li>`).join('')}</ul></div>`;
+  if(r.readingSummary) html += `<div class="card"><div class="section-title">Tóm tắt bài đọc</div><p>${esc(r.readingSummary)}</p></div>`;
+  if(r.mistakes) html += `<div class="card"><div class="section-title">⚠️ Lỗi thường gặp</div><ul>${r.mistakes.map(m=>`<li>${esc(m)}</li>`).join('')}</ul></div>`;
+  return html;
+}
+
+/* ============ WORKBOOK EXERCISES (SBT) ============ */
+function renderWorkbook(){
+  let html = `<h2 class="page-h">📕 Bài tập Workbook (SBT)</h2>`;
+  (DATA.workbook.exercises||[]).forEach((ex,i)=>{
+    html += `<div class="card"><div class="section-title">${esc(ex.title)}</div>`;
+    if(ex.box) html += `<div class="section-desc">Chọn từ: <b>${ex.box.join(', ')}</b></div>`;
+    if(ex.type==='readaloud'){
+      html += ex.items.map(it=>`<div class="dialog-row"><span>${esc(it.en)}</span> <button class="btn small" onclick="speak(${JSON.stringify(it.en)})">🔊</button><div class="vi-explain show">${esc(it.vi)}</div></div>`).join('');
+    } else {
+      html += `<div id="wbEx${i}Holder"></div>`;
+    }
+    html += `</div>`;
+  });
+  const wb = DATA.workbook;
+  if(wb.speakingGame && wb.speakingGame.items.length){
+    html += `<div class="card"><div class="section-title">${esc(wb.speakingGame.title)}</div>`;
+    html += wb.speakingGame.items.map((it,i)=>`<div class="quiz-q"><div class="qtext">${i+1}. ${esc(it.q)}</div><div class="vi-explain show">${esc(it.qVi)}</div><button class="btn small secondary" onclick="this.nextElementSibling.style.display='block';this.style.display='none'">👁 Xem gợi ý đáp án</button><div class="explain" style="display:none">✅ ${esc(it.a)}<br>🇻🇳 ${esc(it.aVi)}</div></div>`).join('');
+    html += `</div>`;
+  }
+  if(wb.speakingInfo && wb.speakingInfo.facts.length){
+    html += `<div class="card"><div class="section-title">${esc(wb.speakingInfo.title)}</div><ul>${wb.speakingInfo.facts.map(f=>`<li>${esc(f)}</li>`).join('')}</ul></div>`;
+  }
+  if(wb.writingTask2){
+    const w2 = wb.writingTask2;
+    html += `<div class="card"><div class="section-title">${esc(w2.title)}</div>
+      <div class="section-desc"><b>Gợi ý:</b><ul>${w2.notes.map(n=>`<li>${esc(n)}</li>`).join('')}</ul></div>
+      <textarea rows="6" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:10px;font-size:14px" placeholder="Viết bài của em vào đây..." id="w2Area" oninput="saveW2Draft()"></textarea>
+      <details style="margin-top:10px"><summary style="cursor:pointer;font-weight:600">👁 Xem bài mẫu + dịch nghĩa + phân tích</summary>
+        <div style="margin-top:10px">
+          <button class="btn small" onclick="speak(${JSON.stringify(w2.sampleAnswer)})">🔊 Nghe bài mẫu</button>
+          <p style="margin-top:8px">${esc(w2.sampleAnswer)}</p>
+          <button class="fill-vi-toggle" onclick="document.getElementById('w2SampleVi').classList.toggle('show')">🇻🇳 Xem/Ẩn bản dịch</button>
+          <div class="vi-explain" id="w2SampleVi">${esc(w2.sampleAnswerVi)}</div>
+          <div class="section-title" style="margin-top:14px">🔍 Phân tích từng câu</div>
+          ${w2.analysis.map((a,i)=>`<div class="sentence-block"><b>${i+1}. ${esc(a.en)}</b><div class="vi-explain show">${esc(a.vi)}</div>${a.note?`<div class="explain">📎 ${esc(a.note)}</div>`:''}</div>`).join('')}
+        </div>
+      </details>
+    </div>`;
+  }
+  return html;
+}
+function afterWorkbookMount(){
+  (DATA.workbook.exercises||[]).forEach((ex,i)=>{
+    const holderId = 'wbEx'+i+'Holder', key='wbEx'+i;
+    if(ex.type==='readaloud') return;
+    if(ex.type==='mcq') mountMCQBlock(holderId, ex.items, key);
+    else if(ex.type==='match') mountMatch(holderId, ex.items, key);
+    else mountFillBlank(holderId, ex.items, key);
+  });
+}
+function saveW2Draft(){
+  const ta = document.getElementById('w2Area');
+  if(!ta) return;
+  STATE.draftW2 = ta.value; saveState(STATE);
+}
+
+/* ============ WORKBOOK READING (SBT) ============ */
+function renderWbReading(){
+  const wb = DATA.workbook;
+  let html = `<h2 class="page-h">📗 Đọc hiểu (SBT)</h2>`;
+  if(wb.readingFill){
+    html += `<div class="card"><div class="section-title">${esc(wb.readingFill.title)}</div>
+      <p>${esc(wb.readingFill.text).replace(/\(\d\)___/g,m=>`<b style="color:var(--primary)">${m}</b>`)}</p>
+      ${wb.readingFill.textVi?`<button class="fill-vi-toggle" onclick="document.getElementById('wbf_vi').classList.toggle('show')">🇻🇳 Xem/Ẩn bản dịch</button><div class="vi-explain" id="wbf_vi">${esc(wb.readingFill.textVi)}</div>`:''}
+      <div id="wbReadFillHolder" style="margin-top:10px"></div></div>`;
+  }
+  if(wb.readingFill2){
+    html += `<div class="card"><div class="section-title">${esc(wb.readingFill2.title)}</div>
+      <p>${esc(wb.readingFill2.text)}</p>
+      ${wb.readingFill2.textVi?`<button class="fill-vi-toggle" onclick="document.getElementById('wbm_vi').classList.toggle('show')">🇻🇳 Xem/Ẩn bản dịch</button><div class="vi-explain" id="wbm_vi">${esc(wb.readingFill2.textVi)}</div>`:''}
+      <div id="wbReadFill2Holder" style="margin-top:10px"></div></div>`;
+  }
+  if(wb.readingShort){
+    html += `<div class="card"><div class="section-title">${esc(wb.readingShort.title)}</div>
+      <p>${esc(wb.readingShort.text)}</p>
+      ${wb.readingShort.textVi?`<button class="fill-vi-toggle" onclick="document.getElementById('wbt_vi').classList.toggle('show')">🇻🇳 Xem/Ẩn bản dịch</button><div class="vi-explain" id="wbt_vi">${esc(wb.readingShort.textVi)}</div>`:''}
+      <div class="section-desc" style="margin-top:8px"><b>a. Điền từ vào chỗ trống:</b></div>
+      <div id="wbReadShortBlanksHolder"></div>
+      <div class="section-desc" style="margin-top:8px"><b>b. Trả lời câu hỏi ngắn:</b></div>
+      ${wb.readingShort.shortAnswer.map((qa,i)=>`<div class="quiz-q"><div class="qtext">${i+1}. ${esc(qa.q)}</div><div class="vi-explain show">${esc(qa.qVi)}</div><button class="btn small secondary" onclick="this.nextElementSibling.style.display='block';this.style.display='none'">👁 Xem đáp án mẫu</button><div class="explain" style="display:none">✅ ${esc(qa.a)}<br>🇻🇳 ${esc(qa.aVi)}</div></div>`).join('')}
+      </div>`;
+  }
+  return html;
+}
+function afterWbReadingMount(){
+  const wb = DATA.workbook;
+  if(wb.readingFill){
+    const items = wb.readingFill.blanks.map((b,i)=>({q:`Chỗ trống (${i+1}):`, qVi:b.qVi, opts:b.opts, optsVi:b.optsVi, a:b.a}));
+    mountMCQBlock('wbReadFillHolder', items, 'wbReadFill');
+  }
+  if(wb.readingFill2) mountFillBlank('wbReadFill2Holder', wb.readingFill2.blanks.map(b=>({s:b.q, qVi:b.qVi, a:b.a})), 'wbReadFill2');
+  if(wb.readingShort) mountFillBlank('wbReadShortBlanksHolder', wb.readingShort.blanks.map(b=>({s:b.q, qVi:b.qVi, a:b.a})), 'wbReadShort');
+}
+
+/* ============ MY MISTAKES ============ */
+function renderMistakes(){
+  const keys = Object.keys(STATE.mistakes||{});
+  let html = `<h2 class="page-h">❌ Lỗi sai của em</h2>`;
+  if(!keys.length){
+    html += `<div class="card">🎉 Chưa có lỗi sai nào được ghi lại. Cứ tiếp tục luyện tập nhé!</div>`;
+    return html;
+  }
+  html += `<div class="card"><button class="btn small ghost" onclick="clearAllMistakes()">🗑️ Xoá tất cả</button></div>`;
+  html += keys.map(k=>{
+    const m = STATE.mistakes[k];
+    return `<div class="mistake-card">
+      <div><b>Câu hỏi:</b> ${esc(m.q)}</div>
+      <div>❌ <b>Câu trả lời của em:</b> ${esc(m.your)}</div>
+      <div>✅ <b>Đáp án đúng:</b> ${esc(m.correct)}</div>
+      ${m.exp?`<div class="explain">💡 ${esc(m.exp)}</div>`:''}
+    </div>`;
+  }).join('');
+  return html;
+}
+function clearAllMistakes(){ STATE.mistakes = {}; saveState(STATE); openTab('mistakes'); }
+
+/* ============ PROGRESS ============ */
+function renderProgress(){
+  const total = Object.keys(STATE.done||{}).length;
+  const correct = Object.values(STATE.done||{}).filter(d=>d.correct).length;
+  const pct = total ? Math.round(correct/total*100) : 0;
+  let badge = '💪 Cố lên nào!';
+  if(pct>=90) badge = '🏆 Xuất sắc!';
+  else if(pct>=70) badge = '⭐ Khá tốt!';
+  return `<h2 class="page-h">📊 Tiến độ học tập</h2>
+  <div class="card">
+    <div class="section-title">Tổng quan</div>
+    <div class="progressbar"><div style="width:${pct}%"></div></div>
+    <p>${correct}/${total} câu đã làm đúng — <b>${pct}%</b> ${badge}</p>
+    <p style="color:var(--ink-soft);font-size:13px">Số lỗi sai đang lưu: ${Object.keys(STATE.mistakes||{}).length}</p>
+  </div>
+  <div class="card">
+    <button class="btn secondary" onclick="resetProgress()">🔄 Làm lại từ đầu (xoá toàn bộ tiến độ)</button>
+  </div>`;
+}
+function resetProgress(){
+  if(confirm('Xoá toàn bộ tiến độ và lỗi sai đã lưu?')){
+    STATE = {done:{}, mistakes:{}, favs:{}};
+    saveState(STATE);
+    openTab(CURRENT_TAB);
+  }
+}
+</script>
+
+
+<script>
+renderNav();
+openTab(TABS.find(t=>t.show()).key);
+</script>
+</body>
+</html>
