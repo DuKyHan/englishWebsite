@@ -1,0 +1,755 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Reading Quest</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap">
+<style>
+/* Layout: one centred column (max 640px), top bar with progress and hearts, question card, fixed feedback sheet at the bottom. Palette is Duolingo-like: green primary, blue info, red wrong, gold XP. */
+:root{
+  --bg:#ffffff; --fg:#3c3c3c; --muted:#777777; --line:#e5e5e5; --card:#ffffff; --soft:#f7f7f7;
+  --green:#58cc02; --green-d:#58a700; --green-bg:#d7ffb8; --green-fg:#4b8f00;
+  --red:#ff4b4b; --red-d:#ea2b2b; --red-bg:#ffdfe0; --red-fg:#d33131;
+  --blue:#1cb0f6; --blue-d:#1899d6; --blue-bg:#ddf4ff;
+  --gold:#ffc800; --gold-d:#e5b400; --mark:#fff0a8;
+  --font:'Nunito',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#131f24; --fg:#e8eef0; --muted:#8fa3ab; --line:#37464f; --card:#1b2a31; --soft:#202f36;
+  --green-bg:#1f3a12; --green-fg:#89e219; --red-bg:#3d1a1d; --red-fg:#ff7878; --blue-bg:#14323f; --mark:#5b4d10; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#131f24; --fg:#e8eef0; --muted:#8fa3ab; --line:#37464f; --card:#1b2a31; --soft:#202f36;
+  --green-bg:#1f3a12; --green-fg:#89e219; --red-bg:#3d1a1d; --red-fg:#ff7878; --blue-bg:#14323f; --mark:#5b4d10; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-weight:700;font-size:17px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0;min-height:100vh}
+button{font-family:inherit;cursor:pointer;color:inherit}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.wrap{max-width:640px;margin:0 auto;min-width:0}
+h1,h2,h3,p{margin:0}
+h1,h2{text-wrap:balance}
+
+/* chunky buttons */
+.btn{display:block;width:100%;border:0;border-radius:16px;padding:14px 20px;font-size:16px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;
+  background:var(--green);color:#fff;box-shadow:0 4px 0 var(--green-d);transition:transform .08s,box-shadow .08s}
+.btn:active:not(:disabled){transform:translateY(4px);box-shadow:0 0 0 var(--green-d)}
+.btn:disabled{background:var(--line);color:var(--muted);box-shadow:0 4px 0 var(--line);cursor:not-allowed}
+.btn.red{background:var(--red);box-shadow:0 4px 0 var(--red-d)}
+.btn.red:active{box-shadow:0 0 0 var(--red-d)}
+.btn.ghost{background:var(--card);color:var(--blue-d);border:2px solid var(--line);box-shadow:0 4px 0 var(--line)}
+.btn.ghost:active{box-shadow:0 0 0 var(--line)}
+
+/* HOME */
+.home{padding-block:32px 48px}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.owl{width:48px;height:48px;border-radius:14px;background:var(--green);display:grid;place-items:center;color:#fff;font-size:26px;font-weight:900;box-shadow:0 4px 0 var(--green-d)}
+.brand h1{font-size:30px;font-weight:900;line-height:1.1}
+.sub{color:var(--muted);margin-bottom:24px}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:var(--soft);border:2px solid var(--line);font-weight:900;font-size:15px}
+.chip b{color:var(--gold-d)}
+.lessons{display:grid;gap:16px}
+.lesson{display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center;text-align:left;width:100%;background:var(--card);
+  border:2px solid var(--line);border-radius:20px;padding:16px;box-shadow:0 4px 0 var(--line);transition:transform .08s,box-shadow .08s}
+.lesson:hover{border-color:var(--blue)}
+.lesson:active{transform:translateY(4px);box-shadow:0 0 0 var(--line)}
+.badge{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font-size:30px;font-weight:900;color:#fff;background:var(--c);box-shadow:0 5px 0 var(--cd)}
+.lesson h2{font-size:20px;font-weight:900;line-height:1.2}
+.lesson p{color:var(--muted);font-size:14px;font-weight:700}
+.stars{font-size:22px;letter-spacing:2px;white-space:nowrap}
+.star-on{color:var(--gold)}.star-off{color:var(--line)}
+.note{margin-top:24px;color:var(--muted);font-size:14px}
+
+/* QUIZ */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:14px 10px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.top .wrap{display:flex;align-items:center;gap:14px}
+.x{border:0;background:none;font-size:26px;font-weight:900;color:var(--muted);padding:0 4px;line-height:1}
+.bar{flex:1;height:16px;background:var(--line);border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--green);border-radius:999px;transition:width .4s;position:relative}
+.bar i::after{content:"";position:absolute;left:8px;right:8px;top:3px;height:4px;border-radius:4px;background:rgba(255,255,255,.35)}
+.hearts{display:flex;align-items:center;gap:4px;color:var(--red);font-weight:900;font-size:19px}
+.hearts.hit{animation:shake .4s}
+
+.quiz{padding-block:8px 70vh}
+.tag{display:inline-block;font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--blue-d);margin-bottom:6px}
+.q{font-size:23px;font-weight:900;line-height:1.3;margin-bottom:18px;text-wrap:balance}
+.passage{background:var(--soft);border:2px solid var(--line);border-radius:18px;margin-bottom:22px;overflow:hidden}
+.passage summary{list-style:none;cursor:pointer;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;font-weight:900;color:var(--blue-d)}
+.passage summary::-webkit-details-marker{display:none}
+.passage summary::after{content:"▾";transition:transform .2s}
+.passage[open] summary::after{transform:rotate(180deg)}
+.passage .txt{padding:0 16px 16px;font-weight:600;font-size:16px;line-height:1.7;max-height:34vh;overflow-y:auto}
+mark{background:var(--mark);color:inherit;border-radius:4px;padding:1px 2px}
+
+.tf{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:16px;
+  padding:14px 16px;font-size:17px;font-weight:800;box-shadow:0 3px 0 var(--line);transition:transform .08s,box-shadow .08s}
+.opt:hover:not(:disabled){background:var(--soft)}
+.opt:active:not(:disabled){transform:translateY(3px);box-shadow:0 0 0 var(--line)}
+.opts{display:grid;gap:12px}
+.key{flex:none;width:32px;height:32px;border:2px solid var(--line);border-radius:10px;display:grid;place-items:center;font-size:14px;font-weight:900;color:var(--muted)}
+.tf .opt{justify-content:center;padding:26px 12px;font-size:20px;font-weight:900;letter-spacing:.04em}
+.opt.sel{border-color:var(--blue);background:var(--blue-bg);box-shadow:0 3px 0 var(--blue);color:var(--blue-d)}
+.opt.sel .key{border-color:var(--blue);color:var(--blue-d)}
+.opt.ok{border-color:var(--green);background:var(--green-bg);box-shadow:0 3px 0 var(--green);color:var(--green-fg)}
+.opt.ok .key{border-color:var(--green);color:var(--green-fg)}
+.opt.no{border-color:var(--red);background:var(--red-bg);box-shadow:0 3px 0 var(--red);color:var(--red-fg)}
+.opt.no .key{border-color:var(--red);color:var(--red-fg)}
+.opt:disabled{cursor:default}
+
+/* feedback sheet */
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--card);border-top:2px solid var(--line);
+  padding:16px max(16px,env(safe-area-inset-left,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-right,0px));transition:background .2s}
+.sheet.ok{background:var(--green-bg);border-color:transparent}
+.sheet.no{background:var(--red-bg);border-color:transparent}
+.sheet .wrap{display:grid;gap:14px}
+.sheet{max-height:62vh;overflow-y:auto}
+.fb{display:none}
+.blk{margin-top:12px}
+.blk .lb{font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;opacity:.75;margin-bottom:3px}
+.evq{display:grid;gap:2px;margin-top:4px;padding-left:10px;border-left:4px solid currentColor}
+.evq .en{font-weight:900}
+.evq .vi{font-weight:700}
+.ol{margin:8px 0 0;padding-left:20px;display:grid;gap:5px;font-size:14.5px;line-height:1.45}
+.nform{display:grid;gap:10px;max-width:420px}
+.nform label{font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.nform input{font:inherit;font-weight:800;font-size:18px;padding:12px 14px;border:2px solid var(--line);border-radius:14px;background:var(--card);color:var(--fg);width:100%}
+.nform input:focus{border-color:var(--blue);outline:none}
+.nform .btn{margin-top:8px}
+.sc{width:100%;max-width:100%;text-align:left;border:3px solid var(--green);border-radius:20px;overflow:hidden;background:var(--card);box-shadow:0 5px 0 var(--green-d)}
+.sc-h{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;background:var(--green);color:#fff;padding:8px 14px;font-size:12.5px;font-weight:900;letter-spacing:.06em;text-transform:uppercase}
+.sc-b{padding:14px 16px;display:grid;gap:6px}
+.sc-name{font-size:22px;font-weight:900;line-height:1.25;overflow-wrap:anywhere}
+.sc-cls{display:inline-block;margin-left:6px;font-size:13px;padding:2px 10px;border-radius:999px;background:var(--blue-bg);color:var(--blue-d);vertical-align:middle}
+.sc-t{color:var(--muted);font-size:15px}
+.sc-score{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.sc-score b{font-size:44px;line-height:1;color:var(--green-fg)}
+.sc-score span{font-size:18px;color:var(--fg)}
+.sc-f{background:var(--soft);border-top:2px dashed var(--line);padding:8px 14px;font-size:13.5px;color:var(--muted);text-align:center}
+.xsum .sc{margin-top:8px}
+.lw{display:grid;gap:10px}
+.exam-btn{font-size:14px;padding:11px 16px}
+.exam{padding-block:8px 60px}
+.hint{color:var(--muted);font-size:15px;margin-bottom:14px}
+.xq{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:16px;margin-bottom:16px;min-width:0}
+.xn{font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--blue-d);margin-bottom:4px}
+.xq .q{font-size:20px;margin-bottom:6px}
+.qvi{color:var(--muted);font-size:15px;font-weight:700;margin:0 0 14px;padding-left:10px;border-left:4px solid var(--blue)}
+.ovi{display:block;font-size:13px;font-weight:700;color:var(--muted);margin-top:1px}
+.opt.ok .ovi,.opt.no .ovi,.opt.sel .ovi{color:inherit;opacity:.8}
+.xfb{margin-top:14px;border-radius:14px;padding:12px 14px}
+.xfb.ok{background:var(--green-bg);color:var(--green-fg)}
+.xfb.no{background:var(--red-bg);color:var(--red-fg)}
+.xfb h3{font-size:19px;font-weight:900;margin-bottom:2px}
+.xfb p{font-size:15px}
+.xsum{text-align:center;display:grid;gap:6px;justify-items:center;margin-bottom:18px}
+.xsum h1{font-size:30px;font-weight:900}
+.xsum p{color:var(--muted)}
+.xactions{display:grid;gap:14px;margin-top:8px}
+.lang{display:flex;gap:8px;padding:0 16px 10px;flex-wrap:wrap}
+.lang button{border:2px solid var(--line);background:var(--card);border-radius:999px;padding:4px 12px;font-size:13.5px;font-weight:900;color:var(--muted)}
+.lang button.on{border-color:var(--blue);background:var(--blue-bg);color:var(--blue-d)}
+.sheet.ok .fb,.sheet.no .fb{display:block;animation:up .25s}
+.fb h3{font-size:22px;font-weight:900;margin-bottom:4px}
+.sheet.ok .fb h3{color:var(--green-fg)}
+.sheet.no .fb h3{color:var(--red-fg)}
+.fb p{font-weight:700;font-size:15.5px;line-height:1.5}
+.sheet.ok .fb p{color:var(--green-fg)}
+.sheet.no .fb p{color:var(--red-fg)}
+.fb .ans{font-weight:900}
+.fb .ev{margin-top:6px;font-size:14px;opacity:.9;font-style:italic;font-weight:700}
+
+/* RESULT */
+.result{padding-block:48px;text-align:center;display:grid;gap:20px;justify-items:center}
+.big{font-size:84px;line-height:1}
+.result h1{font-size:32px;font-weight:900}
+.result p{color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%}
+.card{border:2px solid var(--c);border-radius:16px;overflow:hidden;background:var(--card)}
+.card .h{background:var(--c);color:#fff;font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;padding:5px}
+.card .v{padding:14px 6px;font-size:22px;font-weight:900;color:var(--c)}
+.rbtns{display:grid;gap:14px;width:100%;margin-top:6px}
+.review{width:100%;text-align:left;display:grid;gap:10px}
+.review h2{font-size:18px;font-weight:900}
+.rv{background:var(--soft);border:2px solid var(--line);border-radius:14px;padding:12px 14px;font-size:15px}
+.rv b{color:var(--red-fg)}
+
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(.6)}70%{transform:scale(1.12)}100%{transform:scale(1)}}
+.pop{animation:pop .5s}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:420px){.lesson{grid-template-columns:52px 1fr}.badge{width:52px;height:52px;font-size:24px}.stars{grid-column:1/-1;text-align:center}.q{font-size:21px}.tf .opt{padding:22px 8px}}
+</style>
+
+<div id="app"></div>
+
+<script>
+/* ---------- DỮ LIỆU BÀI ---------- */
+const LESSONS = [
+{
+  id:'models', icon:'🛠', c:'#ff9600', cd:'#cc7900', title:'Bài 1: Minh’s hobby', sub:'Sở thích làm mô hình',
+  passage:"Hi, I’m Minh. I’m in grade 7, and my hobby is making models. I started it two years ago when my uncle gave me a model kit of a ship on my birthday. Now I usually make models of houses, cars and planes from cardboard, glue and old paper. It doesn’t cost much money because I reuse old things. Making models is not a piece of cake. It takes me about two weeks to finish a big model, so I have to be very patient. My younger sister sometimes helps me paint the models, but she doesn’t like cutting the cardboard. I think this hobby is very useful. It helps me relax after school and makes me more creative. Last month, I took part in a model competition at my school and won second prize. In the future, I want to share my hobby with my classmates and start a small model club.",
+  qs:[
+   {t:'tf',q:'Minh started making models two years ago.',a:true,ev:['I started it two years ago'],
+    why:'Bài viết nói: “I started it two years ago”, nghĩa là Minh bắt đầu cách đây hai năm.'},
+   {t:'tf',q:'Minh’s aunt gave him a model kit on his birthday.',a:false,ev:['my uncle gave me a model kit'],
+    why:'Người tặng là “my uncle” (chú/cậu), không phải “aunt” (cô/dì).'},
+   {t:'tf',q:'Minh spends a lot of money on his hobby.',a:false,ev:['It doesn’t cost much money because I reuse old things'],
+    why:'Bài viết nói sở thích này “doesn’t cost much money” vì Minh dùng lại đồ cũ.'},
+   {t:'tf',q:'Minh’s younger sister sometimes helps him paint the models.',a:true,ev:['My younger sister sometimes helps me paint the models'],
+    why:'“My younger sister sometimes helps me paint the models” khớp hoàn toàn với câu đề bài. Lưu ý: “younger sister” là em gái; chị gái là “older sister”.'},
+   {t:'mc',q:'It takes Minh about ______ to finish a big model.',o:['two days','two weeks','two years','one month'],a:1,ev:['It takes me about two weeks to finish a big model'],
+    why:'“It takes me about two weeks to finish a big model.” Chú ý đừng nhầm với “two years ago” (thời điểm bắt đầu).'},
+   {t:'mc',q:'What is the passage mainly about?',o:['Minh’s family','a school contest','Minh’s hobby','painting models'],a:2,ev:['my hobby is making models'],
+    why:'Cả đoạn kể về việc làm mô hình: bắt đầu từ khi nào, làm gì, lợi ích và dự định. Gia đình, cuộc thi, sơn mô hình chỉ là chi tiết nhỏ.'}
+  ]
+},
+{
+  id:'green', icon:'🌱', c:'#58cc02', cd:'#58a700', title:'Bài 2: Green Hands', sub:'Nhóm tình nguyện',
+  passage:"Last summer, I joined a volunteer group called Green Hands in my neighbourhood. Our group has about thirty members, and most of them are teenagers. We did many useful activities. In June, we cleaned up the streets and planted trees along the river. In July, we visited a nursing home and spent time with the elderly people there. We read books, played board games and listened to their stories. In August, we collected old clothes, books and blankets and donated them to children in a mountainous area. I also tutored two street children in Maths every Sunday morning. At first, I was very shy, but I soon felt more confident. Volunteering helped me learn many skills, such as teamwork and communication. I felt very proud because I could make a difference in my community. This summer, I’m going to volunteer with Green Hands again.",
+  qs:[
+   {t:'tf',q:'Most members of Green Hands are teenagers.',a:true,ev:['most of them are teenagers'],
+    why:'“about thirty members, and most of them are teenagers” khớp với câu đề bài.'},
+   {t:'tf',q:'The group planted trees along the river in July.',a:false,ev:['In June, we cleaned up the streets and planted trees along the river'],
+    why:'Việc trồng cây diễn ra vào tháng Sáu (June). Tháng Bảy (July) nhóm đi thăm viện dưỡng lão.'},
+   {t:'tf',q:'The volunteers sold old clothes and books to children in a mountainous area.',a:false,ev:['we collected old clothes, books and blankets and donated them to children in a mountainous area'],
+    why:'Nhóm “donated” (quyên tặng) chứ không “sold” (bán).'},
+   {t:'tf',q:'Volunteering helped the writer learn teamwork and communication skills.',a:true,ev:['Volunteering helped me learn many skills, such as teamwork and communication'],
+    why:'Câu này gần như lặp lại đúng ý trong bài.'},
+   {t:'mc',q:'How often did the writer tutor the street children?',o:['once a week','twice a week','every day','once a month'],a:0,ev:['I also tutored two street children in Maths every Sunday morning'],
+    why:'“every Sunday morning” = mỗi tuần một lần = once a week.'},
+   {t:'mc',q:'Which activity is NOT mentioned in the passage?',o:['cleaning streets','planting trees','painting murals','donating blankets'],a:2,ev:['cleaned up the streets','planted trees along the river','blankets and donated'],
+    why:'Bài có nhắc dọn đường, trồng cây và tặng chăn. Không có chỗ nào nói đến vẽ tranh tường (painting murals).'}
+  ]
+},
+{
+  id:'pho', icon:'🍜', c:'#1cb0f6', cd:'#1899d6', title:'Bài 3: Phở', sub:'Món ăn Việt Nam',
+  passage:"Phở is one of the most popular dishes in Viet Nam. People can eat it for breakfast, lunch or dinner, but most Vietnamese people eat it in the morning. There are two main kinds of phở: beef noodle soup and chicken noodle soup. The most important part of phở is the broth. To make a good broth, cooks stew beef bones with onions, ginger and some spices for many hours. Then they put rice noodles into a bowl, add some slices of beef or chicken and pour the hot broth over them. People often eat phở with fresh herbs, lime and chilli. Some people also like to add a little fish sauce. My mum cooks phở for my family every Sunday. It takes her about six hours to prepare it, but we all love it. I like beef phở better than chicken phở because it is tastier. Today, phở is also famous in many countries around the world.",
+  qs:[
+   {t:'tf',q:'Most Vietnamese people eat phở in the morning.',a:true,ev:['most Vietnamese people eat it in the morning'],
+    why:'Bài viết nói người Việt có thể ăn phở cả ngày, nhưng “most” ăn vào buổi sáng.'},
+   {t:'tf',q:'Cooks stew beef bones for only a few minutes to make the broth.',a:false,ev:['stew beef bones with onions, ginger and some spices for many hours'],
+    why:'Xương bò được hầm “for many hours” (nhiều giờ), không phải vài phút.'},
+   {t:'tf',q:'People never add fish sauce to phở.',a:false,ev:['Some people also like to add a little fish sauce'],
+    why:'“Some people also like to add a little fish sauce” nên “never” (không bao giờ) là sai.'},
+   {t:'tf',q:'The writer prefers beef phở to chicken phở.',a:true,ev:['I like beef phở better than chicken phở'],
+    why:'“like A better than B” = thích A hơn B = prefer A to B.'},
+   {t:'mc',q:'Which ingredient is NOT used to make the broth?',o:['beef bones','onions','ginger','lime'],a:3,ev:['stew beef bones with onions, ginger and some spices','eat phở with fresh herbs, lime and chilli'],
+    why:'Nước dùng được nấu từ xương bò, hành, gừng và gia vị. Chanh (lime) chỉ được ăn kèm với phở.'},
+   {t:'mc',q:'Which word best describes phở in the passage?',o:['expensive','popular','unhealthy','spicy'],a:1,ev:['Phở is one of the most popular dishes in Viet Nam'],
+    why:'Câu mở đầu nói “one of the most popular dishes”. Bài không nói phở đắt, không tốt cho sức khỏe hay cay.'}
+  ]
+}];
+
+/* ---------- BẢN DỊCH + GIẢI THÍCH CHI TIẾT ---------- */
+const VI = {
+models:{
+ passage:"Xin chào, mình là Minh. Mình học lớp 7 và sở thích của mình là làm mô hình. Mình bắt đầu sở thích này cách đây hai năm khi chú của mình tặng mình một bộ mô hình con tàu vào sinh nhật. Bây giờ mình thường làm mô hình nhà, ô tô và máy bay từ bìa các-tông, keo và giấy cũ. Sở thích này không tốn nhiều tiền vì mình tái sử dụng đồ cũ. Làm mô hình không hề dễ dàng. Mình mất khoảng hai tuần để hoàn thành một mô hình lớn, nên mình phải rất kiên nhẫn. Em gái mình thỉnh thoảng giúp mình sơn các mô hình, nhưng em không thích cắt bìa các-tông. Mình nghĩ sở thích này rất hữu ích. Nó giúp mình thư giãn sau giờ học và khiến mình sáng tạo hơn. Tháng trước, mình tham gia một cuộc thi mô hình ở trường và giành giải nhì. Trong tương lai, mình muốn chia sẻ sở thích với các bạn cùng lớp và thành lập một câu lạc bộ mô hình nhỏ.",
+ qs:[
+  {q:'Minh bắt đầu làm mô hình cách đây hai năm.',ev:['Mình bắt đầu sở thích này cách đây hai năm']},
+  {q:'Cô của Minh tặng bạn ấy một bộ mô hình vào sinh nhật.',ev:['chú của mình tặng mình một bộ mô hình con tàu']},
+  {q:'Minh tiêu rất nhiều tiền cho sở thích của mình.',ev:['Sở thích này không tốn nhiều tiền vì mình tái sử dụng đồ cũ']},
+  {q:'Em gái (younger sister) của Minh thỉnh thoảng giúp bạn ấy sơn các mô hình.',ev:['Em gái mình thỉnh thoảng giúp mình sơn các mô hình']},
+  {q:'Minh mất khoảng ______ để hoàn thành một mô hình lớn.',ev:['Mình mất khoảng hai tuần để hoàn thành một mô hình lớn'],
+   o:['hai ngày','hai tuần','hai năm','một tháng'],
+   opt:['Sai. Bài không nhắc đến “two days”.','Đúng. Bài viết “about two weeks”.','Sai. “Two years” là thời gian Minh bắt đầu sở thích (two years ago), không phải thời gian làm một mô hình.','Sai. “Last month” chỉ là lúc Minh dự thi, không liên quan đến thời gian làm mô hình.']},
+  {q:'Bài đọc chủ yếu nói về điều gì?',ev:['sở thích của mình là làm mô hình'],
+   o:['gia đình của Minh','một cuộc thi ở trường','sở thích của Minh','việc sơn mô hình'],
+   opt:['Sai. Gia đình (người chú, em gái) chỉ được nhắc thoáng qua.','Sai. Cuộc thi chỉ là một chi tiết ở gần cuối bài.','Đúng. Cả bài nói về sở thích làm mô hình: bắt đầu thế nào, làm gì, lợi ích và dự định.','Sai. Sơn mô hình chỉ là một việc nhỏ do em gái giúp.']}
+ ]},
+green:{
+ passage:"Mùa hè năm ngoái, mình tham gia một nhóm tình nguyện tên là Green Hands ở khu phố của mình. Nhóm có khoảng ba mươi thành viên, và hầu hết là thanh thiếu niên. Chúng mình đã làm nhiều hoạt động hữu ích. Vào tháng Sáu, chúng mình dọn dẹp đường phố và trồng cây dọc bờ sông. Vào tháng Bảy, chúng mình đến thăm một viện dưỡng lão và dành thời gian bên những người cao tuổi ở đó. Chúng mình đọc sách, chơi cờ bàn và lắng nghe những câu chuyện của họ. Vào tháng Tám, chúng mình thu gom quần áo cũ, sách và chăn rồi quyên tặng cho trẻ em ở vùng núi. Mình cũng dạy kèm môn Toán cho hai em bé đường phố vào mỗi sáng Chủ nhật. Lúc đầu mình rất nhút nhát, nhưng chẳng bao lâu mình cảm thấy tự tin hơn. Hoạt động tình nguyện giúp mình học được nhiều kỹ năng, chẳng hạn như làm việc nhóm và giao tiếp. Mình cảm thấy rất tự hào vì mình có thể tạo ra sự khác biệt trong cộng đồng. Mùa hè này, mình sẽ lại tham gia tình nguyện cùng Green Hands.",
+ qs:[
+  {q:'Hầu hết thành viên của Green Hands là thanh thiếu niên.',ev:['hầu hết là thanh thiếu niên']},
+  {q:'Nhóm trồng cây dọc bờ sông vào tháng Bảy.',ev:['Vào tháng Sáu, chúng mình dọn dẹp đường phố và trồng cây dọc bờ sông']},
+  {q:'Các tình nguyện viên bán quần áo và sách cũ cho trẻ em ở vùng núi.',ev:['thu gom quần áo cũ, sách và chăn rồi quyên tặng cho trẻ em ở vùng núi']},
+  {q:'Hoạt động tình nguyện giúp người viết học được kỹ năng làm việc nhóm và giao tiếp.',ev:['Hoạt động tình nguyện giúp mình học được nhiều kỹ năng, chẳng hạn như làm việc nhóm và giao tiếp']},
+  {q:'Người viết dạy kèm các em bé đường phố thường xuyên đến mức nào?',ev:['dạy kèm môn Toán cho hai em bé đường phố vào mỗi sáng Chủ nhật'],
+   o:['một lần một tuần','hai lần một tuần','mỗi ngày','một lần một tháng'],
+   opt:['Đúng. “Every Sunday morning” là mỗi tuần một lần.','Sai. “Two” trong bài là số em bé (two street children), không phải số buổi dạy.','Sai. Bài chỉ nói vào sáng Chủ nhật, không phải mỗi ngày.','Sai. Dạy mỗi Chủ nhật thì nhiều hơn một lần một tháng.']},
+  {q:'Hoạt động nào KHÔNG được nhắc đến trong bài?',ev:['dọn dẹp đường phố','trồng cây dọc bờ sông','chăn rồi quyên tặng'],
+   o:['dọn dẹp đường phố','trồng cây','vẽ tranh tường','tặng chăn'],
+   opt:['Có nhắc. “cleaned up the streets” (tháng Sáu).','Có nhắc. “planted trees along the river” (tháng Sáu).','Đúng đáp án. Bài không hề nhắc đến “painting murals” (vẽ tranh tường).','Có nhắc. Chăn được quyên tặng cho trẻ em vùng núi (tháng Tám).']}
+ ]},
+pho:{
+ passage:"Phở là một trong những món ăn phổ biến nhất ở Việt Nam. Mọi người có thể ăn phở vào bữa sáng, bữa trưa hoặc bữa tối, nhưng hầu hết người Việt ăn phở vào buổi sáng. Có hai loại phở chính: phở bò và phở gà. Phần quan trọng nhất của phở là nước dùng. Để có nước dùng ngon, đầu bếp hầm xương bò với hành, gừng và một số gia vị trong nhiều giờ. Sau đó họ cho bánh phở vào tô, thêm vài lát thịt bò hoặc thịt gà rồi chan nước dùng nóng lên. Mọi người thường ăn phở với rau thơm tươi, chanh và ớt. Một số người còn thích thêm một chút nước mắm. Mẹ mình nấu phở cho cả nhà vào mỗi Chủ nhật. Mẹ mất khoảng sáu tiếng để chuẩn bị, nhưng cả nhà đều rất thích. Mình thích phở bò hơn phở gà vì nó ngon hơn. Ngày nay, phở cũng nổi tiếng ở nhiều nước trên thế giới.",
+ qs:[
+  {q:'Hầu hết người Việt ăn phở vào buổi sáng.',ev:['hầu hết người Việt ăn phở vào buổi sáng']},
+  {q:'Đầu bếp chỉ hầm xương bò vài phút để làm nước dùng.',ev:['hầm xương bò với hành, gừng và một số gia vị trong nhiều giờ']},
+  {q:'Mọi người không bao giờ thêm nước mắm vào phở.',ev:['Một số người còn thích thêm một chút nước mắm']},
+  {q:'Người viết thích phở bò hơn phở gà.',ev:['Mình thích phở bò hơn phở gà']},
+  {q:'Nguyên liệu nào KHÔNG được dùng để nấu nước dùng?',ev:['hầm xương bò với hành, gừng và một số gia vị','ăn phở với rau thơm tươi, chanh và ớt'],
+   o:['xương bò','hành','gừng','chanh'],
+   opt:['Có dùng. Xương bò được hầm để lấy nước dùng.','Có dùng. Hành được hầm cùng xương.','Có dùng. Gừng được hầm cùng xương.','Đúng đáp án. Chanh (lime) chỉ là món ăn kèm khi ăn phở, không dùng để nấu nước dùng.']},
+  {q:'Từ nào mô tả phở đúng nhất trong bài?',ev:['Phở là một trong những món ăn phổ biến nhất ở Việt Nam'],
+   o:['đắt','phổ biến','không tốt cho sức khỏe','cay'],
+   opt:['Sai. Bài không nói gì về giá.','Đúng. Câu đầu bài: “one of the most popular dishes”, và cuối bài phở còn nổi tiếng ở nhiều nước.','Sai. Bài không bàn về sức khỏe.','Sai. Ớt (chilli) chỉ là món ăn kèm tùy chọn, bài không mô tả phở là cay.']}
+ ]}
+};
+LESSONS.forEach(L=>{const v=VI[L.id];L.vi=v.passage;L.qs.forEach((q,i)=>{const x=v.qs[i];q.qVi=x.q;q.evVi=x.ev;q.oVi=x.o;q.optWhy=x.opt;});});
+
+/* ---------- TRẠNG THÁI ---------- */
+const $ = s => document.querySelector(s);
+const app = $('#app');
+const MAX_HEARTS = 5;
+let store = {xp:0, stars:{}};
+try { const s = JSON.parse(localStorage.getItem('rq1')||'null'); if(s) store = s; } catch(e){}
+const save = () => { try{ localStorage.setItem('rq1', JSON.stringify(store)); }catch(e){} };
+
+let S = null; // phiên học hiện tại
+
+const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function passageHtml(L, q, lang){
+  const vi = lang==='vi';
+  let t = esc(vi ? L.vi : L.passage);
+  const ev = q ? (vi ? q.evVi : q.ev) : [];
+  (ev||[]).forEach(e => { const k = esc(e); if(t.includes(k)) t = t.replace(k, '<mark>'+k+'</mark>'); });
+  return t;
+}
+const starsFor = n => n>=6 ? 3 : n>=5 ? 2 : n>=3 ? 1 : 0;
+const starStr = n => [1,2,3].map(i=>`<span class="${i<=n?'star-on':'star-off'}">★</span>`).join('');
+
+/* ---------- MÀN HÌNH CHÍNH ---------- */
+function nameGate(edit){
+  app.innerHTML = `<div class="home wrap">
+    <div class="brand"><div class="owl">R</div><h1>Reading Quest</h1></div>
+    <p class="sub">Nhập tên để bắt đầu. Sau mỗi bài, bạn sẽ có thẻ điểm ghi tên và kết quả để chụp màn hình gửi cho giáo viên.</p>
+    <form id="nf" class="nform">
+      <label for="nm">Họ và tên</label>
+      <input id="nm" autocomplete="name" maxlength="40" placeholder="Ví dụ: Nguyễn Văn An" value="${esc(store.name||'')}" required>
+      <label for="cl">Lớp</label>
+      <input id="cl" maxlength="12" placeholder="Ví dụ: 7A2" value="${esc(store.cls||'')}">
+      <button class="btn" type="submit">${edit?'Lưu':'Bắt đầu'}</button>
+      ${edit&&store.name?'<button class="btn ghost" type="button" id="ncancel">Hủy</button>':''}
+    </form></div>`;
+  $('#nf').onsubmit = e => { e.preventDefault(); const n=$('#nm').value.trim(); if(!n) return;
+    store.name=n; store.cls=$('#cl').value.trim(); save(); home(); };
+  const c=$('#ncancel'); if(c) c.onclick=home;
+  window.scrollTo(0,0); setTimeout(()=>{ const i=$('#nm'); if(i) i.focus(); },50);
+}
+function scoreCard(kind, title, score, total){
+  const ten = Math.round(score/total*100)/10;
+  const when = new Date().toLocaleString('vi-VN',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit',year:'numeric'});
+  return `<div class="sc" role="group" aria-label="Thẻ điểm">
+    <div class="sc-h"><span>Thẻ điểm · Reading Quest</span><span>${esc(when)}</span></div>
+    <div class="sc-b">
+      <div class="sc-name">${esc(store.name||'Chưa nhập tên')}${store.cls?` <span class="sc-cls">Lớp ${esc(store.cls)}</span>`:''}</div>
+      <div class="sc-t">${esc(kind)} · ${esc(title)}</div>
+      <div class="sc-score"><b>${score}/${total}</b><span>${ten}/10 điểm</span></div>
+    </div>
+    <div class="sc-f">📸 Chụp màn hình thẻ điểm này và gửi cho giáo viên</div>
+  </div>`;
+}
+
+function home(){
+  if(!store.name) return nameGate(false);
+  S = null;
+  const total = LESSONS.reduce((a,l)=>a+(store.stars[l.id]||0),0);
+  app.innerHTML = `
+  <div class="home wrap">
+    <div class="brand"><div class="owl">R</div><h1>Reading Quest</h1></div>
+    <p class="sub">Đọc bài, chọn TRUE hoặc FALSE, rồi xem lời giải thích ngay. Mỗi bài có 6 câu và 5 tim.</p>
+    <div class="stats">
+      <button class="chip" id="chname" style="cursor:pointer" aria-label="Đổi tên">👤 ${esc(store.name)}${store.cls?' · '+esc(store.cls):''} ✎</button>
+      <span class="chip">⚡ <b>${store.xp}</b> XP</span>
+      <span class="chip">★ <b>${total}</b> / ${LESSONS.length*3}</span>
+    </div>
+    <div class="lessons">
+      ${LESSONS.map(l=>`
+      <div class="lw">
+      <button class="lesson" data-id="${l.id}" style="--c:${l.c};--cd:${l.cd}">
+        <span class="badge" aria-hidden="true">${l.icon}</span>
+        <span><h2>${l.title}</h2><p>${l.sub} · học từng câu</p></span>
+        <span class="stars" aria-label="${store.stars[l.id]||0} trên 3 sao">${starStr(store.stars[l.id]||0)}</span>
+      </button>
+      <button class="btn ghost exam-btn" data-id="${l.id}">📝 Làm bài kiểm tra cả 6 câu${store.exam&&store.exam[l.id]!=null?` · điểm cao nhất ${store.exam[l.id]}/6`:''}</button>
+      <button class="btn ghost exam-btn" data-mem="${l.id}">🧠 Thử thách trí nhớ (8 câu, không nhìn bài)${store.mem&&store.mem[l.id]!=null?` · điểm cao nhất ${store.mem[l.id]}/8`:''}</button>
+      </div>`).join('')}
+    </div>
+    ${weakKeys().length?`<button class="btn" id="weakbtn" style="margin-top:22px">🧠 Ôn câu hay quên (${weakKeys().length})</button>`:''}
+    <p class="note">Học từng câu để hiểu bài, sau đó làm bài kiểm tra 6 câu (câu 23 đến 28) như đề thi thật. Sao được tính theo số câu đúng ngay lần đầu: 3 đến 4 câu được 1 sao, 5 câu được 2 sao, 6 câu được 3 sao.</p>
+  </div>`;
+  app.querySelectorAll('.lesson').forEach(b=>b.onclick=()=>start(b.dataset.id));
+  app.querySelectorAll('.exam-btn').forEach(b=>b.onclick=()=>b.dataset.mem?memStudy(b.dataset.mem):exam(b.dataset.id));
+  const wb = $('#weakbtn'); if(wb) wb.onclick = weakReview;
+  $('#chname').onclick = () => nameGate(true);
+  window.scrollTo(0,0);
+}
+
+/* ---------- LÀM BÀI ---------- */
+function start(id){
+  const L = LESSONS.find(l=>l.id===id);
+  S = { L, queue: L.qs.map((q,i)=>({q,i,retry:false})), done:0, first:0, hearts:MAX_HEARTS, xp:0,
+        wrong:[], sel:null, checked:false, total:L.qs.length };
+  quiz();
+}
+
+function quiz(){
+  if(!S.queue.length) return finish(true);
+  const cur = S.queue[0], q = cur.q, L = S.L;
+  S.sel = null; S.checked = false;
+  const pct = Math.round(S.done / S.total * 100);
+  const kind = q.t==='tf' ? 'TRUE hay FALSE?' : 'Chọn đáp án đúng';
+  const body = q.t==='tf'
+    ? `<div class="tf">
+         <button class="opt" data-v="true">TRUE</button>
+         <button class="opt" data-v="false">FALSE</button>
+       </div>`
+    : `<div class="opts">${q.o.map((o,i)=>`<button class="opt" data-v="${i}"><span class="key">${'ABCD'[i]}</span><span>${esc(o)}</span></button>`).join('')}</div>`;
+
+  app.innerHTML = `
+  <div class="top"><div class="wrap">
+    <button class="x" id="quit" aria-label="Thoát bài học">✕</button>
+    <div class="bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${pct}%"></i></div>
+    <div class="hearts" id="hearts" aria-label="${S.hearts} tim">❤ ${S.hearts}</div>
+  </div></div>
+  <div class="quiz wrap">
+    <details class="passage" ${S.done===0||cur.retry?'open':''} id="pass">
+      <summary>📖 Đọc bài</summary>
+      <div class="lang" role="group" aria-label="Ngôn ngữ bài đọc">
+        <button type="button" data-l="en" class="${S.lang==='vi'?'':'on'}">English</button>
+        <button type="button" data-l="vi" class="${S.lang==='vi'?'on':''}">Bản dịch tiếng Việt</button>
+      </div>
+      <div class="txt" id="ptxt">${passageHtml(L,null,S.lang)}</div>
+    </details>
+    <div class="tag">${cur.retry?'Làm lại câu sai · ':''}${kind}</div>
+    <h2 class="q">${esc(q.q)}</h2>
+    ${body}
+  </div>
+  <div class="sheet" id="sheet"><div class="wrap">
+    <div class="fb" id="fb"></div>
+    <button class="btn" id="go" disabled>Kiểm tra</button>
+  </div></div>`;
+
+  $('#quit').onclick = () => { if(S.done===0 || S.confirmQuit){ home(); } else { S.confirmQuit = true; $('#quit').textContent='Thoát?'; $('#quit').style.fontSize='14px'; setTimeout(()=>{ if(S){S.confirmQuit=false; const x=$('#quit'); if(x){x.textContent='✕';x.style.fontSize='';}} },2500);} };
+  app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    if(S.checked) return;
+    app.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));
+    b.classList.add('sel'); S.sel = b.dataset.v; $('#go').disabled = false;
+  });
+  $('#go').onclick = () => S.checked ? next() : check();
+  app.querySelectorAll('.lang button').forEach(b=>b.onclick=()=>{
+    S.lang = b.dataset.l;
+    app.querySelectorAll('.lang button').forEach(x=>x.classList.toggle('on',x===b));
+    $('#ptxt').innerHTML = passageHtml(S.L, S.checked?q:null, S.lang);
+    const m = $('#ptxt mark'); if(m && S.checked) m.scrollIntoView({block:'nearest'});
+  });
+  window.scrollTo(0,0);
+}
+
+function check(){
+  const cur = S.queue[0], q = cur.q;
+  const correct = q.t==='tf' ? String(q.a) : String(q.a);
+  const ok = S.sel === correct;
+  S.checked = true;
+
+  app.querySelectorAll('.opt').forEach(o=>{
+    o.disabled = true; o.classList.remove('sel');
+    if(o.dataset.v===correct) o.classList.add('ok');
+    else if(o.dataset.v===S.sel) o.classList.add('no');
+  });
+  $('#ptxt').innerHTML = passageHtml(S.L, q, S.lang);
+  const det = $('#pass'); det.open = true;
+  const m = det.querySelector('mark'); if(m) m.scrollIntoView({block:'nearest'});
+
+  const ansTxt = q.t==='tf' ? (q.a?'TRUE (Đúng)':'FALSE (Sai)') : `${'ABCD'[q.a]}. ${q.o[q.a]} (${q.oVi[q.a]})`;
+  const sheet = $('#sheet');
+  sheet.classList.add(ok?'ok':'no');
+  const praise = ['Chính xác!','Tuyệt vời!','Đúng rồi!','Giỏi quá!'][Math.floor(Math.random()*4)];
+  const evBlock = q.ev.map((e,i)=>`<div class="evq"><span class="en">“${esc(e)}”</span><span class="vi">→ “${esc(q.evVi[i])}”</span></div>`).join('');
+  const optBlock = q.t==='mc' ? `<ul class="ol">${q.o.map((o,i)=>`<li><b>${'ABCD'[i]}. ${esc(o)}</b> (${esc(q.oVi[i])}): ${esc(q.optWhy[i])}</li>`).join('')}</ul>` : '';
+  $('#fb').innerHTML = `<h3>${ok?praise:'Chưa đúng'}</h3>
+    <p>Đáp án đúng: <span class="ans">${esc(ansTxt)}</span></p>
+    <div class="blk"><div class="lb">Dịch câu hỏi</div><p>${esc(q.qVi)}</p></div>
+    <div class="blk"><div class="lb">Dẫn chứng trong bài</div>${evBlock}</div>
+    <div class="blk"><div class="lb">Giải thích</div><p>${esc(q.why)}</p>${optBlock}</div>
+    <p class="ev">Dẫn chứng đã được tô vàng trong phần “Đọc bài”. Bấm “Bản dịch tiếng Việt” để xem đoạn tương ứng.</p>`;
+  const go = $('#go'); go.disabled=false; go.textContent='Tiếp tục'; if(!ok) go.classList.add('red');
+
+  if(ok){
+    S.done++; if(!cur.retry) S.first++; S.xp += cur.retry?5:10; S.queue.shift();
+    $('.bar i').style.width = Math.round(S.done/S.total*100)+'%';
+  } else {
+    S.hearts--; if(!cur.retry) S.wrong.push(cur.q);
+    S.queue.shift(); S.queue.push({q:cur.q,i:cur.i,retry:true});
+    const h = $('#hearts'); h.textContent = '❤ '+S.hearts; h.classList.add('hit');
+  }
+  S.lastOk = ok;
+  sheet.scrollIntoView({block:'end'});
+}
+
+function next(){
+  if(S.hearts<=0 && !S.lastOk) return finish(false);
+  quiz();
+}
+
+/* ---------- KẾT QUẢ ---------- */
+function finish(win){
+  const L = S.L, n = S.first;
+  let stars = 0;
+  if(win){
+    stars = starsFor(n);
+    store.xp += S.xp + (n===S.total?20:0);
+    store.stars[L.id] = Math.max(store.stars[L.id]||0, stars);
+    save();
+  }
+  const bonus = win && n===S.total ? 20 : 0;
+  app.innerHTML = `
+  <div class="result wrap">
+    <div class="big pop">${win?(stars===3?'🏆':'🎉'):'💔'}</div>
+    <h1>${win?(stars===3?'Hoàn hảo!':'Hoàn thành bài học!'):'Hết tim rồi'}</h1>
+    <p>${win?`${L.title} · ${L.sub}`:'Đọc lại bài thật kỹ rồi thử lần nữa nhé. Mỗi lần làm lại là một lần hiểu bài hơn.'}</p>
+    ${win?`<div class="stars" style="font-size:44px" aria-label="${stars} trên 3 sao">${starStr(stars)}</div>`:''}
+    <div class="cards">
+      <div class="card" style="--c:var(--gold-d)"><div class="h">XP</div><div class="v">+${win?S.xp+bonus:S.xp}</div></div>
+      <div class="card" style="--c:var(--green)"><div class="h">Đúng ngay</div><div class="v">${n}/${S.total}</div></div>
+      <div class="card" style="--c:var(--red)"><div class="h">Tim còn</div><div class="v">${Math.max(S.hearts,0)}</div></div>
+    </div>
+    ${win?scoreCard('Học từng câu',L.title+' · '+L.sub,n,S.total):''}
+    ${S.wrong.length?`<div class="review"><h2>Các câu cần xem lại</h2>
+      ${S.wrong.map(q=>`<div class="rv"><b>${esc(q.q)}</b><br>${esc(q.why)}</div>`).join('')}</div>`:''}
+    <div class="rbtns">
+      ${win?`<button class="btn" id="toexam">📝 Làm bài kiểm tra cả 6 câu</button><button class="btn ghost" id="tomem">🧠 Thử thách trí nhớ (không nhìn bài)</button>`:''}
+      <button class="btn ${win?'ghost':''}" id="again">${win?'Học lại bài này':'Thử lại'}</button>
+      <button class="btn ghost" id="back">Về danh sách bài</button>
+    </div>
+  </div>`;
+  if(win){ $('#toexam').onclick = () => exam(L.id); $('#tomem').onclick = () => memStudy(L.id); }
+  $('#again').onclick = () => start(L.id);
+  $('#back').onclick = home;
+  window.scrollTo(0,0);
+}
+
+/* ---------- THỬ THÁCH TRÍ NHỚ (không nhìn bài) ---------- */
+// [câu hỏi, dịch, [đáp án], [dịch đáp án], chỉ số đúng, câu gốc trong bài, dịch câu gốc]
+const MEM = {
+models:[
+ ['Minh is in grade ___.','Minh học lớp ___.',['5','6','7','8'],['5','6','7','8'],2,'I’m in grade 7','Mình học lớp 7'],
+ ['What did Minh’s uncle give him on his birthday?','Chú của Minh tặng gì cho bạn ấy vào sinh nhật?',['a model kit of a ship','a toy car','a box of paint','a camera'],['bộ mô hình con tàu','một chiếc ô tô đồ chơi','một hộp màu','một chiếc máy ảnh'],0,'my uncle gave me a model kit of a ship on my birthday','chú mình tặng mình bộ mô hình con tàu vào sinh nhật'],
+ ['What does Minh make his models from?','Minh làm mô hình từ những gì?',['cardboard, glue and old paper','wood, metal and plastic','clay and sand','bottles and cans'],['bìa các-tông, keo và giấy cũ','gỗ, kim loại và nhựa','đất sét và cát','chai và lon'],0,'models of houses, cars and planes from cardboard, glue and old paper','mô hình nhà, ô tô và máy bay từ bìa các-tông, keo và giấy cũ'],
+ ['Why doesn’t his hobby cost much money?','Vì sao sở thích của Minh không tốn nhiều tiền?',['He reuses old things.','His uncle pays for it.','Models are cheap to buy.','The school gives him materials.'],['Bạn ấy tái sử dụng đồ cũ.','Chú bạn ấy trả tiền.','Mô hình mua rất rẻ.','Trường cho bạn ấy nguyên liệu.'],0,'It doesn’t cost much money because I reuse old things','Sở thích này không tốn nhiều tiền vì mình tái sử dụng đồ cũ'],
+ ['Minh’s younger sister doesn’t like ___.','Em gái Minh không thích ___.',['cutting the cardboard','painting the models','playing with models','making planes'],['cắt bìa các-tông','sơn mô hình','chơi với mô hình','làm máy bay'],0,'she doesn’t like cutting the cardboard','em không thích cắt bìa các-tông'],
+ ['How does the hobby help Minh after school?','Sở thích giúp Minh điều gì sau giờ học?',['It helps him relax.','It helps him do homework.','It helps him sleep.','It helps him exercise.'],['Giúp bạn ấy thư giãn.','Giúp bạn ấy làm bài tập.','Giúp bạn ấy ngủ.','Giúp bạn ấy tập thể dục.'],0,'It helps me relax after school','Nó giúp mình thư giãn sau giờ học'],
+ ['Which prize did Minh win in the model competition?','Minh giành giải nào trong cuộc thi mô hình?',['first prize','second prize','third prize','special prize'],['giải nhất','giải nhì','giải ba','giải đặc biệt'],1,'won second prize','giành giải nhì'],
+ ['What does Minh want to do in the future?','Trong tương lai Minh muốn làm gì?',['start a small model club','sell his models','go to a model school','travel abroad'],['thành lập một câu lạc bộ mô hình nhỏ','bán mô hình','vào học trường mô hình','đi du lịch nước ngoài'],0,'start a small model club','thành lập một câu lạc bộ mô hình nhỏ']
+],
+green:[
+ ['How many members does Green Hands have?','Green Hands có bao nhiêu thành viên?',['about twenty','about thirty','about fifty','about a hundred'],['khoảng hai mươi','khoảng ba mươi','khoảng năm mươi','khoảng một trăm'],1,'Our group has about thirty members','Nhóm có khoảng ba mươi thành viên'],
+ ['What did the group do in June?','Nhóm làm gì vào tháng Sáu?',['cleaned streets and planted trees','visited a nursing home','collected old clothes','tutored street children'],['dọn đường phố và trồng cây','thăm viện dưỡng lão','thu gom quần áo cũ','dạy kèm trẻ em đường phố'],0,'In June, we cleaned up the streets and planted trees along the river','Vào tháng Sáu, chúng mình dọn dẹp đường phố và trồng cây dọc bờ sông'],
+ ['Where did the group go in July?','Nhóm đến đâu vào tháng Bảy?',['a nursing home','a hospital','an orphanage','a school'],['viện dưỡng lão','bệnh viện','trại trẻ mồ côi','một trường học'],0,'In July, we visited a nursing home','Vào tháng Bảy, chúng mình đến thăm một viện dưỡng lão'],
+ ['What did they do with the elderly people?','Họ đã làm gì cùng những người cao tuổi?',['read books, played board games and listened to stories','sang songs and danced','cooked meals together','painted pictures'],['đọc sách, chơi cờ bàn và nghe kể chuyện','hát và nhảy','cùng nấu ăn','vẽ tranh'],0,'We read books, played board games and listened to their stories','Chúng mình đọc sách, chơi cờ bàn và lắng nghe những câu chuyện của họ'],
+ ['Who received the donated clothes, books and blankets?','Ai nhận quần áo, sách và chăn được quyên tặng?',['children in a mountainous area','elderly people','street children','students in the city'],['trẻ em ở vùng núi','người cao tuổi','trẻ em đường phố','học sinh trong thành phố'],0,'donated them to children in a mountainous area','quyên tặng cho trẻ em ở vùng núi'],
+ ['Which subject did the writer tutor?','Người viết dạy kèm môn nào?',['Maths','English','Science','Art'],['Toán','Tiếng Anh','Khoa học','Mỹ thuật'],0,'I also tutored two street children in Maths','Mình cũng dạy kèm môn Toán cho hai em bé đường phố'],
+ ['How did the writer feel at first?','Lúc đầu người viết cảm thấy thế nào?',['shy','proud','bored','angry'],['nhút nhát','tự hào','chán','tức giận'],0,'At first, I was very shy','Lúc đầu mình rất nhút nhát'],
+ ['Why did the writer feel proud?','Vì sao người viết cảm thấy tự hào?',['They could make a difference in the community.','They won a prize.','They became the leader.','They made many friends.'],['Họ có thể tạo ra sự khác biệt trong cộng đồng.','Họ giành được giải thưởng.','Họ trở thành trưởng nhóm.','Họ có nhiều bạn.'],0,'I felt very proud because I could make a difference in my community','Mình cảm thấy rất tự hào vì mình có thể tạo ra sự khác biệt trong cộng đồng']
+],
+pho:[
+ ['When do most Vietnamese people eat phở?','Hầu hết người Việt ăn phở vào lúc nào?',['in the morning','in the afternoon','in the evening','at midnight'],['buổi sáng','buổi chiều','buổi tối','nửa đêm'],0,'most Vietnamese people eat it in the morning','hầu hết người Việt ăn phở vào buổi sáng'],
+ ['What are the two main kinds of phở?','Hai loại phở chính là gì?',['beef and chicken','pork and fish','beef and pork','chicken and duck'],['bò và gà','heo và cá','bò và heo','gà và vịt'],0,'two main kinds of phở: beef noodle soup and chicken noodle soup','hai loại phở chính: phở bò và phở gà'],
+ ['What is the most important part of phở?','Phần quan trọng nhất của phở là gì?',['the broth','the noodles','the herbs','the meat'],['nước dùng','bánh phở','rau thơm','thịt'],0,'The most important part of phở is the broth','Phần quan trọng nhất của phở là nước dùng'],
+ ['What do cooks stew to make the broth?','Đầu bếp hầm những gì để làm nước dùng?',['beef bones with onions, ginger and spices','chicken bones with garlic','pork bones with carrots','fish with lemongrass'],['xương bò với hành, gừng và gia vị','xương gà với tỏi','xương heo với cà rốt','cá với sả'],0,'stew beef bones with onions, ginger and some spices for many hours','hầm xương bò với hành, gừng và một số gia vị trong nhiều giờ'],
+ ['What do people often eat phở with?','Mọi người thường ăn phở kèm với gì?',['fresh herbs, lime and chilli','rice and eggs','bread and butter','sugar and milk'],['rau thơm tươi, chanh và ớt','cơm và trứng','bánh mì và bơ','đường và sữa'],0,'People often eat phở with fresh herbs, lime and chilli','Mọi người thường ăn phở với rau thơm tươi, chanh và ớt'],
+ ['On which day does the writer’s mum cook phở?','Mẹ người viết nấu phở vào ngày nào?',['every Sunday','every Saturday','every Monday','every day'],['mỗi Chủ nhật','mỗi thứ Bảy','mỗi thứ Hai','mỗi ngày'],0,'My mum cooks phở for my family every Sunday','Mẹ mình nấu phở cho cả nhà vào mỗi Chủ nhật'],
+ ['How long does it take her to prepare phở?','Mẹ mất bao lâu để chuẩn bị phở?',['about six hours','about two hours','about three hours','about ten hours'],['khoảng sáu tiếng','khoảng hai tiếng','khoảng ba tiếng','khoảng mười tiếng'],0,'It takes her about six hours to prepare it','Mẹ mất khoảng sáu tiếng để chuẩn bị'],
+ ['Which phở does the writer like better, and why?','Người viết thích loại phở nào hơn, và vì sao?',['beef phở, because it is tastier','chicken phở, because it is cheaper','beef phở, because it is faster to cook','chicken phở, because it is healthier'],['phở bò, vì ngon hơn','phở gà, vì rẻ hơn','phở bò, vì nấu nhanh hơn','phở gà, vì tốt cho sức khỏe hơn'],0,'I like beef phở better than chicken phở because it is tastier','Mình thích phở bò hơn phở gà vì nó ngon hơn']
+]};
+const memItems = lid => MEM[lid].map((r,i)=>({lid,idx:i,q:r[0],qVi:r[1],o:r[2],oVi:r[3],a:r[4],src:r[5],srcVi:r[6]}));
+const weakKeys = () => Object.keys(store.weak||{});
+let M = null, studyTimer = null;
+
+function memStudy(lid){
+  clearInterval(studyTimer);
+  const L = LESSONS.find(l=>l.id===lid);
+  let left = 90, lang='en';
+  app.innerHTML = `
+  <div class="top"><div class="wrap"><button class="x" id="mback" aria-label="Về danh sách bài">✕</button>
+    <div class="bar"><i id="tbar" style="width:100%"></i></div><div class="hearts" id="tnum" style="color:var(--blue-d)">90s</div></div></div>
+  <div class="quiz wrap exam">
+    <div class="tag">Thử thách trí nhớ · ${esc(L.title)}</div>
+    <h2 class="q">Đọc kỹ bài trong 90 giây</h2>
+    <p class="hint">Sau đó bài đọc sẽ ẩn đi và bạn trả lời 8 câu hỏi về chi tiết bằng trí nhớ. Chú ý con số, tên người, ngày tháng và đồ vật.</p>
+    <div class="passage" style="margin-bottom:18px">
+      <div class="lang" style="padding-top:12px"><button type="button" data-l="en" class="on">English</button><button type="button" data-l="vi">Bản dịch tiếng Việt</button></div>
+      <div class="txt" id="ptxt" style="padding:0 16px 16px;font-weight:600;line-height:1.7">${passageHtml(L,null,'en')}</div>
+    </div>
+    <button class="btn" id="mgo">Mình đã nhớ, bắt đầu!</button>
+  </div>`;
+  app.querySelectorAll('.lang button').forEach(b=>b.onclick=()=>{lang=b.dataset.l;
+    app.querySelectorAll('.lang button').forEach(x=>x.classList.toggle('on',x===b));$('#ptxt').innerHTML=passageHtml(L,null,lang);});
+  const go = () => { clearInterval(studyTimer); memStart(memItems(lid), 'Thử thách trí nhớ', lid); };
+  $('#mgo').onclick = go; $('#mback').onclick = () => { clearInterval(studyTimer); home(); };
+  studyTimer = setInterval(()=>{ left--; const b=$('#tbar'), n=$('#tnum'); if(!b){clearInterval(studyTimer);return;}
+    b.style.width = (left/90*100)+'%'; n.textContent = left+'s'; if(left<=0){ n.textContent='Hết giờ'; clearInterval(studyTimer); } },1000);
+  window.scrollTo(0,0);
+}
+
+function memStart(items, title, lid){
+  M = {items, i:0, score:0, missed:[], title, lid, sel:null, checked:false};
+  memQ(); window.scrollTo(0,0);
+}
+function memQ(){
+  if(M.i >= M.items.length) return memEnd();
+  const it = M.items[M.i], pct = Math.round(M.i/M.items.length*100);
+  const L = LESSONS.find(l=>l.id===it.lid);
+  M.sel=null; M.checked=false;
+  app.innerHTML = `
+  <div class="top"><div class="wrap"><button class="x" id="mq" aria-label="Thoát">✕</button>
+    <div class="bar"><i style="width:${pct}%"></i></div><div class="hearts" style="color:var(--blue-d)">${M.i+1}/${M.items.length}</div></div></div>
+  <div class="quiz wrap">
+    <div class="tag">🧠 ${esc(M.title)}${M.lid?'':' · '+esc(L.title)} · không nhìn bài</div>
+    <h2 class="q">${esc(it.q)}</h2>
+    <p class="qvi">${esc(it.qVi)}</p>
+    <div class="opts">${it.o.map((o,k)=>`<button class="opt" data-v="${k}"><span class="key">${'ABCD'[k]}</span><span>${esc(o)}<span class="ovi">${esc(it.oVi[k])}</span></span></button>`).join('')}</div>
+  </div>
+  <div class="sheet" id="sheet"><div class="wrap"><div class="fb" id="fb"></div><button class="btn" id="go" disabled>Kiểm tra</button></div></div>`;
+  $('#mq').onclick = home;
+  app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{ if(M.checked) return;
+    app.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel')); b.classList.add('sel'); M.sel=b.dataset.v; $('#go').disabled=false; });
+  $('#go').onclick = () => M.checked ? (M.i++, memQ(), window.scrollTo(0,0)) : memCheck();
+}
+function memCheck(){
+  const it = M.items[M.i], ok = +M.sel === it.a, key = it.lid+':'+it.idx;
+  M.checked = true;
+  app.querySelectorAll('.opt').forEach(o=>{ o.disabled=true; o.classList.remove('sel');
+    if(+o.dataset.v===it.a) o.classList.add('ok'); else if(o.dataset.v===M.sel) o.classList.add('no'); });
+  store.weak = store.weak||{};
+  if(ok){ M.score++; delete store.weak[key]; store.xp += 5; } else { M.missed.push(it); store.weak[key] = true; }
+  save();
+  const sheet=$('#sheet'); sheet.classList.add(ok?'ok':'no');
+  $('#fb').innerHTML = `<h3>${ok?'Bạn nhớ chính xác!':'Chưa nhớ đúng'}</h3>
+    <p>Đáp án đúng: <span class="ans">${'ABCD'[it.a]}. ${esc(it.o[it.a])} (${esc(it.oVi[it.a])})</span></p>
+    <div class="blk"><div class="lb">Dẫn chứng trong bài</div><div class="evq"><span class="en">“${esc(it.src)}”</span><span class="vi">→ “${esc(it.srcVi)}”</span></div></div>
+    ${ok?'':'<p class="ev">Câu này đã được lưu vào “Ôn câu hay quên” trên trang chủ.</p>'}`;
+  const go=$('#go'); go.disabled=false; go.textContent = M.i+1>=M.items.length?'Xem kết quả':'Tiếp tục'; if(!ok) go.classList.add('red');
+  sheet.scrollIntoView({block:'end'});
+}
+function memEnd(){
+  const n=M.items.length, s=M.score, lid=M.lid;
+  if(lid){ store.mem = store.mem||{}; store.mem[lid] = Math.max(store.mem[lid]||0, s); save(); }
+  const lvl = s===n?'Trí nhớ siêu việt!':s>=n*0.75?'Nhớ bài rất tốt!':s>=n*0.5?'Khá ổn, cần ôn thêm':'Cần đọc lại bài kỹ hơn';
+  app.innerHTML = `<div class="result wrap">
+    <div class="big pop">${s===n?'🧠':s>=n*0.75?'🎉':'📚'}</div>
+    <h1>${esc(lvl)}</h1><p>Bạn nhớ đúng ${s}/${n} chi tiết.</p>
+    <div class="cards"><div class="card" style="--c:var(--green)"><div class="h">Nhớ đúng</div><div class="v">${s}</div></div>
+      <div class="card" style="--c:var(--red)"><div class="h">Quên</div><div class="v">${n-s}</div></div>
+      <div class="card" style="--c:var(--gold-d)"><div class="h">XP</div><div class="v">+${s*5}</div></div></div>
+    ${scoreCard(M.lid?'Trí nhớ':'Ôn câu hay quên', M.lid?LESSONS.find(l=>l.id===M.lid).title:'nhiều bài', s, n)}
+    ${M.missed.length?`<div class="review"><h2>Những chi tiết cần nhớ lại</h2>${M.missed.map(it=>`<div class="rv"><b>${esc(it.q)}</b><br>${esc(it.o[it.a])} (${esc(it.oVi[it.a])})<br><i>“${esc(it.src)}”</i></div>`).join('')}</div>`:''}
+    <div class="rbtns">
+      ${lid?`<button class="btn" id="mretry">Đọc lại và thử lần nữa</button>`:''}
+      ${weakKeys().length?`<button class="btn ${lid?'ghost':''}" id="mweak">🧠 Ôn câu hay quên (${weakKeys().length})</button>`:''}
+      <button class="btn ghost" id="mhome">Về danh sách bài</button></div></div>`;
+  if(lid) $('#mretry').onclick = () => memStudy(lid);
+  if(weakKeys().length) $('#mweak').onclick = weakReview;
+  $('#mhome').onclick = home; window.scrollTo(0,0);
+}
+function weakReview(){
+  const items = weakKeys().map(k=>{const [l,i]=k.split(':');return memItems(l)[+i];}).filter(Boolean);
+  if(!items.length) return home();
+  memStart(items.sort(()=>Math.random()-.5).slice(0,10), 'Ôn câu hay quên', null);
+}
+
+/* ---------- BÀI KIỂM TRA CẢ 6 CÂU ---------- */
+let E = null;
+function exam(id){
+  const L = LESSONS.find(l=>l.id===id);
+  E = {L, ans:L.qs.map(()=>null), done:false, lang:'en', showVi:true};
+  renderExam();
+  window.scrollTo(0,0);
+}
+function renderExam(keepScroll){
+  const L = E.L, y = window.scrollY;
+  const answered = E.ans.filter(a=>a!==null).length;
+  const score = E.done ? L.qs.filter((q,i)=>E.ans[i]===String(q.a)).length : 0;
+
+  const qHtml = L.qs.map((q,i)=>{
+    const n = 23+i, a = E.ans[i], correct = String(q.a);
+    const isOk = E.done && a===correct;
+    const cls = v => {
+      if(E.done){ if(v===correct) return 'ok'; if(v===a) return 'no'; return ''; }
+      return a===v ? 'sel' : '';
+    };
+    const opts = q.t==='tf'
+      ? `<div class="tf">${['true','false'].map(v=>`<button class="opt ${cls(v)}" data-i="${i}" data-v="${v}" ${E.done?'disabled':''}>${v.toUpperCase()}</button>`).join('')}</div>`
+      : `<div class="opts">${q.o.map((o,k)=>`<button class="opt ${cls(String(k))}" data-i="${i}" data-v="${k}" ${E.done?'disabled':''}><span class="key">${'ABCD'[k]}</span><span>${esc(o)}${E.showVi?`<span class="ovi">${esc(q.oVi[k])}</span>`:''}</span></button>`).join('')}</div>`;
+    let fb = '';
+    if(E.done){
+      const ansTxt = q.t==='tf' ? (q.a?'TRUE (Đúng)':'FALSE (Sai)') : `${'ABCD'[q.a]}. ${q.o[q.a]} (${q.oVi[q.a]})`;
+      const yours = a===null ? 'Bạn chưa trả lời' : (q.t==='tf' ? a.toUpperCase() : `${'ABCD'[+a]}. ${q.o[+a]}`);
+      fb = `<div class="xfb ${isOk?'ok':'no'}">
+        <h3>${isOk?'Đúng rồi!':'Chưa đúng'}</h3>
+        ${isOk?'':`<p>Bạn chọn: <b>${esc(yours)}</b></p>`}
+        <p>Đáp án đúng: <span class="ans">${esc(ansTxt)}</span></p>
+        <div class="blk"><div class="lb">Dẫn chứng trong bài</div>${q.ev.map((e,k)=>`<div class="evq"><span class="en">“${esc(e)}”</span><span class="vi">→ “${esc(q.evVi[k])}”</span></div>`).join('')}</div>
+        <div class="blk"><div class="lb">Giải thích</div><p>${esc(q.why)}</p>${q.t==='mc'?`<ul class="ol">${q.o.map((o,k)=>`<li><b>${'ABCD'[k]}. ${esc(o)}</b>: ${esc(q.optWhy[k])}</li>`).join('')}</ul>`:''}</div>
+      </div>`;
+    }
+    return `<section class="xq" aria-label="Câu ${n}">
+      <div class="xn">Câu ${n}</div>
+      <h2 class="q">${esc(q.q)}</h2>
+      ${E.showVi?`<p class="qvi">${esc(q.qVi)}</p>`:''}
+      ${opts}${fb}
+    </section>`;
+  }).join('');
+
+  const summary = E.done ? `
+    <div class="xsum"><div class="big pop">${score===6?'🏆':score>=4?'🎉':'💪'}</div>
+      <h1>${score}/6 câu đúng</h1>
+      <p>${score===6?'Hoàn hảo! Bạn hiểu bài rất tốt.':score>=4?'Làm tốt lắm! Xem lại các câu sai bên dưới nhé.':'Đọc lại bài và các dẫn chứng bên dưới, rồi thử làm lại.'}</p>
+      ${scoreCard('Bài kiểm tra 6 câu', L.title, score, 6)}
+    </div>` : '';
+
+  app.innerHTML = `
+  <div class="top"><div class="wrap">
+    <button class="x" id="xback" aria-label="Về danh sách bài">✕</button>
+    <div class="bar" role="progressbar" aria-valuenow="${E.done?6:answered}" aria-valuemin="0" aria-valuemax="6"><i style="width:${(E.done?6:answered)/6*100}%"></i></div>
+    <div class="hearts" style="color:var(--green)">${E.done?score:answered}/6</div>
+  </div></div>
+  <div class="quiz wrap exam">
+    <div class="tag">Bài kiểm tra · ${esc(L.title)}</div>
+    <p class="hint">Đọc bài, rồi chọn TRUE hoặc FALSE cho câu 23 đến 26 và chọn A, B, C hoặc D cho câu 27 đến 28.</p>
+    ${summary}
+    <details class="passage" open>
+      <summary>📖 Đọc bài</summary>
+      <div class="lang" role="group" aria-label="Ngôn ngữ bài đọc">
+        <button type="button" data-l="en" class="${E.lang==='en'?'on':''}">English</button>
+        <button type="button" data-l="vi" class="${E.lang==='vi'?'on':''}">Bản dịch tiếng Việt</button>
+        <button type="button" id="tgvi" class="${E.showVi?'on':''}">Dịch câu hỏi: ${E.showVi?'Bật':'Tắt'}</button>
+      </div>
+      <div class="txt" id="ptxt">${passageHtml(L,null,E.lang)}</div>
+    </details>
+    ${qHtml}
+    <div class="xactions">
+      ${E.done
+        ? `<button class="btn" id="xretry">Làm lại bài kiểm tra</button><button class="btn ghost" id="xlearn">Học từng câu</button><button class="btn ghost" id="xhome">Về danh sách bài</button>`
+        : `<button class="btn" id="xsubmit" ${answered<6?'disabled':''}>${answered<6?`Nộp bài (còn ${6-answered} câu)`:'Nộp bài'}</button>`}
+    </div>
+  </div>`;
+
+  app.querySelectorAll('.exam .opt').forEach(b=>b.onclick=()=>{
+    if(E.done) return;
+    E.ans[+b.dataset.i] = b.dataset.v; renderExam(true);
+  });
+  app.querySelectorAll('.lang button[data-l]').forEach(b=>b.onclick=()=>{ E.lang=b.dataset.l; renderExam(true); });
+  $('#tgvi').onclick = () => { E.showVi=!E.showVi; renderExam(true); };
+  $('#xback').onclick = home;
+  if(E.done){
+    $('#xretry').onclick = () => exam(L.id);
+    $('#xlearn').onclick = () => start(L.id);
+    $('#xhome').onclick = home;
+  } else {
+    $('#xsubmit').onclick = () => {
+      E.done = true;
+      const sc = L.qs.filter((q,i)=>E.ans[i]===String(q.a)).length;
+      store.xp += sc*5; store.exam = store.exam||{}; store.exam[L.id] = Math.max(store.exam[L.id]||0, sc); save();
+      renderExam(); window.scrollTo(0,0);
+    };
+  }
+  if(keepScroll) window.scrollTo(0,y);
+}
+
+home();
+</script>
+
+</body></html>
