@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2B70F0">
+<title>Vượt Ải Anh 8</title>
+<style>
+:root{
+  --bg:#F4F7FC; --card:#FFFFFF; --ink:#1B2430; --muted:#66748A; --line:#DDE4EF; --line2:#C9D3E3;
+  --pri:#2B70F0; --pri-d:#1A55C2; --ok:#1FA45B; --ok-d:#15803F; --ok-bg:#E3F7EA; --bad:#E0434B; --bad-d:#B32A31; --bad-bg:#FDE7E8;
+  --gold:#FFB020; --gold-d:#D98A00; --sel:#E6EFFE; --sel-line:#8AB0F7; --lock:#C3CCDA; --shadow:0 2px 0 rgba(20,40,80,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1621; --card:#18222F; --ink:#E8EEF6; --muted:#93A1B5; --line:#2A3746; --line2:#364557;
+    --pri:#4D8BFF; --pri-d:#2F6AD8; --ok:#2BC46F; --ok-d:#1E9554; --ok-bg:#12301F; --bad:#FF5C63; --bad-d:#C93A41; --bad-bg:#3A1A1D;
+    --sel:#1C2E4D; --sel-line:#4D7BD0; --lock:#3A4656; --shadow:0 2px 0 rgba(0,0,0,.25);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1621; --card:#18222F; --ink:#E8EEF6; --muted:#93A1B5; --line:#2A3746; --line2:#364557;
+  --pri:#4D8BFF; --pri-d:#2F6AD8; --ok:#2BC46F; --ok-d:#1E9554; --ok-bg:#12301F; --bad:#FF5C63; --bad-d:#C93A41; --bad-bg:#3A1A1D;
+  --sel:#1C2E4D; --sel-line:#4D7BD0; --lock:#3A4656; --shadow:0 2px 0 rgba(0,0,0,.25);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;font-size:16px;line-height:1.45;min-height:100vh;overflow-x:hidden}
+button{font:inherit;color:inherit}
+.hidden{display:none!important}
+.wrap{max-width:640px;margin:0 auto;padding:0 16px}
+
+/* ---------- top bar ---------- */
+.topbar{position:sticky;top:0;z-index:20;background:var(--card);border-bottom:2px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:10px;height:58px}
+.brand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:18px;letter-spacing:-.2px;flex:1;min-width:0}
+.brand span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chip{display:flex;align-items:center;gap:4px;font-weight:800;font-size:15px;padding:6px 8px;border-radius:12px}
+.chip.fire{color:#F0761A}.chip.xp{color:var(--gold-d)}
+.iconbtn{background:none;border:0;padding:6px;border-radius:10px;cursor:pointer;font-size:20px;line-height:1;color:var(--muted)}
+.iconbtn:hover{background:var(--bg)}
+
+/* ---------- home ---------- */
+.hero{margin:16px 0;background:var(--card);border:2px solid var(--line);border-radius:18px;padding:16px;display:flex;gap:14px;align-items:center}
+.hero h1{font-size:18px;margin:0 0 4px}
+.hero p{margin:0;color:var(--muted);font-size:14px}
+.goalbar{height:12px;background:var(--line);border-radius:8px;overflow:hidden;margin-top:8px}
+.goalbar i{display:block;height:100%;background:var(--gold);border-radius:8px;transition:width .5s}
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}
+.qbtn{background:var(--card);border:2px solid var(--line);border-bottom-width:4px;border-radius:16px;padding:12px;text-align:left;cursor:pointer;display:flex;gap:10px;align-items:center}
+.qbtn:active{transform:translateY(2px);border-bottom-width:2px}
+.qbtn b{display:block;font-size:15px}.qbtn small{color:var(--muted);font-size:12.5px}
+.qbtn .em{font-size:26px}
+.qbtn[disabled]{opacity:.55;cursor:default}
+.section{margin:22px 0 8px}
+.sechead{border-radius:18px;padding:14px 16px;color:#fff;display:flex;align-items:center;gap:12px;box-shadow:inset 0 -4px 0 rgba(0,0,0,.15)}
+.sechead .sp{font-size:12.5px;opacity:.9;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.sechead h2{margin:2px 0 0;font-size:19px}
+.sechead .em{font-size:30px}
+.sechead .tipbtn{margin-left:auto;background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.45);color:#fff;border-radius:12px;padding:7px 10px;font-weight:800;font-size:13px;cursor:pointer;white-space:nowrap}
+.secprog{font-size:12.5px;opacity:.95;margin-top:2px}
+.path{position:relative;padding:14px 0 6px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.node{display:flex;flex-direction:column;align-items:center;gap:4px;width:150px}
+.node .circle{width:70px;height:64px;border-radius:50%;border:0;cursor:pointer;font-size:28px;display:flex;align-items:center;justify-content:center;color:#fff;position:relative;transition:transform .1s}
+.node .circle:active{transform:translateY(4px)}
+.node .lbl{font-size:13px;font-weight:700;text-align:center;color:var(--ink);line-height:1.25}
+.node.locked .circle{background:var(--lock)!important;box-shadow:0 6px 0 var(--line2)!important;cursor:pointer}
+.node.locked .lbl{color:var(--muted)}
+.node .stars{font-size:12px;letter-spacing:1px;color:var(--gold);min-height:14px}
+.node.current .circle::after{content:"";position:absolute;inset:-8px;border-radius:50%;border:4px solid currentColor;opacity:.35;animation:pulse 1.6s infinite}
+@keyframes pulse{0%{transform:scale(.95);opacity:.5}70%{transform:scale(1.1);opacity:0}100%{opacity:0}}
+.startTag{background:var(--card);border:2px solid var(--line);color:var(--pri);font-weight:800;font-size:12px;padding:3px 9px;border-radius:10px;text-transform:uppercase;animation:bob 1.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-3px)}}
+.foot{color:var(--muted);font-size:12.5px;text-align:center;padding:28px 0 40px}
+
+/* ---------- modal ---------- */
+.overlay{position:fixed;inset:0;background:rgba(10,20,35,.55);z-index:50;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--card);width:100%;max-width:640px;border-radius:22px 22px 0 0;padding:20px 16px calc(20px + env(safe-area-inset-bottom));max-height:86vh;overflow:auto;animation:up .22s ease-out}
+@media(min-width:700px){.overlay{align-items:center}.sheet{border-radius:22px}}
+@keyframes up{from{transform:translateY(40px);opacity:.3}}
+.sheet h3{margin:0 0 4px;font-size:20px}
+.sheet .sub{color:var(--muted);margin:0 0 12px;font-size:14px}
+.tipbox{font-size:15px}
+.tipbox h4{margin:12px 0 4px;font-size:15px;color:var(--pri)}
+.tipbox ul,.tipbox ol{padding-left:20px;margin:6px 0}
+.tipbox li{margin:4px 0}
+.tipbox p{margin:6px 0}
+
+/* ---------- buttons ---------- */
+.btn{display:block;width:100%;border:0;border-radius:16px;padding:14px 16px;font-weight:800;font-size:16px;letter-spacing:.3px;text-transform:uppercase;cursor:pointer;background:var(--pri);color:#fff;box-shadow:0 4px 0 var(--pri-d);transition:transform .05s}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--pri-d)}
+.btn.ok{background:var(--ok);box-shadow:0 4px 0 var(--ok-d)}
+.btn.bad{background:var(--bad);box-shadow:0 4px 0 var(--bad-d)}
+.btn.ghost{background:var(--card);color:var(--pri);border:2px solid var(--line);box-shadow:0 4px 0 var(--line)}
+.btn[disabled]{background:var(--line);color:var(--muted);box-shadow:0 4px 0 var(--line2);cursor:default}
+.row{display:flex;gap:10px}.row>*{flex:1}
+.mt{margin-top:10px}
+
+/* ---------- lesson ---------- */
+#lesson{min-height:100vh;display:flex;flex-direction:column}
+.lhead{position:sticky;top:0;background:var(--bg);z-index:10}
+.lhead .wrap{display:flex;align-items:center;gap:12px;height:60px}
+.pbar{flex:1;height:16px;background:var(--line);border-radius:10px;overflow:hidden}
+.pbar i{display:block;height:100%;background:var(--ok);border-radius:10px;transition:width .4s;box-shadow:inset 0 -4px 0 rgba(0,0,0,.08);position:relative}
+.hearts{font-weight:800;color:var(--bad);display:flex;align-items:center;gap:4px;font-size:17px}
+.lbody{flex:1;padding-bottom:230px}
+.instr{font-size:19px;font-weight:800;margin:10px 0 12px;line-height:1.3}
+.tag{display:inline-block;font-size:12px;font-weight:800;color:#fff;border-radius:8px;padding:2px 8px;margin-bottom:6px}
+.qtext{font-size:18px;margin:4px 0 16px;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:14px}
+.qtext .gap{display:inline-block;min-width:70px;border-bottom:2px solid var(--muted);margin:0 2px}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opts.grid{display:grid;grid-template-columns:1fr 1fr}
+.opt{background:var(--card);border:2px solid var(--line);border-bottom-width:4px;border-radius:14px;padding:13px 14px;text-align:left;cursor:pointer;font-size:17px;display:flex;align-items:center;gap:10px;min-height:54px}
+.opt .k{flex:none;width:28px;height:28px;border:2px solid var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--muted)}
+.opt.sel{background:var(--sel);border-color:var(--sel-line)}
+.opt.sel .k{border-color:var(--sel-line);color:var(--pri)}
+.opt.right{background:var(--ok-bg);border-color:var(--ok)}
+.opt.wrong{background:var(--bad-bg);border-color:var(--bad)}
+.opt[disabled]{cursor:default}
+.opt u{text-decoration-thickness:2px;text-underline-offset:3px;font-weight:800;color:var(--pri)}
+.opts.big .opt{justify-content:center;font-size:20px;font-weight:800}
+.passage{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:12px 14px;margin-bottom:14px;font-size:15.5px;max-height:42vh;overflow:auto;white-space:pre-line}
+.passage .blank{background:var(--line);border-radius:6px;padding:0 6px;font-weight:700;color:var(--muted)}
+.passage .blank.cur{background:var(--gold);color:#3a2600}
+.passage .blank.done{background:var(--ok-bg);color:var(--ok-d)}
+.ptools{display:flex;gap:8px;margin:-6px 0 12px;flex-wrap:wrap}
+.pill{border:2px solid var(--line);background:var(--card);border-radius:999px;padding:5px 12px;font-size:13px;font-weight:700;cursor:pointer;color:var(--pri)}
+.pill[disabled]{color:var(--muted);cursor:default;opacity:.7}
+.pvi{background:var(--sel);border-radius:14px;padding:12px 14px;margin-bottom:14px;font-size:14.5px;white-space:pre-line}
+.sign{margin:6px auto 16px;max-width:360px;border-radius:14px;padding:18px 16px;text-align:center;font-weight:800;border:5px solid;background:#fff;color:#1b1b1b;box-shadow:0 4px 0 rgba(0,0,0,.12)}
+.sign .ic{font-size:36px;display:block;margin-bottom:4px}
+.sign .l0{font-size:22px;letter-spacing:.5px}
+.sign .ln{font-size:16px;font-weight:700;margin-top:4px}
+.sign.ban{border-color:#D32F2F}.sign.ban .l0{color:#C62828}
+.sign.warn{border-color:#F2B600;background:#FFF8D6}
+.sign.must{border-color:#1565C0}.sign.must .l0{color:#0D47A1}
+.sign.info{border-color:#2E7D32}.sign.info .l0{color:#1B5E20}
+.inp{width:100%;font-size:19px;padding:14px;border-radius:14px;border:2px solid var(--line2);background:var(--card);color:var(--ink);outline:none}
+.inp:focus{border-color:var(--pri)}
+.inp.right{border-color:var(--ok);background:var(--ok-bg)}.inp.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.hint{margin-top:10px;font-size:14px;color:var(--muted)}
+.hint b{color:var(--ink)}
+.dict{background:var(--card);border:2px solid var(--line);border-left:6px solid #5B6B7F;border-radius:14px;padding:12px 14px;margin-bottom:14px;font-size:14.5px}
+.dict .hw{font-size:19px;font-weight:800}
+.dict .ipa{color:var(--muted);margin-left:6px}
+.dict .pos{font-style:italic;color:var(--muted)}
+.dict ul{margin:4px 0 6px;padding-left:18px}
+.dict .g{color:var(--pri);font-weight:700}
+/* order */
+.orig{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:12px 14px;margin-bottom:14px;font-size:17px}
+.orig small{display:block;color:var(--muted);font-size:12.5px;font-weight:700;text-transform:uppercase;margin-bottom:2px}
+.ansline{min-height:110px;border-top:2px solid var(--line);border-bottom:2px solid var(--line);padding:10px 0;display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start;background:repeating-linear-gradient(to bottom,transparent 0,transparent 52px,var(--line) 52px,var(--line) 54px)}
+.bank{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:18px}
+.tile{background:var(--card);border:2px solid var(--line);border-bottom-width:4px;border-radius:12px;padding:8px 12px;font-size:17px;cursor:pointer;min-height:44px}
+.tile.fixed{background:var(--sel);border-color:var(--sel-line);cursor:default;font-weight:700}
+.tile.used{visibility:hidden}
+.ansline.right .tile{border-color:var(--ok)}.ansline.wrong .tile:not(.fixed){border-color:var(--bad)}
+/* match */
+.match{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.match .col{display:flex;flex-direction:column;gap:10px}
+.mt-i{background:var(--card);border:2px solid var(--line);border-bottom-width:4px;border-radius:14px;padding:10px;min-height:60px;cursor:pointer;font-size:15.5px;text-align:center;display:flex;align-items:center;justify-content:center}
+.mt-i.sel{background:var(--sel);border-color:var(--sel-line)}
+.mt-i.ok{background:var(--ok-bg);border-color:var(--ok);opacity:.55;cursor:default}
+.mt-i.no{background:var(--bad-bg);border-color:var(--bad);animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+/* footer feedback */
+.lfoot{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:2px solid var(--line);z-index:15;padding:14px 0 calc(14px + env(safe-area-inset-bottom))}
+.lfoot.ok{background:var(--ok-bg);border-top-color:transparent}
+.lfoot.bad{background:var(--bad-bg);border-top-color:transparent}
+.fb{max-height:52vh;overflow:auto;margin-bottom:12px}
+.fb h3{margin:0 0 6px;font-size:21px;display:flex;align-items:center;gap:8px}
+.lfoot.ok .fb h3{color:var(--ok-d)}.lfoot.bad .fb h3{color:var(--bad-d)}
+.fb .ans{font-weight:700;margin-bottom:8px}
+.fb .box{background:var(--card);border-radius:12px;padding:10px 12px;margin-top:8px;font-size:15px}
+.fb .box b.t{display:block;font-size:12.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-bottom:2px}
+.spk{border:2px solid var(--line);background:var(--card);border-radius:10px;padding:3px 9px;font-size:14px;cursor:pointer;margin-left:auto;font-weight:700;color:var(--pri)}
+/* result */
+#result{min-height:100vh;display:flex;flex-direction:column;justify-content:center;text-align:center;padding:24px 0}
+#result h1{font-size:28px;margin:10px 0 4px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.stat{border:2px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card)}
+.stat b{display:block;font-size:12px;color:#fff;padding:4px;text-transform:uppercase}
+.stat span{display:block;font-size:22px;font-weight:800;padding:10px 4px}
+.bigstars{font-size:44px;letter-spacing:6px}
+.bigstars .off{filter:grayscale(1);opacity:.3}
+.reviewlist{text-align:left;margin-top:10px}
+.reviewlist details{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;font-size:14.5px}
+.reviewlist summary{cursor:pointer;font-weight:700}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-weight:700;z-index:99;font-size:14px;max-width:90vw;text-align:center}
+.confetti{position:fixed;top:-10px;width:10px;height:14px;z-index:5;animation:fall linear forwards;border-radius:2px}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg)}}
+.mascot{flex:none}
+@media (max-width:380px){.opts.grid{grid-template-columns:1fr}.quick{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- ============ HOME ============ -->
+<div id="home">
+  <div class="topbar"><div class="wrap">
+    <div class="brand"><svg class="mascot" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="12" width="52" height="46" rx="18" fill="#2B70F0"/><rect x="6" y="12" width="52" height="40" rx="18" fill="#4D8BFF"/><circle cx="24" cy="32" r="8" fill="#fff"/><circle cx="40" cy="32" r="8" fill="#fff"/><circle cx="25.5" cy="33" r="4" fill="#1B2430"/><circle cx="41.5" cy="33" r="4" fill="#1B2430"/><path d="M26 44 q6 5 12 0" stroke="#1B2430" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M14 12 L32 4 L50 12 L32 19 Z" fill="#1B2430"/><path d="M48 12 v9" stroke="#FFB020" stroke-width="3" stroke-linecap="round"/><circle cx="48" cy="22" r="3" fill="#FFB020"/></svg><span>Vượt Ải Anh 8</span></div>
+    <div class="chip fire" title="Chuỗi ngày học">🔥 <span id="hStreak">0</span></div>
+    <div class="chip xp" title="Tổng điểm kinh nghiệm">⭐ <span id="hXp">0</span></div>
+    <button class="iconbtn" id="btnMenu" aria-label="Cài đặt">⚙️</button>
+  </div></div>
+  <div class="wrap">
+    <div class="hero">
+      <svg class="mascot" width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="12" width="52" height="46" rx="18" fill="#2B70F0"/><rect x="6" y="12" width="52" height="40" rx="18" fill="#4D8BFF"/><circle cx="24" cy="32" r="8" fill="#fff"/><circle cx="40" cy="32" r="8" fill="#fff"/><circle cx="25.5" cy="33" r="4" fill="#1B2430"/><circle cx="41.5" cy="33" r="4" fill="#1B2430"/><path d="M26 44 q6 5 12 0" stroke="#1B2430" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M14 12 L32 4 L50 12 L32 19 Z" fill="#1B2430"/><path d="M48 12 v9" stroke="#FFB020" stroke-width="3" stroke-linecap="round"/><circle cx="48" cy="22" r="3" fill="#FFB020"/></svg>
+      <div style="flex:1;min-width:0">
+        <h1 id="greet">Ôn thi cuối HK1 – Tiếng Anh 8</h1>
+        <p id="goalTxt">Mục tiêu hôm nay: 0 / 50 XP</p>
+        <div class="goalbar"><i id="goalBar" style="width:0%"></i></div>
+      </div>
+    </div>
+    <div class="quick">
+      <button class="qbtn" id="btnReview"><span class="em">🩹</span><span><b>Ôn câu sai</b><small id="wrongCnt">Chưa có câu sai</small></span></button>
+      <button class="qbtn" id="btnMix"><span class="em">🏆</span><span><b>Thử thách tổng hợp</b><small>15 câu ngẫu nhiên mọi phần</small></span></button>
+    </div>
+    <div id="sections"></div>
+    <div class="foot">Nội dung theo Đề cương ôn tập cuối HK1 Tiếng Anh 8 (2026–2027) · Ma trận 40 câu · Chơi được không cần mạng<br>Tiến độ được lưu trên chính thiết bị này.</div>
+  </div>
+</div>
+
+<!-- ============ LESSON ============ -->
+<div id="lesson" class="hidden">
+  <div class="lhead"><div class="wrap">
+    <button class="iconbtn" id="btnQuit" aria-label="Thoát" style="font-size:24px">✕</button>
+    <div class="pbar"><i id="pbar" style="width:0%"></i></div>
+    <div class="hearts">❤️ <span id="hearts">5</span></div>
+  </div></div>
+  <div class="lbody"><div class="wrap" id="qArea"></div></div>
+  <div class="lfoot" id="lfoot"><div class="wrap">
+    <div class="fb hidden" id="fb"></div>
+    <button class="btn" id="btnCheck" disabled>Kiểm tra</button>
+  </div></div>
+</div>
+
+<!-- ============ RESULT ============ -->
+<div id="result" class="hidden"><div class="wrap" id="resArea"></div></div>
+
+<div id="modal" class="overlay hidden"><div class="sheet" id="sheet"></div></div>
+
+<script>
+/* ===== DỮ LIỆU CÂU HỎI – theo Đề cương ôn tập cuối HK1 Anh 8 (2026–2027) ===== */
+const P=(o,a,ex,vi)=>({t:'mcq',kind:'pron',o:o.split('|'),a,ex,vi});
+const S=(o,a,ex,vi)=>({t:'mcq',kind:'stress',o:o.split('|'),a,ex,vi});
+const C=(q,o,a,ex,vi)=>({t:'mcq',q,o:o.split('|'),a,ex,vi});
+const TF=(q,a,ex,vi)=>({t:'mcq',kind:'tf',q,o:['True','False'],a:a?0:1,fixed:true,ex,vi});
+const SG=(lines,k,o,a,ex,vi)=>({t:'mcq',kind:'sign',sign:{lines:lines.split('|'),k},q:'What does the sign / notice say?',o:o.split('|'),a,ex,vi});
+const I=(q,a,h,ex,vi,e)=>({t:'input',q,a:a.split('|'),h,ex,vi,e});
+const O=(q,s,ans,d,ex,vi,alts)=>({t:'order',q,s,ans,d:d.split('|'),ex,vi,alts:alts?alts.split('|'):[]});
+const MT=(p)=>({t:'match',pairs:p.split(';').map(x=>x.split('='))});
+
+const DICT={
+hobby:{w:'hobby',ipa:'/ˈhɒbi/',pos:'noun (plural hobbies)',defs:[{g:'[countable]',d:'an activity that you do for pleasure when you are not working',ex:['Her hobbies include reading and swimming.','He took up painting as a hobby.','Collecting stamps is a popular hobby for children.']}]},
+harvest:{w:'harvest',ipa:'/ˈhɑːvɪst/',pos:'noun',defs:[{g:'1 [countable, uncountable]',d:'the time of year when crops are cut and collected',ex:['Farmers are very busy at harvest time.','Villagers often help each other during the rice harvest.']},{g:'2 [countable]',d:'the amount of crops that is collected',ex:['We had a good harvest this year.','A bad harvest can make farmers poor.']}]},
+peer:{w:'peer',ipa:'/pɪə(r)/',pos:'noun',defs:[{g:'[countable, usually plural]',d:'a person who is the same age or has the same social position as you',ex:['She is popular with her peers.','Teenagers often feel peer pressure to look cool.','Children learn a lot from their peers.']}]},
+festival:{w:'festival',ipa:'/ˈfestɪvl/',pos:'noun',defs:[{g:'',d:'a day or period when people celebrate a special event, often a religious or traditional one',ex:['Tet is the most important traditional festival in Viet Nam.','The Hung King Temple Festival is held every spring.','Thousands of festival-goers came to watch the lion dances.']}]},
+ethnic:{w:'ethnic',ipa:'/ˈeθnɪk/',pos:'adjective',defs:[{g:'',d:'connected with or belonging to a group of people who share the same culture, traditions, language, etc.',ex:['Viet Nam has 54 ethnic groups.','The museum shows the costumes of ethnic minorities.','She loves listening to ethnic music.']}]},
+reunion:{w:'reunion',ipa:'/riːˈjuːniən/',pos:'noun',defs:[{g:'[countable, uncountable]',d:'a social occasion when people who have not seen each other for a long time meet again',ex:['We hold a family reunion every Tet.','Our class had a reunion ten years after we left school.','It was an emotional reunion with her old friends.']}]}
+};
+
+const SECTIONS=[
+/* ---------------- 1. PHÁT ÂM ---------------- */
+{id:'pron',part:'Phần I · Câu 1–2',title:'Phát âm',icon:'🔊',color:'#2B70F0',
+instr:'Chọn từ có phần gạch chân phát âm khác với ba từ còn lại',
+tip:`<h4>Đuôi -ed</h4><ul><li><b>/ɪd/</b>: động từ tận cùng âm /t/, /d/ → wanted, needed, harvested</li><li><b>/t/</b>: âm vô thanh /p/ /k/ /f/ /s/ /ʃ/ /tʃ/ /θ/ → hoped, worked, laughed, missed, washed, watched. Thần chú: <i>"Khi Sang Sông Phải Chờ Thu Phí"</i></li><li><b>/d/</b>: các trường hợp còn lại → played, lived, raised, ploughed</li></ul><p>Bẫy: <b>laughed</b> /t/ (gh = /f/), <b>ploughed</b> /d/ (gh câm), <b>raised</b> /d/ nhưng <b>released</b> /t/.</p><h4>/uː/ và /ʊ/</h4><p>"oo" thường đọc /uː/ (food, school, bamboo) nhưng <b>oo + k</b> và good, wood, foot, stood đọc /ʊ/. would/could/should /ʊ/.</p><h4>/k/ và /g/</h4><p>c + e, i, y → /s/ (ceremony, city). ch thường /tʃ/ (chase) nhưng school, character, technology /k/. g + e, i, y thường /dʒ/ (village, generation). Âm câm: <b>k</b>nit, si<b>g</b>n.</p>`,
+lessons:[
+{title:'Đuôi -ed',qs:[
+P('work[ed]|watch[ed]|need[ed]|walk[ed]',2,'<b>needed</b> đọc /ɪd/ vì động từ <i>need</i> tận cùng bằng âm /d/. Ba từ còn lại đọc /t/: work<b>ed</b>, walk<b>ed</b> (âm cuối /k/), watch<b>ed</b> (âm cuối /tʃ/).','worked: đã làm việc · watched: đã xem · needed: đã cần · walked: đã đi bộ'),
+P('decid[ed]|play[ed]|clean[ed]|liv[ed]',0,'<b>decided</b> đọc /ɪd/ vì <i>decide</i> tận cùng âm /d/. played, cleaned, lived đọc /d/ (âm cuối /eɪ/, /n/, /v/ là âm hữu thanh).','decided: đã quyết định · played: đã chơi · cleaned: đã dọn dẹp · lived: đã sống'),
+P('laugh[ed]|relax[ed]|harvest[ed]|danc[ed]',2,'<b>harvested</b> đọc /ɪd/ vì <i>harvest</i> tận cùng âm /t/. laughed (gh đọc /f/), relaxed (x đọc /ks/), danced (ce đọc /s/) đều là âm vô thanh nên đọc /t/.','laughed: đã cười · relaxed: đã thư giãn · harvested: đã thu hoạch · danced: đã nhảy múa'),
+P('plough[ed]|knitt[ed]|cultivat[ed]|collect[ed]',0,'<b>ploughed</b> /plaʊd/ đọc /d/: chữ gh câm, âm cuối là nguyên âm /aʊ/. knitted, cultivated, collected tận cùng âm /t/ nên đọc /ɪd/.','ploughed: đã cày (ruộng) · knitted: đã đan · cultivated: đã trồng trọt · collected: đã sưu tầm'),
+P('releas[ed]|promis[ed]|chas[ed]|rais[ed]',3,'<b>raised</b> /reɪzd/ đọc /d/ vì chữ s ở đây đọc /z/ (âm hữu thanh). released, promised, chased có s đọc /s/ (vô thanh) nên đuôi -ed đọc /t/.','released: đã thả · promised: đã hứa · chased: đã đuổi · raised: đã nuôi; đã nâng lên'),
+P('decorat[ed]|celebrat[ed]|worshipp[ed]|invit[ed]',2,'<b>worshipped</b> đọc /t/ vì âm cuối là /p/. decorated, celebrated, invited tận cùng âm /t/ nên đọc /ɪd/.','decorated: đã trang trí · celebrated: đã tổ chức mừng · worshipped: đã thờ cúng · invited: đã mời'),
+P('visit[ed]|wash[ed]|need[ed]|connect[ed]',1,'<b>washed</b> đọc /t/ vì âm cuối là /ʃ/ (sh). visited, needed, connected tận cùng /t/ hoặc /d/ nên đọc /ɪd/. <i>(Câu 1 – Đề ôn tập tham khảo)</i>','visited: đã thăm · washed: đã giặt, rửa · needed: đã cần · connected: đã kết nối'),
+P('preferr[ed]|pray[ed]|fix[ed]|enjoy[ed]',2,'<b>fixed</b> đọc /t/ vì chữ x đọc /ks/, âm cuối /s/ là âm vô thanh. preferred, prayed, enjoyed có âm cuối hữu thanh (/ɜː/, /eɪ/, /ɔɪ/) nên đọc /d/.','preferred: đã thích hơn · prayed: đã cầu nguyện · fixed: đã sửa · enjoyed: đã thích thú')
+]},
+{title:'Âm /uː/ – /ʊ/',qs:[
+P('f[oo]d|g[oo]d|sch[oo]l|m[oo]n',1,'<b>good</b> /ɡʊd/ đọc /ʊ/ (u ngắn) – một trong những từ "oo" đặc biệt cần nhớ (good, wood, foot, stood). food, school, moon đọc /uː/ (u dài).','food: thức ăn · good: tốt · school: trường học · moon: mặt trăng'),
+P('b[oo]k|l[oo]k|c[oo]k|bamb[oo]',3,'<b>bamboo</b> /bæmˈbuː/ đọc /uː/. book, look, cook có "oo" đứng trước k nên đọc /ʊ/.','book: quyển sách · look: nhìn · cook: nấu ăn · bamboo: cây tre'),
+P('p[u]sh|p[u]t|fl[u]te|b[u]lly',2,'<b>flute</b> /fluːt/ đọc /uː/ (dạng u_e). push, put, bully đọc /ʊ/ (u đứng sau p, b).','push: đẩy · put: đặt · flute: cây sáo · bully: bắt nạt'),
+P('w[ou]ld|gr[ou]p|s[ou]p|y[ou]',0,'<b>would</b> /wʊd/ đọc /ʊ/ (giống could, should). group, soup, you đọc /uː/.','would: sẽ (quá khứ của will) · group: nhóm · soup: món súp · you: bạn'),
+P('f[oo]t|f[oo]d|t[oo]l|r[u]le',0,'<b>foot</b> /fʊt/ đọc /ʊ/. food, tool, rule đọc /uː/. <i>(Câu 2 – Đề ôn tập tham khảo)</i>','foot: bàn chân · food: thức ăn · tool: dụng cụ · rule: quy tắc'),
+P('c[u]shion|p[u]dding|s[u]gar|j[ui]ce',3,'<b>juice</b> /dʒuːs/ đọc /uː/. cushion /ˈkʊʃn/, pudding /ˈpʊdɪŋ/, sugar /ˈʃʊɡə/ đều đọc /ʊ/.','cushion: cái đệm · pudding: bánh pudding · sugar: đường · juice: nước ép'),
+P('st[oo]d|w[oo]d|igl[oo]|f[oo]t',2,'<b>igloo</b> /ˈɪɡluː/ đọc /uː/. stood, wood, foot là các từ "oo" đặc biệt đọc /ʊ/.','stood: đã đứng · wood: gỗ · igloo: lều tuyết · foot: bàn chân')
+]},
+{title:'Âm /k/ – /g/',qs:[
+P('[c]ulture|[c]eremony|[c]ustom|[c]rop',1,'<b>ceremony</b> /ˈserəməni/: chữ c đứng trước e nên đọc /s/. culture, custom, crop có c đứng trước u, r nên đọc /k/.','culture: văn hóa · ceremony: nghi lễ · custom: phong tục · crop: vụ mùa, cây trồng'),
+P('s[ch]ool|[ch]ase|[ch]aracter|te[ch]nology',1,'<b>chase</b> /tʃeɪs/: ch đọc /tʃ/ như thông thường. school, character, technology là từ gốc Hy Lạp, ch đọc /k/.','school: trường học · chase: đuổi theo · character: nhân vật; tính cách · technology: công nghệ'),
+P('[k]nit|[k]ite|[k]een|[k]ind',0,'<b>knit</b> /nɪt/: chữ k đứng trước n là <b>k câm</b> (giống know, knife, knee). kite, keen, kind đọc /k/.','knit: đan (len) · kite: cái diều · keen: say mê · kind: tốt bụng; loại'),
+P('[g]ong|[g]ather|villa[g]e|[g]roup',2,'<b>village</b> /ˈvɪlɪdʒ/: g + e đọc /dʒ/. gong, gather, group có g đứng trước o, a, r nên đọc /g/.','gong: cái cồng, chiêng · gather: tụ họp · village: ngôi làng · group: nhóm'),
+P('[g]ift|[g]et|[g]ive|[g]eneration',3,'<b>generation</b> /ˌdʒenəˈreɪʃn/: g + e đọc /dʒ/. Chú ý gift, get, give là ngoại lệ: dù g đứng trước i, e vẫn đọc /g/.','gift: món quà · get: nhận được · give: cho, tặng · generation: thế hệ'),
+P('si[g]n|[g]uest|[g]ood|[g]lad',0,'<b>sign</b> /saɪn/: chữ g câm (giống design, foreign). guest, good, glad đọc /g/.','sign: biển báo; kí tên · guest: khách · good: tốt · glad: vui mừng')
+]},
+{title:'Ghép từ hay gặp',qs:[
+MT('laughed=cười;ploughed=cày (ruộng);worshipped=thờ cúng;herded=chăn (gia súc);knitted=đan (len)'),
+MT('bamboo=cây tre;flute=cây sáo;costume=trang phục;statue=bức tượng;cushion=cái đệm'),
+MT('ceremony=nghi lễ;character=nhân vật; tính cách;technology=công nghệ;village=ngôi làng;gong=cái cồng, chiêng')
+]}
+]},
+/* ---------------- 2. TRỌNG ÂM ---------------- */
+{id:'stress',part:'Phần I · Câu 3–4',title:'Trọng âm',icon:'🎯',color:'#7A5AF0',
+instr:'Chọn từ có trọng âm chính khác với ba từ còn lại',
+tip:`<ol><li><b>Danh từ, tính từ 2 âm tiết</b> → thường nhấn âm 1: ˈleisure, ˈharvest, ˈcostume. Ngoại lệ: reˈsort, bamˈboo, maˈture, uˈnique.</li><li><b>Động từ 2 âm tiết</b> → thường nhấn âm 2: enˈjoy, reˈlax, unˈload, mainˈtain. Ngoại lệ: ˈvisit, ˈgather, ˈworship.</li><li><b>-tion, -sion, -ic, -ity, -ian, -logy</b> → nhấn ngay trước hậu tố: traˈdition, miˈnority.</li><li><b>-ee, -eer, -ese, -esque, -ique, -oo, -ain</b> → nhấn chính hậu tố: pictuˈresque, volunˈteer, enterˈtain.</li><li><b>-ful, -ment, -er, -ing, -al…</b> không đổi trọng âm từ gốc: deˈvelopment, enterˈtainment.</li><li>Từ 3 âm tiết trở lên tận cùng <b>-ate, -y</b> → nhấn âm thứ 3 từ cuối: ˈcultivate, ˈceremony.</li><li><b>Danh từ ghép</b> nhấn phần đầu: ˈlighthouse; <b>động từ ghép</b> nhấn phần sau: overˈlook.</li></ol>`,
+lessons:[
+{title:'Từ 2 âm tiết',qs:[
+S('leisure|puzzle|relax|balance',2,'<b>reˈlax</b> là động từ 2 âm tiết → nhấn âm 2. ˈleisure, ˈpuzzle, ˈbalance là danh từ 2 âm tiết → nhấn âm 1.','leisure: thời gian rảnh · puzzle: câu đố · relax: thư giãn · balance: sự cân bằng'),
+S('enjoy|prefer|detest|message',3,'<b>ˈmessage</b> là danh từ → nhấn âm 1. enˈjoy, preˈfer, deˈtest là động từ → nhấn âm 2.','enjoy: thích thú · prefer: thích hơn · detest: ghét · message: tin nhắn'),
+S('harvest|orchard|cattle|unload',3,'<b>unˈload</b> là động từ, tiền tố un- không nhận trọng âm → nhấn âm 2. ˈharvest, ˈorchard, ˈcattle là danh từ → nhấn âm 1.','harvest: vụ mùa · orchard: vườn cây ăn quả · cattle: gia súc · unload: dỡ hàng'),
+S('lighthouse|costume|unique|statue',2,'<b>uˈnique</b>: hậu tố -ique nhận trọng âm → nhấn âm 2. ˈlighthouse (danh từ ghép), ˈcostume, ˈstatue → nhấn âm 1.','lighthouse: ngọn hải đăng · costume: trang phục · unique: độc đáo · statue: bức tượng'),
+S('maintain|worship|custom|lantern',0,'<b>mainˈtain</b>: động từ, hậu tố -ain → nhấn âm 2. ˈworship (ngoại lệ), ˈcustom, ˈlantern → nhấn âm 1.','maintain: duy trì · worship: thờ cúng · custom: phong tục · lantern: đèn lồng'),
+S('peaceful|wooden|mature|ethnic',2,'<b>maˈture</b> là tính từ ngoại lệ → nhấn âm 2. ˈpeaceful (-ful không đổi trọng âm gốc ˈpeace), ˈwooden, ˈethnic → nhấn âm 1.','peaceful: yên bình · wooden: bằng gỗ · mature: trưởng thành · ethnic: thuộc dân tộc'),
+S('village|harvest|relax|costume',2,'<b>reˈlax</b> là động từ → nhấn âm 2. ˈvillage, ˈharvest, ˈcostume là danh từ → nhấn âm 1. <i>(Câu 3 – Đề ôn tập tham khảo)</i>','village: ngôi làng · harvest: vụ mùa · relax: thư giãn · costume: trang phục')
+]},
+{title:'Từ 3 âm tiết trở lên',qs:[
+S('tradition|decorate|collection|connected',1,'<b>ˈdecorate</b>: từ 3 âm tiết tận cùng -ate → nhấn âm 1. traˈdition, colˈlection (-tion nhấn âm ngay trước), conˈnected → nhấn âm 2.','tradition: truyền thống · decorate: trang trí · collection: bộ sưu tập · connected: được kết nối'),
+S('picturesque|Vietnamese|volunteer|festival',3,'<b>ˈfestival</b> → nhấn âm 1. pictuˈresque, Vietnaˈmese, volunˈteer có hậu tố -esque, -ese, -eer nhận trọng âm → nhấn âm 3.','picturesque: đẹp như tranh · Vietnamese: người/tiếng Việt · volunteer: tình nguyện viên · festival: lễ hội'),
+S('cultivate|concentrate|entertain|decorate',2,'<b>enterˈtain</b>: động từ tận cùng -ain → nhấn âm cuối (âm 3). ˈcultivate, ˈconcentrate, ˈdecorate (-ate) → nhấn âm 1.','cultivate: trồng trọt · concentrate: tập trung · entertain: giải trí · decorate: trang trí'),
+S('minority|ceremony|activity|traditional',1,'<b>ˈceremony</b> → nhấn âm 1. miˈnority, acˈtivity (-ity), traˈditional (-al giữ trọng âm của tradition) → nhấn âm 2.','minority: thiểu số · ceremony: nghi lễ · activity: hoạt động · traditional: truyền thống'),
+S('development|entertainment|environment|experience',1,'<b>enterˈtainment</b> → nhấn âm 3 (giữ trọng âm của entertain). deˈvelopment, enˈvironment, exˈperience → nhấn âm 2.','development: sự phát triển · entertainment: sự giải trí · environment: môi trường · experience: kinh nghiệm'),
+S('overlook|lighthouse|staircase|farmhouse',0,'<b>overˈlook</b> là động từ ghép → nhấn phần sau (âm 3). ˈlighthouse, ˈstaircase, ˈfarmhouse là danh từ ghép → nhấn âm 1.','overlook: nhìn ra · lighthouse: ngọn hải đăng · staircase: cầu thang · farmhouse: nhà ở trang trại'),
+S('tradition|important|decorate|collector',2,'<b>ˈdecorate</b> → nhấn âm 1. traˈdition, imˈportant, colˈlector → nhấn âm 2. <i>(Câu 4 – Đề ôn tập tham khảo)</i>','tradition: truyền thống · important: quan trọng · decorate: trang trí · collector: người sưu tầm')
+]},
+{title:'Ghép từ – trọng âm',qs:[
+MT('leisure=thời gian rảnh;relax=thư giãn;harvest=vụ mùa; thu hoạch;unload=dỡ hàng;picturesque=đẹp như tranh'),
+MT('unique=độc đáo;mature=trưởng thành;maintain=duy trì;entertain=giải trí;minority=dân tộc thiểu số'),
+MT('cultivate=trồng trọt;overlook=nhìn ra (hướng ra);worship=thờ cúng;tradition=truyền thống;resort=khu nghỉ dưỡng')
+]}
+]},
+/* ---------------- 3. TỪ VỰNG ---------------- */
+{id:'vocab',part:'Phần I · Câu 5–10',title:'Từ vựng Unit 1–5',icon:'📚',color:'#12A37F',
+instr:'Chọn đáp án đúng để hoàn thành câu',
+tip:`<p><b>Cách làm:</b> 4 đáp án là 4 từ khác nghĩa → câu từ vựng. Tìm <b>cụm từ cố định (collocation)</b> quanh chỗ trống: surf <u>the net</u>, herd <u>the cattle</u>, raise <u>livestock</u>, release <u>carps</u>, peer <u>pressure</u>…</p><p>Mẹo học: che cột nghĩa để tự kiểm tra, rồi che cột tiếng Anh để tự nhớ lại. Các bài "Ghép cặp" trong phần này giúp em làm đúng việc đó.</p>`,
+lessons:[
+{title:'Unit 1–2: Giải trí & Nông thôn',qs:[
+MT('do DIY=tự làm, tự sửa đồ;do puzzles=chơi giải đố, xếp hình;surf the net=lướt mạng;message friends=nhắn tin cho bạn bè;hang out with friends=đi chơi với bạn bè'),
+C('Teenagers often ______ the net to look for information for their projects.','knit|message|surf|fold',2,'<b>surf the net</b> = lướt mạng. Các từ khác: knit (đan), message (nhắn tin), fold (gấp) không đi với "the net".','Thanh thiếu niên thường lướt mạng để tìm thông tin cho các dự án của mình.'),
+C('In the countryside, boys often ______ the buffaloes to the fields after school.','load|herd|dry|milk',1,'<b>herd the buffaloes</b> = chăn trâu, lùa trâu. load: chất hàng; dry: phơi khô; milk: vắt sữa.','Ở nông thôn, các bạn nam thường lùa trâu ra đồng sau giờ học.'),
+MT('herd the cattle=chăn gia súc;milk the cows=vắt sữa bò;pick fruit=hái quả;dry the rice=phơi lúa;plough the field=cày ruộng'),
+C('At harvest time, farmers use a ______ to cut and collect rice quickly.','lighthouse|combine harvester|paddy field|ferry',1,'<b>combine harvester</b> = máy gặt đập liên hợp (vừa cắt vừa thu gom lúa). lighthouse: hải đăng; paddy field: cánh đồng lúa; ferry: phà.','Vào mùa gặt, nông dân dùng máy gặt đập liên hợp để cắt và thu gom lúa nhanh chóng.'),
+C('My village is very ______ with green rice fields, a winding river and old bamboo trees.','hospitable|well-trained|noisy|picturesque',3,'<b>picturesque</b> = đẹp như tranh, dùng để tả cảnh vật. hospitable (hiếu khách) và well-trained (lành nghề) dùng cho người; noisy (ồn ào) trái nghĩa với cảnh được tả.','Làng tôi rất đẹp như tranh với những cánh đồng lúa xanh, dòng sông uốn khúc và những bụi tre già.'),
+C('In the countryside, children often fly ______ in the open fields.','kites|cattle|crops|ferries',0,'<b>fly kites</b> = thả diều. cattle: gia súc; crops: cây trồng; ferries: phà. <i>(Câu 5 – Đề ôn tập tham khảo)</i>','Ở nông thôn, trẻ em thường thả diều trên những cánh đồng rộng.'),
+MT('knitting kit=bộ dụng cụ đan len;muscle strength=sức mạnh cơ bắp;be hooked on=nghiện, mê;pastime=thú tiêu khiển;have sth in common=có điểm chung'),
+MT('paddy field=cánh đồng lúa;orchard=vườn cây ăn quả;combine harvester=máy gặt đập liên hợp;hospitable=hiếu khách;vast=rộng lớn, bao la')
+]},
+{title:'Unit 3: Tuổi teen',qs:[
+MT('log on to=đăng nhập vào;upload photos=tải ảnh lên;browse websites=lướt các trang web;online forum=diễn đàn trực tuyến;peer pressure=áp lực từ bạn bè đồng trang lứa'),
+C('Many students feel stressed because of ______ pressure – they want to be like their friends.','media|forum|peer|account',2,'<b>peer pressure</b> = áp lực từ bạn bè đồng trang lứa (muốn giống bạn bè). media: truyền thông; forum: diễn đàn; account: tài khoản.','Nhiều học sinh cảm thấy căng thẳng vì áp lực đồng trang lứa – các em muốn giống bạn bè mình.'),
+C('You need a password to log ______ to your school account.','at|on|for|with',1,'<b>log on to</b> = đăng nhập vào (tài khoản, trang web).','Bạn cần mật khẩu để đăng nhập vào tài khoản của trường.'),
+C('Ba can\'t ______ on his homework because his phone keeps showing notifications.','upload|browse|connect|concentrate',3,'<b>concentrate on</b> = tập trung vào. upload: tải lên; browse: lướt xem; connect: kết nối (connect with).','Ba không thể tập trung làm bài tập về nhà vì điện thoại liên tục hiện thông báo.'),
+C('Teenagers who spend too much time on social media may become ______ to it.','keen|fond|addicted|interested',2,'<b>become addicted to</b> = trở nên nghiện. Các từ khác đi với giới từ khác: keen <u>on</u>, fond <u>of</u>, interested <u>in</u> – không đi với "to". <i>(Câu 6 – Đề tham khảo)</i>','Những thanh thiếu niên dành quá nhiều thời gian cho mạng xã hội có thể bị nghiện nó.'),
+C('Lan is under a lot of ______ because she has three tests next week.','pressure|forum|notification|session',0,'<b>be under (a lot of) pressure</b> = chịu (nhiều) áp lực. forum: diễn đàn; notification: thông báo; session: buổi, phiên. <i>(Câu 10 – Đề tham khảo)</i>','Lan đang chịu nhiều áp lực vì tuần tới bạn ấy có ba bài kiểm tra.'),
+MT('cyberbullying=bắt nạt trên mạng;concentrate on=tập trung vào;midterm test=bài kiểm tra giữa kì;mature=trưởng thành, chín chắn;stressful=gây căng thẳng')
+]},
+{title:'Unit 4: Các dân tộc Việt Nam',qs:[
+MT('ethnic minority=dân tộc thiểu số;stilt house=nhà sàn;communal house=nhà rông (nhà cộng đồng);terraced fields=ruộng bậc thang;folk dance=điệu múa dân gian'),
+C('The Ede people live in long ______ houses made of wood and bamboo.','stilt|terraced|flute|gong',0,'<b>stilt house</b> = nhà sàn. terraced đi với fields (ruộng bậc thang); flute: sáo; gong: cồng chiêng.','Người Ê Đê sống trong những ngôi nhà sàn dài làm bằng gỗ và tre.'),
+C('Ethnic minority people in the mountains often ______ livestock such as goats, pigs and chickens.','grow|raise|weave|overlook',1,'<b>raise livestock</b> = chăn nuôi gia súc. grow: trồng (cây); weave: dệt; overlook: nhìn ra.','Người dân tộc thiểu số ở vùng núi thường chăn nuôi gia súc như dê, lợn và gà.'),
+C('Viet Nam has 54 ______ groups living throughout the country.','folk|ethnic|minority|communal',1,'<b>ethnic groups</b> = các dân tộc. folk: dân gian; minority: thiểu số; communal: thuộc cộng đồng. <i>(Câu 7 – Đề tham khảo)</i>','Việt Nam có 54 dân tộc sinh sống trên khắp cả nước.'),
+C('The Hmong people grow rice on ______ fields on the mountainsides.','terraced|stilt|communal|open-air',0,'<b>terraced fields</b> = ruộng bậc thang, làm trên sườn núi. stilt đi với house; communal đi với house; open-air đi với market.','Người Hmông trồng lúa trên ruộng bậc thang ở sườn núi.'),
+C('Many tourists visit the ______ market in Bac Ha to buy brocade bags.','open-air|communal|folk|terraced',0,'<b>open-air market</b> = chợ ngoài trời, chợ phiên (như chợ phiên Bắc Hà).','Nhiều du khách đến chợ phiên Bắc Hà để mua túi thổ cẩm.'),
+MT('raise livestock=chăn nuôi gia súc;weave cloth=dệt vải;heritage site=khu di sản;open-air market=chợ ngoài trời, chợ phiên;highland=vùng cao, cao nguyên')
+]},
+{title:'Unit 5: Phong tục & Lễ hội',qs:[
+MT('release carps=thả cá chép;chase away bad spirits=xua đuổi tà ma;lion dance=múa lân;family reunion=sự đoàn tụ gia đình;table manners=phép tắc khi ăn uống'),
+C('On the first day of Tet, children wish their grandparents good health and ______.','bad luck|offering|longevity|monk',2,'<b>longevity</b> = sự trường thọ, sống lâu – lời chúc dành cho ông bà. bad luck: xui xẻo; offering: lễ vật; monk: nhà sư.','Vào mùng một Tết, trẻ em chúc ông bà mạnh khỏe và sống lâu.'),
+C('On the 23rd day of the last lunar month, people ______ carps to send the Kitchen Gods to Heaven.','chase|release|hang|admire',1,'<b>release carps</b> = thả cá chép (ngày 23 tháng Chạp, tiễn Ông Công Ông Táo). chase: đuổi; hang: treo; admire: ngắm.','Vào ngày 23 tháng Chạp, người ta thả cá chép để tiễn Ông Công Ông Táo về trời.'),
+C('People believe that the lion dance can ______ bad spirits.','take place|look after|take off|chase away',3,'<b>chase away bad spirits</b> = xua đuổi tà ma. take place: diễn ra; look after: chăm sóc; take off: cởi ra, cất cánh.','Người ta tin rằng múa lân có thể xua đuổi tà ma.'),
+C('Tet is a time for family ______; people return home from everywhere.','reunion|manner|ceremony|decoration',0,'<b>family reunion</b> = sự đoàn tụ gia đình. manner: cách thức; ceremony: nghi lễ; decoration: đồ trang trí.','Tết là dịp đoàn tụ gia đình; mọi người từ khắp nơi trở về nhà.'),
+C('People hang red ______ in front of their houses during the Mid-Autumn Festival.','carps|monks|offerings|lanterns',3,'<b>hang lanterns</b> = treo đèn lồng. carps: cá chép; monks: nhà sư; offerings: lễ vật. <i>(Câu 8 – Đề tham khảo)</i>','Mọi người treo đèn lồng đỏ trước nhà trong dịp Tết Trung thu.'),
+C('On the 23rd day of the twelfth lunar month, people ______ carps into rivers and lakes.','pray|release|admire|place',1,'<b>release carps</b> = thả cá chép. pray: cầu nguyện; admire: ngắm nhìn; place: đặt. <i>(Câu 9 – Đề tham khảo)</i>','Vào ngày 23 tháng Chạp, người ta thả cá chép xuống sông, hồ.'),
+MT('worship ancestors=thờ cúng tổ tiên;take place=diễn ra;peach blossoms=hoa đào;lucky money=tiền lì xì;offering=lễ vật')
+]}
+]},
+/* ---------------- 4. NGỮ PHÁP ---------------- */
+{id:'gram',part:'Phần I · Câu 11',title:'Ngữ pháp',icon:'🧩',color:'#E07A1F',
+instr:'Chọn đáp án đúng để hoàn thành câu',
+tip:`<ul><li><b>enjoy / fancy / adore / detest / dislike / don't mind + V-ing</b>; like / love / hate / prefer + V-ing hoặc to V; would like + to V.</li><li><b>So sánh hơn trạng từ</b>: trạng từ ngắn + -er (harder, faster); trạng từ dài: more + adv (more carefully). Bất quy tắc: well → better, badly → worse.</li><li><b>Câu hỏi</b>: What (cái gì), Where (ở đâu), How far (bao xa), How often (bao lâu một lần), How many + N đếm được, How much + N không đếm được.</li><li><b>Lượng từ</b>: many / a few + N đếm được số nhiều; much / a little + N không đếm được.</li><li><b>Mạo từ</b>: a + phụ âm, an + nguyên âm (theo cách đọc); the + sông, biển, vật duy nhất, so sánh nhất.</li><li><b>If loại 1</b>: If + S + V(s/es), S + will + V.</li></ul>`,
+lessons:[
+{title:'Sở thích & so sánh trạng từ',qs:[
+C('In her free time, Mai likes ______ DIY projects like making paper flowers.','doing|do|to doing|does',0,'<b>like + V-ing</b> (hoặc like + to V). "to doing" sai cấu trúc; do / does không đứng ngay sau like.','Vào thời gian rảnh, Mai thích làm các món đồ tự làm (DIY) như làm hoa giấy.'),
+C('My grandfather doesn\'t mind ______ up early to water the plants.','get|to get|getting|got',2,'<b>don\'t / doesn\'t mind + V-ing</b> = không ngại làm gì.','Ông tôi không ngại dậy sớm để tưới cây.'),
+C('My little brother enjoys ______ with Lego bricks.','play|to play|playing|plays',2,'<b>enjoy + V-ing</b> = thích làm gì. Không dùng enjoy + to V. <i>(Câu 11 – Đề tham khảo)</i>','Em trai tôi thích chơi với những viên gạch Lego.'),
+C('Lan studies ______ than her brother, so she always gets better marks.','hard|harder|more hard|more hardly',1,'Có <b>than</b> → so sánh hơn. <i>hard</i> là trạng từ ngắn → <b>harder</b>. Chú ý: hardly nghĩa là "hầu như không", không phải trạng từ của hard.','Lan học chăm chỉ hơn anh trai, vì vậy bạn ấy luôn được điểm cao hơn.'),
+C('City people seem to live ______ than people in the countryside.','more busily|busier|more busy|busily',0,'Cần <b>trạng từ</b> bổ nghĩa cho động từ <i>live</i>: busily là trạng từ dài (đuôi -ly) → <b>more busily</b> than. busier / more busy là tính từ.','Người thành phố dường như sống bận rộn hơn người ở nông thôn.'),
+C('Nam speaks English ______ than any other student in my class.','good|well|better|more well',2,'Có <b>than</b> → so sánh hơn. Trạng từ well (giỏi) có dạng so sánh bất quy tắc <b>better</b>. good là tính từ; "more well" sai.','Nam nói tiếng Anh giỏi hơn bất kì học sinh nào khác trong lớp tôi.')
+]},
+{title:'Câu hỏi, lượng từ, mạo từ',qs:[
+C('______ do the Hmong people usually wear on special occasions? – Colourful costumes.','What|Where|Who|Why',0,'Câu trả lời là một vật (trang phục) → hỏi bằng <b>What</b> (cái gì).','Người Hmông thường mặc gì vào những dịp đặc biệt? – Những bộ trang phục sặc sỡ.'),
+C('______ is it from Ha Noi to Sa Pa? – About 320 kilometres.','How long|How far|How often|How much',1,'Câu trả lời là khoảng cách (320 km) → <b>How far</b> (bao xa). How long: bao lâu; How often: bao lâu một lần; How much: bao nhiêu (giá, lượng không đếm được).','Từ Hà Nội đến Sa Pa bao xa? – Khoảng 320 ki-lô-mét.'),
+C('We don\'t have ______ rice left. Let\'s buy some more.','much|many|a few|few',0,'<b>rice</b> là danh từ không đếm được → dùng <b>much</b>. many, a few, few dùng với danh từ đếm được số nhiều.','Chúng ta không còn nhiều gạo. Hãy mua thêm một ít nhé.'),
+C('______ Mekong River flows through six countries.','A|An|The|Ø',2,'Trước <b>tên sông</b> dùng mạo từ <b>the</b>: the Mekong River, the Red River.','Sông Mê Kông chảy qua sáu quốc gia.'),
+C('My cousin is ______ engineer, and he works in ______ city centre.','a – the|an – the|an – a|the – an',1,'<b>an</b> + engineer (bắt đầu bằng nguyên âm /e/); <b>the</b> city centre (trung tâm thành phố – nơi đã xác định).','Anh họ tôi là kĩ sư và anh ấy làm việc ở trung tâm thành phố.'),
+C('If it ______ tomorrow, we will stay at home.','rains|will rain|rained|raining',0,'<b>Câu điều kiện loại 1</b>: If + S + V hiện tại đơn, S + will + V. Mệnh đề If <u>không</u> dùng will → <b>rains</b>.','Nếu ngày mai trời mưa, chúng tôi sẽ ở nhà.')
+]}
+]},
+/* ---------------- 5. LIÊN TỪ & GIỚI TỪ ---------------- */
+{id:'link',part:'Phần I · Câu 12–13',title:'Liên từ & Giới từ',icon:'🔗',color:'#D6457A',
+instr:'Chọn đáp án đúng để hoàn thành câu',
+tip:`<h4>Liên từ</h4><ul><li>Sau dấu phẩy giữa câu: <b>and</b> (và), <b>but</b> (nhưng), <b>so</b> (nên), <b>or</b> (hoặc), <b>for</b> (vì).</li><li>Sau dấu chấm phẩy: <b>however</b> (tuy nhiên), <b>therefore</b> (vì vậy), <b>otherwise</b> (nếu không thì), <b>moreover</b> (hơn nữa).</li><li><b>because / although + mệnh đề</b>; <b>because of / despite + cụm danh từ</b>.</li></ul><h4>Giới từ hay gặp</h4><p>keen on, fond of, interested in, crazy about, good at, famous for, proud of, similar to, different from, take part in, log on to, concentrate on, under pressure.</p><p><b>Thời gian</b>: at + giờ, at Tet, at the weekend · on + thứ, ngày cụ thể (on the 15th day) · in + tháng, năm, mùa.</p>`,
+lessons:[
+{title:'Liên từ',qs:[
+C('It rained heavily; ______, the festival still took place.','therefore|however|so|because',1,'Hai vế <b>trái ngược</b> (mưa to – lễ hội vẫn diễn ra), đứng sau dấu chấm phẩy → <b>however</b> (tuy nhiên).','Trời mưa to; tuy nhiên, lễ hội vẫn diễn ra.'),
+C('Hoa felt very tired, ______ she went to bed early.','but|so|or|for',1,'Vế 2 là <b>kết quả</b> của vế 1 (mệt → đi ngủ sớm) → <b>so</b> (vì vậy).','Hoa cảm thấy rất mệt, vì vậy bạn ấy đi ngủ sớm.'),
+C('You should switch off your phone in class; ______, you won\'t concentrate on the lesson.','however|therefore|otherwise|moreover',2,'<b>otherwise</b> = nếu không thì (nếu không tắt điện thoại thì sẽ không tập trung được).','Em nên tắt điện thoại trong giờ học; nếu không, em sẽ không tập trung vào bài học được.'),
+C('Ba wanted to buy a new laptop; ______, he didn\'t have enough money.','therefore|however|so|because',1,'Hai vế trái ngược (muốn mua – không đủ tiền), sau dấu chấm phẩy → <b>however</b>. <i>(Câu 12 – Đề tham khảo)</i>','Ba muốn mua một chiếc máy tính xách tay mới; tuy nhiên, bạn ấy không có đủ tiền.'),
+C('______ the heavy rain, the farmers still worked in the field.','Although|Despite|Because|So',1,'Sau chỗ trống là <b>cụm danh từ</b> (the heavy rain) và hai vế trái ngược → <b>Despite</b> (mặc dù). Although phải đi với mệnh đề (S + V).','Mặc dù trời mưa to, những người nông dân vẫn làm việc trên cánh đồng.'),
+C('We stayed at home ______ it was very cold.','because|so|but|because of',0,'Vế sau là <b>lý do</b> và là một mệnh đề (it was…) → <b>because</b>. because of chỉ đi với danh từ / V-ing.','Chúng tôi ở nhà vì trời rất lạnh.')
+]},
+{title:'Giới từ',qs:[
+MT('keen on=thích;famous for=nổi tiếng về;proud of=tự hào về;similar to=giống với;different from=khác với'),
+C('My sister is crazy ______ taking photos of flowers.','on|about|in|at',1,'<b>be crazy about</b> = mê, phát cuồng vì.','Chị gái tôi mê chụp ảnh hoa.'),
+C('Duong Lam Village is famous ______ its ancient laterite houses.','for|with|of|at',0,'<b>be famous for</b> = nổi tiếng về.','Làng Đường Lâm nổi tiếng với những ngôi nhà cổ bằng đá ong.'),
+C('The Mid-Autumn Festival takes place ______ the 15th day of the 8th lunar month.','in|at|on|for',2,'<b>on</b> + ngày cụ thể (on the 15th day, on Monday).','Tết Trung thu diễn ra vào ngày 15 tháng 8 âm lịch.'),
+C('My grandmother is good ______ making traditional cakes.','on|at|in|for',1,'<b>be good at</b> = giỏi về. <i>(Câu 13 – Đề tham khảo)</i>','Bà tôi giỏi làm các loại bánh truyền thống.'),
+C('Lan is interested ______ learning about the cultures of ethnic groups.','on|in|at|about',1,'<b>be interested in</b> = quan tâm, thích thú.','Lan thích tìm hiểu về văn hóa của các dân tộc.'),
+C('We usually visit our grandparents ______ Tet.','in|on|at|for',2,'<b>at Tet</b> = vào dịp Tết (giống at Christmas, at the weekend).','Chúng tôi thường về thăm ông bà vào dịp Tết.'),
+MT('take part in=tham gia;look after=chăm sóc;cope with=đối phó với;belong to=thuộc về;under pressure=chịu áp lực')
+]}
+]},
+/* ---------------- 6. GIAO TIẾP ---------------- */
+{id:'comm',part:'Phần I · Câu 14',title:'Chức năng giao tiếp',icon:'💬',color:'#0E9BB5',
+instr:'Chọn câu đáp lại phù hợp nhất',
+tip:`<ul><li>Lời mời <i>Would you like to…?</i> → <b>I'd love to.</b> / I'd love to, but I'm busy.</li><li>Lời khen → <b>Thank you.</b> / That's very kind of you.</li><li>Lời cảm ơn → <b>You're welcome. / It's my pleasure.</b></li><li>Xin lỗi → <b>That's all right. / Never mind.</b></li><li>Gợi ý <i>Let's… / Why don't we…?</i> → <b>That's a good idea!</b></li><li><i>Do you mind if I…?</i> → đồng ý thì nói <b>No, not at all. / Not at all. Go ahead.</b></li><li>Chúc mừng → <b>Thank you (very much).</b></li></ul><p>Mẹo: xác định chức năng câu của A trước, cẩn thận "bẫy lặp từ".</p>`,
+lessons:[
+{title:'Đáp lời trong hội thoại',qs:[
+C('A: "Would you like to go to the flower festival with me this Sunday?"<br>B: "______"','Yes, I like flowers.|I\'d love to. What time?|No, I wouldn\'t.|You\'re welcome.',1,'Đây là <b>lời mời</b> → nhận lời bằng <b>I\'d love to</b>. "Yes, I like flowers" là bẫy lặp từ; "No, I wouldn\'t" bất lịch sự; "You\'re welcome" dùng để đáp lời cảm ơn.','A: "Chủ nhật này bạn có muốn đi lễ hội hoa với mình không?" – B: "Mình rất thích. Mấy giờ vậy?"'),
+C('A: "Your áo dài is so beautiful!"<br>B: "______"','Thank you. My mum made it for me.|Yes, it is.|I don\'t think.|Not at all.',0,'Đáp lại <b>lời khen</b> → <b>Thank you</b>. "Yes, it is" thiếu lịch sự; "Not at all" dùng cho Do you mind…?','A: "Chiếc áo dài của bạn đẹp quá!" – B: "Cảm ơn bạn. Mẹ mình may cho mình đấy."'),
+C('A: "Thank you for helping me with my DIY project."<br>B: "______"','That\'s right.|It\'s my pleasure.|Yes, please.|Good idea.',1,'Đáp lại <b>lời cảm ơn</b> → <b>It\'s my pleasure</b> / You\'re welcome.','A: "Cảm ơn bạn đã giúp mình làm dự án DIY." – B: "Đó là niềm vui của mình mà."'),
+C('A: "I think life in the countryside is more peaceful than in the city."<br>B: "______ The air is fresher, too."','I don\'t agree.|I completely agree.|Never mind.|Of course not.',1,'Câu sau "The air is fresher, too" (không khí cũng trong lành hơn) cho thấy B <b>đồng ý</b> → <b>I completely agree</b>.','A: "Mình nghĩ cuộc sống ở nông thôn yên bình hơn ở thành phố." – B: "Mình hoàn toàn đồng ý. Không khí cũng trong lành hơn nữa."'),
+C('A: "Do you mind if I use your laptop for a moment?"<br>B: "______"','Yes, sure.|Not at all. Go ahead.|I\'m sorry for that.|Congratulations!',1,'<b>Do you mind…?</b> nghĩa là "Bạn có phiền không…?" → đồng ý thì trả lời <b>Not at all</b> (không phiền chút nào). "Yes, sure" lại có nghĩa là "Có, phiền đấy".','A: "Bạn có phiền không nếu mình dùng máy tính xách tay của bạn một lát?" – B: "Không phiền đâu. Cứ dùng đi."'),
+C('A: "Congratulations on winning the first prize!"<br>B: "______"','Thank you very much.|Never mind.|You\'re welcome.|Yes, I do.',0,'Đáp lại <b>lời chúc mừng</b> → <b>Thank you (very much)</b>. <i>(Câu 14 – Đề tham khảo)</i>','A: "Chúc mừng bạn đã đạt giải nhất!" – B: "Cảm ơn bạn rất nhiều."'),
+C('A: "I\'m sorry for being late."<br>B: "______"','That\'s all right.|You\'re welcome.|Congratulations!|Yes, please.',0,'Đáp lại <b>lời xin lỗi</b> → <b>That\'s all right</b> / Never mind / No problem.','A: "Xin lỗi, mình đến muộn." – B: "Không sao đâu."'),
+C('A: "Let\'s visit my grandparents\' farm this weekend."<br>B: "______"','That\'s a good idea!|Not at all.|It\'s my pleasure.|No, I don\'t.',0,'Đáp lại <b>lời gợi ý</b> (Let\'s…) → <b>That\'s a good idea!</b> / Great! / Sounds fun.','A: "Cuối tuần này mình đến thăm trang trại của ông bà mình đi." – B: "Ý hay đấy!"')
+]}
+]},
+/* ---------------- 7. BIỂN BÁO ---------------- */
+{id:'sign',part:'Phần II · Câu 15–16',title:'Biển báo – Thông báo',icon:'🚸',color:'#C9302C',
+instr:'Biển báo / thông báo này có nghĩa là gì?',
+tip:`<ul><li><b>Cấm</b> (vòng tròn đỏ): NO + V-ing, DO NOT…, PROHIBITED, NOT ALLOWED → <i>You must not… / You are not allowed to…</i></li><li><b>Bắt buộc</b> (vòng tròn xanh): MUST, REQUIRED → <i>You have to… / You must…</i></li><li><b>Cảnh báo</b> (tam giác vàng): CAUTION, WARNING, DANGER, MIND… → <i>Be careful…</i></li><li><b>Thông tin</b>: OUT OF ORDER (hỏng), STAFF ONLY, CLOSED ON… </li></ul><p>Bẫy: chú ý ONLY, EXCEPT, giờ và ngày trên biển; should (nên) khác must (phải).</p>`,
+lessons:[
+{title:'Biển cấm & cảnh báo',qs:[
+MT('No smoking=Cấm hút thuốc;No littering=Cấm xả rác;Keep off the grass=Không giẫm lên cỏ;Wet floor=Sàn ướt;Beware of the dog=Coi chừng chó dữ'),
+SG('NO SWIMMING|DEEP WATER','ban','You can swim here because the water is deep.|You must not swim here because the water is deep.|You should learn to swim in deep water.|Swimming is only allowed in the morning.',1,'<b>NO + V-ing</b> = cấm làm gì → <i>You must not swim here</i>. Các đáp án khác sai nghĩa (cho phép bơi, khuyên học bơi, thêm thông tin "buổi sáng" không có trên biển).','Biển: CẤM BƠI – NƯỚC SÂU. → Bạn không được bơi ở đây vì nước sâu.'),
+SG('PLEASE KEEP OFF THE GRASS','ban','Do not walk on the grass.|Cut the grass regularly.|You can sit on the grass.|Water the grass every day.',0,'<b>Keep off the grass</b> = không giẫm/đi lên cỏ → <i>Do not walk on the grass</i>.','Biển: VUI LÒNG KHÔNG GIẪM LÊN CỎ. → Không đi lên cỏ.'),
+SG('CAUTION|WET FLOOR','warn','Clean the floor now.|Be careful because the floor may be slippery.|Do not use water on the floor.|The floor is dry and safe.',1,'<b>CAUTION</b> = chú ý, cẩn thận; <b>WET FLOOR</b> = sàn ướt → sàn có thể trơn, hãy cẩn thận.','Biển: CHÚ Ý – SÀN ƯỚT. → Hãy cẩn thận vì sàn có thể trơn trượt.'),
+SG('LIBRARY – SILENCE PLEASE|Mobile phones must be switched off.','must','You can talk quietly on the phone.|You must keep quiet and turn off your phone.|Phones are sold in the library.|Only students can use phones here.',1,'<b>Silence please</b> = xin giữ im lặng; <b>must be switched off</b> = phải tắt → giữ im lặng và tắt điện thoại.','Biển: THƯ VIỆN – XIN GIỮ IM LẶNG. Điện thoại di động phải được tắt. → Bạn phải giữ im lặng và tắt điện thoại.'),
+SG('PAGODA|Please take off your shoes before entering.','must','Leave your shoes outside before going in.|You can buy shoes here.|Shoes are not sold in the pagoda.|Wear your shoes when you enter.',0,'<b>take off your shoes</b> = cởi giày → để giày bên ngoài trước khi vào.','Biển: CHÙA – Vui lòng cởi giày trước khi vào. → Hãy để giày bên ngoài trước khi đi vào.'),
+SG('STAFF ONLY','info','Everyone can enter this room.|Only people who work here can enter.|Staff must stay outside.|Visitors should wait for the staff here.',1,'<b>STAFF ONLY</b> = chỉ dành cho nhân viên → chỉ người làm việc ở đây mới được vào.','Biển: CHỈ DÀNH CHO NHÂN VIÊN. → Chỉ những người làm việc ở đây mới được vào.'),
+SG('NO PHOTOGRAPHY|IN THE MUSEUM','ban','You can take photos here.|You must not take photos in the museum.|You can buy photos in the museum.|Photos of the museum are free.',1,'<b>NO PHOTOGRAPHY</b> = cấm chụp ảnh. <i>(Câu 15 – Đề tham khảo)</i>','Biển: CẤM CHỤP ẢNH TRONG BẢO TÀNG. → Bạn không được chụp ảnh trong bảo tàng.')
+]},
+{title:'Thông báo & kĩ năng mềm',qs:[
+SG('TICKET OFFICE|Open: 8 a.m. – 5 p.m.|Closed on Mondays','info','You can buy tickets on Monday morning.|The office opens at 5 p.m.|You can\'t buy tickets here on Mondays.|The office is open all day, every day.',2,'<b>Closed on Mondays</b> = đóng cửa vào thứ Hai → thứ Hai không mua được vé. Mở cửa 8 giờ sáng (không phải 5 giờ chiều).','Biển: PHÒNG VÉ – Mở cửa: 8 giờ sáng – 5 giờ chiều. Đóng cửa vào thứ Hai. → Bạn không thể mua vé ở đây vào thứ Hai.'),
+SG('NO LITTERING|Fine: 200,000 VND','ban','You will be fined if you throw rubbish here.|You can buy a bin for 200,000 VND.|Rubbish collection costs 200,000 VND.|You will get 200,000 VND for picking up litter.',0,'<b>No littering</b> = cấm xả rác; <b>Fine</b> = tiền phạt → xả rác sẽ bị phạt 200.000 đồng.','Biển: CẤM XẢ RÁC – Phạt: 200.000 đồng. → Bạn sẽ bị phạt nếu vứt rác ở đây.'),
+SG('LIFT OUT OF ORDER|Please use the stairs.','info','The lift is not working, so use the stairs.|Line up in order to use the lift.|The stairs are closed today.|The lift is for staff only.',0,'<b>Out of order</b> = bị hỏng, không hoạt động → thang máy hỏng, hãy đi cầu thang bộ. (Bẫy: "in order" là theo thứ tự.)','Biển: THANG MÁY BỊ HỎNG – Vui lòng đi cầu thang bộ. → Thang máy không hoạt động, vì vậy hãy đi cầu thang bộ.'),
+SG('ONLINE SAFETY TIP|Never share your password with anyone.','info','You should give your password to your friends.|Keep your password secret.|Change your password every day.|Post your password on social media.',1,'<b>Never share your password</b> = không bao giờ chia sẻ mật khẩu → giữ bí mật mật khẩu.','Biển: MẸO AN TOÀN TRÊN MẠNG – Không bao giờ chia sẻ mật khẩu với bất kì ai. → Hãy giữ bí mật mật khẩu của bạn.'),
+SG('FIRE EXIT|KEEP CLEAR','must','Don\'t put anything in front of this door.|You can make a fire here.|Use this door only when there is no fire.|Keep this door locked at all times.',0,'<b>Fire exit</b> = lối thoát hiểm; <b>Keep clear</b> = để trống, không cản lối → đừng để đồ vật trước cửa này.','Biển: LỐI THOÁT HIỂM – ĐỂ TRỐNG. → Không để bất cứ thứ gì trước cửa này.'),
+SG('THINK BEFORE YOU POST','info','Post as many photos as possible.|Consider carefully before sharing something online.|Never use social media.|You should only post at night.',1,'<b>Think before you post</b> = suy nghĩ trước khi đăng → cân nhắc kĩ trước khi chia sẻ lên mạng.','Biển: HÃY SUY NGHĨ TRƯỚC KHI ĐĂNG. → Hãy cân nhắc kĩ trước khi chia sẻ điều gì đó lên mạng.'),
+SG('MIND YOUR HEAD|Low ceiling','warn','Be careful not to hit your head.|Think carefully before you go in.|You must not wear a hat here.|The ceiling is very high.',0,'<b>Mind your head</b> = cẩn thận đụng đầu; <b>Low ceiling</b> = trần thấp. (Bẫy: mind ở đây không phải "suy nghĩ".) <i>(Câu 16 – Đề tham khảo)</i>','Biển: CẨN THẬN ĐỤNG ĐẦU – Trần thấp. → Hãy cẩn thận kẻo đụng đầu.'),
+MT('Out of order=Bị hỏng, không hoạt động;Staff only=Chỉ dành cho nhân viên;Fire exit=Lối thoát hiểm;Mandatory=Bắt buộc;Fine=Tiền phạt')
+]}
+]},
+/* ---------------- 8. ĐỌC ĐIỀN TỪ ---------------- */
+{id:'cloze',part:'Phần III · Câu 17–22',title:'Đọc điền từ',icon:'📝',color:'#3D8B37',
+instr:'Đọc đoạn văn và chọn đáp án đúng cho chỗ trống',
+tip:`<ol><li>Đọc lướt cả đoạn để nắm chủ đề.</li><li>Xét 4 đáp án: cùng gốc từ khác loại → xác định vị trí cần N/adj/adv; cùng động từ khác dạng → nhìn động từ phía trước (enjoy + V-ing, help + V, want + to V); liên từ → xét quan hệ nghĩa câu trước – câu sau; giới từ → nhớ cụm cố định.</li><li>Đọc lại cả câu với đáp án đã chọn.</li></ol><p>Mẹo: làm câu ngữ pháp, giới từ trước (nhanh, chắc điểm), câu từ vựng sau.</p>`,
+lessons:[
+{title:'Đoạn A – Leisure time (DIY)',
+passage:'Many teenagers today are (1) ______ about doing DIY. DIY stands (2) ______ "do it yourself". It is a great way to spend your free time because it helps you become more (3) ______. For example, you can make a pencil case (4) ______ old jeans or decorate your bedroom with paper flowers. DIY also helps you save money. (5) ______, you should be careful when you use tools like scissors or glue guns. If you are interested (6) ______ DIY, why don\'t you start with a simple project this weekend?',
+pvi:'Ngày nay nhiều bạn trẻ rất mê làm đồ DIY. DIY là viết tắt của "do it yourself" (tự mình làm). Đó là một cách tuyệt vời để dành thời gian rảnh vì nó giúp bạn trở nên sáng tạo hơn. Ví dụ, bạn có thể làm hộp bút từ quần jean cũ hoặc trang trí phòng ngủ bằng hoa giấy. DIY cũng giúp bạn tiết kiệm tiền. Tuy nhiên, bạn nên cẩn thận khi dùng các dụng cụ như kéo hay súng bắn keo. Nếu bạn thích DIY, sao bạn không bắt đầu với một dự án đơn giản vào cuối tuần này?',
+qs:[
+C('(1)','keen|crazy|fond|interested',1,'Sau chỗ trống là <b>about</b> → <b>crazy about</b> (mê). keen đi với on, fond đi với of, interested đi với in.','Ngày nay nhiều bạn trẻ rất mê làm đồ DIY.'),
+C('(2)','by|for|with|of',1,'<b>stand for</b> = là viết tắt của.','DIY là viết tắt của "do it yourself" (tự mình làm).'),
+C('(3)','create|creative|creatively|creation',1,'Sau <b>become more</b> cần <b>tính từ</b> → creative (sáng tạo).','Nó giúp bạn trở nên sáng tạo hơn.'),
+C('(4)','from|at|on|in',0,'<b>make sth from sth</b> = làm cái gì từ cái gì.','Bạn có thể làm hộp bút từ quần jean cũ.'),
+C('(5)','However|Therefore|Because|So',0,'Câu trước nói lợi ích (tiết kiệm tiền), câu sau là lời lưu ý → quan hệ <b>tương phản</b>, đứng đầu câu có dấu phẩy → <b>However</b>.','Tuy nhiên, bạn nên cẩn thận khi dùng các dụng cụ như kéo hay súng bắn keo.'),
+C('(6)','on|at|in|about',2,'<b>be interested in</b> = quan tâm, thích thú.','Nếu bạn thích DIY, sao bạn không bắt đầu với một dự án đơn giản vào cuối tuần này?')
+]},
+{title:'Đoạn B – Life in the countryside',
+passage:'My grandparents live in a small village in Nam Dinh. Life there is much more (1) ______ than in the city. There are no tall buildings or heavy traffic, and the air is fresh. Every morning, my grandfather gets up early to (2) ______ the cattle to the field. My grandmother grows vegetables and (3) ______ the chickens. The villagers are very (4) ______; they always smile and invite visitors into their homes. Last summer, I helped my grandparents (5) ______ the rice. It was hard work, but I enjoyed it. People in the countryside work (6) ______ than people in the city, but they seem happier.',
+pvi:'Ông bà tôi sống ở một ngôi làng nhỏ ở Nam Định. Cuộc sống ở đó yên bình hơn nhiều so với ở thành phố. Không có nhà cao tầng hay giao thông đông đúc, và không khí trong lành. Mỗi sáng, ông tôi dậy sớm để lùa đàn gia súc ra đồng. Bà tôi trồng rau và cho gà ăn. Dân làng rất hiếu khách; họ luôn mỉm cười và mời khách vào nhà. Hè năm ngoái, tôi đã giúp ông bà gặt lúa. Đó là công việc vất vả nhưng tôi rất thích. Người ở nông thôn làm việc vất vả hơn người ở thành phố, nhưng họ dường như hạnh phúc hơn.',
+qs:[
+C('(1)','peace|peaceful|peacefully|peacefulness',1,'Sau <b>is much more</b> cần <b>tính từ</b> (so sánh hơn) → peaceful (yên bình).','Cuộc sống ở đó yên bình hơn nhiều so với ở thành phố.'),
+C('(2)','herd|milk|load|dry',0,'<b>herd the cattle to the field</b> = lùa gia súc ra đồng. milk: vắt sữa; load: chất hàng; dry: phơi.','Mỗi sáng, ông tôi dậy sớm để lùa đàn gia súc ra đồng.'),
+C('(3)','feeds|rides|catches|flies',0,'<b>feed the chickens</b> = cho gà ăn. Chủ ngữ số ít (my grandmother) và song song với grows → feeds.','Bà tôi trồng rau và cho gà ăn.'),
+C('(4)','hospitable|vast|picturesque|well-trained',0,'Vế sau "luôn mỉm cười và mời khách vào nhà" → <b>hospitable</b> (hiếu khách). vast (rộng lớn), picturesque (đẹp như tranh) dùng cho cảnh vật.','Dân làng rất hiếu khách; họ luôn mỉm cười và mời khách vào nhà.'),
+C('(5)','harvest|harvesting|harvested|harvests',0,'<b>help + sb + V (nguyên mẫu)</b> → helped my grandparents harvest.','Hè năm ngoái, tôi đã giúp ông bà gặt lúa.'),
+C('(6)','hard|harder|more hardly|hardly',1,'Có <b>than</b> → so sánh hơn của trạng từ ngắn hard → <b>harder</b>.','Người ở nông thôn làm việc vất vả hơn người ở thành phố, nhưng họ dường như hạnh phúc hơn.')
+]},
+{title:'Đoạn C – Teenagers & social media',
+passage:'Nowadays, social media plays an important role in teenagers\' lives. Many students (1) ______ on to their accounts every day to chat with friends or share photos. Social media can be useful (2) ______ students can join online forums to discuss their schoolwork. However, spending too much time online can make teens (3) ______ and tired. Some students even become victims of cyberbullying. (4) ______ this reason, teenagers should use social media wisely. They should not share personal information, (5) ______ they should tell an adult if someone bullies them online. Parents and teachers should also help teens (6) ______ a healthy balance between online and offline activities.',
+pvi:'Ngày nay, mạng xã hội đóng vai trò quan trọng trong cuộc sống của thanh thiếu niên. Nhiều học sinh đăng nhập vào tài khoản mỗi ngày để trò chuyện với bạn bè hoặc chia sẻ ảnh. Mạng xã hội có thể hữu ích vì học sinh có thể tham gia các diễn đàn trực tuyến để thảo luận bài vở. Tuy nhiên, dành quá nhiều thời gian trên mạng có thể khiến thanh thiếu niên căng thẳng và mệt mỏi. Một số học sinh thậm chí trở thành nạn nhân của bắt nạt trên mạng. Vì lý do này, thanh thiếu niên nên sử dụng mạng xã hội một cách khôn ngoan. Các em không nên chia sẻ thông tin cá nhân, và nên báo cho người lớn nếu ai đó bắt nạt mình trên mạng. Cha mẹ và thầy cô cũng nên giúp thanh thiếu niên giữ sự cân bằng lành mạnh giữa hoạt động trực tuyến và ngoài đời thực.',
+qs:[
+C('(1)','log|upload|browse|connect',0,'<b>log on to</b> = đăng nhập vào.','Nhiều học sinh đăng nhập vào tài khoản mỗi ngày để trò chuyện với bạn bè hoặc chia sẻ ảnh.'),
+C('(2)','although|because|but|so',1,'Vế sau giải thích <b>lý do</b> mạng xã hội hữu ích → <b>because</b>.','Mạng xã hội có thể hữu ích vì học sinh có thể tham gia các diễn đàn trực tuyến để thảo luận bài vở.'),
+C('(3)','stress|stressful|stressed|stressfully',2,'<b>make + sb + adj</b>; chỉ cảm xúc của người (teens) → <b>stressed</b> (bị căng thẳng). stressful dùng cho sự vật gây căng thẳng.','Tuy nhiên, dành quá nhiều thời gian trên mạng có thể khiến thanh thiếu niên căng thẳng và mệt mỏi.'),
+C('(4)','Because|For|With|By',1,'<b>For this reason</b> = vì lý do này.','Vì lý do này, thanh thiếu niên nên sử dụng mạng xã hội một cách khôn ngoan.'),
+C('(5)','and|or|but|so',0,'Hai vế đều là lời khuyên, bổ sung cho nhau → <b>and</b> (thêm ý).','Các em không nên chia sẻ thông tin cá nhân, và nên báo cho người lớn nếu ai đó bắt nạt mình trên mạng.'),
+C('(6)','keep|keeping|kept|keeps',0,'<b>help + sb + V (nguyên mẫu)</b> → help teens keep.','Cha mẹ và thầy cô cũng nên giúp thanh thiếu niên giữ sự cân bằng lành mạnh giữa hoạt động trực tuyến và ngoài đời thực.')
+]},
+{title:'Đề tham khảo – Câu 17–22',
+passage:'Leisure time is very important for teenagers. After hours of studying at school, students need time to relax and (1) ______ their energy. There are many leisure activities to choose from. Some students like (2) ______ the net or messaging friends. Others prefer outdoor activities (3) ______ cycling, playing football or flying kites. Outdoor activities are good for our health (4) ______ they help us build muscle strength and keep fit. However, we should not spend too (5) ______ time on screens. Experts say that teenagers should do at least 60 minutes of physical activity every day. So, turn off your phone and go outside (6) ______ some fresh air!',
+pvi:'Thời gian rảnh rất quan trọng đối với thanh thiếu niên. Sau nhiều giờ học ở trường, học sinh cần thời gian để thư giãn và lấy lại năng lượng. Có nhiều hoạt động giải trí để lựa chọn. Một số bạn thích lướt mạng hoặc nhắn tin với bạn bè. Những bạn khác thích các hoạt động ngoài trời như đạp xe, đá bóng hay thả diều. Hoạt động ngoài trời tốt cho sức khỏe vì chúng giúp ta tăng sức mạnh cơ bắp và giữ dáng. Tuy nhiên, chúng ta không nên dành quá nhiều thời gian cho màn hình. Các chuyên gia nói rằng thanh thiếu niên nên vận động ít nhất 60 phút mỗi ngày. Vậy nên, hãy tắt điện thoại và ra ngoài tận hưởng không khí trong lành!',
+qs:[
+C('(1)','recover|lose|spend|waste',0,'<b>recover their energy</b> = lấy lại năng lượng (hợp nghĩa sau khi học nhiều giờ). lose: mất; spend: tiêu; waste: lãng phí.','Sau nhiều giờ học ở trường, học sinh cần thời gian để thư giãn và lấy lại năng lượng.'),
+C('(2)','surf|surfing|surfed|surfs',1,'<b>like + V-ing</b>, song song với messaging → <b>surfing</b> the net.','Một số bạn thích lướt mạng hoặc nhắn tin với bạn bè.'),
+C('(3)','such as|for example|like as|so as',0,'<b>such as</b> = chẳng hạn như, dùng để liệt kê ví dụ ngay giữa câu. "for example" thường đứng đầu câu và có dấu phẩy; "like as", "so as" sai.','Những bạn khác thích các hoạt động ngoài trời như đạp xe, đá bóng hay thả diều.'),
+C('(4)','so|but|because|although',2,'Vế sau giải thích <b>lý do</b> hoạt động ngoài trời tốt cho sức khỏe → <b>because</b>.','Hoạt động ngoài trời tốt cho sức khỏe vì chúng giúp ta tăng sức mạnh cơ bắp và giữ dáng.'),
+C('(5)','many|much|few|a lot',1,'<b>time</b> là danh từ không đếm được → <b>too much time</b> (quá nhiều thời gian).','Tuy nhiên, chúng ta không nên dành quá nhiều thời gian cho màn hình.'),
+C('(6)','enjoy|to enjoy|enjoying|enjoyed',1,'<b>to + V</b> chỉ mục đích: ra ngoài <i>để</i> tận hưởng → <b>to enjoy</b>.','Vậy nên, hãy tắt điện thoại và ra ngoài tận hưởng không khí trong lành!')
+]}
+]},
+/* ---------------- 9. ĐỌC HIỂU ---------------- */
+{id:'read',part:'Phần IV · Câu 23–28',title:'Đọc hiểu',icon:'📖',color:'#8A5A2B',
+instr:'Đọc đoạn văn và trả lời câu hỏi',
+tip:`<p><b>True / False</b>: đọc câu hỏi trước, gạch chân từ khóa (tên, số, thời gian), dò trong bài. Giống ý (dù khác từ) → True; sai chi tiết, đổi đối tượng (men ↔ women, North ↔ South), thêm "only / all / always" → False.</p><p><b>Trắc nghiệm</b>: ý chính → chọn đáp án bao quát toàn bài; từ quy chiếu (they, it, he or she) → đọc câu chứa từ đó và câu ngay trước; EXCEPT → tìm 3 đáp án có trong bài, chọn đáp án còn lại.</p><p>Cặp từ đồng nghĩa: take place = be held; be good at = be skilful at; most = the majority of; famous = well-known.</p>`,
+lessons:[
+{title:'Đoạn A – The Tay people',
+passage:'The Tay are the largest ethnic minority group in Viet Nam, with a population of about 1.8 million people. They live mainly in the northern mountainous provinces such as Cao Bang, Lang Son and Bac Kan. Most Tay people live in villages near rivers or streams, and their houses are usually stilt houses made of wood and bamboo. Living on stilts keeps them safe from wild animals and floods.\n\nThe Tay are good at farming. They grow wet rice in paddy fields and on terraced fields, and they also raise livestock such as buffaloes, pigs and chickens. Tay women are skilful at weaving. They make beautiful cloth and brocade bags, and their traditional costumes are usually dark indigo.\n\nThe Tay have a rich culture. "Then" singing, often performed with a "tinh" lute, is a famous folk art of the Tay and is recognised by UNESCO. During festivals, Tay people play folk games and enjoy special foods like five-colour sticky rice.',
+pvi:'Người Tày là dân tộc thiểu số đông dân nhất Việt Nam, với khoảng 1,8 triệu người. Họ sống chủ yếu ở các tỉnh miền núi phía Bắc như Cao Bằng, Lạng Sơn và Bắc Kạn. Hầu hết người Tày sống trong những bản làng gần sông suối, và nhà của họ thường là nhà sàn làm bằng gỗ và tre. Sống trên nhà sàn giúp họ an toàn trước thú dữ và lũ lụt.\n\nNgười Tày giỏi làm nông. Họ trồng lúa nước trên cánh đồng và ruộng bậc thang, đồng thời chăn nuôi gia súc như trâu, lợn và gà. Phụ nữ Tày khéo léo trong việc dệt vải. Họ làm ra những tấm vải và túi thổ cẩm đẹp, và trang phục truyền thống của họ thường có màu chàm sẫm.\n\nNgười Tày có nền văn hóa phong phú. Hát Then, thường được biểu diễn cùng đàn tính, là một loại hình nghệ thuật dân gian nổi tiếng của người Tày và được UNESCO công nhận. Trong các lễ hội, người Tày chơi trò chơi dân gian và thưởng thức những món ăn đặc biệt như xôi ngũ sắc.',
+qs:[
+TF('The Tay are the largest ethnic minority group in Viet Nam.',true,'Bài viết: "<i>The Tay are the largest ethnic minority group in Viet Nam</i>" → đúng y như câu hỏi.','Người Tày là dân tộc thiểu số đông dân nhất Việt Nam.'),
+TF('Most Tay people live in the southern part of Viet Nam.',false,'Bài viết: "<i>They live mainly in the <b>northern</b> mountainous provinces</i>" → họ sống ở miền <b>Bắc</b>, không phải miền Nam.','Hầu hết người Tày sống ở miền Nam Việt Nam.'),
+TF('Stilt houses help protect the Tay from floods and wild animals.',true,'Bài viết: "<i>Living on stilts keeps them safe from wild animals and floods.</i>" (keep safe from = protect from).','Nhà sàn giúp người Tày tránh khỏi lũ lụt và thú dữ.'),
+TF('Tay men are famous for weaving brocade.',false,'Bài viết: "<i>Tay <b>women</b> are skilful at weaving.</i>" → phụ nữ, không phải đàn ông (bẫy đổi đối tượng).','Đàn ông Tày nổi tiếng về nghề dệt thổ cẩm.'),
+C('What is the passage mainly about?','Farming methods in the north|The life and culture of the Tay people|Stilt houses in Viet Nam|UNESCO heritage in Viet Nam',1,'Bài có 3 đoạn: nơi ở – công việc – văn hóa của người Tày → ý chính bao quát là <b>cuộc sống và văn hóa của người Tày</b>. Các đáp án khác chỉ là một chi tiết nhỏ.','Đoạn văn chủ yếu nói về điều gì? → Cuộc sống và văn hóa của người Tày.'),
+C('The word "They" in paragraph 2 refers to ______.','paddy fields|the Tay|buffaloes|terraced fields',1,'Câu ngay trước: "<i>The Tay are good at farming.</i>" → "They grow wet rice…" nghĩa là <b>người Tày</b> trồng lúa.','Từ "They" ở đoạn 2 chỉ người Tày.')
+]},
+{title:'Đoạn B – The Mid-Autumn Festival',
+passage:'The Mid-Autumn Festival, or Tet Trung Thu, takes place on the 15th day of the eighth lunar month, when the moon is the fullest and brightest. In the past, it was a time for farmers to celebrate the end of the harvest and to thank the gods for good crops. Today, it is mainly a festival for children.\n\nA few weeks before the festival, shops and streets are full of colourful lanterns in many shapes, such as stars, fish and rabbits. Families buy mooncakes, which are often filled with lotus seeds, green beans or mixed nuts, to give to relatives and friends. On the night of the festival, children carry lanterns and walk around their neighbourhood. They also watch lion dances, which people believe bring good luck. Later, families sit together, eat mooncakes, drink tea and admire the full moon. For many Vietnamese people, the Mid-Autumn Festival is a time of family bonding and happy memories.',
+pvi:'Tết Trung thu diễn ra vào ngày 15 tháng 8 âm lịch, khi trăng tròn và sáng nhất. Ngày xưa, đó là dịp để nông dân mừng kết thúc mùa gặt và tạ ơn thần linh vì mùa màng bội thu. Ngày nay, đó chủ yếu là lễ hội dành cho trẻ em.\n\nVài tuần trước lễ hội, các cửa hàng và đường phố tràn ngập đèn lồng đủ màu sắc với nhiều hình dạng như ngôi sao, con cá và con thỏ. Các gia đình mua bánh trung thu, thường có nhân hạt sen, đậu xanh hoặc thập cẩm, để biếu họ hàng và bạn bè. Vào đêm hội, trẻ em cầm đèn lồng đi quanh xóm. Các em cũng xem múa lân – điệu múa mà mọi người tin rằng mang lại may mắn. Sau đó, các gia đình ngồi bên nhau, ăn bánh trung thu, uống trà và ngắm trăng tròn. Với nhiều người Việt Nam, Tết Trung thu là dịp gắn kết gia đình và lưu giữ những kỉ niệm vui vẻ.',
+qs:[
+TF('The Mid-Autumn Festival is held when the moon is the fullest.',true,'Bài viết: "<i>takes place on the 15th day of the eighth lunar month, when the moon is the fullest and brightest</i>" (take place = be held).','Tết Trung thu được tổ chức khi trăng tròn nhất.'),
+TF('In the past, the festival was mainly for children.',false,'Bài viết: "<i>In the past, it was a time for <b>farmers</b>… Today, it is mainly a festival for children.</i>" → ngày xưa dành cho nông dân, <b>ngày nay</b> mới dành cho trẻ em.','Ngày xưa, lễ hội chủ yếu dành cho trẻ em.'),
+TF('Lanterns are made only in the shape of stars.',false,'Bài viết: "<i>lanterns in many shapes, such as stars, fish and rabbits</i>" → có nhiều hình dạng, không chỉ ngôi sao (bẫy từ "only").','Đèn lồng chỉ được làm hình ngôi sao.'),
+TF('People believe that lion dances bring good luck.',true,'Bài viết: "<i>lion dances, which people believe bring good luck</i>".','Mọi người tin rằng múa lân mang lại may mắn.'),
+C('Mooncakes may be filled with all of the following EXCEPT ______.','lotus seeds|green beans|mixed nuts|sticky rice',3,'Bài viết nêu nhân bánh: "<i>lotus seeds, green beans or mixed nuts</i>". <b>sticky rice</b> (gạo nếp, xôi) không được nhắc đến → đáp án.','Bánh trung thu có thể có tất cả các loại nhân sau, NGOẠI TRỪ: xôi (gạo nếp).'),
+C('Which is the best title for the passage?','How to make mooncakes|The Mid-Autumn Festival in Viet Nam|Lantern shops in Ha Noi|Harvest time in the countryside',1,'Cả bài nói về nguồn gốc và các hoạt động của Tết Trung thu → tiêu đề bao quát: <b>Tết Trung thu ở Việt Nam</b>.','Tiêu đề phù hợp nhất cho đoạn văn là gì? → Tết Trung thu ở Việt Nam.')
+]},
+{title:'Đoạn C – Tet customs',
+passage:'Tet, or the Lunar New Year, is the most important festival in Viet Nam. Before Tet, people clean and decorate their houses. In the North, people usually buy peach blossoms, while in the South, people prefer apricot blossoms. Many families also put a kumquat tree in their living room as a symbol of wealth.\n\nVietnamese people follow many customs during Tet. On the first day, the first visitor to a house is very important because people believe he or she will bring luck for the whole year. Children wear new clothes and wish their grandparents and parents a long and healthy life. In return, they receive lucky money in red envelopes. People also avoid sweeping the floor during the first days of Tet because they are afraid of sweeping away good luck. Today, some families travel during Tet instead of staying at home, but most people still return to their hometowns for family reunions.',
+pvi:'Tết, hay Tết Nguyên đán, là lễ hội quan trọng nhất ở Việt Nam. Trước Tết, mọi người dọn dẹp và trang trí nhà cửa. Ở miền Bắc, người ta thường mua hoa đào, còn ở miền Nam người ta chuộng hoa mai. Nhiều gia đình còn đặt một cây quất trong phòng khách như biểu tượng của sự giàu có.\n\nNgười Việt Nam giữ nhiều phong tục trong dịp Tết. Vào mùng một, người đầu tiên đến nhà (xông đất) rất quan trọng vì người ta tin rằng người đó sẽ mang lại may mắn cho cả năm. Trẻ em mặc quần áo mới và chúc ông bà, cha mẹ sống lâu, mạnh khỏe. Đáp lại, các em nhận tiền lì xì trong phong bao đỏ. Mọi người cũng tránh quét nhà trong những ngày đầu năm vì sợ quét mất may mắn. Ngày nay, một số gia đình đi du lịch trong dịp Tết thay vì ở nhà, nhưng hầu hết mọi người vẫn trở về quê để đoàn tụ gia đình.',
+qs:[
+TF('Peach blossoms are popular in the North of Viet Nam at Tet.',true,'Bài viết: "<i>In the North, people usually buy peach blossoms</i>".','Hoa đào được ưa chuộng ở miền Bắc Việt Nam vào dịp Tết.'),
+TF('The kumquat tree is a symbol of long life.',false,'Bài viết: "<i>a kumquat tree… as a symbol of <b>wealth</b></i>" → biểu tượng của sự giàu có, không phải sống lâu.','Cây quất là biểu tượng của sự sống lâu.'),
+TF('Children give lucky money to their grandparents.',false,'Bài viết: "<i>In return, they <b>receive</b> lucky money</i>" → trẻ em <b>nhận</b> tiền lì xì, không phải cho.','Trẻ em lì xì cho ông bà.'),
+TF('Some families now go travelling during Tet.',true,'Bài viết: "<i>Today, some families travel during Tet instead of staying at home</i>".','Ngày nay một số gia đình đi du lịch trong dịp Tết.'),
+C('Why do people avoid sweeping the floor during the first days of Tet?','Because they are too busy.|Because they don\'t want to sweep away good luck.|Because the floor is already clean.|Because the first visitor will do it.',1,'Bài viết: "<i>because they are afraid of sweeping away good luck</i>" (sợ quét mất may mắn = không muốn quét đi may mắn).','Tại sao người ta tránh quét nhà trong những ngày đầu năm? → Vì họ không muốn quét mất may mắn.'),
+C('The words "he or she" in paragraph 2 refer to ______.','the first visitor|the grandparent|the child|the host',0,'Câu chứa từ: "<i>the first visitor to a house is very important because people believe he or she will bring luck</i>" → <b>người đến nhà đầu tiên</b>.','Cụm "he or she" ở đoạn 2 chỉ người đầu tiên đến nhà (người xông đất).')
+]},
+{title:'Đề tham khảo – Câu 23–28',
+passage:'The Gong Festival in the Central Highlands\n\nThe Space of Gong Culture in the Central Highlands of Viet Nam was recognised by UNESCO as a Masterpiece of the Oral and Intangible Heritage of Humanity in 2005. Every year, many provinces in the Central Highlands such as Gia Lai, Kon Tum and Dak Lak hold gong festivals.\n\nFor ethnic groups such as the Ede, the Ba Na and the Gia Rai, gongs are not only musical instruments but also sacred objects. People believe that every gong has its own god, and the older the gong is, the more powerful its god is. Gongs are played at important events in a person\'s life, from birth to death, and in ceremonies such as the new rice celebration.\n\nDuring the festival, people gather around a fire in front of the communal house. Men play the gongs while women in colourful traditional costumes dance in a circle. Visitors can also enjoy rice wine, grilled meat and other local specialities. The festival is a great chance for tourists to learn about the culture of the ethnic minorities in the Central Highlands.',
+pvi:'Lễ hội Cồng chiêng ở Tây Nguyên\n\nKhông gian văn hóa Cồng chiêng Tây Nguyên của Việt Nam được UNESCO công nhận là Kiệt tác Di sản Văn hóa Phi vật thể và Truyền khẩu của Nhân loại vào năm 2005. Hằng năm, nhiều tỉnh ở Tây Nguyên như Gia Lai, Kon Tum và Đắk Lắk tổ chức lễ hội cồng chiêng.\n\nĐối với các dân tộc như Ê Đê, Ba Na và Gia Rai, cồng chiêng không chỉ là nhạc cụ mà còn là vật linh thiêng. Người ta tin rằng mỗi chiếc cồng đều có vị thần riêng, và chiếc cồng càng cổ thì vị thần càng quyền năng. Cồng chiêng được đánh trong những sự kiện quan trọng của đời người, từ khi sinh ra đến khi mất đi, và trong các nghi lễ như lễ mừng lúa mới.\n\nTrong lễ hội, mọi người tụ họp quanh đống lửa trước nhà rông. Đàn ông đánh cồng chiêng trong khi phụ nữ mặc trang phục truyền thống sặc sỡ múa thành vòng tròn. Du khách cũng có thể thưởng thức rượu cần, thịt nướng và các đặc sản địa phương khác. Lễ hội là cơ hội tuyệt vời để du khách tìm hiểu văn hóa của các dân tộc thiểu số ở Tây Nguyên.',
+qs:[
+TF('The Space of Gong Culture was recognised by UNESCO in 2005.',true,'Bài viết: "<i>…was recognised by UNESCO… in 2005</i>".','Không gian văn hóa Cồng chiêng được UNESCO công nhận năm 2005.'),
+TF('Gong festivals are only held in Gia Lai province.',false,'Bài viết: "<i><b>many provinces</b>… such as Gia Lai, Kon Tum and Dak Lak hold gong festivals</i>" → nhiều tỉnh, không chỉ Gia Lai (bẫy "only").','Lễ hội cồng chiêng chỉ được tổ chức ở tỉnh Gia Lai.'),
+TF('People believe that older gongs have more powerful gods.',true,'Bài viết: "<i>the older the gong is, the more powerful its god is</i>".','Người ta tin rằng những chiếc cồng cổ hơn có vị thần quyền năng hơn.'),
+TF('During the festival, women play the gongs and men dance.',false,'Bài viết: "<i><b>Men</b> play the gongs while <b>women</b>… dance</i>" → bị đảo ngược đối tượng.','Trong lễ hội, phụ nữ đánh cồng chiêng còn đàn ông nhảy múa.'),
+C('Where do people gather during the festival?','In a pagoda|In front of the communal house|At the market|In the rice fields',1,'Bài viết: "<i>people gather around a fire in front of the communal house</i>".','Mọi người tụ họp ở đâu trong lễ hội? → Trước nhà rông.'),
+C('What is the passage mainly about?','How to play the gongs|The gong festival and its meaning|Rice wine in the Central Highlands|Traditional costumes of the Ede',1,'Bài nói về sự công nhận của UNESCO, ý nghĩa thiêng liêng của cồng chiêng và hoạt động trong lễ hội → <b>lễ hội cồng chiêng và ý nghĩa của nó</b>.','Đoạn văn chủ yếu nói về điều gì? → Lễ hội cồng chiêng và ý nghĩa của nó.')
+]}
+]},
+/* ---------------- 10. DẠNG TỪ ---------------- */
+{id:'wf',part:'Phần V · Câu 29–34',title:'Dạng từ (Word form)',icon:'🔤',color:'#B8860B',
+instr:'Viết dạng đúng của từ trong ngoặc',
+tip:`<ul><li><b>Danh từ</b>: sau a/an/the, my/his…, sau tính từ, sau giới từ, trước "of".</li><li><b>Tính từ</b>: trước danh từ; sau be, feel, become, get, make + O; sau very, so, more.</li><li><b>Trạng từ</b>: bổ nghĩa động từ; đứng trước tính từ; đầu câu có dấu phẩy.</li><li><b>Động từ</b>: sau can/will/should, sau to, sau help/let/make + O.</li></ul><p><b>-ed / -ing</b>: người cảm thấy → stressed, entertained; sự vật gây ra → stressful, entertaining.</p><p>15 họ từ: act, connect, entertain, collect, peace, develop, diverse, farm, participate, stress, expect, popular, strong, ethnic, tradition.</p>`,
+lessons:[
+{title:'act · connect · entertain',qs:[
+I('Swimming is the most popular leisure ______ among teenagers in my neighbourhood. (act)','activity','Cần danh từ','Sau "the most popular leisure" cần <b>danh từ</b>: leisure <b>activity</b> = hoạt động giải trí.','Bơi lội là hoạt động giải trí phổ biến nhất với thanh thiếu niên trong khu tôi ở.'),
+I('My grandmother is over 80, but she is still very ______. (act)','active','Cần tính từ','Sau "is still very" cần <b>tính từ</b> → <b>active</b> (năng động).','Bà tôi đã hơn 80 tuổi nhưng vẫn còn rất năng động.'),
+I('Students should take part ______ in school activities. (act)','actively','Cần trạng từ','Bổ nghĩa cho động từ "take part" → cần <b>trạng từ</b>: <b>actively</b> (một cách tích cực).','Học sinh nên tham gia tích cực vào các hoạt động của trường.'),
+I('Without an Internet ______, we can\'t join the online class. (connect)','connection','Cần danh từ','Sau "an Internet" cần <b>danh từ</b> → Internet <b>connection</b> (kết nối Internet).','Không có kết nối Internet, chúng ta không thể tham gia lớp học trực tuyến.'),
+I('I couldn\'t finish the online test because I got ______ from the Internet. (connect)','disconnected','Cần tính từ – nghĩa phủ định','Sau "got" cần <b>tính từ</b>; nghĩa là không làm xong bài vì <i>bị mất</i> kết nối → phủ định: <b>disconnected</b>.','Tôi không thể làm xong bài kiểm tra trực tuyến vì bị mất kết nối Internet.'),
+I('Watching comedies is a form of ______ for the whole family. (entertain)','entertainment','Cần danh từ','Sau "a form of" cần <b>danh từ</b> → <b>entertainment</b> (sự giải trí).','Xem phim hài là một hình thức giải trí cho cả gia đình.'),
+I('The magic show was really ______; all the children laughed a lot. (entertain)','entertaining','Cần tính từ đuôi -ing','Sau "was really" cần <b>tính từ</b>; chủ ngữ là sự vật (buổi diễn) gây ra cảm xúc → đuôi -ing: <b>entertaining</b>.','Buổi biểu diễn ảo thuật thật sự thú vị; tất cả trẻ em đều cười rất nhiều.'),
+I('The comedy was so ______ that everyone laughed all the time. (entertain)','entertaining','Cần tính từ đuôi -ing','Cấu trúc <b>so + adj + that</b>; vở hài kịch (sự vật) → <b>entertaining</b>. <i>(Câu 33 – Đề tham khảo)</i>','Vở hài kịch thú vị đến mức mọi người cười suốt.')
+]},
+{title:'collect · peace · develop · diverse',qs:[
+I('My brother has a big ______ of foreign stamps. (collect)','collection','Cần danh từ chỉ vật','Sau "a big" cần <b>danh từ</b>; nói về đồ vật (tem) → <b>collection</b> (bộ sưu tập).','Anh trai tôi có một bộ sưu tập tem nước ngoài lớn.'),
+I('He is a famous coin ______; he has more than 2,000 old coins. (collect)','collector','Cần danh từ chỉ người','Chủ ngữ "He is a famous coin…" → <b>danh từ chỉ người</b>: <b>collector</b> (người sưu tầm).','Ông ấy là một nhà sưu tầm tiền xu nổi tiếng; ông có hơn 2.000 đồng xu cổ.'),
+I('My uncle is a stamp ______; he has thousands of stamps. (collect)','collector','Cần danh từ chỉ người','"My uncle is a stamp…" → <b>danh từ chỉ người</b>: <b>collector</b>. <i>(Câu 32 – Đề tham khảo)</i>','Chú tôi là một người sưu tầm tem; chú có hàng nghìn con tem.'),
+I('Life in the countryside is quiet and ______. (peace)','peaceful','Cần tính từ','Sau "is quiet and" cần <b>tính từ</b> song song với quiet → <b>peaceful</b> (yên bình).','Cuộc sống ở nông thôn yên tĩnh và yên bình.'),
+I('The baby is sleeping ______ in her mother\'s arms. (peace)','peacefully','Cần trạng từ','Bổ nghĩa cho động từ "is sleeping" → <b>trạng từ</b>: <b>peacefully</b>.','Em bé đang ngủ yên bình trong vòng tay mẹ.'),
+I('My grandparents live a ______ life in the countryside. (peace)','peaceful','Cần tính từ','Trước danh từ "life" cần <b>tính từ</b> → a <b>peaceful</b> life. <i>(Câu 29 – Đề tham khảo)</i>','Ông bà tôi sống một cuộc sống yên bình ở nông thôn.'),
+I('The ______ of technology has changed the way teenagers learn. (develop)','development','Cần danh từ','Cấu trúc <b>The + N + of</b> → <b>development</b> (sự phát triển).','Sự phát triển của công nghệ đã thay đổi cách thanh thiếu niên học tập.'),
+I('Viet Nam is a ______ country with a fast-growing economy. (develop)','developing','Cần tính từ','Trước danh từ "country" cần <b>tính từ</b> → <b>developing</b> country (nước đang phát triển).','Việt Nam là một quốc gia đang phát triển với nền kinh tế tăng trưởng nhanh.'),
+I('Viet Nam is famous for its cultural ______ with 54 ethnic groups. (diverse)','diversity','Cần danh từ','Sau "its cultural" cần <b>danh từ</b> → cultural <b>diversity</b> (sự đa dạng văn hóa).','Việt Nam nổi tiếng về sự đa dạng văn hóa với 54 dân tộc.')
+]},
+{title:'farm · participate · stress · expect',qs:[
+I('Most ______ in my village grow rice and raise cattle. (farm)','farmers','Cần danh từ chỉ người, số nhiều','Sau "Most" cần danh từ số nhiều; người trồng lúa, nuôi gia súc → <b>farmers</b> (nông dân).','Hầu hết nông dân ở làng tôi trồng lúa và nuôi gia súc.'),
+I('Modern machines make ______ easier than before. (farm)','farming','Cần danh từ chỉ công việc','make + <b>O</b> + adj: tân ngữ là danh từ chỉ công việc → <b>farming</b> (việc làm nông).','Máy móc hiện đại làm cho việc làm nông dễ dàng hơn trước.'),
+I('All ______ in the singing contest will receive a small gift. (participate)','participants','Cần danh từ chỉ người, số nhiều','Sau "All" cần danh từ số nhiều chỉ người (nhận quà) → <b>participants</b> (người tham gia).','Tất cả người tham gia cuộc thi hát sẽ nhận được một món quà nhỏ.'),
+I('Her active ______ in class activities impressed her teacher. (participate)','participation','Cần danh từ chỉ sự việc','Sau "Her active" cần <b>danh từ</b> chỉ sự việc → <b>participation</b> (sự tham gia).','Sự tham gia tích cực của bạn ấy vào các hoạt động lớp đã gây ấn tượng với cô giáo.'),
+I('Exams can be very ______ for students. (stress)','stressful','Cần tính từ chỉ sự vật','Sau "be very" cần <b>tính từ</b>; chủ ngữ là sự vật (kì thi) gây căng thẳng → <b>stressful</b>.','Các kì thi có thể rất căng thẳng đối với học sinh.'),
+I('Lan felt ______ the night before her final exam. (stress)','stressed','Cần tính từ chỉ cảm xúc người','Sau "felt" cần <b>tính từ</b>; cảm xúc của người (Lan) → <b>stressed</b> (bị căng thẳng).','Lan cảm thấy căng thẳng vào đêm trước kì thi cuối kì.'),
+I('Parents\' high ______ can put a lot of pressure on teenagers. (expect)','expectations|expectation','Cần danh từ','Sau tính từ "high" cần <b>danh từ</b> → high <b>expectations</b> (kì vọng cao).','Kì vọng cao của cha mẹ có thể gây nhiều áp lực cho thanh thiếu niên.'),
+I('______, our weak team won the first prize. Nobody thought it could happen. (expect)','Unexpectedly','Cần trạng từ đầu câu – nghĩa phủ định','Đầu câu, trước dấu phẩy → <b>trạng từ</b>; "không ai nghĩ điều đó có thể xảy ra" → nghĩa bất ngờ: <b>Unexpectedly</b> (viết hoa vì đầu câu).','Thật bất ngờ, đội yếu của chúng tôi đã giành giải nhất. Không ai nghĩ điều đó có thể xảy ra.')
+]},
+{title:'popular · strong · ethnic · tradition',qs:[
+I('K-pop has gained great ______ among Vietnamese teenagers. (popular)','popularity','Cần danh từ','Sau "gained great" cần <b>danh từ</b> → gain <b>popularity</b> (trở nên phổ biến).','K-pop đã trở nên rất phổ biến với thanh thiếu niên Việt Nam.'),
+I('Playing video games all day is ______ with most parents. (popular)','unpopular','Cần tính từ – nghĩa phủ định','Sau "is" cần <b>tính từ</b>; phụ huynh không thích việc chơi game cả ngày → <b>unpopular</b>.','Việc chơi điện tử cả ngày không được hầu hết phụ huynh ưa thích.'),
+I('The ______ of social media has changed teenagers\' lives. (popular)','popularity','Cần danh từ','Cấu trúc <b>The + N + of</b> → <b>popularity</b>. <i>(Câu 31 – Đề tham khảo)</i>','Sự phổ biến của mạng xã hội đã thay đổi cuộc sống của thanh thiếu niên.'),
+I('Doing exercise every day helps to improve our muscle ______. (strong)','strength','Cần danh từ','Sau "our muscle" cần <b>danh từ</b> → muscle <b>strength</b> (sức mạnh cơ bắp).','Tập thể dục mỗi ngày giúp cải thiện sức mạnh cơ bắp.'),
+I('Team sports can help ______ the friendship among students. (strong)','strengthen','Cần động từ','Sau "help" cần <b>động từ nguyên mẫu</b> → <b>strengthen</b> (làm mạnh thêm, thắt chặt).','Các môn thể thao đồng đội có thể giúp thắt chặt tình bạn giữa học sinh.'),
+I('Taking part in team sports helps students ______ their friendship. (strong)','strengthen','Cần động từ','<b>help + O + V</b> → <b>strengthen</b>. <i>(Câu 30 – Đề tham khảo)</i>','Tham gia các môn thể thao đồng đội giúp học sinh thắt chặt tình bạn.'),
+I('Viet Nam is an ______ diverse country. (ethnic)','ethnically','Cần trạng từ','Đứng trước tính từ "diverse" → <b>trạng từ</b>: <b>ethnically</b> diverse (đa dạng về dân tộc). Chú ý "an" vì ethnically bắt đầu bằng nguyên âm.','Việt Nam là một quốc gia đa dạng về dân tộc.'),
+I('Áo dài is the ______ costume of Vietnamese women. (tradition)','traditional','Cần tính từ','Trước danh từ "costume" cần <b>tính từ</b> → <b>traditional</b> costume (trang phục truyền thống).','Áo dài là trang phục truyền thống của phụ nữ Việt Nam.'),
+I('______, Vietnamese people make chung cakes before Tet. (tradition)','Traditionally','Cần trạng từ đầu câu','Đầu câu, trước dấu phẩy → <b>trạng từ</b>: <b>Traditionally</b> (theo truyền thống).','Theo truyền thống, người Việt gói bánh chưng trước Tết.'),
+I('______, Vietnamese people visit their relatives during Tet. (tradition)','Traditionally','Cần trạng từ đầu câu','Đầu câu, trước dấu phẩy → <b>Traditionally</b>. <i>(Câu 34 – Đề tham khảo)</i>','Theo truyền thống, người Việt Nam đi thăm họ hàng trong dịp Tết.'),
+I('The villagers welcomed us ______, so we felt at home. (warm)','warmly','Cần trạng từ','Bổ nghĩa cho động từ "welcomed" → <b>trạng từ</b>: <b>warmly</b> (nồng hậu).','Dân làng chào đón chúng tôi nồng hậu, nên chúng tôi cảm thấy như ở nhà.')
+]}
+]},
+/* ---------------- 11. TỪ ĐIỂN ---------------- */
+{id:'dict',part:'Phần VI · Câu 35–36',title:'Tra từ điển',icon:'🔍',color:'#5B6B7F',
+instr:'Đọc mục từ điển và điền cụm từ thích hợp',
+tip:`<ol><li>Đọc câu cần điền, đoán nghĩa và loại từ cần.</li><li>So sánh với các <b>câu ví dụ</b> trong từ điển, tìm câu có ngữ cảnh giống nhất.</li><li><b>Chép</b> cụm từ đó (2–4 từ).</li><li>Biến đổi cho hợp ngữ pháp: chia thì (take up → took up), số ít/số nhiều, thêm a/an/the.</li></ol><p>Không tự "sáng tác" cụm từ mới – chép đúng cụm có sẵn trong từ điển.</p>`,
+lessons:[
+{title:'hobby · harvest · peer',qs:[
+I('Last summer, my sister ______ knitting as a hobby.','took up','Dựa vào ví dụ: "He took up painting as a hobby."','Câu ví dụ: "<i>He <b>took up</b> painting as a hobby.</i>" → take up = bắt đầu (một sở thích). Có "Last summer" nên chia quá khứ: <b>took up</b>.','Mùa hè năm ngoái, chị tôi bắt đầu đan len như một sở thích.','hobby'),
+I('Making origami is ______ for Japanese children.','a popular hobby','Dựa vào ví dụ: "Collecting stamps is a popular hobby for children."','Câu ví dụ: "<i>Collecting stamps is <b>a popular hobby</b> for children.</i>" → chép nguyên cụm <b>a popular hobby</b>.','Gấp giấy origami là một sở thích phổ biến của trẻ em Nhật Bản.','hobby'),
+I('Everyone in my village works from early morning until late evening ______.','at harvest time','Dựa vào ví dụ: "Farmers are very busy at harvest time."','Câu ví dụ: "<i>Farmers are very busy <b>at harvest time</b>.</i>" → <b>at harvest time</b> = vào mùa gặt.','Vào mùa gặt, mọi người trong làng tôi làm việc từ sáng sớm đến tối muộn.','harvest'),
+I('Thanks to the good weather, the farmers had ______ this year.','a good harvest','Dựa vào ví dụ: "We had a good harvest this year."','Câu ví dụ: "<i>We had <b>a good harvest</b> this year.</i>" → <b>a good harvest</b> = một vụ mùa bội thu.','Nhờ thời tiết thuận lợi, năm nay nông dân được một vụ mùa bội thu.','harvest'),
+I('Many teenagers want expensive phones because of ______.','peer pressure','Dựa vào ví dụ: "Teenagers often feel peer pressure to look cool."','Câu ví dụ: "<i>Teenagers often feel <b>peer pressure</b> to look cool.</i>" → because of + danh từ: <b>peer pressure</b>.','Nhiều thanh thiếu niên muốn có điện thoại đắt tiền vì áp lực từ bạn bè đồng trang lứa.','peer'),
+I('When working in groups, students can learn a lot ______.','from their peers','Dựa vào ví dụ: "Children learn a lot from their peers."','Câu ví dụ: "<i>Children learn a lot <b>from their peers</b>.</i>" → <b>from their peers</b> (từ bạn bè đồng trang lứa).','Khi làm việc nhóm, học sinh có thể học hỏi được nhiều điều từ bạn bè.','peer')
+]},
+{title:'festival · ethnic · reunion',qs:[
+I('Families get together to celebrate the new year at Tet – ______ in Viet Nam.','the most important traditional festival','Dựa vào ví dụ: "Tet is the most important traditional festival in Viet Nam."','Câu ví dụ: "<i>Tet is <b>the most important traditional festival</b> in Viet Nam.</i>" → chép nguyên cụm.','Các gia đình sum họp để đón năm mới vào dịp Tết – lễ hội truyền thống quan trọng nhất ở Việt Nam.','festival'),
+I('The Lim Festival in Bac Ninh ______.','is held every spring','Dựa vào ví dụ: "The Hung King Temple Festival is held every spring."','Câu ví dụ: "<i>The Hung King Temple Festival <b>is held every spring</b>.</i>" → <b>is held every spring</b> (được tổ chức vào mỗi mùa xuân).','Hội Lim ở Bắc Ninh được tổ chức vào mỗi mùa xuân.','festival'),
+I('In Ha Giang, tourists can meet people from different ______ such as the Hmong and the Dao.','ethnic groups|ethnic minorities','Dựa vào ví dụ: "Viet Nam has 54 ethnic groups."','Câu ví dụ: "<i>Viet Nam has 54 <b>ethnic groups</b>.</i>" → sau "different" cần danh từ số nhiều: <b>ethnic groups</b> (hoặc ethnic minorities).','Ở Hà Giang, du khách có thể gặp gỡ người thuộc nhiều dân tộc khác nhau như người Hmông và người Dao.','ethnic'),
+I('At the night market, visitors can enjoy ______ played on traditional instruments.','ethnic music','Dựa vào ví dụ: "She loves listening to ethnic music."','Câu ví dụ: "<i>She loves listening to <b>ethnic music</b>.</i>" → <b>ethnic music</b> (âm nhạc dân tộc).','Ở chợ đêm, du khách có thể thưởng thức âm nhạc dân tộc được chơi bằng nhạc cụ truyền thống.','ethnic'),
+I('Every Lunar New Year, all my relatives come back home for ______.','a family reunion','Dựa vào ví dụ: "We hold a family reunion every Tet."','Câu ví dụ: "<i>We hold <b>a family reunion</b> every Tet.</i>" → <b>a family reunion</b> (cuộc đoàn tụ gia đình). <i>(Câu 35 – Đề tham khảo)</i>','Mỗi dịp Tết Nguyên đán, tất cả họ hàng của tôi đều trở về nhà để đoàn tụ gia đình.','reunion'),
+I('Ten years after leaving school, our class ______ at a restaurant.','had a reunion','Dựa vào ví dụ: "Our class had a reunion ten years after we left school."','Câu ví dụ: "<i>Our class <b>had a reunion</b> ten years after we left school.</i>" → <b>had a reunion</b> (đã họp lớp). <i>(Câu 36 – Đề tham khảo)</i>','Mười năm sau khi ra trường, lớp chúng tôi đã họp lớp ở một nhà hàng.','reunion')
+]}
+]},
+/* ---------------- 12. VIẾT LẠI CÂU ---------------- */
+{id:'rw',part:'Phần VII · Câu 37–40',title:'Viết lại câu',icon:'✍️',color:'#1F6FB2',
+instr:'Viết lại câu cho nghĩa không đổi – chạm vào các từ để sắp xếp',
+tip:`<h4>37. If loại 1 (không dùng unless)</h4><p>Mệnh lệnh + <b>or / otherwise</b> → If + you <b>don't</b> + V (đổi sang phủ định). Mệnh lệnh + <b>and</b> → If + you + V (giữ khẳng định). Don't + V, or → If + you + V. "OR đảo NOT".</p><h4>38. Had better (not)</h4><p>should / ought to / It's a good idea / Why don't you → <b>had better + V</b>; shouldn't / Don't / It's not a good idea → <b>had better not + V</b>. Không có "to", không đổi had thành has.</p><h4>39. Because ↔ so</h4><p><b>Because</b> + nguyên nhân; <b>so</b> + kết quả. Không dùng cả because và so trong một câu.</p><h4>40. So sánh tính từ → trạng từ</h4><p>A is a better swimmer than B → A <b>swims better</b> than B. A is a more careful driver → A <b>drives more carefully</b>. Nhớ thêm -s cho động từ khi chủ ngữ số ít.</p>`,
+lessons:[
+{title:'Câu điều kiện loại 1',qs:[
+O('Hurry up, or you will be late for school.','If','you don\'t hurry up, you will be late for school.','will|doesn\'t','Mệnh lệnh + <b>or</b> (nếu không thì) → đổi vế If sang <b>phủ định</b>: If you <b>don\'t</b> hurry up, …','Nếu bạn không nhanh lên, bạn sẽ bị muộn học.'),
+O('Water these plants every day, and they will grow well.','If','you water these plants every day, they will grow well.','don\'t|will','Mệnh lệnh + <b>and</b> → giữ <b>khẳng định</b>: If you water…, they will grow well.','Nếu bạn tưới những cây này mỗi ngày, chúng sẽ phát triển tốt.'),
+O('Be careful, or you will cut your finger.','If','you aren\'t careful, you will cut your finger.','don\'t|be','"Be careful" + or → phủ định. careful là <b>tính từ</b> nên dùng <b>aren\'t</b> (không dùng don\'t careful).','Nếu bạn không cẩn thận, bạn sẽ bị đứt tay.'),
+O('Turn off the lights when you leave, and you will save electricity.','If','you turn off the lights when you leave, you will save electricity.','don\'t|will','Mệnh lệnh + <b>and</b> → giữ khẳng định.','Nếu bạn tắt đèn khi ra ngoài, bạn sẽ tiết kiệm được điện.'),
+O('Stop playing computer games, or your eyes will get tired.','If','you don\'t stop playing computer games, your eyes will get tired.','won\'t|stopped','Mệnh lệnh + <b>or</b> → phủ định: If you don\'t stop playing…','Nếu bạn không dừng chơi điện tử, mắt bạn sẽ bị mỏi.'),
+O('Don\'t be noisy in the library, or the librarian will be angry.','If','you are noisy in the library, the librarian will be angry.','don\'t|aren\'t','"<b>Don\'t</b> + V, or…" → bỏ don\'t, chuyển thành <b>khẳng định</b>: If you are noisy…','Nếu bạn làm ồn trong thư viện, cô thủ thư sẽ tức giận.'),
+O('Mai must wear a raincoat, or she will get wet.','If','Mai doesn\'t wear a raincoat, she will get wet.','don\'t|must','S + must + V, or… → If + S + <b>doesn\'t</b> + V (chủ ngữ Mai số ít → doesn\'t).','Nếu Mai không mặc áo mưa, bạn ấy sẽ bị ướt.'),
+O('Practise speaking English every day, and you will speak it fluently.','If','you practise speaking English every day, you will speak it fluently.','don\'t|fluent','Mệnh lệnh + <b>and</b> → giữ khẳng định.','Nếu bạn luyện nói tiếng Anh mỗi ngày, bạn sẽ nói lưu loát.'),
+O('Leave now, otherwise you will miss the last bus.','If','you don\'t leave now, you will miss the last bus.','will|otherwise','<b>otherwise</b> giống "or" → đổi sang phủ định: If you don\'t leave now…','Nếu bạn không đi ngay bây giờ, bạn sẽ lỡ chuyến xe buýt cuối cùng.'),
+O('Study harder, or you will fail the final exam.','If','you don\'t study harder, you will fail the final exam.','won\'t|hard','Mệnh lệnh + <b>or</b> → phủ định. <i>(Câu 37 – Đề tham khảo)</i>','Nếu bạn không học chăm hơn, bạn sẽ trượt kì thi cuối kì.')
+]},
+{title:'Had better (not)',qs:[
+O('You should wear a helmet when riding a motorbike.','You had better','wear a helmet when riding a motorbike.','to|not','<b>should + V</b> → <b>had better + V</b> (không có "to").','Bạn nên đội mũ bảo hiểm khi đi xe máy.'),
+O('It\'s a good idea for you to see a doctor.','You','had better see a doctor.','to|has','<b>It\'s a good idea for you to V</b> → You <b>had better + V</b>. Không đổi had thành has.','Bạn nên đi khám bác sĩ.'),
+O('You shouldn\'t stay up too late before the exam.','You had','better not stay up too late before the exam.','to|don\'t','<b>shouldn\'t + V</b> → <b>had better not + V</b>.','Bạn không nên thức quá khuya trước kì thi.'),
+O('Don\'t use your phone while you are crossing the road.','You had','better not use your phone while you are crossing the road.','don\'t|to','<b>Don\'t + V</b> → You <b>had better not + V</b>.','Bạn không nên dùng điện thoại khi đang qua đường.'),
+O('Students ought to do their homework before class.','Students','had better do their homework before class.','to|have','<b>ought to + V</b> → <b>had better + V</b> (dù chủ ngữ số nhiều vẫn là had).','Học sinh nên làm bài tập về nhà trước giờ học.'),
+O('It\'s not a good idea to wrap a gift in black paper in Viet Nam.','You had','better not wrap a gift in black paper in Viet Nam.','to|don\'t','<b>It\'s not a good idea to V</b> → had better <b>not</b> + V.','Ở Việt Nam, bạn không nên gói quà bằng giấy màu đen.'),
+O('We should take off our shoes before entering the pagoda.','We had','better take off our shoes before entering the pagoda.','to|not','<b>should + V</b> → <b>had better + V</b>.','Chúng ta nên cởi giày trước khi vào chùa.'),
+O('Why don\'t you ask your teacher for help?','You had','better ask your teacher for help.','to|don\'t','<b>Why don\'t you + V?</b> (lời khuyên) → You <b>had better + V</b>.','Bạn nên nhờ thầy cô giúp đỡ.'),
+O('You should wear warm clothes when you visit Sa Pa in winter.','You had','better wear warm clothes when you visit Sa Pa in winter.','to|wearing','<b>should + V</b> → <b>had better + V</b>. <i>(Câu 38 – Đề tham khảo)</i>','Bạn nên mặc quần áo ấm khi đến Sa Pa vào mùa đông.')
+]},
+{title:'Because ↔ so',qs:[
+O('It rained heavily, so we stayed at home.','Because','it rained heavily, we stayed at home.','so|of','<b>Because</b> đứng trước <b>nguyên nhân</b> (trời mưa to); bỏ "so" – không dùng cả because và so trong một câu.','Vì trời mưa to nên chúng tôi ở nhà.'),
+O('Nam was ill, so he didn\'t go to school yesterday.','Because','Nam was ill, he didn\'t go to school yesterday.','so|isn\'t','Because + nguyên nhân (Nam bị ốm), giữ nguyên thì quá khứ.','Vì Nam bị ốm nên hôm qua bạn ấy không đi học.','he was ill, Nam didn\'t go to school yesterday.'),
+O('My village is very peaceful, so many tourists come there to relax.','Because','my village is very peaceful, many tourists come there to relax.','so|peace','Because + nguyên nhân (làng yên bình), vế sau là kết quả.','Vì làng tôi rất yên bình nên nhiều du khách đến đó để thư giãn.'),
+O('Lan stayed up late chatting online, so she felt tired in class.','Because','Lan stayed up late chatting online, she felt tired in class.','so|of','Because + nguyên nhân (thức khuya), vế sau là kết quả (mệt trong lớp).','Vì Lan thức khuya nhắn tin trên mạng nên bạn ấy thấy mệt trong lớp.','she stayed up late chatting online, Lan felt tired in class.'),
+O('Because the Tay live near rivers, they build stilt houses.','The Tay','live near rivers, so they build stilt houses.','because|lives','Đổi ngược lại: nguyên nhân + <b>, so</b> + kết quả.','Người Tày sống gần sông, vì vậy họ làm nhà sàn.'),
+O('Because Tet is coming, people are busy decorating their houses.','Tet','is coming, so people are busy decorating their houses.','because|decorate','Nguyên nhân (Tết đến) + <b>, so</b> + kết quả (mọi người bận trang trí nhà).','Tết sắp đến nên mọi người bận rộn trang trí nhà cửa.'),
+O('Mai loves DIY, so she often makes her own birthday cards.','Because','Mai loves DIY, she often makes her own birthday cards.','so|love','Because + nguyên nhân (Mai thích DIY).','Vì Mai yêu thích DIY nên bạn ấy thường tự làm thiệp sinh nhật.','she loves DIY, Mai often makes her own birthday cards.'),
+O('He didn\'t study hard, so he failed the test.','Because','he didn\'t study hard, he failed the test.','so|fail','Because + nguyên nhân (không học chăm), giữ nguyên thì quá khứ.','Vì không học chăm nên cậu ấy trượt bài kiểm tra.'),
+O('Minh bought a lot of origami paper, for he wanted to make paper cranes.','Because','Minh wanted to make paper cranes, he bought a lot of origami paper.','for|so','<b>for</b> (vì) đứng trước nguyên nhân → đưa nguyên nhân lên sau <b>Because</b>.','Vì Minh muốn gấp hạc giấy nên bạn ấy đã mua rất nhiều giấy origami.','he wanted to make paper cranes, Minh bought a lot of origami paper.'),
+O('Hoa was very tired, so she went to bed early.','Because','Hoa was very tired, she went to bed early.','so|of','Because + nguyên nhân. <i>(Câu 39 – Đề tham khảo)</i>','Vì Hoa rất mệt nên bạn ấy đi ngủ sớm.','she was very tired, Hoa went to bed early.')
+]},
+{title:'So sánh: tính từ → trạng từ',qs:[
+O('Minh is a better swimmer than Hieu.','Minh swims','better than Hieu.','more|well','a better <b>swimmer</b> → <b>swims better</b> (good → well → better).','Minh bơi giỏi hơn Hiếu.'),
+O('My mother is a more careful driver than my father.','My mother','drives more carefully than my father.','careful|drive','a more careful <b>driver</b> → <b>drives more carefully</b> (thêm -s vì chủ ngữ số ít; careful → carefully).','Mẹ tôi lái xe cẩn thận hơn bố tôi.'),
+O('Lan is a faster runner than her sister.','Lan','runs faster than her sister.','more|run','a faster <b>runner</b> → <b>runs faster</b> (fast là trạng từ ngắn, giữ nguyên faster).','Lan chạy nhanh hơn chị gái.'),
+O('Mr Hai was a harder worker than his colleagues.','Mr Hai','worked harder than his colleagues.','works|more','"<b>was</b>" là quá khứ → động từ chia quá khứ: <b>worked harder</b>.','Ông Hải đã làm việc chăm chỉ hơn các đồng nghiệp.'),
+O('Nga is a more beautiful singer than Hoa.','Nga','sings more beautifully than Hoa.','beautiful|sing','a more beautiful <b>singer</b> → <b>sings more beautifully</b>.','Nga hát hay hơn Hoa.'),
+O('Tom is a worse cook than his wife.','Tom','cooks worse than his wife.','more|badly','a worse <b>cook</b> (đầu bếp) → <b>cooks worse</b> (badly → worse).','Tom nấu ăn dở hơn vợ.'),
+O('Mai is a more fluent English speaker than Lan.','Mai','speaks English more fluently than Lan.','fluent|speak','a more fluent English <b>speaker</b> → <b>speaks English more fluently</b> (tân ngữ English đặt ngay sau động từ).','Mai nói tiếng Anh lưu loát hơn Lan.'),
+O('My brother is a better badminton player than me.','My brother','plays badminton better than me.','well|more','a better badminton <b>player</b> → <b>plays badminton better</b>.','Anh trai tôi chơi cầu lông giỏi hơn tôi.'),
+O('Nam is a more careless writer than his classmates.','Nam','writes more carelessly than his classmates.','careless|write','a more careless <b>writer</b> → <b>writes more carelessly</b>.','Nam viết cẩu thả hơn các bạn cùng lớp.'),
+O('Huong is a more creative designer than her friend.','Huong','designs more creatively than her friend.','creative|design','a more creative <b>designer</b> → <b>designs more creatively</b>.','Hương thiết kế sáng tạo hơn bạn của cô ấy.'),
+O('Peter is a more careful driver than his brother.','Peter','drives more carefully than his brother.','careful|drive','a more careful <b>driver</b> → <b>drives more carefully</b>. <i>(Câu 40 – Đề tham khảo)</i>','Peter lái xe cẩn thận hơn anh trai.')
+]}
+]}
+];
+
+</script>
+<script>
+(function(){
+'use strict';
+/* ---------------- storage ---------------- */
+const KEY='vuotai-anh8-v1';
+let ST={xp:0,streak:0,lastDay:'',done:{},wrong:[],day:'',dayXp:0,sound:true,unlockAll:false,theme:''};
+try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s)ST=Object.assign(ST,s);}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(ST));}catch(e){}}
+function today(){const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+function yesterday(){const d=new Date();d.setDate(d.getDate()-1);return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+if(ST.day!==today()){ST.day=today();ST.dayXp=0;}
+if(ST.lastDay && ST.lastDay!==today() && ST.lastDay!==yesterday()){ST.streak=0;}
+if(ST.theme)document.documentElement.setAttribute('data-theme',ST.theme);
+const GOAL=50;
+
+/* ---------------- index ---------------- */
+const QMAP={};
+SECTIONS.forEach(sec=>sec.lessons.forEach((L,li)=>{
+  L.id=sec.id+'-'+li;
+  L.qs.forEach((q,qi)=>{q.id=L.id+'-'+qi;q.sec=sec;if(L.passage){q.passage=L.passage;q.pvi=L.pvi;}QMAP[q.id]=q;});
+}));
+
+/* ---------------- helpers ---------------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const strip=s=>String(s).replace(/<[^>]+>/g,'').replace(/\[|\]/g,'');
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const norm=s=>String(s).toLowerCase().replace(/[’‘`´]/g,"'").replace(/\s+/g,' ').replace(/\s*([,.!?])\s*/g,'$1 ').trim().replace(/[.!\s]+$/,'');
+const underline=s=>esc(s).replace(/\[(.+?)\]/g,'<u>$1</u>');
+function toast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2200);}
+
+/* ---------------- sound ---------------- */
+let AC=null;
+function tone(freqs,dur,type){if(!ST.sound)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();let t=AC.currentTime;freqs.forEach(f=>{const o=AC.createOscillator(),g=AC.createGain();o.type=type||'sine';o.frequency.value=f;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.18,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+dur+.02);t+=dur*.8;});}catch(e){}}
+const sOk=()=>tone([660,880],.14),sBad=()=>tone([220,180],.18,'square'),sWin=()=>tone([523,659,784,1047],.15),sTap=()=>tone([500],.04);
+/* ---------------- speech ---------------- */
+const canSpeak='speechSynthesis' in window;
+let enVoice=null;
+function pickVoice(){if(!canSpeak)return;const v=speechSynthesis.getVoices();enVoice=v.find(x=>/en[-_]GB/i.test(x.lang))||v.find(x=>/en[-_]US/i.test(x.lang))||v.find(x=>/^en/i.test(x.lang))||null;}
+if(canSpeak){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
+function speak(text){if(!canSpeak||!text)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=enVoice?enVoice.lang:'en-GB';if(enVoice)u.voice=enVoice;u.rate=.88;speechSynthesis.speak(u);}catch(e){}}
+
+/* ---------------- HOME ---------------- */
+function lessonUnlocked(sec,li){return ST.unlockAll||li===0||!!ST.done[sec.lessons[li-1].id];}
+function renderHome(){
+  $('#hStreak').textContent=ST.streak;$('#hXp').textContent=ST.xp;
+  $('#goalTxt').textContent='Mục tiêu hôm nay: '+Math.min(ST.dayXp,GOAL)+' / '+GOAL+' XP'+(ST.dayXp>=GOAL?' ✅':'');
+  $('#goalBar').style.width=Math.min(100,ST.dayXp/GOAL*100)+'%';
+  const wc=ST.wrong.filter(id=>QMAP[id]).length;
+  $('#wrongCnt').textContent=wc?wc+' câu cần ôn lại':'Chưa có câu sai';
+  $('#btnReview').disabled=!wc;
+  const box=$('#sections');box.innerHTML='';
+  let firstCurrentMarked=false;
+  SECTIONS.forEach(sec=>{
+    const doneN=sec.lessons.filter(L=>ST.done[L.id]).length;
+    const qN=sec.lessons.reduce((a,L)=>a+L.qs.length,0);
+    const d=document.createElement('div');d.className='section';
+    d.innerHTML=`<div class="sechead" style="background:${sec.color}"><span class="em">${sec.icon}</span><div style="min-width:0"><div class="sp">${esc(sec.part)}</div><h2>${esc(sec.title)}</h2><div class="secprog">${doneN}/${sec.lessons.length} bài · ${qN} câu</div></div><button class="tipbtn">📘 Mẹo</button></div><div class="path"></div>`;
+    d.querySelector('.tipbtn').onclick=()=>showTip(sec);
+    const path=d.querySelector('.path');
+    const offs=[0,-60,-80,-40,20,60,80,40];
+    sec.lessons.forEach((L,li)=>{
+      const unlocked=lessonUnlocked(sec,li);const done=ST.done[L.id];
+      const isCur=unlocked&&!done&&!firstCurrentMarked;
+      if(isCur)firstCurrentMarked=true;
+      const n=document.createElement('div');
+      n.className='node'+(unlocked?'':' locked')+(isCur?' current':'');
+      n.style.transform='translateX('+offs[li%offs.length]+'px)';
+      const icon=done?'✔':(unlocked?(L.qs[0].t==='match'?'🧠':(L.passage?'📄':'★')):'🔒');
+      n.innerHTML=(isCur?'<div class="startTag">Bắt đầu</div>':'')+`<button class="circle" style="background:${sec.color};box-shadow:0 6px 0 ${shade(sec.color)};color:#fff" aria-label="${esc(L.title)}">${icon}</button><div class="stars">${done?'★'.repeat(done)+'☆'.repeat(3-done):''}</div><div class="lbl">${esc(L.title)}</div>`;
+      if(isCur)n.querySelector('.circle').style.color=sec.color;
+      n.querySelector('.circle').innerHTML='<span style="color:#fff">'+icon+'</span>';
+      n.querySelector('.circle').onclick=()=>{sTap();if(!unlocked){toast('Hoàn thành bài trước để mở khoá nhé!');return;}openLessonSheet(sec,L);};
+      path.appendChild(n);
+    });
+    box.appendChild(d);
+  });
+}
+function shade(hex){const n=parseInt(hex.slice(1),16);let r=(n>>16)*.75|0,g=((n>>8)&255)*.75|0,b=(n&255)*.75|0;return 'rgb('+r+','+g+','+b+')';}
+function openModal(html){$('#sheet').innerHTML=html;$('#modal').classList.remove('hidden');}
+function closeModal(){$('#modal').classList.add('hidden');}
+$('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal();});
+function showTip(sec){openModal(`<h3>${sec.icon} ${esc(sec.title)}</h3><p class="sub">${esc(sec.part)} · Mẹo làm bài</p><div class="tipbox">${sec.tip}</div><button class="btn mt" id="mClose">Đã hiểu</button>`);$('#mClose').onclick=closeModal;}
+function openLessonSheet(sec,L){
+  const done=ST.done[L.id];
+  const kinds={mcq:'Trắc nghiệm',input:'Điền từ',order:'Sắp xếp câu',match:'Ghép cặp'};
+  const ks=[...new Set(L.qs.map(q=>kinds[q.t]))].join(' · ');
+  openModal(`<div class="tag" style="background:${sec.color}">${esc(sec.part)}</div><h3>${esc(L.title)}</h3><p class="sub">${L.qs.length} câu · ${ks}${done?' · Kỷ lục: '+'★'.repeat(done):''}</p><div class="row"><button class="btn ghost" id="mTip">📘 Mẹo</button><button class="btn" id="mGo">${done?'Luyện lại':'Bắt đầu'}</button></div>`);
+  $('#mTip').onclick=()=>showTip(sec);
+  $('#mGo').onclick=()=>{closeModal();startLesson({title:L.title,lessonId:L.id,qs:L.qs.slice(),sec});};
+}
+$('#btnMenu').onclick=()=>{
+  openModal(`<h3>⚙️ Cài đặt</h3><p class="sub">Tiến độ chỉ lưu trên thiết bị này.</p>
+  <div class="row"><button class="btn ghost" id="sSound">${ST.sound?'🔊 Âm thanh: Bật':'🔇 Âm thanh: Tắt'}</button></div>
+  <div class="row mt"><button class="btn ghost" id="sTheme">🌓 Giao diện: ${ST.theme==='dark'?'Tối':ST.theme==='light'?'Sáng':'Theo máy'}</button></div>
+  <div class="row mt"><button class="btn ghost" id="sUnlock">${ST.unlockAll?'🔓 Đang mở khoá tất cả bài':'🔒 Mở khoá tất cả bài'}</button></div>
+  <div class="row mt"><button class="btn bad" id="sReset">Xoá toàn bộ tiến độ</button></div>
+  <button class="btn mt" id="mClose">Đóng</button>`);
+  $('#sSound').onclick=()=>{ST.sound=!ST.sound;save();$('#btnMenu').click();};
+  $('#sTheme').onclick=()=>{ST.theme=ST.theme===''?'dark':ST.theme==='dark'?'light':'';if(ST.theme)document.documentElement.setAttribute('data-theme',ST.theme);else document.documentElement.removeAttribute('data-theme');save();$('#btnMenu').click();};
+  $('#sUnlock').onclick=()=>{ST.unlockAll=!ST.unlockAll;save();renderHome();$('#btnMenu').click();};
+  $('#sReset').onclick=()=>{if(confirm('Xoá toàn bộ điểm, chuỗi ngày và tiến độ?')){ST.xp=0;ST.streak=0;ST.lastDay='';ST.done={};ST.wrong=[];ST.dayXp=0;save();renderHome();closeModal();}};
+  $('#mClose').onclick=closeModal;
+};
+$('#btnReview').onclick=()=>{const ids=shuffle(ST.wrong.filter(id=>QMAP[id])).slice(0,15);if(!ids.length)return;startLesson({title:'Ôn câu sai',review:true,qs:ids.map(id=>QMAP[id])});};
+$('#btnMix').onclick=()=>{const all=Object.values(QMAP).filter(q=>q.t!=='match');startLesson({title:'Thử thách tổng hợp',mix:true,qs:shuffle(all).slice(0,15)});};
+
+/* ---------------- LESSON ENGINE ---------------- */
+let LS=null;
+function startLesson(cfg){
+  LS={cfg,queue:cfg.qs.slice(),total:cfg.qs.length,correct:0,hearts:5,mistakes:0,firstTry:0,seen:{},wrongList:[],filled:{},start:Date.now(),cur:null,state:'answer',ans:null};
+  $('#home').classList.add('hidden');$('#result').classList.add('hidden');$('#lesson').classList.remove('hidden');
+  window.scrollTo(0,0);next();
+}
+function updateBar(){$('#pbar').style.width=(LS.correct/LS.total*100)+'%';$('#hearts').textContent=LS.hearts;}
+function next(){
+  updateBar();
+  if(!LS.queue.length){return finish(true);}
+  LS.cur=LS.queue.shift();LS.state='answer';LS.ans=null;
+  const fb=$('#fb');fb.classList.add('hidden');fb.innerHTML='';
+  $('#lfoot').className='lfoot';
+  const b=$('#btnCheck');b.className='btn';b.textContent='Kiểm tra';b.disabled=true;
+  renderQ(LS.cur);window.scrollTo(0,0);
+}
+function setReady(v){$('#btnCheck').disabled=!v;}
+function instrOf(q){if(q.t==='match')return 'Ghép từ tiếng Anh với nghĩa tiếng Việt';if(q.t==='order')return 'Viết lại câu cho nghĩa không đổi';if(q.kind==='tf')return 'True (Đúng) hay False (Sai)?';if(q.passage&&q.t==='mcq'&&/^\(\d\)$/.test(q.q))return 'Chọn đáp án đúng cho chỗ trống '+q.q;return q.sec.instr;}
+function passageHTML(q){
+  let p=esc(q.passage);
+  if(/^\(\d\)$/.test(q.q||'')){
+    p=p.replace(/\((\d)\) ______/g,(m,n)=>{const key='('+n+')';if(key===q.q)return '<span class="blank cur">('+n+') ______</span>';
+      if(LS.filled[key]&&!LS.cfg.mix&&!LS.cfg.review)return '<span class="blank done">('+n+') '+esc(LS.filled[key])+'</span>';return '<span class="blank">('+n+') ______</span>';});
+  }
+  return p;
+}
+function renderQ(q){
+  const A=$('#qArea');let h='';document.querySelectorAll('.confetti').forEach(c=>c.parentNode.removeChild(c));$('.lbody').style.paddingBottom='';
+  if(LS.cfg.mix||LS.cfg.review)h+=`<div class="tag" style="background:${q.sec.color}">${q.sec.icon} ${esc(q.sec.title)}</div>`;
+  h+=`<div class="instr">${esc(instrOf(q))}</div>`;
+  if(q.passage){h+=`<div class="passage" id="passage">${passageHTML(q)}</div><div class="ptools"><button class="pill" id="pViBtn" disabled>🇻🇳 Dịch đoạn văn (sau khi trả lời)</button></div><div class="pvi hidden" id="pVi">${esc(q.pvi||'')}</div>`;}
+  if(q.e&&DICT[q.e]){const D=DICT[q.e];h+=`<div class="dict"><span class="hw">${esc(D.w)}</span><span class="ipa">${esc(D.ipa)}</span> <span class="pos">${esc(D.pos)}</span>${D.defs.map(df=>`<div style="margin-top:6px"><span class="g">${esc(df.g)}</span> ${esc(df.d)}<ul>${df.ex.map(x=>'<li>'+esc(x)+'</li>').join('')}</ul></div>`).join('')}</div>`;}
+  if(q.t==='mcq'){
+    if(q.sign){const ic={ban:'🚫',warn:'⚠️',must:'🔵',info:'ℹ️'}[q.sign.k];h+=`<div class="sign ${q.sign.k}"><span class="ic">${ic}</span>${q.sign.lines.map((l,i)=>`<div class="${i?'ln':'l0'}">${esc(l)}</div>`).join('')}</div>`;}
+    else if(q.q&&!/^\(\d\)$/.test(q.q)){h+=`<div class="qtext">${q.kind==='tf'?'':''}${esc(q.q).replace(/&lt;br&gt;/g,'<br>').replace(/______/g,'<span class="gap">&nbsp;</span>')}</div>`;}
+    let order=q.o.map((t,i)=>i);if(!q.fixed)order=shuffle(order);
+    LS.order=order;
+    const big=q.kind==='tf';const grid=(q.kind==='pron'||q.kind==='stress'||(!q.sign&&q.o.every(o=>o.length<16)&&!big));
+    h+=`<div class="opts${big?' grid big':grid?' grid':''}">`+order.map((oi,k)=>`<button class="opt" data-i="${oi}">${big?'':`<span class="k">${'ABCD'[k]}</span>`}<span>${big?(q.o[oi]==='True'?'✔ True – Đúng':'✘ False – Sai'):(q.kind==='pron'?underline(q.o[oi]):esc(q.o[oi]))}</span></button>`).join('')+'</div>';
+    A.innerHTML=h;
+    A.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{if(LS.state!=='answer')return;sTap();A.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');LS.ans=+b.dataset.i;setReady(true);if(q.kind==='pron'||q.kind==='stress')speak(strip(q.o[+b.dataset.i]));});
+  }
+  if(q.passage){const pc=$('#passage'),cb=pc&&pc.querySelector('.blank.cur');if(cb)pc.scrollTop=Math.max(0,cb.offsetTop-pc.offsetTop-40);}
+  if(q.t==='input'){
+    h+=`<div class="qtext">${esc(q.q).replace(/______/g,'<span class="gap">&nbsp;</span>')}</div><input class="inp" id="inp" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Gõ câu trả lời…"><div class="hint"><button class="pill" id="hintBtn">💡 Gợi ý</button> <span id="hintTxt" class="hidden"><b>${esc(q.h||'')}</b></span></div>`;
+    A.innerHTML=h;const inp=$('#inp');
+    inp.oninput=()=>{LS.ans=inp.value;setReady(inp.value.trim().length>0);};
+    inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();$('#btnCheck').click();}};
+    $('#hintBtn').onclick=()=>{$('#hintTxt').classList.remove('hidden');};
+    setTimeout(()=>{try{inp.focus({preventScroll:true});}catch(e){}},50);
+  }
+  else if(q.t==='order'){
+    const toks=q.ans.split(' ');const bank=shuffle(toks.concat(q.d).map((t,i)=>({t,i})));
+    LS.picked=[];
+    h+=`<div class="orig"><small>Câu gốc</small>${esc(q.q)}</div><div class="ansline" id="ansline"><span class="tile fixed">${esc(q.s)}</span></div><div class="bank" id="bank">${bank.map(b=>`<button class="tile" data-i="${b.i}">${esc(b.t)}</button>`).join('')}</div>`;
+    A.innerHTML=h;
+    const all=toks.concat(q.d);
+    const redraw=()=>{const line=$('#ansline');line.innerHTML=`<span class="tile fixed">${esc(q.s)}</span>`+LS.picked.map(i=>`<button class="tile" data-i="${i}">${esc(all[i])}</button>`).join('');
+      line.querySelectorAll('button.tile').forEach(t=>t.onclick=()=>{if(LS.state!=='answer')return;sTap();LS.picked=LS.picked.filter(x=>x!==+t.dataset.i);A.querySelector('#bank .tile[data-i="'+t.dataset.i+'"]').classList.remove('used');redraw();});
+      LS.ans=LS.picked.map(i=>all[i]).join(' ');setReady(LS.picked.length>0);};
+    A.querySelectorAll('#bank .tile').forEach(t=>t.onclick=()=>{if(LS.state!=='answer'||t.classList.contains('used'))return;sTap();t.classList.add('used');LS.picked.push(+t.dataset.i);redraw();});
+  }
+  else if(q.t==='match'){
+    const L=shuffle(q.pairs.map((p,i)=>({t:p[0],i}))),R=shuffle(q.pairs.map((p,i)=>({t:p[1],i})));
+    h+=`<div class="match"><div class="col">${L.map(x=>`<button class="mt-i" data-s="L" data-i="${x.i}">${esc(x.t)}</button>`).join('')}</div><div class="col">${R.map(x=>`<button class="mt-i" data-s="R" data-i="${x.i}">${esc(x.t)}</button>`).join('')}</div></div>`;
+    A.innerHTML=h;let selL=null,selR=null,got=0;LS.matchMiss=0;
+    const tryPair=()=>{if(!selL||!selR)return;const a=selL,b=selR;selL=selR=null;
+      if(a.dataset.i===b.dataset.i){sOk();speak(q.pairs[+a.dataset.i][0]);[a,b].forEach(x=>{x.classList.remove('sel');x.classList.add('ok');x.disabled=true;});got++;if(got===q.pairs.length){LS.ans='ok';setReady(true);setTimeout(()=>$('#btnCheck').click(),350);}}
+      else{sBad();LS.matchMiss++;[a,b].forEach(x=>{x.classList.remove('sel');x.classList.add('no');setTimeout(()=>x.classList.remove('no'),400);});}};
+    A.querySelectorAll('.mt-i').forEach(b=>b.onclick=()=>{if(b.classList.contains('ok'))return;sTap();if(b.dataset.s==='L'){A.querySelectorAll('[data-s="L"]').forEach(x=>x.classList.remove('sel'));selL=b;}else{A.querySelectorAll('[data-s="R"]').forEach(x=>x.classList.remove('sel'));selR=b;}b.classList.add('sel');if(b.dataset.s==='L')speak(b.textContent);tryPair();});
+  }
+}
+function correctText(q){
+  if(q.t==='mcq')return q.o[q.a];
+  if(q.t==='input')return q.a[0];
+  if(q.t==='order')return q.s+' '+q.ans;
+  return '';
+}
+function englishOf(q){
+  if(q.t==='match')return '';
+  if(q.kind==='pron'||q.kind==='stress')return q.o.map(strip).join(', ');
+  if(q.kind==='tf')return q.q;
+  if(q.sign)return q.o[q.a];
+  if(q.t==='order')return q.s+' '+q.ans;
+  if(q.passage&&/^\(\d\)$/.test(q.q)){const re=new RegExp('[^.!?]*\\'+q.q.slice(0,2)+'\\) ______[^.!?]*[.!?]');const m=q.passage.match(re);return m?m[0].replace(/\(\d\) ______/,q.o[q.a]).replace(/\(\d\) ______/g,'…').trim():q.o[q.a];}
+  let s=strip(q.q||'').replace(/\s*\((?:act|connect|entertain|collect|peace|develop|diverse|farm|participate|stress|expect|popular|strong|ethnic|tradition|warm)\)\s*$/,'');
+  const ans=q.t==='input'?q.a[0]:q.o[q.a];
+  if(/^A: /.test(s)){s=s.replace('______',ans);return s.replace(/^A: /,'').replace(/B: /,' ');}
+  return s.replace(/______/,ans);
+}
+$('#btnCheck').onclick=()=>{
+  if(!LS)return;
+  if(LS.state==='feedback'){next();return;}
+  const q=LS.cur;let ok=false;
+  if(q.t==='mcq')ok=LS.ans===q.a;
+  else if(q.t==='input')ok=q.a.some(a=>norm(a)===norm(LS.ans||''));
+  else if(q.t==='order')ok=[q.ans].concat(q.alts||[]).some(a=>norm(a)===norm(LS.ans||''));
+  else if(q.t==='match')ok=true;
+  LS.state='feedback';
+  const first=!LS.seen[q.id];LS.seen[q.id]=1;
+  const A=$('#qArea');
+  if(q.t==='mcq'){A.querySelectorAll('.opt').forEach(b=>{b.disabled=true;const i=+b.dataset.i;if(i===q.a)b.classList.add('right');else if(i===LS.ans)b.classList.add('wrong');});}
+  if(q.t==='input'){$('#inp').classList.add(ok?'right':'wrong');$('#inp').readOnly=true;}
+  if(q.t==='order'){$('#ansline').classList.add(ok?'right':'wrong');}
+  if(ok){LS.correct++;if(first){LS.firstTry++;if(q.t!=='match'&&(LS.cfg.review||ST.wrong.includes(q.id)))ST.wrong=ST.wrong.filter(x=>x!==q.id);}if(q.passage&&q.q)LS.filled[q.q]=q.o?q.o[q.a]:'';sOk();}
+  else{LS.mistakes++;LS.hearts--;if(!ST.wrong.includes(q.id))ST.wrong.push(q.id);if(!LS.wrongList.includes(q))LS.wrongList.push(q);LS.queue.push(q);sBad();}
+  save();updateBar();
+  if(q.passage){const pb=$('#pViBtn');if(pb){pb.disabled=false;pb.textContent='🇻🇳 Xem bản dịch đoạn văn';pb.onclick=()=>$('#pVi').classList.toggle('hidden');}}
+  const praise=['Chính xác!','Tuyệt vời!','Giỏi quá!','Xuất sắc!','Đúng rồi!'];
+  const en=englishOf(q);
+  let fb='';
+  if(q.t==='match'){fb=`<h3>${LS.matchMiss?'Hoàn thành!':'Hoàn hảo!'} 🎉</h3><div class="box"><b class="t">Các cặp từ</b>${q.pairs.map(p=>'<div><b>'+esc(p[0])+'</b>: '+esc(p[1])+'</div>').join('')}</div>`;}
+  else{
+    fb=`<h3>${ok?'✅ '+praise[Math.random()*praise.length|0]:'❌ Chưa đúng rồi'}${canSpeak&&en?'<button class="spk" id="spk">🔊 Nghe</button>':''}</h3>`;
+    if(!ok){fb+=`<div class="ans">Đáp án đúng: ${q.kind==='pron'?underline(correctText(q)):esc(correctText(q))}</div>`;}
+    else if(q.t==='input'&&norm(LS.ans)!==norm(q.a[0])){fb+=`<div class="ans">Đáp án: ${esc(q.a.join(' / '))}</div>`;}
+    fb+=`<div class="box"><b class="t">💡 Giải thích</b>${q.ex}</div>`;
+    fb+=`<div class="box"><b class="t">🇻🇳 Dịch nghĩa</b>${esc(q.vi)}</div>`;
+  }
+  const f=$('#fb');f.innerHTML=fb;f.classList.remove('hidden');
+  const sp=$('#spk');if(sp)sp.onclick=()=>speak(en);
+  $('#lfoot').className='lfoot '+(ok?'ok':'bad');
+  const b=$('#btnCheck');b.disabled=false;b.className='btn '+(ok?'ok':'bad');b.textContent=ok?'Tiếp tục':'Đã hiểu';
+  if(LS.hearts<=0){b.textContent='Tiếp tục';b.onclickOverride=true;LS.queue=[];LS.dead=true;}
+  f.scrollTop=0;
+  $('.lbody').style.paddingBottom=($('#lfoot').offsetHeight+24)+'px';
+};
+function finish(){
+  const dead=LS.dead;
+  $('#lesson').classList.add('hidden');$('#result').classList.remove('hidden');window.scrollTo(0,0);
+  const secs=Math.round((Date.now()-LS.start)/1000);const tm=Math.floor(secs/60)+':'+String(secs%60).padStart(2,'0');
+  const acc=LS.firstTry&&LS.total?Math.round(LS.firstTry/LS.total*100):0;
+  const R=$('#resArea');
+  const reviewHTML=LS.wrongList.length?`<div class="reviewlist"><h3 style="margin:18px 0 8px;font-size:17px">Xem lại câu đã sai (${LS.wrongList.length})</h3>${LS.wrongList.map(q=>`<details><summary>${esc(strip(q.q&&!/^\(\d\)$/.test(q.q)?q.q:(q.kind==='pron'||q.kind==='stress'?q.o.map(strip).join(' · '):(q.sign?q.sign.lines.join(' – '):q.q||''))).slice(0,90))}</summary><div style="margin-top:6px"><b>Đáp án:</b> ${esc(correctText(q))}</div><div style="margin-top:4px">${q.ex}</div><div style="margin-top:4px;color:var(--muted)">${esc(q.vi)}</div></details>`).join('')}</div>`:'';
+  if(dead){
+    sBad();
+    R.innerHTML=`<div style="font-size:64px">💔</div><h1>Hết tim rồi!</h1><p style="color:var(--muted)">Đừng nản nhé – đọc lại phần giải thích các câu sai rồi thử lại.</p>${reviewHTML}<div class="row mt"><button class="btn ghost" id="rHome">Về trang chính</button><button class="btn" id="rRetry">Làm lại</button></div>`;
+    $('#rRetry').onclick=()=>startLesson(Object.assign({},LS.cfg,{qs:LS.cfg.mix?shuffle(Object.values(QMAP).filter(q=>q.t!=='match')).slice(0,15):LS.cfg.qs}));
+    $('#rHome').onclick=goHome;return;
+  }
+  const stars=LS.mistakes===0?3:LS.mistakes<=2?2:1;
+  const gain=10+LS.firstTry+(LS.mistakes===0?5:0);
+  ST.xp+=gain;ST.dayXp+=gain;
+  if(ST.lastDay!==today()){ST.streak=(ST.lastDay===yesterday())?ST.streak+1:1;ST.lastDay=today();}
+  if(LS.cfg.lessonId){ST.done[LS.cfg.lessonId]=Math.max(ST.done[LS.cfg.lessonId]||0,stars);}
+  save();sWin();confetti();
+  const msgs={3:'Hoàn hảo! Không sai câu nào!',2:'Làm tốt lắm!',1:'Hoàn thành! Ôn lại câu sai để giỏi hơn nhé.'};
+  R.innerHTML=`<div class="bigstars">${[1,2,3].map(i=>i<=stars?'⭐':'<span class="off">⭐</span>').join('')}</div><h1>${msgs[stars]}</h1><p style="color:var(--muted);margin:0">${esc(LS.cfg.title)}</p>
+  <div class="stats"><div class="stat"><b style="background:var(--gold)">Điểm XP</b><span>+${gain}</span></div><div class="stat"><b style="background:var(--ok)">Chính xác</b><span>${acc}%</span></div><div class="stat"><b style="background:var(--pri)">Thời gian</b><span>${tm}</span></div></div>
+  <p style="margin:0 0 6px;font-weight:700">🔥 Chuỗi ${ST.streak} ngày · Hôm nay ${Math.min(ST.dayXp,GOAL)}/${GOAL} XP</p>
+  ${reviewHTML}
+  <div class="row mt"><button class="btn ghost" id="rAgain">Luyện lại</button><button class="btn ok" id="rHome">Tiếp tục</button></div>`;
+  $('#rHome').onclick=goHome;
+  $('#rAgain').onclick=()=>startLesson(Object.assign({},LS.cfg,{qs:LS.cfg.mix?shuffle(Object.values(QMAP).filter(q=>q.t!=='match')).slice(0,15):LS.cfg.qs}));
+}
+function goHome(){$('#result').classList.add('hidden');$('#lesson').classList.add('hidden');$('#home').classList.remove('hidden');renderHome();window.scrollTo(0,0);}
+$('#btnQuit').onclick=()=>{
+  openModal(`<h3>Thoát bài học?</h3><p class="sub">Tiến độ của bài này sẽ không được lưu.</p><div class="row"><button class="btn ghost" id="qNo">Học tiếp</button><button class="btn bad" id="qYes">Thoát</button></div>`);
+  $('#qNo').onclick=closeModal;$('#qYes').onclick=()=>{closeModal();if(canSpeak)speechSynthesis.cancel();goHome();};
+};
+function confetti(){const c=['#2B70F0','#FFB020','#1FA45B','#E0434B','#7A5AF0'];for(let i=0;i<40;i++){const d=document.createElement('div');d.className='confetti';d.style.left=Math.random()*100+'vw';d.style.background=c[i%c.length];d.style.animationDuration=(1.6+Math.random()*1.6)+'s';d.style.animationDelay=(Math.random()*.4)+'s';document.body.appendChild(d);setTimeout(()=>d.remove(),3800);}}
+document.addEventListener('keydown',e=>{if($('#lesson').classList.contains('hidden')||!LS)return;if(e.key==='Enter'&&document.activeElement.id!=='inp'&&!$('#btnCheck').disabled){e.preventDefault();$('#btnCheck').click();}
+  if(LS.state==='answer'&&LS.cur&&LS.cur.t==='mcq'&&/^[1-4]$/.test(e.key)){const b=$('#qArea').querySelectorAll('.opt')[+e.key-1];if(b)b.click();}});
+const h=new Date().getHours();$('#greet').textContent=(h<11?'Chào buổi sáng! ':h<18?'Chào em! ':'Chào buổi tối! ')+'Ôn thi cuối HK1 nào 💪';
+renderHome();
+})();
+</script>
+</body>
+</html>
