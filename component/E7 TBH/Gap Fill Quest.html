@@ -1,0 +1,558 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Gap Fill Quest</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap">
+<style>
+/* Layout: one centred column (max 640px), top bar with progress and hearts, question card, fixed feedback sheet at the bottom. Palette is Duolingo-like: green primary, blue info, red wrong, gold XP. */
+:root{
+  --bg:#ffffff; --fg:#3c3c3c; --muted:#777777; --line:#e5e5e5; --card:#ffffff; --soft:#f7f7f7;
+  --green:#58cc02; --green-d:#58a700; --green-bg:#d7ffb8; --green-fg:#4b8f00;
+  --red:#ff4b4b; --red-d:#ea2b2b; --red-bg:#ffdfe0; --red-fg:#d33131;
+  --blue:#1cb0f6; --blue-d:#1899d6; --blue-bg:#ddf4ff;
+  --gold:#ffc800; --gold-d:#e5b400; --mark:#fff0a8;
+  --font:'Nunito',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#131f24; --fg:#e8eef0; --muted:#8fa3ab; --line:#37464f; --card:#1b2a31; --soft:#202f36;
+  --green-bg:#1f3a12; --green-fg:#89e219; --red-bg:#3d1a1d; --red-fg:#ff7878; --blue-bg:#14323f; --mark:#5b4d10; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#131f24; --fg:#e8eef0; --muted:#8fa3ab; --line:#37464f; --card:#1b2a31; --soft:#202f36;
+  --green-bg:#1f3a12; --green-fg:#89e219; --red-bg:#3d1a1d; --red-fg:#ff7878; --blue-bg:#14323f; --mark:#5b4d10; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-weight:700;font-size:17px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0;min-height:100vh}
+button{font-family:inherit;cursor:pointer;color:inherit}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.wrap{max-width:640px;margin:0 auto;min-width:0}
+h1,h2,h3,p{margin:0}
+h1,h2{text-wrap:balance}
+
+/* chunky buttons */
+.btn{display:block;width:100%;border:0;border-radius:16px;padding:14px 20px;font-size:16px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;
+  background:var(--green);color:#fff;box-shadow:0 4px 0 var(--green-d);transition:transform .08s,box-shadow .08s}
+.btn:active:not(:disabled){transform:translateY(4px);box-shadow:0 0 0 var(--green-d)}
+.btn:disabled{background:var(--line);color:var(--muted);box-shadow:0 4px 0 var(--line);cursor:not-allowed}
+.btn.red{background:var(--red);box-shadow:0 4px 0 var(--red-d)}
+.btn.red:active{box-shadow:0 0 0 var(--red-d)}
+.btn.ghost{background:var(--card);color:var(--blue-d);border:2px solid var(--line);box-shadow:0 4px 0 var(--line)}
+.btn.ghost:active{box-shadow:0 0 0 var(--line)}
+
+/* HOME */
+.home{padding-block:32px 48px}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.owl{width:48px;height:48px;border-radius:14px;background:var(--green);display:grid;place-items:center;color:#fff;font-size:26px;font-weight:900;box-shadow:0 4px 0 var(--green-d)}
+.brand h1{font-size:30px;font-weight:900;line-height:1.1}
+.sub{color:var(--muted);margin-bottom:24px}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:var(--soft);border:2px solid var(--line);font-weight:900;font-size:15px}
+.chip b{color:var(--gold-d)}
+.lessons{display:grid;gap:16px}
+.lesson{display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center;text-align:left;width:100%;background:var(--card);
+  border:2px solid var(--line);border-radius:20px;padding:16px;box-shadow:0 4px 0 var(--line);transition:transform .08s,box-shadow .08s}
+.lesson:hover{border-color:var(--blue)}
+.lesson:active{transform:translateY(4px);box-shadow:0 0 0 var(--line)}
+.badge{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font-size:30px;font-weight:900;color:#fff;background:var(--c);box-shadow:0 5px 0 var(--cd)}
+.lesson h2{font-size:20px;font-weight:900;line-height:1.2}
+.lesson p{color:var(--muted);font-size:14px;font-weight:700}
+.stars{font-size:22px;letter-spacing:2px;white-space:nowrap}
+.star-on{color:var(--gold)}.star-off{color:var(--line)}
+.note{margin-top:24px;color:var(--muted);font-size:14px}
+
+/* QUIZ */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:14px 10px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.top .wrap{display:flex;align-items:center;gap:14px}
+.x{border:0;background:none;font-size:26px;font-weight:900;color:var(--muted);padding:0 4px;line-height:1}
+.bar{flex:1;height:16px;background:var(--line);border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--green);border-radius:999px;transition:width .4s;position:relative}
+.bar i::after{content:"";position:absolute;left:8px;right:8px;top:3px;height:4px;border-radius:4px;background:rgba(255,255,255,.35)}
+.hearts{display:flex;align-items:center;gap:4px;color:var(--red);font-weight:900;font-size:19px}
+.hearts.hit{animation:shake .4s}
+
+.quiz{padding-block:8px 70vh}
+.tag{display:inline-block;font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--blue-d);margin-bottom:6px}
+.q{font-size:23px;font-weight:900;line-height:1.3;margin-bottom:18px;text-wrap:balance}
+.passage{background:var(--soft);border:2px solid var(--line);border-radius:18px;margin-bottom:22px;overflow:hidden}
+.passage summary{list-style:none;cursor:pointer;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;font-weight:900;color:var(--blue-d)}
+.passage summary::-webkit-details-marker{display:none}
+.passage summary::after{content:"▾";transition:transform .2s}
+.passage[open] summary::after{transform:rotate(180deg)}
+.passage .txt{padding:0 16px 16px;font-weight:600;font-size:16px;line-height:1.7;max-height:34vh;overflow-y:auto}
+mark{background:var(--mark);color:inherit;border-radius:4px;padding:1px 2px}
+
+.tf{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:16px;
+  padding:14px 16px;font-size:17px;font-weight:800;box-shadow:0 3px 0 var(--line);transition:transform .08s,box-shadow .08s}
+.opt:hover:not(:disabled){background:var(--soft)}
+.opt:active:not(:disabled){transform:translateY(3px);box-shadow:0 0 0 var(--line)}
+.opts{display:grid;gap:12px}
+.key{flex:none;width:32px;height:32px;border:2px solid var(--line);border-radius:10px;display:grid;place-items:center;font-size:14px;font-weight:900;color:var(--muted)}
+.tf .opt{justify-content:center;padding:26px 12px;font-size:20px;font-weight:900;letter-spacing:.04em}
+.opt.sel{border-color:var(--blue);background:var(--blue-bg);box-shadow:0 3px 0 var(--blue);color:var(--blue-d)}
+.opt.sel .key{border-color:var(--blue);color:var(--blue-d)}
+.opt.ok{border-color:var(--green);background:var(--green-bg);box-shadow:0 3px 0 var(--green);color:var(--green-fg)}
+.opt.ok .key{border-color:var(--green);color:var(--green-fg)}
+.opt.no{border-color:var(--red);background:var(--red-bg);box-shadow:0 3px 0 var(--red);color:var(--red-fg)}
+.opt.no .key{border-color:var(--red);color:var(--red-fg)}
+.opt:disabled{cursor:default}
+
+/* feedback sheet */
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--card);border-top:2px solid var(--line);
+  padding:16px max(16px,env(safe-area-inset-left,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-right,0px));transition:background .2s}
+.sheet.ok{background:var(--green-bg);border-color:transparent}
+.sheet.no{background:var(--red-bg);border-color:transparent}
+.sheet .wrap{display:grid;gap:14px}
+.sheet{max-height:62vh;overflow-y:auto}
+.fb{display:none}
+.blk{margin-top:12px}
+.blk .lb{font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;opacity:.75;margin-bottom:3px}
+.evq{display:grid;gap:2px;margin-top:4px;padding-left:10px;border-left:4px solid currentColor}
+.evq .en{font-weight:900}
+.evq .vi{font-weight:700}
+.ol{margin:8px 0 0;padding-left:20px;display:grid;gap:5px;font-size:14.5px;line-height:1.45}
+.nform{display:grid;gap:10px;max-width:420px}
+.nform label{font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.nform input{font:inherit;font-weight:800;font-size:18px;padding:12px 14px;border:2px solid var(--line);border-radius:14px;background:var(--card);color:var(--fg);width:100%}
+.nform input:focus{border-color:var(--blue);outline:none}
+.nform .btn{margin-top:8px}
+.sc{width:100%;max-width:100%;text-align:left;border:3px solid var(--green);border-radius:20px;overflow:hidden;background:var(--card);box-shadow:0 5px 0 var(--green-d)}
+.sc-h{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;background:var(--green);color:#fff;padding:8px 14px;font-size:12.5px;font-weight:900;letter-spacing:.06em;text-transform:uppercase}
+.sc-b{padding:14px 16px;display:grid;gap:6px}
+.sc-name{font-size:22px;font-weight:900;line-height:1.25;overflow-wrap:anywhere}
+.sc-cls{display:inline-block;margin-left:6px;font-size:13px;padding:2px 10px;border-radius:999px;background:var(--blue-bg);color:var(--blue-d);vertical-align:middle}
+.sc-t{color:var(--muted);font-size:15px}
+.sc-score{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.sc-score b{font-size:44px;line-height:1;color:var(--green-fg)}
+.sc-score span{font-size:18px;color:var(--fg)}
+.sc-f{background:var(--soft);border-top:2px dashed var(--line);padding:8px 14px;font-size:13.5px;color:var(--muted);text-align:center}
+.xsum .sc{margin-top:8px}
+.lw{display:grid;gap:10px}
+.exam-btn{font-size:14px;padding:11px 16px}
+.exam{padding-block:8px 60px}
+.hint{color:var(--muted);font-size:15px;margin-bottom:14px}
+.xq{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:16px;margin-bottom:16px;min-width:0}
+.xn{font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--blue-d);margin-bottom:4px}
+.xq .q{font-size:20px;margin-bottom:6px}
+.qvi{color:var(--muted);font-size:15px;font-weight:700;margin:0 0 14px;padding-left:10px;border-left:4px solid var(--blue)}
+.ovi{display:block;font-size:13px;font-weight:700;color:var(--muted);margin-top:1px}
+.opt.ok .ovi,.opt.no .ovi,.opt.sel .ovi{color:inherit;opacity:.8}
+.xfb{margin-top:14px;border-radius:14px;padding:12px 14px}
+.xfb.ok{background:var(--green-bg);color:var(--green-fg)}
+.xfb.no{background:var(--red-bg);color:var(--red-fg)}
+.xfb h3{font-size:19px;font-weight:900;margin-bottom:2px}
+.xfb p{font-size:15px}
+.xsum{text-align:center;display:grid;gap:6px;justify-items:center;margin-bottom:18px}
+.xsum h1{font-size:30px;font-weight:900}
+.xsum p{color:var(--muted)}
+.xactions{display:grid;gap:14px;margin-top:8px}
+.lang{display:flex;gap:8px;padding:0 16px 10px;flex-wrap:wrap}
+.lang button{border:2px solid var(--line);background:var(--card);border-radius:999px;padding:4px 12px;font-size:13.5px;font-weight:900;color:var(--muted)}
+.lang button.on{border-color:var(--blue);background:var(--blue-bg);color:var(--blue-d)}
+.sheet.ok .fb,.sheet.no .fb{display:block;animation:up .25s}
+.fb h3{font-size:22px;font-weight:900;margin-bottom:4px}
+.sheet.ok .fb h3{color:var(--green-fg)}
+.sheet.no .fb h3{color:var(--red-fg)}
+.fb p{font-weight:700;font-size:15.5px;line-height:1.5}
+.sheet.ok .fb p{color:var(--green-fg)}
+.sheet.no .fb p{color:var(--red-fg)}
+.fb .ans{font-weight:900}
+.fb .ev{margin-top:6px;font-size:14px;opacity:.9;font-style:italic;font-weight:700}
+
+/* RESULT */
+.result{padding-block:48px;text-align:center;display:grid;gap:20px;justify-items:center}
+.big{font-size:84px;line-height:1}
+.result h1{font-size:32px;font-weight:900}
+.result p{color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%}
+.card{border:2px solid var(--c);border-radius:16px;overflow:hidden;background:var(--card)}
+.card .h{background:var(--c);color:#fff;font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;padding:5px}
+.card .v{padding:14px 6px;font-size:22px;font-weight:900;color:var(--c)}
+.rbtns{display:grid;gap:14px;width:100%;margin-top:6px}
+.review{width:100%;text-align:left;display:grid;gap:10px}
+.review h2{font-size:18px;font-weight:900}
+.rv{background:var(--soft);border:2px solid var(--line);border-radius:14px;padding:12px 14px;font-size:15px}
+.rv b{color:var(--red-fg)}
+
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(.6)}70%{transform:scale(1.12)}100%{transform:scale(1)}}
+.pop{animation:pop .5s}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:420px){.lesson{grid-template-columns:52px 1fr}.badge{width:52px;height:52px;font-size:24px}.stars{grid-column:1/-1;text-align:center}.q{font-size:21px}.tf .opt{padding:22px 8px}}
+</style>
+<style>
+.gap{display:inline-block;min-width:84px;text-align:center;font-weight:900;color:var(--muted);border-bottom:3px solid var(--line);padding:0 6px;margin:0 2px;border-radius:6px 6px 0 0}
+.gap.cur{color:var(--blue-d);border-color:var(--blue);background:var(--blue-bg)}
+.gap.ok{color:var(--green-fg);border-color:var(--green);background:var(--green-bg)}
+.gap.no{color:var(--red-fg);border-color:var(--red);background:var(--red-bg)}
+.sent{font-size:20px;line-height:1.9;font-weight:700;background:var(--soft);border:2px solid var(--line);border-radius:18px;padding:14px 16px;margin-bottom:18px;overflow-wrap:anywhere}
+.ptitle{font-weight:900;text-align:center;margin:0 0 8px;font-size:15px;letter-spacing:.04em}
+.passage .txt p{margin:0 0 10px}
+.passage .txt{line-height:2}
+.exam .passage .txt{max-height:none}
+.opts2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:480px){.opts2{grid-template-columns:1fr}}
+.lang button:disabled{opacity:.55;cursor:not-allowed}
+.rule{display:inline-block;margin-top:6px;padding:3px 10px;border-radius:999px;background:var(--blue-bg);color:var(--blue-d);font-size:13px;font-weight:900}
+.note2{margin-top:10px;font-size:14px;opacity:.9}
+</style>
+
+<div id="app"></div>
+
+<script>
+/* ---------- DỮ LIỆU ---------- */
+const LESSONS = [
+{
+ id:'pop', icon:'🍿', c:'#ff9600', cd:'#cc7900', title:'Bài 1: Who invented popcorn?', sub:'Ai phát minh ra bắp rang bơ?', head:'WHO INVENTED POPCORN?',
+ passage:"Popcorn is a delicacy that was developed by the Indians of North America, dated back {17} of years. Besides eating popped corn, the Indians also used popped corn in {18}, necklaces and in religious ceremonies. According to most sources, a deerskin bag full {19} popcorn was served at the first Thanksgiving dinner at Plymouth Rock in {20}.\nPopcorn’s popularity grew during the Depression of the 1930s people realized a little popcorn could {21} a long way. But its success was clinched when movie {22} across the continent started serving the snack. By 1947, 85 percent of movie houses were selling popcorn at their concession stands.",
+ vi:"Bắp rang bơ là một món ngon do người Anh-điêng (còn gọi là người Mỹ bản địa, thổ dân châu Mỹ hay người da đỏ) ở Bắc Mỹ tạo ra, có từ hàng nghìn năm trước. Ngoài việc ăn bắp rang, người Anh-điêng còn dùng bắp rang để làm đồ đội đầu, vòng cổ và trong các nghi lễ tôn giáo. Theo hầu hết các nguồn, một túi da hươu đầy bắp rang đã được dọn ra trong bữa tối Lễ Tạ ơn đầu tiên tại Plymouth Rock vào năm 1621.\nĐộ phổ biến của bắp rang tăng lên trong thời kỳ Đại suy thoái những năm 1930, khi người ta nhận ra một ít bắp rang cũng dùng được rất lâu (đi được một chặng đường dài). Nhưng thành công của nó được định đoạt khi các rạp chiếu phim trên khắp lục địa bắt đầu bán món ăn vặt này. Đến năm 1947, 85% rạp chiếu phim bán bắp rang tại quầy ăn nhẹ của họ.",
+ qs:[
+  {n:17,o:['thousands','plenty','many','loads'],oVi:['hàng nghìn','nhiều','nhiều','rất nhiều (thân mật)'],a:0,
+   rule:'thousands of + danh từ số nhiều',
+   sVi:'Bắp rang bơ là món ngon do người Anh-điêng (còn gọi là người Mỹ bản địa, thổ dân châu Mỹ hay người da đỏ) ở Bắc Mỹ tạo ra, có từ hàng nghìn năm trước.',
+   why:'“dated back thousands of years” nghĩa là có từ hàng nghìn năm trước. Cụm “thousands of + N số nhiều” thường đi với mốc thời gian lịch sử.',
+   opt:['Đúng. thousands of years = hàng nghìn năm.','Sai. “plenty of years” không tự nhiên khi nói về lịch sử lâu đời.','Sai. “many” không đi với “of” trước danh từ chung (many years, không phải many of years).','Sai. “loads of” là cách nói thân mật, không dùng trong câu kể lịch sử này.']},
+  {n:18,o:['costumes','baskets','decorations','headdress'],oVi:['trang phục','giỏ','đồ trang trí','đồ đội đầu (của người Mỹ bản địa)'],a:3,
+   rule:'danh sách đồ trang sức: headdress, necklaces',
+   sVi:'Ngoài việc ăn bắp rang, người Anh-điêng còn dùng bắp rang để làm đồ đội đầu, vòng cổ và trong các nghi lễ tôn giáo.',
+   why:'Câu liệt kê các vật dùng bắp rang làm đồ trang sức: “headdress” (đồ đội đầu), “necklaces” (vòng cổ) và các nghi lễ tôn giáo. Đáp án theo đề là headdress.',
+   opt:['Không chọn. Costumes (trang phục) nghĩa gần nhưng đề dùng headdress, song song với necklaces.','Sai. Baskets (giỏ) không phải đồ trang sức, không hợp với necklaces.','Không chọn. Decorations (đồ trang trí) nghĩa quá chung; đề dùng headdress cụ thể hơn.','Đúng theo đề. Headdress = đồ đội đầu, cùng nhóm đồ trang sức với necklaces.']},
+  {n:19,o:['in','on','of','at'],oVi:['trong','trên','của','tại'],a:2,
+   rule:'be full of + N',
+   sVi:'Theo hầu hết các nguồn, một túi da hươu đầy bắp rang đã được dọn ra trong bữa tối Lễ Tạ ơn đầu tiên tại Plymouth Rock vào năm 1621.',
+   why:'“full of + N” = đầy cái gì. “a deerskin bag full of popcorn” = một túi da hươu đầy bắp rang.',
+   opt:['Sai. Không nói “full in”.','Sai. Không nói “full on” trong nghĩa này.','Đúng. full of = đầy.','Sai. Không nói “full at”.']},
+  {n:20,o:['1621','Indians','1930s','Christmas'],oVi:['năm 1621','người Anh-điêng (người Mỹ bản địa)','những năm 1930','Lễ Giáng sinh'],a:0,
+   rule:'in + năm',
+   sVi:'Theo hầu hết các nguồn, một túi da hươu đầy bắp rang đã được dọn ra trong bữa tối Lễ Tạ ơn đầu tiên tại Plymouth Rock vào năm 1621.',
+   why:'Sau “in” cần một mốc thời gian. Bữa tối Lễ Tạ ơn đầu tiên ở Plymouth Rock diễn ra năm 1621.',
+   opt:['Đúng. “in 1621” là mốc thời gian của bữa tối Lễ Tạ ơn đầu tiên.','Sai. “Indians” là danh từ chỉ người, không phải mốc thời gian.','Sai. 1930s là thời kỳ Đại suy thoái ở đoạn sau, không phải thời điểm của Lễ Tạ ơn đầu tiên.','Sai. Đang nói về Thanksgiving, không phải Christmas (và phải nói “at Christmas”).']},
+  {n:21,o:['go','goes','went','going'],oVi:['đi (nguyên mẫu)','đi (ngôi thứ ba số ít)','đã đi','đang đi'],a:0,
+   rule:'could + động từ nguyên mẫu; go a long way',
+   sVi:'Độ phổ biến của bắp rang tăng lên trong thời kỳ Đại suy thoái những năm 1930, khi người ta nhận ra một ít bắp rang cũng dùng được rất lâu (đi được một chặng đường dài).',
+   why:'Sau động từ khuyết thiếu “could” dùng động từ nguyên mẫu không “to”. “go a long way” nghĩa là dùng được rất lâu, rất có ích dù chỉ một lượng nhỏ.',
+   opt:['Đúng. could + go (nguyên mẫu).','Sai. Sau could không thêm -s.','Sai. Sau could không dùng quá khứ.','Sai. Sau could không dùng V-ing.']},
+  {n:22,o:['hospitals','theatres','museums','stations'],oVi:['bệnh viện','rạp chiếu phim','bảo tàng','nhà ga'],a:1,
+   rule:'movie theatres = rạp chiếu phim',
+   sVi:'Nhưng thành công của nó được định đoạt khi các rạp chiếu phim trên khắp lục địa bắt đầu bán món ăn vặt này.',
+   why:'Câu sau nhắc đến “movie houses” bán bắp rang tại quầy ăn nhẹ, nên chỗ trống là “movie theatres” (rạp chiếu phim).',
+   opt:['Sai. “movie hospitals” không có nghĩa.','Đúng. movie theatres = rạp chiếu phim, nơi bán bắp rang.','Sai. “movie museums” không phù hợp với việc bán bắp rang.','Sai. “movie stations” không phải cụm thông dụng.']}
+ ]
+},
+{
+ id:'music', icon:'🎧', c:'#1cb0f6', cd:'#1899d6', title:'Bài 2: James and Joongih', sub:'Gu âm nhạc của hai bạn',
+ passage:"James says his {17} type of music ranges from Rap and R&B to Punk and even Hard Rock. The only kind of music he does not really care for is Country. He thinks it is a {18} thing to have a wide taste in music. Joongih, however, does not have one favourite type. If a song comes on the radio and {19} his attention, he finds out the name of the artist or group. Then he {20} the song and saves it. After some time, songs from many different genres become part of what he listens to in his {21} time. Both boys enjoy music, {22} their tastes are not exactly the same.",
+ vi:"James nói rằng thể loại nhạc yêu thích của cậu ấy trải rộng từ Rap và R&B đến Punk và thậm chí cả Hard Rock. Thể loại nhạc duy nhất cậu ấy không thực sự quan tâm là Country. Cậu ấy nghĩ việc có gu âm nhạc rộng là một điều tốt. Tuy nhiên, Joongih không có một thể loại yêu thích duy nhất. Nếu một bài hát phát trên đài và thu hút sự chú ý của cậu ấy, cậu ấy sẽ tìm tên nghệ sĩ hoặc nhóm nhạc. Sau đó cậu ấy tải bài hát về và lưu lại. Sau một thời gian, các bài hát từ nhiều thể loại khác nhau trở thành một phần của những gì cậu ấy nghe vào thời gian rảnh. Cả hai cậu bé đều thích âm nhạc, nhưng gu của họ không hoàn toàn giống nhau.",
+ qs:[
+  {n:17,o:['favourite','fame','recent','quiet'],oVi:['yêu thích','danh tiếng','gần đây','yên tĩnh'],a:0,
+   rule:'tính từ đứng trước danh từ: favourite type',
+   sVi:'Cậu ấy nói thể loại nhạc yêu thích của mình trải từ Rap và R&B đến Punk và thậm chí cả Hard Rock.',
+   why:'Cần một tính từ đứng trước “type of music”. Cả bài nói về gu nhạc, và câu sau có “one favourite type”, nên chọn favourite.',
+   opt:['Đúng. his favourite type of music = thể loại nhạc yêu thích của cậu ấy.','Sai. “fame” là danh từ (danh tiếng), không đứng trước “type”.','Sai. “recent type” (thể loại gần đây) không hợp nghĩa với việc trải từ Rap đến Hard Rock.','Sai. “quiet type of music” không hợp với Rap, Punk, Hard Rock.']},
+  {n:18,o:['boring','loud','good','popular'],oVi:['nhàm chán','ồn ào','tốt','phổ biến'],a:2,
+   rule:'a good thing to + V',
+   sVi:'Cậu ấy nghĩ có gu âm nhạc rộng là một điều tốt.',
+   why:'James đánh giá tích cực việc có gu nhạc rộng, nên dùng “a good thing” (một điều tốt).',
+   opt:['Sai. “boring” (nhàm chán) mâu thuẫn với ý tích cực của James.','Sai. “loud thing” (điều ồn ào) không hợp nghĩa.','Đúng. a good thing to have a wide taste = một điều tốt khi có gu rộng.','Sai. “popular thing” là cụm không tự nhiên để đánh giá việc có gu nhạc rộng.']},
+  {n:19,o:['catch','catches','caught','catching'],oVi:['bắt (nguyên mẫu)','bắt (ngôi thứ ba số ít)','đã bắt','đang bắt'],a:1,
+   rule:'S số ít + V-s; catch one’s attention',
+   sVi:'Nếu một bài hát phát trên đài và thu hút sự chú ý của cậu ấy, cậu ấy sẽ tìm tên nghệ sĩ hoặc nhóm nhạc.',
+   why:'Chủ ngữ là “a song” (số ít), động từ song song với “comes on” nên chia hiện tại đơn có -s: catches. “catch someone’s attention” = thu hút sự chú ý.',
+   opt:['Sai. Chủ ngữ số ít cần V-s.','Đúng. a song comes on ... and catches his attention.','Sai. Đây là thói quen ở hiện tại, không dùng quá khứ.','Sai. Không dùng V-ing sau “and” khi song song với “comes”.']},
+  {n:20,o:['downloads','paints','performs','celebrates'],oVi:['tải về','vẽ','biểu diễn','ăn mừng'],a:0,
+   rule:'download a song = tải bài hát',
+   sVi:'Sau đó cậu ấy tải bài hát về và lưu lại.',
+   why:'Sau khi tìm ra tên nghệ sĩ, cậu ấy tải bài hát và lưu lại. “download” hợp với “saves it”.',
+   opt:['Đúng. downloads the song and saves it.','Sai. paint (vẽ) không dùng với bài hát.','Sai. perform (biểu diễn) không hợp với “saves it”.','Sai. celebrate (ăn mừng) không dùng với bài hát.']},
+  {n:21,o:['academic','spare','live','folk'],oVi:['học thuật','rảnh rỗi','trực tiếp','dân gian'],a:1,
+   rule:'spare time = thời gian rảnh',
+   sVi:'Sau một thời gian, các bài hát từ nhiều thể loại khác nhau trở thành một phần của những gì cậu ấy nghe vào thời gian rảnh.',
+   why:'Cụm cố định “in his spare time” = vào lúc rảnh rỗi. Nghe nhạc là hoạt động lúc rảnh.',
+   opt:['Sai. “academic time” không phải cụm thông dụng.','Đúng. spare time = thời gian rảnh.','Sai. “live time” không có nghĩa phù hợp.','Sai. “folk time” không phải cụm thông dụng (folk là một thể loại nhạc).']},
+  {n:22,o:['but','so','because','or'],oVi:['nhưng','vì vậy','bởi vì','hoặc'],a:0,
+   rule:'but = nối hai ý tương phản',
+   sVi:'Cả hai cậu bé đều thích âm nhạc, nhưng gu của họ không hoàn toàn giống nhau.',
+   why:'Hai vế đối lập: cùng thích nhạc nhưng gu không giống nhau, nên dùng “but”.',
+   opt:['Đúng. but nối hai ý tương phản.','Sai. so chỉ kết quả, không hợp nghĩa.','Sai. because chỉ nguyên nhân, không hợp nghĩa.','Sai. or chỉ sự lựa chọn, không hợp nghĩa.']}
+ ]
+},
+{
+ id:'health', icon:'🥦', c:'#58cc02', cd:'#58a700', title:'Bài 3: Healthy habits', sub:'Thói quen lành mạnh',
+ passage:"Healthy habits are important for students because they help us feel active and study better every day. Everyone should {17} healthy food. Fruit and vegetables are good {18} our bodies. They give us vitamins and energy for school and daily activities. We should drink enough {19} every day. Drinking water is especially important after playing sports or spending time outdoors. It is also important to do exercise regularly. Walking, cycling, or {20} badminton are simple ways to keep fit. Don't eat too {21} junk food because it is not good for our health. We should also sleep about eight hours each night and take short breaks when we feel tired. Small healthy choices can make a big {22} to our lives.",
+ vi:"Thói quen lành mạnh quan trọng với học sinh vì chúng giúp chúng ta cảm thấy năng động và học tốt hơn mỗi ngày. Mọi người nên ăn thực phẩm lành mạnh. Trái cây và rau củ tốt cho cơ thể chúng ta. Chúng cung cấp vitamin và năng lượng cho việc học và các hoạt động hằng ngày. Chúng ta nên uống đủ nước mỗi ngày. Uống nước đặc biệt quan trọng sau khi chơi thể thao hoặc dành thời gian ngoài trời. Tập thể dục thường xuyên cũng quan trọng. Đi bộ, đạp xe hoặc chơi cầu lông là những cách đơn giản để giữ dáng khỏe mạnh. Đừng ăn quá nhiều đồ ăn vặt vì nó không tốt cho sức khỏe. Chúng ta cũng nên ngủ khoảng tám tiếng mỗi đêm và nghỉ ngắn khi thấy mệt. Những lựa chọn lành mạnh nhỏ có thể tạo ra khác biệt lớn cho cuộc sống của chúng ta.",
+ qs:[
+  {n:17,o:['eat','eats','eating','ate'],oVi:['ăn (nguyên mẫu)','ăn (ngôi thứ ba số ít)','việc ăn','đã ăn'],a:0,
+   rule:'should + động từ nguyên mẫu',
+   sVi:'Mọi người nên ăn thực phẩm lành mạnh.',
+   why:'Sau động từ khuyết thiếu “should” dùng động từ nguyên mẫu không “to”: should eat.',
+   opt:['Đúng. should + eat.','Sai. Sau should không thêm -s dù chủ ngữ là “Everyone”.','Sai. Sau should không dùng V-ing.','Sai. Sau should không dùng quá khứ.']},
+  {n:18,o:['at','for','in','on'],oVi:['tại','cho','trong','trên'],a:1,
+   rule:'be good for + N',
+   sVi:'Trái cây và rau củ tốt cho cơ thể chúng ta.',
+   why:'“be good for” = tốt cho. “good for our bodies” = tốt cho cơ thể chúng ta.',
+   opt:['Sai. Không nói “good at our bodies” (good at dùng cho kỹ năng).','Đúng. good for = tốt cho.','Sai. Không nói “good in our bodies” trong nghĩa này.','Sai. Không nói “good on our bodies”.']},
+  {n:19,o:['milk','juice','water','cola'],oVi:['sữa','nước ép','nước lọc','nước ngọt có ga'],a:2,
+   rule:'dựa vào câu sau: Drinking water ...',
+   sVi:'Chúng ta nên uống đủ nước mỗi ngày.',
+   why:'Câu liền sau nói “Drinking water is especially important...”, cho thấy chỗ trống là water. Cola cũng không phải đồ uống lành mạnh.',
+   opt:['Không chọn. Về ngữ pháp vẫn đúng, nhưng câu sau nói về water và chủ đề là thói quen lành mạnh.','Không chọn. Về ngữ pháp vẫn đúng, nhưng câu sau nói về water.','Đúng. enough water every day; câu sau “Drinking water is ...” xác nhận.','Sai. Cola (nước ngọt có ga) không lành mạnh.']},
+  {n:20,o:['playing','plays','play','played'],oVi:['chơi (V-ing)','chơi (ngôi thứ ba số ít)','chơi (nguyên mẫu)','đã chơi'],a:0,
+   rule:'song song: Walking, cycling, or playing',
+   sVi:'Đi bộ, đạp xe hoặc chơi cầu lông là những cách đơn giản để giữ dáng khỏe mạnh.',
+   why:'Danh sách có “Walking, cycling, or ...” nên chỗ trống cũng phải là V-ing để cấu trúc song song: playing badminton.',
+   opt:['Đúng. Walking, cycling, or playing (cùng dạng V-ing).','Sai. Không chia -s trong danh sách V-ing.','Sai. Nguyên mẫu không song song với Walking, cycling.','Sai. Quá khứ không song song với Walking, cycling.']},
+  {n:21,o:['many','much','lot','more'],oVi:['nhiều (đếm được)','nhiều (không đếm được)','nhiều (danh từ)','hơn'],a:1,
+   rule:'too much + danh từ không đếm được',
+   sVi:'Đừng ăn quá nhiều đồ ăn vặt vì nó không tốt cho sức khỏe.',
+   why:'“junk food” là danh từ không đếm được, nên dùng “too much”. “too many” chỉ đi với danh từ đếm được số nhiều.',
+   opt:['Sai. too many + danh từ đếm được số nhiều (too many sweets).','Đúng. too much + danh từ không đếm được (too much junk food).','Sai. Phải là “too much” hoặc “a lot of”, không nói “too lot”.','Sai. “too more” không đúng ngữ pháp.']},
+  {n:22,o:['difference','differ','different','differently'],oVi:['sự khác biệt (danh từ)','khác nhau (động từ)','khác (tính từ)','một cách khác (trạng từ)'],a:0,
+   rule:'make a big difference to',
+   sVi:'Những lựa chọn lành mạnh nhỏ có thể tạo ra khác biệt lớn cho cuộc sống của chúng ta.',
+   why:'Sau “a big” cần một danh từ. “make a difference to” = tạo ra sự khác biệt, có tác động đến.',
+   opt:['Đúng. a big difference (danh từ).','Sai. differ là động từ, không đứng sau a big.','Sai. different là tính từ; không có “a big different”.','Sai. differently là trạng từ, không đứng sau a big.']}
+ ]
+}];
+
+/* ---------- TIỆN ÍCH ---------- */
+const $ = s => document.querySelector(s);
+const app = $('#app');
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+let store = {xp:0, stars:{}, exam:{}};
+try { const s = JSON.parse(localStorage.getItem('gf1')||'null'); if(s) store = Object.assign(store,s); } catch(e){}
+const save = () => { try{ localStorage.setItem('gf1', JSON.stringify(store)); }catch(e){} };
+const starsFor = n => n>=6 ? 3 : n>=5 ? 2 : n>=3 ? 1 : 0;
+const starStr = n => [1,2,3].map(i=>`<span class="${i<=n?'star-on':'star-off'}">★</span>`).join('');
+let S=null, E=null;
+
+function fillText(t, map, cur){
+  return esc(t).replace(/\{(\d+)\}/g,(m,d)=>{ const n=+d, f=map&&map[n];
+    if(f) return `<span class="gap ${f.cls}">${esc(f.t)}</span>`;
+    return `<span class="gap ${n===cur?'cur':''}">(${n}) ______</span>`; });
+}
+function passageHtml(L, lang, map, cur){
+  if(lang==='vi') return L.vi.split('\n').map(p=>`<p>${esc(p)}</p>`).join('');
+  return `<p class="ptitle">${esc(L.head||L.title)}</p>` + L.passage.split('\n').map(p=>`<p>${fillText(p,map,cur)}</p>`).join('');
+}
+const sentenceOf = (L,n) => L.passage.replace(/\n/g,' ').split(/(?<=[.!?])\s+/).find(s=>s.includes('{'+n+'}'));
+
+function nameGate(edit){
+  app.innerHTML = `<div class="home wrap">
+    <div class="brand"><div class="owl">G</div><h1>Gap Fill Quest</h1></div>
+    <p class="sub">Nhập tên để bắt đầu. Sau mỗi bài, bạn sẽ có thẻ điểm ghi tên và kết quả để chụp màn hình gửi cho giáo viên.</p>
+    <form id="nf" class="nform">
+      <label for="nm">Họ và tên</label>
+      <input id="nm" autocomplete="name" maxlength="40" placeholder="Ví dụ: Nguyễn Văn An" value="${esc(store.name||'')}" required>
+      <label for="cl">Lớp</label>
+      <input id="cl" maxlength="12" placeholder="Ví dụ: 9A2" value="${esc(store.cls||'')}">
+      <button class="btn" type="submit">${edit?'Lưu':'Bắt đầu'}</button>
+      ${edit&&store.name?'<button class="btn ghost" type="button" id="ncancel">Hủy</button>':''}
+    </form></div>`;
+  $('#nf').onsubmit = e => { e.preventDefault(); const n=$('#nm').value.trim(); if(!n) return; store.name=n; store.cls=$('#cl').value.trim(); save(); home(); };
+  const c=$('#ncancel'); if(c) c.onclick=home;
+  window.scrollTo(0,0);
+}
+function scoreCard(kind, title, score, total){
+  const ten = Math.round(score/total*100)/10;
+  const when = new Date().toLocaleString('vi-VN',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit',year:'numeric'});
+  return `<div class="sc" role="group" aria-label="Thẻ điểm">
+    <div class="sc-h"><span>Thẻ điểm · Gap Fill Quest</span><span>${esc(when)}</span></div>
+    <div class="sc-b">
+      <div class="sc-name">${esc(store.name||'Chưa nhập tên')}${store.cls?` <span class="sc-cls">Lớp ${esc(store.cls)}</span>`:''}</div>
+      <div class="sc-t">${esc(kind)} · ${esc(title)}</div>
+      <div class="sc-score"><b>${score}/${total}</b><span>${ten}/10 điểm</span></div>
+    </div>
+    <div class="sc-f">📸 Chụp màn hình thẻ điểm này và gửi cho giáo viên</div>
+  </div>`;
+}
+
+/* ---------- TRANG CHỦ ---------- */
+function home(){
+  if(!store.name) return nameGate(false);
+  S=null; E=null;
+  const total = LESSONS.reduce((a,l)=>a+(store.stars[l.id]||0),0);
+  app.innerHTML = `
+  <div class="home wrap">
+    <div class="brand"><div class="owl">G</div><h1>Gap Fill Quest</h1></div>
+    <p class="sub">Chọn đáp án đúng để điền vào chỗ trống. Mỗi câu có giải thích ngữ pháp, bản dịch và 5 tim.</p>
+    <div class="stats">
+      <button class="chip" id="chname" style="cursor:pointer" aria-label="Đổi tên">👤 ${esc(store.name)}${store.cls?' · '+esc(store.cls):''} ✎</button>
+      <span class="chip">⚡ <b>${store.xp}</b> XP</span>
+      <span class="chip">★ <b>${total}</b> / ${LESSONS.length*3}</span>
+    </div>
+    <div class="lessons">
+    ${LESSONS.map(l=>`
+      <div class="lw">
+        <button class="lesson" data-id="${l.id}" style="--c:${l.c};--cd:${l.cd}">
+          <span class="badge" aria-hidden="true">${l.icon}</span>
+          <span><h2>${esc(l.title)}</h2><p>${esc(l.sub)} · 6 chỗ trống (câu 17 đến 22)</p></span>
+          <span class="stars" aria-label="${store.stars[l.id]||0} trên 3 sao">${starStr(store.stars[l.id]||0)}</span>
+        </button>
+        <button class="btn ghost exam-btn" data-id="${l.id}">📝 Làm cả bài như đề thi${store.exam[l.id]!=null?` · điểm cao nhất ${store.exam[l.id]}/6`:''}</button>
+      </div>`).join('')}
+    </div>
+    <p class="note">Học từng câu để hiểu cách chọn đáp án, sau đó làm cả bài như đề thi. Sao tính theo số câu đúng ngay lần đầu: 3 đến 4 câu được 1 sao, 5 câu được 2 sao, 6 câu được 3 sao.</p>
+  </div>`;
+  app.querySelectorAll('.lesson').forEach(b=>b.onclick=()=>start(b.dataset.id));
+  app.querySelectorAll('.exam-btn').forEach(b=>b.onclick=()=>exam(b.dataset.id));
+  $('#chname').onclick = () => nameGate(true);
+  window.scrollTo(0,0);
+}
+
+/* ---------- HỌC TỪNG CÂU ---------- */
+function start(id){
+  const L = LESSONS.find(l=>l.id===id);
+  S = {L, queue:L.qs.map(q=>({q,retry:false})), done:0, first:0, hearts:5, xp:0, wrong:[], map:{}, lang:'en', total:L.qs.length, sel:null, checked:false};
+  quiz();
+}
+function quiz(){
+  if(!S.queue.length) return finish(true);
+  const cur=S.queue[0], q=cur.q, L=S.L;
+  S.sel=null; S.checked=false; S.lang='en';
+  const pct = Math.round(S.done/S.total*100);
+  app.innerHTML = `
+  <div class="top"><div class="wrap">
+    <button class="x" id="quit" aria-label="Thoát bài học">✕</button>
+    <div class="bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${pct}%"></i></div>
+    <div class="hearts" id="hearts" aria-label="${S.hearts} tim">❤ ${S.hearts}</div>
+  </div></div>
+  <div class="quiz wrap">
+    <details class="passage" id="pass" ${S.done===0?'open':''}>
+      <summary>📖 Xem cả đoạn văn</summary>
+      <div class="lang" role="group" aria-label="Ngôn ngữ">
+        <button type="button" data-l="en" class="on">English</button>
+        <button type="button" data-l="vi" id="vibtn" disabled>🔒 Bản dịch (mở sau khi trả lời)</button>
+      </div>
+      <div class="txt" id="ptxt">${passageHtml(L,'en',S.map,q.n)}</div>
+    </details>
+    <div class="tag">${cur.retry?'Làm lại câu sai · ':''}Điền từ vào chỗ trống · câu ${q.n}</div>
+    <div class="sent" id="sent">${fillText(sentenceOf(L,q.n),S.map,q.n)}</div>
+    <div class="opts">${q.o.map((o,k)=>`<button class="opt" data-v="${k}"><span class="key">${'ABCD'[k]}</span><span>${esc(o)}<span class="ovi">${esc(q.oVi[k])}</span></span></button>`).join('')}</div>
+  </div>
+  <div class="sheet" id="sheet"><div class="wrap"><div class="fb" id="fb"></div><button class="btn" id="go" disabled>Kiểm tra</button></div></div>`;
+  $('#quit').onclick = () => { if(S.done===0 || S.confirmQuit) home(); else { S.confirmQuit=true; $('#quit').textContent='Thoát?'; $('#quit').style.fontSize='14px'; setTimeout(()=>{ if(S){S.confirmQuit=false; const x=$('#quit'); if(x){x.textContent='✕';x.style.fontSize='';}} },2500);} };
+  app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{ if(S.checked) return;
+    app.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel')); b.classList.add('sel'); S.sel=b.dataset.v; $('#go').disabled=false; });
+  app.querySelectorAll('.lang button').forEach(b=>b.onclick=()=>{ if(b.disabled) return; S.lang=b.dataset.l;
+    app.querySelectorAll('.lang button').forEach(x=>x.classList.toggle('on',x===b));
+    $('#ptxt').innerHTML = passageHtml(L,S.lang,S.map,q.n); });
+  $('#go').onclick = () => S.checked ? next() : check();
+  window.scrollTo(0,0);
+}
+function check(){
+  const cur=S.queue[0], q=cur.q, L=S.L;
+  const ok = +S.sel === q.a; S.checked=true;
+  app.querySelectorAll('.opt').forEach(o=>{ o.disabled=true; o.classList.remove('sel');
+    if(+o.dataset.v===q.a) o.classList.add('ok'); else if(o.dataset.v===S.sel) o.classList.add('no'); });
+  const ans = q.o[q.a];
+  const map = Object.assign({}, S.map, {[q.n]:{t:ans, cls:'ok'}});
+  $('#sent').innerHTML = fillText(sentenceOf(L,q.n), map, q.n);
+  $('#ptxt').innerHTML = passageHtml(L,'en',map,q.n);
+  const vb=$('#vibtn'); vb.disabled=false; vb.textContent='Bản dịch tiếng Việt';
+  const sheet=$('#sheet'); sheet.classList.add(ok?'ok':'no');
+  const praise=['Chính xác!','Tuyệt vời!','Đúng rồi!','Giỏi quá!'][Math.floor(Math.random()*4)];
+  $('#fb').innerHTML = `<h3>${ok?praise:'Chưa đúng'}</h3>
+    <p>Đáp án đúng: <span class="ans">${'ABCD'[q.a]}. ${esc(ans)} (${esc(q.oVi[q.a])})</span></p>
+    <div class="blk"><div class="lb">Câu hoàn chỉnh</div>
+      <div class="evq"><span class="en">${fillText(sentenceOf(L,q.n),map,q.n).replace(/<span class="gap [^"]*">/g,'<b>').replace(/<\/span>/g,'</b>')}</span><span class="vi">→ ${esc(q.sVi)}</span></div></div>
+    <div class="blk"><div class="lb">Cấu trúc cần nhớ</div><p><span class="rule">${esc(q.rule)}</span></p></div>
+    <div class="blk"><div class="lb">Giải thích</div><p>${esc(q.why)}</p>
+      <ul class="ol">${q.o.map((o,k)=>`<li><b>${'ABCD'[k]}. ${esc(o)}</b> (${esc(q.oVi[k])}): ${esc(q.opt[k])}</li>`).join('')}</ul></div>`;
+  const go=$('#go'); go.disabled=false; go.textContent='Tiếp tục'; if(!ok) go.classList.add('red');
+  if(ok){ S.done++; if(!cur.retry) S.first++; S.xp += cur.retry?5:10; S.map[q.n]={t:ans,cls:'ok'}; S.queue.shift(); $('.bar i').style.width=Math.round(S.done/S.total*100)+'%'; }
+  else { S.hearts--; if(!cur.retry) S.wrong.push(q); S.queue.shift(); S.queue.push({q,retry:true}); const h=$('#hearts'); h.textContent='❤ '+S.hearts; h.classList.add('hit'); }
+  S.lastOk=ok; sheet.scrollIntoView({block:'end'});
+}
+function next(){ if(S.hearts<=0 && !S.lastOk) return finish(false); quiz(); }
+
+function finish(win){
+  const L=S.L, n=S.first; let stars=0;
+  const bonus = win && n===S.total ? 20 : 0;
+  if(win){ stars=starsFor(n); store.xp += S.xp+bonus; store.stars[L.id]=Math.max(store.stars[L.id]||0,stars); save(); }
+  app.innerHTML = `<div class="result wrap">
+    <div class="big pop">${win?(stars===3?'🏆':'🎉'):'💔'}</div>
+    <h1>${win?(stars===3?'Hoàn hảo!':'Hoàn thành bài học!'):'Hết tim rồi'}</h1>
+    <p>${win?esc(L.title)+' · '+esc(L.sub):'Đọc lại các giải thích rồi thử lần nữa nhé. Mỗi lần làm lại là một lần hiểu bài hơn.'}</p>
+    ${win?`<div class="stars" style="font-size:44px" aria-label="${stars} trên 3 sao">${starStr(stars)}</div>`:''}
+    <div class="cards">
+      <div class="card" style="--c:var(--gold-d)"><div class="h">XP</div><div class="v">+${win?S.xp+bonus:S.xp}</div></div>
+      <div class="card" style="--c:var(--green)"><div class="h">Đúng ngay</div><div class="v">${n}/${S.total}</div></div>
+      <div class="card" style="--c:var(--red)"><div class="h">Tim còn</div><div class="v">${Math.max(S.hearts,0)}</div></div>
+    </div>
+    ${win?scoreCard('Học từng câu',L.title,n,S.total):''}
+    ${S.wrong.length?`<div class="review"><h2>Các câu cần xem lại</h2>${S.wrong.map(q=>`<div class="rv"><b>Câu ${q.n}: ${esc(q.o[q.a])}</b> (${esc(q.rule)})<br>${esc(q.why)}</div>`).join('')}</div>`:''}
+    <div class="rbtns">
+      ${win?`<button class="btn" id="toexam">📝 Làm cả bài như đề thi</button>`:''}
+      <button class="btn ${win?'ghost':''}" id="again">${win?'Học lại bài này':'Thử lại'}</button>
+      <button class="btn ghost" id="back">Về danh sách bài</button>
+    </div></div>`;
+  if(win) $('#toexam').onclick=()=>exam(L.id);
+  $('#again').onclick=()=>start(L.id); $('#back').onclick=home; window.scrollTo(0,0);
+}
+
+/* ---------- LÀM CẢ BÀI NHƯ ĐỀ THI ---------- */
+function exam(id){
+  const L=LESSONS.find(l=>l.id===id);
+  E={L, ans:L.qs.map(()=>null), done:false, lang:'en', showVi:true};
+  renderExam(); window.scrollTo(0,0);
+}
+function renderExam(keep){
+  const L=E.L, y=window.scrollY;
+  const answered=E.ans.filter(a=>a!==null).length;
+  const score = E.done ? L.qs.filter((q,i)=>E.ans[i]===q.a).length : 0;
+  const map={};
+  L.qs.forEach((q,i)=>{ const a=E.ans[i]; if(a!==null) map[q.n]={t:q.o[a], cls:E.done?(a===q.a?'ok':'no'):'cur'};
+    else if(E.done) map[q.n]={t:'(bỏ trống)',cls:'no'}; });
+  const qHtml = L.qs.map((q,i)=>{
+    const a=E.ans[i], ok=E.done&&a===q.a;
+    const cls=k=>{ if(E.done){ if(k===q.a) return 'ok'; if(k===a) return 'no'; return ''; } return a===k?'sel':''; };
+    const opts=q.o.map((o,k)=>`<button class="opt ${cls(k)}" data-i="${i}" data-v="${k}" ${E.done?'disabled':''}><span class="key">${'ABCD'[k]}</span><span>${esc(o)}${E.showVi?`<span class="ovi">${esc(q.oVi[k])}</span>`:''}</span></button>`).join('');
+    let fb='';
+    if(E.done){
+      fb=`<div class="xfb ${ok?'ok':'no'}"><h3>${ok?'Đúng rồi!':'Chưa đúng'}</h3>
+        ${ok?'':`<p>Bạn chọn: <b>${a===null?'chưa trả lời':esc('ABCD'[a]+'. '+q.o[a])}</b></p>`}
+        <p>Đáp án đúng: <span class="ans">${'ABCD'[q.a]}. ${esc(q.o[q.a])} (${esc(q.oVi[q.a])})</span></p>
+        <div class="blk"><div class="lb">Câu hoàn chỉnh</div><div class="evq"><span class="en">${esc(sentenceOf(L,q.n).replace(/\{(\d+)\}/g,(m,d)=>+d===q.n?q.o[q.a]:'___'))}</span><span class="vi">→ ${esc(q.sVi)}</span></div></div>
+        <div class="blk"><div class="lb">Cấu trúc cần nhớ</div><p><span class="rule">${esc(q.rule)}</span></p></div>
+        <div class="blk"><div class="lb">Giải thích</div><p>${esc(q.why)}</p><ul class="ol">${q.o.map((o,k)=>`<li><b>${'ABCD'[k]}. ${esc(o)}</b>: ${esc(q.opt[k])}</li>`).join('')}</ul></div></div>`;
+    }
+    return `<section class="xq" aria-label="Câu ${q.n}"><div class="xn">Câu ${q.n}</div><div class="opts2">${opts}</div>${fb}</section>`;
+  }).join('');
+  const summary = E.done ? `<div class="xsum"><div class="big pop">${score===6?'🏆':score>=4?'🎉':'💪'}</div><h1>${score}/6 câu đúng</h1>
+    <p>${score===6?'Hoàn hảo! Bạn nắm chắc ngữ pháp bài này.':score>=4?'Làm tốt lắm! Xem lại các câu sai bên dưới nhé.':'Đọc lại giải thích bên dưới, rồi học từng câu và thử làm lại.'}</p>
+    ${scoreCard('Làm cả bài', L.title, score, 6)}</div>` : '';
+  app.innerHTML = `
+  <div class="top"><div class="wrap"><button class="x" id="xback" aria-label="Về danh sách bài">✕</button>
+    <div class="bar"><i style="width:${(E.done?6:answered)/6*100}%"></i></div>
+    <div class="hearts" style="color:var(--green)">${E.done?score:answered}/6</div></div></div>
+  <div class="quiz wrap exam">
+    <div class="tag">Làm cả bài · ${esc(L.title)}</div>
+    <p class="hint">Đọc đoạn văn, chọn đáp án A, B, C hoặc D cho từng chỗ trống (câu 17 đến 22). Bản dịch đoạn văn mở sau khi nộp bài để không lộ đáp án.</p>
+    ${summary}
+    <details class="passage" open><summary>📖 Đoạn văn</summary>
+      <div class="lang" role="group" aria-label="Tùy chọn">
+        <button type="button" data-l="en" class="${E.lang==='en'?'on':''}">English</button>
+        <button type="button" data-l="vi" class="${E.lang==='vi'?'on':''}" ${E.done?'':'disabled'}>${E.done?'Bản dịch tiếng Việt':'🔒 Bản dịch (mở sau khi nộp)'}</button>
+        <button type="button" id="tgvi" class="${E.showVi?'on':''}">Nghĩa của từ: ${E.showVi?'Bật':'Tắt'}</button>
+      </div>
+      <div class="txt" id="ptxt">${passageHtml(L,E.lang,map,null)}</div></details>
+    ${qHtml}
+    <div class="xactions">${E.done
+      ? `<button class="btn" id="xretry">Làm lại bài này</button><button class="btn ghost" id="xlearn">Học từng câu</button><button class="btn ghost" id="xhome">Về danh sách bài</button>`
+      : `<button class="btn" id="xsubmit" ${answered<6?'disabled':''}>${answered<6?`Nộp bài (còn ${6-answered} câu)`:'Nộp bài'}</button>`}</div>
+  </div>`;
+  app.querySelectorAll('.exam .opt').forEach(b=>b.onclick=()=>{ if(E.done) return; E.ans[+b.dataset.i]=+b.dataset.v; renderExam(true); });
+  app.querySelectorAll('.lang button[data-l]').forEach(b=>b.onclick=()=>{ if(b.disabled) return; E.lang=b.dataset.l; renderExam(true); });
+  $('#tgvi').onclick=()=>{ E.showVi=!E.showVi; renderExam(true); };
+  $('#xback').onclick=home;
+  if(E.done){ $('#xretry').onclick=()=>exam(L.id); $('#xlearn').onclick=()=>start(L.id); $('#xhome').onclick=home; }
+  else $('#xsubmit').onclick=()=>{ E.done=true; const sc=L.qs.filter((q,i)=>E.ans[i]===q.a).length;
+    store.xp+=sc*5; store.exam[L.id]=Math.max(store.exam[L.id]||0,sc); save(); renderExam(); window.scrollTo(0,0); };
+  if(keep) window.scrollTo(0,y);
+}
+
+home();
+</script>
+
+</body></html>
